@@ -26,109 +26,106 @@ class _LoginPageState extends State<LoginPage> {
     var headline6 = Theme.of(context).textTheme.headline6;
     var height = MediaQuery.of(context).size.height;
 
-    return WillPopScope(
-      onWillPop: () async => false,
-      child: Scaffold(
-        body: Container(
-          alignment: Alignment.center,
-          padding: Responsive.isDesktop(context)
-              ? const EdgeInsets.all(50.0)
-              : const EdgeInsets.all(10.0),
-          child: Card(
-            elevation: 10,
-            shadowColor: Colors.deepPurpleAccent,
-            child: Row(
-              children: [
-                if (!Responsive.isMobile(context))
-                  Expanded(
-                    child: Stack(
-                      children: [
-                        Center(
-                          child: Image.asset('assets/images/logo.png',
-                              fit: BoxFit.cover,
-                              height: Responsive.isDesktop(context)
-                                  ? height / 1.5
-                                  : height / 2),
-                        ),
-                        Positioned(
-                          bottom: 50,
-                          left: 20,
-                          child: DefaultTextStyle(
-                            style: headline6!.copyWith(color: Colors.black),
-                            child: AnimatedTextKit(
-                              animatedTexts: [
-                                TypewriterAnimatedText(
-                                    'Bienvenue sur l\'interface d\'administration FOKAD.',
-                                    textStyle: TextStyle(
-                                        color: ThemeProvider().isDarkMode
-                                            ? Colors.white
-                                            : Colors.black)),
-                                TypewriterAnimatedText(
-                                    'Générez vos rapports instanement.',
-                                    textStyle: TextStyle(
-                                        color: ThemeProvider().isDarkMode
-                                            ? Colors.white
-                                            : Colors.black)),
-                                TypewriterAnimatedText(
-                                    'Gerer votre reporting calls et projets.',
-                                    textStyle: TextStyle(
-                                        color: ThemeProvider().isDarkMode
-                                            ? Colors.white
-                                            : Colors.black)),
-                                TypewriterAnimatedText(
-                                    'Redigez et envoyez vos mails instanement.',
-                                    textStyle: TextStyle(
-                                        color: ThemeProvider().isDarkMode
-                                            ? Colors.white
-                                            : Colors.black)),
-                                TypewriterAnimatedText(
-                                    'Travaillez partout et à tous moment.',
-                                    textStyle: TextStyle(
-                                        color: ThemeProvider().isDarkMode
-                                            ? Colors.white
-                                            : Colors.black)),
-                              ],
-                            ),
+    return Scaffold(
+      body: Container(
+        alignment: Alignment.center,
+        padding: Responsive.isDesktop(context)
+            ? const EdgeInsets.all(50.0)
+            : const EdgeInsets.all(10.0),
+        child: Card(
+          elevation: 10,
+          shadowColor: Colors.deepPurpleAccent,
+          child: Row(
+            children: [
+              if (!Responsive.isMobile(context))
+                Expanded(
+                  child: Stack(
+                    children: [
+                      Center(
+                        child: Image.asset('assets/images/logo.png',
+                            fit: BoxFit.cover,
+                            height: Responsive.isDesktop(context)
+                                ? height / 1.5
+                                : height / 2),
+                      ),
+                      Positioned(
+                        bottom: 50,
+                        left: 20,
+                        child: DefaultTextStyle(
+                          style: headline6!.copyWith(color: Colors.black),
+                          child: AnimatedTextKit(
+                            animatedTexts: [
+                              TypewriterAnimatedText(
+                                  'Bienvenue sur l\'interface d\'administration FOKAD.',
+                                  textStyle: TextStyle(
+                                      color: ThemeProvider().isDarkMode
+                                          ? Colors.white
+                                          : Colors.black)),
+                              TypewriterAnimatedText(
+                                  'Générez vos rapports instanement.',
+                                  textStyle: TextStyle(
+                                      color: ThemeProvider().isDarkMode
+                                          ? Colors.white
+                                          : Colors.black)),
+                              TypewriterAnimatedText(
+                                  'Gerer votre reporting calls et projets.',
+                                  textStyle: TextStyle(
+                                      color: ThemeProvider().isDarkMode
+                                          ? Colors.white
+                                          : Colors.black)),
+                              TypewriterAnimatedText(
+                                  'Redigez et envoyez vos mails instanement.',
+                                  textStyle: TextStyle(
+                                      color: ThemeProvider().isDarkMode
+                                          ? Colors.white
+                                          : Colors.black)),
+                              TypewriterAnimatedText(
+                                  'Travaillez partout et à tous moment.',
+                                  textStyle: TextStyle(
+                                      color: ThemeProvider().isDarkMode
+                                          ? Colors.white
+                                          : Colors.black)),
+                            ],
                           ),
-                        )
+                        ),
+                      )
+                    ],
+                  ),
+                ),
+              Expanded(
+                  child: Form(
+                key: _form,
+                child: SingleChildScrollView(
+                  child: Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Align(
+                            alignment: Alignment.topRight,
+                            child: helpWidget()),
+                        logoWidget(),
+                        // titleText(),
+                        const SizedBox(height: 20),
+                        userNameBuild(),
+                        const SizedBox(height: 20),
+                        passwordBuild(),
+                        const SizedBox(height: 20),
+                        loginButtonBuild(),
+                        const SizedBox(height: 20),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            forgotPasswordWidget(),
+                          ],
+                        ),
                       ],
                     ),
                   ),
-                Expanded(
-                    child: Form(
-                  key: _form,
-                  child: SingleChildScrollView(
-                    child: Padding(
-                      padding: const EdgeInsets.all(16.0),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Align(
-                              alignment: Alignment.topRight,
-                              child: helpWidget()),
-                          logoWidget(),
-                          // titleText(),
-                          const SizedBox(height: 20),
-                          userNameBuild(),
-                          const SizedBox(height: 20),
-                          passwordBuild(),
-                          const SizedBox(height: 20),
-                          loginButtonBuild(),
-                          const SizedBox(height: 20),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              forgotPasswordWidget(),
-                            ],
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ))
-              ],
-            ),
+                ),
+              ))
+            ],
           ),
         ),
       ),
