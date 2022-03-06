@@ -22,6 +22,7 @@ class _DrawerMenuState extends State<DrawerMenu> {
     final headline6 = Theme.of(context).textTheme.headline6;
     final bodyText1 = Theme.of(context).textTheme.bodyText1;
     final bodyText2 = Theme.of(context).textTheme.bodyText2;
+
     String pageCurrente = Routemaster.of(context).currentRoute.fullPath;
     return Drawer(
       elevation: 10.0,

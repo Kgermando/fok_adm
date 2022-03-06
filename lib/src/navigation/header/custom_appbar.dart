@@ -6,6 +6,7 @@ import 'package:fokad_admin/src/provider/controller.dart';
 import 'package:fokad_admin/src/utils/menu_items.dart';
 import 'package:fokad_admin/src/utils/menu_options.dart';
 import 'package:provider/provider.dart';
+import 'package:badges/badges.dart';
 
 class CustomAppbar extends StatefulWidget {
   const CustomAppbar({Key? key, required this.title}) : super(key: key);
@@ -35,26 +36,34 @@ class _CustomAppbarState extends State<CustomAppbar> {
               ),
             HeaderItem(title: widget.title),
             const Spacer(),
-            IconButton(onPressed: () {}, icon: const Icon(Icons.mail)),
+            IconButton(onPressed: () {}, icon: Badge(
+                  badgeContent: const Text('3',
+                      style: TextStyle(fontSize: 10.0, color: Colors.white)),
+                  child: const Icon(Icons.mail),
+                )),
             IconButton(
-                onPressed: () {},
-                icon: isActiveNotification
-                    ? const Icon(Icons.notifications_active)
-                    : const Icon(Icons.notifications)),
-            TextButton.icon(
               onPressed: () {},
-              icon: CircleAvatar(
-                radius: 30,
-                child: Image.asset(
-                  'assets/images/logo.png',
-                  width: 30,
-                  height: 30,
-                  fit: BoxFit.cover,
-                ),
+              icon: Badge(
+                badgeContent: const Text('9+', style: TextStyle(fontSize: 10.0, color: Colors.white)),
+                child: const Icon(Icons.notifications),
+              )
+            ),
+            const SizedBox(width: 10.0),
+            InkWell(
+              onTap: () {},
+              child: Row(
+                children: [
+                  Image.asset(
+                    'assets/images/logo.png',
+                    width: 30,
+                    height: 30,
+                    fit: BoxFit.cover,
+                  ),
+                Responsive.isDesktop(context)
+                    ? const Text("Germain Kataku")
+                    : Container()
+                ],
               ),
-              label: Responsive.isDesktop(context)
-                  ? const Text("Germain Kataku")
-                  : Container(),
             ),
             PopupMenuButton<MenuItem>(
               onSelected: (item) => MenuOptions().onSelected(context, item),
