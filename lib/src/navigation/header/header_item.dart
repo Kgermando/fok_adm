@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fokad_admin/src/constants/app_theme.dart';
 import 'package:fokad_admin/src/constants/responsive.dart';
 
 class HeaderItem extends StatelessWidget {
@@ -11,7 +12,7 @@ class HeaderItem extends StatelessWidget {
     final headlineMedium = Theme.of(context).textTheme.headlineMedium;
     final headline6 = Theme.of(context).textTheme.headline6;
     return Padding(
-      padding: const EdgeInsets.only(left: 20.0),
+      padding: const EdgeInsets.only(left: p10),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
