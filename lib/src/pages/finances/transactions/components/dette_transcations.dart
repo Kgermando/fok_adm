@@ -34,7 +34,7 @@ class _DetteTransactionsState extends State<DetteTransactions> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const CustomAppbar(title: 'Transactions Dettes'),
+                      const CustomAppbar(title: 'Dettes'),
                       Expanded(
                           child: ListView(
                         children: const [

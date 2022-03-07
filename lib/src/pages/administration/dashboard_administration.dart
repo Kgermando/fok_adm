@@ -6,15 +6,14 @@ import 'package:fokad_admin/src/navigation/header/custom_appbar.dart';
 import 'package:fokad_admin/src/provider/controller.dart';
 import 'package:provider/provider.dart';
 
-
-class DepenseTransactions extends StatefulWidget {
-  const DepenseTransactions({ Key? key }) : super(key: key);
+class DashboardAdministration extends StatefulWidget {
+  const DashboardAdministration({ Key? key }) : super(key: key);
 
   @override
-  State<DepenseTransactions> createState() => _DepenseTransactionsState();
+  State<DashboardAdministration> createState() => _DashboardAdministrationState();
 }
 
-class _DepenseTransactionsState extends State<DepenseTransactions> {
+class _DashboardAdministrationState extends State<DashboardAdministration> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -35,11 +34,11 @@ class _DepenseTransactionsState extends State<DepenseTransactions> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const CustomAppbar(title: 'Dépenses'),
+                    const CustomAppbar(title: 'Tableau de bord'),
                     Expanded(
                         child: ListView(
                       children: const [
-                        Text("Banque Dépenses"),
+                        Text("Dashboard Budget"),
                       ],
                     ))
                   ],

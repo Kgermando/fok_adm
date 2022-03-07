@@ -35,7 +35,7 @@ class _FinExterneTransactionsState extends State<FinExterneTransactions> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const CustomAppbar(title: 'Transactions Fin. Externe'),
+                      const CustomAppbar(title: 'Fin. Externe'),
                       Expanded(
                           child: ListView(
                         children: const [

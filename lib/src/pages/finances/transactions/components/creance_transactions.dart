@@ -34,7 +34,7 @@ class _CreanceTransactionsState extends State<CreanceTransactions> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const CustomAppbar(title: 'Transactions Créances'),
+                      const CustomAppbar(title: 'Créances'),
                       Expanded(
                           child: ListView(
                         children: const [

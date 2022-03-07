@@ -8,17 +8,18 @@ class HeaderItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final headline3 = Theme.of(context).textTheme.headline3;
+    final headlineMedium = Theme.of(context).textTheme.headlineMedium;
     final headline6 = Theme.of(context).textTheme.headline6;
     return Padding(
       padding: const EdgeInsets.only(left: 20.0),
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           if (Responsive.isDesktop(context))
           Text(
             title.toUpperCase(),
             overflow: TextOverflow.ellipsis,
-            style: headline3
+            style: headlineMedium
           ),
           
           if (!Responsive.isDesktop(context))

@@ -1,6 +1,7 @@
 
 
 import 'package:flutter/material.dart';
+import 'package:fokad_admin/src/pages/administration/dashboard_administration.dart';
 import 'package:fokad_admin/src/pages/auth/login_auth.dart';
 import 'package:fokad_admin/src/pages/finances/budgets/budget_finance.dart';
 import 'package:fokad_admin/src/pages/finances/dashboard/dashboard_finance.dart';
@@ -23,6 +24,7 @@ final routes = RouteMap(
     '/login': (_) => const MaterialPage(child: LoginPage()),
     '/helps': (_) => const MaterialPage(child: HelpScreen()),
     '/settings': (_) => const MaterialPage(child: SettingsScreen()),
+    '/admin-dashboard': (_) => const MaterialPage(child: DashboardAdministration()),
     '/finance-dashboard': (_) => const MaterialPage(child: DashboardFinance()),
     '/finance-transactions': (_) =>
         const MaterialPage(child: TransactionsFinance()),
