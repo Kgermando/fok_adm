@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fokad_admin/src/constants/app_theme.dart';
 import 'package:fokad_admin/src/navigation/drawer/drawer_widget.dart';
 import 'package:routemaster/routemaster.dart';
 
@@ -37,13 +38,13 @@ class _DrawerMenuState extends State<DrawerMenu> {
             title: 'Dashboard',
             style: headline6!,
             onTap: () {
-              Routemaster.of(context).replace('/admin-dashboard');
+              Routemaster.of(context).replace('/admin-dashboard'); 
               // Responsive.isMobile(context);
               Routemaster.of(context).pop();
             }
           ),
           ExpansionTile(
-            leading: const Icon(Icons.monetization_on, size: 30.0,),
+            leading: Icon(Icons.monetization_on, size: 30.0, color: themeColor,),
             title: Text('Finances', style: headline6),
             initiallyExpanded: false,
             onExpansionChanged: (val) {
@@ -66,7 +67,7 @@ class _DrawerMenuState extends State<DrawerMenu> {
                 }
               ),
               ExpansionTile(
-                leading: const Icon(Icons.compare_arrows, size: 20.0,),
+                leading: Icon(Icons.compare_arrows, size: 20.0, color: themeColor),
                 title: Text('Transactions', style: bodyText1),
                 initiallyExpanded: false,
                 onExpansionChanged: (val) {

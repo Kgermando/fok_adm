@@ -37,7 +37,7 @@ class _CustomAppbarState extends State<CustomAppbar> {
             HeaderItem(title: widget.title),
             const Spacer(),
             IconButton(onPressed: () {}, icon: Badge(
-                  badgeContent: const Text('3',
+                  badgeContent: const Text('33',
                       style: TextStyle(fontSize: 10.0, color: Colors.white)),
                   child: const Icon(Icons.mail),
                 )),

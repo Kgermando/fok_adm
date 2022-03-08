@@ -28,7 +28,8 @@ Color orangeLightColors = const Color(0xffF2861E);
 Color orangeColor = Colors.orange;
 Color bleuFonceColor = const Color(0xFF2A2D3E);
 Color greenColor = const Color(0xFF1B5E20);
-Color themeColor = const Color(0xff6200ee);
+Color themeColorPurpre = const Color(0xff6200ee); 
+Color themeColor = Colors.blue.shade700; 
 
 // Colors used in this app
 const primaryColor = Color.fromRGBO(17, 159, 250, 1);

@@ -8,7 +8,6 @@ import 'package:url_strategy/url_strategy.dart';
 import 'package:provider/provider.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
-
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
   setPathUrlStrategy();

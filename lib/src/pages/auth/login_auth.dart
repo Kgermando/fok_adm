@@ -93,10 +93,11 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                 ),
               Expanded(
+                child: SizedBox(
+                  width: MediaQuery.of(context).size.width / 2,
                   child: Form(
-                key: _form,
-                child: SingleChildScrollView(
-                  child: Padding(
+                  key: _form,
+                  child: SingleChildScrollView(
                     padding: const EdgeInsets.all(16.0),
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -123,8 +124,8 @@ class _LoginPageState extends State<LoginPage> {
                       ],
                     ),
                   ),
-                ),
-              ))
+              ),
+                ))
             ],
           ),
         ),
