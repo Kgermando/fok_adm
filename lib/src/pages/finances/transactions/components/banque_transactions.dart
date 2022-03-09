@@ -9,19 +9,20 @@ import 'package:fokad_admin/src/utils/departement.dart';
 import 'package:fokad_admin/src/utils/pluto_grid.dart';
 import 'package:fokad_admin/src/utils/type_operation.dart';
 import 'package:fokad_admin/src/widgets/btn_widget.dart';
+import 'package:fokad_admin/src/widgets/print_widget.dart';
 import 'package:fokad_admin/src/widgets/title_widget.dart';
 import 'package:provider/provider.dart';
 import 'package:simple_speed_dial/simple_speed_dial.dart';
 
 class BanqueTransactions extends StatefulWidget {
-  const BanqueTransactions({ Key? key }) : super(key: key);
+  const BanqueTransactions({Key? key}) : super(key: key);
 
   @override
   State<BanqueTransactions> createState() => _BanqueTransactionsState();
 }
 
 class _BanqueTransactionsState extends State<BanqueTransactions> {
-    final controller = ScrollController();
+  final controller = ScrollController();
   final ScrollController _controllerBillet = ScrollController();
 
   final TextEditingController nomCompletController = TextEditingController();
@@ -42,7 +43,7 @@ class _BanqueTransactionsState extends State<BanqueTransactions> {
 
   late int count;
 
-    @override
+  @override
   void initState() {
     setState(() {
       count = 0;
@@ -61,10 +62,12 @@ class _BanqueTransactionsState extends State<BanqueTransactions> {
     for (final controller in coupureBilletControllerList) {
       controller.dispose();
     }
+    for (final controller in nombreBilletControllerList) {
+      controller.dispose();
+    }
     super.dispose();
   }
 
-  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -88,13 +91,21 @@ class _BanqueTransactionsState extends State<BanqueTransactions> {
                     children: [
                       const CustomAppbar(title: 'Transactions Banque'),
                       Expanded(
-                          child: ListView(
-                        children: const [
-                         SizedBox(
-                            height: p20,
-                          ),
-                          ColumnFilteringScreen()
-                        ],
+                          child: Scrollbar(
+                        controller: controller,
+                        child: ListView(
+                          controller: controller,
+                          children: [
+                            const SizedBox(
+                              height: p20,
+                            ),
+                            PrintWidget(onPressed: (() {})),
+                            const SizedBox(
+                              height: p10,
+                            ),
+                            const ColumnFilteringScreen()
+                          ],
+                        ),
                       ))
                     ],
                   ),
@@ -194,29 +205,32 @@ class _BanqueTransactionsState extends State<BanqueTransactions> {
                             mainAxisAlignment: MainAxisAlignment.end,
                             children: [
                               IconButton(
-                                  onPressed: () {
-                                    setState(() {
+                                    onPressed: () {
+                                      setState(() {
+                                        final coupureBillet = TextEditingController();
+                                        final nombreBillet = TextEditingController();
+                                        nombreBilletControllerList.add(nombreBillet);
+                                        coupureBilletControllerList.add(coupureBillet);
+                                        count++;
+                                      });
+                                    },
+                                    icon: const Icon(Icons.add)),
+                                if (count > 0)
+                                IconButton(
+                                    onPressed: () {
+                                      setState(() {
+                                        final coupureBillet =
+                                          TextEditingController();
                                       final nombreBillet =
                                           TextEditingController();
                                       nombreBilletControllerList
-                                          .add(nombreBillet);
-                                      count++;
-                                      print('count $count');
-                                    });
-                                  },
-                                  icon: const Icon(Icons.add)),
-                              IconButton(
-                                  onPressed: () {
-                                    setState(() {
-                                      final coupureBillet =
-                                          TextEditingController();
+                                          .remove(nombreBillet);
                                       coupureBilletControllerList
                                           .remove(coupureBillet);
-                                      count--;
-                                      print('count $count');
-                                    });
-                                  },
-                                  icon: const Icon(Icons.close)),
+                                        count--;
+                                      });
+                                    },
+                                    icon: const Icon(Icons.close)),
                             ],
                           ),
                           SizedBox(
@@ -227,13 +241,12 @@ class _BanqueTransactionsState extends State<BanqueTransactions> {
                             height: p20,
                           ),
                           BtnWidget(
-                            title: 'Soumettre', 
-                            press: () {
-                              setState(() {
-                                count = 0;
-                              });
-                            }
-                            )
+                              title: 'Soumettre',
+                              press: () {
+                                setState(() {
+                                  count = 0;
+                                });
+                              })
                         ],
                       ),
                     ),
@@ -310,14 +323,14 @@ class _BanqueTransactionsState extends State<BanqueTransactions> {
                                       coupureBilletControllerList
                                           .add(coupureBillet);
                                       count++;
-                                      print('count $count');
                                     });
                                   },
                                   icon: const Icon(Icons.add)),
+                              if (count > 0)
                               IconButton(
                                   onPressed: () {
                                     setState(() {
-                                     final coupureBillet =
+                                      final coupureBillet =
                                           TextEditingController();
                                       final nombreBillet =
                                           TextEditingController();
@@ -326,7 +339,6 @@ class _BanqueTransactionsState extends State<BanqueTransactions> {
                                       coupureBilletControllerList
                                           .remove(coupureBillet);
                                       count--;
-                                      print('count $count');
                                     });
                                   },
                                   icon: const Icon(Icons.close)),
@@ -340,13 +352,12 @@ class _BanqueTransactionsState extends State<BanqueTransactions> {
                             height: p20,
                           ),
                           BtnWidget(
-                            title: 'Soumettre', 
-                            press: () {
+                              title: 'Soumettre',
+                              press: () {
                                 setState(() {
                                   count = 0;
                                 });
-                            }
-                          )
+                              })
                         ],
                       ),
                     ),
@@ -420,7 +431,7 @@ class _BanqueTransactionsState extends State<BanqueTransactions> {
             Expanded(
               flex: 5,
               child: TextFormField(
-                controller: libelleController,
+                controller: montantController,
                 decoration: InputDecoration(
                   border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(10.0)),

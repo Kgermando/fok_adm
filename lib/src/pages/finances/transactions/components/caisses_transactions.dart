@@ -11,6 +11,7 @@ import 'package:fokad_admin/src/utils/departement.dart';
 import 'package:fokad_admin/src/utils/pluto_grid.dart';
 import 'package:fokad_admin/src/utils/type_operation.dart';
 import 'package:fokad_admin/src/widgets/btn_widget.dart';
+import 'package:fokad_admin/src/widgets/print_widget.dart';
 import 'package:fokad_admin/src/widgets/title_widget.dart';
 import 'package:provider/provider.dart';
 import 'package:simple_speed_dial/simple_speed_dial.dart';
@@ -64,6 +65,9 @@ class _CaisseTransactionsState extends State<CaisseTransactions> {
     for (final controller in coupureBilletControllerList) {
       controller.dispose();
     }
+    for (final controller in nombreBilletControllerList) {
+      controller.dispose();
+    }
     super.dispose();
   }
 
@@ -94,11 +98,15 @@ class _CaisseTransactionsState extends State<CaisseTransactions> {
                         controller: controller,
                         child: ListView(
                           controller: controller,
-                          children: const [
-                            SizedBox(
+                          children: [
+                            const SizedBox(
                               height: p20,
                             ),
-                            ColumnFilteringScreen()
+                            PrintWidget(onPressed: (() {})),
+                            const SizedBox(
+                              height: p10,
+                            ),
+                            const ColumnFilteringScreen()
                           ],
                         ),
                       ))
@@ -207,10 +215,10 @@ class _CaisseTransactionsState extends State<CaisseTransactions> {
                                         nombreBilletControllerList.add(nombreBillet);
                                         coupureBilletControllerList.add(coupureBillet);
                                         count++;
-                                        print('count $count');
                                       });
                                     },
                                     icon: const Icon(Icons.add)),
+                                if (count > 0)
                                 IconButton(
                                     onPressed: () {
                                       setState(() {
@@ -223,7 +231,6 @@ class _CaisseTransactionsState extends State<CaisseTransactions> {
                                       coupureBilletControllerList
                                           .remove(coupureBillet);
                                         count--;
-                                        print('count $count');
                                       });
                                     },
                                     icon: const Icon(Icons.close)),
@@ -304,23 +311,33 @@ class _CaisseTransactionsState extends State<CaisseTransactions> {
                               mainAxisAlignment: MainAxisAlignment.end,
                               children: [
                                 IconButton(
-                                    onPressed: () {
-                                      setState(() {
-                                        final nombreBillet = TextEditingController();
-                                        nombreBilletControllerList
+                                  onPressed: () {
+                                    setState(() {
+                                      final coupureBillet =
+                                          TextEditingController();
+                                      final nombreBillet =
+                                          TextEditingController();
+                                      nombreBilletControllerList
                                           .add(nombreBillet);
-                                        count++;
-                                        print('count $count');
-                                      });
-                                    },
-                                    icon: const Icon(Icons.add)),
+                                      coupureBilletControllerList
+                                          .add(coupureBillet);
+                                      count++;
+                                    });
+                                  },
+                                  icon: const Icon(Icons.add)),
+                              if (count > 0)
                                 IconButton(
                                     onPressed: () {
                                       setState(() {
-                                        final coupureBillet = TextEditingController();
-                                        coupureBilletControllerList.remove(coupureBillet);
+                                        final coupureBillet =
+                                            TextEditingController();
+                                        final nombreBillet =
+                                            TextEditingController();
+                                        nombreBilletControllerList
+                                            .remove(nombreBillet);
+                                        coupureBilletControllerList
+                                            .remove(coupureBillet);
                                         count--;
-                                        print('count $count');
                                       });
                                     },
                                     icon: const Icon(Icons.close)),
@@ -408,7 +425,7 @@ class _CaisseTransactionsState extends State<CaisseTransactions> {
             Expanded(
               flex: 5,
               child: TextFormField(
-                controller: libelleController,
+                controller: montantController,
                 decoration: InputDecoration(
                   border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(10.0)),

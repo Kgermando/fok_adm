@@ -34,6 +34,7 @@ class MyThemes {
     primaryColor: Colors.black,
     fontFamily: 'Poppins',
     colorScheme: const ColorScheme.dark(),
+
     // textButtonTheme: TextButtonThemeData(
     //   style: ButtonStyle(
     //     elevation: MaterialStateProperty.all(5.0),
@@ -93,7 +94,7 @@ class MyThemes {
     //   ),
     // ),
     primaryColor: Colors.white,
-    primarySwatch: Colors.teal,
+    primarySwatch: Colors.blue,
     fontFamily: 'Poppins',
     colorScheme: const ColorScheme.light(),
     // iconTheme: const IconThemeData(color: Colors.orange, opacity: 0.8),

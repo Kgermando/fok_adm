@@ -7,9 +7,9 @@ import 'package:fokad_admin/src/navigation/header/custom_appbar.dart';
 import 'package:fokad_admin/src/provider/controller.dart';
 import 'package:fokad_admin/src/utils/pluto_grid.dart';
 import 'package:fokad_admin/src/widgets/btn_widget.dart';
+import 'package:fokad_admin/src/widgets/print_widget.dart';
 import 'package:fokad_admin/src/widgets/title_widget.dart';
 import 'package:provider/provider.dart';
-import 'package:simple_speed_dial/simple_speed_dial.dart';
 
 class DetteTransactions extends StatefulWidget {
   const DetteTransactions({Key? key}) : super(key: key);
@@ -74,11 +74,15 @@ class _DetteTransactionsState extends State<DetteTransactions> {
                         controller: controller,
                         child: ListView(
                           controller: controller,
-                          children: const [
-                            SizedBox(
+                          children: [
+                            const SizedBox(
                               height: p20,
                             ),
-                            ColumnFilteringScreen()
+                            PrintWidget(onPressed: (() {})),
+                            const SizedBox(
+                              height: p10,
+                            ),
+                            const ColumnFilteringScreen()
                           ],
                         ),
                       ))
@@ -90,7 +94,6 @@ class _DetteTransactionsState extends State<DetteTransactions> {
           ),
         ));
   }
-
 
 
   transactionsDialogDette() {
@@ -213,7 +216,7 @@ class _DetteTransactionsState extends State<DetteTransactions> {
             Expanded(
               flex: 5,
               child: TextFormField(
-                controller: libelleController,
+                controller: montantController,
                 decoration: InputDecoration(
                   border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(10.0)),
@@ -239,7 +242,7 @@ class _DetteTransactionsState extends State<DetteTransactions> {
 
 
   Future submit() async {
-    final caisseModel = DetteModel(
+    final detteModel = DetteModel(
         nomComplet: nomCompletController.text,
         pieceJustificative: pieceJustificativeController.text,
         libelle: libelleController.text,

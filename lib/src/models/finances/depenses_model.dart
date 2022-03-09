@@ -7,6 +7,7 @@ class DepensesModel {
   final List<dynamic> coupureBillet;
   final String ligneBudgtaire; // somme d'affectation pour le budget
   final DateTime date;
+  final String numeroOperation;
 
   DepensesModel( 
     {
@@ -18,6 +19,7 @@ class DepensesModel {
     required this.coupureBillet,
     required this.ligneBudgtaire,
     required this.date,
+    required this.numeroOperation,
   });
 
   factory DepensesModel.fromSQL(List<dynamic> row) {
@@ -29,7 +31,8 @@ class DepensesModel {
         montant: row[4],
         coupureBillet: row[5],
         ligneBudgtaire: row[6],
-        date: row[7]
+        date: row[7],
+        numeroOperation: row[8]
     );
   }
 
@@ -43,6 +46,7 @@ class DepensesModel {
       coupureBillet: json['coupureBillet'],
       ligneBudgtaire: json['ligneBudgtaire'],
       date: DateTime.parse(json['date']),
+      numeroOperation: json['numeroOperation'],
     );
   }
 
@@ -56,6 +60,7 @@ class DepensesModel {
       'coupureBillet': coupureBillet,
       'ligneBudgtaire': ligneBudgtaire,
       'date': date.toIso8601String(),
+      'numeroOperation': numeroOperation,
     };
   }
 }

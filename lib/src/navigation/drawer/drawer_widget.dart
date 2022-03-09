@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fokad_admin/src/constants/app_theme.dart';
+import 'package:fokad_admin/src/provider/theme_provider.dart';
 
 class DrawerWidget extends StatelessWidget {
   const DrawerWidget(
@@ -21,18 +22,22 @@ class DrawerWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Color? color;
+    if (selected == true) {
+      color = themeColor;
+    } 
     return ListTile(
         selected: selected,
         selectedTileColor: selectedTileColor,
         leading: Icon(
           icon, 
           size: sizeIcon,
-          color: selected ? themeColor : Colors.black
+          color: color,
         ),
         title: Text(
           title,
           style: style.copyWith(
-            color: selected ? themeColor : Colors.black,
+            color: color,
           )
         ),
         onTap: onTap);

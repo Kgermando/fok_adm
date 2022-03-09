@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:fokad_admin/src/models/menu_item.dart';
 import 'package:fokad_admin/src/pages/auth/profil_page.dart';
-import 'package:fokad_admin/src/pages/screens/help_screen.dart';
-import 'package:fokad_admin/src/pages/screens/settings_screen.dart';
 import 'package:fokad_admin/src/utils/menu_items.dart';
+import 'package:routemaster/routemaster.dart';
 
 class MenuOptions with ChangeNotifier {
   PopupMenuItem<MenuItem> buildItem(MenuItem item) => PopupMenuItem(
@@ -19,24 +18,21 @@ class MenuOptions with ChangeNotifier {
   void onSelected(BuildContext context, MenuItem item) {
     switch (item) {
       case MenuItems.itemProfile:
-        Navigator.of(context).push(
-            MaterialPageRoute(builder: (context) => const ProfilPage()));
+        Routemaster.of(context).push('/profile');
         break;
 
       case MenuItems.itemHelp:
-        Navigator.of(context)
-            .push(MaterialPageRoute(builder: (context) => const HelpScreen()));
+        Routemaster.of(context).push('/helps');
         break;
 
       case MenuItems.itemSettings:
-        Navigator.of(context).push(
-            MaterialPageRoute(builder: (context) => const SettingsScreen()));
+        Routemaster.of(context).push('/settings');
         break;
 
       case MenuItems.itemLogout:
-        // Remove stockage jwt here.
-        // AuthHttp().logout();
-        // Phoenix.rebirth(context);
+      // Remove stockage jwt here.
+      // AuthHttp().logout();
+      // Phoenix.rebirth(context);
     }
   }
 }

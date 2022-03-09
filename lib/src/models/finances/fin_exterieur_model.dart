@@ -8,7 +8,8 @@ class FinanceExterieurModel {
   final String ligneBudgtaire; // somme d'affectation pour le budget
   final String typeOperation;
   final DateTime date;
-
+  final String numeroOperation;
+ 
   FinanceExterieurModel( 
     {
       this.id,
@@ -20,6 +21,7 @@ class FinanceExterieurModel {
     required this.ligneBudgtaire,
     required this.typeOperation,
     required this.date,
+    required this.numeroOperation,
   });
 
   factory FinanceExterieurModel.fromSQL(List<dynamic> row) {
@@ -32,7 +34,8 @@ class FinanceExterieurModel {
         coupureBillet: row[5],
         ligneBudgtaire: row[6],
         typeOperation: row[7],
-        date: row[8]
+        date: row[8],
+        numeroOperation: row[9]
     );
   }
 
@@ -47,6 +50,7 @@ class FinanceExterieurModel {
       ligneBudgtaire: json['ligneBudgtaire'],
       typeOperation: json['typeOperation'],
       date: DateTime.parse(json['date']),
+      numeroOperation: json['numeroOperation'],
     );
   }
 
@@ -61,6 +65,7 @@ class FinanceExterieurModel {
       'ligneBudgtaire': ligneBudgtaire,
       'typeOperation': typeOperation,
       'date': date.toIso8601String(),
+      'numeroOperation': numeroOperation,
     };
   }
 }

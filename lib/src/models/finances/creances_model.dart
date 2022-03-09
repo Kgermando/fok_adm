@@ -5,6 +5,7 @@ class CreanceModel {
   final String libelle;
   final String montant;
   final DateTime date;
+  final String numeroOperation;
 
  CreanceModel( 
     {
@@ -14,6 +15,7 @@ class CreanceModel {
     required this.libelle,
     required this.montant,
     required this.date,
+    required this.numeroOperation,
   });
 
   factory CreanceModel.fromSQL(List<dynamic> row) {
@@ -23,7 +25,8 @@ class CreanceModel {
         pieceJustificative: row[2],
         libelle: row[3],
         montant: row[4],
-        date: row[5]
+        date: row[5],
+        numeroOperation: row[6]
     );
   }
 
@@ -35,6 +38,7 @@ class CreanceModel {
       libelle: json['libelle'],
       montant: json['montant'],
       date: DateTime.parse(json['date']),
+      numeroOperation: json['numeroOperation'],
     );
   }
 
@@ -46,6 +50,7 @@ class CreanceModel {
       'libelle': libelle,
       'montant': montant,
       'date': date.toIso8601String(),
+      'numeroOperation': numeroOperation,
     };
   }
 }
