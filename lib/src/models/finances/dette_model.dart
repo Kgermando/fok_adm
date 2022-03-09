@@ -5,6 +5,7 @@ class DetteModel {
   final String libelle;
   final String montant;
   final DateTime date;
+  final String numeroOperation;
 
   DetteModel( 
     {
@@ -14,6 +15,7 @@ class DetteModel {
     required this.libelle,
     required this.montant,
     required this.date,
+    required this.numeroOperation,
   });
 
   factory DetteModel.fromSQL(List<dynamic> row) {
@@ -23,8 +25,9 @@ class DetteModel {
         pieceJustificative: row[2],
         libelle: row[3],
         montant: row[4],
-        date: row[5]
-    );
+        date: row[5],
+        numeroOperation: row[6]
+    ); 
   }
 
   factory DetteModel.fromJson(Map<String, dynamic> json) {
@@ -35,6 +38,7 @@ class DetteModel {
       libelle: json['libelle'],
       montant: json['montant'],
       date: DateTime.parse(json['date']),
+      numeroOperation: json['numeroOperation'],
     );
   }
 
@@ -46,6 +50,7 @@ class DetteModel {
       'libelle': libelle,
       'montant': montant,
       'date': date.toIso8601String(),
+      'numeroOperation': numeroOperation,
     };
   }
 }

@@ -11,7 +11,6 @@ import 'package:fokad_admin/src/utils/departement.dart';
 import 'package:fokad_admin/src/utils/pluto_grid.dart';
 import 'package:fokad_admin/src/utils/type_operation.dart';
 import 'package:fokad_admin/src/widgets/btn_widget.dart';
-import 'package:fokad_admin/src/widgets/dialog_widget.dart';
 import 'package:fokad_admin/src/widgets/title_widget.dart';
 import 'package:provider/provider.dart';
 import 'package:simple_speed_dial/simple_speed_dial.dart';
@@ -36,6 +35,7 @@ class _CaisseTransactionsState extends State<CaisseTransactions> {
   final TextEditingController deperatmentController = TextEditingController();
 
   List<TextEditingController> coupureBilletControllerList = [];
+  List<TextEditingController> nombreBilletControllerList = [];
   String? ligneBudgtaire;
   String? departement;
   String? typeOperation;
@@ -125,7 +125,7 @@ class _CaisseTransactionsState extends State<CaisseTransactions> {
         SpeedDialChild(
           child: const Icon(Icons.upload),
           foregroundColor: Colors.black,
-          backgroundColor: Colors.yellow,
+          backgroundColor: Colors.yellow.shade700,
           label: 'Décaissement',
           onPressed: () {
             setState(() {
@@ -136,7 +136,7 @@ class _CaisseTransactionsState extends State<CaisseTransactions> {
         SpeedDialChild(
           child: const Icon(Icons.file_download),
           foregroundColor: Colors.white,
-          backgroundColor: Colors.green,
+          backgroundColor: Colors.green.shade700,
           label: 'Encaissement',
           onPressed: () => transactionsDialogEncaissement(),
         ),
@@ -203,7 +203,112 @@ class _CaisseTransactionsState extends State<CaisseTransactions> {
                                     onPressed: () {
                                       setState(() {
                                         final coupureBillet = TextEditingController();
+                                        final nombreBillet = TextEditingController();
+                                        nombreBilletControllerList.add(nombreBillet);
                                         coupureBilletControllerList.add(coupureBillet);
+                                        count++;
+                                        print('count $count');
+                                      });
+                                    },
+                                    icon: const Icon(Icons.add)),
+                                IconButton(
+                                    onPressed: () {
+                                      setState(() {
+                                        final coupureBillet =
+                                          TextEditingController();
+                                      final nombreBillet =
+                                          TextEditingController();
+                                      nombreBilletControllerList
+                                          .remove(nombreBillet);
+                                      coupureBilletControllerList
+                                          .remove(coupureBillet);
+                                        count--;
+                                        print('count $count');
+                                      });
+                                    },
+                                    icon: const Icon(Icons.close)),
+                              ],
+                            ),
+                            SizedBox(
+                                height: 300,
+                                width: double.infinity,
+                                child: coupureBilletWidget() 
+                            ),
+                            const SizedBox(
+                              height: p20,
+                            ),
+                            BtnWidget(title: 'Soumettre', press: () {})
+                          ],
+                        ),
+                                    ),
+                                  ),
+                                ));
+                          });
+                        });
+  
+  }
+
+  transactionsDialogDecaissement() {
+    return showDialog(
+      context: context,
+        // barrierDismissible: false,
+      builder: (context) {
+        return StatefulBuilder(builder: (context, StateSetter setState) {
+          return Dialog(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(p8),
+            ),
+            backgroundColor: Colors.transparent,
+            child: Card(
+              child: Padding(
+                padding: const EdgeInsets.all(p16),
+                  child: SizedBox(
+                    width: Responsive.isDesktop(context)
+                      ? MediaQuery.of(context).size.width / 2
+                      : MediaQuery.of(context).size.width,
+                        child: ListView(
+                          children: [
+                            const TitleWidget(title: 'Décaissement'),
+                            const SizedBox(
+                              height: p20,
+                            ),
+                            Row(
+                              children: [
+                                Expanded(child: nomCompletWidget()),
+                                const SizedBox(
+                                  width: p10,
+                                ),
+                                Expanded(child: pieceJustificativeWidget())
+                              ],
+                            ),
+                            Row(
+                              children: [
+                                Expanded(child: libelleWidget()),
+                                const SizedBox(
+                                  width: p10,
+                                ),
+                                Expanded(child: montantWidget())
+                              ],
+                            ),
+                            ligneBudgtaireWidget(),
+                            Row(
+                              children: [
+                                Expanded(child: deperatmentWidget()),
+                                const SizedBox(
+                                  width: p10,
+                                ),
+                                Expanded(child: typeOperationWidget())
+                              ],
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              children: [
+                                IconButton(
+                                    onPressed: () {
+                                      setState(() {
+                                        final nombreBillet = TextEditingController();
+                                        nombreBilletControllerList
+                                          .add(nombreBillet);
                                         count++;
                                         print('count $count');
                                       });
@@ -237,17 +342,6 @@ class _CaisseTransactionsState extends State<CaisseTransactions> {
                                 ));
                           });
                         });
-  
-  }
-
-  transactionsDialogDecaissement() {
-    return dialogWidget(
-      context,
-      Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: const [TitleWidget(title: 'Décaissement'), Text('data')],
-      ),
-    );
   }
 
   Widget nomCompletWidget() {
@@ -353,7 +447,7 @@ class _CaisseTransactionsState extends State<CaisseTransactions> {
                 child: Container(
                   margin: const EdgeInsets.only(bottom: p20),
                   child: TextFormField(
-                    controller: coupureBilletControllerList[index],
+                    controller: nombreBilletControllerList[index],
                     decoration: InputDecoration(
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(10.0)
