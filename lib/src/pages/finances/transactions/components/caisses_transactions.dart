@@ -27,7 +27,6 @@ class _CaisseTransactionsState extends State<CaisseTransactions> {
   final controller = ScrollController();
   final ScrollController _controllerBillet = ScrollController();
 
-
   final TextEditingController nomCompletController = TextEditingController();
   final TextEditingController pieceJustificativeController =
       TextEditingController();
@@ -51,7 +50,7 @@ class _CaisseTransactionsState extends State<CaisseTransactions> {
     setState(() {
       count = 0;
     });
-    
+
     super.initState();
   }
 
@@ -102,7 +101,14 @@ class _CaisseTransactionsState extends State<CaisseTransactions> {
                             const SizedBox(
                               height: p20,
                             ),
-                            PrintWidget(onPressed: (() {})),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text('Livre de Caisse',
+                                style: Theme.of(context).textTheme.bodyText1,),
+                                PrintWidget(onPressed: (() {})),
+                              ],
+                            ),
                             const SizedBox(
                               height: p10,
                             ),
@@ -154,211 +160,236 @@ class _CaisseTransactionsState extends State<CaisseTransactions> {
 
   transactionsDialogEncaissement() {
     return showDialog(
-      context: context,
+        context: context,
         // barrierDismissible: false,
-      builder: (context) {
-        return StatefulBuilder(builder: (context, StateSetter setState) {
-          return Dialog(
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(p8),
-            ),
-            backgroundColor: Colors.transparent,
-            child: Card(
-              child: Padding(
-                padding: const EdgeInsets.all(p16),
-                  child: SizedBox(
-                    width: Responsive.isDesktop(context)
-                      ? MediaQuery.of(context).size.width / 2
-                      : MediaQuery.of(context).size.width,
-                        child: ListView(
-                          children: [
-                            const TitleWidget(title: 'Encaissement'),
-                            const SizedBox(
-                              height: p20,
-                            ),
-                            Row(
-                              children: [
-                                Expanded(child: nomCompletWidget()),
-                                const SizedBox(
-                                  width: p10,
-                                ),
-                                Expanded(child: pieceJustificativeWidget())
-                              ],
-                            ),
-                            Row(
-                              children: [
-                                Expanded(child: libelleWidget()),
-                                const SizedBox(
-                                  width: p10,
-                                ),
-                                Expanded(child: montantWidget())
-                              ],
-                            ),
-                            ligneBudgtaireWidget(),
-                            Row(
-                              children: [
-                                Expanded(child: deperatmentWidget()),
-                                const SizedBox(
-                                  width: p10,
-                                ),
-                                Expanded(child: typeOperationWidget())
-                              ],
-                            ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.end,
-                              children: [
-                                IconButton(
-                                    onPressed: () {
-                                      setState(() {
-                                        final coupureBillet = TextEditingController();
-                                        final nombreBillet = TextEditingController();
-                                        nombreBilletControllerList.add(nombreBillet);
-                                        coupureBilletControllerList.add(coupureBillet);
-                                        count++;
-                                      });
-                                    },
-                                    icon: const Icon(Icons.add)),
-                                if (count > 0)
-                                IconButton(
-                                    onPressed: () {
-                                      setState(() {
-                                        final coupureBillet =
-                                          TextEditingController();
-                                      final nombreBillet =
-                                          TextEditingController();
-                                      nombreBilletControllerList
-                                          .remove(nombreBillet);
-                                      coupureBilletControllerList
-                                          .remove(coupureBillet);
-                                        count--;
-                                      });
-                                    },
-                                    icon: const Icon(Icons.close)),
-                              ],
-                            ),
-                            SizedBox(
-                                height: 300,
-                                width: double.infinity,
-                                child: coupureBilletWidget() 
-                            ),
-                            const SizedBox(
-                              height: p20,
-                            ),
-                            BtnWidget(title: 'Soumettre', press: () {})
-                          ],
-                        ),
-                                    ),
-                                  ),
-                                ));
-                          });
-                        });
-  
+        builder: (context) {
+          return StatefulBuilder(builder: (context, StateSetter setState) {
+            return Dialog(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(p8),
+                ),
+                backgroundColor: Colors.transparent,
+                child: Card(
+                  child: Padding(
+                    padding: const EdgeInsets.all(p16),
+                    child: SizedBox(
+                      width: Responsive.isDesktop(context)
+                          ? MediaQuery.of(context).size.width / 2
+                          : MediaQuery.of(context).size.width,
+                      child: ListView(
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              const TitleWidget(title: 'Bon d\'encaissement'),
+                              PrintWidget(onPressed: () {})
+                            ],
+                          ),
+                          const SizedBox(
+                            height: p20,
+                          ),
+                          Row(
+                            children: [
+                              Expanded(child: nomCompletWidget()),
+                              const SizedBox(
+                                width: p10,
+                              ),
+                              Expanded(child: pieceJustificativeWidget())
+                            ],
+                          ),
+                          Row(
+                            children: [
+                              Expanded(child: libelleWidget()),
+                              const SizedBox(
+                                width: p10,
+                              ),
+                              Expanded(child: montantWidget())
+                            ],
+                          ),
+                          ligneBudgtaireWidget(),
+                          Row(
+                            children: [
+                              Expanded(child: deperatmentWidget()),
+                              const SizedBox(
+                                width: p10,
+                              ),
+                              Expanded(child: typeOperationWidget())
+                            ],
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              SelectableText('Coupure de billet',
+                                  style: Theme.of(context).textTheme.bodyText2),
+                              Row(
+                                children: [
+                                  IconButton(
+                                      onPressed: () {
+                                        setState(() {
+                                          final coupureBillet =
+                                              TextEditingController();
+                                          final nombreBillet =
+                                              TextEditingController();
+                                          nombreBilletControllerList
+                                              .add(nombreBillet);
+                                          coupureBilletControllerList
+                                              .add(coupureBillet);
+                                          count++;
+                                        });
+                                      },
+                                      icon: const Icon(Icons.add)),
+                                  if (count > 0)
+                                    IconButton(
+                                        onPressed: () {
+                                          setState(() {
+                                            final coupureBillet =
+                                                TextEditingController();
+                                            final nombreBillet =
+                                                TextEditingController();
+                                            nombreBilletControllerList
+                                                .remove(nombreBillet);
+                                            coupureBilletControllerList
+                                                .remove(coupureBillet);
+                                            count--;
+                                          });
+                                        },
+                                        icon: const Icon(Icons.close)),
+                                ],
+                              ),
+                            ],
+                          ),
+                          SizedBox(
+                              height: 300,
+                              width: double.infinity,
+                              child: coupureBilletWidget()),
+                          const SizedBox(
+                            height: p20,
+                          ),
+                          BtnWidget(title: 'Soumettre', press: () {})
+                        ],
+                      ),
+                    ),
+                  ),
+                ));
+          });
+        });
   }
 
   transactionsDialogDecaissement() {
     return showDialog(
-      context: context,
+        context: context,
         // barrierDismissible: false,
-      builder: (context) {
-        return StatefulBuilder(builder: (context, StateSetter setState) {
-          return Dialog(
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(p8),
-            ),
-            backgroundColor: Colors.transparent,
-            child: Card(
-              child: Padding(
-                padding: const EdgeInsets.all(p16),
-                  child: SizedBox(
-                    width: Responsive.isDesktop(context)
-                      ? MediaQuery.of(context).size.width / 2
-                      : MediaQuery.of(context).size.width,
-                        child: ListView(
-                          children: [
-                            const TitleWidget(title: 'Décaissement'),
-                            const SizedBox(
-                              height: p20,
-                            ),
-                            Row(
-                              children: [
-                                Expanded(child: nomCompletWidget()),
-                                const SizedBox(
-                                  width: p10,
-                                ),
-                                Expanded(child: pieceJustificativeWidget())
-                              ],
-                            ),
-                            Row(
-                              children: [
-                                Expanded(child: libelleWidget()),
-                                const SizedBox(
-                                  width: p10,
-                                ),
-                                Expanded(child: montantWidget())
-                              ],
-                            ),
-                            ligneBudgtaireWidget(),
-                            Row(
-                              children: [
-                                Expanded(child: deperatmentWidget()),
-                                const SizedBox(
-                                  width: p10,
-                                ),
-                                Expanded(child: typeOperationWidget())
-                              ],
-                            ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.end,
-                              children: [
-                                IconButton(
-                                  onPressed: () {
-                                    setState(() {
-                                      final coupureBillet =
-                                          TextEditingController();
-                                      final nombreBillet =
-                                          TextEditingController();
-                                      nombreBilletControllerList
-                                          .add(nombreBillet);
-                                      coupureBilletControllerList
-                                          .add(coupureBillet);
-                                      count++;
-                                    });
-                                  },
-                                  icon: const Icon(Icons.add)),
-                              if (count > 0)
-                                IconButton(
-                                    onPressed: () {
-                                      setState(() {
-                                        final coupureBillet =
-                                            TextEditingController();
-                                        final nombreBillet =
-                                            TextEditingController();
-                                        nombreBilletControllerList
-                                            .remove(nombreBillet);
-                                        coupureBilletControllerList
-                                            .remove(coupureBillet);
-                                        count--;
-                                      });
-                                    },
-                                    icon: const Icon(Icons.close)),
-                              ],
-                            ),
-                            SizedBox(
-                                height: 300,
-                                width: double.infinity,
-                                child: coupureBilletWidget() 
-                            ),
-                            const SizedBox(
-                              height: p20,
-                            ),
-                            BtnWidget(title: 'Soumettre', press: () {})
-                          ],
-                        ),
-                                    ),
-                                  ),
-                                ));
-                          });
-                        });
+        builder: (context) {
+          return StatefulBuilder(builder: (context, StateSetter setState) {
+            return Dialog(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(p8),
+                ),
+                backgroundColor: Colors.transparent,
+                child: Card(
+                  child: Padding(
+                    padding: const EdgeInsets.all(p16),
+                    child: SizedBox(
+                      width: Responsive.isDesktop(context)
+                          ? MediaQuery.of(context).size.width / 2
+                          : MediaQuery.of(context).size.width,
+                      child: ListView(
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              const TitleWidget(title: 'Bon de décaissement'),
+                              PrintWidget(onPressed: () {})
+                            ],
+                          ),
+                          const SizedBox(
+                            height: p20,
+                          ),
+                          Row(
+                            children: [
+                              Expanded(child: nomCompletWidget()),
+                              const SizedBox(
+                                width: p10,
+                              ),
+                              Expanded(child: pieceJustificativeWidget())
+                            ],
+                          ),
+                          Row(
+                            children: [
+                              Expanded(child: libelleWidget()),
+                              const SizedBox(
+                                width: p10,
+                              ),
+                              Expanded(child: montantWidget())
+                            ],
+                          ),
+                          ligneBudgtaireWidget(),
+                          Row(
+                            children: [
+                              Expanded(child: deperatmentWidget()),
+                              const SizedBox(
+                                width: p10,
+                              ),
+                              Expanded(child: typeOperationWidget())
+                            ],
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              SelectableText('Coupure de billet',
+                                  style: Theme.of(context).textTheme.bodyText2),
+                              Row(
+                                children: [
+                                  IconButton(
+                                      onPressed: () {
+                                        setState(() {
+                                          final coupureBillet =
+                                              TextEditingController();
+                                          final nombreBillet =
+                                              TextEditingController();
+                                          nombreBilletControllerList
+                                              .add(nombreBillet);
+                                          coupureBilletControllerList
+                                              .add(coupureBillet);
+                                          count++;
+                                        });
+                                      },
+                                      icon: const Icon(Icons.add)),
+                                  if (count > 0)
+                                    IconButton(
+                                        onPressed: () {
+                                          setState(() {
+                                            final coupureBillet =
+                                                TextEditingController();
+                                            final nombreBillet =
+                                                TextEditingController();
+                                            nombreBilletControllerList
+                                                .remove(nombreBillet);
+                                            coupureBilletControllerList
+                                                .remove(coupureBillet);
+                                            count--;
+                                          });
+                                        },
+                                        icon: const Icon(Icons.close)),
+                                ],
+                              ),
+                            ],
+                          ),
+                          SizedBox(
+                              height: 300,
+                              width: double.infinity,
+                              child: coupureBilletWidget()),
+                          const SizedBox(
+                            height: p20,
+                          ),
+                          BtnWidget(title: 'Soumettre', press: () {})
+                        ],
+                      ),
+                    ),
+                  ),
+                ));
+          });
+        });
   }
 
   Widget nomCompletWidget() {
@@ -440,11 +471,11 @@ class _CaisseTransactionsState extends State<CaisseTransactions> {
             ),
             const SizedBox(width: p20),
             Expanded(
-              flex: 1,
+                flex: 1,
                 child: Text(
-              "\$",
-              style: headline6!,
-            ))
+                  "\$",
+                  style: headline6!,
+                ))
           ],
         ));
   }
@@ -454,51 +485,48 @@ class _CaisseTransactionsState extends State<CaisseTransactions> {
       controller: _controllerBillet,
       isAlwaysShown: true,
       child: ListView.builder(
-        controller: _controllerBillet,
-        itemCount: count,
-        shrinkWrap: true,
-        itemBuilder: (context, index) {
-          return Row(
-            children: [
-              Expanded(
-                child: Container(
-                  margin: const EdgeInsets.only(bottom: p20),
-                  child: TextFormField(
-                    controller: nombreBilletControllerList[index],
-                    decoration: InputDecoration(
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10.0)
-                      ),
-                      labelText: '${index + 1}. Nombre',
-                    ),
-                    keyboardType: TextInputType.text,
-                    validator: (val) {
-                      return 'Ce champs est obligatoire';
-                    },
-                    style: const TextStyle(),
-                  )
-                )
-              ),
-              const SizedBox(width: p10),
-              Expanded(
-                  child: Container(
-                      margin: const EdgeInsets.only(bottom: p20),
-                      child: TextFormField(
-                        controller: coupureBilletControllerList[index],
-                        decoration: InputDecoration(
-                          border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10.0)),
-                          labelText: '${index + 1}. Coupure billet',
-                        ),
-                        keyboardType: TextInputType.text,
-                        validator: (val) {
-                          return 'Ce champs est obligatoire';
-                        },
-                        style: const TextStyle(),
-                      )))
-            ],
-          );
-        }),
+          controller: _controllerBillet,
+          itemCount: count,
+          shrinkWrap: true,
+          itemBuilder: (context, index) {
+            return Row(
+              children: [
+                Expanded(
+                    child: Container(
+                        margin: const EdgeInsets.only(bottom: p20),
+                        child: TextFormField(
+                          controller: nombreBilletControllerList[index],
+                          decoration: InputDecoration(
+                            border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10.0)),
+                            labelText: '${index + 1}. Nombre',
+                          ),
+                          keyboardType: TextInputType.text,
+                          validator: (val) {
+                            return 'Ce champs est obligatoire';
+                          },
+                          style: const TextStyle(),
+                        ))),
+                const SizedBox(width: p10),
+                Expanded(
+                    child: Container(
+                        margin: const EdgeInsets.only(bottom: p20),
+                        child: TextFormField(
+                          controller: coupureBilletControllerList[index],
+                          decoration: InputDecoration(
+                            border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10.0)),
+                            labelText: '${index + 1}. Coupure billet',
+                          ),
+                          keyboardType: TextInputType.text,
+                          validator: (val) {
+                            return 'Ce champs est obligatoire';
+                          },
+                          style: const TextStyle(),
+                        )))
+              ],
+            );
+          }),
     );
   }
 
@@ -595,5 +623,6 @@ class _CaisseTransactionsState extends State<CaisseTransactions> {
         typeOperation: typeOperation.toString(),
         date: DateTime.now(),
         numeroOperation: 'FOKAD-caisse-01');
+        
   }
 }

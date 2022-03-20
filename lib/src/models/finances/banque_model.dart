@@ -37,7 +37,7 @@ class BanqueModel {
       departement: row[7],
       typeOperation: row[8],
       date: row[9],
-      numeroOperation: row[10],
+      numeroOperation: row[10]
     );
   }
 

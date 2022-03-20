@@ -26,15 +26,17 @@ class _DepenseTransactionsState extends State<DepenseTransactions> {
   final TextEditingController nomCompletController = TextEditingController();
   final TextEditingController pieceJustificativeController =
       TextEditingController();
-  final TextEditingController libelleController = TextEditingController();
+  final TextEditingController naturePayementController = TextEditingController();
   final TextEditingController montantController = TextEditingController();
   final TextEditingController deperatmentController = TextEditingController();
 
   List<TextEditingController> coupureBilletControllerList = [];
   List<TextEditingController> nombreBilletControllerList = [];
   String? ligneBudgtaire;
+  String? modePayemnt;
 
   final List<String> typeCaisse = TypeOperation().typeCaisse;
+  final List<String> modePayemntList = TypeOperation().modePayemnt;
 
   late int count;
 
@@ -51,7 +53,7 @@ class _DepenseTransactionsState extends State<DepenseTransactions> {
   void dispose() {
     nomCompletController.dispose();
     pieceJustificativeController.dispose();
-    libelleController.dispose();
+    naturePayementController.dispose();
     montantController.dispose();
     deperatmentController.dispose();
     for (final controller in coupureBilletControllerList) {
@@ -139,7 +141,13 @@ class _DepenseTransactionsState extends State<DepenseTransactions> {
                           : MediaQuery.of(context).size.width,
                       child: ListView(
                         children: [
-                          const TitleWidget(title: 'Nouvelle Dépense'),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              const TitleWidget(title: 'Nouvelle Dépense'),
+                              PrintWidget(onPressed: () {})
+                            ],
+                          ),
                           const SizedBox(
                             height: p20,
                           ),
@@ -161,41 +169,55 @@ class _DepenseTransactionsState extends State<DepenseTransactions> {
                               Expanded(child: montantWidget())
                             ],
                           ),
-                          ligneBudgtaireWidget(),
                           Row(
-                            mainAxisAlignment: MainAxisAlignment.end,
                             children: [
-                              IconButton(
-                                  onPressed: () {
-                                    setState(() {
-                                      final coupureBillet =
-                                          TextEditingController();
-                                      final nombreBillet =
-                                          TextEditingController();
-                                      nombreBilletControllerList
-                                          .add(nombreBillet);
-                                      coupureBilletControllerList
-                                          .add(coupureBillet);
-                                      count++;
-                                    });
-                                  },
-                                  icon: const Icon(Icons.add)),
-                              if (count > 0)
-                                IconButton(
-                                    onPressed: () {
-                                      setState(() {
-                                        final coupureBillet =
-                                            TextEditingController();
-                                        final nombreBillet =
-                                            TextEditingController();
-                                        nombreBilletControllerList
-                                            .remove(nombreBillet);
-                                        coupureBilletControllerList
-                                            .remove(coupureBillet);
-                                        count--;
-                                      });
-                                    },
-                                    icon: const Icon(Icons.close)),
+                              Expanded(child: ligneBudgtaireWidget()),
+                              const SizedBox(
+                                width: p10,
+                              ),
+                              Expanded(child: modePayemntWidget())
+                            ],
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              SelectableText('Coupure de billet',
+                                  style: Theme.of(context).textTheme.bodyText2),
+                              Row(
+                                children: [
+                                  IconButton(
+                                      onPressed: () {
+                                        setState(() {
+                                          final coupureBillet =
+                                              TextEditingController();
+                                          final nombreBillet =
+                                              TextEditingController();
+                                          nombreBilletControllerList
+                                              .add(nombreBillet);
+                                          coupureBilletControllerList
+                                              .add(coupureBillet);
+                                          count++;
+                                        });
+                                      },
+                                      icon: const Icon(Icons.add)),
+                                  if (count > 0)
+                                    IconButton(
+                                        onPressed: () {
+                                          setState(() {
+                                            final coupureBillet =
+                                                TextEditingController();
+                                            final nombreBillet =
+                                                TextEditingController();
+                                            nombreBilletControllerList
+                                                .remove(nombreBillet);
+                                            coupureBilletControllerList
+                                                .remove(coupureBillet);
+                                            count--;
+                                          });
+                                        },
+                                        icon: const Icon(Icons.close)),
+                                ],
+                              ),
                             ],
                           ),
                           SizedBox(
@@ -255,11 +277,11 @@ class _DepenseTransactionsState extends State<DepenseTransactions> {
     return Container(
         margin: const EdgeInsets.only(bottom: p20),
         child: TextFormField(
-          controller: libelleController,
+          controller: naturePayementController,
           decoration: InputDecoration(
             border:
                 OutlineInputBorder(borderRadius: BorderRadius.circular(10.0)),
-            labelText: 'Libellé',
+            labelText: 'Nature de la dépense',
           ),
           keyboardType: TextInputType.text,
           validator: (val) {
@@ -380,15 +402,44 @@ class _DepenseTransactionsState extends State<DepenseTransactions> {
     );
   }
 
+  Widget modePayemntWidget() {
+    return Container(
+      margin: const EdgeInsets.only(bottom: p20),
+      child: DropdownButtonFormField<String>(
+        decoration: InputDecoration(
+          labelText: 'Mode de payemnt',
+          labelStyle: const TextStyle(),
+          border: OutlineInputBorder(borderRadius: BorderRadius.circular(5.0)),
+          contentPadding: const EdgeInsets.only(left: 5.0),
+        ),
+        value: modePayemnt,
+        isExpanded: true,
+        items: modePayemntList.map((String value) {
+          return DropdownMenuItem<String>(
+            value: value,
+            child: Text(value),
+          );
+        }).toList(),
+        onChanged: (value) {
+          setState(() {
+            modePayemnt = value!;
+          });
+        },
+      ),
+    );
+  }
+
   Future submit() async {
     final depensesModel = DepensesModel(
         nomComplet: nomCompletController.text,
         pieceJustificative: pieceJustificativeController.text,
-        libelle: libelleController.text,
+        naturePayement: naturePayementController.text,
         montant: montantController.text,
         coupureBillet: [],
         ligneBudgtaire: ligneBudgtaire.toString(),
         date: DateTime.now(),
-        numeroOperation: 'FOKAD-caisse-01');
+        numeroOperation: 'FOKAD-caisse-01',
+        modePayement: modePayemnt.toString(),
+    );
   }
 }

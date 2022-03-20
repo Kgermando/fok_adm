@@ -1,42 +1,46 @@
 import 'package:flutter/material.dart';
 import 'package:fokad_admin/src/constants/app_theme.dart';
 import 'package:fokad_admin/src/constants/responsive.dart';
-import 'package:fokad_admin/src/models/finances/dette_model.dart';
+import 'package:fokad_admin/src/models/comptabilites/valorisation_model.dart';
 import 'package:fokad_admin/src/navigation/drawer/drawer_menu.dart';
 import 'package:fokad_admin/src/navigation/header/custom_appbar.dart';
 import 'package:fokad_admin/src/provider/controller.dart';
 import 'package:fokad_admin/src/utils/pluto_grid.dart';
+import 'package:fokad_admin/src/widgets/bar_chart_widget.dart';
 import 'package:fokad_admin/src/widgets/btn_widget.dart';
+import 'package:fokad_admin/src/widgets/pie_chart_widget.dart';
 import 'package:fokad_admin/src/widgets/print_widget.dart';
 import 'package:fokad_admin/src/widgets/title_widget.dart';
 import 'package:provider/provider.dart';
 
-class DetteTransactions extends StatefulWidget {
-  const DetteTransactions({Key? key}) : super(key: key);
+class ValorisationComptabilite extends StatefulWidget {
+  const ValorisationComptabilite({Key? key}) : super(key: key);
 
   @override
-  State<DetteTransactions> createState() => _DetteTransactionsState();
+  State<ValorisationComptabilite> createState() =>
+      _ValorisationComptabiliteState();
 }
 
-class _DetteTransactionsState extends State<DetteTransactions> {
+class _ValorisationComptabiliteState extends State<ValorisationComptabilite> {
   final controller = ScrollController();
 
-   final TextEditingController nomCompletController = TextEditingController();
-  final TextEditingController pieceJustificativeController =
-      TextEditingController();
-  final TextEditingController libelleController = TextEditingController();
-  final TextEditingController montantController = TextEditingController();
+  final TextEditingController numeroOrdreController = TextEditingController();
+  final TextEditingController intituleController = TextEditingController();
+  final TextEditingController quantiteController = TextEditingController();
+  final TextEditingController prixUnitaireController = TextEditingController();
+  final TextEditingController prixTotalController = TextEditingController();
+  final TextEditingController sourceController = TextEditingController();
 
-
-    @override
+  @override
   void dispose() {
-    nomCompletController.dispose();
-    pieceJustificativeController.dispose();
-    libelleController.dispose();
-    montantController.dispose();
+    numeroOrdreController.dispose();
+    intituleController.dispose();
+    quantiteController.dispose();
+    prixUnitaireController.dispose();
+    prixTotalController.dispose();
+    sourceController.dispose();
     super.dispose();
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -44,15 +48,14 @@ class _DetteTransactionsState extends State<DetteTransactions> {
         key: context.read<Controller>().scaffoldKey,
         drawer: const DrawerMenu(),
         floatingActionButton: FloatingActionButton(
-          foregroundColor: Colors.white,
-          backgroundColor: Colors.red.shade700,
-          child: const Icon(Icons.add),
-          onPressed: () {
-            setState(() {
-              transactionsDialogDette();
-            });
-          }
-        ),
+            foregroundColor: Colors.white,
+            backgroundColor: Colors.blue.shade700,
+            child: const Icon(Icons.add),
+            onPressed: () {
+              setState(() {
+                transactionsDialogDonation();
+              });
+            }),
         body: SafeArea(
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -68,7 +71,7 @@ class _DetteTransactionsState extends State<DetteTransactions> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const CustomAppbar(title: 'Dettes'),
+                      const CustomAppbar(title: 'Valorisation'),
                       Expanded(
                           child: Scrollbar(
                         controller: controller,
@@ -79,6 +82,19 @@ class _DetteTransactionsState extends State<DetteTransactions> {
                               height: p20,
                             ),
                             PrintWidget(onPressed: (() {})),
+                            const SizedBox(
+                              height: p10,
+                            ),
+                            SizedBox(
+                                height: 200,
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceEvenly,
+                                  children: const [
+                                    BarChartWidget(),
+                                    PieChartWidget()
+                                  ],
+                                )),
                             const SizedBox(
                               height: p10,
                             ),
@@ -95,8 +111,7 @@ class _DetteTransactionsState extends State<DetteTransactions> {
         ));
   }
 
-
-  transactionsDialogDette() {
+  transactionsDialogDonation() {
     return showDialog(
         context: context,
         // barrierDismissible: false,
@@ -119,7 +134,7 @@ class _DetteTransactionsState extends State<DetteTransactions> {
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              const TitleWidget(title: 'Ajout dette'),
+                              const TitleWidget(title: 'Nouveau Valorisation'),
                               PrintWidget(onPressed: () {})
                             ],
                           ),
@@ -128,20 +143,29 @@ class _DetteTransactionsState extends State<DetteTransactions> {
                           ),
                           Row(
                             children: [
-                              Expanded(child: nomCompletWidget()),
+                              Expanded(child: numeroOrdreWidget()),
                               const SizedBox(
                                 width: p10,
                               ),
-                              Expanded(child: pieceJustificativeWidget())
+                              Expanded(child: intituleWidget())
                             ],
                           ),
                           Row(
                             children: [
-                              Expanded(child: libelleWidget()),
+                              Expanded(child: quantiteWidget()),
                               const SizedBox(
                                 width: p10,
                               ),
-                              Expanded(child: montantWidget())
+                              Expanded(child: prixUnitaireWidget())
+                            ],
+                          ),
+                          Row(
+                            children: [
+                              Expanded(child: prixTotalWidget()),
+                              const SizedBox(
+                                width: p10,
+                              ),
+                              Expanded(child: sourcelWidget())
                             ],
                           ),
                           const SizedBox(
@@ -157,16 +181,15 @@ class _DetteTransactionsState extends State<DetteTransactions> {
         });
   }
 
-
-  Widget nomCompletWidget() {
+  Widget numeroOrdreWidget() {
     return Container(
         margin: const EdgeInsets.only(bottom: p20),
         child: TextFormField(
-          controller: nomCompletController,
+          controller: numeroOrdreController,
           decoration: InputDecoration(
             border:
                 OutlineInputBorder(borderRadius: BorderRadius.circular(10.0)),
-            labelText: 'Nom complet',
+            labelText: 'Nuéero d\'ordre',
           ),
           keyboardType: TextInputType.text,
           validator: (val) {
@@ -176,15 +199,15 @@ class _DetteTransactionsState extends State<DetteTransactions> {
         ));
   }
 
-  Widget pieceJustificativeWidget() {
+  Widget intituleWidget() {
     return Container(
         margin: const EdgeInsets.only(bottom: p20),
         child: TextFormField(
-          controller: pieceJustificativeController,
+          controller: intituleController,
           decoration: InputDecoration(
             border:
                 OutlineInputBorder(borderRadius: BorderRadius.circular(10.0)),
-            labelText: 'N° de la pièce justificative',
+            labelText: 'Intitulé',
           ),
           keyboardType: TextInputType.text,
           validator: (val) {
@@ -194,15 +217,15 @@ class _DetteTransactionsState extends State<DetteTransactions> {
         ));
   }
 
-  Widget libelleWidget() {
+  Widget quantiteWidget() {
     return Container(
         margin: const EdgeInsets.only(bottom: p20),
         child: TextFormField(
-          controller: libelleController,
+          controller: quantiteController,
           decoration: InputDecoration(
             border:
                 OutlineInputBorder(borderRadius: BorderRadius.circular(10.0)),
-            labelText: 'Libellé',
+            labelText: 'Quantité',
           ),
           keyboardType: TextInputType.text,
           validator: (val) {
@@ -212,48 +235,69 @@ class _DetteTransactionsState extends State<DetteTransactions> {
         ));
   }
 
-  Widget montantWidget() {
-    final headline6 = Theme.of(context).textTheme.headline6;
+  Widget prixUnitaireWidget() {
     return Container(
         margin: const EdgeInsets.only(bottom: p20),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Expanded(
-              flex: 5,
-              child: TextFormField(
-                controller: montantController,
-                decoration: InputDecoration(
-                  border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10.0)),
-                  labelText: 'Montant',
-                ),
-                keyboardType: TextInputType.text,
-                validator: (val) {
-                  return 'Ce champs est obligatoire';
-                },
-                style: const TextStyle(),
-              ),
-            ),
-            const SizedBox(width: p20),
-            Expanded(
-                flex: 1,
-                child: Text(
-                  "\$",
-                  style: headline6!,
-                ))
-          ],
+        child: TextFormField(
+          controller: prixUnitaireController,
+          decoration: InputDecoration(
+            border:
+                OutlineInputBorder(borderRadius: BorderRadius.circular(10.0)),
+            labelText: 'Prix Unitaire',
+          ),
+          keyboardType: TextInputType.text,
+          validator: (val) {
+            return 'Ce champs est obligatoire';
+          },
+          style: const TextStyle(),
         ));
   }
 
+  Widget prixTotalWidget() {
+    return Container(
+        margin: const EdgeInsets.only(bottom: p20),
+        child: TextFormField(
+          controller: prixTotalController,
+          decoration: InputDecoration(
+            border:
+                OutlineInputBorder(borderRadius: BorderRadius.circular(10.0)),
+            labelText: 'Prix Total',
+          ),
+          keyboardType: TextInputType.text,
+          validator: (val) {
+            return 'Ce champs est obligatoire';
+          },
+          style: const TextStyle(),
+        ));
+  }
+
+  Widget sourcelWidget() {
+    return Container(
+        margin: const EdgeInsets.only(bottom: p20),
+        child: TextFormField(
+          controller: sourceController,
+          decoration: InputDecoration(
+            border:
+                OutlineInputBorder(borderRadius: BorderRadius.circular(10.0)),
+            labelText: 'Source',
+          ),
+          keyboardType: TextInputType.text,
+          validator: (val) {
+            return 'Ce champs est obligatoire';
+          },
+          style: const TextStyle(),
+        ));
+  }
 
   Future submit() async {
-    final detteModel = DetteModel(
-        nomComplet: nomCompletController.text,
-        pieceJustificative: pieceJustificativeController.text,
-        libelle: libelleController.text,
-        montant: montantController.text,
+    final valorisationModel = ValorisationModel(
+        numeroOrdre: numeroOrdreController.text,
+        intitule: intituleController.text,
+        quantite: quantiteController.text,
+        prixUnitaire: prixUnitaireController.text,
+        prixTotal: prixTotalController.text,
+        source: sourceController.text,
         date: DateTime.now(),
-        numeroOperation: 'FOKAD-dette-01');
+    );
   }
 }

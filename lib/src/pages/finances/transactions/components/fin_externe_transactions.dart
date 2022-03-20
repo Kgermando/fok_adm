@@ -102,7 +102,7 @@ class _FinExterneTransactionsState extends State<FinExterneTransactions> {
                           child: ListView(
                           controller: controller,
                           children: [
-                             const SizedBox(
+                            const SizedBox(
                               height: p20,
                             ),
                             PrintWidget(onPressed: (() {})),
@@ -143,7 +143,13 @@ class _FinExterneTransactionsState extends State<FinExterneTransactions> {
                           : MediaQuery.of(context).size.width,
                       child: ListView(
                         children: [
-                          const TitleWidget(title: 'Nouvelle donation'),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              const TitleWidget(title: 'Nouvelle donation'),
+                              PrintWidget(onPressed: () {})
+                            ],
+                          ),
                           const SizedBox(
                             height: p20,
                           ),
@@ -175,31 +181,45 @@ class _FinExterneTransactionsState extends State<FinExterneTransactions> {
                             ],
                           ),
                           Row(
-                            mainAxisAlignment: MainAxisAlignment.end,
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              IconButton(
-                                  onPressed: () {
-                                    setState(() {
-                                      final nombreBillet =
-                                          TextEditingController();
-                                      nombreBilletControllerList
-                                          .add(nombreBillet);
-                                      count++;
-                                    });
-                                  },
-                                  icon: const Icon(Icons.add)),
-                              if (count > 0)
-                              IconButton(
-                                  onPressed: () {
-                                    setState(() {
-                                      final coupureBillet =
-                                          TextEditingController();
-                                      coupureBilletControllerList
-                                          .remove(coupureBillet);
-                                      count--;
-                                    });
-                                  },
-                                  icon: const Icon(Icons.close)),
+                              SelectableText('Coupure de billet',
+                                  style: Theme.of(context).textTheme.bodyText2),
+                              Row(
+                                children: [
+                                  IconButton(
+                                      onPressed: () {
+                                        setState(() {
+                                          final coupureBillet =
+                                              TextEditingController();
+                                          final nombreBillet =
+                                              TextEditingController();
+                                          nombreBilletControllerList
+                                              .add(nombreBillet);
+                                          coupureBilletControllerList
+                                              .add(coupureBillet);
+                                          count++;
+                                        });
+                                      },
+                                      icon: const Icon(Icons.add)),
+                                  if (count > 0)
+                                    IconButton(
+                                        onPressed: () {
+                                          setState(() {
+                                            final coupureBillet =
+                                                TextEditingController();
+                                            final nombreBillet =
+                                                TextEditingController();
+                                            nombreBilletControllerList
+                                                .remove(nombreBillet);
+                                            coupureBilletControllerList
+                                                .remove(coupureBillet);
+                                            count--;
+                                          });
+                                        },
+                                        icon: const Icon(Icons.close)),
+                                ],
+                              ),
                             ],
                           ),
                           SizedBox(

@@ -18,7 +18,7 @@ class BtnWidget extends StatelessWidget {
         child: Container(
           height: 1.4 * (MediaQuery.of(context).size.height / 50),
           width: 5 * (MediaQuery.of(context).size.width / 10),
-          color: themeColor,
+          // color: themeColor,
           margin: const EdgeInsets.all(p20),
           // decoration: BoxDecoration(
           //   borderRadius: BorderRadius.circular(p30)

@@ -5,6 +5,10 @@ import 'package:fokad_admin/src/pages/administration/dashboard_administration.da
 import 'package:fokad_admin/src/pages/auth/login_auth.dart';
 import 'package:fokad_admin/src/pages/auth/profil_page.dart';
 import 'package:fokad_admin/src/pages/finances/budgets/budget_finance.dart';
+import 'package:fokad_admin/src/pages/finances/comptabilites/armotissement_comptabilite.dart';
+import 'package:fokad_admin/src/pages/finances/comptabilites/bilan_comptabilite.dart';
+import 'package:fokad_admin/src/pages/finances/comptabilites/journal_comptabilite.dart';
+import 'package:fokad_admin/src/pages/finances/comptabilites/valorisation_comptabilite.dart';
 import 'package:fokad_admin/src/pages/finances/dashboard/dashboard_finance.dart';
 import 'package:fokad_admin/src/pages/finances/transactions/components/banque_transactions.dart';
 import 'package:fokad_admin/src/pages/finances/transactions/components/caisses_transactions.dart';
@@ -42,7 +46,14 @@ final routes = RouteMap(
         const MaterialPage(child: FinExterneTransactions()),
     '/transactions-depenses': (_) =>
         const MaterialPage(child: DepenseTransactions()),
-    
+    '/comptabilite-amortissement': (_) =>
+        const MaterialPage(child: AmortissementComptabilite()),
+    '/comptabilite-bilan': (_) =>
+        const MaterialPage(child: BilanComptabilite()),
+    '/comptabilite-journal': (_) =>
+        const MaterialPage(child: JournalComptabilite()),
+    '/comptabilite-valorisation': (_) =>
+        const MaterialPage(child: ValorisationComptabilite()),
   },
   onUnknownRoute: (_) => const MaterialPage(child: NotFoundPage()),
 );

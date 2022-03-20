@@ -112,7 +112,13 @@ class _CreanceTransactionsState extends State<CreanceTransactions> {
                           : MediaQuery.of(context).size.width,
                       child: ListView(
                         children: [
-                          const TitleWidget(title: 'Ajout une Créance'),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              const TitleWidget(title: 'Ajout une Créance'),
+                              PrintWidget(onPressed: () {})
+                            ],
+                          ),
                           const SizedBox(
                             height: p20,
                           ),

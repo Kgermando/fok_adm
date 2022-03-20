@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fokad_admin/src/constants/role_theme.dart';
 
 Color mainColor = const Color(0xFF6584f7);
 Color background = const Color(0xFFf2f6ff);
@@ -29,7 +30,8 @@ Color orangeColor = Colors.orange;
 Color bleuFonceColor = const Color(0xFF2A2D3E);
 Color greenColor = const Color(0xFF1B5E20);
 Color themeColorPurpre = const Color(0xff6200ee); 
-Color themeColor = Colors.blue.shade700; 
+// Color themeColor = Colors.blue.shade700; 
+Color themeColor = roleTheme(int.parse("0")); 
 
 // Colors used in this app
 const primaryColor = Color.fromRGBO(17, 159, 250, 1);
