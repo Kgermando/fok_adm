@@ -1,3 +1,4 @@
+import 'package:badges/badges.dart';
 import 'package:flutter/material.dart';
 import 'package:fokad_admin/src/constants/app_theme.dart';
 import 'package:fokad_admin/src/navigation/drawer/drawer_widget.dart';
@@ -33,7 +34,7 @@ class _AdministrationNavState extends State<AdministrationNav> {
       },
       trailing: const Icon(Icons.arrow_drop_down),
       children: [
-         DrawerWidget(
+        DrawerWidget(
           selected: widget.pageCurrente == '/admin-dashboard',
           icon: Icons.dashboard,
           sizeIcon: 20.0,
@@ -44,6 +45,70 @@ class _AdministrationNavState extends State<AdministrationNav> {
             Routemaster.of(context).pop();
           }
         ),
+        DrawerWidget(
+            selected: widget.pageCurrente == '/admin-dashboard',
+            icon: Icons.dashboard,
+            sizeIcon: 20.0,
+            title: 'Finances',
+            style: bodyText1,
+            badge: Badge(
+              badgeColor: Colors.blue,
+              badgeContent: const Text('3',
+                  style: TextStyle(fontSize: 10.0, color: Colors.white)),
+              child: const Icon(Icons.notifications),
+            ),
+            onTap: () {
+              Routemaster.of(context).replace('/admin-dashboard');
+              Routemaster.of(context).pop();
+            }),
+        DrawerWidget(
+            selected: widget.pageCurrente == '/admin-dashboard',
+            icon: Icons.dashboard,
+            sizeIcon: 20.0,
+            title: 'RH',
+            style: bodyText1,
+            badge: Badge(
+              badgeColor: Colors.blue,
+              badgeContent: const Text('7',
+                  style: TextStyle(fontSize: 10.0, color: Colors.white)),
+              child: const Icon(Icons.notifications),
+            ),
+            onTap: () {
+              Routemaster.of(context).replace('/admin-dashboard');
+              Routemaster.of(context).pop();
+            }),
+        DrawerWidget(
+            selected: widget.pageCurrente == '/admin-dashboard',
+            icon: Icons.dashboard,
+            sizeIcon: 20.0,
+            title: 'Logistiques',
+            style: bodyText1,
+            badge: Badge(
+              badgeColor: Colors.blue,
+              badgeContent: const Text('1',
+                  style: TextStyle(fontSize: 10.0, color: Colors.white)),
+              child: const Icon(Icons.notifications),
+            ),
+            onTap: () {
+              Routemaster.of(context).replace('/admin-dashboard');
+              Routemaster.of(context).pop();
+            }),
+        DrawerWidget(
+            selected: widget.pageCurrente == '/admin-dashboard',
+            icon: Icons.dashboard,
+            sizeIcon: 20.0,
+            title: 'Comm. & Marketing',
+            style: bodyText1,
+            badge: Badge(
+              badgeColor: Colors.blue,
+              badgeContent: const Text('2',
+                  style: TextStyle(fontSize: 10.0, color: Colors.white)),
+              child: const Icon(Icons.notifications),
+            ),
+            onTap: () {
+              Routemaster.of(context).replace('/admin-dashboard');
+              Routemaster.of(context).pop();
+            }),
       ],
     );
   }

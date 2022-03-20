@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:fokad_admin/src/constants/app_theme.dart';
-import 'package:fokad_admin/src/provider/theme_provider.dart';
 
 class DrawerWidget extends StatelessWidget {
   const DrawerWidget(
@@ -9,7 +8,9 @@ class DrawerWidget extends StatelessWidget {
       this.selectedTileColor,
       required this.icon,
       required this.title,
-      required this.onTap, required this.style, required this.sizeIcon})
+      required this.onTap,
+      required this.style,
+      required this.sizeIcon, this.badge})
       : super(key: key);
 
   final bool selected;
@@ -19,13 +20,14 @@ class DrawerWidget extends StatelessWidget {
   final VoidCallback onTap;
   final TextStyle style;
   final double sizeIcon;
+  final Widget? badge;
 
   @override
   Widget build(BuildContext context) {
     Color? colorCard;
     if (selected == true) {
       colorCard = themeColor;
-    } 
+    }
     Color? color;
     if (selected == true) {
       color = Colors.white;
@@ -37,16 +39,12 @@ class DrawerWidget extends StatelessWidget {
         // selectedColor: color,
         // selectedTileColor: selectedTileColor,
         dense: true,
-        leading: Icon(
-          icon, 
-          size: sizeIcon,
-          // color: color,
-          color: color
-        ),
-        title: Text(
-          title,
-          style: style.copyWith(color:  color)
-        ),
+        leading: Icon(icon,
+            size: sizeIcon,
+            // color: color,
+            color: color),
+        title: Text(title, style: style.copyWith(color: color)),
+        trailing: badge,
         onTap: onTap,
         style: ListTileStyle.drawer,
       ),
