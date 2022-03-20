@@ -23,27 +23,27 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
-        providers: [
-          ChangeNotifierProvider(create: (context) => Controller()),
-          ChangeNotifierProvider(create: (context) => ThemeProvider()),
-        ],
-        builder: (context, _) {
-          final themeProvider = Provider.of<ThemeProvider>(context);
-          return MaterialApp.router(
-            routerDelegate: RoutemasterDelegate(routesBuilder: (_) => routes),
-            routeInformationParser: const RoutemasterParser(),
-            title: 'FOKAD ADMINISTRATION',
-            themeMode: themeProvider.themeMode,
-            theme: MyThemes.lightTheme,
-            darkTheme: MyThemes.darkTheme,
-            localizationsDelegates: const [
-              GlobalMaterialLocalizations.delegate,
-              GlobalWidgetsLocalizations.delegate,
-              GlobalCupertinoLocalizations.delegate,
-            ],
-            supportedLocales: const [
-              Locale('fr', 'FR'), Locale('en', 'EN')],
-          );
-        });
+      providers: [
+        ChangeNotifierProvider(create: (context) => Controller()),
+        ChangeNotifierProvider(create: (context) => ThemeProvider()),
+      ],
+      builder: (context, _) {
+        final themeProvider = Provider.of<ThemeProvider>(context);
+        return MaterialApp.router(
+          routerDelegate: RoutemasterDelegate(routesBuilder: (_) => routes),
+          routeInformationParser: const RoutemasterParser(),
+          title: 'FOKAD ADMINISTRATION',
+          themeMode: themeProvider.themeMode,
+          theme: MyThemes.lightTheme,
+          darkTheme: MyThemes.darkTheme,
+          localizationsDelegates: const [
+            GlobalMaterialLocalizations.delegate,
+            GlobalWidgetsLocalizations.delegate,
+            GlobalCupertinoLocalizations.delegate,
+          ],
+          supportedLocales: const [
+            Locale('fr', 'FR'), Locale('en', 'EN')],
+        );
+      });
   }
 }

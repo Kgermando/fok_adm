@@ -22,7 +22,7 @@ class _FinancesNavState extends State<FinancesNav> {
     final bodyText2 = Theme.of(context).textTheme.bodyText2;
     
     return ExpansionTile(
-        leading: Icon(Icons.monetization_on, size: 30.0, color: themeColor,),
+        leading: const Icon(Icons.monetization_on, size: 30.0),
         title: Text('Finances', style: headline6),
         initiallyExpanded: false,
         onExpansionChanged: (val) {

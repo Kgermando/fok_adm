@@ -17,6 +17,11 @@ import 'package:fokad_admin/src/pages/finances/transactions/components/depense_t
 import 'package:fokad_admin/src/pages/finances/transactions/components/dette_transcations.dart';
 import 'package:fokad_admin/src/pages/finances/transactions/components/fin_externe_transactions.dart';
 import 'package:fokad_admin/src/pages/finances/transactions/transactions_fincance.dart';
+import 'package:fokad_admin/src/pages/rh/agents/agents_rh.dart';
+import 'package:fokad_admin/src/pages/rh/dashboard/dashboard_rh.dart';
+import 'package:fokad_admin/src/pages/rh/paiements/paiements_rh.dart';
+import 'package:fokad_admin/src/pages/rh/presences/presences_rh.dart';
+import 'package:fokad_admin/src/pages/rh/salaires/salaires_rh.dart';
 import 'package:fokad_admin/src/pages/screens/help_screen.dart';
 import 'package:fokad_admin/src/pages/screens/not_found_page.dart';
 import 'package:fokad_admin/src/pages/screens/settings_screen.dart';
@@ -54,6 +59,11 @@ final routes = RouteMap(
         const MaterialPage(child: JournalComptabilite()),
     '/comptabilite-valorisation': (_) =>
         const MaterialPage(child: ValorisationComptabilite()),
+    '/rh-dashboard': (_) => const MaterialPage(child: DashboardRh()),
+    '/rh-paiements': (_) => const MaterialPage(child: PaiementRh()),
+    '/rh-salaires': (_) => const MaterialPage(child: SalaireRh()),
+    '/rh-presences': (_) => const MaterialPage(child: PresenceRh()),
+    '/rh-agents': (_) => const MaterialPage(child: AgentsRh()),
   },
   onUnknownRoute: (_) => const MaterialPage(child: NotFoundPage()),
 );

@@ -22,24 +22,34 @@ class DrawerWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Color? colorCard;
+    if (selected == true) {
+      colorCard = themeColor;
+    } 
     Color? color;
     if (selected == true) {
-      color = themeColor;
-    } 
-    return ListTile(
-        selected: selected,
-        selectedTileColor: selectedTileColor,
+      color = Colors.white;
+    }
+    return Card(
+      color: colorCard,
+      child: ListTile(
+        // selected: selected,
+        // selectedColor: color,
+        // selectedTileColor: selectedTileColor,
+        dense: true,
         leading: Icon(
           icon, 
           size: sizeIcon,
-          color: color,
+          // color: color,
+          color: color
         ),
         title: Text(
           title,
-          style: style.copyWith(
-            color: color,
-          )
+          style: style.copyWith(color:  color)
         ),
-        onTap: onTap);
+        onTap: onTap,
+        style: ListTileStyle.drawer,
+      ),
+    );
   }
 }

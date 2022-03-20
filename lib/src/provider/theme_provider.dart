@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
+import 'package:fokad_admin/src/constants/role_theme.dart';
 
 class ThemeProvider extends ChangeNotifier {
   ThemeMode themeMode = ThemeMode.system;
@@ -94,7 +95,7 @@ class MyThemes {
     //   ),
     // ),
     primaryColor: Colors.white,
-    primarySwatch: Colors.blue,
+    primarySwatch: roleThemeSwatch(1),
     fontFamily: 'Poppins',
     colorScheme: const ColorScheme.light(),
     // iconTheme: const IconThemeData(color: Colors.orange, opacity: 0.8),
