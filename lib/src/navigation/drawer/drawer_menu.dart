@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:fokad_admin/src/constants/app_theme.dart';
 import 'package:fokad_admin/src/navigation/drawer/components/administration_nav.dart';
 import 'package:fokad_admin/src/navigation/drawer/components/finances_nav.dart';
 import 'package:fokad_admin/src/navigation/drawer/components/rh_nav.dart';
@@ -21,10 +20,9 @@ class _DrawerMenuState extends State<DrawerMenu> {
   @override
   Widget build(BuildContext context) {
     String pageCurrente = Routemaster.of(context).currentRoute.fullPath;
-    String path = Routemaster.of(context).currentRoute.path;
 
-    print('pageCurrente $pageCurrente');
-    print('path $path');
+    // print('pageCurrente $pageCurrente');
+    // print('path $path');
     return Drawer(
       elevation: 10.0,
       child: ListView(

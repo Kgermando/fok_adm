@@ -19,8 +19,8 @@ class UserModel {
   late DateTime dateDebutContrat;
   late DateTime dateFinContrat;
   late String fonctionOccupe;  // Fonction occupé
-  late List? competance;
-  late List? experience;
+  late String competance;
+  late String experience;
   late String? rate; // cotes accumullés pour monté en grade
   late bool statutAgent;
   late bool isOnline;
@@ -47,8 +47,8 @@ class UserModel {
     required this.dateDebutContrat,
     required this.dateFinContrat,
     required this.fonctionOccupe,
-    this.competance,
-    this.experience,
+    required this.competance,
+    required this.experience,
     this.rate,
     required this.statutAgent,
     required this.isOnline,

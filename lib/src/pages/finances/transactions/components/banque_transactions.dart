@@ -48,7 +48,6 @@ class _BanqueTransactionsState extends State<BanqueTransactions> {
     setState(() {
       count = 0;
     });
-
     super.initState();
   }
 

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:fokad_admin/src/constants/app_theme.dart';
 import 'package:fokad_admin/src/navigation/drawer/drawer_widget.dart';
 import 'package:routemaster/routemaster.dart';
 

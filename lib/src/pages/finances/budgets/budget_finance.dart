@@ -1,4 +1,3 @@
-import 'package:data_table_2/data_table_2.dart';
 import 'package:flutter/material.dart';
 import 'package:fokad_admin/src/constants/app_theme.dart';
 import 'package:fokad_admin/src/constants/responsive.dart';
@@ -38,8 +37,8 @@ class _BudgetFinanceState extends State<BudgetFinance> {
                       const CustomAppbar(title: 'Finance Budget'),
                       Expanded(
                           child: ListView(
-                        children: [
-                          const Text("Finance Budget"),
+                        children: const [
+                          Text("Finance Budget"),
                           // tableList()
                         ],
                       ))

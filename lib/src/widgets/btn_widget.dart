@@ -16,7 +16,7 @@ class BtnWidget extends StatelessWidget {
       shadowColor: themeColor,
       child: ElevatedButton(
         child: Container(
-          height: 1.4 * (MediaQuery.of(context).size.height / 50),
+          height: 1 * (MediaQuery.of(context).size.height / 50),
           width: 5 * (MediaQuery.of(context).size.width / 10),
           // color: themeColor,
           margin: const EdgeInsets.all(p20),
