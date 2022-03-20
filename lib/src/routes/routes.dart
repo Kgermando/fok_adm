@@ -1,7 +1,11 @@
 
 
 import 'package:flutter/material.dart';
+import 'package:fokad_admin/src/pages/administration/comm_marketing_admin.dart';
 import 'package:fokad_admin/src/pages/administration/dashboard_administration.dart';
+import 'package:fokad_admin/src/pages/administration/finances_admin.dart';
+import 'package:fokad_admin/src/pages/administration/logistique_admin.dart';
+import 'package:fokad_admin/src/pages/administration/rh_admin.dart';
 import 'package:fokad_admin/src/pages/auth/login_auth.dart';
 import 'package:fokad_admin/src/pages/auth/profil_page.dart';
 import 'package:fokad_admin/src/pages/finances/budgets/budget_finance.dart';
@@ -27,7 +31,7 @@ import 'package:fokad_admin/src/pages/screens/not_found_page.dart';
 import 'package:fokad_admin/src/pages/screens/settings_screen.dart';
 import 'package:routemaster/routemaster.dart';
 
-
+ 
 final routes = RouteMap(
   routes: {
     '/': (_) => const Redirect('/login'),
@@ -35,7 +39,15 @@ final routes = RouteMap(
     '/profile': (_) => const MaterialPage(child: ProfilPage()),
     '/helps': (_) => const MaterialPage(child: HelpScreen()),
     '/settings': (_) => const MaterialPage(child: SettingsScreen()),
+
+    // ADMINISTRATION
     '/admin-dashboard': (_) => const MaterialPage(child: DashboardAdministration()),
+    '/admin-commercial-marketing': (_) => const MaterialPage(child: CommMarketingAdmin()),
+    '/admin-finances': (_) => const MaterialPage(child: FinancesAdmin()),
+    '/admin-logistiques': (_) => const MaterialPage(child: LogistiquesAdmin()),
+    '/admin-rh': (_) => const MaterialPage(child: RhAdmin()),
+
+    // FINANCES
     '/finance-dashboard': (_) => const MaterialPage(child: DashboardFinance()),
     '/finance-transactions': (_) =>
         const MaterialPage(child: TransactionsFinance()),
@@ -59,6 +71,8 @@ final routes = RouteMap(
         const MaterialPage(child: JournalComptabilite()),
     '/comptabilite-valorisation': (_) =>
         const MaterialPage(child: ValorisationComptabilite()),
+
+    // RH
     '/rh-dashboard': (_) => const MaterialPage(child: DashboardRh()),
     '/rh-paiements': (_) => const MaterialPage(child: PaiementRh()),
     '/rh-salaires': (_) => const MaterialPage(child: SalaireRh()),

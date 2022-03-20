@@ -1,8 +1,6 @@
 import 'package:badges/badges.dart';
 import 'package:flutter/material.dart';
-import 'package:fokad_admin/src/constants/app_theme.dart';
 import 'package:fokad_admin/src/navigation/drawer/drawer_widget.dart';
-import 'package:fokad_admin/src/provider/theme_provider.dart';
 import 'package:routemaster/routemaster.dart';
 
 class AdministrationNav extends StatefulWidget {
@@ -46,7 +44,7 @@ class _AdministrationNavState extends State<AdministrationNav> {
           }
         ),
         DrawerWidget(
-            selected: widget.pageCurrente == '/admin-dashboard',
+            selected: widget.pageCurrente == '/admin-finances',
             icon: Icons.dashboard,
             sizeIcon: 20.0,
             title: 'Finances',
@@ -58,11 +56,11 @@ class _AdministrationNavState extends State<AdministrationNav> {
               child: const Icon(Icons.notifications),
             ),
             onTap: () {
-              Routemaster.of(context).replace('/admin-dashboard');
+              Routemaster.of(context).replace('/admin-finances');
               Routemaster.of(context).pop();
             }),
         DrawerWidget(
-            selected: widget.pageCurrente == '/admin-dashboard',
+            selected: widget.pageCurrente == '/admin-rh',
             icon: Icons.dashboard,
             sizeIcon: 20.0,
             title: 'RH',
@@ -74,11 +72,11 @@ class _AdministrationNavState extends State<AdministrationNav> {
               child: const Icon(Icons.notifications),
             ),
             onTap: () {
-              Routemaster.of(context).replace('/admin-dashboard');
+              Routemaster.of(context).replace('/admin-rh');
               Routemaster.of(context).pop();
             }),
         DrawerWidget(
-            selected: widget.pageCurrente == '/admin-dashboard',
+            selected: widget.pageCurrente == '/admin-logistiques',
             icon: Icons.dashboard,
             sizeIcon: 20.0,
             title: 'Logistiques',
@@ -90,11 +88,11 @@ class _AdministrationNavState extends State<AdministrationNav> {
               child: const Icon(Icons.notifications),
             ),
             onTap: () {
-              Routemaster.of(context).replace('/admin-dashboard');
+              Routemaster.of(context).replace('/admin-logistiques');
               Routemaster.of(context).pop();
             }),
         DrawerWidget(
-            selected: widget.pageCurrente == '/admin-dashboard',
+            selected: widget.pageCurrente == '/admin-commercial-marketing',
             icon: Icons.dashboard,
             sizeIcon: 20.0,
             title: 'Comm. & Marketing',
@@ -106,7 +104,7 @@ class _AdministrationNavState extends State<AdministrationNav> {
               child: const Icon(Icons.notifications),
             ),
             onTap: () {
-              Routemaster.of(context).replace('/admin-dashboard');
+              Routemaster.of(context).replace('/admin-commercial-marketing');
               Routemaster.of(context).pop();
             }),
       ],
