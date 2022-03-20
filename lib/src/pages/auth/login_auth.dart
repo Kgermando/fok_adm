@@ -194,6 +194,7 @@ class _LoginPageState extends State<LoginPage> {
       padding: const EdgeInsets.all(p20),
       child: BtnWidget(
         title: 'Login', 
+        isLoading: isloading,
         press: () {
           Routemaster.of(context).push('/finance-dashboard');
         }

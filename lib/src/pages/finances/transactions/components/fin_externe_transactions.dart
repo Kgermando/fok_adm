@@ -25,6 +25,8 @@ class _FinExterneTransactionsState extends State<FinExterneTransactions> {
   final controller = ScrollController();
   final ScrollController _controllerBillet = ScrollController();
 
+  bool isLoading = false;
+
   final TextEditingController nomCompletController = TextEditingController();
   final TextEditingController pieceJustificativeController =
       TextEditingController();
@@ -229,7 +231,10 @@ class _FinExterneTransactionsState extends State<FinExterneTransactions> {
                           const SizedBox(
                             height: p20,
                           ),
-                          BtnWidget(title: 'Soumettre', press: () {})
+                          BtnWidget(
+                              title: 'Soumettre',
+                              isLoading: isLoading,
+                              press: () {})
                         ],
                       ),
                     ),

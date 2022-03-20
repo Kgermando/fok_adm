@@ -23,6 +23,8 @@ class BilanComptabilite extends StatefulWidget {
 class _BilanComptabiliteState extends State<BilanComptabilite> {
   final controller = ScrollController();
 
+  bool isLoading = false;
+
   final TextEditingController titleBilanController =
       TextEditingController();
   final TextEditingController comptesController = TextEditingController();
@@ -165,7 +167,10 @@ class _BilanComptabiliteState extends State<BilanComptabilite> {
                           const SizedBox(
                             height: p20,
                           ),
-                          BtnWidget(title: 'Soumettre', press: () {})
+                          BtnWidget(
+                              title: 'Soumettre',
+                              isLoading: isLoading,
+                              press: () {})
                         ],
                       ),
                     ),

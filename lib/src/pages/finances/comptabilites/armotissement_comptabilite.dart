@@ -21,7 +21,7 @@ class AmortissementComptabilite extends StatefulWidget {
 
 class _AmortissementComptabiliteState extends State<AmortissementComptabilite> {
   final controller = ScrollController();
-
+  bool isLoading = false;
   
   final TextEditingController titleArmotissementController = TextEditingController();
   final TextEditingController comptesController =
@@ -150,7 +150,7 @@ class _AmortissementComptabiliteState extends State<AmortissementComptabilite> {
                           const SizedBox(
                             height: p20,
                           ),
-                          BtnWidget(title: 'Soumettre', press: () {})
+                          BtnWidget(title: 'Soumettre', isLoading: isLoading, press: () {})
                         ],
                       ),
                     ),

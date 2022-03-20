@@ -27,6 +27,8 @@ class _CaisseTransactionsState extends State<CaisseTransactions> {
   final controller = ScrollController();
   final ScrollController _controllerBillet = ScrollController();
 
+  bool isLoading = false;
+
   final TextEditingController nomCompletController = TextEditingController();
   final TextEditingController pieceJustificativeController =
       TextEditingController();
@@ -265,7 +267,10 @@ class _CaisseTransactionsState extends State<CaisseTransactions> {
                           const SizedBox(
                             height: p20,
                           ),
-                          BtnWidget(title: 'Soumettre', press: () {})
+                          BtnWidget(
+                              title: 'Soumettre',
+                              isLoading: isLoading,
+                              press: () {})
                         ],
                       ),
                     ),
@@ -382,7 +387,10 @@ class _CaisseTransactionsState extends State<CaisseTransactions> {
                           const SizedBox(
                             height: p20,
                           ),
-                          BtnWidget(title: 'Soumettre', press: () {})
+                          BtnWidget(
+                              title: 'Soumettre',
+                              isLoading: isLoading,
+                              press: () {})
                         ],
                       ),
                     ),

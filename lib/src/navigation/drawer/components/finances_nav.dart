@@ -45,7 +45,7 @@ class _FinancesNavState extends State<FinancesNav> {
             }
           ),
           ExpansionTile(
-            leading: Icon(Icons.compare_arrows, size: 20.0, color: themeColor),
+            leading: const Icon(Icons.compare_arrows, size: 20.0),
             title: Text('Transactions', style: bodyText1),
             initiallyExpanded: false,
             onExpansionChanged: (val) {
@@ -131,8 +131,7 @@ class _FinancesNavState extends State<FinancesNav> {
             ],
           ),
           ExpansionTile(
-            leading:
-                Icon(Icons.analytics, size: 20.0, color: themeColor),
+            leading: const Icon(Icons.analytics, size: 20.0),
             title: Text('Comptabilités', style: bodyText1),
             initiallyExpanded: false,
             onExpansionChanged: (val) {

@@ -21,6 +21,8 @@ class CreanceTransactions extends StatefulWidget {
 class _CreanceTransactionsState extends State<CreanceTransactions> {
   final controller = ScrollController();
 
+  bool isLoading = false;
+
   final TextEditingController nomCompletController = TextEditingController();
   final TextEditingController pieceJustificativeController =
       TextEditingController();
@@ -143,7 +145,10 @@ class _CreanceTransactionsState extends State<CreanceTransactions> {
                           const SizedBox(
                             height: p20,
                           ),
-                          BtnWidget(title: 'Soumettre', press: () {})
+                          BtnWidget(
+                              title: 'Soumettre',
+                              isLoading: isLoading,
+                              press: () {})
                         ],
                       ),
                     ),

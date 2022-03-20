@@ -25,6 +25,8 @@ class _BanqueTransactionsState extends State<BanqueTransactions> {
   final controller = ScrollController();
   final ScrollController _controllerBillet = ScrollController();
 
+  bool isLoading = false;
+
   final TextEditingController nomCompletController = TextEditingController();
   final TextEditingController pieceJustificativeController =
       TextEditingController();
@@ -263,11 +265,8 @@ class _BanqueTransactionsState extends State<BanqueTransactions> {
                           ),
                           BtnWidget(
                               title: 'Soumettre',
-                              press: () {
-                                setState(() {
-                                  count = 0;
-                                });
-                              })
+                              isLoading: isLoading,
+                              press: () {})
                         ],
                       ),
                     ),
@@ -385,11 +384,8 @@ class _BanqueTransactionsState extends State<BanqueTransactions> {
                           ),
                           BtnWidget(
                               title: 'Soumettre',
-                              press: () {
-                                setState(() {
-                                  count = 0;
-                                });
-                              })
+                              isLoading: isLoading,
+                              press: () {})
                         ],
                       ),
                     ),

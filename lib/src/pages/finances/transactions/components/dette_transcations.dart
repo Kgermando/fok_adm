@@ -21,6 +21,8 @@ class DetteTransactions extends StatefulWidget {
 class _DetteTransactionsState extends State<DetteTransactions> {
   final controller = ScrollController();
 
+  bool isLoading = false;
+
    final TextEditingController nomCompletController = TextEditingController();
   final TextEditingController pieceJustificativeController =
       TextEditingController();
@@ -147,7 +149,10 @@ class _DetteTransactionsState extends State<DetteTransactions> {
                           const SizedBox(
                             height: p20,
                           ),
-                          BtnWidget(title: 'Soumettre', press: () {})
+                          BtnWidget(
+                              title: 'Soumettre',
+                              isLoading: isLoading,
+                              press: () {})
                         ],
                       ),
                     ),

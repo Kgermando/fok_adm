@@ -10,6 +10,7 @@ import 'package:fokad_admin/src/utils/departement.dart';
 import 'package:fokad_admin/src/widgets/btn_widget.dart';
 import 'package:fokad_admin/src/widgets/print_widget.dart';
 import 'package:fokad_admin/src/widgets/title_widget.dart';
+import 'package:pluto_grid/pluto_grid.dart';
 import 'package:provider/provider.dart';
 import 'package:date_time_picker/date_time_picker.dart';
 
@@ -22,6 +23,8 @@ class AgentsRh extends StatefulWidget {
 
 class _AgentsRhState extends State<AgentsRh> {
   final ScrollController _controllerScroll = ScrollController();
+
+ bool isLoading = false;
 
   final List<String> departementList = DepartementList().departement;
   final List<String> world = Country().world;
@@ -53,6 +56,7 @@ class _AgentsRhState extends State<AgentsRh> {
 
   String? nationalite;
   String? departement;
+  
 
   @override
   void dispose() {
@@ -110,9 +114,8 @@ class _AgentsRhState extends State<AgentsRh> {
                         controller: _controllerScroll,
                         child: ListView(
                           controller: _controllerScroll,
-                          children: const [
-                            Text("Agents List"),
-                            
+                          children: [
+                            tableWidget()
                           ],
                         ),
                       ))
@@ -123,6 +126,14 @@ class _AgentsRhState extends State<AgentsRh> {
             ],
           ),
         ));
+  }
+
+  Widget tableWidget() {
+    final size = MediaQuery.of(context).size;
+    return SizedBox(
+      height: size.height / 2,
+      child: Container()
+    );
   }
 
   addAgent() {
@@ -248,7 +259,11 @@ class _AgentsRhState extends State<AgentsRh> {
                           const SizedBox(
                             height: p20,
                           ),
-                          BtnWidget(title: 'Soumettre', press: () {})
+                          BtnWidget(
+                            title: 'Soumettre', 
+                            isLoading: isLoading,
+                            press: () {}
+                          )
                         ],
                       ),
                     ),
@@ -638,30 +653,29 @@ class _AgentsRhState extends State<AgentsRh> {
 
   Future submit() async {
     final userModel = UserModel(
-      nom: nomController.text,
-      postNom: postNomController.text,
-      prenom: prenomController.text,
-      email: emailController.text,
-      telephone: telephoneController.text,
-      adresse: adresseController.text,
-      sexe: sexeController.text,
-      role: roleController.text,
-      matricule: matriculeController.text,
-      dateNaissance: DateTime.parse(dateNaissanceController.text),
-      lieuNaissance: lieuNaissanceController.text,
-      nationalite: nationalite.toString(),
-      typeContrat: typeContratController.text,
-      departement: departement.toString(),
-      servicesAffectation: servicesAffectationController.text,
-      dateDebutContrat: DateTime.parse(dateDebutContratController.text) ,
-      dateFinContrat: DateTime.parse(dateFinContratController.text),
-      fonctionOccupe: fonctionOccupeController.text,
-      competance: competanceController.text,
-      experience: experienceController.text,
-      statutAgent: true,
-      isOnline: false,
-      createdAt: DateTime.now(),
-      passwordHash: passwordHashController.text
-    );
+        nom: nomController.text,
+        postNom: postNomController.text,
+        prenom: prenomController.text,
+        email: emailController.text,
+        telephone: telephoneController.text,
+        adresse: adresseController.text,
+        sexe: sexeController.text,
+        role: roleController.text,
+        matricule: matriculeController.text,
+        dateNaissance: DateTime.parse(dateNaissanceController.text),
+        lieuNaissance: lieuNaissanceController.text,
+        nationalite: nationalite.toString(),
+        typeContrat: typeContratController.text,
+        departement: departement.toString(),
+        servicesAffectation: servicesAffectationController.text,
+        dateDebutContrat: DateTime.parse(dateDebutContratController.text),
+        dateFinContrat: DateTime.parse(dateFinContratController.text),
+        fonctionOccupe: fonctionOccupeController.text,
+        competance: competanceController.text,
+        experience: experienceController.text,
+        statutAgent: true,
+        isOnline: false,
+        createdAt: DateTime.now(),
+        passwordHash: passwordHashController.text);
   }
 }

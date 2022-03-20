@@ -24,6 +24,8 @@ class ValorisationComptabilite extends StatefulWidget {
 class _ValorisationComptabiliteState extends State<ValorisationComptabilite> {
   final controller = ScrollController();
 
+  bool isLoading = false;
+
   final TextEditingController numeroOrdreController = TextEditingController();
   final TextEditingController intituleController = TextEditingController();
   final TextEditingController quantiteController = TextEditingController();
@@ -171,7 +173,10 @@ class _ValorisationComptabiliteState extends State<ValorisationComptabilite> {
                           const SizedBox(
                             height: p20,
                           ),
-                          BtnWidget(title: 'Soumettre', press: () {})
+                          BtnWidget(
+                              title: 'Soumettre',
+                              isLoading: isLoading,
+                              press: () {})
                         ],
                       ),
                     ),

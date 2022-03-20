@@ -24,6 +24,8 @@ class JournalComptabilite extends StatefulWidget {
 class _JournalComptabiliteState extends State<JournalComptabilite> {
   final controller = ScrollController();
 
+  bool isLoading = false;
+
   final TextEditingController titleBilanController =
       TextEditingController();
   final TextEditingController comptesController = TextEditingController();
@@ -179,7 +181,10 @@ class _JournalComptabiliteState extends State<JournalComptabilite> {
                           const SizedBox(
                             height: p20,
                           ),
-                          BtnWidget(title: 'Soumettre', press: () {})
+                          BtnWidget(
+                              title: 'Soumettre',
+                              isLoading: isLoading,
+                              press: () {})
                         ],
                       ),
                     ),
