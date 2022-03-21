@@ -43,6 +43,7 @@ dependencies:
   dio: ^4.0.4
   flutter_secure_storage: ^5.0.2
   date_time_picker: ^2.1.0
+  html_editor_enhanced: ^2.4.0+1
 
   faker: ^2.0.0
 

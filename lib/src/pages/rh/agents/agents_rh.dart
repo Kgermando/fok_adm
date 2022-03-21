@@ -10,6 +10,7 @@ import 'package:fokad_admin/src/utils/departement.dart';
 import 'package:fokad_admin/src/widgets/btn_widget.dart';
 import 'package:fokad_admin/src/widgets/print_widget.dart';
 import 'package:fokad_admin/src/widgets/title_widget.dart';
+import 'package:html_editor_enhanced/html_editor.dart';
 import 'package:pluto_grid/pluto_grid.dart';
 import 'package:provider/provider.dart';
 import 'package:date_time_picker/date_time_picker.dart';
@@ -24,7 +25,7 @@ class AgentsRh extends StatefulWidget {
 class _AgentsRhState extends State<AgentsRh> {
   final ScrollController _controllerScroll = ScrollController();
 
- bool isLoading = false;
+  bool isLoading = false;
 
   final List<String> departementList = DepartementList().departement;
   final List<String> world = Country().world;
@@ -50,13 +51,14 @@ class _AgentsRhState extends State<AgentsRh> {
   final TextEditingController fonctionOccupeController =
       TextEditingController();
   final TextEditingController competanceController = TextEditingController();
+  // HtmlEditorController competanceController = HtmlEditorController();
+
   final TextEditingController experienceController = TextEditingController();
   final TextEditingController rateController = TextEditingController();
   final TextEditingController passwordHashController = TextEditingController();
 
   String? nationalite;
   String? departement;
-  
 
   @override
   void dispose() {
@@ -114,9 +116,7 @@ class _AgentsRhState extends State<AgentsRh> {
                         controller: _controllerScroll,
                         child: ListView(
                           controller: _controllerScroll,
-                          children: [
-                            tableWidget()
-                          ],
+                          children: [tableWidget()],
                         ),
                       ))
                     ],
@@ -130,10 +130,7 @@ class _AgentsRhState extends State<AgentsRh> {
 
   Widget tableWidget() {
     final size = MediaQuery.of(context).size;
-    return SizedBox(
-      height: size.height / 2,
-      child: Container()
-    );
+    return SizedBox(height: size.height / 2, child: Container());
   }
 
   addAgent() {
@@ -247,23 +244,16 @@ class _AgentsRhState extends State<AgentsRh> {
                               Expanded(child: rateWidget())
                             ],
                           ),
-                          Row(
-                            children: [
-                              Expanded(child: competanceWidget()),
-                              const SizedBox(
-                                width: p10,
-                              ),
-                              Expanded(child: experienceWidget())
-                            ],
-                          ),
+                          competanceWidget(),
+                          const SizedBox(width: p10,),
+                          experienceWidget(),
                           const SizedBox(
                             height: p20,
                           ),
                           BtnWidget(
-                            title: 'Soumettre', 
-                            isLoading: isLoading,
-                            press: () {}
-                          )
+                              title: 'Soumettre',
+                              isLoading: isLoading,
+                              press: () {})
                         ],
                       ),
                     ),
@@ -601,6 +591,8 @@ class _AgentsRhState extends State<AgentsRh> {
     return Container(
         margin: const EdgeInsets.only(bottom: p20),
         child: TextFormField(
+          minLines: 5,
+          maxLines: 100,
           controller: competanceController,
           decoration: InputDecoration(
             border:
@@ -612,13 +604,28 @@ class _AgentsRhState extends State<AgentsRh> {
             return 'Ce champs est obligatoire';
           },
           style: const TextStyle(),
-        ));
+        )
+
+        //     HtmlEditor(
+        //     controller: competanceController, //required
+        //     htmlEditorOptions: const HtmlEditorOptions(
+        //       hint: "Your text here...",
+        //       //initalText: "text content initial, if any",
+        //     ),
+        //     otherOptions: const OtherOptions(
+        //       height: 400,
+        //     ),
+        // )
+
+        );
   }
 
   Widget experienceWidget() {
     return Container(
         margin: const EdgeInsets.only(bottom: p20),
         child: TextFormField(
+          minLines: 5,
+          maxLines: 100,
           controller: experienceController,
           decoration: InputDecoration(
             border:
@@ -671,7 +678,7 @@ class _AgentsRhState extends State<AgentsRh> {
         dateDebutContrat: DateTime.parse(dateDebutContratController.text),
         dateFinContrat: DateTime.parse(dateFinContratController.text),
         fonctionOccupe: fonctionOccupeController.text,
-        competance: competanceController.text,
+        competance: competanceController.toString(),
         experience: experienceController.text,
         statutAgent: true,
         isOnline: false,
