@@ -45,7 +45,7 @@ class _AdministrationNavState extends State<AdministrationNav> {
         ),
         DrawerWidget(
             selected: widget.pageCurrente == '/admin-finances',
-            icon: Icons.dashboard,
+            icon: Icons.monetization_on,
             sizeIcon: 20.0,
             title: 'Finances',
             style: bodyText1,
@@ -61,7 +61,7 @@ class _AdministrationNavState extends State<AdministrationNav> {
             }),
         DrawerWidget(
             selected: widget.pageCurrente == '/admin-rh',
-            icon: Icons.dashboard,
+            icon: Icons.group,
             sizeIcon: 20.0,
             title: 'RH',
             style: bodyText1,
@@ -76,8 +76,24 @@ class _AdministrationNavState extends State<AdministrationNav> {
               Routemaster.of(context).pop();
             }),
         DrawerWidget(
+            selected: widget.pageCurrente == '/admin-exploitations',
+            icon: Icons.work,
+            sizeIcon: 20.0,
+            title: 'Exploitations',
+            style: bodyText1,
+            badge: Badge(
+              badgeColor: Colors.blue,
+              badgeContent: const Text('12',
+                  style: TextStyle(fontSize: 10.0, color: Colors.white)),
+              child: const Icon(Icons.notifications),
+            ),
+            onTap: () {
+              Routemaster.of(context).replace('/admin-exploitations');
+              Routemaster.of(context).pop();
+            }),
+        DrawerWidget(
             selected: widget.pageCurrente == '/admin-logistiques',
-            icon: Icons.dashboard,
+            icon: Icons.home_work,
             sizeIcon: 20.0,
             title: 'Logistiques',
             style: bodyText1,
@@ -93,7 +109,7 @@ class _AdministrationNavState extends State<AdministrationNav> {
             }),
         DrawerWidget(
             selected: widget.pageCurrente == '/admin-commercial-marketing',
-            icon: Icons.dashboard,
+            icon: Icons.add_business,
             sizeIcon: 20.0,
             title: 'Comm. & Marketing',
             style: bodyText1,

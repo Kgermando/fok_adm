@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:fokad_admin/src/pages/administration/comm_marketing_admin.dart';
 import 'package:fokad_admin/src/pages/administration/dashboard_administration.dart';
+import 'package:fokad_admin/src/pages/administration/exploitations_admin.dart';
 import 'package:fokad_admin/src/pages/administration/finances_admin.dart';
 import 'package:fokad_admin/src/pages/administration/logistique_admin.dart';
 import 'package:fokad_admin/src/pages/administration/rh_admin.dart';
@@ -46,6 +47,7 @@ final routes = RouteMap(
     '/admin-finances': (_) => const MaterialPage(child: FinancesAdmin()),
     '/admin-logistiques': (_) => const MaterialPage(child: LogistiquesAdmin()),
     '/admin-rh': (_) => const MaterialPage(child: RhAdmin()),
+    '/admin-exploitations': (_) => const MaterialPage(child: ExploitationsAdmin()),
 
     // FINANCES
     '/finance-dashboard': (_) => const MaterialPage(child: DashboardFinance()),
