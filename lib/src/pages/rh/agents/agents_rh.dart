@@ -7,11 +7,11 @@ import 'package:fokad_admin/src/navigation/header/custom_appbar.dart';
 import 'package:fokad_admin/src/provider/controller.dart';
 import 'package:fokad_admin/src/utils/country.dart';
 import 'package:fokad_admin/src/utils/departement.dart';
+import 'package:fokad_admin/src/utils/table_.dart';
 import 'package:fokad_admin/src/widgets/btn_widget.dart';
 import 'package:fokad_admin/src/widgets/print_widget.dart';
 import 'package:fokad_admin/src/widgets/title_widget.dart';
 import 'package:html_editor_enhanced/html_editor.dart';
-import 'package:pluto_grid/pluto_grid.dart';
 import 'package:provider/provider.dart';
 import 'package:date_time_picker/date_time_picker.dart';
 
@@ -93,7 +93,7 @@ class _AgentsRhState extends State<AgentsRh> {
         drawer: const DrawerMenu(),
         floatingActionButton: FloatingActionButton(
           onPressed: () => addAgent(),
-          child: const Icon(Icons.add),
+          child: const Icon(Icons.person_add),
         ),
         body: SafeArea(
           child: Row(
@@ -130,7 +130,7 @@ class _AgentsRhState extends State<AgentsRh> {
 
   Widget tableWidget() {
     final size = MediaQuery.of(context).size;
-    return SizedBox(height: size.height / 2, child: Container());
+    return SizedBox(height: size.height, child: const TableExp());
   }
 
   addAgent() {

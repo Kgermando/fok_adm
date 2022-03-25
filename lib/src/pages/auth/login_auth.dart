@@ -1,5 +1,7 @@
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:fokad_admin/src/api/auth/auth_api.dart';
 import 'package:fokad_admin/src/constants/app_theme.dart';
 import 'package:fokad_admin/src/constants/responsive.dart';
 import 'package:fokad_admin/src/provider/theme_provider.dart';
@@ -18,7 +20,7 @@ class _LoginPageState extends State<LoginPage> {
 
   bool isloading = false;
 
-  final TextEditingController userNameController = TextEditingController();
+  final TextEditingController matriculeController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
 
   @override
@@ -93,9 +95,9 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                 ),
               Expanded(
-                child: SizedBox(
-                  width: MediaQuery.of(context).size.width / 2,
-                  child: Form(
+                  child: SizedBox(
+                width: MediaQuery.of(context).size.width / 2,
+                child: Form(
                   key: _form,
                   child: SingleChildScrollView(
                     padding: const EdgeInsets.all(16.0),
@@ -104,8 +106,7 @@ class _LoginPageState extends State<LoginPage> {
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         Align(
-                            alignment: Alignment.topRight,
-                            child: helpWidget()),
+                            alignment: Alignment.topRight, child: helpWidget()),
                         logoWidget(),
                         // titleText(),
                         const SizedBox(height: 20),
@@ -124,8 +125,8 @@ class _LoginPageState extends State<LoginPage> {
                       ],
                     ),
                   ),
-              ),
-                ))
+                ),
+              ))
             ],
           ),
         ),
@@ -151,54 +152,81 @@ class _LoginPageState extends State<LoginPage> {
 
   Widget userNameBuild() {
     return Padding(
-      padding: const EdgeInsets.all(p20),
-      child: TextFormField(
-        decoration: InputDecoration(
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(10.0)
+        padding: const EdgeInsets.all(p20),
+        child: TextFormField(
+          decoration: InputDecoration(
+            border:
+                OutlineInputBorder(borderRadius: BorderRadius.circular(10.0)),
+            labelText: 'Matricule',
           ),
-          labelText: 'Matricule', 
-        ),
-        controller: userNameController,
-        keyboardType: TextInputType.number,
-        validator: (val) {
-          return 'Ce champs est obligatoire';
-        },
-        style: const TextStyle(),
-      )
-    );
+          controller: matriculeController,
+          keyboardType: TextInputType.text,
+          validator: (value) {
+            if (value == null || value.isEmpty) {
+              return 'Ce champ est obligatoire';
+            }
+            return null;
+          },
+          style: const TextStyle(),
+        ));
   }
 
   Widget passwordBuild() {
     return Padding(
-      padding: const EdgeInsets.all(p20),
-      child: TextFormField(
-        decoration: InputDecoration(
-          border:
-            OutlineInputBorder(borderRadius: BorderRadius.circular(10.0)),
-          labelText: 'Mot de passe',
-        ),
+        padding: const EdgeInsets.all(p20),
+        child: TextFormField(
+          decoration: InputDecoration(
+            border:
+                OutlineInputBorder(borderRadius: BorderRadius.circular(10.0)),
+            labelText: 'Mot de passe',
+          ),
           controller: passwordController,
           keyboardType: TextInputType.text,
           obscureText: true,
-          validator: (val) {
-            return 'Ce champs est obligatoire';
+          validator: (value) {
+            if (value == null || value.isEmpty) {
+              return 'Ce champ est obligatoire';
+            }
+            return null;
           },
           style: const TextStyle(),
-        )
-    );
+        ));
   }
 
   Widget loginButtonBuild() {
     return Padding(
       padding: const EdgeInsets.all(p20),
       child: BtnWidget(
-        title: 'Login', 
-        isLoading: isloading,
-        press: () {
-          Routemaster.of(context).push('/finance-dashboard');
-        }
-      ),
+          title: 'Login',
+          isLoading: isloading,
+          press: () async {
+            final form = _form.currentState!;
+            if (form.validate()) {
+              setState(() => isloading = true);
+
+              print('matriculeController ${matriculeController.text}');
+              print('passwordController ${passwordController.text}');
+
+              await AuthApi()
+                  .login(matriculeController.text, passwordController.text)
+                  .then((value) {
+                if (value) {
+                  Routemaster.of(context).push('/admin-dashboard');
+                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                    content: const Text("Login succès!"),
+                    backgroundColor: Colors.green[700],
+                  ));
+                  // setState(() => isloading = false);
+                } else {
+                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                    content: const Text("Telephone ou mot de passe incorrect"),
+                    backgroundColor: Colors.red[700],
+                  ));
+                  setState(() => isloading = false);
+                }
+              });
+            }
+          }),
     );
   }
 
