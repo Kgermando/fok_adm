@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:fokad_admin/src/api/auth/auth_api.dart';
 import 'package:provider/provider.dart';
 import 'package:routemaster/routemaster.dart';
-import 'package:splashscreen/splashscreen.dart';
+import 'package:splash_screen_view/SplashScreenView.dart';
 
 class SplashScreens extends StatefulWidget {
   const SplashScreens({Key? key}) : super(key: key);
@@ -29,18 +29,12 @@ class _SplashScreensState extends State<SplashScreens> {
     authApi = Provider.of<AuthApi>(context);
     _checkIsLoggedIn(); 
 
-    return SplashScreen(
-        seconds: 14,
-        navigateAfterSeconds: Routemaster.of(context).push('/login'),
-        title: const Text(
-          'Welcome In SplashScreen',
-          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20.0),
-        ),
-        image: Image.network('https://i.imgur.com/TyCSG9A.png'),
-        backgroundColor: Colors.white,
-        styleTextUnderTheLoader: const TextStyle(),
-        photoSize: 100.0,
-        onClick: () => print("Flutter splashscreen"),
-        loaderColor: Colors.red);
+    return SplashScreenView(
+      navigateRoute: _checkIsLoggedIn(),
+      duration: 3000,
+      imageSize: 130,
+      imageSrc: "logo.png",
+      backgroundColor: Colors.white,
+    );
   }
 }
