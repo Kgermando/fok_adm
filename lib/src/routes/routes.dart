@@ -30,12 +30,14 @@ import 'package:fokad_admin/src/pages/rh/salaires/salaires_rh.dart';
 import 'package:fokad_admin/src/pages/screens/help_screen.dart';
 import 'package:fokad_admin/src/pages/screens/not_found_page.dart';
 import 'package:fokad_admin/src/pages/screens/settings_screen.dart';
+import 'package:fokad_admin/src/pages/screens/splash_screen.dart';
 import 'package:routemaster/routemaster.dart';
 
  
 final routes = RouteMap(
   routes: {
-    '/': (_) => const Redirect('/login'),
+    '/': (_) => const Redirect('/splash'),
+    '/splash': (_) => const MaterialPage(child: SplashScreens()),
     '/login': (_) => const MaterialPage(child: LoginPage()),
     '/profile': (_) => const MaterialPage(child: ProfilPage()),
     '/helps': (_) => const MaterialPage(child: HelpScreen()),

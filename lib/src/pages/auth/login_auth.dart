@@ -207,10 +207,16 @@ class _LoginPageState extends State<LoginPage> {
               print('matriculeController ${matriculeController.text}');
               print('passwordController ${passwordController.text}');
 
+              const storage = FlutterSecureStorage();
+              // storage.deleteAll();
+              var token = await storage.read(key: 'accessToken');
+              
+
               await AuthApi()
                   .login(matriculeController.text, passwordController.text)
                   .then((value) {
                 if (value) {
+                  print('token $token');
                   Routemaster.of(context).push('/admin-dashboard');
                   ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                     content: const Text("Login succès!"),

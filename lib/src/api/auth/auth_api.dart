@@ -24,6 +24,7 @@ class AuthApi {
       Token token = Token.fromJson(json.decode(resp.body));
 
       // Store the tokens
+      await storage.write(key: 'idToken', value: token.id.toString());
       await storage.write(key: 'accessToken', value: token.accessToken);
       await storage.write(key: 'refreshToken', value: token.refreshToken);
       // await storage.write(key: 'expireIn', value: token.expiresIn.toString());
@@ -43,11 +44,11 @@ class AuthApi {
   Future<void> register(UserModel userModel) async {
     var data = userModel.toMap();
     var body = jsonEncode(data);
-    // const storage = FlutterSecureStorage();
-    // var accessToken = await storage.read(key: 'accessToken');
-    // var headers = {HttpHeaders.authorizationHeader: "Bearer $accessToken"};
+    const storage = FlutterSecureStorage();
+    var accessToken = await storage.read(key: 'accessToken');
+    var headers = {HttpHeaders.authorizationHeader: "Bearer $accessToken"};
 
-    var resp = await client.post(loginUrl, body: body);
+    var resp = await client.post(loginUrl, body: body, headers: headers);
     if (resp.statusCode == 200) {
     } else {
       throw Exception(json.decode(resp.body)['message']);
@@ -81,15 +82,11 @@ class AuthApi {
     const storage = FlutterSecureStorage();
     final refreshToken = await storage.read(key: 'refreshToken');
 
-    Map data = {'refresh_token': refreshToken};
+    var data = {'refresh_token': refreshToken};
 
     var body = jsonEncode(data);
-    var headers = {
-      'Content-Type': 'application/json; charset=utf-8',
-      'access-control-allow-origin': '*'
-    };
 
-    var resp = await client.post(refreshTokenUrl, body: body, headers: headers);
+    var resp = await client.post(refreshTokenUrl, body: body);
 
     if (resp.statusCode == 200) {
       Token token = Token.fromJson(json.decode(resp.body));

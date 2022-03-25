@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:fokad_admin/src/api/auth/auth_api.dart';
 import 'package:fokad_admin/src/provider/controller.dart';
 import 'package:fokad_admin/src/provider/theme_provider.dart';
 import 'package:fokad_admin/src/routes/routes.dart';
@@ -26,6 +27,7 @@ class MyApp extends StatelessWidget {
       providers: [
         ChangeNotifierProvider(create: (context) => Controller()),
         ChangeNotifierProvider(create: (context) => ThemeProvider()),
+        Provider<AuthApi>.value(value: AuthApi()),
       ],
       builder: (context, _) {
         final themeProvider = Provider.of<ThemeProvider>(context);
