@@ -32,39 +32,6 @@ class MenuOptions with ChangeNotifier {
       case MenuItems.itemLogout:
       // Remove stockage jwt here.
       // AuthHttp().logout();
-      // Phoenix.rebirth(context);
     }
   }
 }
-
-// class MenuStatsOptions {
-//   PopupMenuItem<MenuStat> buildItem(MenuStat item) => PopupMenuItem(
-//       value: item,
-//       child: Row(
-//         children: [Text(item.text)],
-//       ));
-
-//   void onSelected(BuildContext context, MenuStat item) {
-//     switch (item) {
-//       case MenuStats.itemDay:
-//         Navigator.of(context).push(
-//             MaterialPageRoute(builder: (context) => const DayDashbaord()));
-//         break;
-
-//       case MenuStats.itemWeek:
-//         Navigator.of(context).push(
-//             MaterialPageRoute(builder: (context) => const WeekDashboard()));
-//         break;
-
-//       case MenuStats.itemMouth:
-//         Navigator.of(context).push(
-//             MaterialPageRoute(builder: (context) => const MouthDashboard()));
-//         break;
-
-//       case MenuStats.itemYear:
-//         Navigator.of(context).push(
-//             MaterialPageRoute(builder: (context) => const YearDashboard()));
-//         break;
-//     }
-//   }
-// }

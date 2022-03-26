@@ -9,7 +9,7 @@ import 'package:fokad_admin/src/api/route_api.dart';
 import 'package:fokad_admin/src/models/users/user_model.dart';
 import 'package:http/http.dart' as http;
 
-class AuthApi {
+class AuthApi extends ChangeNotifier {
   var client = http.Client();
 
   Future<bool> login(String matricule, String passwordHash) async {
@@ -66,8 +66,10 @@ class AuthApi {
       } catch (e) {
         debugPrint('un soucis $e');
       }
+      notifyListeners();
       return true;
     } else {
+      notifyListeners();
       return false;
     }
   }
@@ -110,6 +112,21 @@ class AuthApi {
       await refreshAccessToken();
       refreshAccessTokenTimer(time);
       debugPrint('un soucis $e');
+    }
+  }
+
+  Future<UserModel> getuserLoggedIn() async {
+    const storage = FlutterSecureStorage();
+    var accessToken = await storage.read(key: 'accessToken');
+    var headers = {
+      HttpHeaders.authorizationHeader: "Bearer $accessToken",
+    };
+
+    var resp = await client.get(userUrl, headers: headers);
+    if (resp.statusCode == 200) {
+      return UserModel.fromJson(jsonDecode(resp.body));
+    } else {
+      throw Exception(json.decode(resp.body)['message']);
     }
   }
 }

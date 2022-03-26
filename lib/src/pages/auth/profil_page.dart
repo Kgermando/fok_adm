@@ -16,7 +16,7 @@ class _ProfilPageState extends State<ProfilPage> {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<UserModel?>(
-      // future: AuthApi().getAccessToken(),
+      future: AuthApi().getuserLoggedIn(),
       builder: (context, snapshot) {
         if (snapshot.hasData) {
           UserModel? userInfo = snapshot.data;

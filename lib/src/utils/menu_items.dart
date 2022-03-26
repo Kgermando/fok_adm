@@ -27,16 +27,3 @@ class MenuItems {
   static const itemLogout = MenuItem(text: 'Déconnexion', icon: Icons.logout);
 }
 
-class MenuStats {
-  static const List<MenuStat> itemsFirst = [
-    itemDay,
-    itemWeek,
-    itemMouth,
-    itemYear,
-  ];
-
-  static const itemDay = MenuStat(text: 'Jour');
-  static const itemWeek = MenuStat(text: 'Semaine');
-  static const itemMouth = MenuStat(text: 'Mois');
-  static const itemYear = MenuStat(text: 'Année');
-}

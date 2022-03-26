@@ -1,6 +1,5 @@
-
-
 import 'package:flutter/material.dart';
+import 'package:fokad_admin/src/api/auth/auth_api.dart';
 import 'package:fokad_admin/src/pages/administration/comm_marketing_admin.dart';
 import 'package:fokad_admin/src/pages/administration/dashboard_administration.dart';
 import 'package:fokad_admin/src/pages/administration/exploitations_admin.dart';
@@ -33,10 +32,16 @@ import 'package:fokad_admin/src/pages/screens/settings_screen.dart';
 import 'package:fokad_admin/src/pages/screens/splash_screen.dart';
 import 'package:routemaster/routemaster.dart';
 
- 
-final routes = RouteMap(
+final loggedOutMap = RouteMap(
+  onUnknownRoute: (_) => const MaterialPage(child: NotFoundPage()),
   routes: {
-    '/': (_) => const Redirect('/splash'),
+    '/': (_) => const MaterialPage(child: LoginPage()),
+  },
+);
+
+final loggedInMap = RouteMap(
+  routes: {
+    // '/': (_) => const Redirect('/login'),
     '/splash': (_) => const MaterialPage(child: SplashScreens()),
     '/login': (_) => const MaterialPage(child: LoginPage()),
     '/profile': (_) => const MaterialPage(child: ProfilPage()),
@@ -44,19 +49,23 @@ final routes = RouteMap(
     '/settings': (_) => const MaterialPage(child: SettingsScreen()),
 
     // ADMINISTRATION
-    '/admin-dashboard': (_) => const MaterialPage(child: DashboardAdministration()),
-    '/admin-commercial-marketing': (_) => const MaterialPage(child: CommMarketingAdmin()),
+    '/admin-dashboard': (_) =>
+        const MaterialPage(child: DashboardAdministration()),
+    '/admin-commercial-marketing': (_) =>
+        const MaterialPage(child: CommMarketingAdmin()),
     '/admin-finances': (_) => const MaterialPage(child: FinancesAdmin()),
     '/admin-logistiques': (_) => const MaterialPage(child: LogistiquesAdmin()),
     '/admin-rh': (_) => const MaterialPage(child: RhAdmin()),
-    '/admin-exploitations': (_) => const MaterialPage(child: ExploitationsAdmin()),
+    '/admin-exploitations': (_) =>
+        const MaterialPage(child: ExploitationsAdmin()),
 
     // FINANCES
     '/finance-dashboard': (_) => const MaterialPage(child: DashboardFinance()),
     '/finance-transactions': (_) =>
         const MaterialPage(child: TransactionsFinance()),
     '/finance-budget': (_) => const MaterialPage(child: BudgetFinance()),
-    '/transactions-caisse': (_) => const MaterialPage(child: CaisseTransactions()),
+    '/transactions-caisse': (_) =>
+        const MaterialPage(child: CaisseTransactions()),
     '/transactions-banque': (_) =>
         const MaterialPage(child: BanqueTransactions()),
     '/transactions-dettes': (_) =>
@@ -85,3 +94,15 @@ final routes = RouteMap(
   },
   onUnknownRoute: (_) => const MaterialPage(child: NotFoundPage()),
 );
+
+class AppState extends ChangeNotifier {
+  bool isLoggedIn = false;
+
+  get isLogged => isLoggedIn;
+
+  Future<bool> setIsLoggedIn() async {
+    isLoggedIn = await AuthApi().isLoggedIn();
+    notifyListeners();
+    return isLoggedIn;
+  }
+}

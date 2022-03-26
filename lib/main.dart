@@ -9,12 +9,14 @@ import 'package:url_strategy/url_strategy.dart';
 import 'package:provider/provider.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
-void main() {
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   setPathUrlStrategy();
-  runApp(const MyApp());
 
   timeago.setLocaleMessages('fr_short', timeago.FrShortMessages());
+  await Future<void>.delayed(Duration.zero);
+
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
@@ -27,12 +29,19 @@ class MyApp extends StatelessWidget {
       providers: [
         ChangeNotifierProvider(create: (context) => Controller()),
         ChangeNotifierProvider(create: (context) => ThemeProvider()),
-        Provider<AuthApi>.value(value: AuthApi()),
+        ChangeNotifierProvider(create: (context) => AuthApi()),
+        ChangeNotifierProvider(create: (context) => AppState())
       ],
       builder: (context, _) {
         final themeProvider = Provider.of<ThemeProvider>(context);
         return MaterialApp.router(
-          routerDelegate: RoutemasterDelegate(routesBuilder: (_) => routes),
+          routerDelegate: RoutemasterDelegate(
+            routesBuilder: (context) {
+              // This will rebuild when AppState changes
+              final appState = Provider.of<AppState>(context);
+              return (!appState.isLogged) ? loggedInMap : loggedOutMap;
+            },
+          ),
           routeInformationParser: const RoutemasterParser(),
           title: 'FOKAD ADMINISTRATION',
           themeMode: themeProvider.themeMode,
@@ -44,7 +53,9 @@ class MyApp extends StatelessWidget {
             GlobalCupertinoLocalizations.delegate,
           ],
           supportedLocales: const [
-            Locale('fr', 'FR'), Locale('en', 'EN')],
+            Locale('fr', 'FR'),
+            Locale('en', 'EN')
+          ],
         );
       });
   }

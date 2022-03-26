@@ -204,19 +204,18 @@ class _LoginPageState extends State<LoginPage> {
             if (form.validate()) {
               setState(() => isloading = true);
 
-              print('matriculeController ${matriculeController.text}');
-              print('passwordController ${passwordController.text}');
+              // print('matriculeController ${matriculeController.text}');
+              // print('passwordController ${passwordController.text}');
 
-              const storage = FlutterSecureStorage();
+              // const storage = FlutterSecureStorage();
               // storage.deleteAll();
-              var token = await storage.read(key: 'accessToken');
+              // var token = await storage.read(key: 'accessToken');
               
 
               await AuthApi()
                   .login(matriculeController.text, passwordController.text)
                   .then((value) {
-                if (value) {
-                  print('token $token');
+                if (value) { 
                   Routemaster.of(context).push('/admin-dashboard');
                   ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                     content: const Text("Login succès!"),
