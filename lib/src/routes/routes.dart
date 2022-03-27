@@ -98,10 +98,11 @@ final loggedInMap = RouteMap(
 class AppState extends ChangeNotifier {
   bool isLoggedIn = false;
 
-  get isLogged => isLoggedIn;
+  bool get isLogged => isLoggedIn;
 
   Future<bool> setIsLoggedIn() async {
     isLoggedIn = await AuthApi().isLoggedIn();
+    print('isLoggedIn $isLoggedIn');
     notifyListeners();
     return isLoggedIn;
   }

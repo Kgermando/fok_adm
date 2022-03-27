@@ -26,37 +26,39 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
-      providers: [
-        ChangeNotifierProvider(create: (context) => Controller()),
-        ChangeNotifierProvider(create: (context) => ThemeProvider()),
-        ChangeNotifierProvider(create: (context) => AuthApi()),
-        ChangeNotifierProvider(create: (context) => AppState())
-      ],
-      builder: (context, _) {
-        final themeProvider = Provider.of<ThemeProvider>(context);
-        return MaterialApp.router(
-          routerDelegate: RoutemasterDelegate(
-            routesBuilder: (context) {
-              // This will rebuild when AppState changes
-              final appState = Provider.of<AppState>(context);
-              return (!appState.isLogged) ? loggedInMap : loggedOutMap;
-            },
-          ),
-          routeInformationParser: const RoutemasterParser(),
-          title: 'FOKAD ADMINISTRATION',
-          themeMode: themeProvider.themeMode,
-          theme: MyThemes.lightTheme,
-          darkTheme: MyThemes.darkTheme,
-          localizationsDelegates: const [
-            GlobalMaterialLocalizations.delegate,
-            GlobalWidgetsLocalizations.delegate,
-            GlobalCupertinoLocalizations.delegate,
-          ],
-          supportedLocales: const [
-            Locale('fr', 'FR'),
-            Locale('en', 'EN')
-          ],
-        );
-      });
+        providers: [
+          ChangeNotifierProvider(create: (context) => Controller()),
+          ChangeNotifierProvider(create: (context) => ThemeProvider()),
+          ChangeNotifierProvider(create: (context) => AuthApi()),
+          ChangeNotifierProvider(create: (context) => AppState())
+        ],
+        builder: (context, _) {
+          final themeProvider = Provider.of<ThemeProvider>(context);
+          String token = '';
+          return MaterialApp.router(
+            routerDelegate: RoutemasterDelegate(
+              routesBuilder: (context) {
+                // This will rebuild when AppState changes
+                final appState = Provider.of<AppState>(context);
+                return (!token.contains('null'))
+                    ? (!appState.isLogged)
+                        ? loggedInMap
+                        : loggedOutMap
+                    : loggedOutMap;
+              },
+            ),
+            routeInformationParser: const RoutemasterParser(),
+            title: 'FOKAD ADMINISTRATION',
+            themeMode: themeProvider.themeMode,
+            theme: MyThemes.lightTheme,
+            darkTheme: MyThemes.darkTheme,
+            localizationsDelegates: const [
+              GlobalMaterialLocalizations.delegate,
+              GlobalWidgetsLocalizations.delegate,
+              GlobalCupertinoLocalizations.delegate,
+            ],
+            supportedLocales: const [Locale('fr', 'FR'), Locale('en', 'EN')],
+          );
+        });
   }
 }

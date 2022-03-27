@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:fokad_admin/src/models/menu_item.dart';
 import 'package:fokad_admin/src/pages/auth/profil_page.dart';
 import 'package:fokad_admin/src/utils/menu_items.dart';
@@ -30,8 +31,10 @@ class MenuOptions with ChangeNotifier {
         break;
 
       case MenuItems.itemLogout:
-      // Remove stockage jwt here.
-      // AuthHttp().logout();
+        // Remove stockage jwt here.
+        const storage = FlutterSecureStorage();
+        storage.deleteAll();
+        Routemaster.of(context).replace('/');
     }
   }
 }

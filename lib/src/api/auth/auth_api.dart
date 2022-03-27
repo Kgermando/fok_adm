@@ -59,7 +59,7 @@ class AuthApi extends ChangeNotifier {
   Future<bool> isLoggedIn() async {
     const storage = FlutterSecureStorage();
     final accessToken = await storage.read(key: 'accessToken');
-
+    
     if (accessToken != null && 'accessToken'.isNotEmpty) {
       try {
         await refreshAccessToken();
@@ -83,16 +83,11 @@ class AuthApi extends ChangeNotifier {
   Future<void> refreshAccessToken() async {
     const storage = FlutterSecureStorage();
     final refreshToken = await storage.read(key: 'refreshToken');
-
     var data = {'refresh_token': refreshToken};
-
     var body = jsonEncode(data);
-
     var resp = await client.post(refreshTokenUrl, body: body);
-
     if (resp.statusCode == 200) {
       Token token = Token.fromJson(json.decode(resp.body));
-
       // Store the tokens
       await storage.write(key: 'accessToken', value: token.accessToken);
       // refreshAccessTokenTimer(token.expiresIn);
@@ -118,8 +113,12 @@ class AuthApi extends ChangeNotifier {
   Future<UserModel> getuserLoggedIn() async {
     const storage = FlutterSecureStorage();
     var accessToken = await storage.read(key: 'accessToken');
+    print('profile Token $accessToken');
     var headers = {
-      HttpHeaders.authorizationHeader: "Bearer $accessToken",
+      // HttpHeaders.authorizationHeader: "Bearer $accessToken",
+      "Content-Type": "application/json",
+      "Accept": "application/json",
+      "Authorization": "Bearer $accessToken",
     };
 
     var resp = await client.get(userUrl, headers: headers);
