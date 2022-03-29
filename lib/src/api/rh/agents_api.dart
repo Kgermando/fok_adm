@@ -17,7 +17,7 @@ class AgentsApi extends ChangeNotifier {
   Future<List<UserModel?>> getAllData() async {
     var accessToken = await storage.read(key: 'accessToken');
     var headers = {
-      HttpHeaders.authorizationHeader: "Bearer $accessToken",
+      HttpHeaders.authorizationHeader: "Bearer $accessToken"
     };
     final resp = await client.get(listAgentsUrl, headers: headers);
     if (resp.statusCode == 200) {
