@@ -2,12 +2,13 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+// import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:fokad_admin/src/api/auth/api_error.dart';
 import 'package:fokad_admin/src/api/auth/token.dart';
 import 'package:fokad_admin/src/api/route_api.dart';
 import 'package:fokad_admin/src/models/users/user_model.dart';
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 
 class AuthApi extends ChangeNotifier {
   var client = http.Client();
@@ -20,16 +21,20 @@ class AuthApi extends ChangeNotifier {
 
     if (resp.statusCode == 200) {
       print('body ${json.decode(resp.body)}');
-      const storage = FlutterSecureStorage();
+      // Obtain shared preferences.
+      final prefs = await SharedPreferences.getInstance();
+      // const storage = FlutterSecureStorage();
       Token token = Token.fromJson(json.decode(resp.body));
-
       // Store the tokens
-      await storage.write(key: 'idToken', value: token.id.toString());
-      await storage.write(key: 'accessToken', value: token.accessToken);
-      await storage.write(key: 'refreshToken', value: token.refreshToken);
+      await prefs.setString('idToken', token.id.toString());
+      await prefs.setString('accessToken', token.accessToken);
+      await prefs.setString('refreshToken', token.refreshToken);
+      // await storage.write(key: 'idToken', value: token.id.toString());
+      // await storage.write(key: 'accessToken', value: token.accessToken);
+      // await storage.write(key: 'refreshToken', value: token.refreshToken);
       // await storage.write(key: 'expireIn', value: token.expiresIn.toString());
 
-      var accessToken = await storage.read(key: 'accessToken'); // pour test
+      var accessToken = prefs.getString('accessToken'); // pour test
       print('accessToken $accessToken');
 
       // Add the timer to refresh the token
@@ -44,8 +49,10 @@ class AuthApi extends ChangeNotifier {
   Future<void> register(UserModel userModel) async {
     var data = userModel.toMap();
     var body = jsonEncode(data);
-    const storage = FlutterSecureStorage();
-    var accessToken = await storage.read(key: 'accessToken');
+    // const storage = FlutterSecureStorage();
+    // var accessToken = await storage.read(key: 'accessToken');
+    final prefs = await SharedPreferences.getInstance();
+    var accessToken = prefs.getString("accessToken");
     var headers = {HttpHeaders.authorizationHeader: "Bearer $accessToken"};
 
     var resp = await client.post(loginUrl, body: body, headers: headers);
@@ -57,9 +64,11 @@ class AuthApi extends ChangeNotifier {
 
   // Check if the user is logged in
   Future<bool> isLoggedIn() async {
-    const storage = FlutterSecureStorage();
-    final accessToken = await storage.read(key: 'accessToken');
-    
+    // const storage = FlutterSecureStorage();
+    // final accessToken = await storage.read(key: 'accessToken');
+    final prefs = await SharedPreferences.getInstance();
+    var accessToken = prefs.getString("accessToken");
+
     if (accessToken != null && 'accessToken'.isNotEmpty) {
       try {
         await refreshAccessToken();
@@ -76,13 +85,18 @@ class AuthApi extends ChangeNotifier {
 
   // Retrieve the access token
   Future<String?> getAccessToken() async {
-    const storage = FlutterSecureStorage();
-    return await storage.read(key: 'accessToken');
+    // const storage = FlutterSecureStorage();
+    //  await storage.read(key: 'accessToken');
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getString("accessToken");
   }
 
   Future<void> refreshAccessToken() async {
-    const storage = FlutterSecureStorage();
-    final refreshToken = await storage.read(key: 'refreshToken');
+    // const storage = FlutterSecureStorage();
+    // final refreshToken = await storage.read(key: 'refreshToken');
+    final prefs = await SharedPreferences.getInstance();
+    var refreshToken = prefs.getString("refreshToken");
+
     var data = {'refresh_token': refreshToken};
     var body = jsonEncode(data);
     var resp = await client.post(refreshTokenUrl, body: body);

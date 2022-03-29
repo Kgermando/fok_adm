@@ -18,14 +18,15 @@ class AgentsApi extends ChangeNotifier {
     var accessToken = await storage.read(key: 'accessToken');
     var headers = {
       HttpHeaders.authorizationHeader: "Bearer $accessToken",
-      "content-type": "application/json"
+      "Content-Security-Policy": "default-src self",
+      "X-Frame-Options": "deny"
     };
     final resp = await client.get(listAgentsUrl, headers: headers);
     if (resp.statusCode == 200) {
       List<dynamic> bodyList = json.decode(resp.body)["users"];
       List<UserModel> data = [];
-      for (var item in bodyList) {
-        data.add(UserModel.fromJson(item));
+      for (var u in bodyList) {
+        data.add(UserModel.fromJson(u));
       }
       return data;
     } else {
