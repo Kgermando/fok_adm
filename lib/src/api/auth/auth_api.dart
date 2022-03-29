@@ -126,8 +126,10 @@ class AuthApi extends ChangeNotifier {
   }
 
   Future<UserModel> getuserLoggedIn() async {
-    const storage = FlutterSecureStorage();
-    var accessToken = await storage.read(key: 'accessToken');
+    // const storage = FlutterSecureStorage();
+    // var accessToken = await storage.read(key: 'accessToken');
+    final prefs = await SharedPreferences.getInstance();
+    var accessToken = prefs.getString("accessToken");
     print('profile Token $accessToken');
     var headers = {
       // HttpHeaders.authorizationHeader: "Bearer $accessToken",
