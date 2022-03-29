@@ -103,7 +103,8 @@ class AuthApi extends ChangeNotifier {
     if (resp.statusCode == 200) {
       Token token = Token.fromJson(json.decode(resp.body));
       // Store the tokens
-      await storage.write(key: 'accessToken', value: token.accessToken);
+      // await storage.write(key: 'accessToken', value: token.accessToken);
+      await prefs.setString('accessToken', token.accessToken);
       // refreshAccessTokenTimer(token.expiresIn);
     } else {
       throw ApiError.fromJson(json.decode(resp.body));
