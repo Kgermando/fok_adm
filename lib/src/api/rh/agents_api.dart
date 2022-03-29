@@ -7,15 +7,18 @@ import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:fokad_admin/src/api/auth/api_error.dart';
 import 'package:fokad_admin/src/models/users/user_model.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class AgentsApi extends ChangeNotifier {
   var client = http.Client();
-  final storage = const FlutterSecureStorage();
+  // final storage = const FlutterSecureStorage();
 
   UserModel? user;
 
   Future<List<UserModel?>> getAllData() async {
-    var accessToken = await storage.read(key: 'accessToken');
+    final prefs = await SharedPreferences.getInstance();
+    var accessToken = prefs.getString("accessToken");
+    // var accessToken = await storage.read(key: 'accessToken');
     var headers = {
       HttpHeaders.authorizationHeader: "Bearer $accessToken",
       "Content-Security-Policy": "default-src self",
@@ -37,7 +40,9 @@ class AgentsApi extends ChangeNotifier {
   Future<void> insertData(UserModel userModel) async {
     var data = userModel.toMap();
     var body = jsonEncode(data);
-    var accessToken = await storage.read(key: 'accessToken');
+    // var accessToken = await storage.read(key: 'accessToken');
+    final prefs = await SharedPreferences.getInstance();
+    var accessToken = prefs.getString("accessToken");
     var headers = {HttpHeaders.authorizationHeader: "Bearer $accessToken"};
 
     var resp = await client.post(loginUrl, body: body, headers: headers);
@@ -48,7 +53,9 @@ class AgentsApi extends ChangeNotifier {
   }
 
   Future<UserModel> updateData(int id, UserModel userModel) async {
-    var accessToken = await storage.read(key: 'accessToken');
+    // var accessToken = await storage.read(key: 'accessToken');
+    final prefs = await SharedPreferences.getInstance();
+    var accessToken = prefs.getString("accessToken");
     var headers = {HttpHeaders.authorizationHeader: "Bearer $accessToken"};
     var updateAgentsUrl = Uri.parse("$mainUrl/rh/agents/update-agent/$id");
     final resp = await client.put(updateAgentsUrl,
@@ -63,7 +70,9 @@ class AgentsApi extends ChangeNotifier {
 
   Future<void> deleteData(int id) async {
     var deleteAgentsUrl = Uri.parse("$mainUrl/rh/agents/delete-agent/$id");
-    var accessToken = await storage.read(key: 'accessToken');
+    // var accessToken = await storage.read(key: 'accessToken');
+    final prefs = await SharedPreferences.getInstance();
+    var accessToken = prefs.getString("accessToken");
     var headers = {HttpHeaders.authorizationHeader: "Bearer $accessToken"};
 
     final resp = await client.delete(deleteAgentsUrl, headers: headers);
@@ -78,7 +87,9 @@ class AgentsApi extends ChangeNotifier {
   }
 
   Future<List<UserModel>> getAllSearch(String query) async {
-    var accessToken = await storage.read(key: 'accessToken');
+    // var accessToken = await storage.read(key: 'accessToken');
+    final prefs = await SharedPreferences.getInstance();
+    var accessToken = prefs.getString("accessToken");
     var headers = {
       HttpHeaders.authorizationHeader: "Bearer $accessToken",
     };
