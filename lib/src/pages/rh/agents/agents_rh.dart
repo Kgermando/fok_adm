@@ -4,6 +4,7 @@ import 'package:fokad_admin/src/constants/responsive.dart';
 import 'package:fokad_admin/src/models/users/user_model.dart';
 import 'package:fokad_admin/src/navigation/drawer/drawer_menu.dart';
 import 'package:fokad_admin/src/navigation/header/custom_appbar.dart';
+import 'package:fokad_admin/src/pages/rh/agents/components/table_agents.dart';
 import 'package:fokad_admin/src/provider/controller.dart';
 import 'package:fokad_admin/src/utils/country.dart';
 import 'package:fokad_admin/src/utils/departement.dart';
@@ -115,6 +116,7 @@ class _AgentsRhState extends State<AgentsRh> {
                           child: Scrollbar(
                         controller: _controllerScroll,
                         child: ListView(
+                          padding: const EdgeInsets.only(top: m20),
                           controller: _controllerScroll,
                           children: [tableWidget()],
                         ),
@@ -130,7 +132,7 @@ class _AgentsRhState extends State<AgentsRh> {
 
   Widget tableWidget() {
     final size = MediaQuery.of(context).size;
-    return SizedBox(height: size.height, child: const TableExp());
+    return SizedBox(height: size.height, child: const TableAgents());
   }
 
   addAgent() {

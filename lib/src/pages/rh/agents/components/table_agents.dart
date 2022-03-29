@@ -13,9 +13,8 @@ class TableAgents extends StatefulWidget {
 }
 
 class _TableAgentsState extends State<TableAgents> {
-  Timer? timer;
-  late List<PlutoColumn> columns;
-  late List<PlutoRow> rows;
+  List<PlutoColumn> columns = [];
+  List<PlutoRow> rows = [];
 
   List<UserModel?> listData = [];
 
@@ -23,13 +22,11 @@ class _TableAgentsState extends State<TableAgents> {
   initState() {
     super.initState();
     agentsColumn();
-    timer =
-        Timer.periodic(const Duration(seconds: 1), ((Timer t) => agentsRow()));
+    agentsRow();
   }
 
   @override
   void dispose() {
-    timer!.cancel();
     super.dispose();
   }
 
@@ -182,10 +179,11 @@ class _TableAgentsState extends State<TableAgents> {
   }
 
   Future agentsRow() async {
-    List<UserModel?> rs = await AgentsApi().getAllData();
+    List<UserModel?> data = await AgentsApi().getAllData();
+    print('agents $data');
     if (mounted) {
       setState(() {
-        for (var item in rs) {
+        for (var item in data) {
           rows.add(PlutoRow(cells: {
             'id': PlutoCell(value: item!.id),
             'nom': PlutoCell(value: item.nom),
@@ -208,6 +206,6 @@ class _TableAgentsState extends State<TableAgents> {
 
   @override
   Widget build(BuildContext context) {
-    return Container();
+    return PlutoGrid(columns: columns, rows: rows);
   }
 }
