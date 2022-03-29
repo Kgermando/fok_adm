@@ -17,14 +17,15 @@ class AgentsApi extends ChangeNotifier {
   Future<List<UserModel?>> getAllData() async {
     var accessToken = await storage.read(key: 'accessToken');
     var headers = {
-      HttpHeaders.authorizationHeader: "Bearer $accessToken"
+      HttpHeaders.authorizationHeader: "Bearer $accessToken",
+      "content-type": "application/json"
     };
     final resp = await client.get(listAgentsUrl, headers: headers);
     if (resp.statusCode == 200) {
       List<dynamic> bodyList = json.decode(resp.body)["users"];
       List<UserModel> data = [];
-      for (var u in bodyList) {
-        data.add(UserModel.fromJson(u));
+      for (var item in bodyList) {
+        data.add(UserModel.fromJson(item));
       }
       return data;
     } else {
