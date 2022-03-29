@@ -34,17 +34,17 @@ class MyApp extends StatelessWidget {
         ],
         builder: (context, _) {
           final themeProvider = Provider.of<ThemeProvider>(context);
-          String token = '';
+          String token = 'gg';
           return MaterialApp.router(
             routerDelegate: RoutemasterDelegate(
               routesBuilder: (context) {
                 // This will rebuild when AppState changes
                 final appState = Provider.of<AppState>(context);
-                return (!token.contains('null'))
-                    ? (!appState.isLogged)
-                        ? loggedInMap
-                        : loggedOutMap
-                    : loggedOutMap;
+                return (!token.contains('null') || !token.contains(''))
+                  ? (!appState.isLogged)
+                      ? loggedInMap
+                      : loggedOutMap
+                  : loggedOutMap;
               },
             ),
             routeInformationParser: const RoutemasterParser(),

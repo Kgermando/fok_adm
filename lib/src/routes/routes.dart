@@ -92,7 +92,8 @@ final loggedInMap = RouteMap(
     '/rh-presences': (_) => const MaterialPage(child: PresenceRh()),
     '/rh-agents': (_) => const MaterialPage(child: AgentsRh()),
   },
-  onUnknownRoute: (_) => const MaterialPage(child: NotFoundPage()),
+  // onUnknownRoute: (_) => const MaterialPage(child: NotFoundPage()),
+  onUnknownRoute: (_) => const MaterialPage(child: LoginPage()),
 );
 
 class AppState extends ChangeNotifier {
