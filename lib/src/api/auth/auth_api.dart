@@ -13,6 +13,13 @@ import 'package:shared_preferences/shared_preferences.dart';
 class AuthApi extends ChangeNotifier {
   var client = http.Client();
 
+  Future<String?> getToken() async {
+    final prefs = await SharedPreferences.getInstance();
+    String? accessToken = prefs.getString("accessToken");
+    print('agent accessToken $accessToken');
+    return accessToken;
+  }
+
   Future<bool> login(String matricule, String passwordHash) async {
     var data = {'matricule': matricule, 'passwordHash': passwordHash};
     var body = jsonEncode(data);
@@ -20,7 +27,7 @@ class AuthApi extends ChangeNotifier {
     var resp = await client.post(loginUrl, body: body);
 
     if (resp.statusCode == 200) {
-      print('body ${json.decode(resp.body)}');
+      // print('body ${json.decode(resp.body)}');
       // Obtain shared preferences.
       final prefs = await SharedPreferences.getInstance();
       // const storage = FlutterSecureStorage();
@@ -125,24 +132,25 @@ class AuthApi extends ChangeNotifier {
     }
   }
 
-  Future<UserModel> getuserLoggedIn() async {
-    // const storage = FlutterSecureStorage();
-    // var accessToken = await storage.read(key: 'accessToken');
-    final prefs = await SharedPreferences.getInstance();
-    var accessToken = prefs.getString("accessToken");
-    print('profile Token $accessToken');
-    var headers = {
-      // HttpHeaders.authorizationHeader: "Bearer $accessToken",
-      "Content-Type": "application/json",
-      "Accept": "application/json",
-      "Authorization": "Bearer $accessToken",
-    };
+  Future<UserModel> getUserInfo() async {
+    String? token = await getToken();
+    if (token!.isNotEmpty) {
+      var splittedJwt = token.split(".");
+      var payload = json.decode(
+          ascii.decode(base64.decode(base64.normalize(splittedJwt[1]))));
+    }
+    var res = await client.get(
+      userUrl,
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+        'Authorization': 'Bearer $token'
+      },
+    );
 
-    var resp = await client.get(userUrl, headers: headers);
-    if (resp.statusCode == 200) {
-      return UserModel.fromJson(jsonDecode(resp.body));
+    if (res.statusCode == 200) {
+      return UserModel.fromJson(json.decode(res.body));
     } else {
-      throw Exception(json.decode(resp.body)['message']);
+      throw Exception(json.decode(res.body)['message']);
     }
   }
 }

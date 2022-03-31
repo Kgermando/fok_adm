@@ -130,7 +130,7 @@ class UserModel {
       'sexe': sexe,
       'role': role,
       'matricule': matricule,
-      'dateNaissance': dateNaissance,
+      'dateNaissance': dateNaissance.toIso8601String(),
       'lieuNaissance': lieuNaissance,
       'nationalite': nationalite,
       'typeContrat': typeContrat,

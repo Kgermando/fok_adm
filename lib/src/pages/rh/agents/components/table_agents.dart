@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:fokad_admin/src/api/rh/agents_api.dart';
+import 'package:fokad_admin/src/api/rh/agents_.dart';
 import 'package:fokad_admin/src/models/users/user_model.dart';
 import 'package:pluto_grid/pluto_grid.dart';
 
@@ -15,14 +16,17 @@ class TableAgents extends StatefulWidget {
 class _TableAgentsState extends State<TableAgents> {
   List<PlutoColumn> columns = [];
   List<PlutoRow> rows = [];
+  PlutoGridStateManager? stateManager;
+  PlutoGridSelectingMode gridSelectingMode = PlutoGridSelectingMode.row;
 
   List<UserModel?> listData = [];
 
   @override
   initState() {
-    super.initState();
     agentsColumn();
     agentsRow();
+    
+    super.initState();
   }
 
   @override
@@ -39,9 +43,9 @@ class _TableAgentsState extends State<TableAgents> {
         enableRowDrag: true,
         enableContextMenu: false,
         enableDropToResize: true,
-        titleTextAlign: PlutoColumnTextAlign.right,
-        width: 250,
-        minWidth: 175,
+        titleTextAlign: PlutoColumnTextAlign.left,
+        width: 100,
+        minWidth: 80,
       ),
       PlutoColumn(
         title: 'Nom',
@@ -50,9 +54,9 @@ class _TableAgentsState extends State<TableAgents> {
         enableRowDrag: true,
         enableContextMenu: false,
         enableDropToResize: true,
-        titleTextAlign: PlutoColumnTextAlign.right,
-        width: 250,
-        minWidth: 175,
+        titleTextAlign: PlutoColumnTextAlign.left,
+        width: 150,
+        minWidth: 150,
       ),
       PlutoColumn(
         title: 'Post-Nom',
@@ -61,9 +65,9 @@ class _TableAgentsState extends State<TableAgents> {
         enableRowDrag: true,
         enableContextMenu: false,
         enableDropToResize: true,
-        titleTextAlign: PlutoColumnTextAlign.right,
-        width: 250,
-        minWidth: 175,
+        titleTextAlign: PlutoColumnTextAlign.left,
+        width: 150,
+        minWidth: 150,
       ),
       PlutoColumn(
         title: 'Prénom',
@@ -72,9 +76,9 @@ class _TableAgentsState extends State<TableAgents> {
         enableRowDrag: true,
         enableContextMenu: false,
         enableDropToResize: true,
-        titleTextAlign: PlutoColumnTextAlign.right,
-        width: 250,
-        minWidth: 175,
+        titleTextAlign: PlutoColumnTextAlign.left,
+        width: 150,
+        minWidth: 150,
       ),
       PlutoColumn(
         title: 'Email',
@@ -83,9 +87,9 @@ class _TableAgentsState extends State<TableAgents> {
         enableRowDrag: true,
         enableContextMenu: false,
         enableDropToResize: true,
-        titleTextAlign: PlutoColumnTextAlign.right,
-        width: 250,
-        minWidth: 175,
+        titleTextAlign: PlutoColumnTextAlign.left,
+        width: 150,
+        minWidth: 150,
       ),
       PlutoColumn(
         title: 'telephone',
@@ -94,9 +98,9 @@ class _TableAgentsState extends State<TableAgents> {
         enableRowDrag: true,
         enableContextMenu: false,
         enableDropToResize: true,
-        titleTextAlign: PlutoColumnTextAlign.right,
-        width: 250,
-        minWidth: 175,
+        titleTextAlign: PlutoColumnTextAlign.left,
+        width: 150,
+        minWidth: 150,
       ),
       PlutoColumn(
         title: 'sexe',
@@ -105,9 +109,9 @@ class _TableAgentsState extends State<TableAgents> {
         enableRowDrag: true,
         enableContextMenu: false,
         enableDropToResize: true,
-        titleTextAlign: PlutoColumnTextAlign.right,
-        width: 250,
-        minWidth: 175,
+        titleTextAlign: PlutoColumnTextAlign.left,
+        width: 150,
+        minWidth: 150,
       ),
       PlutoColumn(
         title: 'role',
@@ -116,9 +120,9 @@ class _TableAgentsState extends State<TableAgents> {
         enableRowDrag: true,
         enableContextMenu: false,
         enableDropToResize: true,
-        titleTextAlign: PlutoColumnTextAlign.right,
-        width: 250,
-        minWidth: 175,
+        titleTextAlign: PlutoColumnTextAlign.left,
+        width: 150,
+        minWidth: 150,
       ),
       PlutoColumn(
         title: 'matricule',
@@ -127,9 +131,9 @@ class _TableAgentsState extends State<TableAgents> {
         enableRowDrag: true,
         enableContextMenu: false,
         enableDropToResize: true,
-        titleTextAlign: PlutoColumnTextAlign.right,
-        width: 250,
-        minWidth: 175,
+        titleTextAlign: PlutoColumnTextAlign.left,
+        width: 150,
+        minWidth: 150,
       ),
       PlutoColumn(
         title: 'Date de naissance',
@@ -138,9 +142,9 @@ class _TableAgentsState extends State<TableAgents> {
         enableRowDrag: true,
         enableContextMenu: false,
         enableDropToResize: true,
-        titleTextAlign: PlutoColumnTextAlign.right,
-        width: 250,
-        minWidth: 175,
+        titleTextAlign: PlutoColumnTextAlign.left,
+        width: 150,
+        minWidth: 150,
       ),
       PlutoColumn(
         title: 'departement',
@@ -149,20 +153,20 @@ class _TableAgentsState extends State<TableAgents> {
         enableRowDrag: true,
         enableContextMenu: false,
         enableDropToResize: true,
-        titleTextAlign: PlutoColumnTextAlign.right,
-        width: 250,
-        minWidth: 175,
+        titleTextAlign: PlutoColumnTextAlign.left,
+        width: 150,
+        minWidth: 150,
       ),
       PlutoColumn(
-        title: 'servicesAffectation',
+        title: 'Services d\'affectation',
         field: 'servicesAffectation',
         type: PlutoColumnType.text(),
         enableRowDrag: true,
         enableContextMenu: false,
         enableDropToResize: true,
-        titleTextAlign: PlutoColumnTextAlign.right,
-        width: 250,
-        minWidth: 175,
+        titleTextAlign: PlutoColumnTextAlign.left,
+        width: 150,
+        minWidth: 150,
       ),
       PlutoColumn(
         title: 'Statut Agent',
@@ -171,41 +175,63 @@ class _TableAgentsState extends State<TableAgents> {
         enableRowDrag: true,
         enableContextMenu: false,
         enableDropToResize: true,
-        titleTextAlign: PlutoColumnTextAlign.right,
-        width: 250,
-        minWidth: 175,
+        titleTextAlign: PlutoColumnTextAlign.left,
+        width: 150,
+        minWidth: 150,
       ),
     ];
   }
 
   Future agentsRow() async {
-    List<UserModel?> data = await AgentsApi().getAllData();
-    print('agents $data');
+    List<UserModel?> data = await AgentsApi().getAgents();
+    // print('agents $data');
     if (mounted) {
       setState(() {
         for (var item in data) {
-          rows.add(PlutoRow(cells: {
-            'id': PlutoCell(value: item!.id),
-            'nom': PlutoCell(value: item.nom),
-            'postNom': PlutoCell(value: item.postNom),
-            'prenom': PlutoCell(value: item.prenom),
-            'email': PlutoCell(value: item.email),
-            'telephone': PlutoCell(value: item.telephone),
-            'sexe': PlutoCell(value: item.sexe),
-            'role': PlutoCell(value: item.role),
-            'matricule': PlutoCell(value: item.matricule),
-            'dateNaissance': PlutoCell(value: item.dateNaissance),
-            'departement': PlutoCell(value: item.departement),
-            'servicesAffectation': PlutoCell(value: item.servicesAffectation),
-            'statutAgent': PlutoCell(value: item.statutAgent)
-          }));
+          // print('item ${item!.id}');
+          rows.add(
+            PlutoRow(
+              cells: {
+                'id': PlutoCell(value: item!.id),
+                'nom': PlutoCell(value: item.nom),
+                'postNom': PlutoCell(value: item.postNom),
+                'prenom': PlutoCell(value: item.prenom),
+                'email': PlutoCell(value: item.email),
+                'telephone': PlutoCell(value: item.telephone),
+                'sexe': PlutoCell(value: item.sexe),
+                'role': PlutoCell(value: item.role),
+                'matricule': PlutoCell(value: item.matricule),
+                'dateNaissance': PlutoCell(value: item.dateNaissance),
+                'departement': PlutoCell(value: item.departement),
+                'servicesAffectation': PlutoCell(value: item.servicesAffectation),
+                'statutAgent': PlutoCell(value: item.statutAgent)
+              }
+            )
+          );
         }
+        stateManager!.resetCurrentState();
       });
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    return PlutoGrid(columns: columns, rows: rows);
+    return PlutoGrid(
+      columns: columns, rows: rows,
+      // onChanged: (PlutoGridOnChangedEvent event) {
+      //   setState(() {});
+      //   print(event);
+      //   PlutoRow tr = rows[event.rowIdx!];
+      //   for (var f in tr.cells.values) {
+      //     print(f.value);
+      //   }
+      //   PlutoCell? tc = tr.cells['id'];
+      //   print(tc!.value);
+      // },
+      onLoaded: (PlutoGridOnLoadedEvent event) {
+        stateManager = event.stateManager;
+        // stateManager.setSelectingMode(gridSelectingMode);
+      },
+    );
   }
 }

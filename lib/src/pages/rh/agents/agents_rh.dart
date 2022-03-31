@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fokad_admin/src/api/rh/agents_api.dart';
 import 'package:fokad_admin/src/constants/app_theme.dart';
 import 'package:fokad_admin/src/constants/responsive.dart';
 import 'package:fokad_admin/src/models/users/user_model.dart';
@@ -247,7 +248,9 @@ class _AgentsRhState extends State<AgentsRh> {
                             ],
                           ),
                           competanceWidget(),
-                          const SizedBox(width: p10,),
+                          const SizedBox(
+                            width: p10,
+                          ),
                           experienceWidget(),
                           const SizedBox(
                             height: p20,
@@ -255,7 +258,9 @@ class _AgentsRhState extends State<AgentsRh> {
                           BtnWidget(
                               title: 'Soumettre',
                               isLoading: isLoading,
-                              press: () {})
+                              press: () {
+                                submit();
+                              })
                         ],
                       ),
                     ),
@@ -650,7 +655,7 @@ class _AgentsRhState extends State<AgentsRh> {
           decoration: InputDecoration(
             border:
                 OutlineInputBorder(borderRadius: BorderRadius.circular(10.0)),
-            labelText: 'Experience',
+            labelText: 'Type de contrat',
           ),
           keyboardType: TextInputType.text,
           validator: (val) {
@@ -686,5 +691,11 @@ class _AgentsRhState extends State<AgentsRh> {
         isOnline: false,
         createdAt: DateTime.now(),
         passwordHash: passwordHashController.text);
+
+    await AgentsApi().insertData(userModel);
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      content: const Text("Enregistrer avec succès!"),
+      backgroundColor: Colors.green[700],
+    ));
   }
 }

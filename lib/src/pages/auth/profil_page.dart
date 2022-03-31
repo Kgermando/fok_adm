@@ -15,33 +15,35 @@ class ProfilPage extends StatefulWidget {
 class _ProfilPageState extends State<ProfilPage> {
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<UserModel>(
-      future: AuthApi().getuserLoggedIn(),
-      builder: (context, snapshot) {
-        if (snapshot.hasData) {
-          UserModel? userInfo = snapshot.data;
-          if (userInfo != null) {
-            var userData = userInfo;
-            return SingleChildScrollView(
-              padding: const EdgeInsets.only(bottom: 40.0),
-              child: SizedBox(
-                width: double.infinity,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    header(),
-                    const SizedBox(
-                      height: 20.0,
-                    ),
-                    profileBody(userData),
-                  ],
+    return Scaffold(
+      body: FutureBuilder<UserModel>(
+        future: AuthApi().getUserInfo(),
+        builder: (context, snapshot) {
+          if (snapshot.hasData) {
+            UserModel? userInfo = snapshot.data;
+            if (userInfo != null) {
+              var userData = userInfo;
+              return SingleChildScrollView(
+                padding: const EdgeInsets.only(bottom: 40.0),
+                child: SizedBox(
+                  width: double.infinity,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      header(),
+                      const SizedBox(
+                        height: 20.0,
+                      ),
+                      profileBody(userData),
+                    ],
+                  ),
                 ),
-              ),
-            );
+              );
+            }
           }
-        }
-        return Container();
-      },
+          return Container();
+        },
+      ),
     );
   }
 
