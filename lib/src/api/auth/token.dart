@@ -14,8 +14,8 @@ class Token {
 
   factory Token.fromJson(Map<String, dynamic> jsonMap) {
     return Token(
-      // expiresIn: jsonMap["expiresIn"],
       id: jsonMap["id"],
+      // expiresIn: jsonMap["expiresIn"],
       accessToken: jsonMap["auth_token"],
       refreshToken: jsonMap["refresh_token"],
     );

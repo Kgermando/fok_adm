@@ -36,13 +36,7 @@ class AuthApi extends ChangeNotifier {
       await prefs.setString('idToken', token.id.toString());
       await prefs.setString('accessToken', token.accessToken);
       await prefs.setString('refreshToken', token.refreshToken);
-      // await storage.write(key: 'idToken', value: token.id.toString());
-      // await storage.write(key: 'accessToken', value: token.accessToken);
-      // await storage.write(key: 'refreshToken', value: token.refreshToken);
-      // await storage.write(key: 'expireIn', value: token.expiresIn.toString());
-
-      var accessToken = prefs.getString('accessToken'); // pour test
-      print('accessToken $accessToken');
+      // await prefs.setString('expiresIn', token.expiresIn.toString());
 
       // Add the timer to refresh the token
       // refreshAccessTokenTimer(token.expiresIn);
@@ -62,6 +56,8 @@ class AuthApi extends ChangeNotifier {
 
     var resp = await client.post(registerUrl, body: body, headers: headers);
     if (resp.statusCode == 200) {
+      Token token = Token.fromJson(json.decode(resp.body));
+      // refreshAccessTokenTimer(token.expiresIn);
     } else {
       throw Exception(json.decode(resp.body)['message']);
     }
@@ -69,8 +65,6 @@ class AuthApi extends ChangeNotifier {
 
   // Check if the user is logged in
   Future<bool> isLoggedIn() async {
-    // const storage = FlutterSecureStorage();
-    // final accessToken = await storage.read(key: 'accessToken');
     final prefs = await SharedPreferences.getInstance();
     var accessToken = prefs.getString("accessToken");
 
@@ -97,8 +91,6 @@ class AuthApi extends ChangeNotifier {
   }
 
   Future<void> refreshAccessToken() async {
-    // const storage = FlutterSecureStorage();
-    // final refreshToken = await storage.read(key: 'refreshToken');
     final prefs = await SharedPreferences.getInstance();
     var refreshToken = prefs.getString("refreshToken");
 
@@ -107,8 +99,6 @@ class AuthApi extends ChangeNotifier {
     var resp = await client.post(refreshTokenUrl, body: body);
     if (resp.statusCode == 200) {
       Token token = Token.fromJson(json.decode(resp.body));
-      // Store the tokens
-      // await storage.write(key: 'accessToken', value: token.accessToken);
       await prefs.setString('accessToken', token.accessToken);
       // refreshAccessTokenTimer(token.expiresIn);
     } else {

@@ -30,6 +30,12 @@ class Dropdown {
     'English',
   ];
 
+   List<String> sexe = [
+    'Femme',
+    'Homme',
+  ];
+
+
   List<String> departement = [
     'Administration',
     'Comptabilité et Finance',
@@ -40,5 +46,13 @@ class Dropdown {
   ];
 
   List<String> typeContrat = ['CDI', 'CDD'];
+
+  List<String> role = [
+    '1',
+    '2',
+    '3',
+    '4',
+    '5'
+  ];
 
 }

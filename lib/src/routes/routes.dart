@@ -101,8 +101,13 @@ class AppState extends ChangeNotifier {
 
   bool get isLogged => isLoggedIn;
 
-  Future<bool> setIsLoggedIn() async {
+  Future<bool> setIsLoggedIn(BuildContext context) async {
     isLoggedIn = await AuthApi().isLoggedIn();
+    // if (isLoggedIn) {
+    //   Routemaster.of(context).replace('/admin-dashboard');
+    // } else {
+    //   Routemaster.of(context).replace('/login');
+    // }
     print('isLoggedIn $isLoggedIn');
     notifyListeners();
     return isLoggedIn;

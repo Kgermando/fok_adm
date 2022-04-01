@@ -29,6 +29,8 @@ class _AgentsRhState extends State<AgentsRh> {
 
   final List<String> departementList = Dropdown().departement;
   final List<String> typeContratList = Dropdown().typeContrat;
+  final List<String> sexeList = Dropdown().sexe;
+  final List<String> roleList = Dropdown().role;
   final List<String> world = Country().world;
 
   final TextEditingController nomController = TextEditingController();
@@ -37,8 +39,6 @@ class _AgentsRhState extends State<AgentsRh> {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController telephoneController = TextEditingController();
   final TextEditingController adresseController = TextEditingController();
-  final TextEditingController sexeController = TextEditingController();
-  final TextEditingController roleController = TextEditingController();
   final TextEditingController matriculeController = TextEditingController();
   final TextEditingController dateNaissanceController = TextEditingController();
   final TextEditingController lieuNaissanceController = TextEditingController();
@@ -57,6 +57,8 @@ class _AgentsRhState extends State<AgentsRh> {
   final TextEditingController rateController = TextEditingController();
   final TextEditingController passwordHashController = TextEditingController();
 
+  String? sexe;
+  String? role;
   String? nationalite;
   String? departement;
   String? typeContrat;
@@ -69,8 +71,6 @@ class _AgentsRhState extends State<AgentsRh> {
     emailController.dispose();
     telephoneController.dispose();
     adresseController.dispose();
-    sexeController.dispose();
-    roleController.dispose();
     matriculeController.dispose();
     dateNaissanceController.dispose();
     lieuNaissanceController.dispose();
@@ -211,16 +211,7 @@ class _AgentsRhState extends State<AgentsRh> {
                           ),
                           Row(
                             children: [
-                              Expanded(child: departmentWidget()),
-                              const SizedBox(
-                                width: p10,
-                              ),
-                              Expanded(child: roleWidget())
-                            ],
-                          ),
-                          Row(
-                            children: [
-                              Expanded(child: servicesAffectationWidget()),
+                              Expanded(child: roleWidget()),
                               const SizedBox(
                                 width: p10,
                               ),
@@ -229,11 +220,11 @@ class _AgentsRhState extends State<AgentsRh> {
                           ),
                           Row(
                             children: [
-                              Expanded(child: dateDebutContratWidget()),
+                              Expanded(child: departmentWidget()),
                               const SizedBox(
                                 width: p10,
                               ),
-                              Expanded(child: dateFinContratWidget())
+                              Expanded(child: servicesAffectationWidget())
                             ],
                           ),
                           Row(
@@ -243,6 +234,16 @@ class _AgentsRhState extends State<AgentsRh> {
                                 width: p10,
                               ),
                               Expanded(child: typeContratWidget())
+                            ],
+                          ),
+                          Row(
+                            children: [
+                              Expanded(child: dateDebutContratWidget()),
+                              const SizedBox(
+                                width: p10,
+                              ),
+                              if (typeContrat == 'CDD')
+                                Expanded(child: dateFinContratWidget())
                             ],
                           ),
                           competanceWidget(),
@@ -378,38 +379,56 @@ class _AgentsRhState extends State<AgentsRh> {
 
   Widget sexeWidget() {
     return Container(
-        margin: const EdgeInsets.only(bottom: p20),
-        child: TextFormField(
-          controller: sexeController,
-          decoration: InputDecoration(
-            border:
-                OutlineInputBorder(borderRadius: BorderRadius.circular(10.0)),
-            labelText: 'Sexe',
-          ),
-          keyboardType: TextInputType.text,
-          validator: (val) {
-            return 'Ce champs est obligatoire';
-          },
-          style: const TextStyle(),
-        ));
+      margin: const EdgeInsets.only(bottom: p20),
+      child: DropdownButtonFormField<String>(
+        decoration: InputDecoration(
+          labelText: 'Genre',
+          labelStyle: const TextStyle(),
+          border: OutlineInputBorder(borderRadius: BorderRadius.circular(5.0)),
+          contentPadding: const EdgeInsets.only(left: 5.0),
+        ),
+        value: sexe,
+        isExpanded: true,
+        items: sexeList.map((String value) {
+          return DropdownMenuItem<String>(
+            value: value,
+            child: Text(value),
+          );
+        }).toList(),
+        onChanged: (value) {
+          setState(() {
+            sexe = value!;
+          });
+        },
+      ),
+    );
   }
 
   Widget roleWidget() {
     return Container(
-        margin: const EdgeInsets.only(bottom: p20),
-        child: TextFormField(
-          controller: roleController,
-          decoration: InputDecoration(
-            border:
-                OutlineInputBorder(borderRadius: BorderRadius.circular(10.0)),
-            labelText: 'Niveau d\'acreditation',
-          ),
-          keyboardType: TextInputType.text,
-          validator: (val) {
-            return 'Ce champs est obligatoire';
-          },
-          style: const TextStyle(),
-        ));
+      margin: const EdgeInsets.only(bottom: p20),
+      child: DropdownButtonFormField<String>(
+        decoration: InputDecoration(
+          labelText: 'Niveau d\'accréditation',
+          labelStyle: const TextStyle(),
+          border: OutlineInputBorder(borderRadius: BorderRadius.circular(5.0)),
+          contentPadding: const EdgeInsets.only(left: 5.0),
+        ),
+        value: role,
+        isExpanded: true,
+        items: roleList.map((String value) {
+          return DropdownMenuItem<String>(
+            value: value,
+            child: Text(value),
+          );
+        }).toList(),
+        onChanged: (value) {
+          setState(() {
+            role = value!;
+          });
+        },
+      ),
+    );
   }
 
   Widget matriculeWidget() {
@@ -435,6 +454,7 @@ class _AgentsRhState extends State<AgentsRh> {
         margin: const EdgeInsets.only(bottom: p20),
         child: DateTimePicker(
             decoration: InputDecoration(
+              prefixIcon: const Icon(Icons.date_range),
               border:
                   OutlineInputBorder(borderRadius: BorderRadius.circular(10.0)),
               labelText: 'Date de naissance',
@@ -503,9 +523,9 @@ class _AgentsRhState extends State<AgentsRh> {
           border: OutlineInputBorder(borderRadius: BorderRadius.circular(5.0)),
           contentPadding: const EdgeInsets.only(left: 5.0),
         ),
-        value: departement,
+        value: typeContrat,
         isExpanded: true,
-        items: departementList.map((String value) {
+        items: typeContratList.map((String value) {
           return DropdownMenuItem<String>(
             value: value,
             child: Text(value),
@@ -514,6 +534,7 @@ class _AgentsRhState extends State<AgentsRh> {
         onChanged: (value) {
           setState(() {
             typeContrat = value!;
+            print('typeContrat $typeContrat');
           });
         },
       ),
@@ -570,6 +591,7 @@ class _AgentsRhState extends State<AgentsRh> {
         margin: const EdgeInsets.only(bottom: p20),
         child: DateTimePicker(
             decoration: InputDecoration(
+              prefixIcon: const Icon(Icons.date_range),
               border:
                   OutlineInputBorder(borderRadius: BorderRadius.circular(10.0)),
               labelText: 'Date de début du Contrat',
@@ -588,6 +610,7 @@ class _AgentsRhState extends State<AgentsRh> {
         margin: const EdgeInsets.only(bottom: p20),
         child: DateTimePicker(
             decoration: InputDecoration(
+              prefixIcon: const Icon(Icons.date_range),
               border:
                   OutlineInputBorder(borderRadius: BorderRadius.circular(10.0)),
               labelText: 'Date de Fin du Contrat',
@@ -595,7 +618,13 @@ class _AgentsRhState extends State<AgentsRh> {
             controller: dateFinContratController,
             firstDate: DateTime(1930),
             lastDate: DateTime(2100),
-            // dateLabelText: 'Date de naissance',
+            onChanged: (val) {
+              setState(() {
+                !(dateFinContratController.text == '')
+                    ? dateFinContratController.text
+                    : "2100-01-01T00:00:00.000Z";
+              });
+            },
             validator: (val) {
               return 'Ce champs est obligatoire';
             }));
@@ -673,6 +702,7 @@ class _AgentsRhState extends State<AgentsRh> {
   }
 
   Future submit() async {
+    
     final agentModel = AgentModel(
         nom: nomController.text,
         postNom: postNomController.text,
@@ -680,8 +710,8 @@ class _AgentsRhState extends State<AgentsRh> {
         email: emailController.text,
         telephone: telephoneController.text,
         adresse: adresseController.text,
-        sexe: sexeController.text,
-        role: roleController.text,
+        sexe: sexe.toString(),
+        role: role.toString(),
         matricule: matriculeController.text,
         dateNaissance: DateTime.parse(dateNaissanceController.text),
         lieuNaissance: lieuNaissanceController.text,
