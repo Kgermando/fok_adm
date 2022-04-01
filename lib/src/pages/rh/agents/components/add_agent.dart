@@ -10,6 +10,7 @@ import 'package:fokad_admin/src/provider/controller.dart';
 import 'package:fokad_admin/src/utils/country.dart';
 import 'package:fokad_admin/src/utils/dropdown.dart';
 import 'package:fokad_admin/src/widgets/btn_widget.dart';
+import 'package:fokad_admin/src/widgets/print_widget.dart';
 import 'package:provider/provider.dart';
 
 class AddAgent extends StatefulWidget {
@@ -96,7 +97,7 @@ class _AddAgentState extends State<AddAgent> {
         ),
         body: SafeArea(
           child: Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               if (Responsive.isDesktop(context))
                 const Expanded(
@@ -125,119 +126,131 @@ class _AddAgentState extends State<AddAgent> {
   }
 
   Widget addAgentWidget() {
-    return Card(
-      child: Padding(
-        padding: const EdgeInsets.all(p16),
-        child: SizedBox(
-          width: Responsive.isDesktop(context)
-              ? MediaQuery.of(context).size.width / 2
-              : MediaQuery.of(context).size.width,
-          child: ListView(
-            controller: _controllerScroll,
-            children: [
-              const SizedBox(
-                height: p20,
-              ),
-              Row(
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Card(
+          elevation: 10,
+          child: Padding(
+            padding: const EdgeInsets.all(p16),
+            child: SizedBox(
+              width: Responsive.isDesktop(context)
+                  ? MediaQuery.of(context).size.width / 2
+                  : MediaQuery.of(context).size.width,
+              child: ListView(
+                controller: _controllerScroll,
                 children: [
-                  Expanded(child: nomWidget()),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      PrintWidget(onPressed: (){})
+                    ],
+                  ),
+                  const SizedBox(
+                    height: p20,
+                  ),
+                  Row(
+                    children: [
+                      Expanded(child: nomWidget()),
+                      const SizedBox(
+                        width: p10,
+                      ),
+                      Expanded(child: postNomWidget())
+                    ],
+                  ),
+                  Row(
+                    children: [
+                      Expanded(child: prenomWidget()),
+                      const SizedBox(
+                        width: p10,
+                      ),
+                      Expanded(child: sexeWidget())
+                    ],
+                  ),
+                  Row(
+                    children: [
+                      Expanded(child: dateNaissanceWidget()),
+                      const SizedBox(
+                        width: p10,
+                      ),
+                      Expanded(child: lieuNaissanceWidget())
+                    ],
+                  ),
+                  Row(
+                    children: [
+                      Expanded(child: nationaliteWidget()),
+                      const SizedBox(
+                        width: p10,
+                      ),
+                      Expanded(child: adresseWidget())
+                    ],
+                  ),
+                  Row(
+                    children: [
+                      Expanded(child: emailWidget()),
+                      const SizedBox(
+                        width: p10,
+                      ),
+                      Expanded(child: telephoneWidget())
+                    ],
+                  ),
+                  Row(
+                    children: [
+                      Expanded(child: roleWidget()),
+                      const SizedBox(
+                        width: p10,
+                      ),
+                      Expanded(child: matriculeWidget())
+                    ],
+                  ),
+                  Row(
+                    children: [
+                      Expanded(child: departmentWidget()),
+                      const SizedBox(
+                        width: p10,
+                      ),
+                      Expanded(child: servicesAffectationWidget())
+                    ],
+                  ),
+                  Row(
+                    children: [
+                      Expanded(child: fonctionOccupeWidget()),
+                      const SizedBox(
+                        width: p10,
+                      ),
+                      Expanded(child: typeContratWidget())
+                    ],
+                  ),
+                  Row(
+                    children: [
+                      Expanded(child: dateDebutContratWidget()),
+                      const SizedBox(
+                        width: p10,
+                      ),
+                      if (typeContrat == 'CDD')
+                        Expanded(child: dateFinContratWidget())
+                    ],
+                  ),
+                  competanceWidget(),
                   const SizedBox(
                     width: p10,
                   ),
-                  Expanded(child: postNomWidget())
-                ],
-              ),
-              Row(
-                children: [
-                  Expanded(child: prenomWidget()),
+                  experienceWidget(),
                   const SizedBox(
-                    width: p10,
+                    height: p20,
                   ),
-                  Expanded(child: sexeWidget())
+                  BtnWidget(
+                      title: 'Soumettre',
+                      isLoading: isLoading,
+                      press: () {
+                        submit();
+                      })
                 ],
               ),
-              Row(
-                children: [
-                  Expanded(child: dateNaissanceWidget()),
-                  const SizedBox(
-                    width: p10,
-                  ),
-                  Expanded(child: lieuNaissanceWidget())
-                ],
-              ),
-              Row(
-                children: [
-                  Expanded(child: nationaliteWidget()),
-                  const SizedBox(
-                    width: p10,
-                  ),
-                  Expanded(child: adresseWidget())
-                ],
-              ),
-              Row(
-                children: [
-                  Expanded(child: emailWidget()),
-                  const SizedBox(
-                    width: p10,
-                  ),
-                  Expanded(child: telephoneWidget())
-                ],
-              ),
-              Row(
-                children: [
-                  Expanded(child: roleWidget()),
-                  const SizedBox(
-                    width: p10,
-                  ),
-                  Expanded(child: matriculeWidget())
-                ],
-              ),
-              Row(
-                children: [
-                  Expanded(child: departmentWidget()),
-                  const SizedBox(
-                    width: p10,
-                  ),
-                  Expanded(child: servicesAffectationWidget())
-                ],
-              ),
-              Row(
-                children: [
-                  Expanded(child: fonctionOccupeWidget()),
-                  const SizedBox(
-                    width: p10,
-                  ),
-                  Expanded(child: typeContratWidget())
-                ],
-              ),
-              Row(
-                children: [
-                  Expanded(child: dateDebutContratWidget()),
-                  const SizedBox(
-                    width: p10,
-                  ),
-                  if (typeContrat == 'CDD')
-                    Expanded(child: dateFinContratWidget())
-                ],
-              ),
-              competanceWidget(),
-              const SizedBox(
-                width: p10,
-              ),
-              experienceWidget(),
-              const SizedBox(
-                height: p20,
-              ),
-              BtnWidget(
-                  title: 'Soumettre',
-                  isLoading: isLoading,
-                  press: () {
-                    submit();
-                  })
-            ],
+            ),
           ),
         ),
-      ),
+      ],
     );
   }
 
@@ -597,7 +610,7 @@ class _AddAgentState extends State<AddAgent> {
               setState(() {
                 !(dateFinContratController.text == '')
                     ? dateFinContratController.text
-                    : "2100-01-01T00:00:00.000Z";
+                    : "2022-04-01";
               });
             },
             validator: (val) {
@@ -679,29 +692,31 @@ class _AddAgentState extends State<AddAgent> {
   Future submit() async {
     print('dateDebutContratController ${dateDebutContratController.text}');
     final agentModel = AgentModel(
-        nom: nomController.text,
-        postNom: postNomController.text,
-        prenom: prenomController.text,
-        email: emailController.text,
-        telephone: telephoneController.text,
-        adresse: adresseController.text,
-        sexe: sexe.toString(),
-        role: role.toString(),
-        matricule: matriculeController.text,
-        dateNaissance: DateTime.parse(dateNaissanceController.text),
-        lieuNaissance: lieuNaissanceController.text,
-        nationalite: nationalite.toString(),
-        typeContrat: typeContrat.toString(),
-        departement: departement.toString(),
-        servicesAffectation: servicesAffectationController.text,
-        dateDebutContrat: DateTime.parse(dateDebutContratController.text),
-        dateFinContrat: DateTime.parse(dateFinContratController.text),
-        fonctionOccupe: fonctionOccupeController.text,
-        competance: competanceController.toString(),
-        experience: experienceController.text,
-        statutAgent: true,
-        createdAt: DateTime.now(),
-        passwordHash: passwordHashController.text);
+      nom: nomController.text,
+      postNom: postNomController.text,
+      prenom: prenomController.text,
+      email: emailController.text,
+      telephone: telephoneController.text,
+      adresse: adresseController.text,
+      sexe: sexe.toString(),
+      role: role.toString(),
+      matricule: matriculeController.text,
+      dateNaissance: DateTime.parse(dateNaissanceController.text),
+      lieuNaissance: lieuNaissanceController.text,
+      nationalite: nationalite.toString(),
+      typeContrat: typeContrat.toString(),
+      departement: departement.toString(),
+      servicesAffectation: servicesAffectationController.text,
+      dateDebutContrat: DateTime.parse(dateDebutContratController.text),
+      dateFinContrat: DateTime.parse(dateFinContratController.text),
+      fonctionOccupe: fonctionOccupeController.text,
+      competance: competanceController.toString(),
+      experience: experienceController.text,
+      statutAgent: true,
+      createdAt: DateTime.now(),
+      passwordHash: passwordHashController.text,
+      photo: ''
+    );
 
     await AgentsApi().insertData(agentModel);
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(

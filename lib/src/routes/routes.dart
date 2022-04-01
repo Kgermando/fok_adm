@@ -22,6 +22,7 @@ import 'package:fokad_admin/src/pages/finances/transactions/components/dette_tra
 import 'package:fokad_admin/src/pages/finances/transactions/components/fin_externe_transactions.dart';
 import 'package:fokad_admin/src/pages/finances/transactions/transactions_fincance.dart';
 import 'package:fokad_admin/src/pages/rh/agents/agents_rh.dart';
+import 'package:fokad_admin/src/pages/rh/agents/components/add_agent.dart';
 import 'package:fokad_admin/src/pages/rh/dashboard/dashboard_rh.dart';
 import 'package:fokad_admin/src/pages/rh/paiements/paiements_rh.dart';
 import 'package:fokad_admin/src/pages/rh/presences/presences_rh.dart';
@@ -47,6 +48,14 @@ final loggedInMap = RouteMap(
     '/profile': (_) => const MaterialPage(child: ProfilPage()),
     '/helps': (_) => const MaterialPage(child: HelpScreen()),
     '/settings': (_) => const MaterialPage(child: SettingsScreen()),
+
+    // RH
+    '/rh-agents-add': (_) => const MaterialPage(child: AddAgent()),
+    '/rh-agents': (_) => const MaterialPage(child: AgentsRh()),
+    '/rh-dashboard': (_) => const MaterialPage(child: DashboardRh()),
+    '/rh-paiements': (_) => const MaterialPage(child: PaiementRh()),
+    '/rh-salaires': (_) => const MaterialPage(child: SalaireRh()),
+    '/rh-presences': (_) => const MaterialPage(child: PresenceRh()),
 
     // ADMINISTRATION
     '/admin-dashboard': (_) =>
@@ -85,12 +94,7 @@ final loggedInMap = RouteMap(
     '/comptabilite-valorisation': (_) =>
         const MaterialPage(child: ValorisationComptabilite()),
 
-    // RH
-    '/rh-dashboard': (_) => const MaterialPage(child: DashboardRh()),
-    '/rh-paiements': (_) => const MaterialPage(child: PaiementRh()),
-    '/rh-salaires': (_) => const MaterialPage(child: SalaireRh()),
-    '/rh-presences': (_) => const MaterialPage(child: PresenceRh()),
-    '/rh-agents': (_) => const MaterialPage(child: AgentsRh()),
+    
   },
   // onUnknownRoute: (_) => const MaterialPage(child: NotFoundPage()),
   onUnknownRoute: (_) => const MaterialPage(child: LoginPage()),

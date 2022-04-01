@@ -7,6 +7,7 @@ import 'package:fokad_admin/src/pages/rh/agents/components/add_agent.dart';
 import 'package:fokad_admin/src/pages/rh/agents/components/table_agents.dart';
 import 'package:fokad_admin/src/provider/controller.dart';
 import 'package:provider/provider.dart';
+import 'package:routemaster/routemaster.dart';
 
 class AgentsRh extends StatefulWidget {
   const AgentsRh({Key? key}) : super(key: key);
@@ -30,7 +31,7 @@ class _AgentsRhState extends State<AgentsRh> {
         key: context.read<Controller>().scaffoldKey,
         drawer: const DrawerMenu(),
         floatingActionButton: FloatingActionButton(
-          onPressed: () => const AddAgent(),
+          onPressed: () => Routemaster.of(context).push('/rh-agents-add'),
           child: const Icon(Icons.person_add),
         ),
         body: SafeArea(
@@ -47,17 +48,20 @@ class _AgentsRhState extends State<AgentsRh> {
                   padding: const EdgeInsets.all(p10),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const CustomAppbar(title: 'Liste des Agents'),
+                    children: const [
+                      CustomAppbar(title: 'Liste des Agents'),
                       Expanded(
-                          child: Scrollbar(
-                        controller: _controllerScroll,
-                        child: ListView(
-                          padding: const EdgeInsets.only(top: m20),
-                          controller: _controllerScroll,
-                          children: [tableWidget()],
-                        ),
-                      ))
+                          child: TableAgents()
+                          
+                        // Scrollbar(
+                        //     controller: _controllerScroll,
+                        //     child: ListView(
+                        //       padding: const EdgeInsets.only(top: m20),
+                        //       controller: _controllerScroll,
+                        //       children: [tableWidget()],
+                        //     ),
+                        //   )
+                        )
                     ],
                   ),
                 ),
@@ -66,12 +70,6 @@ class _AgentsRhState extends State<AgentsRh> {
           ),
         ));
   }
-
-  Widget tableWidget() {
-    final size = MediaQuery.of(context).size;
-    return SizedBox(height: size.height, child: const TableAgents());
-  }
-
 
 
  
