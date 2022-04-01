@@ -114,7 +114,7 @@ class _TableAgentsState extends State<TableAgents> {
         minWidth: 150,
       ),
       PlutoColumn(
-        title: 'role',
+        title: 'Acréditation',
         field: 'role',
         type: PlutoColumnType.text(),
         enableRowDrag: true,
@@ -125,7 +125,7 @@ class _TableAgentsState extends State<TableAgents> {
         minWidth: 150,
       ),
       PlutoColumn(
-        title: 'matricule',
+        title: 'Matricule',
         field: 'matricule',
         type: PlutoColumnType.text(),
         enableRowDrag: true,
@@ -147,7 +147,7 @@ class _TableAgentsState extends State<TableAgents> {
         minWidth: 150,
       ),
       PlutoColumn(
-        title: 'departement',
+        title: 'Département',
         field: 'departement',
         type: PlutoColumnType.text(),
         enableRowDrag: true,
@@ -184,15 +184,15 @@ class _TableAgentsState extends State<TableAgents> {
 
   Future agentsRow() async {
     List<AgentModel?> data = await AgentsApi().getAllData();
-    // print('agents $data');
+    print('agents $data');
     if (mounted) {
       setState(() {
         for (var item in data) {
-          // print('item ${item!.id}');
+          print('item ${item!.id}');
           rows.add(
             PlutoRow(
               cells: {
-                'id': PlutoCell(value: item!.id),
+                'id': PlutoCell(value: item.id),
                 'nom': PlutoCell(value: item.nom),
                 'postNom': PlutoCell(value: item.postNom),
                 'prenom': PlutoCell(value: item.prenom),

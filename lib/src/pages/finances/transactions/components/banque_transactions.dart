@@ -5,7 +5,7 @@ import 'package:fokad_admin/src/models/finances/banque_model.dart';
 import 'package:fokad_admin/src/navigation/drawer/drawer_menu.dart';
 import 'package:fokad_admin/src/navigation/header/custom_appbar.dart';
 import 'package:fokad_admin/src/provider/controller.dart';
-import 'package:fokad_admin/src/utils/departement.dart';
+import 'package:fokad_admin/src/utils/dropdown.dart';
 import 'package:fokad_admin/src/utils/pluto_grid.dart';
 import 'package:fokad_admin/src/utils/type_operation.dart';
 import 'package:fokad_admin/src/widgets/btn_widget.dart';
@@ -41,7 +41,7 @@ class _BanqueTransactionsState extends State<BanqueTransactions> {
   String? typeOperation;
 
   final List<String> typeCaisse = TypeOperation().typeCaisse;
-  final List<String> departementList = DepartementList().departement;
+  final List<String> departementList = Dropdown().departement;
 
   late int count;
 

@@ -3,18 +3,15 @@ import 'package:fokad_admin/src/api/rh/agents_api.dart';
 import 'package:fokad_admin/src/constants/app_theme.dart';
 import 'package:fokad_admin/src/constants/responsive.dart';
 import 'package:fokad_admin/src/models/rh/agent_model.dart';
-import 'package:fokad_admin/src/models/users/user_model.dart';
 import 'package:fokad_admin/src/navigation/drawer/drawer_menu.dart';
 import 'package:fokad_admin/src/navigation/header/custom_appbar.dart';
 import 'package:fokad_admin/src/pages/rh/agents/components/table_agents.dart';
 import 'package:fokad_admin/src/provider/controller.dart';
 import 'package:fokad_admin/src/utils/country.dart';
-import 'package:fokad_admin/src/utils/departement.dart';
-import 'package:fokad_admin/src/utils/table_.dart';
+import 'package:fokad_admin/src/utils/dropdown.dart';
 import 'package:fokad_admin/src/widgets/btn_widget.dart';
 import 'package:fokad_admin/src/widgets/print_widget.dart';
 import 'package:fokad_admin/src/widgets/title_widget.dart';
-import 'package:html_editor_enhanced/html_editor.dart';
 import 'package:provider/provider.dart';
 import 'package:date_time_picker/date_time_picker.dart';
 
@@ -30,7 +27,8 @@ class _AgentsRhState extends State<AgentsRh> {
 
   bool isLoading = false;
 
-  final List<String> departementList = DepartementList().departement;
+  final List<String> departementList = Dropdown().departement;
+  final List<String> typeContratList = Dropdown().typeContrat;
   final List<String> world = Country().world;
 
   final TextEditingController nomController = TextEditingController();
@@ -44,7 +42,6 @@ class _AgentsRhState extends State<AgentsRh> {
   final TextEditingController matriculeController = TextEditingController();
   final TextEditingController dateNaissanceController = TextEditingController();
   final TextEditingController lieuNaissanceController = TextEditingController();
-  final TextEditingController typeContratController = TextEditingController();
   final TextEditingController servicesAffectationController =
       TextEditingController();
   final TextEditingController dateDebutContratController =
@@ -62,6 +59,7 @@ class _AgentsRhState extends State<AgentsRh> {
 
   String? nationalite;
   String? departement;
+  String? typeContrat;
 
   @override
   void dispose() {
@@ -76,7 +74,6 @@ class _AgentsRhState extends State<AgentsRh> {
     matriculeController.dispose();
     dateNaissanceController.dispose();
     lieuNaissanceController.dispose();
-    typeContratController.dispose();
     servicesAffectationController.dispose();
     dateDebutContratController.dispose();
     dateFinContratController.dispose();
@@ -245,7 +242,7 @@ class _AgentsRhState extends State<AgentsRh> {
                               const SizedBox(
                                 width: p10,
                               ),
-                              Expanded(child: rateWidget())
+                              Expanded(child: typeContratWidget())
                             ],
                           ),
                           competanceWidget(),
@@ -496,6 +493,33 @@ class _AgentsRhState extends State<AgentsRh> {
     );
   }
 
+  Widget typeContratWidget() {
+    return Container(
+      margin: const EdgeInsets.only(bottom: p20),
+      child: DropdownButtonFormField<String>(
+        decoration: InputDecoration(
+          labelText: 'Type de contrat',
+          labelStyle: const TextStyle(),
+          border: OutlineInputBorder(borderRadius: BorderRadius.circular(5.0)),
+          contentPadding: const EdgeInsets.only(left: 5.0),
+        ),
+        value: departement,
+        isExpanded: true,
+        items: departementList.map((String value) {
+          return DropdownMenuItem<String>(
+            value: value,
+            child: Text(value),
+          );
+        }).toList(),
+        onChanged: (value) {
+          setState(() {
+            typeContrat = value!;
+          });
+        },
+      ),
+    );
+  }
+
   Widget departmentWidget() {
     return Container(
       margin: const EdgeInsets.only(bottom: p20),
@@ -648,24 +672,6 @@ class _AgentsRhState extends State<AgentsRh> {
         ));
   }
 
-  Widget rateWidget() {
-    return Container(
-        margin: const EdgeInsets.only(bottom: p20),
-        child: TextFormField(
-          controller: rateController,
-          decoration: InputDecoration(
-            border:
-                OutlineInputBorder(borderRadius: BorderRadius.circular(10.0)),
-            labelText: 'Type de contrat',
-          ),
-          keyboardType: TextInputType.text,
-          validator: (val) {
-            return 'Ce champs est obligatoire';
-          },
-          style: const TextStyle(),
-        ));
-  }
-
   Future submit() async {
     final agentModel = AgentModel(
         nom: nomController.text,
@@ -680,7 +686,7 @@ class _AgentsRhState extends State<AgentsRh> {
         dateNaissance: DateTime.parse(dateNaissanceController.text),
         lieuNaissance: lieuNaissanceController.text,
         nationalite: nationalite.toString(),
-        typeContrat: typeContratController.text,
+        typeContrat: typeContrat.toString(),
         departement: departement.toString(),
         servicesAffectation: servicesAffectationController.text,
         dateDebutContrat: DateTime.parse(dateDebutContratController.text),

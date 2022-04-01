@@ -30,16 +30,15 @@ class Dropdown {
     'English',
   ];
 
-  List<String> depenses = [
-    'Transports',
-    'Restaurations',
-    'Salaires',
-    'Facture electricité',
-    'Facture Eau',
-    'Credits cellulaires',
-    'Taxes ou împots',
-    'Loyer entreprise',
-    'Manutention',
-    'Autres'
+  List<String> departement = [
+    'Administration',
+    'Comptabilité et Finance',
+    'Ressources Humaines',
+    'Exploitations',
+    'Commercial et Marketing',
+    'Logistique'
   ];
+
+  List<String> typeContrat = ['CDI', 'CDD'];
+
 }
