@@ -54,15 +54,13 @@ class AuthApi extends ChangeNotifier {
   }
 
   Future<void> register(UserModel userModel) async {
-    var data = userModel.toMap();
+    var data = userModel.toJson();
     var body = jsonEncode(data);
-    // const storage = FlutterSecureStorage();
-    // var accessToken = await storage.read(key: 'accessToken');
     final prefs = await SharedPreferences.getInstance();
     var accessToken = prefs.getString("accessToken");
     var headers = {HttpHeaders.authorizationHeader: "Bearer $accessToken"};
 
-    var resp = await client.post(loginUrl, body: body, headers: headers);
+    var resp = await client.post(registerUrl, body: body, headers: headers);
     if (resp.statusCode == 200) {
     } else {
       throw Exception(json.decode(resp.body)['message']);

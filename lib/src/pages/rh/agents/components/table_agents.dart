@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:fokad_admin/src/api/rh/agents_api.dart';
-import 'package:fokad_admin/src/api/rh/agents_.dart';
+import 'package:fokad_admin/src/models/rh/agent_model.dart';
 import 'package:fokad_admin/src/models/users/user_model.dart';
 import 'package:pluto_grid/pluto_grid.dart';
 
@@ -183,7 +183,7 @@ class _TableAgentsState extends State<TableAgents> {
   }
 
   Future agentsRow() async {
-    List<UserModel?> data = await AgentsApi().getAgents();
+    List<AgentModel?> data = await AgentsApi().getAllData();
     // print('agents $data');
     if (mounted) {
       setState(() {

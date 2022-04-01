@@ -68,6 +68,7 @@ class _ProfilPageState extends State<ProfilPage> {
     return Responsive.isDesktop(context)
       ? ListBody(
           children: [
+            if (userModel.photo!.isNotEmpty) Image.network(userModel.photo!),
             // SizedBox(
             //   height: 100,
             //   width: 100,
@@ -97,20 +98,6 @@ class _ProfilPageState extends State<ProfilPage> {
             Card(
               child: ListTile(
                 leading: const Icon(Icons.person),
-                title: Text('Post-Nom',
-                    style: GoogleFonts.poppins(textStyle: headline5)),
-                trailing: Text(userModel.postNom,
-                    overflow: TextOverflow.ellipsis,
-                    style: GoogleFonts.poppins(
-                        textStyle: headline5, fontWeight: FontWeight.bold)),
-              ),
-            ),
-            const SizedBox(
-              height: 20.0,
-            ),
-            Card(
-              child: ListTile(
-                leading: const Icon(Icons.person),
                 title: Text('Prénom',
                     style: GoogleFonts.poppins(textStyle: headline5)),
                 trailing: Text(userModel.prenom,
@@ -123,65 +110,23 @@ class _ProfilPageState extends State<ProfilPage> {
               height: 20.0,
             ),
             Card(
-              child: ListTile(
-                leading: const Icon(Icons.email),
-                title: Text('Email',
-                    style: GoogleFonts.poppins(textStyle: headline5)),
-                trailing: Text(userModel.email,
-                    overflow: TextOverflow.clip,
-                    style: GoogleFonts.poppins(
-                        textStyle: headline5, fontWeight: FontWeight.bold)),
+                child: ListTile(
+                  leading: const Icon(Icons.play_arrow_rounded),
+                  title: Text('Matricule',
+                      style: GoogleFonts.poppins(textStyle: headline5)),
+                  trailing: Text(userModel.matricule,
+                      overflow: TextOverflow.ellipsis,
+                      style: GoogleFonts.poppins(
+                          textStyle: headline5, fontWeight: FontWeight.bold)),
+                ),
               ),
-            ),
-            const SizedBox(
-              height: 20.0,
-            ),
-            Card(
-              child: ListTile(
-                leading: const Icon(Icons.phone),
-                title: Text('Téléphone',
-                    style: GoogleFonts.poppins(textStyle: headline5)),
-                trailing: Text(userModel.telephone,
-                    overflow: TextOverflow.ellipsis,
-                    style: GoogleFonts.poppins(
-                        textStyle: headline5, fontWeight: FontWeight.bold)),
+              const SizedBox(
+                height: 20.0,
               ),
-            ),
-            const SizedBox(
-              height: 20.0,
-            ),
-            Card(
-              child: ListTile(
-                leading: const Icon(Icons.place),
-                title: Text('Nationalité',
-                    style: GoogleFonts.poppins(textStyle: headline5)),
-                trailing: Text(userModel.nationalite,
-                    overflow: TextOverflow.ellipsis,
-                    style: GoogleFonts.poppins(
-                        textStyle: headline5, fontWeight: FontWeight.bold)),
-              ),
-            ),
-            const SizedBox(
-              height: 20.0,
-            ),
-            Card(
-              child: ListTile(
-                leading: const Icon(Icons.location_city_rounded),
-                title: Text('Adresse',
-                    style: GoogleFonts.poppins(textStyle: headline5)),
-                trailing: Text(userModel.adresse,
-                    overflow: TextOverflow.ellipsis,
-                    style: GoogleFonts.poppins(
-                        textStyle: headline5, fontWeight: FontWeight.bold)),
-              ),
-            ),
-            const SizedBox(
-              height: 20.0,
-            ),
             Card(
               child: ListTile(
                 leading: const Icon(Icons.play_arrow_rounded),
-                title: Text('Accréditation',
+                title: Text('Niveau d\'accréditation',
                     style: GoogleFonts.poppins(textStyle: headline5)),
                 trailing: Text(userModel.role,
                     overflow: TextOverflow.ellipsis,
@@ -212,6 +157,8 @@ class _ProfilPageState extends State<ProfilPage> {
       : Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            if(userModel.photo!.isNotEmpty)
+            Image.network(userModel.photo!),
             // CachedNetworkImage(
             //   imageUrl: userModel.logo!,
             //   placeholder: (context, url) => const CircularProgressIndicator(),
@@ -247,8 +194,8 @@ class _ProfilPageState extends State<ProfilPage> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text('Post-Nom', style: bodyText2),
-                      Text(userModel.postNom,
+                      Text('Prénom', style: bodyText2),
+                      Text(userModel.prenom,
                           overflow: TextOverflow.clip, style: bodyText1),
                     ],
                   ),
@@ -266,95 +213,33 @@ class _ProfilPageState extends State<ProfilPage> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text('Prénom', style: bodyText2),
-                        Text(userModel.prenom,
+                        Text('Matricule', style: bodyText2),
+                        Text(userModel.matricule,
                             overflow: TextOverflow.clip, style: bodyText1),
                       ],
                     ),
                   ),
                 ),
               ),
-
-            const SizedBox(
-              height: 16.0,
-            ),
-            SizedBox(
-              width: double.infinity,
-              child: Card(
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text('Email', style: bodyText2),
-                      Text(userModel.email,
-                          overflow: TextOverflow.clip, style: bodyText1),
-                    ],
+              const SizedBox(
+                height: 16.0,
+              ),
+              SizedBox(
+                width: double.infinity,
+                child: Card(
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text('Niveau d\'accréditation', style: bodyText2),
+                        Text(userModel.role,
+                            overflow: TextOverflow.clip, style: bodyText1),
+                      ],
+                    ),
                   ),
                 ),
               ),
-            ),
-
-            const SizedBox(
-              height: 16.0,
-            ),
-            SizedBox(
-              width: double.infinity,
-              child: Card(
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text('Téléphone', style: bodyText2),
-                      Text(userModel.telephone,
-                          overflow: TextOverflow.clip, style: bodyText1),
-                    ],
-                  ),
-                ),
-              ),
-            ),
-            
-            const SizedBox(
-              height: 16.0,
-            ),
-            SizedBox(
-              width: double.infinity,
-              child: Card(
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text('Nationalité', style: bodyText2),
-                      Text(userModel.nationalite,
-                          overflow: TextOverflow.clip, style: bodyText1),
-                    ],
-                  ),
-                ),
-              ),
-            ),
-
-            const SizedBox(
-              height: 16.0,
-            ),
-            SizedBox(
-              width: double.infinity,
-              child: Card(
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text('Adresse', style: bodyText2),
-                      Text(userModel.adresse,
-                          overflow: TextOverflow.clip, style: bodyText1),
-                    ],
-                  ),
-                ),
-              ),
-            ),
-
             const SizedBox(
               height: 16.0,
             ),
