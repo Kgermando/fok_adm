@@ -38,8 +38,9 @@ class MyApp extends StatelessWidget {
             routerDelegate: RoutemasterDelegate(
               routesBuilder: (context) {
                 // This will rebuild when AppState changes
-                final appState = Provider.of<AppState>(context);
-                return (!appState.isLogged) ? loggedInMap : loggedOutMap;
+                // final appState = Provider.of<AppState>(context);
+                final appState = context.watch<AppState>().isLogged;
+                return (!appState) ? loggedInMap : loggedOutMap;
               },
             ),
             routeInformationParser: const RoutemasterParser(),
