@@ -102,14 +102,14 @@ class ClassYouImplemented implements PlutoFilterType {
 
   @override
   get compare => ({
-        required String? base,
-        required String? search,
-        required PlutoColumn? column,
-      }) {
-        var keys = search!.split(',').map((e) => e.toUpperCase()).toList();
+      required String? base,
+      required String? search,
+      required PlutoColumn? column,
+    }) {
+      var keys = search!.split(',').map((e) => e.toUpperCase()).toList();
 
-        return keys.contains(base!.toUpperCase());
-      };
+      return keys.contains(base!.toUpperCase());
+    };
 
   const ClassYouImplemented();
 }

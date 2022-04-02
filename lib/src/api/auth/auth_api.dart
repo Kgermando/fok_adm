@@ -127,7 +127,7 @@ class AuthApi extends ChangeNotifier {
       var payload = json.decode(
           ascii.decode(base64.decode(base64.normalize(splittedJwt[1]))));
     }
-    var res = await client.get(
+    var resp = await client.get(
       userUrl,
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
@@ -135,10 +135,36 @@ class AuthApi extends ChangeNotifier {
       },
     );
 
-    if (res.statusCode == 200) {
-      return UserModel.fromJson(json.decode(res.body));
+    if (resp.statusCode == 200) {
+      return UserModel.fromJson(json.decode(resp.body));
     } else {
-      throw Exception(json.decode(res.body)['message']);
+      throw Exception(json.decode(resp.body)['message']);
+    }
+  }
+
+  Future<void> logout() async {
+    try {
+      String? token = await getToken();
+      if (token!.isNotEmpty) {
+        var splittedJwt = token.split(".");
+        var payload = json.decode(
+            ascii.decode(base64.decode(base64.normalize(splittedJwt[1]))));
+      }
+      var resp = await client.post(
+        logoutUrl,
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+          'Authorization': 'Bearer $token'
+        },
+      );
+      if (resp.statusCode == 200) {
+        final prefs = await SharedPreferences.getInstance();
+        prefs.remove("idToken");
+        prefs.remove("accessToken");
+        prefs.remove("refreshToken");
+      }
+    } catch (e) {
+      throw Exception(['message']);
     }
   }
 }

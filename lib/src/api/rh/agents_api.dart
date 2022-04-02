@@ -1,6 +1,8 @@
 import 'dart:convert';
 
+import 'package:fokad_admin/src/api/auth/auth_api.dart';
 import 'package:fokad_admin/src/api/route_api.dart';
+import 'package:fokad_admin/src/models/rh/agent_count_model.dart';
 import 'package:fokad_admin/src/models/rh/agent_model.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
@@ -13,6 +15,31 @@ class AgentsApi {
     String? accessToken = prefs.getString("accessToken");
     print('agent accessToken $accessToken');
     return accessToken;
+  }
+
+  Future<AgentCountModel> getCount() async {
+    String? token = await getToken();
+    if (token!.isNotEmpty) {
+      var splittedJwt = token.split(".");
+      var payload = json.decode(
+          ascii.decode(base64.decode(base64.normalize(splittedJwt[1]))));
+    }
+    var resp = await client.get(
+      agentCountUrl,
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+        'Authorization': 'Bearer $token'
+      },
+    );
+
+    if (resp.statusCode == 200) {
+      return AgentCountModel.fromJson(json.decode(resp.body));
+    } else if (resp.statusCode == 401) {
+      await AuthApi().refreshAccessToken();
+      return getCount();
+    } else {
+      throw Exception(jsonDecode(resp.body)['message']);
+    }
   }
 
   Future<List<AgentModel>> getAllData() async {
@@ -29,19 +56,20 @@ class AgentsApi {
         'Authorization': 'Bearer $token'
       },
     );
-
     if (resp.statusCode == 200) {
-     List<dynamic> bodyList = json.decode(resp.body);
+      List<dynamic> bodyList = json.decode(resp.body);
       List<AgentModel> data = [];
       for (var u in bodyList) {
         data.add(AgentModel.fromJson(u));
       }
       return data;
+    } else if (resp.statusCode == 401) {
+      await AuthApi().refreshAccessToken();
+      return getAllData();
     } else {
       throw Exception(jsonDecode(resp.body)['message']);
     }
   }
-
 
   Future<List<AgentModel>> getAllSearch(String query) async {
     String? token = await getToken();
@@ -57,10 +85,8 @@ class AgentsApi {
         'Authorization': 'Bearer $token'
       },
     );
-
     if (resp.statusCode == 200) {
       List<dynamic> bodyList = json.decode(resp.body);
-
       return bodyList.map((json) => AgentModel.fromJson(json)).where((data) {
         final nomLower = data.nom.toLowerCase();
         final postNomLower = data.postNom.toLowerCase();
@@ -73,11 +99,13 @@ class AgentsApi {
             matriculeLower.contains(searchLower) ||
             sexeLower.contains(searchLower);
       }).toList();
+    } else if (resp.statusCode == 401) {
+      await AuthApi().refreshAccessToken();
+      return getAllSearch(query);
     } else {
       throw Exception(jsonDecode(resp.body)['message']);
     }
   }
-
 
   Future<AgentModel> insertData(AgentModel agentModel) async {
     final prefs = await SharedPreferences.getInstance();
@@ -86,17 +114,19 @@ class AgentsApi {
     var data = agentModel.toJson();
     var body = jsonEncode(data);
 
-    var res = await client.post(addAgentsUrl,
-      headers: <String, String>{
-        'Content-Type': 'application/json; charset=UTF-8',
-        'Authorization': 'Bearer $accessToken'
-      },
-      body: body);
-    if (res.statusCode == 200) {
-      return AgentModel.fromJson(json.decode(res.body));
-      
+    var resp = await client.post(addAgentsUrl,
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+          'Authorization': 'Bearer $accessToken'
+        },
+        body: body);
+    if (resp.statusCode == 200) {
+      return AgentModel.fromJson(json.decode(resp.body));
+    } else if (resp.statusCode == 401) {
+      await AuthApi().refreshAccessToken();
+      return insertData(agentModel);
     } else {
-      throw Exception(json.decode(res.body)['message']);
+      throw Exception(json.decode(resp.body)['message']);
     }
   }
 
@@ -108,16 +138,19 @@ class AgentsApi {
     var body = jsonEncode(data);
     var updateAgentsUrl = Uri.parse("$mainUrl/rh/agents/update-agent/$id");
 
-    var res = await client.put(updateAgentsUrl,
-      headers: <String, String>{
-        'Content-Type': 'application/json; charset=UTF-8',
-        'Authorization': 'Bearer $accessToken'
-      },
-      body: body);
-    if (res.statusCode == 200) {
-      return AgentModel.fromJson(json.decode(res.body)['agents']);
+    var resp = await client.put(updateAgentsUrl,
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+          'Authorization': 'Bearer $accessToken'
+        },
+        body: body);
+    if (resp.statusCode == 200) {
+      return AgentModel.fromJson(json.decode(resp.body)['agents']);
+    } else if (resp.statusCode == 401) {
+      await AuthApi().refreshAccessToken();
+      return updateData(id, agentModel);
     } else {
-      throw Exception(json.decode(res.body)['message']);
+      throw Exception(json.decode(resp.body)['message']);
     }
   }
 
@@ -127,15 +160,17 @@ class AgentsApi {
 
     var deleteAgentsUrl = Uri.parse("$mainUrl/rh/agents/delete-agent/$id");
 
-    var res = await client.delete(deleteAgentsUrl,
-        headers: <String, String>{
-          'Content-Type': 'application/json; charset=UTF-8',
-          'Authorization': 'Bearer $accessToken'
-        });
-    if (res.statusCode == 200) {
-      return AgentModel.fromJson(json.decode(res.body)['agents']);
+    var resp = await client.delete(deleteAgentsUrl, headers: <String, String>{
+      'Content-Type': 'application/json; charset=UTF-8',
+      'Authorization': 'Bearer $accessToken'
+    });
+    if (resp.statusCode == 200) {
+      return AgentModel.fromJson(json.decode(resp.body)['agents']);
+    } else if (resp.statusCode == 401) {
+      await AuthApi().refreshAccessToken();
+      return deleteData(id);
     } else {
-      throw Exception(json.decode(res.body)['message']);
+      throw Exception(json.decode(resp.body)['message']);
     }
   }
 }
