@@ -48,11 +48,11 @@ class Dropdown {
   List<String> typeContrat = ['CDI', 'CDD'];
 
   List<String> role = [
-    '1',
-    '2',
-    '3',
-    '4',
-    '5'
+    '1', /// Niveau d'accreditation le plus élévé
+    '2', /// Niveau d'accreditation pour directeur
+    '3', /// Niveau d'accreditation chef de service
+    '4', /// Niveau d'accreditation agents
+    '5' /// Niveau d'accreditation le moins élévé
   ];
 
 }

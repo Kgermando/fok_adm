@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fokad_admin/src/constants/responsive.dart';
+import 'package:fokad_admin/src/controllers/app_state.dart';
 import 'package:fokad_admin/src/models/menu_item.dart';
 import 'package:fokad_admin/src/navigation/header/header_item.dart';
 import 'package:fokad_admin/src/provider/controller.dart';
@@ -29,7 +30,7 @@ class _CustomAppbarState extends State<CustomAppbar> {
           children: [
             if (!Responsive.isDesktop(context))
               IconButton(
-                onPressed: context.read<Controller>().controlMenu,
+                onPressed: context.read<AppState>().openDrawer(context),
                 icon: const Icon(
                   Icons.menu,
                 ),

@@ -13,7 +13,7 @@ class AgentsApi {
   Future<String?> getToken() async {
     final prefs = await SharedPreferences.getInstance();
     String? accessToken = prefs.getString("accessToken");
-    print('agent accessToken $accessToken');
+    print('accessToken $accessToken');
     return accessToken;
   }
 
@@ -114,7 +114,8 @@ class AgentsApi {
     var data = agentModel.toJson();
     var body = jsonEncode(data);
 
-    var resp = await client.post(addAgentsUrl,
+    var resp = await client.post(
+      addAgentsUrl,
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
           'Authorization': 'Bearer $accessToken'

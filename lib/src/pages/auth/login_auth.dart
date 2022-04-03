@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:fokad_admin/src/api/auth/auth_api.dart';
 import 'package:fokad_admin/src/constants/app_theme.dart';
 import 'package:fokad_admin/src/constants/responsive.dart';
+import 'package:fokad_admin/src/controllers/app_state.dart';
 import 'package:fokad_admin/src/provider/theme_provider.dart';
 import 'package:fokad_admin/src/routes/routes.dart';
 import 'package:fokad_admin/src/widgets/btn_widget.dart';
@@ -204,21 +205,13 @@ class _LoginPageState extends State<LoginPage> {
             final form = _form.currentState!;
             if (form.validate()) {
               setState(() => isloading = true);
-
-              // print('matriculeController ${matriculeController.text}');
-              // print('passwordController ${passwordController.text}');
-
-              // const storage = FlutterSecureStorage();
-              // storage.deleteAll();
-              // var token = await storage.read(key: 'accessToken');
-              
-
               await AuthApi()
                   .login(matriculeController.text, passwordController.text)
                   .then((value) {
                 if (value) { 
-                  context.read<AppState>().handleAfterLogin(value);
-                  Routemaster.of(context).push(AdminRoutes.adminDashboard);
+                  // FocusScope.of(context).requestFocus(FocusNode());
+                  // context.read<AppState>().handleAfterLogin(value);
+                  Routemaster.of(context).replace(AdminRoutes.adminDashboard);
                   ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                     content: const Text("Login succès!"),
                     backgroundColor: Colors.green[700],

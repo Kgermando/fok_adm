@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:fokad_admin/src/controllers/app_state.dart';
 import 'package:fokad_admin/src/navigation/drawer/components/administration_nav.dart';
 import 'package:fokad_admin/src/navigation/drawer/components/finances_nav.dart';
 import 'package:fokad_admin/src/navigation/drawer/components/rh_nav.dart';
+import 'package:provider/provider.dart';
 import 'package:routemaster/routemaster.dart';
 
 class DrawerMenu extends StatefulWidget {
@@ -19,6 +21,8 @@ class _DrawerMenuState extends State<DrawerMenu> {
 
   @override
   Widget build(BuildContext context) {
+    AppState aState = context.watch<AppState>();
+    
     String pageCurrente = Routemaster.of(context).currentRoute.fullPath;
 
     print('pageCurrente $pageCurrente');

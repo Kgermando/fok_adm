@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fokad_admin/src/controllers/app_state.dart';
 import 'package:fokad_admin/src/helpers/user_preferences.dart';
 import 'package:fokad_admin/src/models/users/user_model.dart';
 import 'package:fokad_admin/src/pages/administration/comm_marketing_admin.dart';
@@ -187,39 +188,4 @@ class AppPages {
   }
 }
 
-class AppState extends ChangeNotifier {
-  bool isLoggedIn = false;
 
-  Future<bool> handleAfterLogin(bool value) async {
-    isLoggedIn = true;
-    bool res = await UserPreferences.setAuth(value);
-    notifyListeners();
-    return res;
-  }
-
-  // Future<bool> handleAfterLogin(UserModel user) async {
-  //   isLoggedIn = false;
-  //   bool res = await UserPreferences.save('userModel', user);
-  //   notifyListeners();
-  //   return res;
-  // }
-
-  void setLogin(UserModel user) {
-    isLoggedIn = true;
-    notifyListeners();
-  }
-
-  Future<bool> handleAfterLogout() async {
-    isLoggedIn = false;
-    bool res = await UserPreferences.removeAuth();
-    notifyListeners();
-    return res;
-  }
-
-  // Future<bool> handleAfterLogout() async {
-  //   isLoggedIn = false;
-  //   bool res = await UserPreferences.remove('userModel');
-  //   notifyListeners();
-  //   return res;
-  // }
-}

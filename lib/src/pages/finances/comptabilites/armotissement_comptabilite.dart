@@ -45,7 +45,7 @@ class _AmortissementComptabiliteState extends State<AmortissementComptabilite> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        key: context.read<Controller>().scaffoldKey,
+        // key: context.read<Controller>().scaffoldKey,
         drawer: const DrawerMenu(),
         floatingActionButton: FloatingActionButton(
           foregroundColor: Colors.white,

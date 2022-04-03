@@ -6,6 +6,9 @@ import 'package:shared_preferences/shared_preferences.dart';
 class UserPreferences extends ChangeNotifier {
   static const _keyUser = 'userModel';
   static const _keyAuth = 'authJWT';
+  static const _keyIdToken = 'idToken';
+  static const _keyAccessToken = 'accessToken';
+  static const _keyRefreshToken = 'refreshToken';
 
   static Future<UserModel> read() async {
     final prefs = await SharedPreferences.getInstance();
@@ -26,14 +29,14 @@ class UserPreferences extends ChangeNotifier {
     }
   }
 
-  static save(String key, value) async {
+  static save(value) async {
     final prefs = await SharedPreferences.getInstance();
-    prefs.setString(key, json.encode(value));
+    prefs.setString(_keyUser, json.encode(value));
   }
 
-  static remove(String key) async {
+  static remove() async {
     final prefs = await SharedPreferences.getInstance();
-    prefs.remove(key);
+    prefs.remove(_keyUser);
   }
 
   static Future<bool> getAuth() async {
@@ -52,4 +55,51 @@ class UserPreferences extends ChangeNotifier {
     final prefs = await SharedPreferences.getInstance();
     prefs.remove(_keyAuth);
   }
+
+  // ID User
+  static Future<String?> getIdToken() async {
+    final prefs = await SharedPreferences.getInstance();
+    final data = prefs.getString(_keyIdToken);
+    return data;
+  }
+  static saveIdToken(value) async {
+    final prefs = await SharedPreferences.getInstance();
+    prefs.setString(_keyIdToken, json.encode(value));
+  }
+  static removeIdToken() async {
+    final prefs = await SharedPreferences.getInstance();
+    prefs.remove(_keyIdToken);
+  }
+
+  // AccessToken
+  static Future<String?> getAccessToken() async {
+    final prefs = await SharedPreferences.getInstance();
+    final data = prefs.getString(_keyAccessToken);
+    return data;
+  }
+  static saveAccessToken(value) async {
+    final prefs = await SharedPreferences.getInstance();
+    prefs.setString(_keyAccessToken, json.encode(value));
+  }
+  static removeAccessToken() async {
+    final prefs = await SharedPreferences.getInstance();
+    prefs.remove(_keyAccessToken);
+  }
+
+  // RefreshToken
+  static Future<String?> getRefreshToken() async {
+    final prefs = await SharedPreferences.getInstance();
+    final data = prefs.getString(_keyRefreshToken);
+    return data;
+  }
+  static saveRefreshToken(value) async {
+    final prefs = await SharedPreferences.getInstance();
+    prefs.setString(_keyRefreshToken, json.encode(value));
+  }
+  static removeRefreshToken() async {
+    final prefs = await SharedPreferences.getInstance();
+    prefs.remove(_keyRefreshToken);
+  }
+
+  
 }
