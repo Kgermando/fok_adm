@@ -32,7 +32,7 @@ class MenuOptions with ChangeNotifier {
       case MenuItems.itemLogout:
         // Remove stockage jwt here.
         AuthApi().logout();
-        Routemaster.of(context).replace('/');
+        Routemaster.of(context).replace('/login');
     }
   }
 }

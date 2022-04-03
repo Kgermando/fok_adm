@@ -74,18 +74,14 @@ class AuthApi extends ChangeNotifier {
       } catch (e) {
         debugPrint('un soucis $e');
       }
-      notifyListeners();
       return true;
     } else {
-      notifyListeners();
       return false;
     }
   }
 
   // Retrieve the access token
   Future<String?> getAccessToken() async {
-    // const storage = FlutterSecureStorage();
-    //  await storage.read(key: 'accessToken');
     final prefs = await SharedPreferences.getInstance();
     return prefs.getString("accessToken");
   }

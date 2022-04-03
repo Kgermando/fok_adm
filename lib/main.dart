@@ -35,14 +35,9 @@ class MyApp extends StatelessWidget {
         builder: (context, _) {
           final themeProvider = Provider.of<ThemeProvider>(context);
           return MaterialApp.router(
-            routerDelegate: RoutemasterDelegate(
-              routesBuilder: (context) {
-                // This will rebuild when AppState changes
-                // final appState = Provider.of<AppState>(context);
-                final appState = context.watch<AppState>().isLogged;
-                return (!appState) ? loggedInMap : loggedOutMap;
-              },
-            ),
+            routerDelegate: RoutemasterDelegate(routesBuilder: (context) {
+              return AppPages.appRoutes(context);
+            }),
             routeInformationParser: const RoutemasterParser(),
             title: 'FOKAD ADMINISTRATION',
             themeMode: themeProvider.themeMode,

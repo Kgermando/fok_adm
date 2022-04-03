@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:fokad_admin/src/api/rh/agents_api.dart';
 import 'package:fokad_admin/src/models/rh/agent_model.dart';
-import 'package:fokad_admin/src/models/users/user_model.dart';
 import 'package:fokad_admin/src/widgets/print_widget.dart';
 import 'package:pluto_grid/pluto_grid.dart';
 
@@ -17,25 +16,72 @@ class TableAgents extends StatefulWidget {
 class _TableAgentsState extends State<TableAgents> {
   List<PlutoColumn> columns = [];
   List<PlutoRow> rows = [];
-  late PlutoGridStateManager stateManager;
+  PlutoGridStateManager? stateManager;
   PlutoGridSelectingMode gridSelectingMode = PlutoGridSelectingMode.row;
-
-  List<UserModel?> listData = [];
 
   @override
   initState() {
     agentsColumn();
     agentsRow();
-
-    stateManager.resetCurrentState();
-
     super.initState();
   }
 
   @override
-  void dispose() {
-    super.dispose();
+  Widget build(BuildContext context) {
+    return PlutoGrid(
+      columns: columns,
+      rows: rows,
+      
+      onLoaded: (PlutoGridOnLoadedEvent event) {
+        stateManager = event.stateManager;
+        stateManager!.setShowColumnFilter(true);
+      },
+      createHeader: (PlutoGridStateManager header) {
+        return Row(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: [PrintWidget(onPressed: () {})],
+        );
+      },
+      configuration: PlutoGridConfiguration(
+        columnFilterConfig: PlutoGridColumnFilterConfig(
+          filters: const [
+            ...FilterHelper.defaultFilters,
+            // custom filter
+            ClassYouImplemented(),
+          ],
+          resolveDefaultColumnFilter: (column, resolver) {
+            if (column.field == 'nom') {
+              return resolver<ClassYouImplemented>() as PlutoFilterType;
+            } else if (column.field == 'postNom') {
+              return resolver<ClassYouImplemented>() as PlutoFilterType;
+            } else if (column.field == 'prenom') {
+              return resolver<ClassYouImplemented>() as PlutoFilterType;
+            } else if (column.field == 'email') {
+              return resolver<ClassYouImplemented>() as PlutoFilterType;
+            } else if (column.field == 'telephone') {
+              return resolver<ClassYouImplemented>() as PlutoFilterType;
+            } else if (column.field == 'sexe') {
+              return resolver<ClassYouImplemented>() as PlutoFilterType;
+            } else if (column.field == 'role') {
+              return resolver<ClassYouImplemented>() as PlutoFilterType;
+            } else if (column.field == 'matricule') {
+              return resolver<ClassYouImplemented>() as PlutoFilterType;
+            } else if (column.field == 'dateNaissance') {
+              return resolver<ClassYouImplemented>() as PlutoFilterType;
+            } else if (column.field == 'departement') {
+              return resolver<ClassYouImplemented>() as PlutoFilterType;
+            } else if (column.field == 'servicesAffectation') {
+              return resolver<ClassYouImplemented>() as PlutoFilterType;
+            } else if (column.field == 'statutAgent') {
+              return resolver<ClassYouImplemented>() as PlutoFilterType;
+            }
+            return resolver<PlutoFilterTypeContains>() as PlutoFilterType;
+          },
+        ),
+      ),
+    );
   }
+
 
   void agentsColumn() {
     columns = [
@@ -200,13 +246,13 @@ class _TableAgentsState extends State<TableAgents> {
 
   Future agentsRow() async {
     List<AgentModel?> data = await AgentsApi().getAllData();
-    print('agents $data');
+    // print('agents $data');
     if (mounted) {
       setState(() {
         for (var item in data) {
-          print('item ${item!.id}');
+          // print('item ${item!.id}');
           rows.add(PlutoRow(cells: {
-            'id': PlutoCell(value: item.id),
+            'id': PlutoCell(value: item!.id),
             'nom': PlutoCell(value: item.nom),
             'postNom': PlutoCell(value: item.postNom),
             'prenom': PlutoCell(value: item.prenom),
@@ -219,75 +265,18 @@ class _TableAgentsState extends State<TableAgents> {
             'departement': PlutoCell(value: item.departement),
             'servicesAffectation': PlutoCell(value: item.servicesAffectation),
             'statutAgent':
-              PlutoCell(value: (item.statutAgent) ? 'Actif' : 'Inactif')
+                PlutoCell(value: (item.statutAgent) ? 'Actif' : 'Inactif')
           }));
         }
-        stateManager.resetCurrentState();
+        stateManager!.resetCurrentState();
       });
     }
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return PlutoGrid(
-      columns: columns,
-      rows: rows,
-      onLoaded: (PlutoGridOnLoadedEvent event) {
-        event.stateManager.setShowColumnFilter(true);
-      },
-      onChanged: (PlutoGridOnChangedEvent event) {
-        print(event);
-      },
-      createHeader: (PlutoGridStateManager header) {
-        return Row(
-          mainAxisAlignment: MainAxisAlignment.end,
-          children: [PrintWidget(onPressed: () {})],
-        );
-      },
-      configuration: PlutoGridConfiguration(
-        columnFilterConfig: PlutoGridColumnFilterConfig(
-          filters: const [
-            ...FilterHelper.defaultFilters,
-            // custom filter
-            ClassYouImplemented(),
-          ],
-          resolveDefaultColumnFilter: (column, resolver) {
-            if (column.field == 'nom') {
-              return resolver<PlutoFilterTypeContains>() as PlutoFilterType;
-            } else if (column.field == 'postNom') {
-              return resolver<PlutoFilterTypeGreaterThan>() as PlutoFilterType;
-            } else if (column.field == 'prenom') {
-              return resolver<PlutoFilterTypeGreaterThan>() as PlutoFilterType;
-            } else if (column.field == 'email') {
-              return resolver<PlutoFilterTypeGreaterThan>() as PlutoFilterType;
-            } else if (column.field == 'telephone') {
-              return resolver<PlutoFilterTypeGreaterThan>() as PlutoFilterType;
-            } else if (column.field == 'sexe') {
-              return resolver<PlutoFilterTypeGreaterThan>() as PlutoFilterType;
-            } else if (column.field == 'role') {
-              return resolver<PlutoFilterTypeGreaterThan>() as PlutoFilterType;
-            } else if (column.field == 'matricule') {
-              return resolver<PlutoFilterTypeGreaterThan>() as PlutoFilterType;
-            } else if (column.field == 'dateNaissance') {
-              return resolver<PlutoFilterTypeLessThan>() as PlutoFilterType;
-            } else if (column.field == 'departement') {
-              return resolver<PlutoFilterTypeLessThan>() as PlutoFilterType;
-            } else if (column.field == 'servicesAffectation') {
-              return resolver<PlutoFilterTypeLessThan>() as PlutoFilterType;
-            } else if (column.field == 'statutAgent') {
-              return resolver<ClassYouImplemented>() as PlutoFilterType;
-            }
-            return resolver<PlutoFilterTypeContains>() as PlutoFilterType;
-          },
-        ),
-      ),
-    );
   }
 }
 
 class ClassYouImplemented implements PlutoFilterType {
   @override
-  String get title => 'Custom contains';
+  String get title => 'recherche';
 
   @override
   get compare => ({

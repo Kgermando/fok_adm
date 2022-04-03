@@ -6,6 +6,7 @@ import 'package:fokad_admin/src/navigation/drawer/drawer_menu.dart';
 import 'package:fokad_admin/src/navigation/header/custom_appbar.dart';
 import 'package:fokad_admin/src/provider/controller.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class DashboardAdministration extends StatefulWidget {
   const DashboardAdministration({Key? key}) : super(key: key);
@@ -23,8 +24,8 @@ class _DashboardAdministrationState extends State<DashboardAdministration> {
   }
 
   Future<void> tokeeee() async {
-    const storage = FlutterSecureStorage();
-    var accessToken = await storage.read(key: 'accessToken'); // pour test
+    final prefs = await SharedPreferences.getInstance();
+    var accessToken = prefs.getString("accessToken"); // pour test
     print('accessToken $accessToken');
   }
 

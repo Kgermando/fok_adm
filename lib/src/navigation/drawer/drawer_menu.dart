@@ -14,29 +14,33 @@ class DrawerMenu extends StatefulWidget {
 }
 
 class _DrawerMenuState extends State<DrawerMenu> {
-  bool isOpen = false;
-  bool isOpenTransaction = false;
+
+  final ScrollController controller = ScrollController();
 
   @override
   Widget build(BuildContext context) {
     String pageCurrente = Routemaster.of(context).currentRoute.fullPath;
 
-    // print('pageCurrente $pageCurrente');
+    print('pageCurrente $pageCurrente');
     // print('path $path');
     return Drawer(
       elevation: 10.0,
-      child: ListView(
-        children: [
-          DrawerHeader(
-              child: Image.asset(
-            'assets/images/logo.png',
-            width: 100,
-            height: 100,
-          )),
-          AdministrationNav(pageCurrente: pageCurrente),
-          FinancesNav(pageCurrente: pageCurrente),
-          RhNav(pageCurrente: pageCurrente),
-        ],
+      child: Scrollbar(
+        controller: controller,
+        child: ListView(
+          controller: controller,
+          children: [
+            DrawerHeader(
+                child: Image.asset(
+              'assets/images/logo.png',
+              width: 100,
+              height: 100,
+            )),
+            AdministrationNav(pageCurrente: pageCurrente),
+            FinancesNav(pageCurrente: pageCurrente),
+            RhNav(pageCurrente: pageCurrente),
+          ],
+        ),
       ),
     );
   }
