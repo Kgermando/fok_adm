@@ -1,13 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:fokad_admin/src/api/auth/auth_api.dart';
 import 'package:fokad_admin/src/models/menu_item.dart';
-<<<<<<< HEAD
 import 'package:fokad_admin/src/routes/routes.dart';
-=======
-import 'package:fokad_admin/src/pages/auth/profil_page.dart';
->>>>>>> parent of 80eb0c4 (add logout done)
 import 'package:fokad_admin/src/utils/menu_items.dart';
-import 'package:routemaster/routemaster.dart';
 
 class MenuOptions with ChangeNotifier {
   PopupMenuItem<MenuItem> buildItem(MenuItem item) => PopupMenuItem(
@@ -23,28 +18,21 @@ class MenuOptions with ChangeNotifier {
   void onSelected(BuildContext context, MenuItem item) {
     switch (item) {
       case MenuItems.itemProfile:
-        Routemaster.of(context).push('/profile');
+        Navigator.of(context).pushReplacementNamed(UserRoutes.profile);
         break;
 
       case MenuItems.itemHelp:
-        Routemaster.of(context).push('/helps');
+       Navigator.of(context).pushReplacementNamed(UserRoutes.helps);
         break;
 
       case MenuItems.itemSettings:
-        Routemaster.of(context).push('/settings');
+        Navigator.of(context).pushReplacementNamed(UserRoutes.settings);
         break;
 
       case MenuItems.itemLogout:
         // Remove stockage jwt here.
-<<<<<<< HEAD
         AuthApi().logout();
-        
-        Routemaster.of(context).replace(UserRoutes.login);
-=======
-        const storage = FlutterSecureStorage();
-        storage.deleteAll();
-        Routemaster.of(context).replace('/');
->>>>>>> parent of 80eb0c4 (add logout done)
+        Navigator.of(context).pushReplacementNamed(UserRoutes.login);
     }
   }
 }

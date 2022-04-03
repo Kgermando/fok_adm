@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fokad_admin/src/navigation/drawer/drawer_widget.dart';
 import 'package:fokad_admin/src/routes/routes.dart';
-import 'package:routemaster/routemaster.dart';
-
 class FinancesNav extends StatefulWidget {
   const FinancesNav({Key? key, required this.pageCurrente}) : super(key: key);
   final String pageCurrente;
@@ -39,9 +37,9 @@ class _FinancesNavState extends State<FinancesNav> {
             title: 'Dashboard',
             style: bodyText1!,
             onTap: () {
-              Routemaster.of(context).replace(FinanceRoutes.financeDashboard);
-              // Responsive.isMobile(context);
-              Routemaster.of(context).pop();
+              Navigator.of(context)
+                  .pushReplacementNamed(FinanceRoutes.financeDashboard);
+              Navigator.of(context).pop();
             }
           ),
           ExpansionTile(
@@ -61,10 +59,9 @@ class _FinancesNavState extends State<FinancesNav> {
                 title: 'Caisse',
                 style: bodyText2!,
                 onTap: () {
-                  Routemaster.of(context)
-                      .replace(FinanceRoutes.transactionsCaisse);
-                  // Responsive.isMobile(context);
-                  Routemaster.of(context).pop();
+                  Navigator.of(context)
+                      .pushReplacementNamed(FinanceRoutes.transactionsCaisse);
+                  Navigator.of(context).pop();
                 }
               ),
               DrawerWidget(
@@ -74,10 +71,9 @@ class _FinancesNavState extends State<FinancesNav> {
                 title: 'Banque',
                 style: bodyText2,
                 onTap: () {
-                  Routemaster.of(context)
-                      .replace(FinanceRoutes.transactionsBanque);
-                  // Responsive.isMobile(context);
-                  Routemaster.of(context).pop();
+                  Navigator.of(context)
+                      .pushReplacementNamed(FinanceRoutes.transactionsBanque);
+                  Navigator.of(context).pop();
                 }
               ),
               DrawerWidget(
@@ -87,10 +83,9 @@ class _FinancesNavState extends State<FinancesNav> {
                   title: 'Dettes',
                   style: bodyText2,
                   onTap: () {
-                    Routemaster.of(context)
-                        .replace(FinanceRoutes.transactionsDettes);
-                    // Responsive.isMobile(context);
-                    Routemaster.of(context).pop();
+                    Navigator.of(context)
+                      .pushReplacementNamed(FinanceRoutes.transactionsDettes);
+                    Navigator.of(context).pop();
                 }),
               DrawerWidget(
                 selected: widget.pageCurrente == FinanceRoutes.transactionsCreances,
@@ -99,10 +94,9 @@ class _FinancesNavState extends State<FinancesNav> {
                 title: 'Creances',
                 style: bodyText2,
                 onTap: () {
-                  Routemaster.of(context)
-                      .replace(FinanceRoutes.transactionsCreances);
-                  // Responsive.isMobile(context);
-                  Routemaster.of(context).pop();
+                  Navigator.of(context).pushReplacementNamed(
+                      FinanceRoutes.transactionsCreances);
+                  Navigator.of(context).pop();
                 }),
               DrawerWidget(
                 selected: widget.pageCurrente == FinanceRoutes.transactionsFinancementExterne,
@@ -111,10 +105,9 @@ class _FinancesNavState extends State<FinancesNav> {
                 title: 'Fin. externes',
                 style: bodyText2,
                 onTap: () {
-                  Routemaster.of(context)
-                      .replace(FinanceRoutes.transactionsFinancementExterne);
-                  // Responsive.isMobile(context);
-                  Routemaster.of(context).pop();
+                  Navigator.of(context)
+                      .pushReplacementNamed(FinanceRoutes.transactionsFinancementExterne);
+                  Navigator.of(context).pop();
                   }),
               DrawerWidget(
                   selected: widget.pageCurrente == FinanceRoutes.transactionsDepenses,
@@ -123,10 +116,9 @@ class _FinancesNavState extends State<FinancesNav> {
                   title: 'Dépenses',
                   style: bodyText2,
                   onTap: () {
-                    Routemaster.of(context)
-                        .replace(FinanceRoutes.transactionsDepenses);
-                    // Responsive.isMobile(context);
-                    Routemaster.of(context).pop();
+                    Navigator.of(context)
+                      .pushReplacementNamed(FinanceRoutes.transactionsDepenses);
+                    Navigator.of(context).pop();
                   }),
             ],
           ),
@@ -147,8 +139,9 @@ class _FinancesNavState extends State<FinancesNav> {
                   title: 'Bilan',
                   style: bodyText2,
                   onTap: () {
-                    Routemaster.of(context).replace(FinanceRoutes.comptabiliteBilan);
-                    Routemaster.of(context).pop();
+                    Navigator.of(context)
+                      .pushReplacementNamed(FinanceRoutes.comptabiliteBilan);
+                    Navigator.of(context).pop();
                   }),
               DrawerWidget(
                   selected: widget.pageCurrente == FinanceRoutes.comptabiliteJournal,
@@ -157,9 +150,9 @@ class _FinancesNavState extends State<FinancesNav> {
                   title: 'Journal',
                   style: bodyText2,
                   onTap: () {
-                    Routemaster.of(context).replace(FinanceRoutes.comptabiliteJournal);
-                    // Responsive.isMobile(context);
-                    Routemaster.of(context).pop();
+                    Navigator.of(context).pushReplacementNamed(
+                      FinanceRoutes.comptabiliteJournal);
+                    Navigator.of(context).pop();
                   }),
               DrawerWidget(
                   selected: widget.pageCurrente == FinanceRoutes.comptabiliteValorisation,
@@ -168,9 +161,9 @@ class _FinancesNavState extends State<FinancesNav> {
                   title: 'Valorisation',
                   style: bodyText2,
                   onTap: () {
-                    Routemaster.of(context).replace(FinanceRoutes.comptabiliteValorisation);
-                    // Responsive.isMobile(context);
-                    Routemaster.of(context).pop();
+                    Navigator.of(context).pushReplacementNamed(
+                      FinanceRoutes.comptabiliteValorisation);
+                    Navigator.of(context).pop();
                   }),
               DrawerWidget(
                   selected: widget.pageCurrente == FinanceRoutes.comptabiliteAmortissement,
@@ -179,10 +172,9 @@ class _FinancesNavState extends State<FinancesNav> {
                   title: 'Amortissement',
                   style: bodyText2,
                   onTap: () {
-                    Routemaster.of(context)
-                        .replace(FinanceRoutes.comptabiliteAmortissement);
-                    // Responsive.isMobile(context);
-                    Routemaster.of(context).pop();
+                    Navigator.of(context)
+                      .pushReplacementNamed(FinanceRoutes.comptabiliteAmortissement);
+                    Navigator.of(context).pop();
                   }),
             ],
           ),
@@ -193,9 +185,8 @@ class _FinancesNavState extends State<FinancesNav> {
             title: 'Budget',
             style: bodyText1,
             onTap: () {
-              Routemaster.of(context).replace(FinanceRoutes.financeBudget);
-              // Responsive.isMobile(context);
-              Routemaster.of(context).pop();
+              Navigator.of(context).pushReplacementNamed(FinanceRoutes.financeBudget);
+              Navigator.of(context).pop();
             }
           ),
         ],

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fokad_admin/src/api/auth/auth_api.dart';
-import 'package:routemaster/routemaster.dart';
+import 'package:fokad_admin/src/routes/routes.dart';
 
 class SplashScreens extends StatefulWidget {
   const SplashScreens({Key? key}) : super(key: key);
@@ -23,9 +23,9 @@ class _SplashScreensState extends State<SplashScreens> {
             if (userInfo != null) {
               var userData = userInfo;
                if (userData) {
-                Routemaster.of(context).replace('/admin-dashboard');
+                Navigator.of(context).pushReplacementNamed(AdminRoutes.adminDashboard);
               } else {
-                Routemaster.of(context).replace('/login');
+                Navigator.of(context).pushReplacementNamed(UserRoutes.login);
               }
             }
           }

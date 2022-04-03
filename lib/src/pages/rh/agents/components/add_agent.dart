@@ -720,10 +720,7 @@ class _AddAgentState extends State<AddAgent> {
     );
 
     await AgentsApi().insertData(agentModel);
-<<<<<<< HEAD
-    Routemaster.of(context).replace(RhRoutes.rhAgent);
-=======
->>>>>>> parent of 80eb0c4 (add logout done)
+    Navigator.of(context).pushReplacementNamed(RhRoutes.rhAgent);
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
       content: const Text("Enregistrer avec succès!"),
       backgroundColor: Colors.green[700],

@@ -3,11 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:fokad_admin/src/api/rh/agents_api.dart';
 import 'package:fokad_admin/src/models/rh/agent_model.dart';
-<<<<<<< HEAD
 import 'package:fokad_admin/src/widgets/print_widget.dart';
-=======
-import 'package:fokad_admin/src/models/users/user_model.dart';
->>>>>>> parent of 80eb0c4 (add logout done)
 import 'package:pluto_grid/pluto_grid.dart';
 
 class TableAgents extends StatefulWidget {
@@ -27,10 +23,6 @@ class _TableAgentsState extends State<TableAgents> {
   initState() {
     agentsColumn();
     agentsRow();
-<<<<<<< HEAD
-=======
-    
->>>>>>> parent of 80eb0c4 (add logout done)
     super.initState();
   }
 
@@ -39,7 +31,6 @@ class _TableAgentsState extends State<TableAgents> {
     return PlutoGrid(
       columns: columns,
       rows: rows,
-      
       onLoaded: (PlutoGridOnLoadedEvent event) {
         stateManager = event.stateManager;
         stateManager!.setShowColumnFilter(true);
@@ -90,10 +81,10 @@ class _TableAgentsState extends State<TableAgents> {
     );
   }
 
-
   void agentsColumn() {
     columns = [
       PlutoColumn(
+        readOnly: true,
         title: 'Id',
         field: 'id',
         type: PlutoColumnType.number(),
@@ -105,6 +96,7 @@ class _TableAgentsState extends State<TableAgents> {
         minWidth: 80,
       ),
       PlutoColumn(
+        readOnly: true,
         title: 'Nom',
         field: 'nom',
         type: PlutoColumnType.text(),
@@ -116,6 +108,7 @@ class _TableAgentsState extends State<TableAgents> {
         minWidth: 150,
       ),
       PlutoColumn(
+        readOnly: true,
         title: 'Post-Nom',
         field: 'postNom',
         type: PlutoColumnType.text(),
@@ -127,6 +120,7 @@ class _TableAgentsState extends State<TableAgents> {
         minWidth: 150,
       ),
       PlutoColumn(
+        readOnly: true,
         title: 'Prénom',
         field: 'prenom',
         type: PlutoColumnType.text(),
@@ -138,6 +132,7 @@ class _TableAgentsState extends State<TableAgents> {
         minWidth: 150,
       ),
       PlutoColumn(
+        readOnly: true,
         title: 'Email',
         field: 'email',
         type: PlutoColumnType.text(),
@@ -149,6 +144,7 @@ class _TableAgentsState extends State<TableAgents> {
         minWidth: 150,
       ),
       PlutoColumn(
+        readOnly: true,
         title: 'telephone',
         field: 'telephone',
         type: PlutoColumnType.text(),
@@ -160,6 +156,7 @@ class _TableAgentsState extends State<TableAgents> {
         minWidth: 150,
       ),
       PlutoColumn(
+        readOnly: true,
         title: 'sexe',
         field: 'sexe',
         type: PlutoColumnType.text(),
@@ -171,6 +168,7 @@ class _TableAgentsState extends State<TableAgents> {
         minWidth: 150,
       ),
       PlutoColumn(
+        readOnly: true,
         title: 'Acréditation',
         field: 'role',
         type: PlutoColumnType.text(),
@@ -182,6 +180,7 @@ class _TableAgentsState extends State<TableAgents> {
         minWidth: 150,
       ),
       PlutoColumn(
+        readOnly: true,
         title: 'Matricule',
         field: 'matricule',
         type: PlutoColumnType.text(),
@@ -193,6 +192,7 @@ class _TableAgentsState extends State<TableAgents> {
         minWidth: 150,
       ),
       PlutoColumn(
+        readOnly: true,
         title: 'Date de naissance',
         field: 'dateNaissance',
         type: PlutoColumnType.text(),
@@ -204,6 +204,7 @@ class _TableAgentsState extends State<TableAgents> {
         minWidth: 150,
       ),
       PlutoColumn(
+        readOnly: true,
         title: 'Département',
         field: 'departement',
         type: PlutoColumnType.text(),
@@ -215,6 +216,7 @@ class _TableAgentsState extends State<TableAgents> {
         minWidth: 150,
       ),
       PlutoColumn(
+        readOnly: true,
         title: 'Services d\'affectation',
         field: 'servicesAffectation',
         type: PlutoColumnType.text(),
@@ -226,6 +228,7 @@ class _TableAgentsState extends State<TableAgents> {
         minWidth: 150,
       ),
       PlutoColumn(
+        readOnly: true,
         title: 'Statut Agent',
         field: 'statutAgent',
         type: PlutoColumnType.text(),
@@ -245,7 +248,6 @@ class _TableAgentsState extends State<TableAgents> {
     if (mounted) {
       setState(() {
         for (var item in data) {
-<<<<<<< HEAD
           // print('item ${item!.id}');
           rows.add(PlutoRow(cells: {
             'id': PlutoCell(value: item!.id),
@@ -263,34 +265,11 @@ class _TableAgentsState extends State<TableAgents> {
             'statutAgent':
                 PlutoCell(value: (item.statutAgent) ? 'Actif' : 'Inactif')
           }));
-=======
-          print('item ${item!.id}');
-          rows.add(
-            PlutoRow(
-              cells: {
-                'id': PlutoCell(value: item.id),
-                'nom': PlutoCell(value: item.nom),
-                'postNom': PlutoCell(value: item.postNom),
-                'prenom': PlutoCell(value: item.prenom),
-                'email': PlutoCell(value: item.email),
-                'telephone': PlutoCell(value: item.telephone),
-                'sexe': PlutoCell(value: item.sexe),
-                'role': PlutoCell(value: item.role),
-                'matricule': PlutoCell(value: item.matricule),
-                'dateNaissance': PlutoCell(value: item.dateNaissance),
-                'departement': PlutoCell(value: item.departement),
-                'servicesAffectation': PlutoCell(value: item.servicesAffectation),
-                'statutAgent': PlutoCell(value: item.statutAgent)
-              }
-            )
-          );
->>>>>>> parent of 80eb0c4 (add logout done)
         }
         stateManager!.resetCurrentState();
       });
     }
   }
-<<<<<<< HEAD
 }
 
 class ClassYouImplemented implements PlutoFilterType {
@@ -310,27 +289,3 @@ class ClassYouImplemented implements PlutoFilterType {
 
   const ClassYouImplemented();
 }
-=======
-
-  @override
-  Widget build(BuildContext context) {
-    return PlutoGrid(
-      columns: columns, rows: rows,
-      // onChanged: (PlutoGridOnChangedEvent event) {
-      //   setState(() {});
-      //   print(event);
-      //   PlutoRow tr = rows[event.rowIdx!];
-      //   for (var f in tr.cells.values) {
-      //     print(f.value);
-      //   }
-      //   PlutoCell? tc = tr.cells['id'];
-      //   print(tc!.value);
-      // },
-      onLoaded: (PlutoGridOnLoadedEvent event) {
-        stateManager = event.stateManager;
-        // stateManager.setSelectingMode(gridSelectingMode);
-      },
-    );
-  }
-}
->>>>>>> parent of 80eb0c4 (add logout done)

@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:fokad_admin/src/api/auth/auth_api.dart';
 import 'package:fokad_admin/src/api/route_api.dart';
 import 'package:fokad_admin/src/models/rh/agent_model.dart';
 import 'package:http/http.dart' as http;
@@ -86,7 +87,6 @@ class AgentsApi {
     var data = agentModel.toJson();
     var body = jsonEncode(data);
 
-<<<<<<< HEAD
     var resp = await client.post(
       addAgentsUrl,
         headers: <String, String>{
@@ -99,19 +99,8 @@ class AgentsApi {
     } else if (resp.statusCode == 401) {
       await AuthApi().refreshAccessToken();
       return insertData(agentModel);
-=======
-    var res = await client.post(addAgentsUrl,
-      headers: <String, String>{
-        'Content-Type': 'application/json; charset=UTF-8',
-        'Authorization': 'Bearer $accessToken'
-      },
-      body: body);
-    if (res.statusCode == 200) {
-      return AgentModel.fromJson(json.decode(res.body));
-      
->>>>>>> parent of 80eb0c4 (add logout done)
     } else {
-      throw Exception(json.decode(res.body)['message']);
+      throw Exception(json.decode(resp.body)['message']);
     }
   }
 

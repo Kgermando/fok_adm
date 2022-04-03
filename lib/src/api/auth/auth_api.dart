@@ -131,7 +131,7 @@ class AuthApi extends ChangeNotifier {
       var payload = json.decode(
           ascii.decode(base64.decode(base64.normalize(splittedJwt[1]))));
     }
-    var res = await client.get(
+    var resp = await client.get(
       userUrl,
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
@@ -139,10 +139,9 @@ class AuthApi extends ChangeNotifier {
       },
     );
 
-    if (res.statusCode == 200) {
-      return UserModel.fromJson(json.decode(res.body));
+    if (resp.statusCode == 200) {
+      return UserModel.fromJson(json.decode(resp.body));
     } else {
-<<<<<<< HEAD
       throw Exception(json.decode(resp.body)['message']);
     }
   }
@@ -192,9 +191,6 @@ class AuthApi extends ChangeNotifier {
       }
     } catch (e) {
       throw Exception(['message']);
-=======
-      throw Exception(json.decode(res.body)['message']);
->>>>>>> parent of 80eb0c4 (add logout done)
     }
   }
 }
