@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:fokad_admin/src/api/rh/agents_api.dart';
 import 'package:fokad_admin/src/constants/app_theme.dart';
 import 'package:fokad_admin/src/constants/responsive.dart';
-import 'package:fokad_admin/src/models/rh/agent_count_model.dart';
 import 'package:fokad_admin/src/models/rh/agent_model.dart';
 import 'package:fokad_admin/src/navigation/drawer/drawer_menu.dart';
 import 'package:fokad_admin/src/navigation/header/custom_appbar.dart';
@@ -13,9 +12,7 @@ import 'package:fokad_admin/src/utils/country.dart';
 import 'package:fokad_admin/src/utils/dropdown.dart';
 import 'package:fokad_admin/src/widgets/btn_widget.dart';
 import 'package:fokad_admin/src/widgets/print_widget.dart';
-import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
-import 'package:routemaster/routemaster.dart';
 
 class AddAgent extends StatefulWidget {
   const AddAgent({Key? key}) : super(key: key);
@@ -59,19 +56,11 @@ class _AddAgentState extends State<AddAgent> {
   final TextEditingController rateController = TextEditingController();
   final TextEditingController passwordHashController = TextEditingController();
 
-  String matricule = "";
-  String? photo;
   String? sexe;
   String? role;
   String? nationalite;
   String? departement;
   String? typeContrat;
-
-  @override
-  void initState() {
-    getData();
-    super.initState();
-  }
 
   @override
   void dispose() {
@@ -96,15 +85,6 @@ class _AddAgentState extends State<AddAgent> {
     passwordHashController.dispose();
 
     super.dispose();
-  }
-
-  AgentCountModel? agentCount;
-  Future<void> getData() async {
-    final data = await AgentsApi().getCount();
-    setState(() {
-      agentCount = data;
-      print('agentCount ${agentCount!.count}');
-    });
   }
 
   @override
@@ -163,7 +143,9 @@ class _AddAgentState extends State<AddAgent> {
                 children: [
                   Row(
                     mainAxisAlignment: MainAxisAlignment.end,
-                    children: [PrintWidget(onPressed: () {})],
+                    children: [
+                      PrintWidget(onPressed: (){})
+                    ],
                   ),
                   const SizedBox(
                     height: p20,
@@ -215,20 +197,20 @@ class _AddAgentState extends State<AddAgent> {
                   ),
                   Row(
                     children: [
-                      Expanded(child: departmentWidget()),
-                      const SizedBox(
-                        width: p10,
-                      ),
-                      Expanded(child: servicesAffectationWidget())
-                    ],
-                  ),
-                  Row(
-                    children: [
                       Expanded(child: roleWidget()),
                       const SizedBox(
                         width: p10,
                       ),
                       Expanded(child: matriculeWidget())
+                    ],
+                  ),
+                  Row(
+                    children: [
+                      Expanded(child: departmentWidget()),
+                      const SizedBox(
+                        width: p10,
+                      ),
+                      Expanded(child: servicesAffectationWidget())
                     ],
                   ),
                   Row(
@@ -437,21 +419,20 @@ class _AddAgentState extends State<AddAgent> {
 
   Widget matriculeWidget() {
     return Container(
-      margin: const EdgeInsets.only(bottom: p20),
-      child: TextFormField(
-        readOnly: true,
-        initialValue: matricule,
-        // controller: matriculeController,
-        decoration: InputDecoration(
-          labelStyle: const TextStyle(color: Colors.red),
-          border:
-              OutlineInputBorder(borderRadius: BorderRadius.circular(10.0)),
-          labelText: matricule,
-        ),
-        keyboardType: TextInputType.text,
-        style: const TextStyle(),
-      )
-    );
+        margin: const EdgeInsets.only(bottom: p20),
+        child: TextFormField(
+          controller: matriculeController,
+          decoration: InputDecoration(
+            border:
+                OutlineInputBorder(borderRadius: BorderRadius.circular(10.0)),
+            labelText: 'Matricule',
+          ),
+          keyboardType: TextInputType.text,
+          validator: (val) {
+            return 'Ce champs est obligatoire';
+          },
+          style: const TextStyle(),
+        ));
   }
 
   Widget dateNaissanceWidget() {
@@ -570,23 +551,6 @@ class _AddAgentState extends State<AddAgent> {
         onChanged: (value) {
           setState(() {
             departement = value!;
-            String fokad = 'FO';
-
-            final date = DateFormat("yy").format(DateTime.now());
-            if (departement == 'Administration') {
-              matricule = "${fokad}ADM$date-${agentCount!.count + 1}";
-            } else if (departement == 'Comptabilité et Finance') {
-              matricule = "${fokad}FIN$date-${agentCount!.count + 1}";
-            } else if (departement == 'Ressources Humaines') {
-              matricule = "${fokad}RH$date-${agentCount!.count + 1}";
-            } else if (departement == 'Exploitations') {
-              matricule = "${fokad}EXP$date-${agentCount!.count + 1}";
-            } else if (departement == 'Commercial et Marketing') {
-              matricule = "${fokad}COM$date-${agentCount!.count + 1}";
-            } else if (departement == 'Logistique') {
-              matricule = "${fokad}LOG$date-${agentCount!.count + 1}";
-            }
-            print('matricule $matricule');
           });
         },
       ),
@@ -643,6 +607,13 @@ class _AddAgentState extends State<AddAgent> {
             controller: dateFinContratController,
             firstDate: DateTime(1930),
             lastDate: DateTime(2100),
+            onChanged: (val) {
+              setState(() {
+                !(dateFinContratController.text == '')
+                    ? dateFinContratController.text
+                    : "2022-04-01";
+              });
+            },
             validator: (val) {
               return 'Ce champs est obligatoire';
             }));
@@ -722,35 +693,37 @@ class _AddAgentState extends State<AddAgent> {
   Future submit() async {
     print('dateDebutContratController ${dateDebutContratController.text}');
     final agentModel = AgentModel(
-        nom: nomController.text,
-        postNom: postNomController.text,
-        prenom: prenomController.text,
-        email: emailController.text,
-        telephone: telephoneController.text,
-        adresse: adresseController.text,
-        sexe: sexe.toString(),
-        role: role.toString(),
-        matricule: matricule,
-        dateNaissance: DateTime.parse(dateNaissanceController.text),
-        lieuNaissance: lieuNaissanceController.text,
-        nationalite: nationalite.toString(),
-        typeContrat: typeContrat.toString(),
-        departement: departement.toString(),
-        servicesAffectation: servicesAffectationController.text,
-        dateDebutContrat: DateTime.parse(dateDebutContratController.text),
-        dateFinContrat: DateTime.parse((dateFinContratController.text == "")
-            ? '2100-00-00'
-            : dateFinContratController.text),
-        fonctionOccupe: fonctionOccupeController.text,
-        competance: competanceController.toString(),
-        experience: experienceController.text,
-        statutAgent: false,
-        createdAt: DateTime.now(),
-        passwordHash: passwordHashController.text,
-        photo: photo.toString());
+      nom: nomController.text,
+      postNom: postNomController.text,
+      prenom: prenomController.text,
+      email: emailController.text,
+      telephone: telephoneController.text,
+      adresse: adresseController.text,
+      sexe: sexe.toString(),
+      role: role.toString(),
+      matricule: matriculeController.text,
+      dateNaissance: DateTime.parse(dateNaissanceController.text),
+      lieuNaissance: lieuNaissanceController.text,
+      nationalite: nationalite.toString(),
+      typeContrat: typeContrat.toString(),
+      departement: departement.toString(),
+      servicesAffectation: servicesAffectationController.text,
+      dateDebutContrat: DateTime.parse(dateDebutContratController.text),
+      dateFinContrat: DateTime.parse(dateFinContratController.text),
+      fonctionOccupe: fonctionOccupeController.text,
+      competance: competanceController.toString(),
+      experience: experienceController.text,
+      statutAgent: true,
+      createdAt: DateTime.now(),
+      passwordHash: passwordHashController.text,
+      photo: ''
+    );
 
     await AgentsApi().insertData(agentModel);
+<<<<<<< HEAD
     Routemaster.of(context).replace(RhRoutes.rhAgent);
+=======
+>>>>>>> parent of 80eb0c4 (add logout done)
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
       content: const Text("Enregistrer avec succès!"),
       backgroundColor: Colors.green[700],

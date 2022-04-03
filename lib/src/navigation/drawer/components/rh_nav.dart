@@ -24,7 +24,7 @@ class _RhNavState extends State<RhNav> {
         Icons.group,
         size: 30.0
       ),
-      title: Text('RH', style: headline6),
+      title: Text('Ressources Humaines', style: headline6),
       initiallyExpanded: false,
       onExpansionChanged: (val) {
         setState(() {
