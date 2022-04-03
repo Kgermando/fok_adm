@@ -8,6 +8,7 @@ import 'package:fokad_admin/src/models/rh/agent_model.dart';
 import 'package:fokad_admin/src/navigation/drawer/drawer_menu.dart';
 import 'package:fokad_admin/src/navigation/header/custom_appbar.dart';
 import 'package:fokad_admin/src/provider/controller.dart';
+import 'package:fokad_admin/src/routes/routes.dart';
 import 'package:fokad_admin/src/utils/country.dart';
 import 'package:fokad_admin/src/utils/dropdown.dart';
 import 'package:fokad_admin/src/widgets/btn_widget.dart';
@@ -749,7 +750,7 @@ class _AddAgentState extends State<AddAgent> {
         photo: photo.toString());
 
     await AgentsApi().insertData(agentModel);
-    Routemaster.of(context).replace('/rh-agents');
+    Routemaster.of(context).replace(RhRoutes.rhAgent);
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
       content: const Text("Enregistrer avec succès!"),
       backgroundColor: Colors.green[700],

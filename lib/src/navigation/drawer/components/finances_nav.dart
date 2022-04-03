@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:fokad_admin/src/constants/app_theme.dart';
 import 'package:fokad_admin/src/navigation/drawer/drawer_widget.dart';
+import 'package:fokad_admin/src/routes/routes.dart';
 import 'package:routemaster/routemaster.dart';
 
 class FinancesNav extends StatefulWidget {
@@ -33,13 +33,13 @@ class _FinancesNavState extends State<FinancesNav> {
         trailing: const Icon(Icons.arrow_drop_down),
         children: [
           DrawerWidget(
-            selected: widget.pageCurrente == '/finance-dashboard',
+            selected: widget.pageCurrente == FinanceRoutes.financeDashboard,
             icon: Icons.dashboard,
             sizeIcon: 20.0,
             title: 'Dashboard',
             style: bodyText1!,
             onTap: () {
-              Routemaster.of(context).replace('/finance-dashboard');
+              Routemaster.of(context).replace(FinanceRoutes.financeDashboard);
               // Responsive.isMobile(context);
               Routemaster.of(context).pop();
             }
@@ -55,76 +55,76 @@ class _FinancesNavState extends State<FinancesNav> {
             },
             children: [
               DrawerWidget(
-                selected: widget.pageCurrente == '/transactions-caisse',
+                selected: widget.pageCurrente == FinanceRoutes.transactionsCaisse,
                 icon: Icons.arrow_right,
                 sizeIcon: 15.0,
                 title: 'Caisse',
                 style: bodyText2!,
                 onTap: () {
                   Routemaster.of(context)
-                      .replace('/transactions-caisse');
+                      .replace(FinanceRoutes.transactionsCaisse);
                   // Responsive.isMobile(context);
                   Routemaster.of(context).pop();
                 }
               ),
               DrawerWidget(
-                selected: widget.pageCurrente == '/transactions-banque',
+                selected: widget.pageCurrente == FinanceRoutes.transactionsBanque,
                 icon: Icons.arrow_right,
                 sizeIcon: 15.0,
                 title: 'Banque',
                 style: bodyText2,
                 onTap: () {
                   Routemaster.of(context)
-                      .replace('/transactions-banque');
+                      .replace(FinanceRoutes.transactionsBanque);
                   // Responsive.isMobile(context);
                   Routemaster.of(context).pop();
                 }
               ),
               DrawerWidget(
-                  selected: widget.pageCurrente == '/transactions-dettes',
+                  selected: widget.pageCurrente == FinanceRoutes.transactionsDettes,
                   icon: Icons.arrow_right,
                   sizeIcon: 15.0,
                   title: 'Dettes',
                   style: bodyText2,
                   onTap: () {
                     Routemaster.of(context)
-                        .replace('/transactions-dettes');
+                        .replace(FinanceRoutes.transactionsDettes);
                     // Responsive.isMobile(context);
                     Routemaster.of(context).pop();
                 }),
               DrawerWidget(
-                selected: widget.pageCurrente == '/transactions-creances',
+                selected: widget.pageCurrente == FinanceRoutes.transactionsCreances,
                 icon: Icons.arrow_right,
                 sizeIcon: 15.0,
                 title: 'Creances',
                 style: bodyText2,
                 onTap: () {
                   Routemaster.of(context)
-                      .replace('/transactions-creances');
+                      .replace(FinanceRoutes.transactionsCreances);
                   // Responsive.isMobile(context);
                   Routemaster.of(context).pop();
                 }),
               DrawerWidget(
-                selected: widget.pageCurrente == '/transactions-financement-externe',
+                selected: widget.pageCurrente == FinanceRoutes.transactionsFinancementExterne,
                 icon: Icons.arrow_right,
                 sizeIcon: 15.0,
                 title: 'Fin. externes',
                 style: bodyText2,
                 onTap: () {
                   Routemaster.of(context)
-                      .replace('/transactions-financement-externe');
+                      .replace(FinanceRoutes.transactionsFinancementExterne);
                   // Responsive.isMobile(context);
                   Routemaster.of(context).pop();
                   }),
               DrawerWidget(
-                  selected: widget.pageCurrente == '/transactions-depenses',
+                  selected: widget.pageCurrente == FinanceRoutes.transactionsDepenses,
                   icon: Icons.arrow_right,
                   sizeIcon: 15.0,
                   title: 'Dépenses',
                   style: bodyText2,
                   onTap: () {
                     Routemaster.of(context)
-                        .replace('/transactions-depenses');
+                        .replace(FinanceRoutes.transactionsDepenses);
                     // Responsive.isMobile(context);
                     Routemaster.of(context).pop();
                   }),
@@ -141,59 +141,59 @@ class _FinancesNavState extends State<FinancesNav> {
             },
             children: [
               DrawerWidget(
-                  selected: widget.pageCurrente == '/comptabilite-bilan',
+                  selected: widget.pageCurrente == FinanceRoutes.comptabiliteBilan,
                   icon: Icons.arrow_right,
                   sizeIcon: 15.0,
                   title: 'Bilan',
                   style: bodyText2,
                   onTap: () {
-                    Routemaster.of(context).replace('/comptabilite-bilan');
+                    Routemaster.of(context).replace(FinanceRoutes.comptabiliteBilan);
                     Routemaster.of(context).pop();
                   }),
               DrawerWidget(
-                  selected: widget.pageCurrente == '/comptabilite-journal',
+                  selected: widget.pageCurrente == FinanceRoutes.comptabiliteJournal,
                   icon: Icons.arrow_right,
                   sizeIcon: 15.0,
                   title: 'Journal',
                   style: bodyText2,
                   onTap: () {
-                    Routemaster.of(context).replace('/comptabilite-journal');
+                    Routemaster.of(context).replace(FinanceRoutes.comptabiliteJournal);
                     // Responsive.isMobile(context);
                     Routemaster.of(context).pop();
                   }),
               DrawerWidget(
-                  selected: widget.pageCurrente == '/comptabilite-valorisation',
+                  selected: widget.pageCurrente == FinanceRoutes.comptabiliteValorisation,
                   icon: Icons.arrow_right,
                   sizeIcon: 15.0,
                   title: 'Valorisation',
                   style: bodyText2,
                   onTap: () {
-                    Routemaster.of(context).replace('/comptabilite-valorisation');
+                    Routemaster.of(context).replace(FinanceRoutes.comptabiliteValorisation);
                     // Responsive.isMobile(context);
                     Routemaster.of(context).pop();
                   }),
               DrawerWidget(
-                  selected: widget.pageCurrente == '/comptabilite-amortissement',
+                  selected: widget.pageCurrente == FinanceRoutes.comptabiliteAmortissement,
                   icon: Icons.arrow_right,
                   sizeIcon: 15.0,
                   title: 'Amortissement',
                   style: bodyText2,
                   onTap: () {
                     Routemaster.of(context)
-                        .replace('/comptabilite-amortissement');
+                        .replace(FinanceRoutes.comptabiliteAmortissement);
                     // Responsive.isMobile(context);
                     Routemaster.of(context).pop();
                   }),
             ],
           ),
           DrawerWidget(
-            selected: widget.pageCurrente == '/finance-budget',
+            selected: widget.pageCurrente == FinanceRoutes.financeBudget,
             icon: Icons.maps_home_work_outlined,
             sizeIcon: 20.0,
             title: 'Budget',
             style: bodyText1,
             onTap: () {
-              Routemaster.of(context).replace('/finance-budget');
+              Routemaster.of(context).replace(FinanceRoutes.financeBudget);
               // Responsive.isMobile(context);
               Routemaster.of(context).pop();
             }

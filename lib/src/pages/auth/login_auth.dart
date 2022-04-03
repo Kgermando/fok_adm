@@ -218,7 +218,7 @@ class _LoginPageState extends State<LoginPage> {
                   .then((value) {
                 if (value) { 
                   context.read<AppState>().handleAfterLogin(value);
-                  Routemaster.of(context).push('/admin-dashboard');
+                  Routemaster.of(context).push(AdminRoutes.adminDashboard);
                   ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                     content: const Text("Login succès!"),
                     backgroundColor: Colors.green[700],

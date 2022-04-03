@@ -27,7 +27,6 @@ import 'package:fokad_admin/src/pages/rh/agents/components/add_agent.dart';
 import 'package:fokad_admin/src/pages/rh/dashboard/dashboard_rh.dart';
 import 'package:fokad_admin/src/pages/rh/paiements/paiements_rh.dart';
 import 'package:fokad_admin/src/pages/rh/presences/presences_rh.dart';
-import 'package:fokad_admin/src/pages/rh/salaires/salaires_rh.dart';
 import 'package:fokad_admin/src/pages/screens/help_screen.dart';
 import 'package:fokad_admin/src/pages/screens/not_found_page.dart';
 import 'package:fokad_admin/src/pages/screens/settings_screen.dart';
@@ -75,7 +74,7 @@ class FinanceRoutes {
   static const comptabiliteBilan = "/comptabilite-bilan";
   static const comptabiliteJournal = "/comptabilite-journal";
   static const comptabiliteValorisation = "/comptabilite-valorisation";
-
+  
 }
 
 class AppPages {
@@ -110,7 +109,7 @@ class AppPages {
           return privateRoute(context, const MaterialPage(child: DashboardAdministration()));
         },
         AdminRoutes.adminRH: (route) {
-          return privateRoute(context, const MaterialPage(child: DashboardRh()));
+          return privateRoute(context, const MaterialPage(child: RhAdmin()));
         },
         AdminRoutes.adminFinance: (route) {
           return privateRoute(context, const MaterialPage(child: FinancesAdmin()));

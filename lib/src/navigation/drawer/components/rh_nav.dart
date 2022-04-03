@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fokad_admin/src/navigation/drawer/drawer_widget.dart';
+import 'package:fokad_admin/src/routes/routes.dart';
 import 'package:routemaster/routemaster.dart';
 
 class RhNav extends StatefulWidget {
@@ -33,57 +34,46 @@ class _RhNavState extends State<RhNav> {
       trailing: const Icon(Icons.arrow_drop_down),
       children: [
         DrawerWidget(
-          selected: widget.pageCurrente == '/rh-dashboard',
+          selected: widget.pageCurrente == RhRoutes.rhDashboard,
           icon: Icons.dashboard,
           sizeIcon: 20.0,
           title: 'Dashboard',
           style: bodyText1!,
           onTap: () {
-            Routemaster.of(context).replace('/rh-dashboard');
+            Routemaster.of(context).replace(RhRoutes.rhDashboard);
             Routemaster.of(context).pop();
           }
         ),
         DrawerWidget(
-          selected: widget.pageCurrente == '/rh-paiements',
+          selected: widget.pageCurrente == RhRoutes.rhPaiement,
           icon: Icons.real_estate_agent_sharp,
           sizeIcon: 20.0,
           title: 'Liste des paiements',
           style: bodyText1,
           onTap: () {
-            Routemaster.of(context).replace('/rh-paiements');
+            Routemaster.of(context).replace(RhRoutes.rhPaiement);
             Routemaster.of(context).pop();
           }
         ),
         DrawerWidget(
-          selected: widget.pageCurrente == '/rh-salaires',
-          icon: Icons.money_sharp,
-          sizeIcon: 20.0,
-          title: 'Salaires des agents',
-          style: bodyText1,
-          onTap: () {
-            Routemaster.of(context).replace('/rh-salaires');
-            Routemaster.of(context).pop();
-          }
-        ),
-        DrawerWidget(
-          selected: widget.pageCurrente == '/rh-presences',
+          selected: widget.pageCurrente == RhRoutes.rhPresence,
           icon: Icons.person,
           sizeIcon: 20.0,
           title: 'Présences des agents',
           style: bodyText1,
           onTap: () {
-            Routemaster.of(context).replace('/rh-presences');
+            Routemaster.of(context).replace(RhRoutes.rhPresence);
             Routemaster.of(context).pop();
           }
         ),
         DrawerWidget(
-          selected: widget.pageCurrente == '/rh-agents',
+          selected: widget.pageCurrente == RhRoutes.rhAgent,
           icon: Icons.group,
           sizeIcon: 20.0,
           title: 'Liste des agents',
           style: bodyText1,
           onTap: () {
-            Routemaster.of(context).replace('/rh-agents');
+            Routemaster.of(context).replace(RhRoutes.rhAgent);
             Routemaster.of(context).pop();
           }
         ),

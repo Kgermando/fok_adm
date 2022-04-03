@@ -6,6 +6,7 @@ import 'package:fokad_admin/src/navigation/header/custom_appbar.dart';
 import 'package:fokad_admin/src/pages/rh/agents/components/add_agent.dart';
 import 'package:fokad_admin/src/pages/rh/agents/components/table_agents.dart';
 import 'package:fokad_admin/src/provider/controller.dart';
+import 'package:fokad_admin/src/routes/routes.dart';
 import 'package:provider/provider.dart';
 import 'package:routemaster/routemaster.dart';
 
@@ -31,7 +32,7 @@ class _AgentsRhState extends State<AgentsRh> {
         key: context.read<Controller>().scaffoldKey,
         drawer: const DrawerMenu(),
         floatingActionButton: FloatingActionButton(
-          onPressed: () => Routemaster.of(context).push('/rh-agents-add'),
+          onPressed: () => Routemaster.of(context).push(RhRoutes.rhAgentAdd),
           child: const Icon(Icons.person_add),
         ),
         body: SafeArea(
