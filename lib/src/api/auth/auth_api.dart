@@ -185,8 +185,6 @@ class AuthApi extends ChangeNotifier {
         },
       );
       if (resp.statusCode == 200) {
-        UserPreferences.remove();
-        UserPreferences.removeAuth();
         UserPreferences.removeIdToken();
         UserPreferences.removeAccessToken();
         UserPreferences.removeRefreshToken();

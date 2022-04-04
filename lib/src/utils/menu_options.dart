@@ -22,7 +22,7 @@ class MenuOptions with ChangeNotifier {
         break;
 
       case MenuItems.itemHelp:
-        Navigator.of(context).pushReplacementNamed(UserRoutes.helps);
+       Navigator.of(context).pushReplacementNamed(UserRoutes.helps);
         break;
 
       case MenuItems.itemSettings:
