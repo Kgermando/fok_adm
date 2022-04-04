@@ -5,6 +5,7 @@ import 'package:fokad_admin/src/navigation/drawer/drawer_menu.dart';
 import 'package:fokad_admin/src/navigation/header/custom_appbar.dart';
 import 'package:fokad_admin/src/provider/controller.dart';
 import 'package:provider/provider.dart';
+
 class FinancesAdmin extends StatefulWidget {
   const FinancesAdmin({ Key? key }) : super(key: key);
 
@@ -18,7 +19,7 @@ class _FinancesAdminState extends State<FinancesAdmin> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        // key: context.read<Controller>().scaffoldKey,
+        key: context.read<Controller>().scaffoldKey,
         drawer: const DrawerMenu(),
         body: SafeArea(
           child: Row(

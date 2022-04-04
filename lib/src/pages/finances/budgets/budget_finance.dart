@@ -3,8 +3,6 @@ import 'package:fokad_admin/src/constants/app_theme.dart';
 import 'package:fokad_admin/src/constants/responsive.dart';
 import 'package:fokad_admin/src/navigation/drawer/drawer_menu.dart';
 import 'package:fokad_admin/src/navigation/header/custom_appbar.dart';
-import 'package:fokad_admin/src/provider/controller.dart';
-import 'package:provider/provider.dart';
 
 class BudgetFinance extends StatefulWidget {
   const BudgetFinance({ Key? key }) : super(key: key);

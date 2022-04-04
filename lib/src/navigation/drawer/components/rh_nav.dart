@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:fokad_admin/src/navigation/drawer/drawer_widget.dart';
 import 'package:fokad_admin/src/routes/routes.dart';
+import 'package:routemaster/routemaster.dart';
 
 class RhNav extends StatefulWidget {
   const RhNav({Key? key, required this.pageCurrente}) : super(key: key);
@@ -20,7 +21,7 @@ class _RhNavState extends State<RhNav> {
 
     return ExpansionTile(
       leading: const Icon(Icons.group, size: 30.0),
-      title: Text('Ressources Humaines', style: headline6),
+      title: Text('RH', style: headline6),
       initiallyExpanded: false,
       onExpansionChanged: (val) {
         setState(() {
@@ -36,8 +37,10 @@ class _RhNavState extends State<RhNav> {
             title: 'Dashboard',
             style: bodyText1!,
             onTap: () {
-              Navigator.of(context).pushReplacementNamed(RhRoutes.rhDashboard);
-              Navigator.of(context).pop();
+              Routemaster.of(context).replace(RhRoutes.rhDashboard);
+              // Routemaster.of(context).pop();
+              // Navigator.of(context).pushReplacementNamed(RhRoutes.rhDashboard);
+              // Navigator.of(context).pop();
             }),
         DrawerWidget(
             selected: widget.pageCurrente == RhRoutes.rhPaiement,
@@ -46,8 +49,10 @@ class _RhNavState extends State<RhNav> {
             title: 'Liste des paiements',
             style: bodyText1,
             onTap: () {
-              Navigator.of(context).pushReplacementNamed(RhRoutes.rhPaiement);
-              Navigator.of(context).pop();
+              Routemaster.of(context).replace(RhRoutes.rhPaiement);
+              // Routemaster.of(context).pop();
+              // Navigator.of(context).pushReplacementNamed(RhRoutes.rhPaiement);
+              // Navigator.of(context).pop();
             }),
         DrawerWidget(
             selected: widget.pageCurrente == RhRoutes.rhPresence,
@@ -56,8 +61,10 @@ class _RhNavState extends State<RhNav> {
             title: 'Présences des agents',
             style: bodyText1,
             onTap: () {
-              Navigator.of(context).pushReplacementNamed(RhRoutes.rhPresence);
-              Navigator.of(context).pop();
+              Routemaster.of(context).replace(RhRoutes.rhPresence);
+              // Routemaster.of(context).pop();
+              // Navigator.of(context).pushReplacementNamed(RhRoutes.rhPresence);
+              // Navigator.of(context).pop();
             }),
         DrawerWidget(
             selected: widget.pageCurrente == RhRoutes.rhAgent,
@@ -66,8 +73,10 @@ class _RhNavState extends State<RhNav> {
             title: 'Liste des agents',
             style: bodyText1,
             onTap: () {
-              Navigator.of(context).pushReplacementNamed(RhRoutes.rhAgent);
-              Navigator.of(context).pop();
+              Routemaster.of(context).replace(RhRoutes.rhAgent);
+              // Routemaster.of(context).pop();
+              // Navigator.of(context).pushReplacementNamed(RhRoutes.rhAgent);
+              // Navigator.of(context).pop();
             }),
       ],
     );

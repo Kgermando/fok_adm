@@ -7,6 +7,7 @@ import 'package:fokad_admin/src/pages/auth/login_auth.dart';
 import 'package:fokad_admin/src/provider/controller.dart';
 import 'package:fokad_admin/src/provider/theme_provider.dart';
 import 'package:fokad_admin/src/routes/routes.dart';
+import 'package:routemaster/routemaster.dart';
 import 'package:url_strategy/url_strategy.dart';
 import 'package:provider/provider.dart';
 import 'package:timeago/timeago.dart' as timeago;
@@ -34,11 +35,11 @@ class MyApp extends StatelessWidget {
         ],
         builder: (context, _) {
           final themeProvider = Provider.of<ThemeProvider>(context);
-          return MaterialApp(
+          return MaterialApp.router(
             title: 'FOKAD ADMINISTRATION',
             themeMode: themeProvider.themeMode,
-            home: const CheckAuth(),
-            routes: Routing().routes,
+            routerDelegate: RoutemasterDelegate(routesBuilder: (_) => Routing().routes),
+            routeInformationParser: const RoutemasterParser(),
             theme: MyThemes.lightTheme,
             darkTheme: MyThemes.darkTheme,
             localizationsDelegates: const [

@@ -30,7 +30,7 @@ class _CustomAppbarState extends State<CustomAppbar> {
           children: [
             if (!Responsive.isDesktop(context))
               IconButton(
-                onPressed: context.read<AppState>().openDrawer(context),
+                onPressed: context.read<Controller>().controlMenu,
                 icon: const Icon(
                   Icons.menu,
                 ),

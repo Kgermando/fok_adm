@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:fokad_admin/src/navigation/drawer/components/administration_nav.dart';
 import 'package:fokad_admin/src/navigation/drawer/components/finances_nav.dart';
 import 'package:fokad_admin/src/navigation/drawer/components/rh_nav.dart';
+import 'package:routemaster/routemaster.dart';
 
 class DrawerMenu extends StatefulWidget {
   const DrawerMenu({Key? key, this.controller, this.page}) : super(key: key);
@@ -18,7 +19,7 @@ class _DrawerMenuState extends State<DrawerMenu> {
   @override
   Widget build(BuildContext context) {
 
-    String? pageCurrente = ModalRoute.of(context)!.settings.name;
+    String pageCurrente = Routemaster.of(context).currentRoute.fullPath;
 
     print('pageCurrente $pageCurrente');
     // print('path $path');
@@ -35,7 +36,7 @@ class _DrawerMenuState extends State<DrawerMenu> {
               width: 100,
               height: 100,
             )),
-            AdministrationNav(pageCurrente: pageCurrente!),
+            AdministrationNav(pageCurrente: pageCurrente),
             FinancesNav(pageCurrente: pageCurrente),
             RhNav(pageCurrente: pageCurrente),
           ],

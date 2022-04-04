@@ -6,6 +6,7 @@ import 'package:fokad_admin/src/constants/responsive.dart';
 import 'package:fokad_admin/src/provider/theme_provider.dart';
 import 'package:fokad_admin/src/routes/routes.dart';
 import 'package:fokad_admin/src/widgets/btn_widget.dart';
+import 'package:routemaster/routemaster.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -206,8 +207,7 @@ class _LoginPageState extends State<LoginPage> {
                   .login(matriculeController.text, passwordController.text)
                   .then((value) {
                 if (value) { 
-                  Navigator.of(context)
-                      .pushReplacementNamed(AdminRoutes.adminDashboard);
+                  Routemaster.of(context).replace(AdminRoutes.adminDashboard);
                   ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                     content: const Text("Login succès!"),
                     backgroundColor: Colors.green[700],

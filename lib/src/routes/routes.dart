@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fokad_admin/src/api/auth/auth_api.dart';
 import 'package:fokad_admin/src/controllers/app_state.dart';
 import 'package:fokad_admin/src/helpers/user_preferences.dart';
 import 'package:fokad_admin/src/models/users/user_model.dart';
@@ -25,12 +26,14 @@ import 'package:fokad_admin/src/pages/finances/transactions/components/fin_exter
 import 'package:fokad_admin/src/pages/finances/transactions/transactions_fincance.dart';
 import 'package:fokad_admin/src/pages/rh/agents/agents_rh.dart';
 import 'package:fokad_admin/src/pages/rh/agents/components/add_agent.dart';
+import 'package:fokad_admin/src/pages/rh/agents/components/agent_page.dart';
 import 'package:fokad_admin/src/pages/rh/dashboard/dashboard_rh.dart';
 import 'package:fokad_admin/src/pages/rh/paiements/paiements_rh.dart';
 import 'package:fokad_admin/src/pages/rh/presences/presences_rh.dart';
 import 'package:fokad_admin/src/pages/screens/help_screen.dart';
 import 'package:fokad_admin/src/pages/screens/not_found_page.dart';
 import 'package:fokad_admin/src/pages/screens/settings_screen.dart';
+import 'package:routemaster/routemaster.dart';
 
 class UserRoutes {
   static const login = "/";
@@ -52,6 +55,7 @@ class AdminRoutes {
 class RhRoutes {
   static const rhDashboard = "/rh-dashboard";
   static const rhAgent = "/rh-agents";
+  static const rhAgentPage = "/rh-agents-page";
   static const rhAgentAdd = "/rh-agents-add";
   static const rhPaiement = "/rh-paiements";
   static const rhPresence = "/rh-presences";
@@ -71,163 +75,65 @@ class FinanceRoutes {
   static const comptabiliteBilan = "/comptabilite-bilan";
   static const comptabiliteJournal = "/comptabilite-journal";
   static const comptabiliteValorisation = "/comptabilite-valorisation";
-  
 }
 
 class Routing {
-  final routes = {
-    UserRoutes.login: (context) => const LoginPage(),
-    UserRoutes.profile: (context) => const ProfilPage(),
-    UserRoutes.helps: (context) => const HelpScreen(),
-    UserRoutes.settings: (context) => const SettingsScreen(),
 
-    // Administration
-    AdminRoutes.adminDashboard: (context) => const DashboardAdministration(),
-    AdminRoutes.adminRH: (context) => const RhAdmin(),
-    AdminRoutes.adminFinance: (context) => const FinancesAdmin(),
-    AdminRoutes.adminExploitation: (context) => const ExploitationsAdmin(),
-    AdminRoutes.adminCommMarketing: (context) => const CommMarketingAdmin(),
-    AdminRoutes.adminLogistique: (context) => const LogistiquesAdmin(),
+  authLogin() async {
+    bool isloggIn = await AuthApi().isLoggedIn();
 
-    // RH
-    RhRoutes.rhDashboard: (context) => const DashboardRh(),
-    RhRoutes.rhAgent: (context) => const AgentsRh(),
-    RhRoutes.rhAgentAdd: (context) => const AddAgent(),
-    RhRoutes.rhPaiement: (context) => const PaiementRh(),
-    RhRoutes.rhPresence: (context) => const PresenceRh(),
+    if (isloggIn) {
+      return const DashboardAdministration();
+    } else {
+      return const LoginPage();
+    }
+  }
+
+  final routes = RouteMap(
+      routes: {
+      UserRoutes.login: (_) => const MaterialPage(child: LoginPage()),
+      UserRoutes.profile: (_) => const MaterialPage(child: ProfilPage()), 
+      UserRoutes.helps: (_) => const MaterialPage(child: HelpScreen()),  
+      UserRoutes.settings: (_) => const MaterialPage(child: SettingsScreen()),
+
+      // Administration
+      AdminRoutes.adminDashboard: (_) => const MaterialPage(child: DashboardAdministration()),
+      AdminRoutes.adminRH: (_) => const MaterialPage(child: RhAdmin()),
+      AdminRoutes.adminFinance: (_) => const MaterialPage(child: FinancesAdmin()),
+      AdminRoutes.adminExploitation: (_) => const MaterialPage(child: ExploitationsAdmin()),
+      AdminRoutes.adminCommMarketing: (_) => const MaterialPage(child: CommMarketingAdmin()),
+      AdminRoutes.adminLogistique: (_) => const MaterialPage(child: LogistiquesAdmin()), 
+
+      // RH
+      RhRoutes.rhDashboard: (_) => const MaterialPage(child: DashboardRh()),
+      RhRoutes.rhAgent: (_) => const MaterialPage(child: AgentsRh()),
+      RhRoutes.rhAgentPage: (_) => const MaterialPage(child: AgentPage()),
+      RhRoutes.rhAgentAdd: (_) => const MaterialPage(child: AddAgent()),
+      RhRoutes.rhPaiement: (_) => const MaterialPage(child: PaiementRh()),
+      RhRoutes.rhPresence: (_) => const MaterialPage(child: PresenceRh()),
 
 
-    // Finance
-    FinanceRoutes.financeDashboard: (context) => const DashboardFinance(),
-    FinanceRoutes.financeTransactions: (context) => const TransactionsFinance(),
-    FinanceRoutes.financeBudget: (context) => const BudgetFinance(),
-    FinanceRoutes.transactionsBanque: (context) => const BanqueTransactions(),
-    FinanceRoutes.transactionsCaisse: (context) => const CaisseTransactions(),
-    FinanceRoutes.transactionsCreances: (context) => const CreanceTransactions(),
-    FinanceRoutes.transactionsDepenses: (context) => const DepenseTransactions(),
-    FinanceRoutes.transactionsDettes: (context) => const DetteTransactions(),
-    FinanceRoutes.transactionsFinancementExterne: (context) => const FinExterneTransactions(),
-    FinanceRoutes.comptabiliteAmortissement: (context) => const AmortissementComptabilite(),
-    FinanceRoutes.comptabiliteBilan: (context) => const BilanComptabilite(),
-    FinanceRoutes.comptabiliteJournal: (context) => const JournalComptabilite(),
-    FinanceRoutes.comptabiliteValorisation: (context) => const ValorisationComptabilite()
-  };
+
+      // Finance
+      FinanceRoutes.financeDashboard: (_) => const MaterialPage(child: DashboardFinance()), 
+      FinanceRoutes.financeTransactions: (_) => const MaterialPage(child: TransactionsFinance()),
+      FinanceRoutes.financeBudget: (_) => const MaterialPage(child: BudgetFinance()), 
+      FinanceRoutes.transactionsBanque: (_) => const MaterialPage(child: BanqueTransactions()),
+      FinanceRoutes.transactionsCaisse: (_) => const MaterialPage(child: CaisseTransactions()),
+      FinanceRoutes.transactionsCreances: (_) => const MaterialPage(child: CreanceTransactions()),
+      FinanceRoutes.transactionsDepenses: (_) => const MaterialPage(child: DepenseTransactions()),
+      FinanceRoutes.transactionsDettes: (_) => const MaterialPage(child: DetteTransactions()), 
+      FinanceRoutes.transactionsFinancementExterne: (_) => const MaterialPage(child: FinExterneTransactions()), 
+      FinanceRoutes.comptabiliteAmortissement: (_) => const MaterialPage(child: AmortissementComptabilite()), 
+      FinanceRoutes.comptabiliteBilan: (_) => const MaterialPage(child: BilanComptabilite()),
+      FinanceRoutes.comptabiliteJournal: (_) => const MaterialPage(child: JournalComptabilite()),
+      FinanceRoutes.comptabiliteValorisation: (_) => const MaterialPage(child: ValorisationComptabilite()), 
+    },
+    onUnknownRoute: (_) => const MaterialPage(child: NotFoundPage()),
+  );
+  
+   
 }
 
-
-
-
-
-
-
-// class AppPages {
-//   static Page privateRoute(BuildContext context, Page route) {
-//     if (!context.read<AppState>().isLoggedIn) {
-//       return const Redirect(UserRoutes.login);
-//     }
-//     return route;
-//   }
-
-//   static RouteMap appRoutes(BuildContext context) {
-//     return RouteMap(
-//       routes: {
-//         UserRoutes.login: (route) {
-//           return const MaterialPage(child: LoginPage());
-//         },
-//         UserRoutes.profile: (route) {
-//           return privateRoute(context, const MaterialPage(child: ProfilPage()));
-//         },
-//         UserRoutes.helps: (route) {
-//           return privateRoute(context, const MaterialPage(child: HelpScreen()));
-//         },
-//         UserRoutes.settings: (route) {
-//           return privateRoute(context, const MaterialPage(child: SettingsScreen()));
-//         },
-//         UserRoutes.splash: (route) {
-//           return privateRoute(context, const MaterialPage(child: SplashScreens()));
-//         },
-
-//         // Administration
-//         AdminRoutes.adminDashboard: (route) {
-//           return privateRoute(context, const MaterialPage(child: DashboardAdministration()));
-//         },
-//         AdminRoutes.adminRH: (route) {
-//           return privateRoute(context, const MaterialPage(child: RhAdmin()));
-//         },
-//         AdminRoutes.adminFinance: (route) {
-//           return privateRoute(context, const MaterialPage(child: FinancesAdmin()));
-//         },
-//         AdminRoutes.adminExploitation: (route) {
-//           return privateRoute(context, const MaterialPage(child: ExploitationsAdmin()));
-//         },
-//         AdminRoutes.adminCommMarketing: (route) {
-//           return privateRoute(context, const MaterialPage(child: CommMarketingAdmin()));
-//         },
-//         AdminRoutes.adminLogistique: (route) {
-//           return privateRoute(context, const MaterialPage(child: LogistiquesAdmin()));
-//         },
-
-//         // RH
-//         RhRoutes.rhAgent: (route) {
-//           return privateRoute(context, const MaterialPage(child: AgentsRh()));
-//         },
-//         RhRoutes.rhAgentAdd: (route) {
-//           return privateRoute(context, const MaterialPage(child: AddAgent()));
-//         },
-//         RhRoutes.rhDashboard: (route) {
-//           return privateRoute(context, const MaterialPage(child: DashboardRh()));
-//         },
-//         RhRoutes.rhPaiement: (route) {
-//           return privateRoute(context, const MaterialPage(child: PaiementRh()));
-//         },
-//         RhRoutes.rhPresence: (route) {
-//           return privateRoute(context, const MaterialPage(child: PresenceRh()));
-//         },
-
-//         // Finances
-//         FinanceRoutes.financeDashboard: (route) {
-//           return privateRoute(context, const MaterialPage(child: DashboardFinance()));
-//         },
-//         FinanceRoutes.financeTransactions: (route) {
-//           return privateRoute(context, const MaterialPage(child: TransactionsFinance()));
-//         },
-//         FinanceRoutes.financeBudget: (route) {
-//           return privateRoute(context, const MaterialPage(child: BudgetFinance()));
-//         },
-//         FinanceRoutes.transactionsBanque: (route) {
-//           return privateRoute(context, const MaterialPage(child: BanqueTransactions()));
-//         },
-//         FinanceRoutes.transactionsCaisse: (route) {
-//           return privateRoute(context, const MaterialPage(child: CaisseTransactions()));
-//         },
-//         FinanceRoutes.transactionsCreances: (route) {
-//           return privateRoute(context, const MaterialPage(child: CreanceTransactions()));
-//         },
-//         FinanceRoutes.transactionsDepenses: (route) {
-//           return privateRoute(context, const MaterialPage(child: DepenseTransactions()));
-//         },
-//         FinanceRoutes.transactionsDettes: (route) {
-//           return privateRoute(context, const MaterialPage(child: DetteTransactions()));
-//         },
-//         FinanceRoutes.transactionsFinancementExterne: (route) {
-//           return privateRoute(context, const MaterialPage(child: FinExterneTransactions()));
-//         },
-//         FinanceRoutes.comptabiliteAmortissement: (route) {
-//           return privateRoute(context, const MaterialPage(child: AmortissementComptabilite()));
-//         },
-//         FinanceRoutes.comptabiliteBilan: (route) {
-//           return privateRoute(context, const MaterialPage(child: BilanComptabilite()));
-//         },
-//         FinanceRoutes.comptabiliteJournal: (route) {
-//           return privateRoute(context, const MaterialPage(child: JournalComptabilite()));
-//         },
-//         FinanceRoutes.comptabiliteValorisation: (route) {
-//           return privateRoute(context, const MaterialPage(child: ValorisationComptabilite()));
-//         },
-
-//       }
-//     );
-//   }
-// }
 
 

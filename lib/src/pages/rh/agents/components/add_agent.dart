@@ -10,6 +10,7 @@ import 'package:fokad_admin/src/provider/controller.dart';
 import 'package:fokad_admin/src/routes/routes.dart';
 import 'package:fokad_admin/src/utils/country.dart';
 import 'package:fokad_admin/src/utils/dropdown.dart';
+import 'package:fokad_admin/src/utils/service_affectation.dart';
 import 'package:fokad_admin/src/widgets/btn_widget.dart';
 import 'package:fokad_admin/src/widgets/print_widget.dart';
 import 'package:provider/provider.dart';
@@ -31,6 +32,10 @@ class _AddAgentState extends State<AddAgent> {
   final List<String> sexeList = Dropdown().sexe;
   final List<String> roleList = Dropdown().role;
   final List<String> world = Country().world;
+  final List<String> serviceAffectationAdminList =
+      FonctionAffection().adminDropdown;
+  final List<String> serviceAffectationList =
+      FonctionAffection().servicesAffection;
 
   final TextEditingController nomController = TextEditingController();
   final TextEditingController postNomController = TextEditingController();
@@ -41,8 +46,7 @@ class _AddAgentState extends State<AddAgent> {
   final TextEditingController matriculeController = TextEditingController();
   final TextEditingController dateNaissanceController = TextEditingController();
   final TextEditingController lieuNaissanceController = TextEditingController();
-  final TextEditingController servicesAffectationController =
-      TextEditingController();
+  // final TextEditingController servicesAffectationController = TextEditingController();
   final TextEditingController dateDebutContratController =
       TextEditingController();
   final TextEditingController dateFinContratController =
@@ -61,6 +65,9 @@ class _AddAgentState extends State<AddAgent> {
   String? nationalite;
   String? departement;
   String? typeContrat;
+  String? servicesAffectation;
+
+  List<String> servAffecList = [];
 
   @override
   void dispose() {
@@ -75,7 +82,7 @@ class _AddAgentState extends State<AddAgent> {
     matriculeController.dispose();
     dateNaissanceController.dispose();
     lieuNaissanceController.dispose();
-    servicesAffectationController.dispose();
+    // servicesAffectationController.dispose();
     dateDebutContratController.dispose();
     dateFinContratController.dispose();
     fonctionOccupeController.dispose();
@@ -143,9 +150,7 @@ class _AddAgentState extends State<AddAgent> {
                 children: [
                   Row(
                     mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      PrintWidget(onPressed: (){})
-                    ],
+                    children: [PrintWidget(onPressed: () {})],
                   ),
                   const SizedBox(
                     height: p20,
@@ -551,6 +556,13 @@ class _AddAgentState extends State<AddAgent> {
         onChanged: (value) {
           setState(() {
             departement = value!;
+            if (departement == 'Administration') {
+              servAffecList = serviceAffectationAdminList;
+            } else if (departement != 'Administration') {
+              servAffecList = serviceAffectationList;
+            } else {
+              servAffecList = [];
+            }
           });
         },
       ),
@@ -560,18 +572,27 @@ class _AddAgentState extends State<AddAgent> {
   Widget servicesAffectationWidget() {
     return Container(
         margin: const EdgeInsets.only(bottom: p20),
-        child: TextFormField(
-          controller: servicesAffectationController,
+        child: DropdownButtonFormField<String>(
           decoration: InputDecoration(
-            border:
-                OutlineInputBorder(borderRadius: BorderRadius.circular(10.0)),
             labelText: 'Service d\'affectation',
+            labelStyle: const TextStyle(),
+            border:
+                OutlineInputBorder(borderRadius: BorderRadius.circular(5.0)),
+            contentPadding: const EdgeInsets.only(left: 5.0),
           ),
-          keyboardType: TextInputType.text,
-          validator: (val) {
-            return 'Ce champs est obligatoire';
+          value: servicesAffectation,
+          isExpanded: true,
+          items: servAffecList.map((String value) {
+            return DropdownMenuItem<String>(
+              value: value,
+              child: Text(value),
+            );
+          }).toList(),
+          onChanged: (value) {
+            setState(() {
+              servicesAffectation = value;
+            });
           },
-          style: const TextStyle(),
         ));
   }
 
@@ -693,31 +714,30 @@ class _AddAgentState extends State<AddAgent> {
   Future submit() async {
     print('dateDebutContratController ${dateDebutContratController.text}');
     final agentModel = AgentModel(
-      nom: nomController.text,
-      postNom: postNomController.text,
-      prenom: prenomController.text,
-      email: emailController.text,
-      telephone: telephoneController.text,
-      adresse: adresseController.text,
-      sexe: sexe.toString(),
-      role: role.toString(),
-      matricule: matriculeController.text,
-      dateNaissance: DateTime.parse(dateNaissanceController.text),
-      lieuNaissance: lieuNaissanceController.text,
-      nationalite: nationalite.toString(),
-      typeContrat: typeContrat.toString(),
-      departement: departement.toString(),
-      servicesAffectation: servicesAffectationController.text,
-      dateDebutContrat: DateTime.parse(dateDebutContratController.text),
-      dateFinContrat: DateTime.parse(dateFinContratController.text),
-      fonctionOccupe: fonctionOccupeController.text,
-      competance: competanceController.toString(),
-      experience: experienceController.text,
-      statutAgent: true,
-      createdAt: DateTime.now(),
-      passwordHash: passwordHashController.text,
-      photo: ''
-    );
+        nom: nomController.text,
+        postNom: postNomController.text,
+        prenom: prenomController.text,
+        email: emailController.text,
+        telephone: telephoneController.text,
+        adresse: adresseController.text,
+        sexe: sexe.toString(),
+        role: role.toString(),
+        matricule: matriculeController.text,
+        dateNaissance: DateTime.parse(dateNaissanceController.text),
+        lieuNaissance: lieuNaissanceController.text,
+        nationalite: nationalite.toString(),
+        typeContrat: typeContrat.toString(),
+        departement: departement.toString(),
+        servicesAffectation: servicesAffectation.toString(),
+        dateDebutContrat: DateTime.parse(dateDebutContratController.text),
+        dateFinContrat: DateTime.parse(dateFinContratController.text),
+        fonctionOccupe: fonctionOccupeController.text,
+        competance: competanceController.toString(),
+        experience: experienceController.text,
+        statutAgent: true,
+        createdAt: DateTime.now(),
+        passwordHash: passwordHashController.text,
+        photo: '');
 
     await AgentsApi().insertData(agentModel);
     Navigator.of(context).pushReplacementNamed(RhRoutes.rhAgent);

@@ -3,8 +3,10 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:fokad_admin/src/api/rh/agents_api.dart';
 import 'package:fokad_admin/src/models/rh/agent_model.dart';
+import 'package:fokad_admin/src/routes/routes.dart';
 import 'package:fokad_admin/src/widgets/print_widget.dart';
 import 'package:pluto_grid/pluto_grid.dart';
+import 'package:routemaster/routemaster.dart';
 
 class TableAgents extends StatefulWidget {
   const TableAgents({Key? key}) : super(key: key);
@@ -19,6 +21,8 @@ class _TableAgentsState extends State<TableAgents> {
   PlutoGridStateManager? stateManager;
   PlutoGridSelectingMode gridSelectingMode = PlutoGridSelectingMode.row;
 
+  int? id;
+
   @override
   initState() {
     agentsColumn();
@@ -31,6 +35,9 @@ class _TableAgentsState extends State<TableAgents> {
     return PlutoGrid(
       columns: columns,
       rows: rows,
+      onRowDoubleTap: (PlutoGridOnRowDoubleTapEvent tapEvent) {
+        Routemaster.of(context).push('${RhRoutes.rhAgentPage}/$id');
+      },
       onLoaded: (PlutoGridOnLoadedEvent event) {
         stateManager = event.stateManager;
         stateManager!.setShowColumnFilter(true);
@@ -195,7 +202,7 @@ class _TableAgentsState extends State<TableAgents> {
         readOnly: true,
         title: 'Date de naissance',
         field: 'dateNaissance',
-        type: PlutoColumnType.text(),
+        type: PlutoColumnType.date(),
         enableRowDrag: true,
         enableContextMenu: false,
         enableDropToResize: true,
@@ -248,9 +255,10 @@ class _TableAgentsState extends State<TableAgents> {
     if (mounted) {
       setState(() {
         for (var item in data) {
+          id = item!.id;
           // print('item ${item!.id}');
           rows.add(PlutoRow(cells: {
-            'id': PlutoCell(value: item!.id),
+            'id': PlutoCell(value: item.id),
             'nom': PlutoCell(value: item.nom),
             'postNom': PlutoCell(value: item.postNom),
             'prenom': PlutoCell(value: item.prenom),

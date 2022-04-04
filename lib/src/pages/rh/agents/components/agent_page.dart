@@ -1,33 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:fokad_admin/src/constants/app_theme.dart';
 import 'package:fokad_admin/src/constants/responsive.dart';
+import 'package:fokad_admin/src/models/rh/agent_model.dart';
 import 'package:fokad_admin/src/navigation/drawer/drawer_menu.dart';
 import 'package:fokad_admin/src/navigation/header/custom_appbar.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:fokad_admin/src/provider/controller.dart';
 import 'package:provider/provider.dart';
+import 'package:routemaster/routemaster.dart';
 
-class DashboardAdministration extends StatefulWidget {
-  const DashboardAdministration({Key? key}) : super(key: key);
+class AgentPage extends StatefulWidget {
+  const AgentPage({Key? key, this.id}) : super(key: key);
+  final int? id;
 
   @override
-  State<DashboardAdministration> createState() =>
-      _DashboardAdministrationState();
+  State<AgentPage> createState() => _AgentPageState();
 }
 
-class _DashboardAdministrationState extends State<DashboardAdministration> {
-  @override
-  initState() {
-    tokeeee();
-    super.initState();
-  }
-
-  Future<void> tokeeee() async {
-    final prefs = await SharedPreferences.getInstance();
-    var accessToken = prefs.getString("accessToken"); // pour test
-    print('accessToken $accessToken');
-  }
-
+class _AgentPageState extends State<AgentPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -48,13 +37,8 @@ class _DashboardAdministrationState extends State<DashboardAdministration> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const CustomAppbar(title: 'Tableau de bord'),
-                      Expanded(
-                          child: ListView(
-                        children: const [
-                          Text("Dashboard Budget"),
-                        ],
-                      ))
+                      const CustomAppbar(title: 'Agent '),
+                      Expanded(child: pageDetail())
                     ],
                   ),
                 ),
@@ -62,5 +46,9 @@ class _DashboardAdministrationState extends State<DashboardAdministration> {
             ],
           ),
         ));
+  }
+
+  Widget pageDetail() {
+    return Container();
   }
 }

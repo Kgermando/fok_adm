@@ -17,22 +17,28 @@ class AgentsApi {
   }
 
   Future<List<AgentModel>> getAllData() async {
+    final prefs = await SharedPreferences.getInstance();
+    var accessToken = prefs.getString("accessToken");
     String? token = await getToken();
+
     if (token!.isNotEmpty) {
       var splittedJwt = token.split(".");
       var payload = json.decode(
           ascii.decode(base64.decode(base64.normalize(splittedJwt[1]))));
+
+      print("payload $payload");
+      print("payload token $token");
     }
     var resp = await client.get(
       listAgentsUrl,
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
-        'Authorization': 'Bearer $token'
+        'Authorization': 'Bearer $accessToken'
       },
     );
 
     if (resp.statusCode == 200) {
-     List<dynamic> bodyList = json.decode(resp.body);
+      List<dynamic> bodyList = json.decode(resp.body);
       List<AgentModel> data = [];
       for (var u in bodyList) {
         data.add(AgentModel.fromJson(u));
@@ -42,7 +48,6 @@ class AgentsApi {
       throw Exception(jsonDecode(resp.body)['message']);
     }
   }
-
 
   Future<List<AgentModel>> getAllSearch(String query) async {
     String? token = await getToken();
@@ -79,7 +84,6 @@ class AgentsApi {
     }
   }
 
-
   Future<AgentModel> insertData(AgentModel agentModel) async {
     final prefs = await SharedPreferences.getInstance();
     var accessToken = prefs.getString("accessToken");
@@ -87,8 +91,7 @@ class AgentsApi {
     var data = agentModel.toJson();
     var body = jsonEncode(data);
 
-    var resp = await client.post(
-      addAgentsUrl,
+    var resp = await client.post(addAgentsUrl,
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
           'Authorization': 'Bearer $accessToken'
@@ -113,11 +116,11 @@ class AgentsApi {
     var updateAgentsUrl = Uri.parse("$mainUrl/rh/agents/update-agent/$id");
 
     var res = await client.put(updateAgentsUrl,
-      headers: <String, String>{
-        'Content-Type': 'application/json; charset=UTF-8',
-        'Authorization': 'Bearer $accessToken'
-      },
-      body: body);
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+          'Authorization': 'Bearer $accessToken'
+        },
+        body: body);
     if (res.statusCode == 200) {
       return AgentModel.fromJson(json.decode(res.body)['agents']);
     } else {
@@ -131,11 +134,10 @@ class AgentsApi {
 
     var deleteAgentsUrl = Uri.parse("$mainUrl/rh/agents/delete-agent/$id");
 
-    var res = await client.delete(deleteAgentsUrl,
-        headers: <String, String>{
-          'Content-Type': 'application/json; charset=UTF-8',
-          'Authorization': 'Bearer $accessToken'
-        });
+    var res = await client.delete(deleteAgentsUrl, headers: <String, String>{
+      'Content-Type': 'application/json; charset=UTF-8',
+      'Authorization': 'Bearer $accessToken'
+    });
     if (res.statusCode == 200) {
       return AgentModel.fromJson(json.decode(res.body)['agents']);
     } else {
