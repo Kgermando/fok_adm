@@ -75,6 +75,7 @@ class FinanceRoutes {
   static const comptabiliteBilan = "/comptabilite-bilan";
   static const comptabiliteJournal = "/comptabilite-journal";
   static const comptabiliteValorisation = "/comptabilite-valorisation";
+  
 }
 
 class Routing {

@@ -17,8 +17,6 @@ class AgentsApi {
   }
 
   Future<List<AgentModel>> getAllData() async {
-    final prefs = await SharedPreferences.getInstance();
-    var accessToken = prefs.getString("accessToken");
     String? token = await getToken();
 
     if (token!.isNotEmpty) {
@@ -33,7 +31,7 @@ class AgentsApi {
       listAgentsUrl,
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
-        'Authorization': 'Bearer $accessToken'
+        'Authorization': 'Bearer $token'
       },
     );
 
@@ -81,6 +79,29 @@ class AgentsApi {
       }).toList();
     } else {
       throw Exception(jsonDecode(resp.body)['message']);
+    }
+  }
+
+  Future<AgentModel> getOneData(int id) async {
+    String? token = await getToken();
+
+    if (token!.isNotEmpty) {
+      var splittedJwt = token.split(".");
+      var payload = json.decode(
+          ascii.decode(base64.decode(base64.normalize(splittedJwt[1]))));
+    }
+    var agentUrl = Uri.parse("$mainUrl/rh/agents/$id");
+    var resp = await client.get(
+      agentUrl,
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+        'Authorization': 'Bearer $token'
+      },
+    );
+    if (resp.statusCode == 200) {
+      return AgentModel.fromJson(json.decode(resp.body));
+    } else {
+      throw Exception(json.decode(resp.body)['message']);
     }
   }
 

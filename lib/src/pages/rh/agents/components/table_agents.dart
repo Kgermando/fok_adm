@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:fokad_admin/src/api/rh/agents_api.dart';
 import 'package:fokad_admin/src/models/rh/agent_model.dart';
+import 'package:fokad_admin/src/pages/rh/agents/components/agent_page.dart';
 import 'package:fokad_admin/src/routes/routes.dart';
 import 'package:fokad_admin/src/widgets/print_widget.dart';
 import 'package:pluto_grid/pluto_grid.dart';
@@ -36,7 +37,8 @@ class _TableAgentsState extends State<TableAgents> {
       columns: columns,
       rows: rows,
       onRowDoubleTap: (PlutoGridOnRowDoubleTapEvent tapEvent) {
-        Routemaster.of(context).push('${RhRoutes.rhAgentPage}/$id');
+        Routemaster.of(context).push(RhRoutes.rhAgentPage);
+        print(Routemaster.of(context).push('${RhRoutes.rhAgentPage}/$id'));
       },
       onLoaded: (PlutoGridOnLoadedEvent event) {
         stateManager = event.stateManager;
