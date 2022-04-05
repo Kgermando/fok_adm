@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:fokad_admin/src/api/auth/auth_api.dart';
 import 'package:fokad_admin/src/api/rh/agents_api.dart';
 import 'package:fokad_admin/src/constants/app_theme.dart';
 import 'package:fokad_admin/src/constants/responsive.dart';
 import 'package:fokad_admin/src/models/rh/agent_model.dart';
+import 'package:fokad_admin/src/models/users/user_model.dart';
 import 'package:fokad_admin/src/navigation/drawer/drawer_menu.dart';
 import 'package:fokad_admin/src/navigation/header/custom_appbar.dart';
 import 'package:fokad_admin/src/widgets/btn_widget.dart';
@@ -106,11 +108,7 @@ class _AgentPageState extends State<AgentPage> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
-                    IconButton(
-                        tooltip: 'Changer le statut agent',
-                        onPressed: () {},
-                        color: Colors.red.shade700,
-                        icon: const Icon(Icons.person)),
+                    activeAgentWidget(agentModel),
                     PrintWidget(
                         tooltip: 'Imprimer le document', onPressed: () {})
                   ],
@@ -124,6 +122,14 @@ class _AgentPageState extends State<AgentPage> {
         ),
       ],
     );
+  }
+
+  Widget activeAgentWidget(AgentModel agentModel) {
+    return IconButton(
+        tooltip: 'Changer le statut agent',
+        onPressed: () {},
+        color: Colors.red.shade700,
+        icon: const Icon(Icons.person));
   }
 
   Widget identiteWidet(AgentModel agentModel) {
@@ -468,65 +474,29 @@ class _AgentPageState extends State<AgentPage> {
 
   transactionsDialogDette() {
     return showDialog(
-        context: context,
-        // barrierDismissible: false,
-        builder: (context) {
-          return StatefulBuilder(builder: (context, StateSetter setState) {
-            return Dialog(
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(p8),
-                ),
-                backgroundColor: Colors.transparent,
-                child: Card(
-                  child: Padding(
-                    padding: const EdgeInsets.all(p16),
-                    child: SizedBox(
-                      width: Responsive.isDesktop(context)
-                          ? MediaQuery.of(context).size.width / 2
-                          : MediaQuery.of(context).size.width,
-                      child: ListView(
-                        children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              const TitleWidget(title: 'Active Agent'),
-                              PrintWidget(onPressed: () {})
-                            ],
-                          ),
-                          const SizedBox(
-                            height: p20,
-                          ),
-                          Row(
-                            children: [
-                              Expanded(child: nomCompletWidget()),
-                              const SizedBox(
-                                width: p10,
-                              ),
-                              Expanded(child: pieceJustificativeWidget())
-                            ],
-                          ),
-                          Row(
-                            children: [
-                              Expanded(child: libelleWidget()),
-                              const SizedBox(
-                                width: p10,
-                              ),
-                              Expanded(child: montantWidget())
-                            ],
-                          ),
-                          const SizedBox(
-                            height: p20,
-                          ),
-                          BtnWidget(
-                              title: 'Activation',
-                              isLoading: isLoading,
-                              press: () {})
-                        ],
-                      ),
-                    ),
-                  ),
-                ));
-          });
-        });
+      context: context,
+      // barrierDismissible: false,
+      builder: (context) {
+        return AlertDialog(
+            
+        );
+      });
+  }
+
+  Future<void> changeUser(
+    String nom,
+    String prenom,
+    String matricule,
+    String role,
+  ) async {
+    final userModel = UserModel(
+        nom: nom,
+        prenom: prenom,
+        matricule: matricule,
+        role: role,
+        isOnline: true,
+        createdAt: DateTime.now(),
+        passwordHash: "passwordHash");
+    await AuthApi().register(userModel);
   }
 }
