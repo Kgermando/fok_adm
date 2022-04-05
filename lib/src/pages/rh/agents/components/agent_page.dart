@@ -86,9 +86,9 @@ class _AgentPageState extends State<AgentPage> {
           elevation: 10,
           child: Container(
             margin: const EdgeInsets.all(10),
-            width: Responsive.isDesktop(context)
+            width: (Responsive.isDesktop(context))
                 ? MediaQuery.of(context).size.width / 2
-                : MediaQuery.of(context).size.width,
+                : MediaQuery.of(context).size.width / 1.5,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(p10),
               border: Border.all(
