@@ -5,7 +5,9 @@ import 'package:fokad_admin/src/constants/responsive.dart';
 import 'package:fokad_admin/src/models/rh/agent_model.dart';
 import 'package:fokad_admin/src/navigation/drawer/drawer_menu.dart';
 import 'package:fokad_admin/src/navigation/header/custom_appbar.dart';
+import 'package:fokad_admin/src/widgets/btn_widget.dart';
 import 'package:fokad_admin/src/widgets/print_widget.dart';
+import 'package:fokad_admin/src/widgets/title_widget.dart';
 import 'package:intl/intl.dart';
 import 'package:routemaster/routemaster.dart';
 
@@ -19,6 +21,7 @@ class AgentPage extends StatefulWidget {
 
 class _AgentPageState extends State<AgentPage> {
   final ScrollController _controllerScroll = ScrollController();
+  bool isLoading = false;
 
   @override
   Widget build(BuildContext context) {
@@ -54,7 +57,8 @@ class _AgentPageState extends State<AgentPage> {
                                           child: IconButton(
                                               onPressed: () =>
                                                   Routemaster.of(context).pop(),
-                                              icon: const Icon(Icons.arrow_back)),
+                                              icon:
+                                                  const Icon(Icons.arrow_back)),
                                         ),
                                         const SizedBox(width: p10),
                                         Expanded(
@@ -108,9 +112,7 @@ class _AgentPageState extends State<AgentPage> {
                         color: Colors.red.shade700,
                         icon: const Icon(Icons.person)),
                     PrintWidget(
-                      tooltip: 'Imprimer le document',
-                      onPressed: () {}
-                    )
+                        tooltip: 'Imprimer le document', onPressed: () {})
                   ],
                 ),
                 identiteWidet(agentModel),
@@ -136,37 +138,39 @@ class _AgentPageState extends State<AgentPage> {
               CircleAvatar(
                   radius: 50,
                   child: (agentModel.photo == null)
-                    ? Image.asset(
-                        'assets/images/logo.png',
-                        width: 150,
-                        height: 150,
-                      )
-                    : Image.network(
-                        agentModel.photo!,
-                        width: 150,
-                        height: 150,
-                      )
-                ),
+                      ? Image.asset(
+                          'assets/images/logo.png',
+                          width: 150,
+                          height: 150,
+                        )
+                      : Image.network(
+                          agentModel.photo!,
+                          width: 150,
+                          height: 150,
+                        )),
               Column(
                 children: [
                   Row(
                     children: [
                       Text('Statut agent : ',
                           textAlign: TextAlign.start,
-                          style: bodyMedium!.copyWith(fontWeight: FontWeight.bold)),
+                          style: bodyMedium!
+                              .copyWith(fontWeight: FontWeight.bold)),
                       (agentModel.statutAgent)
                           ? Text('Actif',
                               textAlign: TextAlign.start,
-                              style:
-                                  bodyMedium.copyWith(color: Colors.green.shade700))
+                              style: bodyMedium.copyWith(
+                                  color: Colors.green.shade700))
                           : Text('Inactif',
                               textAlign: TextAlign.start,
                               style: bodyMedium.copyWith(
                                   color: Colors.orange.shade700))
                     ],
                   ),
-                  Text("Créé le. ${DateFormat("dd-MM-yy").format(agentModel.createdAt)}",
-                      textAlign: TextAlign.start, style: bodyMedium),
+                  Text(
+                      "Créé le. ${DateFormat("dd-MM-yy").format(agentModel.createdAt)}",
+                      textAlign: TextAlign.start,
+                      style: bodyMedium),
                 ],
               )
             ],
@@ -274,7 +278,8 @@ class _AgentPageState extends State<AgentPage> {
               ),
               Expanded(
                 child: Text(agentModel.matricule,
-                    textAlign: TextAlign.start, style: bodyMedium.copyWith(color: Colors.blueGrey)),
+                    textAlign: TextAlign.start,
+                    style: bodyMedium.copyWith(color: Colors.blueGrey)),
               )
             ],
           ),
@@ -299,8 +304,10 @@ class _AgentPageState extends State<AgentPage> {
                     style: bodyMedium.copyWith(fontWeight: FontWeight.bold)),
               ),
               Expanded(
-                child: Text(DateFormat("dd-MM-yy").format(agentModel.dateNaissance),
-                    textAlign: TextAlign.start, style: bodyMedium),
+                child: Text(
+                    DateFormat("dd-MM-yy").format(agentModel.dateNaissance),
+                    textAlign: TextAlign.start,
+                    style: bodyMedium),
               )
             ],
           ),
@@ -438,33 +445,88 @@ class _AgentPageState extends State<AgentPage> {
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
-                'Formation :',
-                style: bodyMedium!.copyWith(fontWeight: FontWeight.bold)
-              ),
-              
-              Text(
-                agentModel.competance!,
-                textAlign: TextAlign.justify,
-                style: bodyMedium
-              )
+              Text('Formation :',
+                  style: bodyMedium!.copyWith(fontWeight: FontWeight.bold)),
+              Text(agentModel.competance!,
+                  textAlign: TextAlign.justify, style: bodyMedium)
             ],
           ),
           const SizedBox(height: p30),
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-               Text('Experience :',
+              Text('Experience :',
                   style: bodyMedium.copyWith(fontWeight: FontWeight.bold)),
-              Text(
-                agentModel.experience!,
-                textAlign: TextAlign.justify,
-                style: bodyMedium
-              )
+              Text(agentModel.experience!,
+                  textAlign: TextAlign.justify, style: bodyMedium)
             ],
           ),
         ],
       ),
     );
+  }
+
+  transactionsDialogDette() {
+    return showDialog(
+        context: context,
+        // barrierDismissible: false,
+        builder: (context) {
+          return StatefulBuilder(builder: (context, StateSetter setState) {
+            return Dialog(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(p8),
+                ),
+                backgroundColor: Colors.transparent,
+                child: Card(
+                  child: Padding(
+                    padding: const EdgeInsets.all(p16),
+                    child: SizedBox(
+                      width: Responsive.isDesktop(context)
+                          ? MediaQuery.of(context).size.width / 2
+                          : MediaQuery.of(context).size.width,
+                      child: ListView(
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              const TitleWidget(title: 'Active Agent'),
+                              PrintWidget(onPressed: () {})
+                            ],
+                          ),
+                          const SizedBox(
+                            height: p20,
+                          ),
+                          Row(
+                            children: [
+                              Expanded(child: nomCompletWidget()),
+                              const SizedBox(
+                                width: p10,
+                              ),
+                              Expanded(child: pieceJustificativeWidget())
+                            ],
+                          ),
+                          Row(
+                            children: [
+                              Expanded(child: libelleWidget()),
+                              const SizedBox(
+                                width: p10,
+                              ),
+                              Expanded(child: montantWidget())
+                            ],
+                          ),
+                          const SizedBox(
+                            height: p20,
+                          ),
+                          BtnWidget(
+                              title: 'Activation',
+                              isLoading: isLoading,
+                              press: () {})
+                        ],
+                      ),
+                    ),
+                  ),
+                ));
+          });
+        });
   }
 }
