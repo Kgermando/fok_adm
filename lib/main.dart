@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:fokad_admin/src/api/auth/auth_api.dart';
 import 'package:fokad_admin/src/controllers/app_state.dart';
@@ -8,16 +9,31 @@ import 'package:fokad_admin/src/provider/controller.dart';
 import 'package:fokad_admin/src/provider/theme_provider.dart';
 import 'package:fokad_admin/src/routes/routes.dart';
 import 'package:routemaster/routemaster.dart';
-import 'package:url_strategy/url_strategy.dart';
 import 'package:provider/provider.dart';
 import 'package:timeago/timeago.dart' as timeago;
+import 'package:url_strategy/url_strategy.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  setPathUrlStrategy();
+  Routemaster.setPathUrlStrategy();
+  // setPathUrlStrategy();
   timeago.setLocaleMessages('fr_short', timeago.FrShortMessages());
   await Future<void>.delayed(Duration.zero);
   runApp(const MyApp());
+}
+
+class TitleObserver extends RoutemasterObserver {
+  @override
+  void didChangeRoute(RouteData routeData, Page page) {
+    if (page.name != null) {
+      SystemChrome.setApplicationSwitcherDescription(
+        ApplicationSwitcherDescription(
+          label: page.name,
+          primaryColor: 0xFF00FF00,
+        ),
+      );
+    }
+  }
 }
 
 class MyApp extends StatelessWidget {
@@ -38,7 +54,9 @@ class MyApp extends StatelessWidget {
           return MaterialApp.router(
             title: 'FOKAD ADMINISTRATION',
             themeMode: themeProvider.themeMode,
-            routerDelegate: RoutemasterDelegate(routesBuilder: (_) => Routing().routes),
+            routerDelegate: RoutemasterDelegate(
+                observers: [TitleObserver()],
+                routesBuilder: (_) => Routing().routes),
             routeInformationParser: const RoutemasterParser(),
             theme: MyThemes.lightTheme,
             darkTheme: MyThemes.darkTheme,
@@ -93,35 +111,3 @@ class _CheckAuthState extends State<CheckAuth> {
     return authLogin();
   }
 }
-
-// class AppWrapper extends HookWidget {
-//   const AppWrapper({Key? key, required this.child}) : super(key: key);
-//   final Widget? child;
-//   @override
-//   Widget build(BuildContext context) {
-//     var isLoading = useState<bool>(true);
-//     useEffect(() {
-//       Future.microtask(() async {
-//         AuthApi().isLoggedIn().then((value) async {
-//           if (value) {
-//             String? id = await UserPreferences.getIdToken();
-//             context.read<AppState>().setLogin(id!);
-//             Routemaster.of(context).replace(AdminRoutes.adminDashboard);
-//           } else {
-//             await context.read<AppState>().handleAfterLogout();
-//           }
-//         }).catchError((onError) {
-//           debugPrint('onError');
-//         }).whenComplete(() => isLoading.value = false);
-//       });
-//       return null;
-//     }, []);
-//     return isLoading.value
-//         ? Container(
-//             color: Theme.of(context).scaffoldBackgroundColor,
-//             height: double.infinity,
-//             width: double.infinity,
-//             child: const AppSpinner())
-//         : child ?? const SizedBox();
-//   }
-// }

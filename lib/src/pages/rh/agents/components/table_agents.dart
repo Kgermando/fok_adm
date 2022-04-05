@@ -37,8 +37,21 @@ class _TableAgentsState extends State<TableAgents> {
       columns: columns,
       rows: rows,
       onRowDoubleTap: (PlutoGridOnRowDoubleTapEvent tapEvent) {
-        Routemaster.of(context).push(RhRoutes.rhAgentPage);
-        print(Routemaster.of(context).push('${RhRoutes.rhAgentPage}/$id'));
+        final dataList = tapEvent.row!.cells.values;
+        final idPlutoRow = dataList.elementAt(0);
+
+        // Routemaster.of(context)
+        //     .push('${RhRoutes.rhAgentPage}/${idPlutoRow.value}');
+
+        Navigator.of(context).push(MaterialPageRoute(
+          builder: (context) => AgentPage(id: idPlutoRow.value)
+        ));
+
+        print("item ${idPlutoRow.value} ");
+
+        // print("${tapEvent.row!.cells.values} ");
+        // Routemaster.of(context).push(RhRoutes.rhAgentPage);
+        // print(Routemaster.of(context).push('${RhRoutes.rhAgentPage}/$id'));
       },
       onLoaded: (PlutoGridOnLoadedEvent event) {
         stateManager = event.stateManager;

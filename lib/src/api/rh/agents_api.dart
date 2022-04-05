@@ -24,8 +24,8 @@ class AgentsApi {
       var payload = json.decode(
           ascii.decode(base64.decode(base64.normalize(splittedJwt[1]))));
 
-      print("payload $payload");
-      print("payload token $token");
+      // print("payload $payload");
+      // print("payload token $token");
     }
     var resp = await client.get(
       listAgentsUrl,
