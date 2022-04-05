@@ -39,20 +39,6 @@ class AuthApi extends ChangeNotifier {
     }
   }
 
-  Future<void> register(UserModel userModel) async {
-    var data = userModel.toJson();
-    // var body = jsonEncode(data);
-
-    var accessToken = await UserPreferences.getAccessToken();
-    var headers = {HttpHeaders.authorizationHeader: "Bearer $accessToken"};
-
-    var resp = await client.post(registerUrl, body: data, headers: headers);
-    if (resp.statusCode == 200) {
-    } else {
-      throw Exception(json.decode(resp.body)['message']);
-    }
-  }
-
   // Check if the user is logged in
   Future<bool> isLoggedIn() async {
     final accessToken = await getToken();

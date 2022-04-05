@@ -1,16 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_switch/flutter_switch.dart';
-import 'package:fokad_admin/src/api/auth/auth_api.dart';
 import 'package:fokad_admin/src/api/rh/agents_api.dart';
+import 'package:fokad_admin/src/api/user/user_api.dart';
 import 'package:fokad_admin/src/constants/app_theme.dart';
 import 'package:fokad_admin/src/constants/responsive.dart';
 import 'package:fokad_admin/src/models/rh/agent_model.dart';
 import 'package:fokad_admin/src/models/users/user_model.dart';
 import 'package:fokad_admin/src/navigation/drawer/drawer_menu.dart';
 import 'package:fokad_admin/src/navigation/header/custom_appbar.dart';
-import 'package:fokad_admin/src/widgets/btn_widget.dart';
 import 'package:fokad_admin/src/widgets/print_widget.dart';
-import 'package:fokad_admin/src/widgets/title_widget.dart';
 import 'package:intl/intl.dart';
 import 'package:routemaster/routemaster.dart';
 
@@ -25,6 +23,22 @@ class AgentPage extends StatefulWidget {
 class _AgentPageState extends State<AgentPage> {
   final ScrollController _controllerScroll = ScrollController();
   bool isLoading = false;
+  List<UserModel> userList = [];
+
+  bool statutAgent = false;
+
+  @override
+  initState() {
+    getData();
+    super.initState();
+  }
+
+  Future<void> getData() async {
+    final data = await UserApi().getAllData();
+    setState(() {
+      userList = data;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -128,7 +142,7 @@ class _AgentPageState extends State<AgentPage> {
   Widget activeAgentWidget(AgentModel agentModel) {
     return IconButton(
         tooltip: 'Changer le statut agent',
-        onPressed: () {},
+        onPressed: () => agentStatutDialog(agentModel),
         color: Colors.red.shade700,
         icon: const Icon(Icons.person));
   }
@@ -473,36 +487,91 @@ class _AgentPageState extends State<AgentPage> {
     );
   }
 
-  transactionsDialogDette(AgentModel agentModel) {
+  agentStatutDialog(AgentModel agentModel) {
     return showDialog(
-      context: context,
-      // barrierDismissible: false,
-      builder: (context) {
-        return AlertDialog(
-          content: FlutterSwitch(
-            width: 225.0,
-            height: 55.0,
-            inactiveColor : Colors.red,
-            valueFontSize: 25.0,
-            toggleSize: 45.0,
-            value: agentModel.statutAgent,
-            borderRadius: 30.0,
-            padding: 8.0,
-            showOnOff: true,
-            activeText: 'PAYE',
-            inactiveText: 'NON PAYE',
-            onToggle: (val) {
-              setState(() {
-                modeAchat = val;
-              });
-            },
-          ),
-            
-        );
-      });
+        context: context,
+        // barrierDismissible: false,
+        builder: (context) {
+          return AlertDialog(
+            content: FlutterSwitch(
+              width: 225.0,
+              height: 55.0,
+              activeColor: Colors.green,
+              inactiveColor: Colors.red,
+              valueFontSize: 25.0,
+              toggleSize: 45.0,
+              value: agentModel.statutAgent,
+              borderRadius: 30.0,
+              padding: 8.0,
+              showOnOff: true,
+              activeText: 'Active',
+              inactiveText: 'Inactive',
+              onToggle: (val) {
+                setState(() {
+                  statutAgent = val;
+                  if (statutAgent) {
+                    deleteUser(agentModel);
+                    updateAgent(agentModel);
+                  } else {
+                    createUser(agentModel.nom, agentModel.prenom,
+                        agentModel.matricule, agentModel.role);
+                    updateAgent(agentModel);
+                  }
+                });
+              },
+            ),
+          );
+        });
   }
 
-  Future<void> changeUser(
+  // Update statut agent
+  Future<void> updateAgent(AgentModel agentModel) async {
+    final agent = AgentModel(
+        id: agentModel.id,
+        nom: agentModel.nom,
+        postNom: agentModel.postNom,
+        prenom: agentModel.prenom,
+        email: agentModel.email,
+        telephone: agentModel.telephone,
+        adresse: agentModel.adresse,
+        sexe: agentModel.sexe,
+        role: agentModel.role,
+        matricule: agentModel.matricule,
+        dateNaissance: agentModel.dateNaissance,
+        lieuNaissance: agentModel.lieuNaissance,
+        nationalite: agentModel.nationalite,
+        typeContrat: agentModel.typeContrat,
+        departement: agentModel.departement,
+        servicesAffectation: agentModel.servicesAffectation,
+        dateDebutContrat: agentModel.dateDebutContrat,
+        dateFinContrat: agentModel.dateFinContrat,
+        fonctionOccupe: agentModel.fonctionOccupe,
+        statutAgent: statutAgent,
+        createdAt: DateTime.now(),
+        passwordHash: agentModel.passwordHash);
+    await AgentsApi().updateData(agentModel.id!, agent);
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      content: const Text("Mise à statut avec succès!"),
+      backgroundColor: Colors.blue[700],
+    ));
+  }
+
+  // Delete user login accès
+  Future<void> deleteUser(AgentModel agentModel) async {
+    final users = userList
+        .where((element) => element.matricule == agentModel.matricule)
+        .map((e) => e.id)
+        .toList();
+    await UserApi().deleteData(users.first!);
+    Routemaster.of(context).pop();
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      content: const Text("Suppression avec succès!"),
+      backgroundColor: Colors.red[700],
+    ));
+  }
+
+  // Create user login accès
+  Future<void> createUser(
     String nom,
     String prenom,
     String matricule,
@@ -516,6 +585,11 @@ class _AgentPageState extends State<AgentPage> {
         isOnline: true,
         createdAt: DateTime.now(),
         passwordHash: "passwordHash");
-    await AuthApi().register(userModel);
+    await UserApi().insertData(userModel);
+    Routemaster.of(context).pop();
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      content: const Text("Enregistrer avec succès!"),
+      backgroundColor: Colors.green[700],
+    ));
   }
 }

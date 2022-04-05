@@ -22,7 +22,7 @@ class AgentModel {
   late String? experience;
   late bool statutAgent;
   late DateTime createdAt;
-  late String passwordHash;
+  late String? passwordHash;
   late String? photo;
 
   AgentModel({
@@ -49,7 +49,7 @@ class AgentModel {
     this.experience,
     required this.statutAgent,
     required this.createdAt,
-    required this.passwordHash,
+    this.passwordHash,
     this.photo,
   });
 
