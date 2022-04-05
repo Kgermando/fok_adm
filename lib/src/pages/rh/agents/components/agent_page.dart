@@ -138,7 +138,7 @@ class _AgentPageState extends State<AgentPage> {
                 children: [
                   Row(
                     children: [
-                      Text('Statut agent :',
+                      Text('Statut agent : ',
                           textAlign: TextAlign.start,
                           style: bodyMedium!.copyWith(fontWeight: FontWeight.bold)),
                       (agentModel.statutAgent)
@@ -152,7 +152,7 @@ class _AgentPageState extends State<AgentPage> {
                                   color: Colors.orange.shade700))
                     ],
                   ),
-                  Text("Créé le. ${DateFormat.yMMMd().format(agentModel.createdAt)}",
+                  Text("Créé le. ${DateFormat("dd-MM-yy").format(agentModel.createdAt)}",
                       textAlign: TextAlign.start, style: bodyMedium),
                 ],
               )
@@ -261,7 +261,7 @@ class _AgentPageState extends State<AgentPage> {
               ),
               Expanded(
                 child: Text(agentModel.matricule,
-                    textAlign: TextAlign.start, style: bodyMedium),
+                    textAlign: TextAlign.start, style: bodyMedium.copyWith(color: Colors.blueGrey)),
               )
             ],
           ),
@@ -286,7 +286,7 @@ class _AgentPageState extends State<AgentPage> {
                     style: bodyMedium.copyWith(fontWeight: FontWeight.bold)),
               ),
               Expanded(
-                child: Text(DateFormat.yMMMd().format(agentModel.dateNaissance),
+                child: Text(DateFormat("dd-MM-yy").format(agentModel.dateNaissance),
                     textAlign: TextAlign.start, style: bodyMedium),
               )
             ],
@@ -389,7 +389,7 @@ class _AgentPageState extends State<AgentPage> {
               ),
               Expanded(
                 child: Text(
-                    DateFormat.yMMMd().format(agentModel.dateDebutContrat),
+                    DateFormat("dd-MM-yy").format(agentModel.dateDebutContrat),
                     textAlign: TextAlign.start,
                     style: bodyMedium),
               )
@@ -405,7 +405,7 @@ class _AgentPageState extends State<AgentPage> {
                 ),
                 Expanded(
                   child: Text(
-                      DateFormat.yMMMd().format(agentModel.dateFinContrat),
+                      DateFormat("dd-MM-yy").format(agentModel.dateFinContrat),
                       textAlign: TextAlign.start,
                       style: bodyMedium),
                 )
