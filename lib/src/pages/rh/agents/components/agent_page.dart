@@ -472,12 +472,30 @@ class _AgentPageState extends State<AgentPage> {
     );
   }
 
-  transactionsDialogDette() {
+  transactionsDialogDette(AgentModel agentModel) {
     return showDialog(
       context: context,
       // barrierDismissible: false,
       builder: (context) {
         return AlertDialog(
+          content: FlutterSwitch(
+            width: 225.0,
+            height: 55.0,
+            inactiveColor : Colors.red,
+            valueFontSize: 25.0,
+            toggleSize: 45.0,
+            value: agentModel.statutAgent,
+            borderRadius: 30.0,
+            padding: 8.0,
+            showOnOff: true,
+            activeText: 'PAYE',
+            inactiveText: 'NON PAYE',
+            onToggle: (val) {
+              setState(() {
+                modeAchat = val;
+              });
+            },
+          ),
             
         );
       });
