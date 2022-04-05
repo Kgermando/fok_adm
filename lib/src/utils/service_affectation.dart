@@ -1,58 +1,57 @@
-class FonctionAffection {
+class ServiceAffectation {
 
-  List<String> adminDropdown = [
-    'Président',
-    '1er Vice Président',
-    '2er Vice Président',
-    '3er Vice Président',
-    'Directeur générale',
+    List<String> serviceAffectationDropdown = [
+    'Administration',
+    'Membre',
+    'Consultant(e)',
+    'Sans pste occupé',
   ];
 
-  List<String> servicesAffection = [ 
-    'Directeur',
-    'Chef de département',
-    'Chef de service',
-    'Chef de service',
-    'Agent'
+  List<String> adminDropdown = [
+    'Administration',
+    'Membre de FOKAD',
+    'Consultant(e)',
+    'Sans pste occupé',
   ];
 
   List<String> rhDropdown = [
-    'Directeur',
-    'Chef de département',
-    'Chef de service',
-    'Chef de service',
-    'Agent'
+    'Supervision',
+    'Recrutement',
+    'Rémunération du personnel',
+    'Gestion prévisionnelle de l\'emploi et des compétences',
+    'Restoration et Transport'
   ];
 
    List<String> finDropdown = [
-    'Directeur',
-    'Chef de département',
-    'Chef de service',
-    'Chef de service',
-    'Agent'
+    'Supervision',
+    'Comptable',
+    'Caisse',
+    'Finance',
+    'Transactions',
+    'Budget',
   ];
 
   List<String> expDropdown = [
-    'Directeur',
-    'Chef de département',
-    'Chef de service',
-    'Chef de service',
+    'Supervision',
+    'Exploitation',
+    'Gestion des projets',
+    'Suivi des projets',
+    'Gestion des ressources des projets',
     'Agent'
   ];
 
   List<String> commDropdown = [
-    'Directeur',
-    'Chef de département',
-    'Chef de service',
-    'Chef de service',
-    'Agent'
+    'Supervision',
+    'Marketing projet',
+    'Experience utilisateurs',
+    'Benchmark',
+    'Media et réseaux sociaux',
+    'Mapping terrain'
   ];
 
   List<String> logDropdown = [
-    'Directeur',
-    'Chef de département',
-    'Chef de service',
-    'Chef de service',
-    'Agent'
+    'Supervision',
+    'Controle materiels et qualité',
+    'Commande et livraison materiels',
   ];
 }

@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:fokad_admin/src/api/auth/auth_api.dart';
 import 'package:fokad_admin/src/api/route_api.dart';
+import 'package:fokad_admin/src/models/rh/agent_count_model.dart';
 import 'package:fokad_admin/src/models/rh/agent_model.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
@@ -14,6 +15,32 @@ class AgentsApi {
     String? accessToken = prefs.getString("accessToken");
     print('accessToken $accessToken');
     return accessToken;
+  }
+
+
+  Future<AgentCountModel> getCount() async {
+    String? token = await getToken();
+    if (token!.isNotEmpty) {
+      var splittedJwt = token.split(".");
+      var payload = json.decode(
+          ascii.decode(base64.decode(base64.normalize(splittedJwt[1]))));
+    }
+    var resp = await client.get(
+      agentCountUrl,
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+        'Authorization': 'Bearer $token'
+      },
+    );
+
+    if (resp.statusCode == 200) {
+      return AgentCountModel.fromJson(json.decode(resp.body));
+    } else if (resp.statusCode == 401) {
+      await AuthApi().refreshAccessToken();
+      return getCount();
+    } else {
+      throw Exception(jsonDecode(resp.body)['message']);
+    }
   }
 
   Future<List<AgentModel>> getAllData() async {

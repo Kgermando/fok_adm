@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:fokad_admin/src/api/rh/agents_api.dart';
 import 'package:fokad_admin/src/constants/app_theme.dart';
 import 'package:fokad_admin/src/constants/responsive.dart';
+import 'package:fokad_admin/src/models/rh/agent_count_model.dart';
 import 'package:fokad_admin/src/models/rh/agent_model.dart';
 import 'package:fokad_admin/src/navigation/drawer/drawer_menu.dart';
 import 'package:fokad_admin/src/navigation/header/custom_appbar.dart';
@@ -10,9 +11,11 @@ import 'package:fokad_admin/src/provider/controller.dart';
 import 'package:fokad_admin/src/routes/routes.dart';
 import 'package:fokad_admin/src/utils/country.dart';
 import 'package:fokad_admin/src/utils/dropdown.dart';
+import 'package:fokad_admin/src/utils/fonction_occupe.dart';
 import 'package:fokad_admin/src/utils/service_affectation.dart';
 import 'package:fokad_admin/src/widgets/btn_widget.dart';
 import 'package:fokad_admin/src/widgets/print_widget.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 class AddAgent extends StatefulWidget {
@@ -32,10 +35,19 @@ class _AddAgentState extends State<AddAgent> {
   final List<String> sexeList = Dropdown().sexe;
   final List<String> roleList = Dropdown().role;
   final List<String> world = Country().world;
-  final List<String> serviceAffectationAdminList =
-      FonctionAffection().adminDropdown;
-  final List<String> serviceAffectationList =
-      FonctionAffection().servicesAffection;
+  final List<String> fonctionOccupeAdminList = FonctionOccupee().adminDropdown;
+  final List<String> fonctionOccupeList =
+      FonctionOccupee().fonctionOccupeDropdown;
+
+  final List<String> serviceAffectation =
+      ServiceAffectation().serviceAffectationDropdown;
+  final List<String> serviceAffectationAdmin =
+      ServiceAffectation().adminDropdown;
+  final List<String> serviceAffectationRH = ServiceAffectation().rhDropdown;
+  final List<String> serviceAffectationFin = ServiceAffectation().finDropdown;
+  final List<String> serviceAffectationEXp = ServiceAffectation().expDropdown;
+  final List<String> serviceAffectationComm = ServiceAffectation().commDropdown;
+  final List<String> serviceAffectationLog = ServiceAffectation().logDropdown;
 
   final TextEditingController nomController = TextEditingController();
   final TextEditingController postNomController = TextEditingController();
@@ -51,8 +63,6 @@ class _AddAgentState extends State<AddAgent> {
       TextEditingController();
   final TextEditingController dateFinContratController =
       TextEditingController();
-  final TextEditingController fonctionOccupeController =
-      TextEditingController();
   final TextEditingController competanceController = TextEditingController();
   // HtmlEditorController competanceController = HtmlEditorController();
 
@@ -60,14 +70,23 @@ class _AddAgentState extends State<AddAgent> {
   final TextEditingController rateController = TextEditingController();
   final TextEditingController passwordHashController = TextEditingController();
 
+  String matricule = "";
   String? sexe;
   String? role;
   String? nationalite;
   String? departement;
   String? typeContrat;
   String? servicesAffectation;
+  String? fonctionOccupe;
 
-  List<String> servAffecList = [];
+  List<String> servAffectList = [];
+  List<String> fonctionList = [];
+
+  @override
+  void initState() {
+    getData();
+    super.initState();
+  }
 
   @override
   void dispose() {
@@ -85,13 +104,21 @@ class _AddAgentState extends State<AddAgent> {
     // servicesAffectationController.dispose();
     dateDebutContratController.dispose();
     dateFinContratController.dispose();
-    fonctionOccupeController.dispose();
     competanceController.dispose();
     experienceController.dispose();
     rateController.dispose();
     passwordHashController.dispose();
 
     super.dispose();
+  }
+
+  AgentCountModel? agentCount;
+  Future<void> getData() async {
+    final data = await AgentsApi().getCount();
+    setState(() {
+      agentCount = data;
+      print('agentCount ${agentCount!.count}');
+    });
   }
 
   @override
@@ -202,20 +229,20 @@ class _AddAgentState extends State<AddAgent> {
                   ),
                   Row(
                     children: [
-                      Expanded(child: roleWidget()),
-                      const SizedBox(
-                        width: p10,
-                      ),
-                      Expanded(child: matriculeWidget())
-                    ],
-                  ),
-                  Row(
-                    children: [
                       Expanded(child: departmentWidget()),
                       const SizedBox(
                         width: p10,
                       ),
                       Expanded(child: servicesAffectationWidget())
+                    ],
+                  ),
+                  Row(
+                    children: [
+                      Expanded(child: roleWidget()),
+                      const SizedBox(
+                        width: p10,
+                      ),
+                      Expanded(child: matriculeWidget())
                     ],
                   ),
                   Row(
@@ -426,16 +453,15 @@ class _AddAgentState extends State<AddAgent> {
     return Container(
         margin: const EdgeInsets.only(bottom: p20),
         child: TextFormField(
-          controller: matriculeController,
+          readOnly: true,
+          initialValue: matricule,
           decoration: InputDecoration(
+            labelStyle: const TextStyle(color: Colors.red),
             border:
                 OutlineInputBorder(borderRadius: BorderRadius.circular(10.0)),
-            labelText: 'Matricule',
+            labelText: matricule,
           ),
           keyboardType: TextInputType.text,
-          validator: (val) {
-            return 'Ce champs est obligatoire';
-          },
           style: const TextStyle(),
         ));
   }
@@ -556,13 +582,35 @@ class _AddAgentState extends State<AddAgent> {
         onChanged: (value) {
           setState(() {
             departement = value!;
+            String fokad = 'FO';
+            final date = DateFormat("yy").format(DateTime.now());
+
             if (departement == 'Administration') {
-              servAffecList = serviceAffectationAdminList;
-            } else if (departement != 'Administration') {
-              servAffecList = serviceAffectationList;
-            } else {
-              servAffecList = [];
+              matricule = "${fokad}ADM$date-${agentCount!.count + 1}";
+              fonctionList = fonctionOccupeAdminList;
+              servAffectList = serviceAffectationAdmin;
+            } else if (departement == 'Comptabilité et Finance') {
+              matricule = "${fokad}FIN$date-${agentCount!.count + 1}";
+              fonctionList = fonctionOccupeList;
+              servAffectList = serviceAffectationFin;
+            } else if (departement == 'Ressources Humaines') {
+              matricule = "${fokad}RH$date-${agentCount!.count + 1}";
+              fonctionList = fonctionOccupeList;
+              servAffectList = serviceAffectationRH;
+            } else if (departement == 'Exploitations') {
+              matricule = "${fokad}EXP$date-${agentCount!.count + 1}";
+              fonctionList = fonctionOccupeList;
+              servAffectList = serviceAffectationEXp;
+            } else if (departement == 'Commercial et Marketing') {
+              matricule = "${fokad}COM$date-${agentCount!.count + 1}";
+              fonctionList = fonctionOccupeList;
+              servAffectList = serviceAffectationComm;
+            } else if (departement == 'Logistique') {
+              matricule = "${fokad}LOG$date-${agentCount!.count + 1}";
+              fonctionList = fonctionOccupeList;
+              servAffectList = serviceAffectationLog;
             }
+            print('matricule $matricule');
           });
         },
       ),
@@ -582,7 +630,7 @@ class _AddAgentState extends State<AddAgent> {
           ),
           value: servicesAffectation,
           isExpanded: true,
-          items: servAffecList.map((String value) {
+          items: servAffectList.map((String value) {
             return DropdownMenuItem<String>(
               value: value,
               child: Text(value),
@@ -643,18 +691,27 @@ class _AddAgentState extends State<AddAgent> {
   Widget fonctionOccupeWidget() {
     return Container(
         margin: const EdgeInsets.only(bottom: p20),
-        child: TextFormField(
-          controller: fonctionOccupeController,
+        child: DropdownButtonFormField<String>(
           decoration: InputDecoration(
+            labelText: 'Fonction occupée',
+            labelStyle: const TextStyle(),
             border:
-                OutlineInputBorder(borderRadius: BorderRadius.circular(10.0)),
-            labelText: 'Fonction',
+                OutlineInputBorder(borderRadius: BorderRadius.circular(5.0)),
+            contentPadding: const EdgeInsets.only(left: 5.0),
           ),
-          keyboardType: TextInputType.text,
-          validator: (val) {
-            return 'Ce champs est obligatoire';
+          value: fonctionOccupe,
+          isExpanded: true,
+          items: fonctionList.map((String value) {
+            return DropdownMenuItem<String>(
+              value: value,
+              child: Text(value),
+            );
+          }).toList(),
+          onChanged: (value) {
+            setState(() {
+              fonctionOccupe = value;
+            });
           },
-          style: const TextStyle(),
         ));
   }
 
@@ -668,7 +725,7 @@ class _AddAgentState extends State<AddAgent> {
           decoration: InputDecoration(
             border:
                 OutlineInputBorder(borderRadius: BorderRadius.circular(10.0)),
-            labelText: 'Compétance',
+            labelText: 'Formation',
           ),
           keyboardType: TextInputType.text,
           validator: (val) {
@@ -731,7 +788,7 @@ class _AddAgentState extends State<AddAgent> {
         servicesAffectation: servicesAffectation.toString(),
         dateDebutContrat: DateTime.parse(dateDebutContratController.text),
         dateFinContrat: DateTime.parse(dateFinContratController.text),
-        fonctionOccupe: fonctionOccupeController.text,
+        fonctionOccupe: fonctionOccupe.toString(),
         competance: competanceController.toString(),
         experience: experienceController.text,
         statutAgent: true,

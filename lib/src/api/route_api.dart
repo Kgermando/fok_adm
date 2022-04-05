@@ -12,3 +12,4 @@ var userUrl = Uri.parse("$mainUrl/user/");
 // RH
 var listAgentsUrl = Uri.parse("$mainUrl/rh/agents/");
 var addAgentsUrl = Uri.parse("$mainUrl/rh/agents/insert-new-agent");
+var agentCountUrl = Uri.parse("$mainUrl/rh/agents/get-count/");

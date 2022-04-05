@@ -11,7 +11,6 @@ import 'package:fokad_admin/src/routes/routes.dart';
 import 'package:routemaster/routemaster.dart';
 import 'package:provider/provider.dart';
 import 'package:timeago/timeago.dart' as timeago;
-import 'package:url_strategy/url_strategy.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -60,12 +59,11 @@ class MyApp extends StatelessWidget {
             routeInformationParser: const RoutemasterParser(),
             theme: MyThemes.lightTheme,
             darkTheme: MyThemes.darkTheme,
-            localizationsDelegates: const [
-              GlobalMaterialLocalizations.delegate,
-              GlobalWidgetsLocalizations.delegate,
-              GlobalWidgetsLocalizations.delegate
+            localizationsDelegates: GlobalMaterialLocalizations.delegates,
+            supportedLocales: const [
+              Locale('fr', 'FR'),
+              Locale('en', 'EN')
             ],
-            supportedLocales: const [Locale('en', 'EN')],
           );
         });
   }
