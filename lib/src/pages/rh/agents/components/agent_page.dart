@@ -5,10 +5,9 @@ import 'package:fokad_admin/src/constants/responsive.dart';
 import 'package:fokad_admin/src/models/rh/agent_model.dart';
 import 'package:fokad_admin/src/navigation/drawer/drawer_menu.dart';
 import 'package:fokad_admin/src/navigation/header/custom_appbar.dart';
-import 'package:fokad_admin/src/provider/controller.dart';
 import 'package:fokad_admin/src/widgets/print_widget.dart';
 import 'package:intl/intl.dart';
-import 'package:provider/provider.dart';
+import 'package:routemaster/routemaster.dart';
 
 class AgentPage extends StatefulWidget {
   const AgentPage({Key? key, this.id}) : super(key: key);
@@ -48,9 +47,23 @@ class _AgentPageState extends State<AgentPage> {
                                 return Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    CustomAppbar(
-                                        title:
-                                            'Matricule ${agentModel!.matricule} '),
+                                    Row(
+                                      children: [
+                                        SizedBox(
+                                          width: p20,
+                                          child: IconButton(
+                                              onPressed: () =>
+                                                  Routemaster.of(context).pop(),
+                                              icon: const Icon(Icons.arrow_back)),
+                                        ),
+                                        const SizedBox(width: p10),
+                                        Expanded(
+                                          child: CustomAppbar(
+                                              title:
+                                                  'Matricule ${agentModel!.matricule} '),
+                                        ),
+                                      ],
+                                    ),
                                     Expanded(child: pageDetail(agentModel))
                                   ],
                                 );
