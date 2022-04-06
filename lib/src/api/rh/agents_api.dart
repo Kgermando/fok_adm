@@ -170,7 +170,7 @@ class AgentsApi {
         },
         body: body);
     if (res.statusCode == 200) {
-      return AgentModel.fromJson(json.decode(res.body)['agents']);
+      return AgentModel.fromJson(json.decode(res.body));
     } else {
       throw Exception(json.decode(res.body)['message']);
     }

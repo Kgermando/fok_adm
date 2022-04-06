@@ -68,7 +68,6 @@ class _AddAgentState extends State<AddAgent> {
 
   final TextEditingController experienceController = TextEditingController();
   final TextEditingController rateController = TextEditingController();
-  final TextEditingController passwordHashController = TextEditingController();
 
   String matricule = "";
   String? sexe;
@@ -107,7 +106,6 @@ class _AddAgentState extends State<AddAgent> {
     competanceController.dispose();
     experienceController.dispose();
     rateController.dispose();
-    passwordHashController.dispose();
 
     super.dispose();
   }
@@ -678,9 +676,9 @@ class _AddAgentState extends State<AddAgent> {
             lastDate: DateTime(2100),
             onChanged: (val) {
               setState(() {
-                !(dateFinContratController.text == '')
-                    ? dateFinContratController.text
-                    : "2022-04-01";
+                (dateFinContratController.text != "")
+                  ? dateFinContratController.text
+                  : "2099-12-31 00:00:00";
               });
             },
             validator: (val) {
@@ -793,7 +791,6 @@ class _AddAgentState extends State<AddAgent> {
         experience: experienceController.text,
         statutAgent: true,
         createdAt: DateTime.now(),
-        passwordHash: passwordHashController.text,
         photo: '');
 
     await AgentsApi().insertData(agentModel);

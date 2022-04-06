@@ -92,20 +92,6 @@ class UserApi {
     }
   }
 
-  //   Future<void> register(UserModel userModel) async {
-  //   var data = userModel.toJson();
-  //   // var body = jsonEncode(data);
-
-  //   var accessToken = await UserPreferences.getAccessToken();
-  //   var headers = {HttpHeaders.authorizationHeader: "Bearer $accessToken"};
-
-  //   var resp = await client.post(registerUrl, body: data, headers: headers);
-  //   if (resp.statusCode == 200) {
-  //   } else {
-  //     throw Exception(json.decode(resp.body)['message']);
-  //   }
-  // }
-
   Future<UserModel> updateData(int id, UserModel userModel) async {
     final prefs = await SharedPreferences.getInstance();
     var accessToken = prefs.getString("accessToken");
@@ -127,18 +113,17 @@ class UserApi {
     }
   }
 
-  Future<UserModel> deleteData(int id) async {
+  Future<void> deleteData(int id) async {
     final prefs = await SharedPreferences.getInstance();
     var accessToken = prefs.getString("accessToken");
-
-    var deleteAgentsUrl = Uri.parse("$mainUrl/rh/agents/delete-agent/$id");
+    var deleteAgentsUrl = Uri.parse("$mainUrl/user/delete-user/$id");
 
     var res = await client.delete(deleteAgentsUrl, headers: <String, String>{
       'Content-Type': 'application/json; charset=UTF-8',
       'Authorization': 'Bearer $accessToken'
     });
     if (res.statusCode == 200) {
-      return UserModel.fromJson(json.decode(res.body)['agents']);
+  
     } else {
       throw Exception(json.decode(res.body)['message']);
     }

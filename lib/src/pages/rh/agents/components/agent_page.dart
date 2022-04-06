@@ -9,6 +9,7 @@ import 'package:fokad_admin/src/models/users/user_model.dart';
 import 'package:fokad_admin/src/navigation/drawer/drawer_menu.dart';
 import 'package:fokad_admin/src/navigation/header/custom_appbar.dart';
 import 'package:fokad_admin/src/widgets/print_widget.dart';
+import 'package:fokad_admin/src/widgets/title_widget.dart';
 import 'package:intl/intl.dart';
 import 'package:routemaster/routemaster.dart';
 
@@ -121,11 +122,17 @@ class _AgentPageState extends State<AgentPage> {
               controller: _controllerScroll,
               children: [
                 Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    activeAgentWidget(agentModel),
-                    PrintWidget(
-                        tooltip: 'Imprimer le document', onPressed: () {})
+                    const TitleWidget(title: 'Curriculum vitæ'),
+                    Row(
+                      children: [
+                        IconButton(onPressed: (){}, icon: const Icon(Icons.edit)),
+                        activeAgentWidget(agentModel),
+                        PrintWidget(
+                            tooltip: 'Imprimer le document', onPressed: () {})
+                      ],
+                    )
                   ],
                 ),
                 identiteWidet(agentModel),
@@ -488,40 +495,50 @@ class _AgentPageState extends State<AgentPage> {
   }
 
   agentStatutDialog(AgentModel agentModel) {
-    return showDialog(
-        context: context,
-        // barrierDismissible: false,
-        builder: (context) {
-          return AlertDialog(
-            content: FlutterSwitch(
-              width: 225.0,
-              height: 55.0,
-              activeColor: Colors.green,
-              inactiveColor: Colors.red,
-              valueFontSize: 25.0,
-              toggleSize: 45.0,
-              value: agentModel.statutAgent,
-              borderRadius: 30.0,
-              padding: 8.0,
-              showOnOff: true,
-              activeText: 'Active',
-              inactiveText: 'Inactive',
-              onToggle: (val) {
-                setState(() {
-                  statutAgent = val;
-                  if (statutAgent) {
-                    deleteUser(agentModel);
-                    updateAgent(agentModel);
-                  } else {
-                    createUser(agentModel.nom, agentModel.prenom,
-                        agentModel.matricule, agentModel.role);
-                    updateAgent(agentModel);
-                  }
-                });
-              },
-            ),
-          );
-        });
+    statutAgent = agentModel.statutAgent;
+    return showDialog<String>(
+      context: context,
+      builder: (BuildContext context) => AlertDialog(
+        title: const Text('AlertDialog Title'),
+        content: FlutterSwitch(
+          width: 225.0,
+          height: 55.0,
+          activeColor: Colors.green,
+          inactiveColor: Colors.red,
+          valueFontSize: 25.0,
+          toggleSize: 45.0,
+          value: statutAgent,
+          borderRadius: 30.0,
+          padding: 8.0,
+          showOnOff: true,
+          activeText: 'Active',
+          inactiveText: 'Inactive',
+          onToggle: (val) {
+            setState(() {
+              statutAgent = val;
+              if (statutAgent) {
+                deleteUser(agentModel);
+                updateAgent(agentModel);
+              } else {
+                createUser(agentModel.nom, agentModel.prenom,
+                    agentModel.matricule, agentModel.role);
+                updateAgent(agentModel);
+              }
+            });
+          },
+        ),
+        actions: <Widget>[
+          TextButton(
+            onPressed: () => Navigator.pop(context, 'Cancel'),
+            child: const Text('Cancel'),
+          ),
+          TextButton(
+            onPressed: () => Navigator.pop(context, 'OK'),
+            child: const Text('OK'),
+          ),
+        ],
+      ),
+    );
   }
 
   // Update statut agent
@@ -548,7 +565,7 @@ class _AgentPageState extends State<AgentPage> {
         fonctionOccupe: agentModel.fonctionOccupe,
         statutAgent: statutAgent,
         createdAt: DateTime.now(),
-        passwordHash: agentModel.passwordHash);
+        photo: agentModel.photo);
     await AgentsApi().updateData(agentModel.id!, agent);
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
       content: const Text("Mise à statut avec succès!"),
@@ -563,7 +580,6 @@ class _AgentPageState extends State<AgentPage> {
         .map((e) => e.id)
         .toList();
     await UserApi().deleteData(users.first!);
-    Routemaster.of(context).pop();
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
       content: const Text("Suppression avec succès!"),
       backgroundColor: Colors.red[700],
@@ -586,7 +602,6 @@ class _AgentPageState extends State<AgentPage> {
         createdAt: DateTime.now(),
         passwordHash: "passwordHash");
     await UserApi().insertData(userModel);
-    Routemaster.of(context).pop();
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
       content: const Text("Enregistrer avec succès!"),
       backgroundColor: Colors.green[700],
