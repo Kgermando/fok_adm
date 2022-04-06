@@ -8,6 +8,7 @@ import 'package:fokad_admin/src/models/rh/agent_model.dart';
 import 'package:fokad_admin/src/models/users/user_model.dart';
 import 'package:fokad_admin/src/navigation/drawer/drawer_menu.dart';
 import 'package:fokad_admin/src/navigation/header/custom_appbar.dart';
+import 'package:fokad_admin/src/utils/loading.dart';
 import 'package:fokad_admin/src/widgets/print_widget.dart';
 import 'package:fokad_admin/src/widgets/title_widget.dart';
 import 'package:intl/intl.dart';
@@ -127,7 +128,8 @@ class _AgentPageState extends State<AgentPage> {
                     const TitleWidget(title: 'Curriculum vitæ'),
                     Row(
                       children: [
-                        IconButton(onPressed: (){}, icon: const Icon(Icons.edit)),
+                        IconButton(
+                            onPressed: () {}, icon: const Icon(Icons.edit)),
                         activeAgentWidget(agentModel),
                         PrintWidget(
                             tooltip: 'Imprimer le document', onPressed: () {})
@@ -496,49 +498,54 @@ class _AgentPageState extends State<AgentPage> {
 
   agentStatutDialog(AgentModel agentModel) {
     statutAgent = agentModel.statutAgent;
-    return showDialog<String>(
-      context: context,
-      builder: (BuildContext context) => AlertDialog(
-        title: const Text('AlertDialog Title'),
-        content: FlutterSwitch(
-          width: 225.0,
-          height: 55.0,
-          activeColor: Colors.green,
-          inactiveColor: Colors.red,
-          valueFontSize: 25.0,
-          toggleSize: 45.0,
-          value: statutAgent,
-          borderRadius: 30.0,
-          padding: 8.0,
-          showOnOff: true,
-          activeText: 'Active',
-          inactiveText: 'Inactive',
-          onToggle: (val) {
-            setState(() {
-              statutAgent = val;
-              if (statutAgent) {
-                deleteUser(agentModel);
-                updateAgent(agentModel);
-              } else {
-                createUser(agentModel.nom, agentModel.prenom,
-                    agentModel.matricule, agentModel.role);
-                updateAgent(agentModel);
-              }
-            });
-          },
-        ),
-        actions: <Widget>[
-          TextButton(
-            onPressed: () => Navigator.pop(context, 'Cancel'),
-            child: const Text('Cancel'),
-          ),
-          TextButton(
-            onPressed: () => Navigator.pop(context, 'OK'),
-            child: const Text('OK'),
-          ),
-        ],
-      ),
-    );
+    return showDialog(
+        context: context,
+        barrierDismissible: true,
+        builder: (context) {
+          return StatefulBuilder(builder: (context, StateSetter setState) {
+            return !isLoading
+              ? AlertDialog(
+                  title: const Text('Autorisation d\'accès '),
+                  content: FlutterSwitch(
+                    width: 225.0,
+                    height: 55.0,
+                    activeColor: Colors.green,
+                    inactiveColor: Colors.red,
+                    valueFontSize: 25.0,
+                    toggleSize: 45.0,
+                    value: statutAgent,
+                    borderRadius: 30.0,
+                    padding: 8.0,
+                    showOnOff: true,
+                    activeText: 'Active',
+                    inactiveText: 'Inactive',
+                    onToggle: (val) {
+                      setState(() {
+                        isLoading == true;
+                        statutAgent = val;
+                        if (statutAgent) {
+                          deleteUser(agentModel);
+                          updateAgent(agentModel);
+                          // isLoading == false;
+                        } else {
+                          createUser(agentModel.nom, agentModel.prenom,
+                              agentModel.matricule, agentModel.role);
+                          updateAgent(agentModel);
+                          // isLoading == false;
+                        }
+                      });
+                    },
+                  ),
+                  actions: <Widget>[
+                    TextButton(
+                      onPressed: () => Navigator.pop(context, 'OK'),
+                      child: const Text('OK'),
+                    ),
+                  ],
+                )
+              : loading();
+          });
+        });
   }
 
   // Update statut agent
@@ -600,7 +607,7 @@ class _AgentPageState extends State<AgentPage> {
         role: role,
         isOnline: true,
         createdAt: DateTime.now(),
-        passwordHash: "passwordHash");
+        passwordHash: "password");
     await UserApi().insertData(userModel);
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
       content: const Text("Enregistrer avec succès!"),

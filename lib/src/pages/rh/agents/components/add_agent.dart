@@ -39,10 +39,8 @@ class _AddAgentState extends State<AddAgent> {
   final List<String> fonctionOccupeList =
       FonctionOccupee().fonctionOccupeDropdown;
 
-  final List<String> serviceAffectation =
-      ServiceAffectation().serviceAffectationDropdown;
-  final List<String> serviceAffectationAdmin =
-      ServiceAffectation().adminDropdown;
+  final List<String> serviceAffectation = ServiceAffectation().serviceAffectationDropdown;
+  final List<String> serviceAffectationAdmin = ServiceAffectation().adminDropdown;
   final List<String> serviceAffectationRH = ServiceAffectation().rhDropdown;
   final List<String> serviceAffectationFin = ServiceAffectation().finDropdown;
   final List<String> serviceAffectationEXp = ServiceAffectation().expDropdown;

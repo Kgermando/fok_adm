@@ -5,7 +5,6 @@ class FonctionOccupee {
     'Directeur adjoint',
     'Chef de département',
     'Chef de service',
-    'Chef de service',
     'Agent',
     'Sans fonction'
   ];
