@@ -27,7 +27,6 @@ class AddAgent extends StatefulWidget {
 
 class _AddAgentState extends State<AddAgent> {
   final ScrollController _controllerScroll = ScrollController();
-
   bool isLoading = false;
 
   final List<String> departementList = Dropdown().departement;
