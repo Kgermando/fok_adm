@@ -130,7 +130,7 @@ class _AgentPageState extends State<AgentPage> {
                       children: [
                         IconButton(
                             onPressed: () {}, icon: const Icon(Icons.edit)),
-                        activeAgentWidget(agentModel),
+                        statutAgentWidget(agentModel),
                         PrintWidget(
                             tooltip: 'Imprimer le document', onPressed: () {})
                       ],
@@ -148,7 +148,7 @@ class _AgentPageState extends State<AgentPage> {
     );
   }
 
-  Widget activeAgentWidget(AgentModel agentModel) {
+  Widget statutAgentWidget(AgentModel agentModel) {
     return IconButton(
         tooltip: 'Changer le statut agent',
         onPressed: () => agentStatutDialog(agentModel),
@@ -316,6 +316,20 @@ class _AgentPageState extends State<AgentPage> {
           Row(
             children: [
               Expanded(
+                child: Text('Numéro de sécurité sociale :',
+                    textAlign: TextAlign.start,
+                    style: bodyMedium.copyWith(fontWeight: FontWeight.bold)),
+              ),
+              Expanded(
+                child: Text(agentModel.numeroSecuriteSociale,
+                    textAlign: TextAlign.start,
+                    style: bodyMedium.copyWith(color: Colors.blueGrey)),
+              )
+            ],
+          ),
+          Row(
+            children: [
+              Expanded(
                 child: Text('Lieu de naissance :',
                     textAlign: TextAlign.start,
                     style: bodyMedium.copyWith(fontWeight: FontWeight.bold)),
@@ -374,6 +388,7 @@ class _AgentPageState extends State<AgentPage> {
 
   Widget serviceWidet(AgentModel agentModel) {
     final bodyMedium = Theme.of(context).textTheme.bodyMedium;
+    final role = int.parse(agentModel.role);
     return Padding(
       padding: const EdgeInsets.all(p10),
       child: Column(
@@ -461,6 +476,20 @@ class _AgentPageState extends State<AgentPage> {
                 )
               ],
             ),
+          if(role <= 3 )
+          Row(
+            children: [
+              Expanded(
+                child: Text('Salaire :',
+                    textAlign: TextAlign.start,
+                    style: bodyMedium.copyWith(fontWeight: FontWeight.bold)),
+              ),
+              Expanded(
+                child: Text(agentModel.salaire,
+                    textAlign: TextAlign.start, style: bodyMedium),
+              )
+            ],
+          ),
         ],
       ),
     );
@@ -538,7 +567,7 @@ class _AgentPageState extends State<AgentPage> {
                   ),
                   actions: <Widget>[
                     TextButton(
-                      onPressed: () => Navigator.pop(context, 'OK'),
+                      onPressed: () => Routemaster.of(context).pop(),  // Navigator.pop(context, 'OK'),
                       child: const Text('OK'),
                     ),
                   ],
@@ -551,28 +580,31 @@ class _AgentPageState extends State<AgentPage> {
   // Update statut agent
   Future<void> updateAgent(AgentModel agentModel) async {
     final agent = AgentModel(
-        id: agentModel.id,
-        nom: agentModel.nom,
-        postNom: agentModel.postNom,
-        prenom: agentModel.prenom,
-        email: agentModel.email,
-        telephone: agentModel.telephone,
-        adresse: agentModel.adresse,
-        sexe: agentModel.sexe,
-        role: agentModel.role,
-        matricule: agentModel.matricule,
-        dateNaissance: agentModel.dateNaissance,
-        lieuNaissance: agentModel.lieuNaissance,
-        nationalite: agentModel.nationalite,
-        typeContrat: agentModel.typeContrat,
-        departement: agentModel.departement,
-        servicesAffectation: agentModel.servicesAffectation,
-        dateDebutContrat: agentModel.dateDebutContrat,
-        dateFinContrat: agentModel.dateFinContrat,
-        fonctionOccupe: agentModel.fonctionOccupe,
-        statutAgent: statutAgent,
-        createdAt: DateTime.now(),
-        photo: agentModel.photo);
+      id: agentModel.id,
+      nom: agentModel.nom,
+      postNom: agentModel.postNom,
+      prenom: agentModel.prenom,
+      email: agentModel.email,
+      telephone: agentModel.telephone,
+      adresse: agentModel.adresse,
+      sexe: agentModel.sexe,
+      role: agentModel.role,
+      matricule: agentModel.matricule,
+      numeroSecuriteSociale: agentModel.numeroSecuriteSociale,
+      dateNaissance: agentModel.dateNaissance,
+      lieuNaissance: agentModel.lieuNaissance,
+      nationalite: agentModel.nationalite,
+      typeContrat: agentModel.typeContrat,
+      departement: agentModel.departement,
+      servicesAffectation: agentModel.servicesAffectation,
+      dateDebutContrat: agentModel.dateDebutContrat,
+      dateFinContrat: agentModel.dateFinContrat,
+      fonctionOccupe: agentModel.fonctionOccupe,
+      statutAgent: statutAgent,
+      createdAt: DateTime.now(),
+      photo: agentModel.photo,
+      salaire: agentModel.salaire
+    );
     await AgentsApi().updateData(agentModel.id!, agent);
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
       content: const Text("Mise à statut avec succès!"),

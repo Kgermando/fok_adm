@@ -77,16 +77,16 @@ class AuthApi extends ChangeNotifier {
     var data = {'refresh_token': refreshToken};
     var body = jsonEncode(data);
     var resp = await client.post(
-      refreshTokenUrl, 
-      body: body, 
-        headers: <String, String>{
+      refreshTokenUrl,
+      body: body,
+      headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8'
       },
     );
-    
+
     if (resp.statusCode == 200) {
       Token token = Token.fromJson(json.decode(resp.body));
-      
+
       UserPreferences.saveAccessToken(token.accessToken);
       UserPreferences.saveRefreshToken(token.refreshToken);
     } else {
@@ -139,7 +139,13 @@ class AuthApi extends ChangeNotifier {
       var payload = json.decode(
           ascii.decode(base64.decode(base64.normalize(splittedJwt[1]))));
     }
-    var id = UserPreferences.getIdToken();
+
+    var _keyIdToken = 'idToken';
+    final prefs = await SharedPreferences.getInstance();
+    final data = prefs.getString(_keyIdToken);
+    String idPrefs = jsonDecode(data!);
+    print('idPrefs $idPrefs');
+    int id = int.parse(idPrefs);
     var userIdUrl = Uri.parse("$mainUrl/user/$id");
     var resp = await client.get(
       userIdUrl,
@@ -151,7 +157,7 @@ class AuthApi extends ChangeNotifier {
     if (resp.statusCode == 200) {
       return UserModel.fromJson(json.decode(resp.body));
     } else {
-      throw Exception(json.decode(resp.body)['message']);
+      throw Exception(UserModel.fromJson(json.decode(resp.body)));
     }
   }
 

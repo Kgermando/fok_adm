@@ -17,6 +17,7 @@ import 'package:fokad_admin/src/widgets/btn_widget.dart';
 import 'package:fokad_admin/src/widgets/print_widget.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
+import 'package:routemaster/routemaster.dart';
 
 class AddAgent extends StatefulWidget {
   const AddAgent({Key? key}) : super(key: key);
@@ -27,6 +28,7 @@ class AddAgent extends StatefulWidget {
 
 class _AddAgentState extends State<AddAgent> {
   final ScrollController _controllerScroll = ScrollController();
+  final _formKey = GlobalKey<FormState>();
   bool isLoading = false;
 
   final List<String> departementList = Dropdown().departement;
@@ -38,8 +40,10 @@ class _AddAgentState extends State<AddAgent> {
   final List<String> fonctionOccupeList =
       FonctionOccupee().fonctionOccupeDropdown;
 
-  final List<String> serviceAffectation = ServiceAffectation().serviceAffectationDropdown;
-  final List<String> serviceAffectationAdmin = ServiceAffectation().adminDropdown;
+  final List<String> serviceAffectation =
+      ServiceAffectation().serviceAffectationDropdown;
+  final List<String> serviceAffectationAdmin =
+      ServiceAffectation().adminDropdown;
   final List<String> serviceAffectationRH = ServiceAffectation().rhDropdown;
   final List<String> serviceAffectationFin = ServiceAffectation().finDropdown;
   final List<String> serviceAffectationEXp = ServiceAffectation().expDropdown;
@@ -52,10 +56,10 @@ class _AddAgentState extends State<AddAgent> {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController telephoneController = TextEditingController();
   final TextEditingController adresseController = TextEditingController();
-  final TextEditingController matriculeController = TextEditingController();
+  final TextEditingController numeroSecuriteSocialeController =
+      TextEditingController();
   final TextEditingController dateNaissanceController = TextEditingController();
   final TextEditingController lieuNaissanceController = TextEditingController();
-  // final TextEditingController servicesAffectationController = TextEditingController();
   final TextEditingController dateDebutContratController =
       TextEditingController();
   final TextEditingController dateFinContratController =
@@ -64,7 +68,7 @@ class _AddAgentState extends State<AddAgent> {
   // HtmlEditorController competanceController = HtmlEditorController();
 
   final TextEditingController experienceController = TextEditingController();
-  final TextEditingController rateController = TextEditingController();
+  final TextEditingController salaireController = TextEditingController();
 
   String matricule = "";
   String? sexe;
@@ -94,15 +98,14 @@ class _AddAgentState extends State<AddAgent> {
     emailController.dispose();
     telephoneController.dispose();
     adresseController.dispose();
-    matriculeController.dispose();
+    numeroSecuriteSocialeController.dispose();
     dateNaissanceController.dispose();
     lieuNaissanceController.dispose();
-    // servicesAffectationController.dispose();
     dateDebutContratController.dispose();
     dateFinContratController.dispose();
     competanceController.dispose();
     experienceController.dispose();
-    rateController.dispose();
+    salaireController.dispose();
 
     super.dispose();
   }
@@ -121,10 +124,6 @@ class _AddAgentState extends State<AddAgent> {
     return Scaffold(
         key: context.read<Controller>().scaffoldKey,
         drawer: const DrawerMenu(),
-        floatingActionButton: FloatingActionButton(
-          onPressed: () => const AddAgent(),
-          child: const Icon(Icons.person_add),
-        ),
         body: SafeArea(
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.center,
@@ -156,129 +155,137 @@ class _AddAgentState extends State<AddAgent> {
   }
 
   Widget addAgentWidget() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Card(
-          elevation: 10,
-          child: Padding(
-            padding: const EdgeInsets.all(p16),
-            child: SizedBox(
-              width: Responsive.isDesktop(context)
-                  ? MediaQuery.of(context).size.width / 2
-                  : MediaQuery.of(context).size.width,
-              child: ListView(
-                controller: _controllerScroll,
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [PrintWidget(onPressed: () {})],
-                  ),
-                  const SizedBox(
-                    height: p20,
-                  ),
-                  Row(
-                    children: [
-                      Expanded(child: nomWidget()),
-                      const SizedBox(
-                        width: p10,
-                      ),
-                      Expanded(child: postNomWidget())
-                    ],
-                  ),
-                  Row(
-                    children: [
-                      Expanded(child: prenomWidget()),
-                      const SizedBox(
-                        width: p10,
-                      ),
-                      Expanded(child: sexeWidget())
-                    ],
-                  ),
-                  Row(
-                    children: [
-                      Expanded(child: dateNaissanceWidget()),
-                      const SizedBox(
-                        width: p10,
-                      ),
-                      Expanded(child: lieuNaissanceWidget())
-                    ],
-                  ),
-                  Row(
-                    children: [
-                      Expanded(child: nationaliteWidget()),
-                      const SizedBox(
-                        width: p10,
-                      ),
-                      Expanded(child: adresseWidget())
-                    ],
-                  ),
-                  Row(
-                    children: [
-                      Expanded(child: emailWidget()),
-                      const SizedBox(
-                        width: p10,
-                      ),
-                      Expanded(child: telephoneWidget())
-                    ],
-                  ),
-                  Row(
-                    children: [
-                      Expanded(child: departmentWidget()),
-                      const SizedBox(
-                        width: p10,
-                      ),
-                      Expanded(child: servicesAffectationWidget())
-                    ],
-                  ),
-                  Row(
-                    children: [
-                      Expanded(child: roleWidget()),
-                      const SizedBox(
-                        width: p10,
-                      ),
-                      Expanded(child: matriculeWidget())
-                    ],
-                  ),
-                  Row(
-                    children: [
-                      Expanded(child: fonctionOccupeWidget()),
-                      const SizedBox(
-                        width: p10,
-                      ),
-                      Expanded(child: typeContratWidget())
-                    ],
-                  ),
-                  Row(
-                    children: [
-                      Expanded(child: dateDebutContratWidget()),
-                      const SizedBox(
-                        width: p10,
-                      ),
-                      if (typeContrat == 'CDD')
-                        Expanded(child: dateFinContratWidget())
-                    ],
-                  ),
-                  competanceWidget(),
-                  const SizedBox(
-                    width: p10,
-                  ),
-                  experienceWidget(),
-                  const SizedBox(
-                    height: p20,
-                  ),
-                  BtnWidget(
-                      title: 'Soumettre',
-                      isLoading: isLoading,
-                      press: () {
-                        submit();
-                      })
-                ],
+    return Form(
+      key: _formKey,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Card(
+            elevation: 10,
+            child: Padding(
+              padding: const EdgeInsets.all(p16),
+              child: SizedBox(
+                width: Responsive.isDesktop(context)
+                    ? MediaQuery.of(context).size.width / 2
+                    : MediaQuery.of(context).size.width,
+                child: ListView(
+                  controller: _controllerScroll,
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [PrintWidget(onPressed: () {})],
+                    ),
+                    const SizedBox(
+                      height: p20,
+                    ),
+                    Row(
+                      children: [
+                        Expanded(child: nomWidget()),
+                        const SizedBox(
+                          width: p10,
+                        ),
+                        Expanded(child: postNomWidget())
+                      ],
+                    ),
+                    Row(
+                      children: [
+                        Expanded(child: prenomWidget()),
+                        const SizedBox(
+                          width: p10,
+                        ),
+                        Expanded(child: sexeWidget())
+                      ],
+                    ),
+                    Row(
+                      children: [
+                        Expanded(child: dateNaissanceWidget()),
+                        const SizedBox(
+                          width: p10,
+                        ),
+                        Expanded(child: lieuNaissanceWidget())
+                      ],
+                    ),
+                    Row(
+                      children: [
+                        Expanded(child: nationaliteWidget()),
+                        const SizedBox(
+                          width: p10,
+                        ),
+                        Expanded(child: adresseWidget())
+                      ],
+                    ),
+                    Row(
+                      children: [
+                        Expanded(child: emailWidget()),
+                        const SizedBox(
+                          width: p10,
+                        ),
+                        Expanded(child: telephoneWidget())
+                      ],
+                    ),
+                    Row(
+                      children: [
+                        Expanded(child: departmentWidget()),
+                        const SizedBox(
+                          width: p10,
+                        ),
+                        Expanded(child: servicesAffectationWidget())
+                      ],
+                    ),
+                    Row(
+                      children: [
+                        Expanded(child: roleWidget()),
+                        const SizedBox(
+                          width: p10,
+                        ),
+                        Expanded(child: matriculeWidget())
+                      ],
+                    ),
+                    numeroSecuriteSocialeWidget(),
+                    Row(
+                      children: [
+                        Expanded(child: fonctionOccupeWidget()),
+                        const SizedBox(
+                          width: p10,
+                        ),
+                        Expanded(child: typeContratWidget())
+                      ],
+                    ),
+                    Row(
+                      children: [
+                        Expanded(child: dateDebutContratWidget()),
+                        const SizedBox(
+                          width: p10,
+                        ),
+                        if (typeContrat == 'CDD')
+                          Expanded(child: dateFinContratWidget())
+                      ],
+                    ),
+                    competanceWidget(),
+                    const SizedBox(
+                      width: p10,
+                    ),
+                    experienceWidget(),
+                    const SizedBox(
+                      height: p20,
+                    ),
+                    BtnWidget(
+                        title: 'Soumettre',
+                        isLoading: isLoading,
+                        press: () {
+                          final form = _formKey.currentState!;
+                          if (form.validate()) {
+                            submit();
+                            form.reset();
+                          }
+                        })
+                  ],
+                ),
               ),
             ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 
@@ -293,8 +300,12 @@ class _AddAgentState extends State<AddAgent> {
             labelText: 'Nom',
           ),
           keyboardType: TextInputType.text,
-          validator: (val) {
-            return 'Ce champs est obligatoire';
+          validator: (value) {
+            if (value != null && value.isEmpty) {
+              return 'Ce champs est obligatoire';
+            } else {
+              return null;
+            }
           },
           style: const TextStyle(),
         ));
@@ -311,8 +322,12 @@ class _AddAgentState extends State<AddAgent> {
             labelText: 'Post-Nom',
           ),
           keyboardType: TextInputType.text,
-          validator: (val) {
-            return 'Ce champs est obligatoire';
+          validator: (value) {
+            if (value != null && value.isEmpty) {
+              return 'Ce champs est obligatoire';
+            } else {
+              return null;
+            }
           },
           style: const TextStyle(),
         ));
@@ -329,8 +344,12 @@ class _AddAgentState extends State<AddAgent> {
             labelText: 'Prénom',
           ),
           keyboardType: TextInputType.text,
-          validator: (val) {
-            return 'Ce champs est obligatoire';
+          validator: (value) {
+            if (value != null && value.isEmpty) {
+              return 'Ce champs est obligatoire';
+            } else {
+              return null;
+            }
           },
           style: const TextStyle(),
         ));
@@ -347,8 +366,12 @@ class _AddAgentState extends State<AddAgent> {
             labelText: 'Email',
           ),
           keyboardType: TextInputType.text,
-          validator: (val) {
-            return 'Ce champs est obligatoire';
+          validator: (value) {
+            if (value != null && value.isEmpty) {
+              return 'Ce champs est obligatoire';
+            } else {
+              return null;
+            }
           },
           style: const TextStyle(),
         ));
@@ -365,8 +388,12 @@ class _AddAgentState extends State<AddAgent> {
             labelText: 'Téléphone',
           ),
           keyboardType: TextInputType.text,
-          validator: (val) {
-            return 'Ce champs est obligatoire';
+          validator: (value) {
+            if (value != null && value.isEmpty) {
+              return 'Ce champs est obligatoire';
+            } else {
+              return null;
+            }
           },
           style: const TextStyle(),
         ));
@@ -383,8 +410,12 @@ class _AddAgentState extends State<AddAgent> {
             labelText: 'Adresse',
           ),
           keyboardType: TextInputType.text,
-          validator: (val) {
-            return 'Ce champs est obligatoire';
+          validator: (value) {
+            if (value != null && value.isEmpty) {
+              return 'Ce champs est obligatoire';
+            } else {
+              return null;
+            }
           },
           style: const TextStyle(),
         ));
@@ -461,26 +492,54 @@ class _AddAgentState extends State<AddAgent> {
         ));
   }
 
+
+  Widget numeroSecuriteSocialeWidget() {
+    return Container(
+        margin: const EdgeInsets.only(bottom: p20),
+        child: TextFormField(
+          controller: numeroSecuriteSocialeController,
+          decoration: InputDecoration(
+            border:
+                OutlineInputBorder(borderRadius: BorderRadius.circular(10.0)),
+            labelText: 'Numero Sécurité Sociale',
+          ),
+          keyboardType: TextInputType.text,
+          validator: (value) {
+            if (value != null && value.isEmpty) {
+              return 'Ce champs est obligatoire';
+            } else {
+              return null;
+            }
+          },
+          style: const TextStyle(),
+        ));
+  }
+
   Widget dateNaissanceWidget() {
     return Container(
         margin: const EdgeInsets.only(bottom: p20),
         child: DateTimePicker(
-            decoration: InputDecoration(
-              prefixIcon: const Icon(Icons.date_range),
-              border:
-                  OutlineInputBorder(borderRadius: BorderRadius.circular(10.0)),
-              labelText: 'Date de naissance',
-            ),
-            controller: dateNaissanceController,
-            firstDate: DateTime(1930),
-            lastDate: DateTime(2100),
-            onChanged: (va) {
-              print(
-                  'dateDebutContratController ${dateDebutContratController.text}');
-            },
-            validator: (val) {
+          decoration: InputDecoration(
+            prefixIcon: const Icon(Icons.date_range),
+            border:
+                OutlineInputBorder(borderRadius: BorderRadius.circular(10.0)),
+            labelText: 'Date de naissance',
+          ),
+          controller: dateNaissanceController,
+          firstDate: DateTime(1930),
+          lastDate: DateTime(2100),
+          onChanged: (va) {
+            print(
+                'dateDebutContratController ${dateDebutContratController.text}');
+          },
+          validator: (value) {
+            if (value != null && value.isEmpty) {
               return 'Ce champs est obligatoire';
-            }));
+            } else {
+              return null;
+            }
+          },
+        ));
   }
 
   Widget lieuNaissanceWidget() {
@@ -494,8 +553,12 @@ class _AddAgentState extends State<AddAgent> {
             labelText: 'Lieu de naissance',
           ),
           keyboardType: TextInputType.text,
-          validator: (val) {
-            return 'Ce champs est obligatoire';
+          validator: (value) {
+            if (value != null && value.isEmpty) {
+              return 'Ce champs est obligatoire';
+            } else {
+              return null;
+            }
           },
           style: const TextStyle(),
         ));
@@ -643,44 +706,56 @@ class _AddAgentState extends State<AddAgent> {
     return Container(
         margin: const EdgeInsets.only(bottom: p20),
         child: DateTimePicker(
-            decoration: InputDecoration(
-              prefixIcon: const Icon(Icons.date_range),
-              border:
-                  OutlineInputBorder(borderRadius: BorderRadius.circular(10.0)),
-              labelText: 'Date de début du Contrat',
-            ),
-            controller: dateDebutContratController,
-            firstDate: DateTime(1930),
-            lastDate: DateTime(2100),
-            // dateLabelText: 'Date de naissance',
-            validator: (val) {
+          decoration: InputDecoration(
+            prefixIcon: const Icon(Icons.date_range),
+            border:
+                OutlineInputBorder(borderRadius: BorderRadius.circular(10.0)),
+            labelText: 'Date de début du Contrat',
+          ),
+          controller: dateDebutContratController,
+          firstDate: DateTime(1930),
+          lastDate: DateTime(2100),
+          // dateLabelText: 'Date de naissance',
+          validator: (value) {
+            if (value != null && value.isEmpty) {
               return 'Ce champs est obligatoire';
-            }));
+            } else {
+              return null;
+            }
+          },
+        ));
   }
 
   Widget dateFinContratWidget() {
     return Container(
         margin: const EdgeInsets.only(bottom: p20),
         child: DateTimePicker(
-            decoration: InputDecoration(
-              prefixIcon: const Icon(Icons.date_range),
-              border:
-                  OutlineInputBorder(borderRadius: BorderRadius.circular(10.0)),
-              labelText: 'Date de Fin du Contrat',
-            ),
-            controller: dateFinContratController,
-            firstDate: DateTime(1930),
-            lastDate: DateTime(2100),
-            onChanged: (val) {
-              setState(() {
-                (dateFinContratController.text != "")
-                  ? dateFinContratController.text
-                  : "2099-12-31 00:00:00";
-              });
-            },
-            validator: (val) {
+          decoration: InputDecoration(
+            prefixIcon: const Icon(Icons.date_range),
+            border:
+                OutlineInputBorder(borderRadius: BorderRadius.circular(10.0)),
+            labelText: 'Date de Fin du Contrat',
+          ),
+          controller: dateFinContratController,
+          firstDate: DateTime(1930),
+          lastDate: DateTime(2100),
+          // onChanged: (val) {
+          //   setState(() {
+          //     if (val != "") {
+          //       dateFinContratController.text = val;
+          //     } else {
+          //       dateFinContratController.text = "2099-12-31 00:00:00";
+          //     }
+          //   });
+          // },
+          validator: (value) {
+            if (value != null && value.isEmpty) {
               return 'Ce champs est obligatoire';
-            }));
+            } else {
+              return null;
+            }
+          },
+        ));
   }
 
   Widget fonctionOccupeWidget() {
@@ -723,8 +798,12 @@ class _AddAgentState extends State<AddAgent> {
             labelText: 'Formation',
           ),
           keyboardType: TextInputType.text,
-          validator: (val) {
-            return 'Ce champs est obligatoire';
+          validator: (value) {
+            if (value != null && value.isEmpty) {
+              return 'Ce champs est obligatoire';
+            } else {
+              return null;
+            }
           },
           style: const TextStyle(),
         )
@@ -756,42 +835,76 @@ class _AddAgentState extends State<AddAgent> {
             labelText: 'Experience',
           ),
           keyboardType: TextInputType.text,
-          validator: (val) {
-            return 'Ce champs est obligatoire';
+          validator: (value) {
+            if (value != null && value.isEmpty) {
+              return 'Ce champs est obligatoire';
+            } else {
+              return null;
+            }
           },
           style: const TextStyle(),
         ));
   }
 
+  Widget salaireWidget() {
+    return Container(
+      margin: const EdgeInsets.only(bottom: p20),
+      child: TextFormField(
+        minLines: 5,
+        maxLines: 100,
+        controller: salaireController,
+        decoration: InputDecoration(
+          border:
+              OutlineInputBorder(borderRadius: BorderRadius.circular(10.0)),
+          labelText: 'Salaire',
+        ),
+        keyboardType: TextInputType.text,
+        validator: (value) {
+          if (value != null && value.isEmpty) {
+            return 'Ce champs est obligatoire';
+          } else {
+            return null;
+          }
+        },
+        style: const TextStyle(),
+      )
+    );
+  }
+
   Future submit() async {
-    print('dateDebutContratController ${dateDebutContratController.text}');
     final agentModel = AgentModel(
-        nom: nomController.text,
-        postNom: postNomController.text,
-        prenom: prenomController.text,
-        email: emailController.text,
-        telephone: telephoneController.text,
-        adresse: adresseController.text,
-        sexe: sexe.toString(),
-        role: role.toString(),
-        matricule: matriculeController.text,
-        dateNaissance: DateTime.parse(dateNaissanceController.text),
-        lieuNaissance: lieuNaissanceController.text,
-        nationalite: nationalite.toString(),
-        typeContrat: typeContrat.toString(),
-        departement: departement.toString(),
-        servicesAffectation: servicesAffectation.toString(),
-        dateDebutContrat: DateTime.parse(dateDebutContratController.text),
-        dateFinContrat: DateTime.parse(dateFinContratController.text),
-        fonctionOccupe: fonctionOccupe.toString(),
-        competance: competanceController.toString(),
-        experience: experienceController.text,
-        statutAgent: true,
-        createdAt: DateTime.now(),
-        photo: '');
+      nom: nomController.text,
+      postNom: postNomController.text,
+      prenom: prenomController.text,
+      email: emailController.text,
+      telephone: telephoneController.text,
+      adresse: adresseController.text,
+      sexe: sexe.toString(),
+      role: role.toString(),
+      matricule: matricule,
+      numeroSecuriteSociale: numeroSecuriteSocialeController.text,
+      dateNaissance: DateTime.parse(dateNaissanceController.text),
+      lieuNaissance: lieuNaissanceController.text,
+      nationalite: nationalite.toString(),
+      typeContrat: typeContrat.toString(),
+      departement: departement.toString(),
+      servicesAffectation: servicesAffectation.toString(),
+      dateDebutContrat: DateTime.parse(dateDebutContratController.text),
+      dateFinContrat: DateTime.parse((dateFinContratController.text == "")
+          ? "2099-12-31 00:00:00"
+          : dateFinContratController.text),
+      fonctionOccupe: fonctionOccupe.toString(),
+      competance: competanceController.toString(),
+      experience: experienceController.text,
+      statutAgent: false,
+      createdAt: DateTime.now(),
+      photo: '',
+      salaire: salaireController.text
+    );
 
     await AgentsApi().insertData(agentModel);
-    Navigator.of(context).pushReplacementNamed(RhRoutes.rhAgent);
+    Routemaster.of(context).replace(RhRoutes.rhAgent);
+
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
       content: const Text("Enregistrer avec succès!"),
       backgroundColor: Colors.green[700],

@@ -12,6 +12,11 @@ var userAllUrl = Uri.parse("$mainUrl/user/users/");
 var userUrl = Uri.parse("$mainUrl/user/");
 
 // RH
+// Agent
 var listAgentsUrl = Uri.parse("$mainUrl/rh/agents/");
 var addAgentsUrl = Uri.parse("$mainUrl/rh/agents/insert-new-agent");
 var agentCountUrl = Uri.parse("$mainUrl/rh/agents/get-count/");
+
+// Paiement salaire
+var listPaiementSalaireUrl = Uri.parse("$mainUrl/rh/paiement-salaires/");
+var addPaiementSalaireUrl = Uri.parse("$mainUrl/rh/paiement-salaires/insert-new-paiement");

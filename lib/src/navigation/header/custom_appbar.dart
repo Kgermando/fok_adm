@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:fokad_admin/src/api/auth/auth_api.dart';
 import 'package:fokad_admin/src/constants/responsive.dart';
 import 'package:fokad_admin/src/controllers/app_state.dart';
 import 'package:fokad_admin/src/models/menu_item.dart';
+import 'package:fokad_admin/src/models/users/user_model.dart';
 import 'package:fokad_admin/src/navigation/header/header_item.dart';
 import 'package:fokad_admin/src/provider/controller.dart';
 import 'package:fokad_admin/src/utils/menu_items.dart';
@@ -37,34 +39,60 @@ class _CustomAppbarState extends State<CustomAppbar> {
               ),
             HeaderItem(title: widget.title),
             const Spacer(),
-            IconButton(onPressed: () {}, icon: Badge(
+            IconButton(
+                onPressed: () {},
+                icon: Badge(
                   badgeContent: const Text('33',
                       style: TextStyle(fontSize: 10.0, color: Colors.white)),
                   child: const Icon(Icons.mail),
                 )),
             IconButton(
-              onPressed: () {},
-              icon: Badge(
-                badgeContent: const Text('9+', style: TextStyle(fontSize: 10.0, color: Colors.white)),
-                child: const Icon(Icons.notifications),
-              )
-            ),
+                onPressed: () {},
+                icon: Badge(
+                  badgeContent: const Text('9+',
+                      style: TextStyle(fontSize: 10.0, color: Colors.white)),
+                  child: const Icon(Icons.notifications),
+                )),
             const SizedBox(width: 10.0),
             InkWell(
               onTap: () {},
-              child: Row(
-                children: [
-                  Image.asset(
-                    'assets/images/logo.png',
-                    width: 30,
-                    height: 30,
-                    fit: BoxFit.cover,
-                  ),
-                Responsive.isDesktop(context)
-                    ? const Text("Germain Kataku")
-                    : Container()
-                ],
-              ),
+              child: FutureBuilder<UserModel>(
+                  future: AuthApi().getUserId(),
+                  builder: (BuildContext context,
+                      AsyncSnapshot<UserModel> snapshot) {
+                    if (snapshot.hasData) {
+                      UserModel? userModel = snapshot.data;
+                      print('photo ${userModel!.photo}');
+                      return Row(
+                        children: [
+                          Image.asset(
+                            'assets/images/logo.png',
+                            width: 30,
+                            height: 30,
+                            fit: BoxFit.cover,
+                          ),
+                          // (userModel.photo != '' || userModel.photo != null)
+                          //     ? Image.network(
+                          //         userModel.photo!,
+                          //         width: 30,
+                          //         height: 30,
+                          //         fit: BoxFit.cover,
+                          //       )
+                          //     : Image.asset(
+                          //         'assets/images/logo.png',
+                          //         width: 30,
+                          //         height: 30,
+                          //         fit: BoxFit.cover,
+                          //       ),
+                          Responsive.isDesktop(context)
+                              ? Text("${userModel.prenom} ${userModel.nom}")
+                              : Container()
+                        ],
+                      );
+                    } else {
+                      return const Center(child: CircularProgressIndicator());
+                    }
+                  }),
             ),
             PopupMenuButton<MenuItem>(
               onSelected: (item) => MenuOptions().onSelected(context, item),
@@ -78,7 +106,5 @@ class _CustomAppbarState extends State<CustomAppbar> {
         ),
       ],
     );
-
-    
   }
 }

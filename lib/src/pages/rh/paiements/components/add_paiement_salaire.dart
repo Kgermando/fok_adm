@@ -3,40 +3,30 @@ import 'package:fokad_admin/src/constants/app_theme.dart';
 import 'package:fokad_admin/src/constants/responsive.dart';
 import 'package:fokad_admin/src/navigation/drawer/drawer_menu.dart';
 import 'package:fokad_admin/src/navigation/header/custom_appbar.dart';
-import 'package:fokad_admin/src/pages/rh/agents/components/table_agents.dart';
 import 'package:fokad_admin/src/provider/controller.dart';
-import 'package:fokad_admin/src/routes/routes.dart';
 import 'package:provider/provider.dart';
-import 'package:routemaster/routemaster.dart';
 
-class AgentsRh extends StatefulWidget {
-  const AgentsRh({Key? key}) : super(key: key);
+class AddPaiementSalaire extends StatefulWidget {
+  const AddPaiementSalaire({Key? key, this.id}) : super(key: key);
+  final int? id;
 
   @override
-  State<AgentsRh> createState() => _AgentsRhState();
+  State<AddPaiementSalaire> createState() => _AddPaiementSalaireState();
 }
 
-class _AgentsRhState extends State<AgentsRh> {
-   final ScrollController _controllerScroll = ScrollController();
-  
-   @override
-  void dispose() {
-    _controllerScroll.dispose();
-    super.dispose();
-  }
+class _AddPaiementSalaireState extends State<AddPaiementSalaire> {
+  final ScrollController _controllerScroll = ScrollController();
+
+  final TextEditingController salaireController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         key: context.read<Controller>().scaffoldKey,
         drawer: const DrawerMenu(),
-        floatingActionButton: FloatingActionButton(
-          onPressed: () => Routemaster.of(context).push(RhRoutes.rhAgentAdd),
-          child: const Icon(Icons.person_add),
-        ),
         body: SafeArea(
           child: Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               if (Responsive.isDesktop(context))
                 const Expanded(
@@ -48,11 +38,13 @@ class _AgentsRhState extends State<AgentsRh> {
                   padding: const EdgeInsets.all(p10),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
-                    children: const [
-                      CustomAppbar(title: 'Liste des Agents'),
+                    children: [
+                      const CustomAppbar(title: 'Nouveau salaire'),
                       Expanded(
-                          child: TableAgents()
-                        )
+                          child: Scrollbar(
+                        controller: _controllerScroll,
+                        child: addPaiementSalaireWidget(),
+                      ))
                     ],
                   ),
                 ),
@@ -62,6 +54,7 @@ class _AgentsRhState extends State<AgentsRh> {
         ));
   }
 
-
- 
+  Widget addPaiementSalaireWidget() {
+    return Container();
+  }
 }

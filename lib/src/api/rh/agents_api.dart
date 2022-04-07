@@ -117,9 +117,9 @@ class AgentsApi {
       var payload = json.decode(
           ascii.decode(base64.decode(base64.normalize(splittedJwt[1]))));
     }
-    var agentUrl = Uri.parse("$mainUrl/rh/agents/$id");
+    var getUrl = Uri.parse("$mainUrl/rh/agents/$id");
     var resp = await client.get(
-      agentUrl,
+      getUrl,
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
         'Authorization': 'Bearer $token'
@@ -161,9 +161,10 @@ class AgentsApi {
 
     var data = agentModel.toJson();
     var body = jsonEncode(data);
-    var updateAgentsUrl = Uri.parse("$mainUrl/rh/agents/update-agent/$id");
+    var updateUrl = Uri.parse("$mainUrl/rh/agents/update-agent/$id");
 
-    var res = await client.put(updateAgentsUrl,
+    var res = await client.put(
+      updateUrl,
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
           'Authorization': 'Bearer $accessToken'
@@ -180,9 +181,9 @@ class AgentsApi {
     final prefs = await SharedPreferences.getInstance();
     var accessToken = prefs.getString("accessToken");
 
-    var deleteAgentsUrl = Uri.parse("$mainUrl/rh/agents/delete-agent/$id");
+    var deleteUrl = Uri.parse("$mainUrl/rh/agents/delete-agent/$id");
 
-    var res = await client.delete(deleteAgentsUrl, headers: <String, String>{
+    var res = await client.delete(deleteUrl, headers: <String, String>{
       'Content-Type': 'application/json; charset=UTF-8',
       'Authorization': 'Bearer $accessToken'
     });
