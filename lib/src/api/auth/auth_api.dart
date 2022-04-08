@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 // import 'package:flutter_secure_storage/flutter_secure_storage.dart';
@@ -17,7 +16,7 @@ class AuthApi extends ChangeNotifier {
   Future<String?> getToken() async {
     final prefs = await SharedPreferences.getInstance();
     String? accessToken = prefs.getString("accessToken");
-    print('agent accessToken $accessToken');
+    // print('agent accessToken $accessToken');
     return accessToken;
   }
 
@@ -144,7 +143,7 @@ class AuthApi extends ChangeNotifier {
     final prefs = await SharedPreferences.getInstance();
     final data = prefs.getString(_keyIdToken);
     String idPrefs = jsonDecode(data!);
-    print('idPrefs $idPrefs');
+    // print('idPrefs $idPrefs');
     int id = int.parse(idPrefs);
     var userIdUrl = Uri.parse("$mainUrl/user/$id");
     var resp = await client.get(

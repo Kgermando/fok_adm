@@ -2,17 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:fokad_admin/src/api/rh/agents_api.dart';
 import 'package:fokad_admin/src/constants/app_theme.dart';
 import 'package:fokad_admin/src/constants/responsive.dart';
-import 'package:fokad_admin/src/models/rh/agent_count_model.dart';
 import 'package:fokad_admin/src/models/rh/agent_model.dart';
 import 'package:fokad_admin/src/navigation/drawer/drawer_menu.dart';
 import 'package:fokad_admin/src/navigation/header/custom_appbar.dart';
-import 'package:fokad_admin/src/provider/controller.dart';
 import 'package:fokad_admin/src/widgets/btn_widget.dart';
 import 'package:fokad_admin/src/widgets/print_widget.dart';
-import 'package:provider/provider.dart';
+import 'package:routemaster/routemaster.dart';
 
 class AddPaiementSalaire extends StatefulWidget {
-  const AddPaiementSalaire({Key? key}) : super(key: key);
+  const AddPaiementSalaire({Key? key, this.id}) : super(key: key);
+  final int? id;
 
   @override
   State<AddPaiementSalaire> createState() => _AddPaiementSalaireState();
@@ -25,10 +24,7 @@ class _AddPaiementSalaireState extends State<AddPaiementSalaire> {
 
   final TextEditingController nomController = TextEditingController();
   final TextEditingController prenomController = TextEditingController();
-
-  List<AgentModel> agentInfos = [];
-  String? matricule;
-  String? name;
+  
 
   @override
   void initState() {
@@ -46,21 +42,41 @@ class _AddPaiementSalaireState extends State<AddPaiementSalaire> {
     super.dispose();
   }
 
-  List<AgentModel> listAgent = [];
 
-  AgentCountModel? agentCount;
+  String? matricule;
+  String? nom;
+  String? postNom;
+  String? prenom;
+  String? telephone;
+  String? adresse;
+  String? departement;
+  String? numeroSecuriteSociale;
+  String? servicesAffectation;
+  String? salaire;
+
   Future<void> getData() async {
-    final data = await AgentsApi().getAllData();
+    AgentModel data = await AgentsApi().getOneData(widget.id!);
+    if (!mounted) return;
     setState(() {
-      listAgent = data;
-      print('listAgent $listAgent');
+      matricule = data.matricule;
+      nom = data.nom;
+      postNom = data.postNom;
+      prenom = data.prenom;
+      telephone = data.telephone;
+      adresse = data.adresse;
+      departement = data.departement;
+      numeroSecuriteSociale = data.numeroSecuriteSociale;
+      numeroSecuriteSociale = data.numeroSecuriteSociale;
+      servicesAffectation = data.servicesAffectation;
+      salaire = data.salaire;
     });
   }
 
   @override
   Widget build(BuildContext context) {
+    print("id ${widget.id}");
     return Scaffold(
-        key: context.read<Controller>().scaffoldKey,
+        // key: context.read<Controller>().scaffoldKey,
         drawer: const DrawerMenu(),
         body: SafeArea(
           child: Row(
@@ -77,7 +93,19 @@ class _AddPaiementSalaireState extends State<AddPaiementSalaire> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const CustomAppbar(title: 'Nouveau bulletin'),
+                      Row(
+                        children: [
+                          SizedBox(
+                            width: p20,
+                            child: IconButton(
+                                onPressed: () => Routemaster.of(context).pop(),
+                                icon: const Icon(Icons.arrow_back)),
+                          ),
+                          const SizedBox(width: p10),
+                          const Expanded(
+                              child: CustomAppbar(title: 'Nouveau bulletin')),
+                        ],
+                      ),
                       Expanded(
                           child: Scrollbar(
                         controller: _controllerScroll,
@@ -122,31 +150,61 @@ class _AddPaiementSalaireState extends State<AddPaiementSalaire> {
                         const SizedBox(
                           width: p10,
                         ),
-                        // Expanded(child: prenomWidget())
+                        Expanded(child: numeroSecuriteSocialeWidget())
                       ],
                     ),
                     Row(
                       children: [
-                        Expanded(child: nomWidget()),
+                        Expanded(child: prenomWidget()),
                         const SizedBox(
                           width: p10,
                         ),
-                        Expanded(child: prenomWidget())
+                        Expanded(child: nomWidget())
                       ],
                     ),
                     const SizedBox(
                       height: p20,
                     ),
+                    Row(
+                      children: [
+                        Expanded(child: telephoneWidget()),
+                        const SizedBox(
+                          width: p10,
+                        ),
+                        Expanded(child: departementWidget())
+                      ],
+                    ),
+                    const SizedBox(
+                      height: p20,
+                    ),
+                    Row(
+                      children: [
+                        Expanded(child: servicesAffectationWidget()),
+                        const SizedBox(
+                          width: p10,
+                        ),
+                        Expanded(child: salaireWidget())
+                      ],
+                    ),
+                    const SizedBox(
+                      height: p20,
+                    ),
+                    adresseWidget(),
+                    const SizedBox(
+                      height: p20,
+                    ),
+
+                    
                     BtnWidget(
-                        title: 'Soumettre',
-                        isLoading: isLoading,
-                        press: () {
-                          final form = _formKey.currentState!;
-                          if (form.validate()) {
-                            submit();
-                            form.reset();
-                          }
-                        })
+                      title: 'Soumettre',
+                      isLoading: isLoading,
+                      press: () {
+                        final form = _formKey.currentState!;
+                        if (form.validate()) {
+                          submit();
+                          form.reset();
+                        }
+                      })
                   ],
                 ),
               ),
@@ -158,83 +216,146 @@ class _AddPaiementSalaireState extends State<AddPaiementSalaire> {
   }
 
   Widget matriculeWidget() {
-    List<String> matMap = [];
-    matMap = listAgent.map((e) => e.matricule).toSet().toList();
-
+    final bodyMedium = Theme.of(context).textTheme.bodyMedium; 
     return Container(
-      margin: const EdgeInsets.only(bottom: 20.0),
-      child: DropdownButtonFormField<String>(
-        decoration: InputDecoration(
-          labelText: 'Matricule',
-          labelStyle: const TextStyle(),
-          border: OutlineInputBorder(borderRadius: BorderRadius.circular(5.0)),
-          contentPadding: const EdgeInsets.only(left: 5.0),
-        ),
-        value: matricule,
-        isExpanded: true,
-        // style: const TextStyle(color: Colors.deepPurple),
-        items: matMap.map((String value) {
-          return DropdownMenuItem<String>(
-            value: value,
-            child: Text(value),
-          );
-        }).toList(),
-        onChanged: (value) {
-          setState(() {
-            matricule = value!;
-            print('matricule $matricule');
-
-            agentInfos = listAgent
-                .where((element) => element.matricule == matricule).toList();
-          });
-        },
-      ),
+      margin: const EdgeInsets.only(bottom: p20),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text('Matricule', style: bodyMedium!.copyWith(fontWeight: FontWeight.bold),),
+          SelectableText(matricule.toString(), style: bodyMedium,)
+        ]
+      )
     );
   }
 
-  Widget nomWidget() {
-    // nomController.text = agentInfos.map((e) => e.nom).first;
+  Widget numeroSecuriteSocialeWidget() {
+    final bodyMedium = Theme.of(context).textTheme.bodyMedium;
     return Container(
         margin: const EdgeInsets.only(bottom: p20),
-        child: TextFormField(
-          controller: nomController,
-          decoration: InputDecoration(
-            border:
-                OutlineInputBorder(borderRadius: BorderRadius.circular(10.0)),
-            labelText: 'Nom',
+        child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+          Text(
+            'Numéro de securité sociale',
+            style: bodyMedium!.copyWith(fontWeight: FontWeight.bold),
           ),
-          keyboardType: TextInputType.text,
-          style: const TextStyle(),
-          validator: (value) {
-            if (value != null && value.isEmpty) {
-              return 'Ce champs est obligatoire';
-            } else {
-              return null;
-            }
-          },
-        ));
+          SelectableText(
+            numeroSecuriteSociale.toString(),
+            style: bodyMedium,
+          )
+        ]));
+  }
+
+  
+  Widget nomWidget() {
+    final bodyMedium = Theme.of(context).textTheme.bodyMedium; 
+    return Container(
+      margin: const EdgeInsets.only(bottom: p20),
+      child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+        Text(
+          'Nom',
+          style: bodyMedium!.copyWith(fontWeight: FontWeight.bold),
+        ),
+        SelectableText(
+          nom.toString(),
+          style: bodyMedium,
+        )
+      ]));
   }
 
   Widget prenomWidget() {
+    final bodyMedium = Theme.of(context).textTheme.bodyMedium;
     return Container(
         margin: const EdgeInsets.only(bottom: p20),
-        child: TextFormField(
-          controller: prenomController,
-          decoration: InputDecoration(
-            border:
-                OutlineInputBorder(borderRadius: BorderRadius.circular(10.0)),
-            labelText: 'Prénom',
+        child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+          Text(
+            'Prénom',
+            style: bodyMedium!.copyWith(fontWeight: FontWeight.bold),
           ),
-          keyboardType: TextInputType.text,
-          style: const TextStyle(),
-          validator: (value) {
-            if (value != null && value.isEmpty) {
-              return 'Ce champs est obligatoire';
-            } else {
-              return null;
-            }
-          },
-        ));
+          SelectableText(
+            prenom.toString(),
+            style: bodyMedium,
+          )
+        ]));
+  }
+
+  Widget telephoneWidget() {
+    final bodyMedium = Theme.of(context).textTheme.bodyMedium;
+    return Container(
+        margin: const EdgeInsets.only(bottom: p20),
+        child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+          Text(
+            'Téléphone',
+            style: bodyMedium!.copyWith(fontWeight: FontWeight.bold),
+          ),
+          SelectableText(
+            telephone.toString(),
+            style: bodyMedium,
+          )
+        ]));
+  }
+
+  Widget adresseWidget() {
+    final bodyMedium = Theme.of(context).textTheme.bodyMedium;
+    return Container(
+        margin: const EdgeInsets.only(bottom: p20),
+        child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+          Text(
+            'Adresse',
+            style: bodyMedium!.copyWith(fontWeight: FontWeight.bold),
+          ),
+          SelectableText(
+            adresse.toString(),
+            style: bodyMedium,
+          )
+        ]));
+  }
+
+  Widget departementWidget() {
+    final bodyMedium = Theme.of(context).textTheme.bodyMedium;
+    return Container(
+        margin: const EdgeInsets.only(bottom: p20),
+        child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+          Text(
+            'Département',
+            style: bodyMedium!.copyWith(fontWeight: FontWeight.bold),
+          ),
+          SelectableText(
+            departement.toString(),
+            style: bodyMedium,
+          )
+        ]));
+  }
+
+  Widget servicesAffectationWidget() {
+    final bodyMedium = Theme.of(context).textTheme.bodyMedium;
+    return Container(
+        margin: const EdgeInsets.only(bottom: p20),
+        child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+          Text(
+            'Services d\'ffectation',
+            style: bodyMedium!.copyWith(fontWeight: FontWeight.bold),
+          ),
+          SelectableText(
+            servicesAffectation.toString(),
+            style: bodyMedium,
+          )
+        ]));
+  }
+
+  Widget salaireWidget() {
+    final bodyMedium = Theme.of(context).textTheme.bodyMedium;
+    return Container(
+        margin: const EdgeInsets.only(bottom: p20),
+        child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+          Text(
+            'Salaire',
+            style: bodyMedium!.copyWith(fontWeight: FontWeight.bold),
+          ),
+          SelectableText(
+            salaire.toString(),
+            style: bodyMedium,
+          )
+        ]));
   }
 
   submit() {}

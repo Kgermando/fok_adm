@@ -20,9 +20,8 @@ class _DrawerMenuState extends State<DrawerMenu> {
   Widget build(BuildContext context) {
 
     String pageCurrente = Routemaster.of(context).currentRoute.fullPath;
-
-    print('pageCurrente $pageCurrente');
-    // print('path $path');
+    // print('pageCurrente $pageCurrente');
+    
     return Drawer(
       elevation: 10.0,
       child: Scrollbar(

@@ -895,7 +895,8 @@ class _AddAgentState extends State<AddAgent> {
       sexe: sexe.toString(),
       role: role.toString(),
       matricule: matricule,
-      numeroSecuriteSociale: numeroSecuriteSocialeController.text,
+      numeroSecuriteSociale: (numeroSecuriteSocialeController.text == "") 
+        ? "-" : numeroSecuriteSocialeController.text,
       dateNaissance: DateTime.parse(dateNaissanceController.text),
       lieuNaissance: lieuNaissanceController.text,
       nationalite: nationalite.toString(),

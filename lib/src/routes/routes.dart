@@ -115,7 +115,7 @@ class Routing {
       RhRoutes.rhAgentPage: (info) => MaterialPage(child: AgentPage(id: info.queryParameters['id'] as int )),
       RhRoutes.rhAgentAdd: (_) => const MaterialPage(child: AddAgent()),
       RhRoutes.rhPaiement: (_) => const MaterialPage(child: PaiementRh()),
-      RhRoutes.rhPaiementAdd: (_) => const MaterialPage(child: AddPaiementSalaire()),
+      "${RhRoutes.rhPaiementAdd}/:id": (info) => MaterialPage(child: AddPaiementSalaire(id: info.queryParameters['id'] as int)),
       RhRoutes.rhPaiementBulletin: (info) => MaterialPage(child: PaiementBulletin(id: info.queryParameters['id'] as int)),
       RhRoutes.rhPresence: (_) => const MaterialPage(child: PresenceRh()),
 

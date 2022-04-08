@@ -8,6 +8,7 @@ import 'package:fokad_admin/src/models/rh/agent_model.dart';
 import 'package:fokad_admin/src/models/users/user_model.dart';
 import 'package:fokad_admin/src/navigation/drawer/drawer_menu.dart';
 import 'package:fokad_admin/src/navigation/header/custom_appbar.dart';
+import 'package:fokad_admin/src/pages/rh/paiements/components/add_paiement_salaire.dart';
 import 'package:fokad_admin/src/utils/loading.dart';
 import 'package:fokad_admin/src/widgets/print_widget.dart';
 import 'package:fokad_admin/src/widgets/title_widget.dart';
@@ -88,12 +89,10 @@ class _AgentPageState extends State<AgentPage> {
                                       ],
                                     ),
                                     Expanded(
-                                      child: Scrollbar(
-                                        controller: _controllerScroll,
-                                        isAlwaysShown: true,
-                                        child: pageDetail(agentModel)
-                                      )
-                                    )
+                                        child: Scrollbar(
+                                            controller: _controllerScroll,
+                                            isAlwaysShown: true,
+                                            child: pageDetail(agentModel)))
                                   ],
                                 );
                               } else {
@@ -134,6 +133,17 @@ class _AgentPageState extends State<AgentPage> {
                     const TitleWidget(title: 'Curriculum vitæ'),
                     Row(
                       children: [
+                        IconButton(
+                            onPressed: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                         AddPaiementSalaire(id: agentModel.id)));
+                              // Routemaster.of(context).push(
+                              //     "${RhRoutes.rhPaiementAdd}${agentModel.id}");
+                            },
+                            icon: const Icon(Icons.payment)),
                         IconButton(
                             onPressed: () {}, icon: const Icon(Icons.edit)),
                         statutAgentWidget(agentModel),
@@ -482,20 +492,20 @@ class _AgentPageState extends State<AgentPage> {
                 )
               ],
             ),
-          if(role <= 3 )
-          Row(
-            children: [
-              Expanded(
-                child: Text('Salaire :',
-                    textAlign: TextAlign.start,
-                    style: bodyMedium.copyWith(fontWeight: FontWeight.bold)),
-              ),
-              Expanded(
-                child: Text(agentModel.salaire,
-                    textAlign: TextAlign.start, style: bodyMedium),
-              )
-            ],
-          ),
+          if (role <= 3)
+            Row(
+              children: [
+                Expanded(
+                  child: Text('Salaire :',
+                      textAlign: TextAlign.start,
+                      style: bodyMedium.copyWith(fontWeight: FontWeight.bold)),
+                ),
+                Expanded(
+                  child: Text(agentModel.salaire,
+                      textAlign: TextAlign.start, style: bodyMedium),
+                )
+              ],
+            ),
         ],
       ),
     );
@@ -539,46 +549,47 @@ class _AgentPageState extends State<AgentPage> {
         builder: (context) {
           return StatefulBuilder(builder: (context, StateSetter setState) {
             return !isLoading
-              ? AlertDialog(
-                  title: const Text('Autorisation d\'accès '),
-                  content: FlutterSwitch(
-                    width: 225.0,
-                    height: 55.0,
-                    activeColor: Colors.green,
-                    inactiveColor: Colors.red,
-                    valueFontSize: 25.0,
-                    toggleSize: 45.0,
-                    value: statutAgent,
-                    borderRadius: 30.0,
-                    padding: 8.0,
-                    showOnOff: true,
-                    activeText: 'Active',
-                    inactiveText: 'Inactive',
-                    onToggle: (val) {
-                      setState(() {
-                        isLoading == true;
-                        statutAgent = val;
-                        if (statutAgent) {
-                          deleteUser(agentModel);
-                          updateAgent(agentModel);
-                          // isLoading == false;
-                        } else {
-                          createUser(agentModel.nom, agentModel.prenom,
-                              agentModel.matricule, agentModel.role);
-                          updateAgent(agentModel);
-                          // isLoading == false;
-                        }
-                      });
-                    },
-                  ),
-                  actions: <Widget>[
-                    TextButton(
-                      onPressed: () => Routemaster.of(context).pop(),  // Navigator.pop(context, 'OK'),
-                      child: const Text('OK'),
+                ? AlertDialog(
+                    title: const Text('Autorisation d\'accès '),
+                    content: FlutterSwitch(
+                      width: 225.0,
+                      height: 55.0,
+                      activeColor: Colors.green,
+                      inactiveColor: Colors.red,
+                      valueFontSize: 25.0,
+                      toggleSize: 45.0,
+                      value: statutAgent,
+                      borderRadius: 30.0,
+                      padding: 8.0,
+                      showOnOff: true,
+                      activeText: 'Active',
+                      inactiveText: 'Inactive',
+                      onToggle: (val) {
+                        setState(() {
+                          isLoading == true;
+                          statutAgent = val;
+                          if (statutAgent) {
+                            deleteUser(agentModel);
+                            updateAgent(agentModel);
+                            // isLoading == false;
+                          } else {
+                            createUser(agentModel.nom, agentModel.prenom,
+                                agentModel.matricule, agentModel.role);
+                            updateAgent(agentModel);
+                            // isLoading == false;
+                          }
+                        });
+                      },
                     ),
-                  ],
-                )
-              : loading();
+                    actions: <Widget>[
+                      TextButton(
+                        onPressed: () => Routemaster.of(context)
+                            .pop(), // Navigator.pop(context, 'OK'),
+                        child: const Text('OK'),
+                      ),
+                    ],
+                  )
+                : loading();
           });
         });
   }
@@ -586,31 +597,30 @@ class _AgentPageState extends State<AgentPage> {
   // Update statut agent
   Future<void> updateAgent(AgentModel agentModel) async {
     final agent = AgentModel(
-      id: agentModel.id,
-      nom: agentModel.nom,
-      postNom: agentModel.postNom,
-      prenom: agentModel.prenom,
-      email: agentModel.email,
-      telephone: agentModel.telephone,
-      adresse: agentModel.adresse,
-      sexe: agentModel.sexe,
-      role: agentModel.role,
-      matricule: agentModel.matricule,
-      numeroSecuriteSociale: agentModel.numeroSecuriteSociale,
-      dateNaissance: agentModel.dateNaissance,
-      lieuNaissance: agentModel.lieuNaissance,
-      nationalite: agentModel.nationalite,
-      typeContrat: agentModel.typeContrat,
-      departement: agentModel.departement,
-      servicesAffectation: agentModel.servicesAffectation,
-      dateDebutContrat: agentModel.dateDebutContrat,
-      dateFinContrat: agentModel.dateFinContrat,
-      fonctionOccupe: agentModel.fonctionOccupe,
-      statutAgent: statutAgent,
-      createdAt: DateTime.now(),
-      photo: agentModel.photo,
-      salaire: agentModel.salaire
-    );
+        id: agentModel.id,
+        nom: agentModel.nom,
+        postNom: agentModel.postNom,
+        prenom: agentModel.prenom,
+        email: agentModel.email,
+        telephone: agentModel.telephone,
+        adresse: agentModel.adresse,
+        sexe: agentModel.sexe,
+        role: agentModel.role,
+        matricule: agentModel.matricule,
+        numeroSecuriteSociale: agentModel.numeroSecuriteSociale,
+        dateNaissance: agentModel.dateNaissance,
+        lieuNaissance: agentModel.lieuNaissance,
+        nationalite: agentModel.nationalite,
+        typeContrat: agentModel.typeContrat,
+        departement: agentModel.departement,
+        servicesAffectation: agentModel.servicesAffectation,
+        dateDebutContrat: agentModel.dateDebutContrat,
+        dateFinContrat: agentModel.dateFinContrat,
+        fonctionOccupe: agentModel.fonctionOccupe,
+        statutAgent: statutAgent,
+        createdAt: DateTime.now(),
+        photo: agentModel.photo,
+        salaire: agentModel.salaire);
     await AgentsApi().updateData(agentModel.id!, agent);
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
       content: const Text("Mise à statut avec succès!"),

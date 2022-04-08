@@ -32,8 +32,10 @@ class _PaiementRhState extends State<PaiementRh> {
   AgentModel? agentModel;
 
   Future<void> getData() async {
-    final data = await AgentsApi().getOneData(id!).then((value) {
-      
+    AgentModel data = await AgentsApi().getOneData(id!);
+
+    setState(() {
+      agentModel = data;
     });
   }
 
@@ -42,12 +44,12 @@ class _PaiementRhState extends State<PaiementRh> {
     return Scaffold(
         key: context.read<Controller>().scaffoldKey,
         drawer: const DrawerMenu(),
-        floatingActionButton: FloatingActionButton(
-          onPressed: () {
-            Routemaster.of(context).replace(RhRoutes.rhPaiementAdd);
-          },
-          child: const Icon(Icons.add),
-        ),
+        // floatingActionButton: FloatingActionButton(
+        //   onPressed: () {
+        //     Routemaster.of(context).replace(RhRoutes.rhPaiementAdd);
+        //   },
+        //   child: const Icon(Icons.add),
+        // ),
         body: SafeArea(
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,

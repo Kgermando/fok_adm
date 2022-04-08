@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:fokad_admin/src/helpers/user_preferences.dart';
-import 'package:fokad_admin/src/models/users/user_model.dart';
 import 'package:provider/provider.dart';
 
 class AppState extends ChangeNotifier {
