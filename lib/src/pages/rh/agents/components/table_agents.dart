@@ -4,8 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:fokad_admin/src/api/rh/agents_api.dart';
 import 'package:fokad_admin/src/models/rh/agent_model.dart';
 import 'package:fokad_admin/src/pages/rh/agents/components/agent_page.dart';
+import 'package:fokad_admin/src/routes/routes.dart';
 import 'package:fokad_admin/src/widgets/print_widget.dart';
+import 'package:intl/intl.dart';
 import 'package:pluto_grid/pluto_grid.dart';
+import 'package:routemaster/routemaster.dart';
 
 class TableAgents extends StatefulWidget {
   const TableAgents({Key? key}) : super(key: key);
@@ -38,12 +41,10 @@ class _TableAgentsState extends State<TableAgents> {
         final dataList = tapEvent.row!.cells.values;
         final idPlutoRow = dataList.elementAt(0);
 
-        // Routemaster.of(context)
-        //     .push('${RhRoutes.rhAgentPage}/${idPlutoRow.value}');
+        // Routemaster.of(context).push(RhRoutes.rhAgentPage);
 
         Navigator.of(context).push(MaterialPageRoute(
-          builder: (context) => AgentPage(id: idPlutoRow.value)
-        ));
+            builder: (context) => AgentPage(id: idPlutoRow.value)));
 
         print("item ${idPlutoRow.value} ");
 
@@ -215,7 +216,7 @@ class _TableAgentsState extends State<TableAgents> {
         readOnly: true,
         title: 'Date de naissance',
         field: 'dateNaissance',
-        type: PlutoColumnType.date(),
+        type: PlutoColumnType.text(),
         enableRowDrag: true,
         enableContextMenu: false,
         enableDropToResize: true,
@@ -280,7 +281,8 @@ class _TableAgentsState extends State<TableAgents> {
             'sexe': PlutoCell(value: item.sexe),
             'role': PlutoCell(value: item.role),
             'matricule': PlutoCell(value: item.matricule),
-            'dateNaissance': PlutoCell(value: item.dateNaissance),
+            'dateNaissance':
+                PlutoCell(value: DateFormat("dd-MM-yy").format(item.createdAt)),
             'departement': PlutoCell(value: item.departement),
             'servicesAffectation': PlutoCell(value: item.servicesAffectation),
             'statutAgent':

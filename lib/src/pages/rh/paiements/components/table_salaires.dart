@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:fokad_admin/src/api/rh/paiement_salaire_api.dart';
 import 'package:fokad_admin/src/models/rh/paiement_salaire_model.dart';
 import 'package:fokad_admin/src/pages/rh/paiements/components/add_paiement_salaire.dart';
+import 'package:fokad_admin/src/pages/rh/paiements/components/paiement_bulletin.dart';
 import 'package:fokad_admin/src/widgets/print_widget.dart';
 import 'package:pluto_grid/pluto_grid.dart';
 
@@ -42,7 +43,7 @@ class _TableSalairesState extends State<TableSalaires> {
         //     .push('${RhRoutes.rhAgentPage}/${idPlutoRow.value}');
 
         Navigator.of(context).push(MaterialPageRoute(
-            builder: (context) => AddPaiementSalaire(id: idPlutoRow.value)));
+            builder: (context) => PaiementBulletin(id: idPlutoRow.value)));
 
         print("item ${idPlutoRow.value} ");
       },

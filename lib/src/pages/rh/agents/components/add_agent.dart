@@ -15,6 +15,7 @@ import 'package:fokad_admin/src/utils/fonction_occupe.dart';
 import 'package:fokad_admin/src/utils/service_affectation.dart';
 import 'package:fokad_admin/src/widgets/btn_widget.dart';
 import 'package:fokad_admin/src/widgets/print_widget.dart';
+import 'package:fokad_admin/src/widgets/title_widget.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:routemaster/routemaster.dart';
@@ -172,8 +173,14 @@ class _AddAgentState extends State<AddAgent> {
                   controller: _controllerScroll,
                   children: [
                     Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [PrintWidget(onPressed: () {})],
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        const TitleWidget(title: 'Nouveau profile'),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [PrintWidget(onPressed: () {})],
+                        ),
+                      ],
                     ),
                     const SizedBox(
                       height: p20,
@@ -241,7 +248,15 @@ class _AddAgentState extends State<AddAgent> {
                         Expanded(child: matriculeWidget())
                       ],
                     ),
-                    numeroSecuriteSocialeWidget(),
+                    Row(
+                      children: [
+                        Expanded(child: numeroSecuriteSocialeWidget()),
+                        const SizedBox(
+                          width: p10,
+                        ),
+                        Expanded(child: salaireWidget())
+                      ],
+                    ),
                     Row(
                       children: [
                         Expanded(child: fonctionOccupeWidget()),
@@ -300,6 +315,7 @@ class _AddAgentState extends State<AddAgent> {
             labelText: 'Nom',
           ),
           keyboardType: TextInputType.text,
+          style: const TextStyle(),
           validator: (value) {
             if (value != null && value.isEmpty) {
               return 'Ce champs est obligatoire';
@@ -307,7 +323,6 @@ class _AddAgentState extends State<AddAgent> {
               return null;
             }
           },
-          style: const TextStyle(),
         ));
   }
 
@@ -322,6 +337,7 @@ class _AddAgentState extends State<AddAgent> {
             labelText: 'Post-Nom',
           ),
           keyboardType: TextInputType.text,
+          style: const TextStyle(),
           validator: (value) {
             if (value != null && value.isEmpty) {
               return 'Ce champs est obligatoire';
@@ -329,7 +345,7 @@ class _AddAgentState extends State<AddAgent> {
               return null;
             }
           },
-          style: const TextStyle(),
+          
         ));
   }
 
@@ -344,6 +360,7 @@ class _AddAgentState extends State<AddAgent> {
             labelText: 'Prénom',
           ),
           keyboardType: TextInputType.text,
+          style: const TextStyle(),
           validator: (value) {
             if (value != null && value.isEmpty) {
               return 'Ce champs est obligatoire';
@@ -351,7 +368,7 @@ class _AddAgentState extends State<AddAgent> {
               return null;
             }
           },
-          style: const TextStyle(),
+          
         ));
   }
 
@@ -366,6 +383,7 @@ class _AddAgentState extends State<AddAgent> {
             labelText: 'Email',
           ),
           keyboardType: TextInputType.text,
+          style: const TextStyle(),
           validator: (value) {
             if (value != null && value.isEmpty) {
               return 'Ce champs est obligatoire';
@@ -373,7 +391,6 @@ class _AddAgentState extends State<AddAgent> {
               return null;
             }
           },
-          style: const TextStyle(),
         ));
   }
 
@@ -388,6 +405,7 @@ class _AddAgentState extends State<AddAgent> {
             labelText: 'Téléphone',
           ),
           keyboardType: TextInputType.text,
+          style: const TextStyle(),
           validator: (value) {
             if (value != null && value.isEmpty) {
               return 'Ce champs est obligatoire';
@@ -395,7 +413,7 @@ class _AddAgentState extends State<AddAgent> {
               return null;
             }
           },
-          style: const TextStyle(),
+          
         ));
   }
 
@@ -410,6 +428,7 @@ class _AddAgentState extends State<AddAgent> {
             labelText: 'Adresse',
           ),
           keyboardType: TextInputType.text,
+           style: const TextStyle(),
           validator: (value) {
             if (value != null && value.isEmpty) {
               return 'Ce champs est obligatoire';
@@ -417,7 +436,7 @@ class _AddAgentState extends State<AddAgent> {
               return null;
             }
           },
-          style: const TextStyle(),
+         
         ));
   }
 
@@ -504,6 +523,7 @@ class _AddAgentState extends State<AddAgent> {
             labelText: 'Numero Sécurité Sociale',
           ),
           keyboardType: TextInputType.text,
+          style: const TextStyle(),
           validator: (value) {
             if (value != null && value.isEmpty) {
               return 'Ce champs est obligatoire';
@@ -511,7 +531,7 @@ class _AddAgentState extends State<AddAgent> {
               return null;
             }
           },
-          style: const TextStyle(),
+          
         ));
   }
 
@@ -553,6 +573,7 @@ class _AddAgentState extends State<AddAgent> {
             labelText: 'Lieu de naissance',
           ),
           keyboardType: TextInputType.text,
+          style: const TextStyle(),
           validator: (value) {
             if (value != null && value.isEmpty) {
               return 'Ce champs est obligatoire';
@@ -560,7 +581,6 @@ class _AddAgentState extends State<AddAgent> {
               return null;
             }
           },
-          style: const TextStyle(),
         ));
   }
 
@@ -715,7 +735,6 @@ class _AddAgentState extends State<AddAgent> {
           controller: dateDebutContratController,
           firstDate: DateTime(1930),
           lastDate: DateTime(2100),
-          // dateLabelText: 'Date de naissance',
           validator: (value) {
             if (value != null && value.isEmpty) {
               return 'Ce champs est obligatoire';
@@ -739,15 +758,6 @@ class _AddAgentState extends State<AddAgent> {
           controller: dateFinContratController,
           firstDate: DateTime(1930),
           lastDate: DateTime(2100),
-          // onChanged: (val) {
-          //   setState(() {
-          //     if (val != "") {
-          //       dateFinContratController.text = val;
-          //     } else {
-          //       dateFinContratController.text = "2099-12-31 00:00:00";
-          //     }
-          //   });
-          // },
           validator: (value) {
             if (value != null && value.isEmpty) {
               return 'Ce champs est obligatoire';
@@ -798,6 +808,7 @@ class _AddAgentState extends State<AddAgent> {
             labelText: 'Formation',
           ),
           keyboardType: TextInputType.text,
+           style: const TextStyle(),
           validator: (value) {
             if (value != null && value.isEmpty) {
               return 'Ce champs est obligatoire';
@@ -805,7 +816,7 @@ class _AddAgentState extends State<AddAgent> {
               return null;
             }
           },
-          style: const TextStyle(),
+         
         )
 
         //     HtmlEditor(
@@ -835,6 +846,7 @@ class _AddAgentState extends State<AddAgent> {
             labelText: 'Experience',
           ),
           keyboardType: TextInputType.text,
+          style: const TextStyle(),
           validator: (value) {
             if (value != null && value.isEmpty) {
               return 'Ce champs est obligatoire';
@@ -842,7 +854,7 @@ class _AddAgentState extends State<AddAgent> {
               return null;
             }
           },
-          style: const TextStyle(),
+          
         ));
   }
 
@@ -859,6 +871,7 @@ class _AddAgentState extends State<AddAgent> {
           labelText: 'Salaire',
         ),
         keyboardType: TextInputType.text,
+        style: const TextStyle(),
         validator: (value) {
           if (value != null && value.isEmpty) {
             return 'Ce champs est obligatoire';
@@ -866,7 +879,7 @@ class _AddAgentState extends State<AddAgent> {
             return null;
           }
         },
-        style: const TextStyle(),
+        
       )
     );
   }

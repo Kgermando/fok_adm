@@ -87,7 +87,13 @@ class _AgentPageState extends State<AgentPage> {
                                         ),
                                       ],
                                     ),
-                                    Expanded(child: pageDetail(agentModel))
+                                    Expanded(
+                                      child: Scrollbar(
+                                        controller: _controllerScroll,
+                                        isAlwaysShown: true,
+                                        child: pageDetail(agentModel)
+                                      )
+                                    )
                                   ],
                                 );
                               } else {
