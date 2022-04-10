@@ -206,7 +206,7 @@ class _FinancesNavState extends State<FinancesNav> {
           ),
           DrawerWidget(
             selected: widget.pageCurrente == RhRoutes.rhPerformence,
-            icon: Icons.group,
+            icon: Icons.multiline_chart_sharp,
             sizeIcon: 20.0,
             title: 'Performences',
             style: bodyText1,

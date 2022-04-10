@@ -72,7 +72,7 @@ class _RhNavState extends State<RhNav> {
             }),
         DrawerWidget(
             selected: widget.pageCurrente == RhRoutes.rhPerformence,
-            icon: Icons.group,
+            icon: Icons.multiline_chart_sharp,
             sizeIcon: 20.0,
             title: 'Performences',
             style: bodyText1,
