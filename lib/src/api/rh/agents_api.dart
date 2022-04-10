@@ -1,3 +1,5 @@
+// ignore_for_file: unused_local_variable
+
 import 'dart:convert';
 
 import 'package:fokad_admin/src/api/auth/auth_api.dart';
@@ -13,7 +15,7 @@ class AgentsApi {
   Future<String?> getToken() async {
     final prefs = await SharedPreferences.getInstance();
     String? accessToken = prefs.getString("accessToken");
-    print('accessToken $accessToken');
+    // print('accessToken $accessToken');
     return accessToken;
   }
 

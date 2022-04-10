@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:fokad_admin/src/api/rh/paiement_salaire_api.dart';
 import 'package:fokad_admin/src/models/rh/paiement_salaire_model.dart';
 import 'package:fokad_admin/src/pages/administration/components/rh/update_paiement_salaire.dart';
-import 'package:fokad_admin/src/pages/finances/transactions/components/components/update_paiement_salaire.dart';
 import 'package:fokad_admin/src/widgets/print_widget.dart';
 import 'package:intl/intl.dart';
 import 'package:pluto_grid/pluto_grid.dart';

@@ -1,4 +1,4 @@
-import 'package:badges/badges.dart';
+
 import 'package:flutter/material.dart';
 import 'package:fokad_admin/src/constants/app_theme.dart';
 import 'package:fokad_admin/src/constants/responsive.dart';
@@ -50,7 +50,7 @@ class _RhAdminState extends State<RhAdmin> {
                           controller: _controllerScroll,
                           children: [
                             Card(
-                              color: Color.fromARGB(255, 126, 170, 214),
+                              color: const Color.fromARGB(255, 126, 170, 214),
                               child: ExpansionTile(
                                 leading: const Icon(Icons.folder),
                                   title: Text('Dossier Salaire', style: headline6),
@@ -68,7 +68,7 @@ class _RhAdminState extends State<RhAdmin> {
                               ),
 
                             Card(
-                              color: Color.fromARGB(255, 117, 190, 121),
+                              color: const Color.fromARGB(255, 117, 190, 121),
                               child: ExpansionTile(
                                 leading: const Icon(Icons.folder),
                                 title: Text('Dossier Dépenses', style: headline6),
@@ -79,7 +79,7 @@ class _RhAdminState extends State<RhAdmin> {
                                   });
                                 },
                                 trailing: const Icon(Icons.arrow_drop_down),
-                                children: [],
+                                children: const [],
                               ),
                             )
                           ],

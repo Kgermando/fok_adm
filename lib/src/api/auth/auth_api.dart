@@ -1,3 +1,5 @@
+// ignore_for_file: unused_local_variable
+
 import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
@@ -71,7 +73,7 @@ class AuthApi extends ChangeNotifier {
           ascii.decode(base64.decode(base64.normalize(splittedJwt[1]))));
     }
 
-    print('refreshToken $refreshToken');
+    // print('refreshToken $refreshToken');
 
     var data = {'refresh_token': refreshToken};
     var body = jsonEncode(data);

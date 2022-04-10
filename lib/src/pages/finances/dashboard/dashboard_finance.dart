@@ -29,7 +29,7 @@ class _DashboardFinanceState extends State<DashboardFinance> {
     double montant = 25312.00;
 
     return Scaffold(
-      // key: context.read<Controller>().scaffoldKey,
+      key: context.read<Controller>().scaffoldKey,
         drawer: const DrawerMenu(),
         body: SafeArea(
           child: Row(

@@ -88,7 +88,6 @@ class _UpdatePaiementSalaireAdminState extends State<UpdatePaiementSalaireAdmin>
         await PaiementSalaireApi().getOneData(widget.id);
     if (!mounted) return;
     setState(() {
-      print("id ${widget.id} ");
       signatureFinance = user.matricule;
 
       nom = data.nom;
@@ -141,9 +140,6 @@ class _UpdatePaiementSalaireAdminState extends State<UpdatePaiementSalaireAdmin>
       signatureDG = data.signatureDG;
       // signatureFinance = data.signatureFinance;
       signatureRH = data.signatureRH;
-
-      print(
-          'joursHeuresPayeA100PourecentSalaire $joursHeuresPayeA100PourecentSalaire');
     });
   }
 

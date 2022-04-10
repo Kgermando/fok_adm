@@ -19,7 +19,7 @@ class _CommMarketingAdminState extends State<CommMarketingAdmin> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        // key: context.read<Controller>().scaffoldKey,
+        key: context.read<Controller>().scaffoldKey,
         drawer: const DrawerMenu(),
         body: SafeArea(
           child: Row(

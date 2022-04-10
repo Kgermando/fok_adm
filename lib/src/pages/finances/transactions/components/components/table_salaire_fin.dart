@@ -39,13 +39,8 @@ class _TableSalaireFinState extends State<TableSalaireFin> {
         final dataList = tapEvent.row!.cells.values;
         final idPlutoRow = dataList.elementAt(0);
 
-        // Routemaster.of(context)
-        //     .push('${RhRoutes.rhAgentPage}/${idPlutoRow.value}');
-
         Navigator.of(context).push(MaterialPageRoute(
             builder: (context) => UpdatePaiementSalaire(id: idPlutoRow.value)));
-
-        print("item ${idPlutoRow.value} ");
       },
       onLoaded: (PlutoGridOnLoadedEvent event) {
         stateManager = event.stateManager;
@@ -207,7 +202,7 @@ void agentsColumn() {
         await PaiementSalaireApi().getAllData();
     var data = dataList
         .where((element) =>
-            element!.approbation == true)
+            element!.approbation == true && element.observation == false)
         .toList();
 
     if (mounted) {

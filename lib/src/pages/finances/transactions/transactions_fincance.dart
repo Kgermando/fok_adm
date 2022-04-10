@@ -14,10 +14,11 @@ class TransactionsFinance extends StatefulWidget {
 }
 
 class _TransactionsFinanceState extends State<TransactionsFinance> {
+  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // key: context.read<Controller>().scaffoldKey,
+      key: context.read<Controller>().scaffoldKey,
       drawer: const DrawerMenu(),
       body: SafeArea(
         child: Row(

@@ -61,7 +61,7 @@ class _CustomAppbarState extends State<CustomAppbar> {
                       AsyncSnapshot<UserModel> snapshot) {
                     if (snapshot.hasData) {
                       UserModel? userModel = snapshot.data;
-                      print('photo ${userModel!.photo}');
+                      // print('photo ${userModel!.photo}');
                       return Row(
                         children: [
                           Image.asset(
@@ -84,7 +84,7 @@ class _CustomAppbarState extends State<CustomAppbar> {
                           //         fit: BoxFit.cover,
                           //       ),
                           Responsive.isDesktop(context)
-                              ? Text("${userModel.prenom} ${userModel.nom}")
+                              ? Text("${userModel!.prenom} ${userModel.nom}")
                               : Container()
                         ],
                       );
