@@ -39,8 +39,6 @@ class _RhNavState extends State<RhNav> {
             onTap: () {
               Routemaster.of(context).replace(RhRoutes.rhDashboard);
               // Routemaster.of(context).pop();
-              // Navigator.of(context).pushReplacementNamed(RhRoutes.rhDashboard);
-              // Navigator.of(context).pop();
             }),
         DrawerWidget(
             selected: widget.pageCurrente == RhRoutes.rhPaiement,
@@ -51,8 +49,6 @@ class _RhNavState extends State<RhNav> {
             onTap: () {
               Routemaster.of(context).replace(RhRoutes.rhPaiement);
               // Routemaster.of(context).pop();
-              // Navigator.of(context).pushReplacementNamed(RhRoutes.rhPaiement);
-              // Navigator.of(context).pop();
             }),
         DrawerWidget(
             selected: widget.pageCurrente == RhRoutes.rhPresence,
@@ -63,8 +59,6 @@ class _RhNavState extends State<RhNav> {
             onTap: () {
               Routemaster.of(context).replace(RhRoutes.rhPresence);
               // Routemaster.of(context).pop();
-              // Navigator.of(context).pushReplacementNamed(RhRoutes.rhPresence);
-              // Navigator.of(context).pop();
             }),
         DrawerWidget(
             selected: widget.pageCurrente == RhRoutes.rhAgent,
@@ -75,8 +69,16 @@ class _RhNavState extends State<RhNav> {
             onTap: () {
               Routemaster.of(context).replace(RhRoutes.rhAgent);
               // Routemaster.of(context).pop();
-              // Navigator.of(context).pushReplacementNamed(RhRoutes.rhAgent);
-              // Navigator.of(context).pop();
+            }),
+        DrawerWidget(
+            selected: widget.pageCurrente == RhRoutes.rhPerformence,
+            icon: Icons.group,
+            sizeIcon: 20.0,
+            title: 'Performences',
+            style: bodyText1,
+            onTap: () {
+              Routemaster.of(context).replace(RhRoutes.rhPerformence);
+              // Routemaster.of(context).pop();
             }),
       ],
     );

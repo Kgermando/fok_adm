@@ -50,14 +50,9 @@ class _RhAdminState extends State<RhAdmin> {
                           controller: _controllerScroll,
                           children: [
                             Card(
-                              color: Colors.blue.shade700,
+                              color: Color.fromARGB(255, 126, 170, 214),
                               child: ExpansionTile(
-                                leading: Badge(
-                                    badgeColor: Colors.blue,
-                                    badgeContent: const Text('1',
-                                        style: TextStyle(fontSize: 10.0, color: Colors.white)),
-                                    child: const Icon(Icons.notifications),
-                                  ),
+                                leading: const Icon(Icons.folder),
                                   title: Text('Dossier Salaire', style: headline6),
                                   initiallyExpanded: false,
                                   onExpansionChanged: (val) {
@@ -73,15 +68,9 @@ class _RhAdminState extends State<RhAdmin> {
                               ),
 
                             Card(
-                              color: Colors.green..shade700,
+                              color: Color.fromARGB(255, 117, 190, 121),
                               child: ExpansionTile(
-                                leading: Badge(
-                                  badgeColor: Colors.blue,
-                                  badgeContent: const Text('1',
-                                      style: TextStyle(
-                                          fontSize: 10.0, color: Colors.white)),
-                                  child: const Icon(Icons.notifications),
-                                ),
+                                leading: const Icon(Icons.folder),
                                 title: Text('Dossier Dépenses', style: headline6),
                                 initiallyExpanded: false,
                                 onExpansionChanged: (val) {

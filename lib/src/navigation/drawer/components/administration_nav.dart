@@ -1,5 +1,7 @@
 import 'package:badges/badges.dart';
 import 'package:flutter/material.dart';
+import 'package:fokad_admin/src/api/rh/paiement_salaire_api.dart';
+import 'package:fokad_admin/src/models/rh/paiement_salaire_model.dart';
 import 'package:fokad_admin/src/navigation/drawer/drawer_widget.dart';
 import 'package:fokad_admin/src/routes/routes.dart';
 import 'package:routemaster/routemaster.dart';
@@ -15,6 +17,24 @@ class AdministrationNav extends StatefulWidget {
 
 class _AdministrationNavState extends State<AdministrationNav> {
   bool isOpenAdmin = false;
+
+  int countPaie = 0;
+
+  @override
+  void initState() {
+    getData();
+    super.initState();
+  }
+
+  void getData() async {
+    List<PaiementSalaireModel> paiement =
+        await PaiementSalaireApi().getAllData();
+
+    setState(() {
+      countPaie =
+          paiement.where((element) => element.approbation == false).length;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -41,8 +61,7 @@ class _AdministrationNavState extends State<AdministrationNav> {
             title: 'Dashboard',
             style: bodyText1!,
             onTap: () {
-              Routemaster.of(context)
-                  .replace(AdminRoutes.adminDashboard);
+              Routemaster.of(context).replace(AdminRoutes.adminDashboard);
               // Routemaster.of(context).pop();
             }),
         DrawerWidget(
@@ -69,8 +88,8 @@ class _AdministrationNavState extends State<AdministrationNav> {
             style: bodyText1,
             badge: Badge(
               badgeColor: Colors.blue,
-              badgeContent: const Text('7',
-                  style: TextStyle(fontSize: 10.0, color: Colors.white)),
+              badgeContent: Text('$countPaie',
+                  style: const TextStyle(fontSize: 10.0, color: Colors.white)),
               child: const Icon(Icons.notifications),
             ),
             onTap: () {

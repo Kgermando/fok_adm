@@ -204,6 +204,16 @@ class _FinancesNavState extends State<FinancesNav> {
                   // Routemaster.of(context).pop();
             }
           ),
+          DrawerWidget(
+            selected: widget.pageCurrente == RhRoutes.rhPerformence,
+            icon: Icons.group,
+            sizeIcon: 20.0,
+            title: 'Performences',
+            style: bodyText1,
+            onTap: () {
+              Routemaster.of(context).replace(RhRoutes.rhPerformence);
+              // Routemaster.of(context).pop();
+            }),
         ],
       );
   }

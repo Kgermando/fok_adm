@@ -6,16 +6,16 @@ import 'package:fokad_admin/src/navigation/header/custom_appbar.dart';
 import 'package:fokad_admin/src/provider/controller.dart';
 import 'package:provider/provider.dart';
 
-class PresenceRh extends StatefulWidget {
-  const PresenceRh({ Key? key }) : super(key: key);
+class PerformenceRH extends StatefulWidget {
+  const PerformenceRH({ Key? key }) : super(key: key);
 
   @override
-  State<PresenceRh> createState() => _PresenceRhState();
+  State<PerformenceRH> createState() => _PerformenceRHState();
 }
 
-class _PresenceRhState extends State<PresenceRh> {
+class _PerformenceRHState extends State<PerformenceRH> {
   final ScrollController _controllerScroll = ScrollController();
-
+  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -36,14 +36,14 @@ class _PresenceRhState extends State<PresenceRh> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const CustomAppbar(title: 'Liste des presences'),
+                      const CustomAppbar(title: 'Perfomences'),
                       Expanded(
                           child: Scrollbar(
                         controller: _controllerScroll,
                         child: ListView(
                           controller: _controllerScroll,
                           children: const [
-                            Text("presences List"),
+                            Text("Perfomences List"),
                           ],
                         ),
                       ))

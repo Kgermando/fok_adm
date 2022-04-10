@@ -32,6 +32,7 @@ import 'package:fokad_admin/src/pages/rh/dashboard/dashboard_rh.dart';
 import 'package:fokad_admin/src/pages/rh/paiements/components/add_paiement_salaire.dart';
 import 'package:fokad_admin/src/pages/rh/paiements/components/paiement_bulletin.dart';
 import 'package:fokad_admin/src/pages/rh/paiements/paiements_rh.dart';
+import 'package:fokad_admin/src/pages/rh/performences/performences_rh.dart';
 import 'package:fokad_admin/src/pages/rh/presences/presences_rh.dart';
 import 'package:fokad_admin/src/pages/screens/help_screen.dart';
 import 'package:fokad_admin/src/pages/screens/not_found_page.dart';
@@ -64,6 +65,7 @@ class RhRoutes {
   static const rhPaiementAdd = "/rh-paiements-add";
   static const rhPaiementBulletin = "/rh-paiements-bulletin/:id";
   static const rhPresence = "/rh-presences";
+  static const rhPerformence = "/rh-performence";
 }
 
 class FinanceRoutes {
@@ -117,9 +119,10 @@ class Routing {
       RhRoutes.rhAgentPage: (info) => MaterialPage(child: AgentPage(id: info.queryParameters['id'] as int )),
       RhRoutes.rhAgentAdd: (_) => const MaterialPage(child: AddAgent()),
       RhRoutes.rhPaiement: (_) => const MaterialPage(child: PaiementRh()),
-      "${RhRoutes.rhPaiementAdd}/:id": (info) => MaterialPage(child: AddPaiementSalaire()),
+      "${RhRoutes.rhPaiementAdd}/:id": (info) => const MaterialPage(child: AddPaiementSalaire()),
       RhRoutes.rhPaiementBulletin: (info) => MaterialPage(child: PaiementBulletin(id: info.queryParameters['id'] as int)),
       RhRoutes.rhPresence: (_) => const MaterialPage(child: PresenceRh()),
+      RhRoutes.rhPerformence: (_) => const MaterialPage(child: PerformenceRH()),
 
 
       // Finance
