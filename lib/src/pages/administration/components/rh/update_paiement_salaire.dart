@@ -222,8 +222,8 @@ class _UpdatePaiementSalaireAdminState
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         TitleWidget(
-                            title:
-                                'Feuille de paie du ${DateFormat("MM-yy").format(createdAt)}'),
+                          title:
+                            'Feuille de paie du ${DateFormat("MM-yy").format(createdAt)}'),
                         Row(
                           children: [PrintWidget(onPressed: () {})],
                         ),
