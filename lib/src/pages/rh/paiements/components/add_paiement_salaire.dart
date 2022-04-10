@@ -137,7 +137,7 @@ class _AddPaiementSalaireState extends State<AddPaiementSalaire> {
   String? signatureRH;
 
   Future<void> getData() async {
-    UserModel user = await AuthApi().getUserInfo();
+    UserModel user = await AuthApi().getUserId();
     // AgentModel data = await AgentsApi().getOneData(widget.id!);
     if (!mounted) return;
     setState(() {
@@ -502,14 +502,17 @@ class _AddPaiementSalaireState extends State<AddPaiementSalaire> {
                   style: bodyLarge!.copyWith(fontWeight: FontWeight.bold))),
           Expanded(
             flex: 3,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
+            child: Column(
               children: [
-                Expanded(flex: 3, child: tauxJourHeureMoisSalaireWidget()),
-                Expanded(
-                    flex: 2,
-                    child: joursHeuresPayeA100PourecentSalaireWidget()),
-                Expanded(flex: 2, child: totalDuSalaireWidget())
+                tauxJourHeureMoisSalaireWidget(),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Expanded(
+                        child: joursHeuresPayeA100PourecentSalaireWidget()),
+                    Expanded( child: totalDuSalaireWidget())
+                  ],
+                ),
               ],
             ),
           ),
@@ -524,9 +527,7 @@ class _AddPaiementSalaireState extends State<AddPaiementSalaire> {
       child: DropdownButtonFormField<String>(
         decoration: InputDecoration(
           labelText: 'Taux, Jour, Heure, Mois',
-          labelStyle: const TextStyle(),
           border: OutlineInputBorder(borderRadius: BorderRadius.circular(5.0)),
-          // contentPadding: const EdgeInsets.only(left: 5.0),
         ),
         value: tauxJourHeureMoisSalaire,
         isExpanded: true,
@@ -554,6 +555,7 @@ class _AddPaiementSalaireState extends State<AddPaiementSalaire> {
             border:
                 OutlineInputBorder(borderRadius: BorderRadius.circular(10.0)),
             labelText: 'en %',
+            hintText: 'en %',
           ),
           keyboardType: TextInputType.text,
           style: const TextStyle(),
@@ -569,6 +571,7 @@ class _AddPaiementSalaireState extends State<AddPaiementSalaire> {
             border:
                 OutlineInputBorder(borderRadius: BorderRadius.circular(10.0)),
             labelText: 'Total dû',
+            hintText: 'Total dû',
           ),
           keyboardType: TextInputType.text,
           style: const TextStyle(),
@@ -617,6 +620,7 @@ class _AddPaiementSalaireState extends State<AddPaiementSalaire> {
             border:
                 OutlineInputBorder(borderRadius: BorderRadius.circular(10.0)),
             labelText: 'Nombre Heure',
+            hintText: 'Nombre Heure',
           ),
           keyboardType: TextInputType.text,
           style: const TextStyle(),
@@ -632,6 +636,7 @@ class _AddPaiementSalaireState extends State<AddPaiementSalaire> {
             border:
                 OutlineInputBorder(borderRadius: BorderRadius.circular(10.0)),
             labelText: 'Taux',
+            hintText: 'Taux',
           ),
           keyboardType: TextInputType.text,
           style: const TextStyle(),
@@ -647,6 +652,7 @@ class _AddPaiementSalaireState extends State<AddPaiementSalaire> {
             border:
                 OutlineInputBorder(borderRadius: BorderRadius.circular(10.0)),
             labelText: 'Total dû',
+            hintText: 'Total dû',
           ),
           keyboardType: TextInputType.text,
           style: const TextStyle(),
@@ -689,6 +695,7 @@ class _AddPaiementSalaireState extends State<AddPaiementSalaire> {
             border:
                 OutlineInputBorder(borderRadius: BorderRadius.circular(10.0)),
             labelText: 'Supplement dû travail',
+            hintText: 'Supplement dû travail',
           ),
           keyboardType: TextInputType.text,
           style: const TextStyle(),
@@ -730,6 +737,7 @@ class _AddPaiementSalaireState extends State<AddPaiementSalaire> {
             border:
                 OutlineInputBorder(borderRadius: BorderRadius.circular(10.0)),
             labelText: 'Prime',
+            hintText: 'Prime',
           ),
           keyboardType: TextInputType.text,
           style: const TextStyle(),
@@ -774,6 +782,7 @@ class _AddPaiementSalaireState extends State<AddPaiementSalaire> {
             border:
                 OutlineInputBorder(borderRadius: BorderRadius.circular(10.0)),
             labelText: 'Divers',
+            hintText: 'Divers',
           ),
           keyboardType: TextInputType.text,
           style: const TextStyle(),
@@ -804,7 +813,7 @@ class _AddPaiementSalaireState extends State<AddPaiementSalaire> {
               children: [
                 Expanded(flex: 3, child: joursCongesPayeWidget()),
                 Expanded(flex: 2, child: tauxCongesPayeWidget()),
-                Expanded(flex: 2, child: totalDuHeureSupplementairesWidget())
+                Expanded(flex: 2, child: totalDuCongesPayeWidget())
               ],
             ),
           ),
@@ -822,6 +831,7 @@ class _AddPaiementSalaireState extends State<AddPaiementSalaire> {
             border:
                 OutlineInputBorder(borderRadius: BorderRadius.circular(10.0)),
             labelText: 'Jours',
+            hintText: 'Jours',
           ),
           keyboardType: TextInputType.text,
           style: const TextStyle(),
@@ -837,6 +847,23 @@ class _AddPaiementSalaireState extends State<AddPaiementSalaire> {
             border:
                 OutlineInputBorder(borderRadius: BorderRadius.circular(10.0)),
             labelText: 'Taux',
+            hintText: 'Taux',
+          ),
+          keyboardType: TextInputType.text,
+          style: const TextStyle(),
+        ));
+  }
+
+  Widget totalDuCongesPayeWidget() {
+    return Container(
+        margin: const EdgeInsets.only(bottom: p10, left: p5),
+        child: TextFormField(
+          controller: totalDuCongePayeController,
+          decoration: InputDecoration(
+            border:
+                OutlineInputBorder(borderRadius: BorderRadius.circular(10.0)),
+            labelText: 'Total dû',
+            hintText: 'Total dû',
           ),
           keyboardType: TextInputType.text,
           style: const TextStyle(),
@@ -852,6 +879,7 @@ class _AddPaiementSalaireState extends State<AddPaiementSalaire> {
             border:
                 OutlineInputBorder(borderRadius: BorderRadius.circular(10.0)),
             labelText: 'Total dû',
+            hintText: 'Total dû',
           ),
           keyboardType: TextInputType.text,
           style: const TextStyle(),
@@ -900,6 +928,7 @@ class _AddPaiementSalaireState extends State<AddPaiementSalaire> {
             border:
                 OutlineInputBorder(borderRadius: BorderRadius.circular(10.0)),
             labelText: 'Jours Payé',
+            hintText: 'Jours Payé',
           ),
           keyboardType: TextInputType.text,
           style: const TextStyle(),
@@ -915,6 +944,7 @@ class _AddPaiementSalaireState extends State<AddPaiementSalaire> {
             border:
                 OutlineInputBorder(borderRadius: BorderRadius.circular(10.0)),
             labelText: 'Taux',
+            hintText: 'Taux',
           ),
           keyboardType: TextInputType.text,
           style: const TextStyle(),
@@ -930,6 +960,7 @@ class _AddPaiementSalaireState extends State<AddPaiementSalaire> {
             border:
                 OutlineInputBorder(borderRadius: BorderRadius.circular(10.0)),
             labelText: 'Total dû',
+            hintText: 'Total dû',
           ),
           keyboardType: TextInputType.text,
           style: const TextStyle(),
@@ -971,6 +1002,7 @@ class _AddPaiementSalaireState extends State<AddPaiementSalaire> {
             border:
                 OutlineInputBorder(borderRadius: BorderRadius.circular(10.0)),
             labelText: 'Total dû',
+            hintText: 'Total dû',
           ),
           keyboardType: TextInputType.text,
           style: const TextStyle(),
@@ -996,15 +1028,23 @@ class _AddPaiementSalaireState extends State<AddPaiementSalaire> {
                   style: bodyLarge!.copyWith(fontWeight: FontWeight.bold))),
           Expanded(
             flex: 3,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
+            child: Column(
               children: [
-                Expanded(flex: 2, child: pensionDeductiontWidget()),
-                Expanded(
-                    flex: 2, child: indemniteCompensatricesDeductionWidget()),
-                Expanded(flex: 2, child: avancesDeductionWidget()),
-                Expanded(flex: 2, child: diversDeductionWidget()),
-                Expanded(flex: 2, child: retenuesFiscalesDeductionWidget())
+                indemniteCompensatricesDeductionWidget(),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Expanded(child: pensionDeductiontWidget()),
+                    Expanded(child: avancesDeductionWidget()),
+                    Expanded(child: diversDeductionWidget()),
+                  ],
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Expanded(child: retenuesFiscalesDeductionWidget())
+                  ],
+                ),
               ],
             ),
           ),
@@ -1021,7 +1061,8 @@ class _AddPaiementSalaireState extends State<AddPaiementSalaire> {
           decoration: InputDecoration(
             border:
                 OutlineInputBorder(borderRadius: BorderRadius.circular(10.0)),
-            labelText: 'Pension déduction',
+            labelText: 'Pension',
+            hintText: 'Pension',
           ),
           keyboardType: TextInputType.text,
           style: const TextStyle(),
@@ -1036,7 +1077,8 @@ class _AddPaiementSalaireState extends State<AddPaiementSalaire> {
           decoration: InputDecoration(
             border:
                 OutlineInputBorder(borderRadius: BorderRadius.circular(10.0)),
-            labelText: 'Indemnité compensatrices déduction',
+            labelText: 'Indemnité compensatrices',
+            hintText: 'Indemnité compensatrices',
           ),
           keyboardType: TextInputType.text,
           style: const TextStyle(),
@@ -1051,7 +1093,8 @@ class _AddPaiementSalaireState extends State<AddPaiementSalaire> {
           decoration: InputDecoration(
             border:
                 OutlineInputBorder(borderRadius: BorderRadius.circular(10.0)),
-            labelText: 'Avances déduction',
+            labelText: 'Avances',
+            hintText: 'Avances',
           ),
           keyboardType: TextInputType.text,
           style: const TextStyle(),
@@ -1066,7 +1109,8 @@ class _AddPaiementSalaireState extends State<AddPaiementSalaire> {
           decoration: InputDecoration(
             border:
                 OutlineInputBorder(borderRadius: BorderRadius.circular(10.0)),
-            labelText: 'Divers déduction',
+            labelText: 'Divers',
+            hintText: 'Divers',
           ),
           keyboardType: TextInputType.text,
           style: const TextStyle(),
@@ -1081,7 +1125,8 @@ class _AddPaiementSalaireState extends State<AddPaiementSalaire> {
           decoration: InputDecoration(
             border:
                 OutlineInputBorder(borderRadius: BorderRadius.circular(10.0)),
-            labelText: 'Retenues fiscales déduction',
+            labelText: 'Retenues fiscales',
+            hintText: 'Retenues fiscales',
           ),
           keyboardType: TextInputType.text,
           style: const TextStyle(),
@@ -1107,19 +1152,19 @@ class _AddPaiementSalaireState extends State<AddPaiementSalaire> {
                   style: bodyLarge!.copyWith(fontWeight: FontWeight.bold))),
           Expanded(
             flex: 3,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
+            child: Column(
               children: [
-                Expanded(
-                    flex: 2,
-                    child:
-                        nombreEnfantBeneficaireAllocationsFamilialesWidget()),
-                Expanded(
-                    flex: 2, child: nombreDeJoursAllocationsFamilialesWidget()),
-                Expanded(
-                    flex: 2, child: tauxJoursAllocationsFamilialesWidget()),
-                Expanded(
-                    flex: 2, child: totalAPayerAllocationsFamilialesWidget())
+                nombreEnfantBeneficaireAllocationsFamilialesWidget(),
+                nombreDeJoursAllocationsFamilialesWidget(),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Expanded(
+                      child: tauxJoursAllocationsFamilialesWidget()),
+                    Expanded(
+                      child: totalAPayerAllocationsFamilialesWidget())
+                  ],
+                ),
               ],
             ),
           ),
@@ -1137,6 +1182,9 @@ class _AddPaiementSalaireState extends State<AddPaiementSalaire> {
             border:
                 OutlineInputBorder(borderRadius: BorderRadius.circular(10.0)),
             labelText: 'Nombre des enfants béneficaire',
+            
+            hintText: 'Nombre des enfants béneficaire',
+            
           ),
           keyboardType: TextInputType.text,
           style: const TextStyle(),
@@ -1152,6 +1200,9 @@ class _AddPaiementSalaireState extends State<AddPaiementSalaire> {
             border:
                 OutlineInputBorder(borderRadius: BorderRadius.circular(10.0)),
             labelText: 'Nombre des Jours',
+            
+            hintText: 'Nombre des Jours',
+            
           ),
           keyboardType: TextInputType.text,
           style: const TextStyle(),
@@ -1167,6 +1218,9 @@ class _AddPaiementSalaireState extends State<AddPaiementSalaire> {
             border:
                 OutlineInputBorder(borderRadius: BorderRadius.circular(10.0)),
             labelText: 'Taux du journalier',
+            
+            hintText: 'Taux du journalier',
+            
           ),
           keyboardType: TextInputType.text,
           style: const TextStyle(),
@@ -1182,6 +1236,9 @@ class _AddPaiementSalaireState extends State<AddPaiementSalaire> {
             border:
                 OutlineInputBorder(borderRadius: BorderRadius.circular(10.0)),
             labelText: 'Total à payer',
+            
+            hintText: 'Total à payer',
+            
           ),
           keyboardType: TextInputType.text,
           style: const TextStyle(),
@@ -1222,6 +1279,9 @@ class _AddPaiementSalaireState extends State<AddPaiementSalaire> {
             border:
                 OutlineInputBorder(borderRadius: BorderRadius.circular(10.0)),
             labelText: 'Total à payer',
+            
+            hintText: 'Total à payer',
+            
           ),
           keyboardType: TextInputType.text,
           style: const TextStyle(),
@@ -1264,6 +1324,9 @@ class _AddPaiementSalaireState extends State<AddPaiementSalaire> {
             border:
                 OutlineInputBorder(borderRadius: BorderRadius.circular(10.0)),
             labelText: 'Montant pris pour la Cotisations INSS',
+            
+            hintText: 'Montant pris pour la Cotisations INSS',
+            
           ),
           keyboardType: TextInputType.text,
           style: const TextStyle(),
@@ -1286,45 +1349,45 @@ class _AddPaiementSalaireState extends State<AddPaiementSalaire> {
         modePaiement: '',
         createdAt: DateTime.now(),
         approbation: false, // Administration
-        tauxJourHeureMoisSalaire: tauxJourHeureMoisSalaire.toString(),
+        tauxJourHeureMoisSalaire: (tauxJourHeureMoisSalaire.toString() == '') ? '-' : tauxJourHeureMoisSalaire.toString(),
         joursHeuresPayeA100PourecentSalaire:
-            joursHeuresPayeA100PourecentSalaireController.text,
-        totalDuSalaire: totalDuSalaireController.text,
-        nombreHeureSupplementaires: nombreHeureSupplementairesController.text,
-        tauxHeureSupplementaires: tauxHeureSupplementairesController.text,
-        totalDuHeureSupplementaires: totalDuHeureSupplementairesController.text,
+          (joursHeuresPayeA100PourecentSalaireController.text == '') ? '-' : joursHeuresPayeA100PourecentSalaireController.text,
+        totalDuSalaire: (totalDuSalaireController.text == '') ? '-' : totalDuSalaireController.text,
+        nombreHeureSupplementaires: (nombreHeureSupplementairesController.text == '') ? '-' : nombreHeureSupplementairesController.text,
+        tauxHeureSupplementaires: (tauxHeureSupplementairesController.text == '') ? '-' : tauxHeureSupplementairesController.text,
+        totalDuHeureSupplementaires: (totalDuHeureSupplementairesController.text == '') ? '-' : totalDuHeureSupplementairesController.text,
         supplementTravailSamediDimancheJoursFerie:
-            supplementTravailSamediDimancheJoursFerieController.text,
-        prime: primeController.text,
-        divers: diversController.text,
-        joursCongesPaye: joursCongesPayeController.text,
-        tauxCongesPaye: tauxCongesPayeController.text,
-        totalDuCongePaye: totalDuCongePayeController.text,
-        jourPayeMaladieAccident: jourPayeMaladieAccidentController.text,
+          (supplementTravailSamediDimancheJoursFerieController.text == '') ? '-' : supplementTravailSamediDimancheJoursFerieController.text,
+        prime: (primeController.text == '') ? '-' : primeController.text,
+        divers: (diversController.text == '') ? '-' : diversController.text,
+        joursCongesPaye: (joursCongesPayeController.text == '') ? '-' : joursCongesPayeController.text,
+        tauxCongesPaye: (tauxCongesPayeController.text == '') ? '-' : tauxCongesPayeController.text,
+        totalDuCongePaye: (totalDuCongePayeController.text == '') ? '-' : totalDuCongePayeController.text,
+        jourPayeMaladieAccident: (jourPayeMaladieAccidentController.text == '') ? '-' : jourPayeMaladieAccidentController.text,
         tauxJournalierMaladieAccident:
-            tauxJournalierMaladieAccidentController.text,
-        totalDuMaladieAccident: totalDuMaladieAccidentController.text,
-        pensionDeduction: pensionDeductionController.text,
+          (tauxJournalierMaladieAccidentController.text == '') ? '-' : tauxJournalierMaladieAccidentController.text,
+        totalDuMaladieAccident: (totalDuMaladieAccidentController.text == '') ? '-' : totalDuMaladieAccidentController.text,
+        pensionDeduction: (pensionDeductionController.text == '') ? '-' : pensionDeductionController.text,
         indemniteCompensatricesDeduction:
-            indemniteCompensatricesDeductionController.text,
-        avancesDeduction: avancesDeductionController.text,
-        diversDeduction: diversDeductionController.text,
-        retenuesFiscalesDeduction: retenuesFiscalesDeductionController.text,
+            (indemniteCompensatricesDeductionController.text == '') ? '-' : indemniteCompensatricesDeductionController.text,
+        avancesDeduction: (avancesDeductionController.text == '') ? '-' : avancesDeductionController.text,
+        diversDeduction: (diversDeductionController.text == '') ? '-' : diversDeductionController.text,
+        retenuesFiscalesDeduction: (retenuesFiscalesDeductionController.text == '') ? '-' : retenuesFiscalesDeductionController.text,
         nombreEnfantBeneficaireAllocationsFamiliales:
-            nombreEnfantBeneficaireAllocationsFamilialesController.text,
+          (nombreEnfantBeneficaireAllocationsFamilialesController.text == '') ? '-' : retenuesFiscalesDeductionController.text,
         nombreDeJoursAllocationsFamiliales:
-            nombreDeJoursAllocationsFamilialesController.text,
+          (nombreDeJoursAllocationsFamilialesController.text == '') ? '-' : nombreDeJoursAllocationsFamilialesController.text,
         tauxJoursAllocationsFamiliales:
-            tauxJoursAllocationsFamilialesController.text,
+          (tauxJoursAllocationsFamilialesController.text == '') ? '-' : tauxJoursAllocationsFamilialesController.text,
         totalAPayerAllocationsFamiliales:
-            totalAPayerAllocationsFamilialesController.text,
-        netAPayer: netAPayerController.text,
+            (totalAPayerAllocationsFamilialesController.text == '') ? '-' : totalAPayerAllocationsFamilialesController.text,
+        netAPayer: (netAPayerController.text == '') ? '-' : netAPayerController.text,
         montantPrisConsiderationCalculCotisationsINSS:
-            montantPrisConsiderationCalculCotisationsINSSController.text,
-        totalDuBrut: totalDuBrutController.text,
-        signatureDG: '',
-        signatureFinance: '',
-        signatureRH: signatureRH.toString());
+          (montantPrisConsiderationCalculCotisationsINSSController.text == '') ? '-' : montantPrisConsiderationCalculCotisationsINSSController.text,
+        totalDuBrut: (totalDuBrutController.text == '') ? '-' : totalDuBrutController.text,
+        signatureDG: '-',
+        signatureFinance: '-',
+        signatureRH: (signatureRH.toString() == '') ? '-' : signatureRH.toString());
     await PaiementSalaireApi().insertData(paiementSalaireModel);
     Routemaster.of(context).pop();
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(

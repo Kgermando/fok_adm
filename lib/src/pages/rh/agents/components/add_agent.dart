@@ -886,34 +886,34 @@ class _AddAgentState extends State<AddAgent> {
 
   Future submit() async {
     final agentModel = AgentModel(
-      nom: nomController.text,
-      postNom: postNomController.text,
-      prenom: prenomController.text,
-      email: emailController.text,
-      telephone: telephoneController.text,
-      adresse: adresseController.text,
-      sexe: sexe.toString(),
-      role: role.toString(),
-      matricule: matricule,
+      nom: (nomController.text == '') ? '-' : nomController.text,
+      postNom: (postNomController.text == '') ? '-' : postNomController.text,
+      prenom: (prenomController.text == '') ? '-' : prenomController.text,
+      email: (emailController.text == '') ? '-' : emailController.text,
+      telephone: (telephoneController.text == '') ? '-' : telephoneController.text,
+      adresse: (adresseController.text == '') ? '-' : telephoneController.text,
+      sexe: (sexe.toString() == '') ? '-' : sexe.toString(),
+      role: (role.toString() == '') ? '-' : role.toString(),
+      matricule: (matricule == '') ? '-' : matricule,
       numeroSecuriteSociale: (numeroSecuriteSocialeController.text == "") 
         ? "-" : numeroSecuriteSocialeController.text,
-      dateNaissance: DateTime.parse(dateNaissanceController.text),
-      lieuNaissance: lieuNaissanceController.text,
-      nationalite: nationalite.toString(),
-      typeContrat: typeContrat.toString(),
-      departement: departement.toString(),
-      servicesAffectation: servicesAffectation.toString(),
-      dateDebutContrat: DateTime.parse(dateDebutContratController.text),
+      dateNaissance: (dateNaissanceController.text == '') ? DateTime.now() : DateTime.parse(dateNaissanceController.text),
+      lieuNaissance: (lieuNaissanceController.text == '') ? '-' : lieuNaissanceController.text,
+      nationalite: (nationalite.toString() == '') ? '-' : nationalite.toString(),
+      typeContrat: (typeContrat.toString() == '') ? '-' : typeContrat.toString(),
+      departement: (departement.toString() == '') ? '-' : departement.toString(),
+      servicesAffectation: (servicesAffectation.toString() == '') ? '-' : servicesAffectation.toString(),
+      dateDebutContrat: (dateDebutContratController.text == '') ? DateTime.now() : DateTime.parse(dateDebutContratController.text),
       dateFinContrat: DateTime.parse((dateFinContratController.text == "")
           ? "2099-12-31 00:00:00"
           : dateFinContratController.text),
-      fonctionOccupe: fonctionOccupe.toString(),
-      competance: competanceController.toString(),
-      experience: experienceController.text,
+      fonctionOccupe: (fonctionOccupe.toString() == '') ? '-' : fonctionOccupe.toString(),
+      competance: (competanceController.toString() == '') ? '-' : competanceController.toString(),
+      experience: (experienceController.text == '') ? '-' : experienceController.text,
       statutAgent: false,
       createdAt: DateTime.now(),
       photo: '',
-      salaire: salaireController.text
+      salaire: (salaireController.text == '' ) ? '-' : salaireController.text
     );
 
     await AgentsApi().insertData(agentModel);

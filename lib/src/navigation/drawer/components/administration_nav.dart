@@ -41,14 +41,9 @@ class _AdministrationNavState extends State<AdministrationNav> {
             title: 'Dashboard',
             style: bodyText1!,
             onTap: () {
-              Routemaster.of(context).replace(AdminRoutes.adminDashboard);
-              Routemaster.of(context).pop();
-              // Navigator.of(context)
-              //     .pushReplacementNamed(AdminRoutes.adminDashboard);
-              // Navigator.of(context).pop();
-
-              
-              
+              Routemaster.of(context)
+                  .replace(AdminRoutes.adminDashboard);
+              // Routemaster.of(context).pop();
             }),
         DrawerWidget(
             selected: widget.pageCurrente == AdminRoutes.adminFinance,
@@ -63,9 +58,8 @@ class _AdministrationNavState extends State<AdministrationNav> {
               child: const Icon(Icons.notifications),
             ),
             onTap: () {
-              Navigator.of(context)
-                  .pushReplacementNamed(AdminRoutes.adminFinance);
-              Navigator.of(context).pop();
+              Routemaster.of(context).replace(AdminRoutes.adminFinance);
+              // Routemaster.of(context).pop();
             }),
         DrawerWidget(
             selected: widget.pageCurrente == AdminRoutes.adminRH,
@@ -80,8 +74,8 @@ class _AdministrationNavState extends State<AdministrationNav> {
               child: const Icon(Icons.notifications),
             ),
             onTap: () {
-              Navigator.of(context).pushReplacementNamed(AdminRoutes.adminRH);
-              Navigator.of(context).pop();
+              Routemaster.of(context).replace(AdminRoutes.adminRH);
+              // Routemaster.of(context).pop();
             }),
         DrawerWidget(
             selected: widget.pageCurrente == AdminRoutes.adminExploitation,
@@ -96,9 +90,8 @@ class _AdministrationNavState extends State<AdministrationNav> {
               child: const Icon(Icons.notifications),
             ),
             onTap: () {
-              Navigator.of(context)
-                  .pushReplacementNamed(AdminRoutes.adminExploitation);
-              Navigator.of(context).pop();
+              Routemaster.of(context).replace(AdminRoutes.adminExploitation);
+              // Routemaster.of(context).pop();
             }),
         DrawerWidget(
             selected: widget.pageCurrente == AdminRoutes.adminCommMarketing,
@@ -113,9 +106,8 @@ class _AdministrationNavState extends State<AdministrationNav> {
               child: const Icon(Icons.notifications),
             ),
             onTap: () {
-              Navigator.of(context)
-                  .pushReplacementNamed(AdminRoutes.adminCommMarketing);
-              Navigator.of(context).pop();
+              Routemaster.of(context).replace(AdminRoutes.adminCommMarketing);
+              // Routemaster.of(context).pop();
             }),
         DrawerWidget(
             selected: widget.pageCurrente == AdminRoutes.adminLogistique,
@@ -130,9 +122,8 @@ class _AdministrationNavState extends State<AdministrationNav> {
               child: const Icon(Icons.notifications),
             ),
             onTap: () {
-              Navigator.of(context)
-                  .pushReplacementNamed(AdminRoutes.adminLogistique);
-              Navigator.of(context).pop();
+              Routemaster.of(context).replace(AdminRoutes.adminLogistique);
+              // Routemaster.of(context).pop();
             }),
       ],
     );
