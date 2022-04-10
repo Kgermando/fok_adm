@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:fokad_admin/src/api/auth/auth_api.dart';
-import 'package:fokad_admin/src/api/rh/agents_api.dart';
 import 'package:fokad_admin/src/api/rh/paiement_salaire_api.dart';
 import 'package:fokad_admin/src/constants/app_theme.dart';
 import 'package:fokad_admin/src/constants/responsive.dart';
@@ -1217,9 +1216,9 @@ class _AddPaiementSalaireState extends State<AddPaiementSalaire> {
           decoration: InputDecoration(
             border:
                 OutlineInputBorder(borderRadius: BorderRadius.circular(10.0)),
-            labelText: 'Taux du journalier',
+            labelText: 'Taux journalier',
             
-            hintText: 'Taux du journalier',
+            hintText: 'Taux journalier',
             
           ),
           keyboardType: TextInputType.text,
@@ -1324,9 +1323,7 @@ class _AddPaiementSalaireState extends State<AddPaiementSalaire> {
             border:
                 OutlineInputBorder(borderRadius: BorderRadius.circular(10.0)),
             labelText: 'Montant pris pour la Cotisations INSS',
-            
             hintText: 'Montant pris pour la Cotisations INSS',
-            
           ),
           keyboardType: TextInputType.text,
           style: const TextStyle(),

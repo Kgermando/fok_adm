@@ -141,6 +141,9 @@ class _UpdatePaiementSalaireAdminState
       signatureDG = data.signatureDG;
       // signatureFinance = data.signatureFinance;
       signatureRH = data.signatureRH;
+
+      print(
+          'joursHeuresPayeA100PourecentSalaire $joursHeuresPayeA100PourecentSalaire');
     });
   }
 
@@ -172,10 +175,9 @@ class _UpdatePaiementSalaireAdminState
                             icon: const Icon(Icons.arrow_back)),
                       ),
                       const SizedBox(width: p10),
-                      Expanded(
+                      const Expanded(
                           child: CustomAppbar(
-                              title:
-                                  'Feuille de paie du ${DateFormat("MM-yy").format(createdAt)}')),
+                              title: 'Feuille de paie')),
                     ],
                   ),
                   Expanded(
@@ -221,7 +223,7 @@ class _UpdatePaiementSalaireAdminState
                       children: [
                         TitleWidget(
                             title:
-                                'Feuille de paie du ${DateFormat("MM-yy").format(DateTime.now())}'),
+                                'Feuille de paie du ${DateFormat("MM-yy").format(createdAt)}'),
                         Row(
                           children: [PrintWidget(onPressed: () {})],
                         ),
@@ -456,7 +458,7 @@ class _UpdatePaiementSalaireAdminState
             Expanded(
                 child: SelectableText(
               '$salaireField USD',
-              style: bodyMedium,
+              style: bodyMedium.copyWith(color: Colors.blueGrey),
             ))
           ],
         ),
@@ -502,13 +504,12 @@ class _UpdatePaiementSalaireAdminState
             flex: 3,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
-              children: [ 
+              children: [
                 Checkbox(
-                  value: approbation, onChanged: (val) {
-                  setState(() {
-                    
-                  });
-                })
+                    value: approbation,
+                    onChanged: (val) {
+                      setState(() {});
+                    })
               ],
             ),
           ),
@@ -519,6 +520,7 @@ class _UpdatePaiementSalaireAdminState
 
   Widget salaireWidget() {
     final bodyMedium = Theme.of(context).textTheme.bodyMedium;
+    final bodySmall = Theme.of(context).textTheme.bodySmall;
     return Container(
       padding: const EdgeInsets.only(top: p16, bottom: p16),
       decoration: const BoxDecoration(
@@ -541,21 +543,39 @@ class _UpdatePaiementSalaireAdminState
               children: [
                 Expanded(
                     flex: 3,
-                    child: SelectableText(
-                      tauxJourHeureMoisSalaire.toString(),
-                      style: bodyMedium,
+                    child: Column(
+                      children: [
+                        Text(
+                          'Durée',
+                          style: bodySmall,
+                        ),
+                        SelectableText(
+                          tauxJourHeureMoisSalaire.toString(),
+                          style: bodyMedium,
+                        ),
+                      ],
                     )),
                 Expanded(
                     flex: 2,
-                    child: SelectableText(
-                      joursHeuresPayeA100PourecentSalaire.toString(),
-                      style: bodyMedium,
+                    child: Column(
+                      children: [
+                        Text('%', style: bodySmall),
+                        SelectableText(
+                          joursHeuresPayeA100PourecentSalaire.toString(),
+                          style: bodyMedium,
+                        ),
+                      ],
                     )),
                 Expanded(
                     flex: 2,
-                    child: SelectableText(
-                      totalDuSalaire.toString(),
-                      style: bodyMedium,
+                    child: Column(
+                      children: [
+                        Text('Total dû', style: bodySmall),
+                        SelectableText(
+                          totalDuSalaire.toString(),
+                          style: bodyMedium,
+                        ),
+                      ],
                     ))
               ],
             ),
@@ -567,6 +587,7 @@ class _UpdatePaiementSalaireAdminState
 
   Widget heureSupplementaireWidget() {
     final bodyMedium = Theme.of(context).textTheme.bodyMedium;
+    final bodySmall = Theme.of(context).textTheme.bodySmall;
     return Container(
       padding: const EdgeInsets.only(top: p16, bottom: p16),
       decoration: const BoxDecoration(
@@ -589,21 +610,45 @@ class _UpdatePaiementSalaireAdminState
               children: [
                 Expanded(
                     flex: 3,
-                    child: SelectableText(
-                      nombreHeureSupplementaires.toString(),
-                      style: bodyMedium,
+                    child: Column(
+                      children: [
+                        Text(
+                          'Nombre Heure',
+                          style: bodySmall,
+                        ),
+                        SelectableText(
+                          nombreHeureSupplementaires.toString(),
+                          style: bodyMedium,
+                        ),
+                      ],
                     )),
                 Expanded(
                     flex: 2,
-                    child: SelectableText(
-                      tauxHeureSupplementaires.toString(),
-                      style: bodyMedium,
+                    child: Column(
+                      children: [
+                        Text(
+                          'Taux',
+                          style: bodySmall,
+                        ),
+                        SelectableText(
+                          tauxHeureSupplementaires.toString(),
+                          style: bodyMedium,
+                        ),
+                      ],
                     )),
                 Expanded(
                     flex: 2,
-                    child: SelectableText(
-                      totalDuHeureSupplementaires.toString(),
-                      style: bodyMedium,
+                    child: Column(
+                      children: [
+                        Text(
+                          'Total dû',
+                          style: bodySmall,
+                        ),
+                        SelectableText(
+                          totalDuHeureSupplementaires.toString(),
+                          style: bodyMedium,
+                        ),
+                      ],
                     ))
               ],
             ),
@@ -615,6 +660,7 @@ class _UpdatePaiementSalaireAdminState
 
   Widget supplementTravailSamediDimancheJoursFerieWidget() {
     final bodyMedium = Theme.of(context).textTheme.bodyMedium;
+    final bodySmall = Theme.of(context).textTheme.bodySmall;
     return Container(
       padding: const EdgeInsets.only(top: p16, bottom: p16),
       decoration: const BoxDecoration(
@@ -633,9 +679,17 @@ class _UpdatePaiementSalaireAdminState
                   style: bodyMedium!.copyWith(fontWeight: FontWeight.bold))),
           Expanded(
               flex: 3,
-              child: SelectableText(
-                supplementTravailSamediDimancheJoursFerie.toString(),
-                style: bodyMedium,
+              child: Column(
+                children: [
+                  Text(
+                    'Supplement dû travail',
+                    style: bodySmall,
+                  ),
+                  SelectableText(
+                    supplementTravailSamediDimancheJoursFerie.toString(),
+                    style: bodyMedium,
+                  ),
+                ],
               )),
         ],
       ),
@@ -644,6 +698,7 @@ class _UpdatePaiementSalaireAdminState
 
   Widget primeWidget() {
     final bodyMedium = Theme.of(context).textTheme.bodyMedium;
+    final bodySmall = Theme.of(context).textTheme.bodySmall;
     return Container(
       padding: const EdgeInsets.only(top: p16, bottom: p16),
       decoration: const BoxDecoration(
@@ -661,9 +716,17 @@ class _UpdatePaiementSalaireAdminState
                   style: bodyMedium!.copyWith(fontWeight: FontWeight.bold))),
           Expanded(
               flex: 3,
-              child: SelectableText(
-                prime.toString(),
-                style: bodyMedium,
+              child: Column(
+                children: [
+                  Text(
+                    'Prime',
+                    style: bodySmall,
+                  ),
+                  SelectableText(
+                    prime.toString(),
+                    style: bodyMedium,
+                  ),
+                ],
               )),
         ],
       ),
@@ -672,6 +735,7 @@ class _UpdatePaiementSalaireAdminState
 
   Widget diversWidget() {
     final bodyMedium = Theme.of(context).textTheme.bodyMedium;
+    final bodySmall = Theme.of(context).textTheme.bodySmall;
     return Container(
       padding: const EdgeInsets.only(top: p16, bottom: p16),
       decoration: const BoxDecoration(
@@ -689,9 +753,17 @@ class _UpdatePaiementSalaireAdminState
                   style: bodyMedium!.copyWith(fontWeight: FontWeight.bold))),
           Expanded(
               flex: 3,
-              child: SelectableText(
-                divers.toString(),
-                style: bodyMedium,
+              child: Column(
+                children: [
+                  Text(
+                    'Divers',
+                    style: bodySmall,
+                  ),
+                  SelectableText(
+                    divers.toString(),
+                    style: bodyMedium,
+                  ),
+                ],
               )),
         ],
       ),
@@ -700,6 +772,7 @@ class _UpdatePaiementSalaireAdminState
 
   Widget congesPayeWidget() {
     final bodyMedium = Theme.of(context).textTheme.bodyMedium;
+    final bodySmall = Theme.of(context).textTheme.bodySmall;
     return Container(
       padding: const EdgeInsets.only(top: p16, bottom: p16),
       decoration: const BoxDecoration(
@@ -722,21 +795,45 @@ class _UpdatePaiementSalaireAdminState
               children: [
                 Expanded(
                     flex: 3,
-                    child: SelectableText(
-                      joursCongesPaye.toString(),
-                      style: bodyMedium,
+                    child: Column(
+                      children: [
+                        Text(
+                          'Jours',
+                          style: bodySmall,
+                        ),
+                        SelectableText(
+                          joursCongesPaye.toString(),
+                          style: bodyMedium,
+                        ),
+                      ],
                     )),
                 Expanded(
                     flex: 2,
-                    child: SelectableText(
-                      tauxCongesPaye.toString(),
-                      style: bodyMedium,
+                    child: Column(
+                      children: [
+                        Text(
+                          'Taux',
+                          style: bodySmall,
+                        ),
+                        SelectableText(
+                          tauxCongesPaye.toString(),
+                          style: bodyMedium,
+                        ),
+                      ],
                     )),
                 Expanded(
                     flex: 2,
-                    child: SelectableText(
-                      totalDuHeureSupplementaires.toString(),
-                      style: bodyMedium,
+                    child: Column(
+                      children: [
+                        Text(
+                          'Total dû',
+                          style: bodySmall,
+                        ),
+                        SelectableText(
+                          totalDuHeureSupplementaires.toString(),
+                          style: bodyMedium,
+                        ),
+                      ],
                     ))
               ],
             ),
@@ -748,6 +845,7 @@ class _UpdatePaiementSalaireAdminState
 
   Widget maladieAccidentWidget() {
     final bodyMedium = Theme.of(context).textTheme.bodyMedium;
+    final bodySmall = Theme.of(context).textTheme.bodySmall;
     return Container(
       padding: const EdgeInsets.only(top: p16, bottom: p16),
       decoration: const BoxDecoration(
@@ -770,21 +868,45 @@ class _UpdatePaiementSalaireAdminState
               children: [
                 Expanded(
                     flex: 3,
-                    child: SelectableText(
-                      jourPayeMaladieAccident.toString(),
-                      style: bodyMedium,
+                    child: Column(
+                      children: [
+                        Text(
+                          'Jours Payé',
+                          style: bodySmall,
+                        ),
+                        SelectableText(
+                          jourPayeMaladieAccident.toString(),
+                          style: bodyMedium,
+                        ),
+                      ],
                     )),
                 Expanded(
                     flex: 2,
-                    child: SelectableText(
-                      tauxJournalierMaladieAccident.toString(),
-                      style: bodyMedium,
+                    child: Column(
+                      children: [
+                        Text(
+                          'Taux',
+                          style: bodySmall,
+                        ),
+                        SelectableText(
+                          tauxJournalierMaladieAccident.toString(),
+                          style: bodyMedium,
+                        ),
+                      ],
                     )),
                 Expanded(
                     flex: 2,
-                    child: SelectableText(
-                      totalDuMaladieAccident.toString(),
-                      style: bodyMedium,
+                    child: Column(
+                      children: [
+                        Text(
+                          'Total dû',
+                          style: bodySmall,
+                        ),
+                        SelectableText(
+                          totalDuMaladieAccident.toString(),
+                          style: bodyMedium,
+                        ),
+                      ],
                     ))
               ],
             ),
@@ -796,6 +918,7 @@ class _UpdatePaiementSalaireAdminState
 
   Widget totalDuBrutWidget() {
     final bodyMedium = Theme.of(context).textTheme.bodyMedium;
+    final bodySmall = Theme.of(context).textTheme.bodySmall;
     return Container(
       padding: const EdgeInsets.only(top: p16, bottom: p16),
       decoration: const BoxDecoration(
@@ -813,9 +936,17 @@ class _UpdatePaiementSalaireAdminState
                   style: bodyMedium!.copyWith(fontWeight: FontWeight.bold))),
           Expanded(
               flex: 3,
-              child: SelectableText(
-                totalDuBrut.toString(),
-                style: bodyMedium,
+              child: Column(
+                children: [
+                  Text(
+                    'Total',
+                    style: bodySmall,
+                  ),
+                  SelectableText(
+                    totalDuBrut.toString(),
+                    style: bodyMedium,
+                  ),
+                ],
               )),
         ],
       ),
@@ -824,6 +955,7 @@ class _UpdatePaiementSalaireAdminState
 
   Widget deductionWidget() {
     final bodyMedium = Theme.of(context).textTheme.bodyMedium;
+    final bodySmall = Theme.of(context).textTheme.bodySmall;
     return Container(
       padding: const EdgeInsets.only(top: p16, bottom: p16),
       decoration: const BoxDecoration(
@@ -846,33 +978,73 @@ class _UpdatePaiementSalaireAdminState
               children: [
                 Expanded(
                     flex: 2,
-                    child: SelectableText(
-                      pensionDeduction.toString(),
-                      style: bodyMedium,
+                    child: Column(
+                      children: [
+                        Text(
+                          'Pension',
+                          style: bodySmall,
+                        ),
+                        SelectableText(
+                          pensionDeduction.toString(),
+                          style: bodyMedium,
+                        ),
+                      ],
                     )),
                 Expanded(
                     flex: 2,
-                    child: SelectableText(
-                      indemniteCompensatricesDeduction.toString(),
-                      style: bodyMedium,
+                    child: Column(
+                      children: [
+                        Text(
+                          'Indemnité compensatrices',
+                          style: bodySmall,
+                        ),
+                        SelectableText(
+                          indemniteCompensatricesDeduction.toString(),
+                          style: bodyMedium,
+                        ),
+                      ],
                     )),
                 Expanded(
                     flex: 2,
-                    child: SelectableText(
-                      avancesDeduction.toString(),
-                      style: bodyMedium,
+                    child: Column(
+                      children: [
+                        Text(
+                          'Avances',
+                          style: bodySmall,
+                        ),
+                        SelectableText(
+                          avancesDeduction.toString(),
+                          style: bodyMedium,
+                        ),
+                      ],
                     )),
                 Expanded(
                     flex: 2,
-                    child: SelectableText(
-                      diversDeduction.toString(),
-                      style: bodyMedium,
+                    child: Column(
+                      children: [
+                        Text(
+                          'Divers',
+                          style: bodySmall,
+                        ),
+                        SelectableText(
+                          diversDeduction.toString(),
+                          style: bodyMedium,
+                        ),
+                      ],
                     )),
                 Expanded(
                     flex: 2,
-                    child: SelectableText(
-                      retenuesFiscalesDeduction.toString(),
-                      style: bodyMedium,
+                    child: Column(
+                      children: [
+                        Text(
+                          'Retenues fiscales',
+                          style: bodySmall,
+                        ),
+                        SelectableText(
+                          retenuesFiscalesDeduction.toString(),
+                          style: bodyMedium,
+                        ),
+                      ],
                     ))
               ],
             ),
@@ -884,6 +1056,7 @@ class _UpdatePaiementSalaireAdminState
 
   Widget allocationsFamilialesWidget() {
     final bodyMedium = Theme.of(context).textTheme.bodyMedium;
+    final bodySmall = Theme.of(context).textTheme.bodySmall;
     return Container(
       padding: const EdgeInsets.only(top: p16, bottom: p16),
       decoration: const BoxDecoration(
@@ -906,27 +1079,60 @@ class _UpdatePaiementSalaireAdminState
               children: [
                 Expanded(
                     flex: 2,
-                    child: SelectableText(
-                      nombreEnfantBeneficaireAllocationsFamiliales.toString(),
-                      style: bodyMedium,
+                    child: Column(
+                      children: [
+                        Text(
+                          'Nombre des enfants béneficaire',
+                          style: bodySmall,
+                        ),
+                        SelectableText(
+                          nombreEnfantBeneficaireAllocationsFamiliales
+                              .toString(),
+                          style: bodyMedium,
+                        ),
+                      ],
                     )),
                 Expanded(
                     flex: 2,
-                    child: SelectableText(
-                      nombreDeJoursAllocationsFamiliales.toString(),
-                      style: bodyMedium,
+                    child: Column(
+                      children: [
+                        Text(
+                          'Nombre des Jours',
+                          style: bodySmall,
+                        ),
+                        SelectableText(
+                          nombreDeJoursAllocationsFamiliales.toString(),
+                          style: bodyMedium,
+                        ),
+                      ],
                     )),
                 Expanded(
                     flex: 2,
-                    child: SelectableText(
-                      tauxJoursAllocationsFamiliales.toString(),
-                      style: bodyMedium,
+                    child: Column(
+                      children: [
+                        Text(
+                          'Taux journalier',
+                          style: bodySmall,
+                        ),
+                        SelectableText(
+                          tauxJoursAllocationsFamiliales.toString(),
+                          style: bodyMedium,
+                        ),
+                      ],
                     )),
                 Expanded(
                     flex: 2,
-                    child: SelectableText(
-                      totalAPayerAllocationsFamiliales.toString(),
-                      style: bodyMedium,
+                    child: Column(
+                      children: [
+                        Text(
+                          'Total à payer',
+                          style: bodySmall,
+                        ),
+                        SelectableText(
+                          totalAPayerAllocationsFamiliales.toString(),
+                          style: bodyMedium,
+                        ),
+                      ],
                     ))
               ],
             ),
@@ -938,6 +1144,7 @@ class _UpdatePaiementSalaireAdminState
 
   Widget netAPayerWidget() {
     final bodyMedium = Theme.of(context).textTheme.bodyMedium;
+    final bodySmall = Theme.of(context).textTheme.bodySmall;
     return Container(
       padding: const EdgeInsets.only(top: p16, bottom: p16),
       decoration: const BoxDecoration(
@@ -955,9 +1162,17 @@ class _UpdatePaiementSalaireAdminState
                   style: bodyMedium!.copyWith(fontWeight: FontWeight.bold))),
           Expanded(
               flex: 3,
-              child: SelectableText(
-                netAPayer.toString(),
-                style: bodyMedium,
+              child: Column(
+                children: [
+                  Text(
+                    'Total à payer',
+                    style: bodySmall,
+                  ),
+                  SelectableText(
+                    netAPayer.toString(),
+                    style: bodyMedium,
+                  ),
+                ],
               )),
         ],
       ),
@@ -966,6 +1181,7 @@ class _UpdatePaiementSalaireAdminState
 
   Widget montantPrisConsiderationCalculCotisationsINSSWidget() {
     final bodyMedium = Theme.of(context).textTheme.bodyMedium;
+    final bodySmall = Theme.of(context).textTheme.bodySmall;
     return Container(
       padding: const EdgeInsets.only(top: p16, bottom: p16),
       decoration: const BoxDecoration(
@@ -984,9 +1200,17 @@ class _UpdatePaiementSalaireAdminState
                   style: bodyMedium!.copyWith(fontWeight: FontWeight.bold))),
           Expanded(
               flex: 3,
-              child: SelectableText(
-                montantPrisConsiderationCalculCotisationsINSS.toString(),
-                style: bodyMedium,
+              child: Column(
+                children: [
+                  Text(
+                    'Montant pris pour la Cotisations INSS',
+                    style: bodySmall,
+                  ),
+                  SelectableText(
+                    montantPrisConsiderationCalculCotisationsINSS.toString(),
+                    style: bodyMedium,
+                  ),
+                ],
               )),
         ],
       ),
