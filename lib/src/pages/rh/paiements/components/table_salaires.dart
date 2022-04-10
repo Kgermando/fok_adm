@@ -39,13 +39,9 @@ class _TableSalairesState extends State<TableSalaires> {
         final dataList = tapEvent.row!.cells.values;
         final idPlutoRow = dataList.elementAt(0);
 
-        // Routemaster.of(context)
-        //     .push('${RhRoutes.rhAgentPage}/${idPlutoRow.value}');
-
         Navigator.of(context).push(MaterialPageRoute(
             builder: (context) => PaiementBulletin(id: idPlutoRow.value)));
 
-        print("item ${idPlutoRow.value} ");
       },
       onLoaded: (PlutoGridOnLoadedEvent event) {
         stateManager = event.stateManager;

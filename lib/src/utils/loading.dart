@@ -3,10 +3,9 @@ import 'package:fokad_admin/src/provider/theme_provider.dart';
 
 Widget loading() => Row(
   mainAxisAlignment: MainAxisAlignment.center,
-  children: [
-    CircularProgressIndicator(color: ThemeProvider().isDarkMode ? Colors.white : Colors.white),
-    const SizedBox(width: 20.0,),
-    Text('Patientez svp...', style: TextStyle(color: ThemeProvider().isDarkMode ? Colors.white : Colors.white))
+  children: const [
+    SizedBox(width: 20.0,),
+    Text('Patientez svp...', style: TextStyle(color: Colors.purple))
   ],
 );
 

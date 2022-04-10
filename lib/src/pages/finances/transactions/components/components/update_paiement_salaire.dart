@@ -229,10 +229,6 @@ class _UpdatePaiementSalaireState extends State<UpdatePaiementSalaire> {
                     const SizedBox(
                       height: p20,
                     ),
-                    modePaiementWidget(),
-                    const SizedBox(
-                      height: p20,
-                    ),
                     salaireWidget(),
                     const SizedBox(
                       height: p20,
@@ -278,6 +274,10 @@ class _UpdatePaiementSalaireState extends State<UpdatePaiementSalaire> {
                       height: p20,
                     ),
                     montantPrisConsiderationCalculCotisationsINSSWidget(),
+                    const SizedBox(
+                      height: p20,
+                    ),
+                    modePaiementWidget(),
                     const SizedBox(
                       height: p20,
                     ),
@@ -547,7 +547,7 @@ class _UpdatePaiementSalaireState extends State<UpdatePaiementSalaire> {
       padding: const EdgeInsets.only(top: p16, bottom: p16),
       decoration: const BoxDecoration(
         border: Border(
-          top: BorderSide(width: 1.0),
+          bottom: BorderSide(width: 1.0),
         ),
       ),
       child: Row(
