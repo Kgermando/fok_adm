@@ -19,7 +19,7 @@ class _RhAdminState extends State<RhAdmin> {
   bool isOpenRh1 = false;
   bool isOpenRh2 = false;
 
-  
+
 
   @override
   Widget build(BuildContext context) {
@@ -50,7 +50,7 @@ class _RhAdminState extends State<RhAdmin> {
                           controller: _controllerScroll,
                           children: [
                             Card(
-                              color: Colors.red.shade700,
+                              color: Colors.blue.shade700,
                               child: ExpansionTile(
                                 leading: Badge(
                                     badgeColor: Colors.blue,

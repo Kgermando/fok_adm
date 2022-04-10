@@ -7,6 +7,7 @@ import 'package:fokad_admin/src/models/rh/paiement_salaire_model.dart';
 import 'package:fokad_admin/src/models/users/user_model.dart';
 import 'package:fokad_admin/src/navigation/drawer/drawer_menu.dart';
 import 'package:fokad_admin/src/navigation/header/custom_appbar.dart';
+import 'package:fokad_admin/src/utils/loading.dart';
 import 'package:fokad_admin/src/utils/type_operation.dart';
 import 'package:fokad_admin/src/widgets/print_widget.dart';
 import 'package:fokad_admin/src/widgets/title_widget.dart';
@@ -23,8 +24,7 @@ class UpdatePaiementSalaireAdmin extends StatefulWidget {
       _UpdatePaiementSalaireAdminState();
 }
 
-class _UpdatePaiementSalaireAdminState
-    extends State<UpdatePaiementSalaireAdmin> {
+class _UpdatePaiementSalaireAdminState extends State<UpdatePaiementSalaireAdmin> {
   final ScrollController _controllerScroll = ScrollController();
   final _formKey = GlobalKey<FormState>();
   bool isLoading = false;
@@ -176,8 +176,7 @@ class _UpdatePaiementSalaireAdminState
                       ),
                       const SizedBox(width: p10),
                       const Expanded(
-                          child: CustomAppbar(
-                              title: 'Feuille de paie')),
+                          child: CustomAppbar(title: 'Feuille de paie')),
                     ],
                   ),
                   Expanded(
@@ -222,8 +221,8 @@ class _UpdatePaiementSalaireAdminState
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         TitleWidget(
-                          title:
-                            'Feuille de paie du ${DateFormat("MM-yy").format(createdAt)}'),
+                            title:
+                                'Feuille de paie du ${DateFormat("MM-yy").format(createdAt)}'),
                         Row(
                           children: [PrintWidget(onPressed: () {})],
                         ),
@@ -284,7 +283,9 @@ class _UpdatePaiementSalaireAdminState
                     const SizedBox(
                       height: p20,
                     ),
-                    approbationWidget(),
+                    (isLoading) 
+                      ? loading()
+                      : approbationWidget(),
                     const SizedBox(
                       height: p20,
                     )
@@ -484,13 +485,27 @@ class _UpdatePaiementSalaireAdminState
     );
   }
 
+  Color getColor(Set<MaterialState> states) {
+    const Set<MaterialState> interactiveStates = <MaterialState>{
+      MaterialState.pressed,
+      MaterialState.hovered,
+      MaterialState.focused,
+    };
+    if (states.any(interactiveStates.contains)) {
+      return Colors.orange;
+    }
+    return Colors.green;
+  }
+
   Widget approbationWidget() {
     final bodyMedium = Theme.of(context).textTheme.bodyMedium;
     return Container(
       padding: const EdgeInsets.only(top: p16, bottom: p16),
+
       decoration: const BoxDecoration(
+        borderRadius: BorderRadius.all(Radius.circular(20)),
         border: Border(
-          top: BorderSide(width: 1.0),
+          // bottom: BorderSide(width: 1.0),
         ),
       ),
       child: Row(
@@ -506,9 +521,15 @@ class _UpdatePaiementSalaireAdminState
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Checkbox(
+                    checkColor: Colors.white,
+                    fillColor: MaterialStateProperty.resolveWith(getColor),
                     value: approbation,
-                    onChanged: (val) {
-                      setState(() {});
+                    onChanged: (bool? value) {
+                      setState(() {
+                        isLoading = true;
+                        approbation = value!;
+                        submit();
+                      });
                     })
               ],
             ),
