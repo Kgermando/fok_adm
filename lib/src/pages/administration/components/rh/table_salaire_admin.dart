@@ -3,19 +3,20 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:fokad_admin/src/api/rh/paiement_salaire_api.dart';
 import 'package:fokad_admin/src/models/rh/paiement_salaire_model.dart';
+import 'package:fokad_admin/src/pages/administration/components/rh/update_paiement_salaire.dart';
 import 'package:fokad_admin/src/pages/finances/transactions/components/components/update_paiement_salaire.dart';
 import 'package:fokad_admin/src/widgets/print_widget.dart';
 import 'package:intl/intl.dart';
 import 'package:pluto_grid/pluto_grid.dart';
 
-class TableSalaireFin extends StatefulWidget {
-  const TableSalaireFin({ Key? key }) : super(key: key);
+class TableSalaireAdmin extends StatefulWidget {
+  const TableSalaireAdmin({ Key? key }) : super(key: key);
 
   @override
-  State<TableSalaireFin> createState() => _TableSalaireFinState();
+  State<TableSalaireAdmin> createState() => _TableSalaireAdminState();
 }
 
-class _TableSalaireFinState extends State<TableSalaireFin> {
+class _TableSalaireAdminState extends State<TableSalaireAdmin> {
   List<PlutoColumn> columns = [];
   List<PlutoRow> rows = [];
   PlutoGridStateManager? stateManager;
@@ -32,58 +33,61 @@ class _TableSalaireFinState extends State<TableSalaireFin> {
 
   @override
   Widget build(BuildContext context) {
-    return PlutoGrid(
-      columns: columns,
-      rows: rows,
-      onRowDoubleTap: (PlutoGridOnRowDoubleTapEvent tapEvent) {
-        final dataList = tapEvent.row!.cells.values;
-        final idPlutoRow = dataList.elementAt(0);
-
-        // Routemaster.of(context)
-        //     .push('${RhRoutes.rhAgentPage}/${idPlutoRow.value}');
-
-        Navigator.of(context).push(MaterialPageRoute(
-            builder: (context) => UpdatePaiementSalaire(id: idPlutoRow.value)));
-
-        print("item ${idPlutoRow.value} ");
-      },
-      onLoaded: (PlutoGridOnLoadedEvent event) {
-        stateManager = event.stateManager;
-        stateManager!.setShowColumnFilter(true);
-      },
-      createHeader: (PlutoGridStateManager header) {
-        return Row(
-          mainAxisAlignment: MainAxisAlignment.end,
-          children: [PrintWidget(onPressed: () {})],
-        );
-      },
-      configuration: PlutoGridConfiguration(
-        columnFilterConfig: PlutoGridColumnFilterConfig(
-          filters: const [
-            ...FilterHelper.defaultFilters,
-            // custom filter
-            ClassYouImplemented(),
-          ],
-          resolveDefaultColumnFilter: (column, resolver) {
-            if (column.field == 'prenom') {
-              return resolver<ClassYouImplemented>() as PlutoFilterType;
-            } else if (column.field == 'nom') {
-              return resolver<ClassYouImplemented>() as PlutoFilterType;
-            } else if (column.field == 'matricule') {
-              return resolver<ClassYouImplemented>() as PlutoFilterType;
-            } else if (column.field == 'departement') {
-              return resolver<ClassYouImplemented>() as PlutoFilterType;
-            }else if (column.field == 'approbation') {
-              return resolver<ClassYouImplemented>() as PlutoFilterType;
-            } else if (column.field == 'modePaiement') {
-              return resolver<ClassYouImplemented>() as PlutoFilterType;
-            } else if (column.field == 'salaire') {
-              return resolver<ClassYouImplemented>() as PlutoFilterType;
-            } else if (column.field == 'created') {
-              return resolver<ClassYouImplemented>() as PlutoFilterType;
-            }
-            return resolver<PlutoFilterTypeContains>() as PlutoFilterType;
-          },
+    return SizedBox(
+      height: MediaQuery.of(context).size.height,
+      child: PlutoGrid(
+        columns: columns,
+        rows: rows,
+        onRowDoubleTap: (PlutoGridOnRowDoubleTapEvent tapEvent) {
+          final dataList = tapEvent.row!.cells.values;
+          final idPlutoRow = dataList.elementAt(0);
+    
+          // Routemaster.of(context)
+          //     .push('${RhRoutes.rhAgentPage}/${idPlutoRow.value}');
+    
+          Navigator.of(context).push(MaterialPageRoute(
+              builder: (context) => UpdatePaiementSalaireAdmin(id: idPlutoRow.value)));
+    
+          print("item ${idPlutoRow.value} ");
+        },
+        onLoaded: (PlutoGridOnLoadedEvent event) {
+          stateManager = event.stateManager;
+          stateManager!.setShowColumnFilter(true);
+        },
+        createHeader: (PlutoGridStateManager header) {
+          return Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [PrintWidget(onPressed: () {})],
+          );
+        },
+        configuration: PlutoGridConfiguration(
+          columnFilterConfig: PlutoGridColumnFilterConfig(
+            filters: const [
+              ...FilterHelper.defaultFilters,
+              // custom filter
+              ClassYouImplemented(),
+            ],
+            resolveDefaultColumnFilter: (column, resolver) {
+              if (column.field == 'prenom') {
+                return resolver<ClassYouImplemented>() as PlutoFilterType;
+              } else if (column.field == 'nom') {
+                return resolver<ClassYouImplemented>() as PlutoFilterType;
+              } else if (column.field == 'matricule') {
+                return resolver<ClassYouImplemented>() as PlutoFilterType;
+              } else if (column.field == 'departement') {
+                return resolver<ClassYouImplemented>() as PlutoFilterType;
+              }else if (column.field == 'approbation') {
+                return resolver<ClassYouImplemented>() as PlutoFilterType;
+              } else if (column.field == 'modePaiement') {
+                return resolver<ClassYouImplemented>() as PlutoFilterType;
+              } else if (column.field == 'salaire') {
+                return resolver<ClassYouImplemented>() as PlutoFilterType;
+              } else if (column.field == 'created') {
+                return resolver<ClassYouImplemented>() as PlutoFilterType;
+              }
+              return resolver<PlutoFilterTypeContains>() as PlutoFilterType;
+            },
+          ),
         ),
       ),
     );
@@ -153,18 +157,6 @@ void agentsColumn() {
       ),
       PlutoColumn(
         readOnly: true,
-        title: 'Approbation',
-        field: 'approbation',
-        type: PlutoColumnType.text(),
-        enableRowDrag: true,
-        enableContextMenu: false,
-        enableDropToResize: true,
-        titleTextAlign: PlutoColumnTextAlign.left,
-        width: 150,
-        minWidth: 150,
-      ),
-      PlutoColumn(
-        readOnly: true,
         title: 'Salaire',
         field: 'salaire',
         type: PlutoColumnType.text(),
@@ -177,8 +169,8 @@ void agentsColumn() {
       ),
       PlutoColumn(
         readOnly: true,
-        title: 'Mode de paiement',
-        field: 'modePaiement',
+        title: 'Approbation',
+        field: 'approbation',
         type: PlutoColumnType.text(),
         enableRowDrag: true,
         enableContextMenu: false,
@@ -207,7 +199,7 @@ void agentsColumn() {
         await PaiementSalaireApi().getAllData();
     var data = dataList
         .where((element) =>
-            element!.approbation == true)
+            element!.approbation == false)
         .toList();
 
     if (mounted) {
@@ -220,11 +212,11 @@ void agentsColumn() {
             'nom': PlutoCell(value: item.nom),
             'matricule': PlutoCell(value: item.matricule),
             'departement': PlutoCell(value: item.departement),
-            'approbation': PlutoCell(value: (item.approbation == true) 
-              ? "Approuvé" : "Non Approuvé"),
             'salaire': PlutoCell(value: item.salaire),
-            'modePaiement': PlutoCell(value: item.modePaiement),
-            'createdAt': PlutoCell(value: DateFormat("DD-MM-yy").format(item.createdAt))
+            'approbation': PlutoCell(
+                value:
+                    (item.approbation == true) ? "Approuvé" : "Non Approuvé"),
+            'createdAt': PlutoCell(value: DateFormat("dd-MM-yy").format(item.createdAt))
           }));
         }
         stateManager!.resetCurrentState();
