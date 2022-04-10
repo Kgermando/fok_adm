@@ -29,9 +29,9 @@ Color orangeLightColors = const Color(0xffF2861E);
 Color orangeColor = Colors.orange;
 Color bleuFonceColor = const Color(0xFF2A2D3E);
 Color greenColor = const Color(0xFF1B5E20);
-Color themeColorPurpre = const Color(0xff6200ee); 
-// Color themeColor = Colors.blue.shade700; 
-Color themeColor = roleTheme(int.parse("0")); 
+Color themeColorPurpre = const Color(0xff6200ee);
+// Color themeColor = Colors.blue.shade700;
+Color themeColor = roleTheme(int.parse("0"));
 
 // Colors used in this app
 const primaryColor = Color.fromRGBO(17, 159, 250, 1);
@@ -46,6 +46,7 @@ const greenRGBO = Color.fromRGBO(51, 173, 127, 1);
 // Spacing
 const m20 = 20.0;
 
+const p5 = 5.0;
 const p8 = 8.0;
 const p10 = 10.0;
 const p16 = 16.0;

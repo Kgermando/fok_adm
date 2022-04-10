@@ -511,7 +511,7 @@ class _AddAgentState extends State<AddAgent> {
         ));
   }
 
-
+ 
   Widget numeroSecuriteSocialeWidget() {
     return Container(
         margin: const EdgeInsets.only(bottom: p20),
@@ -918,7 +918,6 @@ class _AddAgentState extends State<AddAgent> {
 
     await AgentsApi().insertData(agentModel);
     Routemaster.of(context).replace(RhRoutes.rhAgent);
-
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
       content: const Text("Enregistrer avec succès!"),
       backgroundColor: Colors.green[700],

@@ -110,15 +110,29 @@ class _FinancesNavState extends State<FinancesNav> {
                   // Routemaster.of(context).pop();
                   }),
               DrawerWidget(
-                  selected: widget.pageCurrente == FinanceRoutes.transactionsDepenses,
-                  icon: Icons.arrow_right,
-                  sizeIcon: 15.0,
-                  title: 'Dépenses',
-                  style: bodyText2,
-                  onTap: () {
-                    Routemaster.of(context).replace(FinanceRoutes.transactionsDepenses);
-                    // Routemaster.of(context).pop();
-                  }),
+                selected: widget.pageCurrente == FinanceRoutes.transactionsDepenses,
+                icon: Icons.arrow_right,
+                sizeIcon: 15.0,
+                title: 'Dépenses',
+                style: bodyText2,
+                onTap: () {
+                  Routemaster.of(context).replace(FinanceRoutes.transactionsDepenses);
+                  // Routemaster.of(context).pop();
+                }
+              ),
+              DrawerWidget(
+                selected:
+                    widget.pageCurrente == FinanceRoutes.transactionsPaiement,
+                icon: Icons.arrow_right,
+                sizeIcon: 15.0,
+                title: 'Paiement salaire',
+                style: bodyText2,
+                onTap: () {
+                  Routemaster.of(context)
+                      .replace(FinanceRoutes.transactionsPaiement);
+                  // Routemaster.of(context).pop();
+                }
+              ),
             ],
           ),
           ExpansionTile(

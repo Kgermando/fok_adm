@@ -41,6 +41,9 @@ class PaiementSalaireModel {
   late String netAPayer;
   late String montantPrisConsiderationCalculCotisationsINSS;
   late String totalDuBrut;
+  late String signatureDG;
+  late String signatureFinance;
+  late String signatureRH;
 
   PaiementSalaireModel(
       {this.id,
@@ -84,7 +87,11 @@ class PaiementSalaireModel {
       required this.totalAPayerAllocationsFamiliales,
       required this.netAPayer,
       required this.montantPrisConsiderationCalculCotisationsINSS,
-      required this.totalDuBrut});
+      required this.totalDuBrut,
+      required this.signatureDG,
+      required this.signatureFinance,
+      required this.signatureRH,
+    });
 
   factory PaiementSalaireModel.fromSQL(List<dynamic> row) {
     return PaiementSalaireModel(
@@ -130,6 +137,9 @@ class PaiementSalaireModel {
       netAPayer: row[39],
       montantPrisConsiderationCalculCotisationsINSS: row[40],
       totalDuBrut: row[41],
+      signatureDG: row[42],
+      signatureFinance: row[43],
+      signatureRH: row[44]
     );
   }
 
@@ -183,6 +193,9 @@ class PaiementSalaireModel {
       montantPrisConsiderationCalculCotisationsINSS:
           json['montantPrisConsiderationCalculCotisationsINSS'],
       totalDuBrut: json['totalDuBrut'],
+      signatureDG: json['signatureDG'],
+      signatureFinance: json['signatureFinance'],
+      signatureRH: json['signatureRH']
     );
   }
 
@@ -201,7 +214,7 @@ class PaiementSalaireModel {
       'salaire': salaire,
       'observation': observation,
       'modePaiement': modePaiement,
-      'createdAt': createdAt,
+      'createdAt': createdAt.toIso8601String(),
       'approbation': approbation,
       'tauxJourHeureMoisSalaire': tauxJourHeureMoisSalaire,
       'joursHeuresPayeA100PourecentSalaire':
@@ -234,6 +247,9 @@ class PaiementSalaireModel {
       'montantPrisConsiderationCalculCotisationsINSS':
           montantPrisConsiderationCalculCotisationsINSS,
       'totalDuBrut': totalDuBrut,
+      'signatureDG': signatureDG,
+      'signatureFinance': signatureFinance,
+      'signatureRH': signatureRH
     };
   }
 }

@@ -23,6 +23,7 @@ import 'package:fokad_admin/src/pages/finances/transactions/components/creance_t
 import 'package:fokad_admin/src/pages/finances/transactions/components/depense_transactions.dart';
 import 'package:fokad_admin/src/pages/finances/transactions/components/dette_transcations.dart';
 import 'package:fokad_admin/src/pages/finances/transactions/components/fin_externe_transactions.dart';
+import 'package:fokad_admin/src/pages/finances/transactions/components/paiement_transactions.dart';
 import 'package:fokad_admin/src/pages/finances/transactions/transactions_fincance.dart';
 import 'package:fokad_admin/src/pages/rh/agents/agents_rh.dart';
 import 'package:fokad_admin/src/pages/rh/agents/components/add_agent.dart';
@@ -75,6 +76,7 @@ class FinanceRoutes {
   static const transactionsCreances = "/transactions-creances";
   static const transactionsFinancementExterne = "/transactions-financement-externe";
   static const transactionsDepenses = "/transactions-depenses";
+  static const transactionsPaiement = "/transactions-paiement";
   static const comptabiliteAmortissement = "/comptabilite-amortissement";
   static const comptabiliteBilan = "/comptabilite-bilan";
   static const comptabiliteJournal = "/comptabilite-journal";
@@ -115,7 +117,7 @@ class Routing {
       RhRoutes.rhAgentPage: (info) => MaterialPage(child: AgentPage(id: info.queryParameters['id'] as int )),
       RhRoutes.rhAgentAdd: (_) => const MaterialPage(child: AddAgent()),
       RhRoutes.rhPaiement: (_) => const MaterialPage(child: PaiementRh()),
-      "${RhRoutes.rhPaiementAdd}/:id": (info) => MaterialPage(child: AddPaiementSalaire(id: info.queryParameters['id'] as int)),
+      "${RhRoutes.rhPaiementAdd}/:id": (info) => MaterialPage(child: AddPaiementSalaire()),
       RhRoutes.rhPaiementBulletin: (info) => MaterialPage(child: PaiementBulletin(id: info.queryParameters['id'] as int)),
       RhRoutes.rhPresence: (_) => const MaterialPage(child: PresenceRh()),
 
@@ -129,6 +131,7 @@ class Routing {
       FinanceRoutes.transactionsCreances: (_) => const MaterialPage(child: CreanceTransactions()),
       FinanceRoutes.transactionsDepenses: (_) => const MaterialPage(child: DepenseTransactions()),
       FinanceRoutes.transactionsDettes: (_) => const MaterialPage(child: DetteTransactions()), 
+      FinanceRoutes.transactionsPaiement: (_) => const MaterialPage(child: PaiementTransaction()),
       FinanceRoutes.transactionsFinancementExterne: (_) => const MaterialPage(child: FinExterneTransactions()), 
       FinanceRoutes.comptabiliteAmortissement: (_) => const MaterialPage(child: AmortissementComptabilite()), 
       FinanceRoutes.comptabiliteBilan: (_) => const MaterialPage(child: BilanComptabilite()),

@@ -5,18 +5,18 @@ import 'package:fokad_admin/src/constants/responsive.dart';
 import 'package:fokad_admin/src/models/rh/agent_model.dart';
 import 'package:fokad_admin/src/navigation/drawer/drawer_menu.dart';
 import 'package:fokad_admin/src/navigation/header/custom_appbar.dart';
-import 'package:fokad_admin/src/pages/rh/paiements/components/table_salaires.dart';
+import 'package:fokad_admin/src/pages/finances/transactions/components/components/table_salaire_fin.dart';
 import 'package:fokad_admin/src/provider/controller.dart';
 import 'package:provider/provider.dart';
 
-class PaiementRh extends StatefulWidget {
-  const PaiementRh({Key? key}) : super(key: key);
+class PaiementTransaction extends StatefulWidget {
+  const PaiementTransaction({ Key? key }) : super(key: key);
 
   @override
-  State<PaiementRh> createState() => _PaiementRhState();
+  State<PaiementTransaction> createState() => _PaiementTransactionState();
 }
 
-class _PaiementRhState extends State<PaiementRh> {
+class _PaiementTransactionState extends State<PaiementTransaction> {
   final ScrollController _controllerScroll = ScrollController();
 
   int? id;
@@ -36,7 +36,7 @@ class _PaiementRhState extends State<PaiementRh> {
       agentModel = data;
     });
   }
-
+  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -57,8 +57,8 @@ class _PaiementRhState extends State<PaiementRh> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: const [
-                    CustomAppbar(title: 'Liste des paiements'),
-                    Expanded(child: TableSalaires())
+                    CustomAppbar(title: 'Liste des paiements salaire'),
+                    Expanded(child: TableSalaireFin())
                   ],
                 ),
               ),

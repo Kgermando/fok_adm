@@ -3,19 +3,19 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:fokad_admin/src/api/rh/paiement_salaire_api.dart';
 import 'package:fokad_admin/src/models/rh/paiement_salaire_model.dart';
-import 'package:fokad_admin/src/pages/rh/paiements/components/paiement_bulletin.dart';
+import 'package:fokad_admin/src/pages/finances/transactions/components/components/update_paiement_salaire.dart';
 import 'package:fokad_admin/src/widgets/print_widget.dart';
 import 'package:intl/intl.dart';
 import 'package:pluto_grid/pluto_grid.dart';
 
-class TableSalaires extends StatefulWidget {
-  const TableSalaires({Key? key}) : super(key: key);
+class TableSalaireFin extends StatefulWidget {
+  const TableSalaireFin({ Key? key }) : super(key: key);
 
   @override
-  State<TableSalaires> createState() => _TableSalairesState();
+  State<TableSalaireFin> createState() => _TableSalaireFinState();
 }
 
-class _TableSalairesState extends State<TableSalaires> {
+class _TableSalaireFinState extends State<TableSalaireFin> {
   List<PlutoColumn> columns = [];
   List<PlutoRow> rows = [];
   PlutoGridStateManager? stateManager;
@@ -43,7 +43,7 @@ class _TableSalairesState extends State<TableSalaires> {
         //     .push('${RhRoutes.rhAgentPage}/${idPlutoRow.value}');
 
         Navigator.of(context).push(MaterialPageRoute(
-            builder: (context) => PaiementBulletin(id: idPlutoRow.value)));
+            builder: (context) => UpdatePaiementSalaire(id: idPlutoRow.value)));
 
         print("item ${idPlutoRow.value} ");
       },
@@ -73,9 +73,7 @@ class _TableSalairesState extends State<TableSalaires> {
               return resolver<ClassYouImplemented>() as PlutoFilterType;
             } else if (column.field == 'departement') {
               return resolver<ClassYouImplemented>() as PlutoFilterType;
-            } else if (column.field == 'Approbation') {
-              return resolver<ClassYouImplemented>() as PlutoFilterType;
-            } else if (column.field == 'observation') {
+            }else if (column.field == 'Approbation') {
               return resolver<ClassYouImplemented>() as PlutoFilterType;
             } else if (column.field == 'modePaiement') {
               return resolver<ClassYouImplemented>() as PlutoFilterType;
@@ -91,7 +89,7 @@ class _TableSalairesState extends State<TableSalaires> {
     );
   }
 
-  void agentsColumn() {
+void agentsColumn() {
     columns = [
       PlutoColumn(
         readOnly: true,
@@ -167,8 +165,8 @@ class _TableSalairesState extends State<TableSalaires> {
       ),
       PlutoColumn(
         readOnly: true,
-        title: 'Observation',
-        field: 'observation',
+        title: 'Salaire',
+        field: 'salaire',
         type: PlutoColumnType.text(),
         enableRowDrag: true,
         enableContextMenu: false,
@@ -191,9 +189,9 @@ class _TableSalairesState extends State<TableSalaires> {
       ),
       PlutoColumn(
         readOnly: true,
-        title: 'created',
+        title: 'Date',
         field: 'createdAt',
-        type: PlutoColumnType.date(),
+        type: PlutoColumnType.text(),
         enableRowDrag: true,
         enableContextMenu: false,
         enableDropToResize: true,
@@ -207,9 +205,11 @@ class _TableSalairesState extends State<TableSalaires> {
   Future agentsRow() async {
     List<PaiementSalaireModel?> dataList =
         await PaiementSalaireApi().getAllData();
-    var data =
-        dataList.where((element) => element!.approbation == true && element.observation == true).toList();
-        
+    var data = dataList
+        .where((element) =>
+            element!.approbation == true)
+        .toList();
+
     if (mounted) {
       setState(() {
         for (var item in data) {
@@ -220,11 +220,11 @@ class _TableSalairesState extends State<TableSalaires> {
             'nom': PlutoCell(value: item.nom),
             'matricule': PlutoCell(value: item.matricule),
             'departement': PlutoCell(value: item.departement),
-            'approbation': PlutoCell(value:
-                (item.approbation == true) ? "Approuvé" : "Non Approuvé"),
-            'observation': PlutoCell(value: (item.observation == true) ? "Payé" : "Non payé"),
+            'approbation': PlutoCell(value: (item.approbation == true) 
+              ? "Approuvé" : "Non Approuvé"),
+            'salaire': PlutoCell(value: item.salaire),
             'modePaiement': PlutoCell(value: item.modePaiement),
-            'createdAt': PlutoCell(value:  DateFormat("DD-MM-yy").format(item.createdAt))
+            'createdAt': PlutoCell(value: DateFormat("DD-MM-yy").format(item.createdAt))
           }));
         }
         stateManager!.resetCurrentState();

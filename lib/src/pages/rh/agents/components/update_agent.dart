@@ -23,8 +23,7 @@ class _UpdateAgentState extends State<UpdateAgent> {
   final List<String> roleList = Dropdown().role;
   final List<String> world = Country().world;
   final List<String> fonctionOccupeAdminList = FonctionOccupee().adminDropdown;
-  final List<String> fonctionOccupeList =
-      FonctionOccupee().fonctionOccupeDropdown;
+  final List<String> fonctionOccupeList = FonctionOccupee().fonctionOccupeDropdown;
 
   final List<String> serviceAffectation =
       ServiceAffectation().serviceAffectationDropdown;

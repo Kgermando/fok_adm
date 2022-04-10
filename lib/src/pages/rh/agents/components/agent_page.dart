@@ -60,46 +60,44 @@ class _AgentPageState extends State<AgentPage> {
                 flex: 5,
                 child: Padding(
                     padding: const EdgeInsets.all(p10),
-                    child: Expanded(
-                        child: FutureBuilder<AgentModel>(
-                            future: AgentsApi().getOneData(widget.id!),
-                            builder: (BuildContext context,
-                                AsyncSnapshot<AgentModel> snapshot) {
-                              if (snapshot.hasData) {
-                                AgentModel? agentModel = snapshot.data;
-                                return Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
+                    child: FutureBuilder<AgentModel>(
+                        future: AgentsApi().getOneData(widget.id!),
+                        builder: (BuildContext context,
+                            AsyncSnapshot<AgentModel> snapshot) {
+                          if (snapshot.hasData) {
+                            AgentModel? agentModel = snapshot.data;
+                            return Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Row(
                                   children: [
-                                    Row(
-                                      children: [
-                                        SizedBox(
-                                          width: p20,
-                                          child: IconButton(
-                                              onPressed: () =>
-                                                  Routemaster.of(context).pop(),
-                                              icon:
-                                                  const Icon(Icons.arrow_back)),
-                                        ),
-                                        const SizedBox(width: p10),
-                                        Expanded(
-                                          child: CustomAppbar(
-                                              title:
-                                                  'Matricule ${agentModel!.matricule} '),
-                                        ),
-                                      ],
+                                    SizedBox(
+                                      width: p20,
+                                      child: IconButton(
+                                          onPressed: () =>
+                                              Routemaster.of(context).pop(),
+                                          icon: const Icon(Icons.arrow_back)),
                                     ),
+                                    const SizedBox(width: p10),
                                     Expanded(
-                                        child: Scrollbar(
-                                            controller: _controllerScroll,
-                                            isAlwaysShown: true,
-                                            child: pageDetail(agentModel)))
+                                      child: CustomAppbar(
+                                          title:
+                                              'Matricule ${agentModel!.matricule} '),
+                                    ),
                                   ],
-                                );
-                              } else {
-                                return const Center(
-                                    child: CircularProgressIndicator());
-                              }
-                            }))),
+                                ),
+                                Expanded(
+                                    child: Scrollbar(
+                                        controller: _controllerScroll,
+                                        isAlwaysShown: true,
+                                        child: pageDetail(agentModel)))
+                              ],
+                            );
+                          } else {
+                            return const Center(
+                                child: CircularProgressIndicator());
+                          }
+                        })),
               ),
             ],
           ),
@@ -113,7 +111,7 @@ class _AgentPageState extends State<AgentPage> {
         Card(
           elevation: 10,
           child: Container(
-            margin: const EdgeInsets.all(10),
+            margin: const EdgeInsets.all(p16),
             width: (Responsive.isDesktop(context))
                 ? MediaQuery.of(context).size.width / 2
                 : MediaQuery.of(context).size.width / 1.5,
@@ -133,20 +131,12 @@ class _AgentPageState extends State<AgentPage> {
                     const TitleWidget(title: 'Curriculum vitæ'),
                     Row(
                       children: [
-                        IconButton(
-                            onPressed: () {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) =>
-                                         AddPaiementSalaire(id: agentModel.id)));
-                              // Routemaster.of(context).push(
-                              //     "${RhRoutes.rhPaiementAdd}${agentModel.id}");
-                            },
-                            icon: const Icon(Icons.payment)),
-                        IconButton(
-                            onPressed: () {}, icon: const Icon(Icons.edit)),
+                        compteSalaireWidget(agentModel),
                         statutAgentWidget(agentModel),
+                        IconButton(
+                            tooltip: 'Modifier',
+                            onPressed: () {},
+                            icon: const Icon(Icons.edit)),
                         PrintWidget(
                             tooltip: 'Imprimer le document', onPressed: () {})
                       ],
@@ -162,6 +152,18 @@ class _AgentPageState extends State<AgentPage> {
         ),
       ],
     );
+  }
+
+  Widget compteSalaireWidget(AgentModel agentModel) {
+    return IconButton(
+        tooltip: 'Paiement',
+        onPressed: () {
+          Navigator.of(context).push(MaterialPageRoute(
+              builder: (context) => AddPaiementSalaire(agentModel: agentModel)));
+
+          print("Paiement ${agentModel.id}");
+        },
+        icon: const Icon(Icons.payment));
   }
 
   Widget statutAgentWidget(AgentModel agentModel) {
@@ -183,9 +185,9 @@ class _AgentPageState extends State<AgentPage> {
             children: [
               CircleAvatar(
                   radius: 50,
-                  child: (agentModel.photo == null)
+                  child: (agentModel.photo == '' || agentModel.photo == null)
                       ? Image.asset(
-                          'assets/images/logo.png',
+                          'assets/images/avatar.jpg',
                           width: 150,
                           height: 150,
                         )
@@ -550,7 +552,7 @@ class _AgentPageState extends State<AgentPage> {
           return StatefulBuilder(builder: (context, StateSetter setState) {
             return !isLoading
                 ? AlertDialog(
-                    title: const Text('Autorisation d\'accès '),
+                    title: const Text('Autorisation d\'accès au système'),
                     content: FlutterSwitch(
                       width: 225.0,
                       height: 55.0,
