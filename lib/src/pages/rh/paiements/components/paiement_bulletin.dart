@@ -167,7 +167,7 @@ class _PaiementBulletinState extends State<PaiementBulletin> {
                       ),
                       const SizedBox(width: p10),
                       const Expanded(
-                          child: CustomAppbar(title: 'Feuille de paie')),
+                          child: CustomAppbar(title: 'Bulletin de paie')),
                     ],
                   ),
                   Expanded(
@@ -213,7 +213,7 @@ class _PaiementBulletinState extends State<PaiementBulletin> {
                       children: [
                         TitleWidget(
                             title:
-                                'Feuille de paie du ${DateFormat("MM-yy").format(createdAt)}'),
+                                'Bulletin de paie du ${DateFormat("MM-yy").format(createdAt)}'),
                         Row(
                           children: [PrintWidget(onPressed: () {})],
                         ),
