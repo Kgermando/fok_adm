@@ -37,11 +37,9 @@ var depensesUrl = Uri.parse("$mainUrl/finances/transactions/depenses/");
 var adddepensesUrl = Uri.parse(
     "$mainUrl/finances/transactions/depenses/insert-new-transaction-depense");
 
-
 var dettesUrl = Uri.parse("$mainUrl/finances/transactions/dettes/");
 var adddettesUrl = Uri.parse(
     "$mainUrl/finances/transactions/dettes/insert-new-transaction-dette");
-
 
 var finExterieurUrl = Uri.parse("$mainUrl/finances/transactions/financements-exterieur/");
 var addfinExterieurUrl = Uri.parse(
@@ -50,21 +48,21 @@ var addfinExterieurUrl = Uri.parse(
 
 // Comptabilité
 var amortissementsUrl =
-    Uri.parse("$mainUrl/finances/transactions/amortissements/");
+    Uri.parse("$mainUrl/finances/comptabilite/amortissements/");
 var addamortissementsUrl = Uri.parse(
-    "$mainUrl/finances/transactions/amortissements/insert-new-transaction-amortissement");
+    "$mainUrl/finances/comptabilite/amortissements/insert-new-transaction-amortissement");
 
 var bilansUrl =
-    Uri.parse("$mainUrl/finances/transactions/bilans/");
+    Uri.parse("$mainUrl/finances/comptabilite/bilans/");
 var addbilansUrl = Uri.parse(
-    "$mainUrl/finances/transactions/bilans/insert-new-transaction-bilan");
+    "$mainUrl/finances/comptabilite/bilans/insert-new-transaction-bilan");
 
 
-var journalsUrl = Uri.parse("$mainUrl/finances/transactions/journals/");
+var journalsUrl = Uri.parse("$mainUrl/finances/comptabilite/journals/");
 var addjournalsUrl = Uri.parse(
-    "$mainUrl/finances/transactions/journals/insert-new-transaction-journal");
+    "$mainUrl/finances/comptabilite/journals/insert-new-transaction-journal");
 
 
-var valorisationsUrl = Uri.parse("$mainUrl/finances/transactions/valorisations/");
+var valorisationsUrl = Uri.parse("$mainUrl/finances/comptabilite/valorisations/");
 var addvalorisationsUrl = Uri.parse(
-    "$mainUrl/finances/transactions/valorisations/insert-new-transaction-valorisation");
+    "$mainUrl/finances/comptabilite/valorisations/insert-new-transaction-valorisation");
