@@ -109,34 +109,10 @@ class _CaisseTransactionsState extends State<CaisseTransactions> {
                   padding: const EdgeInsets.all(p10),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const CustomAppbar(title: 'Caisse'),
+                    children: const [
+                      CustomAppbar(title: 'Caisse'),
                       Expanded(
-                          child: Scrollbar(
-                        controller: controller,
-                        child: ListView(
-                          controller: controller,
-                          children: [
-                            const SizedBox(
-                              height: p20,
-                            ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text(
-                                  'Livre de Caisse',
-                                  style: Theme.of(context).textTheme.bodyText1,
-                                ),
-                                PrintWidget(onPressed: (() {})),
-                              ],
-                            ),
-                            const SizedBox(
-                              height: p10,
-                            ),
-                            const TableCaisse()
-                          ],
-                        ),
-                      ))
+                          child: TableCaisse())
                     ],
                   ),
                 ),

@@ -92,25 +92,10 @@ class _DetteTransactionsState extends State<DetteTransactions> {
                   padding: const EdgeInsets.all(p10),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const CustomAppbar(title: 'Dettes'),
+                    children: const [
+                      CustomAppbar(title: 'Dettes'),
                       Expanded(
-                          child: Scrollbar(
-                        controller: controller,
-                        child: ListView(
-                          controller: controller,
-                          children: [
-                            const SizedBox(
-                              height: p20,
-                            ),
-                            PrintWidget(onPressed: (() {})),
-                            const SizedBox(
-                              height: p10,
-                            ),
-                            const TableDette()
-                          ],
-                        ),
-                      ))
+                          child: TableDette())
                     ],
                   ),
                 ),
