@@ -121,7 +121,8 @@ class _BilanComptabiliteState extends State<BilanComptabilite> {
                             const SizedBox(
                               height: p10,
                             ),
-                            const TableBilan()
+                            const Expanded(
+                              child: TableBilan())
                           ],
                         ),
                       ))

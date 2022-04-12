@@ -66,3 +66,7 @@ var addjournalsUrl = Uri.parse(
 var valorisationsUrl = Uri.parse("$mainUrl/finances/comptabilite/valorisations/");
 var addvalorisationsUrl = Uri.parse(
     "$mainUrl/finances/comptabilite/valorisations/insert-new-transaction-valorisation");
+
+
+var devisUrl = Uri.parse("$mainUrl/devis/");
+var addDevissUrl = Uri.parse("$mainUrl/devis/insert-new-devis");

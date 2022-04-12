@@ -5,6 +5,9 @@ class UserModel {
   late String nom;
   late String prenom;
   late String matricule;
+  late String departement;
+  late String servicesAffectation;
+  late String fonctionOccupe;
   late String role;  // Acces user de 1 à 5
   late bool isOnline; // Agent connecté
   late DateTime createdAt; 
@@ -16,6 +19,9 @@ class UserModel {
     required this.nom,
     required this.prenom,
     required this.matricule,
+    required this.departement,
+    required this.servicesAffectation,
+    required this.fonctionOccupe,
     required this.role,
     required this.isOnline,
     required this.createdAt,
@@ -29,10 +35,13 @@ class UserModel {
       nom: row[2],
       prenom: row[3],
       matricule: row[4],
-      role: row[5],
-      isOnline: row[6],
-      createdAt: row[7],
-      passwordHash: row[8]
+      departement: row[5],
+      servicesAffectation: row[6],
+      fonctionOccupe: row[7],
+      role: row[8],
+      isOnline: row[9],
+      createdAt: row[10],
+      passwordHash: row[11]
     );
   }
 
@@ -44,6 +53,9 @@ class UserModel {
       nom: json["nom"],
       prenom: json["prenom"],
       matricule: json["matricule"],
+      departement: json["departement"],
+      servicesAffectation: json["servicesAffectation"],
+      fonctionOccupe: json["fonctionOccupe"],
       role: json["role"],
       isOnline: json["isOnline"],
       createdAt: DateTime.parse(json["createdAt"]),
@@ -59,6 +71,9 @@ class UserModel {
       'nom': nom,
       'prenom': prenom,
       'matricule': matricule,
+      'departement': departement,
+      'servicesAffectation': servicesAffectation,
+      'fonctionOccupe': fonctionOccupe,
       'role': role,
       'isOnline': isOnline,
       'createdAt': createdAt.toIso8601String(),

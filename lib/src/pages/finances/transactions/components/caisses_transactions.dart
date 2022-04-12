@@ -237,20 +237,21 @@ class _CaisseTransactionsState extends State<CaisseTransactions> {
                                       icon: const Icon(Icons.add)),
                                   if (count > 0)
                                     IconButton(
-                                        onPressed: () {
-                                          setState(() {
-                                            final coupureBillet =
-                                                TextEditingController();
-                                            final nombreBillet =
-                                                TextEditingController();
-                                            nombreBilletControllerList
-                                                .remove(nombreBillet);
-                                            coupureBilletControllerList
-                                                .remove(coupureBillet);
-                                            count--;
-                                          });
-                                        },
-                                        icon: const Icon(Icons.close)),
+                                      onPressed: () {
+                                        setState(() {
+                                          final coupureBillet =
+                                              TextEditingController();
+                                          final nombreBillet =
+                                              TextEditingController();
+                                          nombreBilletControllerList
+                                              .remove(nombreBillet);
+                                          coupureBilletControllerList
+                                              .remove(coupureBillet);
+                                          count--;
+                                        });
+                                      },
+                                      icon: const Icon(Icons.close)
+                                  ),
                                 ],
                               ),
                             ],

@@ -93,25 +93,10 @@ class _AmortissementComptabiliteState extends State<AmortissementComptabilite> {
                   padding: const EdgeInsets.all(p10),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const CustomAppbar(title: 'Amortissement'),
+                    children: const [
+                      CustomAppbar(title: 'Amortissement'),
                       Expanded(
-                          child: Scrollbar(
-                        controller: controller,
-                        child: ListView(
-                          controller: controller,
-                          children: [
-                            const SizedBox(
-                              height: p20,
-                            ),
-                            PrintWidget(onPressed: (() {})),
-                            const SizedBox(
-                              height: p10,
-                            ),
-                            const TableAmortissement()
-                          ],
-                        ),
-                      ))
+                          child: TableAmortissement())
                     ],
                   ),
                 ),

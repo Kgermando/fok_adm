@@ -144,6 +144,22 @@ class _AdministrationNavState extends State<AdministrationNav> {
               Routemaster.of(context).replace(AdminRoutes.adminLogistique);
               // Routemaster.of(context).pop();
             }),
+        DrawerWidget(
+          selected: widget.pageCurrente == DevisRoutes.devis,
+          icon: Icons.note_alt,
+          sizeIcon: 20.0,
+          title: 'Etat de besoin',
+          style: bodyText1,
+          badge: Badge(
+            badgeColor: Colors.blue,
+            badgeContent: const Text('1',
+                style: TextStyle(fontSize: 10.0, color: Colors.white)),
+            child: const Icon(Icons.notifications),
+          ),
+          onTap: () {
+            Routemaster.of(context).replace(DevisRoutes.devis);
+            // Routemaster.of(context).pop();
+          }),
       ],
     );
   }

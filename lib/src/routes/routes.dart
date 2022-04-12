@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:fokad_admin/src/api/auth/auth_api.dart';
-import 'package:fokad_admin/src/controllers/app_state.dart';
-import 'package:fokad_admin/src/helpers/user_preferences.dart';
-import 'package:fokad_admin/src/models/users/user_model.dart';
 import 'package:fokad_admin/src/pages/administration/comm_marketing_admin.dart';
 import 'package:fokad_admin/src/pages/administration/dashboard_administration.dart';
 import 'package:fokad_admin/src/pages/administration/exploitations_admin.dart';
@@ -11,6 +8,7 @@ import 'package:fokad_admin/src/pages/administration/logistique_admin.dart';
 import 'package:fokad_admin/src/pages/administration/rh_admin.dart';
 import 'package:fokad_admin/src/pages/auth/login_auth.dart';
 import 'package:fokad_admin/src/pages/auth/profil_page.dart';
+import 'package:fokad_admin/src/pages/devis/devis_page.dart';
 import 'package:fokad_admin/src/pages/finances/budgets/budget_finance.dart';
 import 'package:fokad_admin/src/pages/finances/comptabilites/armotissement_comptabilite.dart';
 import 'package:fokad_admin/src/pages/finances/comptabilites/bilan_comptabilite.dart';
@@ -45,6 +43,10 @@ class UserRoutes {
   static const helps = "/helps";
   static const settings = "/settings";
   static const splash = "/splash";
+}
+
+class DevisRoutes {
+  static const devis = "/devis";
 }
 
 class AdminRoutes {
@@ -140,6 +142,8 @@ class Routing {
       FinanceRoutes.comptabiliteBilan: (_) => const MaterialPage(child: BilanComptabilite()),
       FinanceRoutes.comptabiliteJournal: (_) => const MaterialPage(child: JournalComptabilite()),
       FinanceRoutes.comptabiliteValorisation: (_) => const MaterialPage(child: ValorisationComptabilite()), 
+
+      DevisRoutes.devis: (_) => const MaterialPage(child: DevisPage()),
     },
     onUnknownRoute: (_) => const MaterialPage(child: NotFoundPage()),
   );

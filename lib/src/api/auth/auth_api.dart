@@ -148,7 +148,7 @@ class AuthApi extends ChangeNotifier {
     int id = int.parse(idPrefs);
     var userIdUrl = Uri.parse("$mainUrl/user/$id");
     var resp = await client.get(
-      userIdUrl,
+      userIdUrl, 
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
         'Authorization': 'Bearer $token'

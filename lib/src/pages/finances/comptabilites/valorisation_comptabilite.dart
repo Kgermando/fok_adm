@@ -124,7 +124,7 @@ class _ValorisationComptabiliteState extends State<ValorisationComptabilite> {
                             const SizedBox(
                               height: p10,
                             ),
-                            const TableValorisation()
+                            const Expanded(child: TableValorisation())
                           ],
                         ),
                       ))

@@ -576,7 +576,9 @@ class _AgentPageState extends State<AgentPage> {
                             // isLoading == false;
                           } else {
                             createUser(agentModel.nom, agentModel.prenom,
-                                agentModel.matricule, agentModel.role);
+                              agentModel.matricule, agentModel.departement, 
+                              agentModel.servicesAffectation, 
+                              agentModel.fonctionOccupe,  agentModel.role);
                             updateAgent(agentModel);
                             // isLoading == false;
                           }
@@ -648,12 +650,18 @@ class _AgentPageState extends State<AgentPage> {
     String nom,
     String prenom,
     String matricule,
+    String departement,
+    String servicesAffectation,
+    String fonctionOccupe,
     String role,
   ) async {
     final userModel = UserModel(
         nom: nom,
         prenom: prenom,
         matricule: matricule,
+        departement: departement,
+        servicesAffectation: servicesAffectation,
+        fonctionOccupe: fonctionOccupe,
         role: role,
         isOnline: true,
         createdAt: DateTime.now(),
