@@ -1,15 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:fokad_admin/src/api/auth/auth_api.dart';
+import 'package:fokad_admin/src/api/finances/creance_api.dart';
 import 'package:fokad_admin/src/constants/app_theme.dart';
 import 'package:fokad_admin/src/constants/responsive.dart';
 import 'package:fokad_admin/src/models/finances/creances_model.dart';
 import 'package:fokad_admin/src/navigation/drawer/drawer_menu.dart';
 import 'package:fokad_admin/src/navigation/header/custom_appbar.dart';
+import 'package:fokad_admin/src/pages/finances/transactions/components/components/creances/table_creance.dart';
 import 'package:fokad_admin/src/provider/controller.dart';
-import 'package:fokad_admin/src/utils/pluto_grid.dart';
+import 'package:fokad_admin/src/routes/routes.dart';
 import 'package:fokad_admin/src/widgets/btn_widget.dart';
 import 'package:fokad_admin/src/widgets/print_widget.dart';
 import 'package:fokad_admin/src/widgets/title_widget.dart';
 import 'package:provider/provider.dart';
+import 'package:routemaster/routemaster.dart';
 
 class CreanceTransactions extends StatefulWidget {
   const CreanceTransactions({Key? key}) : super(key: key);
@@ -30,12 +34,32 @@ class _CreanceTransactionsState extends State<CreanceTransactions> {
   final TextEditingController montantController = TextEditingController();
 
   @override
+  void initState() {
+    setState(() {
+      getData();
+    });
+    super.initState();
+  }
+
+  @override
   void dispose() {
     nomCompletController.dispose();
     pieceJustificativeController.dispose();
     libelleController.dispose();
     montantController.dispose();
     super.dispose();
+  }
+
+  String? matricule;
+  int numberItem = 0;
+
+  Future<void> getData() async {
+    final userModel = await AuthApi().getUserId();
+    final data = await CreanceApi().getAllData();
+    setState(() {
+      matricule = userModel.matricule;
+      numberItem = data.length;
+    });
   }
 
   @override
@@ -81,7 +105,7 @@ class _CreanceTransactionsState extends State<CreanceTransactions> {
                             const SizedBox(
                               height: p10,
                             ),
-                            const ColumnFilteringScreen()
+                            const TableCreance()
                           ],
                         ),
                       ))
@@ -252,7 +276,14 @@ class _CreanceTransactionsState extends State<CreanceTransactions> {
         pieceJustificative: pieceJustificativeController.text,
         libelle: libelleController.text,
         montant: montantController.text,
-        date: DateTime.now(),
-        numeroOperation: 'FOKAD-creance-01');
+        created: DateTime.now(),
+        numeroOperation: 'FOKAD-Creance-${numberItem + 1}',
+        signature: matricule.toString());
+    await CreanceApi().insertData(creanceModel);
+    Routemaster.of(context).replace(FinanceRoutes.transactionsCreances);
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      content: const Text("Enregistrer avec succès!"),
+      backgroundColor: Colors.green[700],
+    ));
   }
 }

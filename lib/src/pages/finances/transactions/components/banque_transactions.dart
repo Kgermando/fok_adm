@@ -1,17 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:fokad_admin/src/api/auth/auth_api.dart';
+import 'package:fokad_admin/src/api/finances/banque_api.dart';
 import 'package:fokad_admin/src/constants/app_theme.dart';
 import 'package:fokad_admin/src/constants/responsive.dart';
 import 'package:fokad_admin/src/models/finances/banque_model.dart';
 import 'package:fokad_admin/src/navigation/drawer/drawer_menu.dart';
 import 'package:fokad_admin/src/navigation/header/custom_appbar.dart';
+import 'package:fokad_admin/src/pages/finances/transactions/components/components/banques/table_banque.dart';
 import 'package:fokad_admin/src/provider/controller.dart';
+import 'package:fokad_admin/src/routes/routes.dart';
 import 'package:fokad_admin/src/utils/dropdown.dart';
-import 'package:fokad_admin/src/utils/pluto_grid.dart';
 import 'package:fokad_admin/src/utils/type_operation.dart';
 import 'package:fokad_admin/src/widgets/btn_widget.dart';
 import 'package:fokad_admin/src/widgets/print_widget.dart';
 import 'package:fokad_admin/src/widgets/title_widget.dart';
 import 'package:provider/provider.dart';
+import 'package:routemaster/routemaster.dart';
 import 'package:simple_speed_dial/simple_speed_dial.dart';
 
 class BanqueTransactions extends StatefulWidget {
@@ -48,6 +52,7 @@ class _BanqueTransactionsState extends State<BanqueTransactions> {
   @override
   void initState() {
     setState(() {
+      getData();
       count = 0;
     });
     super.initState();
@@ -67,6 +72,19 @@ class _BanqueTransactionsState extends State<BanqueTransactions> {
       controller.dispose();
     }
     super.dispose();
+  }
+
+  String? matricule;
+  int numberItem = 0;
+
+
+  Future<void> getData() async {
+    final userModel = await AuthApi().getUserId();
+    final data = await BanqueApi().getAllData();
+    setState(() {
+      matricule = userModel.matricule;
+      numberItem = data.length;
+    });
   }
 
   @override
@@ -113,7 +131,7 @@ class _BanqueTransactionsState extends State<BanqueTransactions> {
                             const SizedBox(
                               height: p10,
                             ),
-                            const ColumnFilteringScreen()
+                            const TableBanque()
                           ],
                         ),
                       ))
@@ -182,7 +200,8 @@ class _BanqueTransactionsState extends State<BanqueTransactions> {
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              const TitleWidget(title: 'Bordereau de versement'),
+                              const TitleWidget(
+                                  title: 'Bordereau de versement'),
                               PrintWidget(onPressed: () {})
                             ],
                           ),
@@ -225,35 +244,38 @@ class _BanqueTransactionsState extends State<BanqueTransactions> {
                               Row(
                                 children: [
                                   IconButton(
+                                      onPressed: () {
+                                        setState(() {
+                                          final coupureBillet =
+                                              TextEditingController();
+                                          final nombreBillet =
+                                              TextEditingController();
+                                          nombreBilletControllerList
+                                              .add(nombreBillet);
+                                          coupureBilletControllerList
+                                              .add(coupureBillet);
+                                          count++;
+                                        });
+                                      },
+                                      icon: const Icon(Icons.add)),
+                                  if (count > 0)
+                                    IconButton(
                                         onPressed: () {
                                           setState(() {
-                                            final coupureBillet = TextEditingController();
-                                            final nombreBillet = TextEditingController();
-                                            nombreBilletControllerList.add(nombreBillet);
-                                            coupureBilletControllerList.add(coupureBillet);
-                                            count++;
+                                            final coupureBillet =
+                                                TextEditingController();
+                                            final nombreBillet =
+                                                TextEditingController();
+                                            nombreBilletControllerList
+                                                .remove(nombreBillet);
+                                            coupureBilletControllerList
+                                                .remove(coupureBillet);
+                                            count--;
                                           });
                                         },
-                                        icon: const Icon(Icons.add)),
-                                  if (count > 0)
-                                IconButton(
-                                    onPressed: () {
-                                      setState(() {
-                                        final coupureBillet =
-                                          TextEditingController();
-                                      final nombreBillet =
-                                          TextEditingController();
-                                      nombreBilletControllerList
-                                          .remove(nombreBillet);
-                                      coupureBilletControllerList
-                                          .remove(coupureBillet);
-                                        count--;
-                                      });
-                                    },
-                                    icon: const Icon(Icons.close)),
+                                        icon: const Icon(Icons.close)),
                                 ],
                               ),
-                                
                             ],
                           ),
                           SizedBox(
@@ -337,7 +359,8 @@ class _BanqueTransactionsState extends State<BanqueTransactions> {
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              SelectableText('Coupure de billet', style: Theme.of(context).textTheme.bodyText2),
+                              SelectableText('Coupure de billet',
+                                  style: Theme.of(context).textTheme.bodyText2),
                               Row(
                                 children: [
                                   IconButton(
@@ -615,7 +638,7 @@ class _BanqueTransactionsState extends State<BanqueTransactions> {
   }
 
   Future submit() async {
-    final caisseModel = BanqueModel(
+    final banqueModel = BanqueModel(
         nomComplet: nomCompletController.text,
         pieceJustificative: pieceJustificativeController.text,
         libelle: libelleController.text,
@@ -624,7 +647,14 @@ class _BanqueTransactionsState extends State<BanqueTransactions> {
         ligneBudgtaire: ligneBudgtaire.toString(),
         departement: departement.toString(),
         typeOperation: typeOperation.toString(),
-        date: DateTime.now(),
-        numeroOperation: 'FOKAD-banque-01');
+        numeroOperation: 'FOKAD-Banque-${numberItem + 1}',
+        created: DateTime.now(),
+        signature: matricule.toString());
+    await BanqueApi().insertData(banqueModel);
+    Routemaster.of(context).replace(FinanceRoutes.transactionsBanque);
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      content: const Text("Enregistrer avec succès!"),
+      backgroundColor: Colors.green[700],
+    ));
   }
-}
+} 

@@ -1,14 +1,15 @@
 class FinanceExterieurModel {
-  final int? id;
-  final String nomComplet;
-  final String pieceJustificative;
-  final String libelle;
-  final String montant;
-  final List<dynamic> coupureBillet;
-  final String ligneBudgtaire; // somme d'affectation pour le budget
-  final String typeOperation;
-  final DateTime date;
-  final String numeroOperation;
+  late int? id;
+  late String nomComplet;
+  late String pieceJustificative;
+  late String libelle;
+  late String montant;
+  late List<dynamic> coupureBillet;
+  late String ligneBudgtaire; // somme d'affectation pour le budget
+  late String typeOperation;
+  late String numeroOperation;
+  late DateTime created;
+  late String signature;
  
   FinanceExterieurModel( 
     {
@@ -20,8 +21,9 @@ class FinanceExterieurModel {
     required this.coupureBillet,
     required this.ligneBudgtaire,
     required this.typeOperation,
-    required this.date,
     required this.numeroOperation,
+    required this.created,
+    required this.signature,
   });
 
   factory FinanceExterieurModel.fromSQL(List<dynamic> row) {
@@ -34,8 +36,9 @@ class FinanceExterieurModel {
         coupureBillet: row[5],
         ligneBudgtaire: row[6],
         typeOperation: row[7],
-        date: row[8],
-        numeroOperation: row[9]
+        numeroOperation: row[8],
+        created: row[9],
+        signature: row[10]
     );
   }
 
@@ -49,8 +52,9 @@ class FinanceExterieurModel {
       coupureBillet: json['coupureBillet'],
       ligneBudgtaire: json['ligneBudgtaire'],
       typeOperation: json['typeOperation'],
-      date: DateTime.parse(json['date']),
       numeroOperation: json['numeroOperation'],
+      created: DateTime.parse(json['created']),
+      signature: json['signature']
     );
   }
 
@@ -64,8 +68,9 @@ class FinanceExterieurModel {
       'coupureBillet': coupureBillet,
       'ligneBudgtaire': ligneBudgtaire,
       'typeOperation': typeOperation,
-      'date': date.toIso8601String(),
       'numeroOperation': numeroOperation,
+      'created': created.toIso8601String(),
+      'signature': signature,
     };
   }
 }

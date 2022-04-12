@@ -1,15 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:fokad_admin/src/api/auth/auth_api.dart';
+import 'package:fokad_admin/src/api/comptabilite/bilan_api.dart';
 import 'package:fokad_admin/src/constants/app_theme.dart';
 import 'package:fokad_admin/src/constants/responsive.dart';
 import 'package:fokad_admin/src/models/comptabilites/bilan_model.dart';
 import 'package:fokad_admin/src/navigation/drawer/drawer_menu.dart';
 import 'package:fokad_admin/src/navigation/header/custom_appbar.dart';
-import 'package:fokad_admin/src/utils/pluto_grid.dart';
+import 'package:fokad_admin/src/pages/finances/comptabilites/components/bilan/table_bilan.dart';
+import 'package:fokad_admin/src/routes/routes.dart';
 import 'package:fokad_admin/src/widgets/bar_chart_widget.dart';
 import 'package:fokad_admin/src/widgets/btn_widget.dart';
 import 'package:fokad_admin/src/widgets/pie_chart_widget.dart';
 import 'package:fokad_admin/src/widgets/print_widget.dart';
 import 'package:fokad_admin/src/widgets/title_widget.dart';
+import 'package:routemaster/routemaster.dart';
 
 class BilanComptabilite extends StatefulWidget {
   const BilanComptabilite({Key? key}) : super(key: key);
@@ -23,12 +27,19 @@ class _BilanComptabiliteState extends State<BilanComptabilite> {
 
   bool isLoading = false;
 
-  final TextEditingController titleBilanController =
-      TextEditingController();
+  final TextEditingController titleBilanController = TextEditingController();
   final TextEditingController comptesController = TextEditingController();
   final TextEditingController intituleController = TextEditingController();
   final TextEditingController montantController = TextEditingController();
   final TextEditingController typeBilanController = TextEditingController();
+
+  @override
+  void initState() {
+    setState(() {
+      getData();
+    });
+    super.initState();
+  }
 
   @override
   void dispose() {
@@ -41,6 +52,17 @@ class _BilanComptabiliteState extends State<BilanComptabilite> {
     super.dispose();
   }
 
+  String? matricule;
+  int numberItem = 0;
+
+  Future<void> getData() async {
+    final userModel = await AuthApi().getUserId();
+    final data = await BilanApi().getAllData();
+    setState(() {
+      matricule = userModel.matricule;
+      numberItem = data.length;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -48,14 +70,14 @@ class _BilanComptabiliteState extends State<BilanComptabilite> {
         // key: context.read<Controller>().scaffoldKey,
         drawer: const DrawerMenu(),
         floatingActionButton: FloatingActionButton(
-          foregroundColor: Colors.white,
-          backgroundColor: Colors.blue.shade700,
-          child: const Icon(Icons.add),
-          onPressed: () {
-            setState(() {
-              transactionsDialogDonation();
-            });
-          }),
+            foregroundColor: Colors.white,
+            backgroundColor: Colors.blue.shade700,
+            child: const Icon(Icons.add),
+            onPressed: () {
+              setState(() {
+                transactionsDialogDonation();
+              });
+            }),
         body: SafeArea(
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -78,7 +100,7 @@ class _BilanComptabiliteState extends State<BilanComptabilite> {
                         child: ListView(
                           controller: controller,
                           children: [
-                             const SizedBox(
+                            const SizedBox(
                               height: p20,
                             ),
                             PrintWidget(onPressed: (() {})),
@@ -86,19 +108,20 @@ class _BilanComptabiliteState extends State<BilanComptabilite> {
                               height: p10,
                             ),
                             SizedBox(
-                              height: 200,
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                children: const [
-                                  BarChartWidget(),
-                                  BarChartWidget(),
-                                  PieChartWidget()
-                                ],
-                              )),
+                                height: 200,
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceEvenly,
+                                  children: const [
+                                    BarChartWidget(),
+                                    BarChartWidget(),
+                                    PieChartWidget()
+                                  ],
+                                )),
                             const SizedBox(
                               height: p10,
                             ),
-                            const ColumnFilteringScreen()
+                            const TableBilan()
                           ],
                         ),
                       ))
@@ -111,7 +134,6 @@ class _BilanComptabiliteState extends State<BilanComptabilite> {
         ));
   }
 
-  
   transactionsDialogDonation() {
     return showDialog(
         context: context,
@@ -135,8 +157,7 @@ class _BilanComptabiliteState extends State<BilanComptabilite> {
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              const TitleWidget(
-                                  title: 'Nouveau Bilan'),
+                              const TitleWidget(title: 'Nouveau Bilan'),
                               PrintWidget(onPressed: () {})
                             ],
                           ),
@@ -270,12 +291,18 @@ class _BilanComptabiliteState extends State<BilanComptabilite> {
 
   Future submit() async {
     final bilanModel = BilanModel(
-      titleBilan: titleBilanController.text,
-      comptes: comptesController.text,
-      intitule: intituleController.text,
-      montant: montantController.text,
-      typeBilan: typeBilanController.text,
-      date: DateTime.now(),
-    );
+        titleBilan: titleBilanController.text,
+        comptes: comptesController.text,
+        intitule: intituleController.text,
+        montant: montantController.text,
+        typeBilan: typeBilanController.text,
+        created: DateTime.now(),
+        signature: matricule.toString());
+    await BilanApi().insertData(bilanModel);
+    Routemaster.of(context).replace(FinanceRoutes.comptabiliteBilan);
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      content: const Text("Enregistrer avec succès!"),
+      backgroundColor: Colors.green[700],
+    ));
   }
 }

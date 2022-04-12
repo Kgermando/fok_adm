@@ -1,16 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:fokad_admin/src/api/auth/auth_api.dart';
+import 'package:fokad_admin/src/api/finances/depenses_model.dart';
 import 'package:fokad_admin/src/constants/app_theme.dart';
 import 'package:fokad_admin/src/constants/responsive.dart';
 import 'package:fokad_admin/src/models/finances/depenses_model.dart';
 import 'package:fokad_admin/src/navigation/drawer/drawer_menu.dart';
 import 'package:fokad_admin/src/navigation/header/custom_appbar.dart';
+import 'package:fokad_admin/src/pages/finances/transactions/components/components/depenses/table_depense.dart';
 import 'package:fokad_admin/src/provider/controller.dart';
-import 'package:fokad_admin/src/utils/pluto_grid.dart';
+import 'package:fokad_admin/src/routes/routes.dart';
 import 'package:fokad_admin/src/utils/type_operation.dart';
 import 'package:fokad_admin/src/widgets/btn_widget.dart';
 import 'package:fokad_admin/src/widgets/print_widget.dart';
 import 'package:fokad_admin/src/widgets/title_widget.dart';
 import 'package:provider/provider.dart';
+import 'package:routemaster/routemaster.dart';
 
 class DepenseTransactions extends StatefulWidget {
   const DepenseTransactions({Key? key}) : super(key: key);
@@ -28,7 +32,8 @@ class _DepenseTransactionsState extends State<DepenseTransactions> {
   final TextEditingController nomCompletController = TextEditingController();
   final TextEditingController pieceJustificativeController =
       TextEditingController();
-  final TextEditingController naturePayementController = TextEditingController();
+  final TextEditingController naturePayementController =
+      TextEditingController();
   final TextEditingController montantController = TextEditingController();
   final TextEditingController deperatmentController = TextEditingController();
 
@@ -41,13 +46,14 @@ class _DepenseTransactionsState extends State<DepenseTransactions> {
   final List<String> modePayemntList = TypeOperation().modePayemnt;
 
   late int count;
+  int numberItem = 0;
 
   @override
   void initState() {
     setState(() {
+      getData();
       count = 0;
     });
-
     super.initState();
   }
 
@@ -65,6 +71,17 @@ class _DepenseTransactionsState extends State<DepenseTransactions> {
       controller.dispose();
     }
     super.dispose();
+  }
+
+  String? matricule;
+
+  Future<void> getData() async {
+    final userModel = await AuthApi().getUserId();
+    final data = await DepenseApi().getAllData();
+    setState(() {
+      matricule = userModel.matricule;
+      numberItem = data.length;
+    });
   }
 
   @override
@@ -110,7 +127,7 @@ class _DepenseTransactionsState extends State<DepenseTransactions> {
                             const SizedBox(
                               height: p10,
                             ),
-                            const ColumnFilteringScreen()
+                            const TableDepense()
                           ],
                         ),
                       ))
@@ -342,21 +359,21 @@ class _DepenseTransactionsState extends State<DepenseTransactions> {
             return Row(
               children: [
                 Expanded(
-                  child: Container(
-                      margin: const EdgeInsets.only(bottom: p20),
-                      child: TextFormField(
-                        controller: nombreBilletControllerList[index],
-                        decoration: InputDecoration(
-                          border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10.0)),
-                          labelText: '${index + 1}. Nombre',
-                        ),
-                        keyboardType: TextInputType.text,
-                        validator: (val) {
-                          return 'Ce champs est obligatoire';
-                        },
-                        style: const TextStyle(),
-                      ))),
+                    child: Container(
+                        margin: const EdgeInsets.only(bottom: p20),
+                        child: TextFormField(
+                          controller: nombreBilletControllerList[index],
+                          decoration: InputDecoration(
+                            border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10.0)),
+                            labelText: '${index + 1}. Nombre',
+                          ),
+                          keyboardType: TextInputType.text,
+                          validator: (val) {
+                            return 'Ce champs est obligatoire';
+                          },
+                          style: const TextStyle(),
+                        ))),
                 const SizedBox(width: p10),
                 Expanded(
                     child: Container(
@@ -442,9 +459,15 @@ class _DepenseTransactionsState extends State<DepenseTransactions> {
         montant: montantController.text,
         coupureBillet: [],
         ligneBudgtaire: ligneBudgtaire.toString(),
-        date: DateTime.now(),
-        numeroOperation: 'FOKAD-caisse-01',
+        created: DateTime.now(),
+        numeroOperation: 'FOKAD-Depense-${numberItem + 1}',
         modePayement: modePayemnt.toString(),
-    );
+        signature: matricule.toString());
+    await DepenseApi().insertData(depensesModel);
+    Routemaster.of(context).replace(FinanceRoutes.transactionsDepenses);
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      content: const Text("Enregistrer avec succès!"),
+      backgroundColor: Colors.green[700],
+    ));
   }
 }

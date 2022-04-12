@@ -1,20 +1,23 @@
 import 'package:flutter/material.dart';
+import 'package:fokad_admin/src/api/auth/auth_api.dart';
+import 'package:fokad_admin/src/api/finances/fin_exterieur_api.dart';
 import 'package:fokad_admin/src/constants/app_theme.dart';
 import 'package:fokad_admin/src/constants/responsive.dart';
 import 'package:fokad_admin/src/models/finances/fin_exterieur_model.dart';
 import 'package:fokad_admin/src/navigation/drawer/drawer_menu.dart';
 import 'package:fokad_admin/src/navigation/header/custom_appbar.dart';
+import 'package:fokad_admin/src/pages/finances/transactions/components/components/fin_exterieur/table_fin_exterieur.dart';
 import 'package:fokad_admin/src/provider/controller.dart';
-import 'package:fokad_admin/src/utils/pluto_grid.dart';
+import 'package:fokad_admin/src/routes/routes.dart';
 import 'package:fokad_admin/src/utils/type_operation.dart';
 import 'package:fokad_admin/src/widgets/btn_widget.dart';
 import 'package:fokad_admin/src/widgets/print_widget.dart';
 import 'package:fokad_admin/src/widgets/title_widget.dart';
 import 'package:provider/provider.dart';
-
+import 'package:routemaster/routemaster.dart';
 
 class FinExterneTransactions extends StatefulWidget {
-  const FinExterneTransactions({ Key? key }) : super(key: key);
+  const FinExterneTransactions({Key? key}) : super(key: key);
 
   @override
   State<FinExterneTransactions> createState() => _FinExterneTransactionsState();
@@ -40,11 +43,13 @@ class _FinExterneTransactionsState extends State<FinExterneTransactions> {
 
   final List<String> typeCaisse = TypeOperation().typeCaisse;
 
-  late int count; 
+  late int count;
+  
 
   @override
   void initState() {
     setState(() {
+      getData();
       count = 0;
     });
 
@@ -65,6 +70,19 @@ class _FinExterneTransactionsState extends State<FinExterneTransactions> {
       controller.dispose();
     }
     super.dispose();
+  }
+
+  String? matricule;
+  int numberItem = 0;
+
+  Future<void> getData() async {
+    final userModel = await AuthApi().getUserId();
+    final data = await FinExterieurApi().getAllData();
+
+    setState(() {
+      matricule = userModel.matricule;
+      numberItem = data.length;
+    });
   }
 
   @override
@@ -98,9 +116,9 @@ class _FinExterneTransactionsState extends State<FinExterneTransactions> {
                     children: [
                       const CustomAppbar(title: 'Fin. Externe'),
                       Expanded(
-                        child: Scrollbar(
-                          controller: controller,
-                          child: ListView(
+                          child: Scrollbar(
+                        controller: controller,
+                        child: ListView(
                           controller: controller,
                           children: [
                             const SizedBox(
@@ -110,10 +128,10 @@ class _FinExterneTransactionsState extends State<FinExterneTransactions> {
                             const SizedBox(
                               height: p10,
                             ),
-                            const ColumnFilteringScreen()
+                            const TableFinExterieur()
                           ],
-                                              ),
-                        ))
+                        ),
+                      ))
                     ],
                   ),
                 ),
@@ -122,7 +140,6 @@ class _FinExterneTransactionsState extends State<FinExterneTransactions> {
           ),
         ));
   }
-
 
   transactionsDialogDonation() {
     return showDialog(
@@ -408,7 +425,6 @@ class _FinExterneTransactionsState extends State<FinExterneTransactions> {
     );
   }
 
-
   Widget typeOperationWidget() {
     return Container(
       margin: const EdgeInsets.only(bottom: p20),
@@ -445,7 +461,15 @@ class _FinExterneTransactionsState extends State<FinExterneTransactions> {
         coupureBillet: [],
         ligneBudgtaire: ligneBudgtaire.toString(),
         typeOperation: typeOperation.toString(),
-        date: DateTime.now(),
-        numeroOperation: 'FOKAD-caisse-01');
+        created: DateTime.now(),
+        numeroOperation: 'FOKAD-Fin-Ext-${numberItem + 1}',
+        signature: matricule.toString());
+
+    await FinExterieurApi().insertData(financeExterieurModel);
+    Routemaster.of(context).replace(FinanceRoutes.transactionsFinancementExterne);
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      content: const Text("Enregistrer avec succès!"),
+      backgroundColor: Colors.green[700],
+    ));
   }
 }

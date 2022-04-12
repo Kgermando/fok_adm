@@ -5,9 +5,10 @@ import 'package:fokad_admin/src/constants/responsive.dart';
 import 'package:fokad_admin/src/models/rh/agent_model.dart';
 import 'package:fokad_admin/src/navigation/drawer/drawer_menu.dart';
 import 'package:fokad_admin/src/navigation/header/custom_appbar.dart';
-import 'package:fokad_admin/src/pages/finances/transactions/components/components/table_salaire_fin.dart';
 import 'package:fokad_admin/src/provider/controller.dart';
 import 'package:provider/provider.dart';
+
+import 'components/salaires/table_salaire_fin.dart';
 
 class PaiementTransaction extends StatefulWidget {
   const PaiementTransaction({ Key? key }) : super(key: key);

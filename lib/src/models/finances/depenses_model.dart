@@ -1,14 +1,15 @@
 class DepensesModel {
-  final int? id;
-  final String nomComplet;
-  final String pieceJustificative;
-  final String naturePayement;
-  final String montant;
-  final List<dynamic> coupureBillet;
-  final String ligneBudgtaire; // somme d'affectation pour le budget
-  final DateTime date;
-  final String numeroOperation;
-  final String modePayement;
+  late int? id;
+  late String nomComplet;
+  late String pieceJustificative;
+  late String naturePayement;
+  late String montant;
+  late List<dynamic> coupureBillet;
+  late String ligneBudgtaire; // somme d'affectation pour le budget
+  late String modePayement;
+  late String numeroOperation;
+  late DateTime created;
+  late String signature;
 
   DepensesModel( 
     {
@@ -19,9 +20,10 @@ class DepensesModel {
     required this.montant,
     required this.coupureBillet,
     required this.ligneBudgtaire,
-    required this.date,
-    required this.numeroOperation,
     required this.modePayement,
+    required this.numeroOperation,
+    required this.created,
+    required this.signature,
   });
 
   factory DepensesModel.fromSQL(List<dynamic> row) {
@@ -33,9 +35,10 @@ class DepensesModel {
         montant: row[4],
         coupureBillet: row[5],
         ligneBudgtaire: row[6],
-        date: row[7],
+        modePayement: row[7],
         numeroOperation: row[8],
-        modePayement: row[9]
+        created: row[9],
+        signature: row[10]
     );
   }
 
@@ -48,9 +51,10 @@ class DepensesModel {
       montant: json['montant'],
       coupureBillet: json['coupureBillet'],
       ligneBudgtaire: json['ligneBudgtaire'],
-      date: DateTime.parse(json['date']),
-      numeroOperation: json['numeroOperation'],
       modePayement: json['modePayement'],
+      numeroOperation: json['numeroOperation'],
+      created: DateTime.parse(json['created']),
+      signature: json['signature']
     );
   }
 
@@ -63,9 +67,10 @@ class DepensesModel {
       'montant': montant,
       'coupureBillet': coupureBillet,
       'ligneBudgtaire': ligneBudgtaire,
-      'date': date.toIso8601String(),
-      'numeroOperation': numeroOperation,
       'modePayement': modePayement,
+      'numeroOperation': numeroOperation,
+      'created': created.toIso8601String(),
+      'signature': signature,
     };
   }
 }

@@ -1,17 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:fokad_admin/src/api/auth/auth_api.dart';
+import 'package:fokad_admin/src/api/comptabilite/valorisation_api.dart';
 import 'package:fokad_admin/src/constants/app_theme.dart';
 import 'package:fokad_admin/src/constants/responsive.dart';
 import 'package:fokad_admin/src/models/comptabilites/valorisation_model.dart';
 import 'package:fokad_admin/src/navigation/drawer/drawer_menu.dart';
 import 'package:fokad_admin/src/navigation/header/custom_appbar.dart';
+import 'package:fokad_admin/src/pages/finances/comptabilites/components/valorisations/table_valorisation.dart';
 import 'package:fokad_admin/src/provider/controller.dart';
-import 'package:fokad_admin/src/utils/pluto_grid.dart';
+import 'package:fokad_admin/src/routes/routes.dart';
 import 'package:fokad_admin/src/widgets/bar_chart_widget.dart';
 import 'package:fokad_admin/src/widgets/btn_widget.dart';
 import 'package:fokad_admin/src/widgets/pie_chart_widget.dart';
 import 'package:fokad_admin/src/widgets/print_widget.dart';
 import 'package:fokad_admin/src/widgets/title_widget.dart';
 import 'package:provider/provider.dart';
+import 'package:routemaster/routemaster.dart';
 
 class ValorisationComptabilite extends StatefulWidget {
   const ValorisationComptabilite({Key? key}) : super(key: key);
@@ -34,6 +38,14 @@ class _ValorisationComptabiliteState extends State<ValorisationComptabilite> {
   final TextEditingController sourceController = TextEditingController();
 
   @override
+  void initState() {
+    setState(() {
+      getData();
+    });
+    super.initState();
+  }
+
+  @override
   void dispose() {
     numeroOrdreController.dispose();
     intituleController.dispose();
@@ -42,6 +54,18 @@ class _ValorisationComptabiliteState extends State<ValorisationComptabilite> {
     prixTotalController.dispose();
     sourceController.dispose();
     super.dispose();
+  }
+
+  String? matricule;
+  int numberItem = 0;
+
+  Future<void> getData() async {
+    final userModel = await AuthApi().getUserId();
+    final data = await ValorisationApi().getAllData();
+    setState(() {
+      matricule = userModel.matricule;
+      numberItem = data.length;
+    });
   }
 
   @override
@@ -100,7 +124,7 @@ class _ValorisationComptabiliteState extends State<ValorisationComptabilite> {
                             const SizedBox(
                               height: p10,
                             ),
-                            const ColumnFilteringScreen()
+                            const TableValorisation()
                           ],
                         ),
                       ))
@@ -302,7 +326,13 @@ class _ValorisationComptabiliteState extends State<ValorisationComptabilite> {
         prixUnitaire: prixUnitaireController.text,
         prixTotal: prixTotalController.text,
         source: sourceController.text,
-        date: DateTime.now(),
-    );
+        created: DateTime.now(),
+        signature: matricule.toString());
+    await ValorisationApi().insertData(valorisationModel);
+    Routemaster.of(context).pop();
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      content: const Text("Enregistrer avec succès!"),
+      backgroundColor: Colors.green[700],
+    ));
   }
 }

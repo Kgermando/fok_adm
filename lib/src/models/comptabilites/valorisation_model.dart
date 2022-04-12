@@ -1,12 +1,13 @@
 class ValorisationModel {
-  final int? id;
-  final String numeroOrdre;
-  final String intitule;
-  final String quantite;
-  final String prixUnitaire;
-  final String prixTotal;
-  final String source;
-  final DateTime date;
+  late int? id;
+  late String numeroOrdre;
+  late String intitule;
+  late String quantite;
+  late String prixUnitaire;
+  late String prixTotal;
+  late String source;
+  late DateTime created;
+  late String signature;
 
   ValorisationModel({
     this.id,
@@ -16,7 +17,8 @@ class ValorisationModel {
     required this.prixUnitaire,
     required this.prixTotal,
     required this.source,
-    required this.date
+    required this.created,
+    required this.signature,
   });
 
   factory ValorisationModel.fromSQL(List<dynamic> row) {
@@ -28,7 +30,8 @@ class ValorisationModel {
       prixUnitaire: row[4],
       prixTotal: row[5],
       source: row[6],
-      date: row[7]
+      created: row[7],
+      signature: row[8]
     );
   }
 
@@ -41,7 +44,8 @@ class ValorisationModel {
       prixUnitaire: json['prixUnitaire'],
       prixTotal: json['prixTotal'],
       source: json['source'],
-      date: DateTime.parse(json['date']),
+      created: DateTime.parse(json['created']),
+        signature: json['signature']
     );
   }
 
@@ -54,7 +58,8 @@ class ValorisationModel {
       'prixUnitaire': prixUnitaire,
       'prixTotal': prixTotal,
       'source': source,
-      'date': date.toIso8601String(),
+      'created': created.toIso8601String(),
+      'signature': signature,
     };
   }
 }

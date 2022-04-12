@@ -70,11 +70,11 @@ class ValorisationApi {
   }
 
   Future<ValorisationModel> insertData(
-      ValorisationModel amortissementModel) async {
+      ValorisationModel valorisationModel) async {
     final prefs = await SharedPreferences.getInstance();
     var accessToken = prefs.getString("accessToken");
 
-    var data = amortissementModel.toJson();
+    var data = valorisationModel.toJson();
     var body = jsonEncode(data);
 
     var resp = await client.post(addamortissementsUrl,
@@ -87,7 +87,7 @@ class ValorisationApi {
       return ValorisationModel.fromJson(json.decode(resp.body));
     } else if (resp.statusCode == 401) {
       await AuthApi().refreshAccessToken();
-      return insertData(amortissementModel);
+      return insertData(valorisationModel);
     } else {
       throw Exception(json.decode(resp.body)['message']);
     }

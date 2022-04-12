@@ -1,19 +1,23 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:fokad_admin/src/api/auth/auth_api.dart';
+import 'package:fokad_admin/src/api/finances/caisse_api.dart';
 import 'package:fokad_admin/src/constants/app_theme.dart';
 import 'package:fokad_admin/src/constants/responsive.dart';
 import 'package:fokad_admin/src/models/finances/caisse_model.dart';
 import 'package:fokad_admin/src/navigation/drawer/drawer_menu.dart';
 import 'package:fokad_admin/src/navigation/header/custom_appbar.dart';
+import 'package:fokad_admin/src/pages/finances/transactions/components/components/caisses/table_caisse.dart';
 import 'package:fokad_admin/src/provider/controller.dart';
+import 'package:fokad_admin/src/routes/routes.dart';
 import 'package:fokad_admin/src/utils/dropdown.dart';
-import 'package:fokad_admin/src/utils/pluto_grid.dart';
 import 'package:fokad_admin/src/utils/type_operation.dart';
 import 'package:fokad_admin/src/widgets/btn_widget.dart';
 import 'package:fokad_admin/src/widgets/print_widget.dart';
 import 'package:fokad_admin/src/widgets/title_widget.dart';
 import 'package:provider/provider.dart';
+import 'package:routemaster/routemaster.dart';
 import 'package:simple_speed_dial/simple_speed_dial.dart';
 
 class CaisseTransactions extends StatefulWidget {
@@ -50,6 +54,7 @@ class _CaisseTransactionsState extends State<CaisseTransactions> {
   @override
   void initState() {
     setState(() {
+      getData();
       count = 0;
     });
 
@@ -70,6 +75,18 @@ class _CaisseTransactionsState extends State<CaisseTransactions> {
       controller.dispose();
     }
     super.dispose();
+  }
+
+  String? matricule;
+  int numberItem = 0;
+
+  Future<void> getData() async {
+    final userModel = await AuthApi().getUserId();
+    final data = await CaisseApi().getAllData();
+    setState(() {
+      matricule = userModel.matricule;
+      numberItem = data.length;
+    });
   }
 
   @override
@@ -106,15 +123,17 @@ class _CaisseTransactionsState extends State<CaisseTransactions> {
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                Text('Livre de Caisse',
-                                style: Theme.of(context).textTheme.bodyText1,),
+                                Text(
+                                  'Livre de Caisse',
+                                  style: Theme.of(context).textTheme.bodyText1,
+                                ),
                                 PrintWidget(onPressed: (() {})),
                               ],
                             ),
                             const SizedBox(
                               height: p10,
                             ),
-                            const ColumnFilteringScreen()
+                            const TableCaisse()
                           ],
                         ),
                       ))
@@ -629,8 +648,14 @@ class _CaisseTransactionsState extends State<CaisseTransactions> {
         ligneBudgtaire: ligneBudgtaire.toString(),
         departement: departement.toString(),
         typeOperation: typeOperation.toString(),
-        date: DateTime.now(),
-        numeroOperation: 'FOKAD-caisse-01');
-        
+        created: DateTime.now(),
+        numeroOperation: 'FOKAD-Caisse-${numberItem + 1}',
+        signature: matricule.toString());
+    await CaisseApi().insertData(caisseModel);
+    Routemaster.of(context).replace(FinanceRoutes.transactionsCaisse);
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      content: const Text("Enregistrer avec succès!"),
+      backgroundColor: Colors.green[700],
+    ));
   }
 }

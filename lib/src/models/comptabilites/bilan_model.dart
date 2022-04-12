@@ -1,11 +1,12 @@
 class BilanModel {
-  final int? id;
-  final String titleBilan;
-  final String comptes;
-  final String intitule;
-  final String montant;
-  final String typeBilan; // Actif ou Passif
-  final DateTime date;
+  late int? id;
+  late String titleBilan;
+  late String comptes;
+  late String intitule;
+  late String montant;
+  late String typeBilan; // Actif ou Passif
+  late DateTime created;
+  late String signature;
 
   BilanModel({
     this.id, 
@@ -14,7 +15,8 @@ class BilanModel {
     required this.intitule, 
     required this.montant, 
     required this.typeBilan, 
-    required this.date
+    required this.created,
+    required this.signature,
   });
 
   factory BilanModel.fromSQL(List<dynamic> row) {
@@ -25,7 +27,8 @@ class BilanModel {
       intitule: row[3],
       montant: row[4],
       typeBilan: row[5],
-      date: row[6]
+      created: row[6],
+      signature: row[7]
     );
   }
 
@@ -37,7 +40,8 @@ class BilanModel {
       intitule: json['intitule'],
       montant: json['montant'],
       typeBilan: json['typeBilan'],
-      date: DateTime.parse(json['date']),
+      created: DateTime.parse(json['created']),
+      signature: json['signature']
     );
   }
 
@@ -49,7 +53,8 @@ class BilanModel {
       'intitule': intitule,
       'montant': montant,
       'typeBilan': typeBilan,
-      'date': date.toIso8601String(),
+      'created': created.toIso8601String(),
+      'signature': signature,
     };
   }
 }

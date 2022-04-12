@@ -1,15 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:fokad_admin/src/api/auth/auth_api.dart';
+import 'package:fokad_admin/src/api/finances/dette_api.dart';
 import 'package:fokad_admin/src/constants/app_theme.dart';
 import 'package:fokad_admin/src/constants/responsive.dart';
 import 'package:fokad_admin/src/models/finances/dette_model.dart';
 import 'package:fokad_admin/src/navigation/drawer/drawer_menu.dart';
 import 'package:fokad_admin/src/navigation/header/custom_appbar.dart';
+import 'package:fokad_admin/src/pages/finances/transactions/components/components/dettes/table_dette.dart';
 import 'package:fokad_admin/src/provider/controller.dart';
-import 'package:fokad_admin/src/utils/pluto_grid.dart';
+import 'package:fokad_admin/src/routes/routes.dart';
 import 'package:fokad_admin/src/widgets/btn_widget.dart';
 import 'package:fokad_admin/src/widgets/print_widget.dart';
 import 'package:fokad_admin/src/widgets/title_widget.dart';
 import 'package:provider/provider.dart';
+import 'package:routemaster/routemaster.dart';
 
 class DetteTransactions extends StatefulWidget {
   const DetteTransactions({Key? key}) : super(key: key);
@@ -23,14 +27,35 @@ class _DetteTransactionsState extends State<DetteTransactions> {
 
   bool isLoading = false;
 
-   final TextEditingController nomCompletController = TextEditingController();
+  final TextEditingController nomCompletController = TextEditingController();
   final TextEditingController pieceJustificativeController =
       TextEditingController();
   final TextEditingController libelleController = TextEditingController();
   final TextEditingController montantController = TextEditingController();
 
+  int numberItem = 0;
 
-    @override
+  @override
+  void initState() {
+    setState(() {
+      getData();
+    });
+    super.initState();
+  }
+
+  
+  String? matricule;
+
+  Future<void> getData() async {
+    final userModel = await AuthApi().getUserId();
+    final data = await DetteApi().getAllData();
+    setState(() {
+      matricule = userModel.matricule;
+      numberItem = data.length;
+    });
+  }
+
+  @override
   void dispose() {
     nomCompletController.dispose();
     pieceJustificativeController.dispose();
@@ -39,22 +64,20 @@ class _DetteTransactionsState extends State<DetteTransactions> {
     super.dispose();
   }
 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         key: context.read<Controller>().scaffoldKey,
         drawer: const DrawerMenu(),
         floatingActionButton: FloatingActionButton(
-          foregroundColor: Colors.white,
-          backgroundColor: Colors.red.shade700,
-          child: const Icon(Icons.add),
-          onPressed: () {
-            setState(() {
-              transactionsDialogDette();
-            });
-          }
-        ),
+            foregroundColor: Colors.white,
+            backgroundColor: Colors.red.shade700,
+            child: const Icon(Icons.add),
+            onPressed: () {
+              setState(() {
+                transactionsDialogDette();
+              });
+            }),
         body: SafeArea(
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -84,7 +107,7 @@ class _DetteTransactionsState extends State<DetteTransactions> {
                             const SizedBox(
                               height: p10,
                             ),
-                            const ColumnFilteringScreen()
+                            const TableDette()
                           ],
                         ),
                       ))
@@ -96,7 +119,6 @@ class _DetteTransactionsState extends State<DetteTransactions> {
           ),
         ));
   }
-
 
   transactionsDialogDette() {
     return showDialog(
@@ -161,7 +183,6 @@ class _DetteTransactionsState extends State<DetteTransactions> {
           });
         });
   }
-
 
   Widget nomCompletWidget() {
     return Container(
@@ -251,14 +272,20 @@ class _DetteTransactionsState extends State<DetteTransactions> {
         ));
   }
 
-
   Future submit() async {
     final detteModel = DetteModel(
         nomComplet: nomCompletController.text,
         pieceJustificative: pieceJustificativeController.text,
         libelle: libelleController.text,
         montant: montantController.text,
-        date: DateTime.now(),
-        numeroOperation: 'FOKAD-dette-01');
+        created: DateTime.now(),
+        numeroOperation: 'FOKAD-Dette-${numberItem + 1}',
+        signature: matricule.toString());
+    await DetteApi().insertData(detteModel);
+    Routemaster.of(context).replace(FinanceRoutes.transactionsDettes);
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      content: const Text("Enregistrer avec succès!"),
+      backgroundColor: Colors.green[700],
+    ));
   }
 }

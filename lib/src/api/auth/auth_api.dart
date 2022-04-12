@@ -27,7 +27,6 @@ class AuthApi extends ChangeNotifier {
     var body = jsonEncode(data);
 
     var resp = await client.post(loginUrl, body: body);
-
     if (resp.statusCode == 200) {
       Token token = Token.fromJson(json.decode(resp.body));
       // Store the tokens

@@ -1,15 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:fokad_admin/src/api/auth/auth_api.dart';
+import 'package:fokad_admin/src/api/comptabilite/amortissement_api.dart';
 import 'package:fokad_admin/src/constants/app_theme.dart';
 import 'package:fokad_admin/src/constants/responsive.dart';
 import 'package:fokad_admin/src/models/comptabilites/amortissement_model.dart';
 import 'package:fokad_admin/src/navigation/drawer/drawer_menu.dart';
 import 'package:fokad_admin/src/navigation/header/custom_appbar.dart';
+import 'package:fokad_admin/src/pages/finances/comptabilites/components/amortissements/table_amortissement.dart';
 import 'package:fokad_admin/src/provider/controller.dart';
-import 'package:fokad_admin/src/utils/pluto_grid.dart';
+import 'package:fokad_admin/src/routes/routes.dart';
 import 'package:fokad_admin/src/widgets/btn_widget.dart';
 import 'package:fokad_admin/src/widgets/print_widget.dart';
 import 'package:fokad_admin/src/widgets/title_widget.dart';
 import 'package:provider/provider.dart';
+import 'package:routemaster/routemaster.dart';
 
 class AmortissementComptabilite extends StatefulWidget {
   const AmortissementComptabilite({Key? key}) : super(key: key);
@@ -22,13 +26,21 @@ class AmortissementComptabilite extends StatefulWidget {
 class _AmortissementComptabiliteState extends State<AmortissementComptabilite> {
   final controller = ScrollController();
   bool isLoading = false;
-  
-  final TextEditingController titleArmotissementController = TextEditingController();
-  final TextEditingController comptesController =
+
+  final TextEditingController titleArmotissementController =
       TextEditingController();
+  final TextEditingController comptesController = TextEditingController();
   final TextEditingController intituleController = TextEditingController();
   final TextEditingController montantController = TextEditingController();
   final TextEditingController typeJournalController = TextEditingController();
+
+  @override
+  void initState() {
+    setState(() {
+      getData();
+    });
+    super.initState();
+  }
 
   @override
   void dispose() {
@@ -41,6 +53,17 @@ class _AmortissementComptabiliteState extends State<AmortissementComptabilite> {
     super.dispose();
   }
 
+  String? matricule;
+  int numberItem = 0;
+
+  Future<void> getData() async {
+    final userModel = await AuthApi().getUserId();
+    final data = await AmortissementApi().getAllData();
+    setState(() {
+      matricule = userModel.matricule;
+      numberItem = data.length;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -48,14 +71,14 @@ class _AmortissementComptabiliteState extends State<AmortissementComptabilite> {
         key: context.read<Controller>().scaffoldKey,
         drawer: const DrawerMenu(),
         floatingActionButton: FloatingActionButton(
-          foregroundColor: Colors.white,
-          backgroundColor: Colors.blue.shade700,
-          child: const Icon(Icons.add),
-          onPressed: () {
-            setState(() {
-              transactionsDialogDonation();
-            });
-          }),
+            foregroundColor: Colors.white,
+            backgroundColor: Colors.blue.shade700,
+            child: const Icon(Icons.add),
+            onPressed: () {
+              setState(() {
+                transactionsDialogDonation();
+              });
+            }),
         body: SafeArea(
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -85,7 +108,7 @@ class _AmortissementComptabiliteState extends State<AmortissementComptabilite> {
                             const SizedBox(
                               height: p10,
                             ),
-                            const ColumnFilteringScreen()
+                            const TableAmortissement()
                           ],
                         ),
                       ))
@@ -121,7 +144,8 @@ class _AmortissementComptabiliteState extends State<AmortissementComptabilite> {
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              const TitleWidget(title: 'Nouvelle armotissement'),
+                              const TitleWidget(
+                                  title: 'Nouvelle armotissement'),
                               PrintWidget(onPressed: () {})
                             ],
                           ),
@@ -150,7 +174,10 @@ class _AmortissementComptabiliteState extends State<AmortissementComptabilite> {
                           const SizedBox(
                             height: p20,
                           ),
-                          BtnWidget(title: 'Soumettre', isLoading: isLoading, press: () {})
+                          BtnWidget(
+                              title: 'Soumettre',
+                              isLoading: isLoading,
+                              press: () {})
                         ],
                       ),
                     ),
@@ -160,7 +187,7 @@ class _AmortissementComptabiliteState extends State<AmortissementComptabilite> {
         });
   }
 
-    Widget titleArmotissementWidget() {
+  Widget titleArmotissementWidget() {
     return Container(
         margin: const EdgeInsets.only(bottom: p20),
         child: TextFormField(
@@ -178,7 +205,7 @@ class _AmortissementComptabiliteState extends State<AmortissementComptabilite> {
         ));
   }
 
-    Widget comptesWidget() {
+  Widget comptesWidget() {
     return Container(
         margin: const EdgeInsets.only(bottom: p20),
         child: TextFormField(
@@ -196,7 +223,7 @@ class _AmortissementComptabiliteState extends State<AmortissementComptabilite> {
         ));
   }
 
-    Widget intituleWidget() {
+  Widget intituleWidget() {
     return Container(
         margin: const EdgeInsets.only(bottom: p20),
         child: TextFormField(
@@ -214,8 +241,7 @@ class _AmortissementComptabiliteState extends State<AmortissementComptabilite> {
         ));
   }
 
-
-    Widget montantWidget() {
+  Widget montantWidget() {
     return Container(
         margin: const EdgeInsets.only(bottom: p20),
         child: TextFormField(
@@ -251,15 +277,20 @@ class _AmortissementComptabiliteState extends State<AmortissementComptabilite> {
         ));
   }
 
-
   Future submit() async {
     final amortissementModel = AmortissementModel(
-      titleArmotissement: titleArmotissementController.text,
-      comptes: comptesController.text,
-      intitule: intituleController.text,
-      montant: montantController.text,
-      typeJournal: typeJournalController.text,
-      date: DateTime.now(),
-    );
+        titleArmotissement: titleArmotissementController.text,
+        comptes: comptesController.text,
+        intitule: intituleController.text,
+        montant: montantController.text,
+        typeJournal: typeJournalController.text,
+        created: DateTime.now(),
+        signature: matricule.toString());
+    await AmortissementApi().insertData(amortissementModel);
+    Routemaster.of(context).replace(FinanceRoutes.comptabiliteAmortissement);
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      content: const Text("Enregistrer avec succès!"),
+      backgroundColor: Colors.green[700],
+    ));
   }
 }

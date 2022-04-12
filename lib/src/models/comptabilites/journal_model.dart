@@ -1,11 +1,12 @@
 class JournalModel {
-  final int? id;
-  final String titleBilan;
-  final String comptes;
-  final String intitule;
-  final String montant;
-  final String typeJournal; // Debit ou Credit
-  final DateTime date;
+  late int? id;
+  late String titleBilan;
+  late String comptes;
+  late String intitule;
+  late String montant;
+  late String typeJournal; // Debit ou Credit
+  late DateTime created;
+  late String signature;
 
   JournalModel(
       {this.id,
@@ -14,7 +15,9 @@ class JournalModel {
       required this.intitule,
       required this.montant,
       required this.typeJournal,
-      required this.date});
+      required this.created,
+    required this.signature,
+  });
 
   factory JournalModel.fromSQL(List<dynamic> row) {
     return JournalModel(
@@ -24,7 +27,8 @@ class JournalModel {
       intitule: row[3],
       montant: row[4],
       typeJournal: row[5],
-      date: row[6]
+      created: row[6],
+      signature: row[7]
     );
   }
 
@@ -36,7 +40,8 @@ class JournalModel {
       intitule: json['intitule'],
       montant: json['montant'],
       typeJournal: json['typeJournal'],
-      date: DateTime.parse(json['date']),
+      created: DateTime.parse(json['created']),
+        signature: json['signature']
     );
   }
 
@@ -48,7 +53,8 @@ class JournalModel {
       'intitule': intitule,
       'montant': montant,
       'typeJournal': typeJournal,
-      'date': date.toIso8601String(),
+      'created': created.toIso8601String(),
+      'signature': signature,
     };
   }
 }

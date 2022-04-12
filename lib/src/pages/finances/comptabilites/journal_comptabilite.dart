@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:fokad_admin/src/api/auth/auth_api.dart';
+import 'package:fokad_admin/src/api/comptabilite/journal_api.dart';
 import 'package:fokad_admin/src/constants/app_theme.dart';
 import 'package:fokad_admin/src/constants/responsive.dart';
 import 'package:fokad_admin/src/models/comptabilites/journal_model.dart';
 import 'package:fokad_admin/src/navigation/drawer/drawer_menu.dart';
 import 'package:fokad_admin/src/navigation/header/custom_appbar.dart';
 import 'package:fokad_admin/src/provider/controller.dart';
-import 'package:fokad_admin/src/utils/pluto_grid.dart';
 import 'package:fokad_admin/src/widgets/btn_widget.dart';
 import 'package:fokad_admin/src/widgets/datatable2_widget.dart';
 import 'package:fokad_admin/src/widgets/pie_chart_widget.dart';
@@ -33,6 +34,16 @@ class _JournalComptabiliteState extends State<JournalComptabilite> {
   final TextEditingController montantController = TextEditingController();
   final TextEditingController typeJournalController = TextEditingController();
 
+
+  @override
+  void initState() {
+    setState(() {
+      getData();
+    });
+    super.initState();
+  }
+
+
   @override
   void dispose() {
     titleBilanController.dispose();
@@ -44,10 +55,23 @@ class _JournalComptabiliteState extends State<JournalComptabilite> {
     super.dispose();
   }
 
+  String? matricule;
+  int numberItem = 0;
+
+  Future<void> getData() async {
+    final userModel = await AuthApi().getUserId();
+    final data = await JournalApi().getAllData();
+    setState(() {
+      matricule = userModel.matricule;
+      numberItem = data.length;
+    });
+  }
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        // key: context.read<Controller>().scaffoldKey,
+        key: context.read<Controller>().scaffoldKey,
         drawer: const DrawerMenu(),
         floatingActionButton: FloatingActionButton(
             foregroundColor: Colors.white,
@@ -291,7 +315,8 @@ class _JournalComptabiliteState extends State<JournalComptabilite> {
       intitule: intituleController.text,
       montant: montantController.text,
       typeJournal: typeJournalController.text,
-      date: DateTime.now(),
+      created: DateTime.now(),
+      signature: matricule.toString()
     );
   }
 }

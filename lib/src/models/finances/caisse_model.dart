@@ -1,15 +1,16 @@
 class CaisseModel {
-  final int? id;
-  final String nomComplet;
-  final String pieceJustificative;
-  final String libelle;
-  final String montant;
-  final List<dynamic> coupureBillet;
-  final String ligneBudgtaire; // somme d'affectation pour le budget
-  final String departement;
-  final String typeOperation;
-  final DateTime date;
-  final String numeroOperation;
+  late int? id;
+  late String nomComplet;
+  late String pieceJustificative;
+  late String libelle;
+  late String montant;
+  late List<dynamic> coupureBillet;
+  late String ligneBudgtaire; // somme d'affectation pour le budget
+  late String departement;
+  late String typeOperation;
+  late String numeroOperation;
+  late DateTime created;
+  late String signature;
 
   CaisseModel( 
     {
@@ -22,23 +23,25 @@ class CaisseModel {
     required this.ligneBudgtaire,
     required this.departement,
     required this.typeOperation,
-    required this.date,
     required this.numeroOperation,
+    required this.created,
+    required this.signature,
   });
 
   factory CaisseModel.fromSQL(List<dynamic> row) {
     return CaisseModel(
-        id: row[0],
-        nomComplet: row[1],
-        pieceJustificative: row[2],
-        libelle: row[3],
-        montant: row[4],
-        coupureBillet: row[5],
-        ligneBudgtaire: row[6],
-        departement: row[7],
-        typeOperation: row[8],
-        date: row[9],
-        numeroOperation: row[10],
+      id: row[0],
+      nomComplet: row[1],
+      pieceJustificative: row[2],
+      libelle: row[3],
+      montant: row[4],
+      coupureBillet: row[5],
+      ligneBudgtaire: row[6],
+      departement: row[7],
+      typeOperation: row[8],
+      numeroOperation: row[9],
+      created: row[10],
+      signature: row[11]
     );
   }
 
@@ -53,8 +56,9 @@ class CaisseModel {
       ligneBudgtaire: json['ligneBudgtaire'],
       departement: json['departement'],
       typeOperation: json['typeOperation'],
-      date: DateTime.parse(json['date']),
       numeroOperation: json['numeroOperation'],
+      created: DateTime.parse(json['created']),
+      signature: json['signature']
     );
   }
 
@@ -69,8 +73,9 @@ class CaisseModel {
       'ligneBudgtaire': ligneBudgtaire,
       'departement': departement,
       'typeOperation': typeOperation,
-      'date': date.toIso8601String(),
       'numeroOperation': numeroOperation,
+      'created': created.toIso8601String(),
+      'signature': signature,
     };
   }
 }
