@@ -282,7 +282,7 @@ class _DetteTransactionsState extends State<DetteTransactions> {
         numeroOperation: 'FOKAD-Dette-${numberItem + 1}',
         signature: matricule.toString());
     await DetteApi().insertData(detteModel);
-    Routemaster.of(context).replace(FinanceRoutes.transactionsDettes);
+    Routemaster.of(context).pop();
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
       content: const Text("Enregistrer avec succès!"),
       backgroundColor: Colors.green[700],

@@ -280,7 +280,7 @@ class _CreanceTransactionsState extends State<CreanceTransactions> {
         numeroOperation: 'FOKAD-Creance-${numberItem + 1}',
         signature: matricule.toString());
     await CreanceApi().insertData(creanceModel);
-    Routemaster.of(context).replace(FinanceRoutes.transactionsCreances);
+    Routemaster.of(context).pop();
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
       content: const Text("Enregistrer avec succès!"),
       backgroundColor: Colors.green[700],

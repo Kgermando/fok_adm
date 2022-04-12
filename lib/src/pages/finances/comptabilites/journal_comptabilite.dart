@@ -13,10 +13,10 @@ import 'package:fokad_admin/src/widgets/pie_chart_widget.dart';
 import 'package:fokad_admin/src/widgets/print_widget.dart';
 import 'package:fokad_admin/src/widgets/title_widget.dart';
 import 'package:provider/provider.dart';
-
+import 'package:routemaster/routemaster.dart';
 
 class JournalComptabilite extends StatefulWidget {
-  const JournalComptabilite({ Key? key }) : super(key: key);
+  const JournalComptabilite({Key? key}) : super(key: key);
 
   @override
   State<JournalComptabilite> createState() => _JournalComptabiliteState();
@@ -27,13 +27,11 @@ class _JournalComptabiliteState extends State<JournalComptabilite> {
 
   bool isLoading = false;
 
-  final TextEditingController titleBilanController =
-      TextEditingController();
+  final TextEditingController titleBilanController = TextEditingController();
   final TextEditingController comptesController = TextEditingController();
   final TextEditingController intituleController = TextEditingController();
   final TextEditingController montantController = TextEditingController();
   final TextEditingController typeJournalController = TextEditingController();
-
 
   @override
   void initState() {
@@ -42,7 +40,6 @@ class _JournalComptabiliteState extends State<JournalComptabilite> {
     });
     super.initState();
   }
-
 
   @override
   void dispose() {
@@ -66,7 +63,6 @@ class _JournalComptabiliteState extends State<JournalComptabilite> {
       numberItem = data.length;
     });
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -111,31 +107,30 @@ class _JournalComptabiliteState extends State<JournalComptabilite> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 const Expanded(
-                                  flex: 4,
-                                  child: DataTable2Widget()),
+                                    flex: 4, child: DataTable2Widget()),
                                 Expanded(
-                                  flex: 2,
-                                  child: Padding(
-                                    padding: const EdgeInsets.only(
+                                    flex: 2,
+                                    child: Padding(
+                                      padding: const EdgeInsets.only(
                                           right: p10, left: p10),
-                                    child: Column(
-                                      children: [
-                                        Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
-                                          children: [
-                                            const TitleWidget(
-                                                title: 'Detail journal'),
-                                            PrintWidget(onPressed: () {})
-                                          ],
-                                        ),
-                                        const SizedBox(
-                                          height: p10,
-                                        ),
-                                        const PieChartWidget(),
-                                      ],
-                                    ),
-                                  ))
+                                      child: Column(
+                                        children: [
+                                          Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              const TitleWidget(
+                                                  title: 'Detail journal'),
+                                              PrintWidget(onPressed: () {})
+                                            ],
+                                          ),
+                                          const SizedBox(
+                                            height: p10,
+                                          ),
+                                          const PieChartWidget(),
+                                        ],
+                                      ),
+                                    ))
                               ],
                             )
                           ],
@@ -150,8 +145,6 @@ class _JournalComptabiliteState extends State<JournalComptabilite> {
         ));
   }
 
-
-  
   transactionsDialogDonation() {
     return showDialog(
         context: context,
@@ -175,8 +168,7 @@ class _JournalComptabiliteState extends State<JournalComptabilite> {
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              const TitleWidget(
-                                  title: 'Nouveau journal'),
+                              const TitleWidget(title: 'Nouveau journal'),
                               PrintWidget(onPressed: () {})
                             ],
                           ),
@@ -309,14 +301,19 @@ class _JournalComptabiliteState extends State<JournalComptabilite> {
   }
 
   Future submit() async {
-    final amortissementModel = JournalModel(
-      titleBilan: titleBilanController.text,
-      comptes: comptesController.text,
-      intitule: intituleController.text,
-      montant: montantController.text,
-      typeJournal: typeJournalController.text,
-      created: DateTime.now(),
-      signature: matricule.toString()
-    );
+    final journalModel = JournalModel(
+        titleBilan: titleBilanController.text,
+        comptes: comptesController.text,
+        intitule: intituleController.text,
+        montant: montantController.text,
+        typeJournal: typeJournalController.text,
+        created: DateTime.now(),
+        signature: matricule.toString());
+    await JournalApi().insertData(journalModel);
+    Routemaster.of(context).pop();
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      content: const Text("Enregistrer avec succès!"),
+      backgroundColor: Colors.green[700],
+    ));
   }
 }

@@ -651,7 +651,7 @@ class _BanqueTransactionsState extends State<BanqueTransactions> {
         created: DateTime.now(),
         signature: matricule.toString());
     await BanqueApi().insertData(banqueModel);
-    Routemaster.of(context).replace(FinanceRoutes.transactionsBanque);
+    Routemaster.of(context).pop();
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
       content: const Text("Enregistrer avec succès!"),
       backgroundColor: Colors.green[700],

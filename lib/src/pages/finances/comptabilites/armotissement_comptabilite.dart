@@ -287,7 +287,7 @@ class _AmortissementComptabiliteState extends State<AmortissementComptabilite> {
         created: DateTime.now(),
         signature: matricule.toString());
     await AmortissementApi().insertData(amortissementModel);
-    Routemaster.of(context).replace(FinanceRoutes.comptabiliteAmortissement);
+    Routemaster.of(context).pop();
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
       content: const Text("Enregistrer avec succès!"),
       backgroundColor: Colors.green[700],

@@ -464,7 +464,7 @@ class _DepenseTransactionsState extends State<DepenseTransactions> {
         modePayement: modePayemnt.toString(),
         signature: matricule.toString());
     await DepenseApi().insertData(depensesModel);
-    Routemaster.of(context).replace(FinanceRoutes.transactionsDepenses);
+    Routemaster.of(context).pop();
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
       content: const Text("Enregistrer avec succès!"),
       backgroundColor: Colors.green[700],

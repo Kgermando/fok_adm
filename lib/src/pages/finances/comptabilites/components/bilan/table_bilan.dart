@@ -70,7 +70,7 @@ class _TableBilanState extends State<TableBilan> {
             ClassYouImplemented(),
           ],
           resolveDefaultColumnFilter: (column, resolver) {
-            if (column.field == 'titleArmotissement') {
+            if (column.field == 'titleBilan') {
               return resolver<ClassYouImplemented>() as PlutoFilterType;
             } else if (column.field == 'comptes') {
               return resolver<ClassYouImplemented>() as PlutoFilterType;
@@ -78,7 +78,7 @@ class _TableBilanState extends State<TableBilan> {
               return resolver<ClassYouImplemented>() as PlutoFilterType;
             } else if (column.field == 'montant') {
               return resolver<ClassYouImplemented>() as PlutoFilterType;
-            } else if (column.field == 'typeJournal') {
+            } else if (column.field == 'typeBilan') {
               return resolver<ClassYouImplemented>() as PlutoFilterType;
             }
             return resolver<PlutoFilterTypeContains>() as PlutoFilterType;

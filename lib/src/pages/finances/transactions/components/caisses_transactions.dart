@@ -652,7 +652,7 @@ class _CaisseTransactionsState extends State<CaisseTransactions> {
         numeroOperation: 'FOKAD-Caisse-${numberItem + 1}',
         signature: matricule.toString());
     await CaisseApi().insertData(caisseModel);
-    Routemaster.of(context).replace(FinanceRoutes.transactionsCaisse);
+    Routemaster.of(context).pop();
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
       content: const Text("Enregistrer avec succès!"),
       backgroundColor: Colors.green[700],

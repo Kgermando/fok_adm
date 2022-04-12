@@ -466,7 +466,7 @@ class _FinExterneTransactionsState extends State<FinExterneTransactions> {
         signature: matricule.toString());
 
     await FinExterieurApi().insertData(financeExterieurModel);
-    Routemaster.of(context).replace(FinanceRoutes.transactionsFinancementExterne);
+    Routemaster.of(context).pop();
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
       content: const Text("Enregistrer avec succès!"),
       backgroundColor: Colors.green[700],

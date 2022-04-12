@@ -71,7 +71,7 @@ class _TableJournalState extends State<TableJournal> {
             ClassYouImplemented(),
           ],
           resolveDefaultColumnFilter: (column, resolver) {
-            if (column.field == 'titleArmotissement') {
+            if (column.field == 'titleBilan') {
               return resolver<ClassYouImplemented>() as PlutoFilterType;
             } else if (column.field == 'comptes') {
               return resolver<ClassYouImplemented>() as PlutoFilterType;
@@ -153,8 +153,8 @@ class _TableJournalState extends State<TableJournal> {
       ),
       PlutoColumn(
         readOnly: true,
-        title: 'Type de bilan',
-        field: 'typeBilan',
+        title: 'Type de journal',
+        field: 'typeJournal',
         type: PlutoColumnType.text(),
         enableRowDrag: true,
         enableContextMenu: false,

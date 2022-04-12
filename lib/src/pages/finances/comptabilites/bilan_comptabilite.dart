@@ -299,7 +299,7 @@ class _BilanComptabiliteState extends State<BilanComptabilite> {
         created: DateTime.now(),
         signature: matricule.toString());
     await BilanApi().insertData(bilanModel);
-    Routemaster.of(context).replace(FinanceRoutes.comptabiliteBilan);
+    Routemaster.of(context).pop();
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
       content: const Text("Enregistrer avec succès!"),
       backgroundColor: Colors.green[700],
