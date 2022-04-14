@@ -75,7 +75,7 @@ class CaisseModel {
       'typeOperation': typeOperation,
       'numeroOperation': numeroOperation,
       'created': created.toIso8601String(),
-      'signature': signature,
+      'signature': signature
     };
   }
 }

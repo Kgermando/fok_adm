@@ -27,7 +27,6 @@ class _DetailDevisState extends State<DetailDevis> {
   final _formKey = GlobalKey<FormState>();
   bool isLoading = false;
 
-  Timer? timer;
   List<PlutoColumn> columns = [];
   List<PlutoRow> rows = [];
   PlutoGridStateManager? stateManager;
@@ -37,16 +36,14 @@ class _DetailDevisState extends State<DetailDevis> {
   void initState() {
     getData();
     agentsColumn();
-    timer = Timer.periodic(const Duration(milliseconds: 500), (t) {
-      agentsRow();
-    });
+    agentsRow();
     super.initState();
   }
 
   String? title;
   String? priority;
   String? departement;
-  List<dynamic> list = [];
+  List<dynamic>? list;
   bool approbation = false;
   bool observation = false;
   String? signatureDG;
@@ -338,11 +335,11 @@ class _DetailDevisState extends State<DetailDevis> {
   }
 
   Future agentsRow() async {
-    List<dynamic> dataList = list;
-    var data = dataList;
+    // List<dynamic> dataList = list!;
+    // var data = dataList;
     if (mounted) {
       setState(() {
-        for (var item in data) {
+        for (var item in list!) {
           rows.add(PlutoRow(cells: {
             'id': PlutoCell(value: item[0]['id']),
             'title': PlutoCell(value: item[1]['nombre']),

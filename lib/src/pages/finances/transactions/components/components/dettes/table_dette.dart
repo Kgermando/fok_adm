@@ -23,74 +23,145 @@ class _TableDetteState extends State<TableDette> {
   PlutoGridSelectingMode gridSelectingMode = PlutoGridSelectingMode.row;
 
   int? id;
+  double paye = 0.0;
+  double nonPaye = 0.0;
 
   @override
   initState() {
     agentsColumn();
-    timer = Timer.periodic(const Duration(milliseconds: 500), (t) {
-      agentsRow();
-    });
+    getData();
+    agentsRow();
 
     super.initState();
   }
 
-  @override
-  void dispose() {
-    timer!.cancel();
-    super.dispose();
+  Future<void> getData() async {
+    List<DetteModel?> dataList = await DetteApi().getAllData();
+    setState(() {
+      List<DetteModel?> payeList =
+          dataList.where((element) => element!.statutPaie == true).toList();
+      List<DetteModel?> nonPayeList =
+          dataList.where((element) => element!.statutPaie == false).toList();
+      for (var item in payeList) {
+        paye += double.parse(item!.montant);
+      }
+      for (var item in nonPayeList) {
+        nonPaye += double.parse(item!.montant);
+      }
+    });
   }
+
 
   @override
   Widget build(BuildContext context) {
-    return PlutoGrid(
-      columns: columns,
-      rows: rows,
-      onRowDoubleTap: (PlutoGridOnRowDoubleTapEvent tapEvent) {
-        final dataList = tapEvent.row!.cells.values;
-        final idPlutoRow = dataList.elementAt(0);
+    return Column(
+      children: [
+        Expanded(
+          child: PlutoGrid(
+            columns: columns,
+            rows: rows,
+            onRowDoubleTap: (PlutoGridOnRowDoubleTapEvent tapEvent) {
+              final dataList = tapEvent.row!.cells.values;
+              final idPlutoRow = dataList.elementAt(0);
+        
+              Navigator.of(context).push(MaterialPageRoute(
+                  builder: (context) => DetailDette(id: idPlutoRow.value)));
+            },
+            onLoaded: (PlutoGridOnLoadedEvent event) {
+              stateManager = event.stateManager;
+              stateManager!.setShowColumnFilter(true);
+            },
+            createHeader: (PlutoGridStateManager header) {
+              return Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [PrintWidget(onPressed: () {})],
+              );
+            },
+            configuration: PlutoGridConfiguration(
+              columnFilterConfig: PlutoGridColumnFilterConfig(
+                filters: const [
+                  ...FilterHelper.defaultFilters,
+                  // custom filter
+                  ClassYouImplemented(),
+                ],
+                resolveDefaultColumnFilter: (column, resolver) {
+                  if (column.field == 'nomComplet') {
+                    return resolver<ClassYouImplemented>() as PlutoFilterType;
+                  } else if (column.field == 'pieceJustificative') {
+                    return resolver<ClassYouImplemented>() as PlutoFilterType;
+                  } else if (column.field == 'libelle') {
+                    return resolver<ClassYouImplemented>() as PlutoFilterType;
+                  } else if (column.field == 'montant') {
+                    return resolver<ClassYouImplemented>() as PlutoFilterType;
+                  } else if (column.field == 'ligneBudgtaire') {
+                    return resolver<ClassYouImplemented>() as PlutoFilterType;
+                  } else if (column.field == 'departement') {
+                    return resolver<ClassYouImplemented>() as PlutoFilterType;
+                  } else if (column.field == 'typeOperation') {
+                    return resolver<ClassYouImplemented>() as PlutoFilterType;
+                  } else if (column.field == 'numeroOperation') {
+                    return resolver<ClassYouImplemented>() as PlutoFilterType;
+                  } else if (column.field == 'created') {
+                    return resolver<ClassYouImplemented>() as PlutoFilterType;
+                  }
+                  return resolver<PlutoFilterTypeContains>() as PlutoFilterType;
+                },
+              ),
+            ),
+          ),
+        ),
+        totalSolde()
+      ],
+    );
+  }
 
-        Navigator.of(context).push(MaterialPageRoute(
-            builder: (context) => DetailDette(id: idPlutoRow.value)));
-      },
-      onLoaded: (PlutoGridOnLoadedEvent event) {
-        stateManager = event.stateManager;
-        stateManager!.setShowColumnFilter(true);
-      },
-      createHeader: (PlutoGridStateManager header) {
-        return Row(
-          mainAxisAlignment: MainAxisAlignment.end,
-          children: [PrintWidget(onPressed: () {})],
-        );
-      },
-      configuration: PlutoGridConfiguration(
-        columnFilterConfig: PlutoGridColumnFilterConfig(
-          filters: const [
-            ...FilterHelper.defaultFilters,
-            // custom filter
-            ClassYouImplemented(),
+
+  Widget totalSolde() {
+    final bodyMedium = Theme.of(context).textTheme.bodyMedium;
+    return Card(
+      color: Colors.red.shade700,
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Row(
+              children: [
+                SelectableText('Total: ',
+                    style: bodyMedium!.copyWith(
+                        fontWeight: FontWeight.bold, color: Colors.white)),
+                SelectableText(
+                    '${NumberFormat.decimalPattern('fr').format(paye + nonPaye)} \$',
+                    style: bodyMedium.copyWith(
+                        fontWeight: FontWeight.bold, color: Colors.white))
+              ],
+            ),
+            Row(
+              children: [
+                SelectableText('Payé: ',
+                    style: bodyMedium.copyWith(
+                        fontWeight: FontWeight.bold, color: Colors.white)),
+                SelectableText(
+                    '${NumberFormat.decimalPattern('fr').format(paye)} \$',
+                    style: bodyMedium.copyWith(
+                        fontWeight: FontWeight.bold, color: Colors.white))
+              ],
+            ),
+            Row(
+              children: [
+                SelectableText('Non Payé: ',
+                    style: bodyMedium.copyWith(
+                        fontWeight: FontWeight.bold, color: Colors.white)),
+                SelectableText(
+                    '${NumberFormat.decimalPattern('fr').format(nonPaye)} \$',
+                    style: bodyMedium.copyWith(
+                        fontWeight: FontWeight.bold, color: Colors.white))
+              ],
+            ),
+            const SizedBox(
+              width: 100,
+            )
           ],
-          resolveDefaultColumnFilter: (column, resolver) {
-            if (column.field == 'nomComplet') {
-              return resolver<ClassYouImplemented>() as PlutoFilterType;
-            } else if (column.field == 'pieceJustificative') {
-              return resolver<ClassYouImplemented>() as PlutoFilterType;
-            } else if (column.field == 'libelle') {
-              return resolver<ClassYouImplemented>() as PlutoFilterType;
-            } else if (column.field == 'montant') {
-              return resolver<ClassYouImplemented>() as PlutoFilterType;
-            } else if (column.field == 'ligneBudgtaire') {
-              return resolver<ClassYouImplemented>() as PlutoFilterType;
-            } else if (column.field == 'departement') {
-              return resolver<ClassYouImplemented>() as PlutoFilterType;
-            } else if (column.field == 'typeOperation') {
-              return resolver<ClassYouImplemented>() as PlutoFilterType;
-            } else if (column.field == 'numeroOperation') {
-              return resolver<ClassYouImplemented>() as PlutoFilterType;
-            } else if (column.field == 'created') {
-              return resolver<ClassYouImplemented>() as PlutoFilterType;
-            }
-            return resolver<PlutoFilterTypeContains>() as PlutoFilterType;
-          },
         ),
       ),
     );
@@ -172,6 +243,18 @@ class _TableDetteState extends State<TableDette> {
       ),
       PlutoColumn(
         readOnly: true,
+        title: 'Approbation',
+        field: 'approbation',
+        type: PlutoColumnType.text(),
+        enableRowDrag: true,
+        enableContextMenu: false,
+        enableDropToResize: true,
+        titleTextAlign: PlutoColumnTextAlign.left,
+        width: 150,
+        minWidth: 150,
+      ),
+      PlutoColumn(
+        readOnly: true,
         title: 'Date',
         field: 'created',
         type: PlutoColumnType.text(),
@@ -188,7 +271,6 @@ class _TableDetteState extends State<TableDette> {
   Future agentsRow() async {
     List<DetteModel?> dataList = await DetteApi().getAllData();
     var data = dataList;
-
     if (mounted) {
       setState(() {
         for (var item in data) {
@@ -200,6 +282,7 @@ class _TableDetteState extends State<TableDette> {
             'libelle': PlutoCell(value: item.libelle),
             'montant': PlutoCell(value: item.montant),
             'numeroOperation': PlutoCell(value: item.numeroOperation),
+            'approbation': PlutoCell(value: (item.approbation) ? "Approuvé": "Non approuvé"),
             'created': PlutoCell(
                 value: DateFormat("DD-MM-yy H:mm").format(item.created))
           }));

@@ -8,7 +8,6 @@ import 'package:fokad_admin/src/navigation/drawer/drawer_menu.dart';
 import 'package:fokad_admin/src/navigation/header/custom_appbar.dart';
 import 'package:fokad_admin/src/pages/finances/transactions/components/components/dettes/table_dette.dart';
 import 'package:fokad_admin/src/provider/controller.dart';
-import 'package:fokad_admin/src/routes/routes.dart';
 import 'package:fokad_admin/src/widgets/btn_widget.dart';
 import 'package:fokad_admin/src/widgets/print_widget.dart';
 import 'package:fokad_admin/src/widgets/title_widget.dart';
@@ -24,6 +23,7 @@ class DetteTransactions extends StatefulWidget {
 
 class _DetteTransactionsState extends State<DetteTransactions> {
   final controller = ScrollController();
+  final _formKey = GlobalKey<FormState>();
 
   bool isLoading = false;
 
@@ -43,7 +43,6 @@ class _DetteTransactionsState extends State<DetteTransactions> {
     super.initState();
   }
 
-  
   String? matricule;
 
   Future<void> getData() async {
@@ -94,8 +93,7 @@ class _DetteTransactionsState extends State<DetteTransactions> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: const [
                       CustomAppbar(title: 'Dettes'),
-                      Expanded(
-                          child: TableDette())
+                      Expanded(child: TableDette())
                     ],
                   ),
                 ),
@@ -116,51 +114,60 @@ class _DetteTransactionsState extends State<DetteTransactions> {
                   borderRadius: BorderRadius.circular(p8),
                 ),
                 backgroundColor: Colors.transparent,
-                child: Card(
-                  child: Padding(
-                    padding: const EdgeInsets.all(p16),
-                    child: SizedBox(
-                      width: Responsive.isDesktop(context)
-                          ? MediaQuery.of(context).size.width / 2
-                          : MediaQuery.of(context).size.width,
-                      child: ListView(
-                        children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              const TitleWidget(title: 'Ajout dette'),
-                              PrintWidget(onPressed: () {})
-                            ],
-                          ),
-                          const SizedBox(
-                            height: p20,
-                          ),
-                          Row(
-                            children: [
-                              Expanded(child: nomCompletWidget()),
-                              const SizedBox(
-                                width: p10,
-                              ),
-                              Expanded(child: pieceJustificativeWidget())
-                            ],
-                          ),
-                          Row(
-                            children: [
-                              Expanded(child: libelleWidget()),
-                              const SizedBox(
-                                width: p10,
-                              ),
-                              Expanded(child: montantWidget())
-                            ],
-                          ),
-                          const SizedBox(
-                            height: p20,
-                          ),
-                          BtnWidget(
-                              title: 'Soumettre',
-                              isLoading: isLoading,
-                              press: () {})
-                        ],
+                child: Form(
+                  key: _formKey,
+                  child: Card(
+                    child: Padding(
+                      padding: const EdgeInsets.all(p16),
+                      child: SizedBox(
+                        width: Responsive.isDesktop(context)
+                            ? MediaQuery.of(context).size.width / 2
+                            : MediaQuery.of(context).size.width,
+                        child: ListView(
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                const TitleWidget(title: 'Ajout dette'),
+                                PrintWidget(onPressed: () {})
+                              ],
+                            ),
+                            const SizedBox(
+                              height: p20,
+                            ),
+                            Row(
+                              children: [
+                                Expanded(child: nomCompletWidget()),
+                                const SizedBox(
+                                  width: p10,
+                                ),
+                                Expanded(child: pieceJustificativeWidget())
+                              ],
+                            ),
+                            Row(
+                              children: [
+                                Expanded(child: libelleWidget()),
+                                const SizedBox(
+                                  width: p10,
+                                ),
+                                Expanded(child: montantWidget())
+                              ],
+                            ),
+                            const SizedBox(
+                              height: p20,
+                            ),
+                            BtnWidget(
+                                title: 'Soumettre',
+                                isLoading: isLoading,
+                                press: () {
+                                  final form = _formKey.currentState!;
+                                  if (form.validate()) {
+                                    submit();
+                                    form.reset();
+                                  }
+                                })
+                          ],
+                        ),
                       ),
                     ),
                   ),
@@ -265,7 +272,9 @@ class _DetteTransactionsState extends State<DetteTransactions> {
         montant: montantController.text,
         created: DateTime.now(),
         numeroOperation: 'FOKAD-Dette-${numberItem + 1}',
-        signature: matricule.toString());
+        signature: matricule.toString(),
+        approbation: false,
+        statutPaie: false);
     await DetteApi().insertData(detteModel);
     Routemaster.of(context).pop();
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(

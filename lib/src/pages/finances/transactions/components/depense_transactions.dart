@@ -42,7 +42,7 @@ class _DepenseTransactionsState extends State<DepenseTransactions> {
   String? ligneBudgtaire;
   String? modePayemnt;
 
-  final List<String> typeCaisse = TypeOperation().typeCaisse;
+  final List<String> typeCaisse = TypeOperation().typeVereCaisse;
   final List<String> modePayemntList = TypeOperation().modePayemnt;
 
   late int count;

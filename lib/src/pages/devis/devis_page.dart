@@ -16,6 +16,7 @@ import 'package:fokad_admin/src/widgets/btn_widget.dart';
 import 'package:fokad_admin/src/widgets/print_widget.dart';
 import 'package:fokad_admin/src/widgets/title_widget.dart';
 import 'package:provider/provider.dart';
+import 'package:routemaster/routemaster.dart';
 
 class DevisPage extends StatefulWidget {
   const DevisPage({Key? key}) : super(key: key);
@@ -451,6 +452,7 @@ class _DevisPageState extends State<DevisPage> {
         signatureEmission: matricule.toString(),
         created: DateTime.now());
     await DevisAPi().insertData(devisModel);
+    Routemaster.of(context).pop();
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
       content: const Text("Envoyer avec succès!"),
       backgroundColor: Colors.green[700],

@@ -234,7 +234,7 @@ class _AgentPageState extends State<AgentPage> {
                     style: bodyMedium.copyWith(fontWeight: FontWeight.bold)),
               ),
               Expanded(
-                child: Text(agentModel.nom,
+                child: SelectableText(agentModel.nom,
                     textAlign: TextAlign.start, style: bodyMedium),
               )
             ],
@@ -247,7 +247,7 @@ class _AgentPageState extends State<AgentPage> {
                     style: bodyMedium.copyWith(fontWeight: FontWeight.bold)),
               ),
               Expanded(
-                child: Text(agentModel.postNom,
+                child: SelectableText(agentModel.postNom,
                     textAlign: TextAlign.start, style: bodyMedium),
               )
             ],
@@ -260,7 +260,7 @@ class _AgentPageState extends State<AgentPage> {
                     style: bodyMedium.copyWith(fontWeight: FontWeight.bold)),
               ),
               Expanded(
-                child: Text(agentModel.prenom,
+                child: SelectableText(agentModel.prenom,
                     textAlign: TextAlign.start, style: bodyMedium),
               )
             ],
@@ -273,7 +273,7 @@ class _AgentPageState extends State<AgentPage> {
                     style: bodyMedium.copyWith(fontWeight: FontWeight.bold)),
               ),
               Expanded(
-                child: Text(agentModel.email,
+                child: SelectableText(agentModel.email,
                     textAlign: TextAlign.start, style: bodyMedium),
               )
             ],
@@ -286,7 +286,7 @@ class _AgentPageState extends State<AgentPage> {
                     style: bodyMedium.copyWith(fontWeight: FontWeight.bold)),
               ),
               Expanded(
-                child: Text(agentModel.telephone,
+                child: SelectableText(agentModel.telephone,
                     textAlign: TextAlign.start, style: bodyMedium),
               )
             ],
@@ -299,7 +299,7 @@ class _AgentPageState extends State<AgentPage> {
                     style: bodyMedium.copyWith(fontWeight: FontWeight.bold)),
               ),
               Expanded(
-                child: Text(agentModel.sexe,
+                child: SelectableText(agentModel.sexe,
                     textAlign: TextAlign.start, style: bodyMedium),
               )
             ],
@@ -312,7 +312,7 @@ class _AgentPageState extends State<AgentPage> {
                     style: bodyMedium.copyWith(fontWeight: FontWeight.bold)),
               ),
               Expanded(
-                child: Text(agentModel.role,
+                child: SelectableText(agentModel.role,
                     textAlign: TextAlign.start, style: bodyMedium),
               )
             ],
@@ -325,7 +325,7 @@ class _AgentPageState extends State<AgentPage> {
                     style: bodyMedium.copyWith(fontWeight: FontWeight.bold)),
               ),
               Expanded(
-                child: Text(agentModel.matricule,
+                child: SelectableText(agentModel.matricule,
                     textAlign: TextAlign.start,
                     style: bodyMedium.copyWith(color: Colors.blueGrey)),
               )
@@ -339,7 +339,7 @@ class _AgentPageState extends State<AgentPage> {
                     style: bodyMedium.copyWith(fontWeight: FontWeight.bold)),
               ),
               Expanded(
-                child: Text(agentModel.numeroSecuriteSociale,
+                child: SelectableText(agentModel.numeroSecuriteSociale,
                     textAlign: TextAlign.start,
                     style: bodyMedium.copyWith(color: Colors.blueGrey)),
               )
@@ -353,7 +353,7 @@ class _AgentPageState extends State<AgentPage> {
                     style: bodyMedium.copyWith(fontWeight: FontWeight.bold)),
               ),
               Expanded(
-                child: Text(agentModel.lieuNaissance,
+                child: SelectableText(agentModel.lieuNaissance,
                     textAlign: TextAlign.start, style: bodyMedium),
               )
             ],
@@ -381,7 +381,7 @@ class _AgentPageState extends State<AgentPage> {
                     style: bodyMedium.copyWith(fontWeight: FontWeight.bold)),
               ),
               Expanded(
-                child: Text(agentModel.nationalite,
+                child: SelectableText(agentModel.nationalite,
                     textAlign: TextAlign.start, style: bodyMedium),
               )
             ],
@@ -394,7 +394,7 @@ class _AgentPageState extends State<AgentPage> {
                     style: bodyMedium.copyWith(fontWeight: FontWeight.bold)),
               ),
               Expanded(
-                child: Text(agentModel.adresse,
+                child: SelectableText(agentModel.adresse,
                     textAlign: TextAlign.start, style: bodyMedium),
               )
             ],
@@ -419,7 +419,7 @@ class _AgentPageState extends State<AgentPage> {
                     style: bodyMedium!.copyWith(fontWeight: FontWeight.bold)),
               ),
               Expanded(
-                child: Text(agentModel.typeContrat,
+                child: SelectableText(agentModel.typeContrat,
                     textAlign: TextAlign.start, style: bodyMedium),
               )
             ],
@@ -432,7 +432,7 @@ class _AgentPageState extends State<AgentPage> {
                     style: bodyMedium.copyWith(fontWeight: FontWeight.bold)),
               ),
               Expanded(
-                child: Text(agentModel.fonctionOccupe,
+                child: SelectableText(agentModel.fonctionOccupe,
                     textAlign: TextAlign.start, style: bodyMedium),
               )
             ],
@@ -445,7 +445,7 @@ class _AgentPageState extends State<AgentPage> {
                     style: bodyMedium.copyWith(fontWeight: FontWeight.bold)),
               ),
               Expanded(
-                child: Text(agentModel.departement,
+                child: SelectableText(agentModel.departement,
                     textAlign: TextAlign.start, style: bodyMedium),
               )
             ],
@@ -458,7 +458,7 @@ class _AgentPageState extends State<AgentPage> {
                     style: bodyMedium.copyWith(fontWeight: FontWeight.bold)),
               ),
               Expanded(
-                child: Text(agentModel.servicesAffectation,
+                child: SelectableText(agentModel.servicesAffectation,
                     textAlign: TextAlign.start, style: bodyMedium),
               )
             ],
@@ -503,7 +503,7 @@ class _AgentPageState extends State<AgentPage> {
                       style: bodyMedium.copyWith(fontWeight: FontWeight.bold)),
                 ),
                 Expanded(
-                  child: Text(agentModel.salaire,
+                  child: SelectableText(agentModel.salaire,
                       textAlign: TextAlign.start, style: bodyMedium),
                 )
               ],
@@ -524,7 +524,7 @@ class _AgentPageState extends State<AgentPage> {
             children: [
               Text('Formation :',
                   style: bodyMedium!.copyWith(fontWeight: FontWeight.bold)),
-              Text(agentModel.competance!,
+              SelectableText(agentModel.competance!,
                   textAlign: TextAlign.justify, style: bodyMedium)
             ],
           ),
@@ -534,7 +534,7 @@ class _AgentPageState extends State<AgentPage> {
             children: [
               Text('Experience :',
                   style: bodyMedium.copyWith(fontWeight: FontWeight.bold)),
-              Text(agentModel.experience!,
+              SelectableText(agentModel.experience!,
                   textAlign: TextAlign.justify, style: bodyMedium)
             ],
           ),

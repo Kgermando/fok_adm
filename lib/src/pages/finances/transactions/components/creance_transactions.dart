@@ -8,7 +8,6 @@ import 'package:fokad_admin/src/navigation/drawer/drawer_menu.dart';
 import 'package:fokad_admin/src/navigation/header/custom_appbar.dart';
 import 'package:fokad_admin/src/pages/finances/transactions/components/components/creances/table_creance.dart';
 import 'package:fokad_admin/src/provider/controller.dart';
-import 'package:fokad_admin/src/routes/routes.dart';
 import 'package:fokad_admin/src/widgets/btn_widget.dart';
 import 'package:fokad_admin/src/widgets/print_widget.dart';
 import 'package:fokad_admin/src/widgets/title_widget.dart';
@@ -24,6 +23,7 @@ class CreanceTransactions extends StatefulWidget {
 
 class _CreanceTransactionsState extends State<CreanceTransactions> {
   final controller = ScrollController();
+  final _formKey = GlobalKey<FormState>();
 
   bool isLoading = false;
 
@@ -92,8 +92,7 @@ class _CreanceTransactionsState extends State<CreanceTransactions> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: const [
                       CustomAppbar(title: 'Créances'),
-                      Expanded(
-                          child: TableCreance())
+                      Expanded(child: TableCreance())
                     ],
                   ),
                 ),
@@ -114,51 +113,60 @@ class _CreanceTransactionsState extends State<CreanceTransactions> {
                   borderRadius: BorderRadius.circular(p8),
                 ),
                 backgroundColor: Colors.transparent,
-                child: Card(
-                  child: Padding(
-                    padding: const EdgeInsets.all(p16),
-                    child: SizedBox(
-                      width: Responsive.isDesktop(context)
-                          ? MediaQuery.of(context).size.width / 2
-                          : MediaQuery.of(context).size.width,
-                      child: ListView(
-                        children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              const TitleWidget(title: 'Ajout une Créance'),
-                              PrintWidget(onPressed: () {})
-                            ],
-                          ),
-                          const SizedBox(
-                            height: p20,
-                          ),
-                          Row(
-                            children: [
-                              Expanded(child: nomCompletWidget()),
-                              const SizedBox(
-                                width: p10,
-                              ),
-                              Expanded(child: pieceJustificativeWidget())
-                            ],
-                          ),
-                          Row(
-                            children: [
-                              Expanded(child: libelleWidget()),
-                              const SizedBox(
-                                width: p10,
-                              ),
-                              Expanded(child: montantWidget())
-                            ],
-                          ),
-                          const SizedBox(
-                            height: p20,
-                          ),
-                          BtnWidget(
-                              title: 'Soumettre',
-                              isLoading: isLoading,
-                              press: () {})
-                        ],
+                child: Form(
+                  key: _formKey,
+                  child: Card(
+                    child: Padding(
+                      padding: const EdgeInsets.all(p16),
+                      child: SizedBox(
+                        width: Responsive.isDesktop(context)
+                            ? MediaQuery.of(context).size.width / 2
+                            : MediaQuery.of(context).size.width,
+                        child: ListView(
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                const TitleWidget(title: 'Ajout une Créance'),
+                                PrintWidget(onPressed: () {})
+                              ],
+                            ),
+                            const SizedBox(
+                              height: p20,
+                            ),
+                            Row(
+                              children: [
+                                Expanded(child: nomCompletWidget()),
+                                const SizedBox(
+                                  width: p10,
+                                ),
+                                Expanded(child: pieceJustificativeWidget())
+                              ],
+                            ),
+                            Row(
+                              children: [
+                                Expanded(child: libelleWidget()),
+                                const SizedBox(
+                                  width: p10,
+                                ),
+                                Expanded(child: montantWidget())
+                              ],
+                            ),
+                            const SizedBox(
+                              height: p20,
+                            ),
+                            BtnWidget(
+                                title: 'Soumettre',
+                                isLoading: isLoading,
+                                press: () {
+                                  final form = _formKey.currentState!;
+                                  if (form.validate()) {
+                                    submit();
+                                    form.reset();
+                                  }
+                                })
+                          ],
+                        ),
                       ),
                     ),
                   ),
@@ -178,9 +186,9 @@ class _CreanceTransactionsState extends State<CreanceTransactions> {
             labelText: 'Nom complet',
           ),
           keyboardType: TextInputType.text,
-          validator: (val) {
-            return 'Ce champs est obligatoire';
-          },
+          validator: (value) => value != null && value.isEmpty
+              ? 'Ce champs est obligatoire.'
+              : null,
           style: const TextStyle(),
         ));
   }
@@ -196,9 +204,9 @@ class _CreanceTransactionsState extends State<CreanceTransactions> {
             labelText: 'N° de la pièce justificative',
           ),
           keyboardType: TextInputType.text,
-          validator: (val) {
-            return 'Ce champs est obligatoire';
-          },
+          validator: (value) => value != null && value.isEmpty
+              ? 'Ce champs est obligatoire.'
+              : null,
           style: const TextStyle(),
         ));
   }
@@ -214,9 +222,9 @@ class _CreanceTransactionsState extends State<CreanceTransactions> {
             labelText: 'Libellé',
           ),
           keyboardType: TextInputType.text,
-          validator: (val) {
-            return 'Ce champs est obligatoire';
-          },
+          validator: (value) => value != null && value.isEmpty
+              ? 'Ce champs est obligatoire.'
+              : null,
           style: const TextStyle(),
         ));
   }
@@ -231,16 +239,16 @@ class _CreanceTransactionsState extends State<CreanceTransactions> {
             Expanded(
               flex: 5,
               child: TextFormField(
-                controller: libelleController,
+                controller: montantController,
                 decoration: InputDecoration(
                   border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(10.0)),
                   labelText: 'Montant',
                 ),
                 keyboardType: TextInputType.text,
-                validator: (val) {
-                  return 'Ce champs est obligatoire';
-                },
+                validator: (value) => value != null && value.isEmpty
+                  ? 'Ce champs est obligatoire.'
+                  : null,
                 style: const TextStyle(),
               ),
             ),
@@ -263,7 +271,10 @@ class _CreanceTransactionsState extends State<CreanceTransactions> {
         montant: montantController.text,
         created: DateTime.now(),
         numeroOperation: 'FOKAD-Creance-${numberItem + 1}',
-        signature: matricule.toString());
+        signature: matricule.toString(),
+        approbation: false,
+        statutPaie: false
+    );
     await CreanceApi().insertData(creanceModel);
     Routemaster.of(context).pop();
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(

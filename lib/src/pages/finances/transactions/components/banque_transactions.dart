@@ -30,6 +30,7 @@ class _BanqueTransactionsState extends State<BanqueTransactions> {
   final controller = ScrollController();
   final ScrollController _controllerBillet = ScrollController();
   final _form = GlobalKey<FormState>();
+  final _formRetrait = GlobalKey<FormState>();
 
   bool isLoading = false;
 
@@ -46,7 +47,9 @@ class _BanqueTransactionsState extends State<BanqueTransactions> {
   String? departement;
   String? typeOperation;
 
-  final List<String> typeCaisse = TypeOperation().typeVereCash;
+  final List<String> typeCaisse = TypeOperation().typeVereCaisse;
+  final List<String> typeBanque = TypeOperation().typeVereBanque;
+  final List<String> typeBanqueRetraitDepot = TypeOperation().typeBanqueRetraitDepot;
   final List<String> departementList = Dropdown().departement;
 
   late List<Map<String, dynamic>> _values;
@@ -209,16 +212,17 @@ class _BanqueTransactionsState extends State<BanqueTransactions> {
                                 Expanded(child: montantWidget())
                               ],
                             ),
-                            ligneBudgtaireWidget(),
-                            Row(
-                              children: [
-                                Expanded(child: deperatmentWidget()),
-                                const SizedBox(
-                                  width: p10,
-                                ),
-                                Expanded(child: typeOperationWidget())
-                              ],
-                            ),
+                            // ligneBudgtaireWidget(),
+                            // Row(
+                            //   children: [
+                            //     Expanded(child: deperatmentWidget()),
+                            //     const SizedBox(
+                            //       width: p10,
+                            //     ),
+                            //     Expanded(child: )
+                            //   ],
+                            // ),
+                            // typeOperationWidget(),
                             if (count == 0)
                             Row(
                               mainAxisAlignment: MainAxisAlignment.end,
@@ -253,7 +257,7 @@ class _BanqueTransactionsState extends State<BanqueTransactions> {
                                 press: () {
                                   final form = _form.currentState!;
                                   if (form.validate()) {
-                                    submit();
+                                    submitDepot();
                                     form.reset();
                                   }
                                 })
@@ -279,7 +283,7 @@ class _BanqueTransactionsState extends State<BanqueTransactions> {
                 ),
                 backgroundColor: Colors.transparent,
                 child: Form(
-                  key: _form,
+                  key: _formRetrait,
                   child: Card(
                     child: Padding(
                       padding: const EdgeInsets.all(p16),
@@ -318,16 +322,16 @@ class _BanqueTransactionsState extends State<BanqueTransactions> {
                                 Expanded(child: montantWidget())
                               ],
                             ),
-                            ligneBudgtaireWidget(),
                             Row(
                               children: [
                                 Expanded(child: deperatmentWidget()),
                                 const SizedBox(
                                   width: p10,
                                 ),
-                                Expanded(child: typeOperationWidget())
+                                Expanded(child: ligneBudgtaireWidget())
                               ],
                             ),
+                            // typeOperationWidgetRetrait()
                             if (count == 0)
                             Row(
                               mainAxisAlignment: MainAxisAlignment.end,
@@ -361,9 +365,9 @@ class _BanqueTransactionsState extends State<BanqueTransactions> {
                                 title: 'Soumettre',
                                 isLoading: isLoading,
                                 press: () {
-                                  final form = _form.currentState!;
+                                  final form = _formRetrait.currentState!;
                                   if (form.validate()) {
-                                    submit();
+                                    submitRetrait();
                                     form.reset();
                                   }
                                 })
@@ -388,9 +392,9 @@ class _BanqueTransactionsState extends State<BanqueTransactions> {
             labelText: 'Nom complet',
           ),
           keyboardType: TextInputType.text,
-          validator: (val) {
-            return 'Ce champs est obligatoire';
-          },
+          validator: (value) => value != null && value.isEmpty
+              ? 'Ce champs est obligatoire.'
+              : null,
           style: const TextStyle(),
         ));
   }
@@ -406,9 +410,9 @@ class _BanqueTransactionsState extends State<BanqueTransactions> {
             labelText: 'N° de la pièce justificative',
           ),
           keyboardType: TextInputType.text,
-          validator: (val) {
-            return 'Ce champs est obligatoire';
-          },
+          validator: (value) => value != null && value.isEmpty
+              ? 'Ce champs est obligatoire.'
+              : null,
           style: const TextStyle(),
         ));
   }
@@ -424,9 +428,9 @@ class _BanqueTransactionsState extends State<BanqueTransactions> {
             labelText: 'Libellé',
           ),
           keyboardType: TextInputType.text,
-          validator: (val) {
-            return 'Ce champs est obligatoire';
-          },
+          validator: (value) => value != null && value.isEmpty
+              ? 'Ce champs est obligatoire.'
+              : null,
           style: const TextStyle(),
         ));
   }
@@ -448,9 +452,9 @@ class _BanqueTransactionsState extends State<BanqueTransactions> {
                   labelText: 'Montant',
                 ),
                 keyboardType: TextInputType.text,
-                validator: (val) {
-                  return 'Ce champs est obligatoire';
-                },
+                validator: (value) => value != null && value.isEmpty
+                    ? 'Ce champs est obligatoire.'
+                    : null,
                 style: const TextStyle(),
               ),
             ),
@@ -529,9 +533,6 @@ class _BanqueTransactionsState extends State<BanqueTransactions> {
                                 labelText: '${index + 1}. Nombre',
                               ),
                               keyboardType: TextInputType.text,
-                              validator: (val) {
-                                return 'Ce champs est obligatoire';
-                              },
                               style: const TextStyle(),
                             ))),
                     const SizedBox(width: p10),
@@ -546,9 +547,6 @@ class _BanqueTransactionsState extends State<BanqueTransactions> {
                                 labelText: '${index + 1}. Coupure billet',
                               ),
                               keyboardType: TextInputType.text,
-                              validator: (val) {
-                                return 'Ce champs est obligatoire';
-                              },
                               style: const TextStyle(),
                             )))
                   ],
@@ -625,7 +623,34 @@ class _BanqueTransactionsState extends State<BanqueTransactions> {
         ),
         value: typeOperation,
         isExpanded: true,
-        items: typeCaisse.map((String value) {
+        items: typeBanque.map((String value) {
+          return DropdownMenuItem<String>(
+            value: value,
+            child: Text(value),
+          );
+        }).toList(),
+        onChanged: (value) {
+          setState(() {
+            typeOperation = value!;
+          });
+        },
+      ),
+    );
+  }
+
+  Widget typeOperationWidgetRetrait() {
+    return Container(
+      margin: const EdgeInsets.only(bottom: p20),
+      child: DropdownButtonFormField<String>(
+        decoration: InputDecoration(
+          labelText: 'Type d\'Operation',
+          labelStyle: const TextStyle(),
+          border: OutlineInputBorder(borderRadius: BorderRadius.circular(5.0)),
+          contentPadding: const EdgeInsets.only(left: 5.0),
+        ),
+        value: typeOperation,
+        isExpanded: true,
+        items: typeBanque.map((String value) {
           return DropdownMenuItem<String>(
             value: value,
             child: Text(value),
@@ -673,7 +698,29 @@ class _BanqueTransactionsState extends State<BanqueTransactions> {
     return encoder.convert(jsonObject);
   }
 
-  Future submit() async {
+  Future submitDepot() async {
+    final jsonList = _values.map((item) => jsonEncode(item)).toList();
+    final banqueModel = BanqueModel(
+        nomComplet: nomCompletController.text,
+        pieceJustificative: pieceJustificativeController.text,
+        libelle: libelleController.text,
+        montant: montantController.text,
+        coupureBillet: jsonList,
+        ligneBudgtaire: '',
+        departement: '',
+        typeOperation: 'Depot',
+        numeroOperation: 'FOKAD-Banque-${numberItem + 1}',
+        created: DateTime.now(),
+        signature: matricule.toString());
+    await BanqueApi().insertData(banqueModel);
+    Routemaster.of(context).pop();
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      content: const Text("Enregistrer avec succès!"),
+      backgroundColor: Colors.green[700],
+    ));
+  }
+
+  Future submitRetrait() async {
     final jsonList = _values.map((item) => jsonEncode(item)).toList();
     final banqueModel = BanqueModel(
         nomComplet: nomCompletController.text,
@@ -683,7 +730,7 @@ class _BanqueTransactionsState extends State<BanqueTransactions> {
         coupureBillet: jsonList,
         ligneBudgtaire: ligneBudgtaire.toString(),
         departement: departement.toString(),
-        typeOperation: typeOperation.toString(),
+        typeOperation: 'Retrait',
         numeroOperation: 'FOKAD-Banque-${numberItem + 1}',
         created: DateTime.now(),
         signature: matricule.toString());

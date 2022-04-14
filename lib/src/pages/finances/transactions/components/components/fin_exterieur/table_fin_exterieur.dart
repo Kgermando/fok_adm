@@ -23,74 +23,114 @@ class _TableFinExterieurState extends State<TableFinExterieur> {
   PlutoGridSelectingMode gridSelectingMode = PlutoGridSelectingMode.row;
 
   int? id;
+  double cumul = 0.0;
 
   @override
   initState() {
     agentsColumn();
-    timer = Timer.periodic(const Duration(milliseconds: 500), (t) {
-      agentsRow();
-    });
+    getData();
+    agentsRow();
 
     super.initState();
   }
 
-  @override
-  void dispose() {
-    timer!.cancel();
-    super.dispose();
+  Future<void> getData() async {
+    List<FinanceExterieurModel?> dataList = await FinExterieurApi().getAllData();
+    setState(() {
+      List<FinanceExterieurModel?> recetteList = dataList;
+      for (var item in recetteList) {
+        cumul += double.parse(item!.montant);
+      }
+    });
   }
 
   @override
   Widget build(BuildContext context) {
-    return PlutoGrid(
-      columns: columns,
-      rows: rows,
-      onRowDoubleTap: (PlutoGridOnRowDoubleTapEvent tapEvent) {
-        final dataList = tapEvent.row!.cells.values;
-        final idPlutoRow = dataList.elementAt(0);
+    return Column(
+      children: [
+        Expanded(
+          child: PlutoGrid(
+            columns: columns,
+            rows: rows,
+            onRowDoubleTap: (PlutoGridOnRowDoubleTapEvent tapEvent) {
+              final dataList = tapEvent.row!.cells.values;
+              final idPlutoRow = dataList.elementAt(0);
+        
+              Navigator.of(context).push(MaterialPageRoute(
+                  builder: (context) => DetailFinExterieur(id: idPlutoRow.value)));
+            },
+            onLoaded: (PlutoGridOnLoadedEvent event) {
+              stateManager = event.stateManager;
+              stateManager!.setShowColumnFilter(true);
+            },
+            createHeader: (PlutoGridStateManager header) {
+              return Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [PrintWidget(onPressed: () {})],
+              );
+            },
+            configuration: PlutoGridConfiguration(
+              columnFilterConfig: PlutoGridColumnFilterConfig(
+                filters: const [
+                  ...FilterHelper.defaultFilters,
+                  // custom filter
+                  ClassYouImplemented(),
+                ],
+                resolveDefaultColumnFilter: (column, resolver) {
+                  if (column.field == 'nomComplet') {
+                    return resolver<ClassYouImplemented>() as PlutoFilterType;
+                  } else if (column.field == 'pieceJustificative') {
+                    return resolver<ClassYouImplemented>() as PlutoFilterType;
+                  } else if (column.field == 'libelle') {
+                    return resolver<ClassYouImplemented>() as PlutoFilterType;
+                  } else if (column.field == 'montant') {
+                    return resolver<ClassYouImplemented>() as PlutoFilterType;
+                  } else if (column.field == 'ligneBudgtaire') {
+                    return resolver<ClassYouImplemented>() as PlutoFilterType;
+                  } else if (column.field == 'departement') {
+                    return resolver<ClassYouImplemented>() as PlutoFilterType;
+                  } else if (column.field == 'typeOperation') {
+                    return resolver<ClassYouImplemented>() as PlutoFilterType;
+                  } else if (column.field == 'numeroOperation') {
+                    return resolver<ClassYouImplemented>() as PlutoFilterType;
+                  } else if (column.field == 'created') {
+                    return resolver<ClassYouImplemented>() as PlutoFilterType;
+                  }
+                  return resolver<PlutoFilterTypeContains>() as PlutoFilterType;
+                },
+              ),
+            ),
+          ),
+        ),
+        totalSolde()
+      ],
+    );
+  }
 
-        Navigator.of(context).push(MaterialPageRoute(
-            builder: (context) => DetailFinExterieur(id: idPlutoRow.value)));
-      },
-      onLoaded: (PlutoGridOnLoadedEvent event) {
-        stateManager = event.stateManager;
-        stateManager!.setShowColumnFilter(true);
-      },
-      createHeader: (PlutoGridStateManager header) {
-        return Row(
-          mainAxisAlignment: MainAxisAlignment.end,
-          children: [PrintWidget(onPressed: () {})],
-        );
-      },
-      configuration: PlutoGridConfiguration(
-        columnFilterConfig: PlutoGridColumnFilterConfig(
-          filters: const [
-            ...FilterHelper.defaultFilters,
-            // custom filter
-            ClassYouImplemented(),
+  Widget totalSolde() {
+    final bodyMedium = Theme.of(context).textTheme.bodyMedium;
+    return Card(
+      color: Colors.red.shade700,
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Row(
+              children: [
+                SelectableText('Total: ',
+                    style: bodyMedium!.copyWith(
+                        fontWeight: FontWeight.bold, color: Colors.white)),
+                SelectableText(
+                    '${NumberFormat.decimalPattern('fr').format(cumul)} \$',
+                    style: bodyMedium.copyWith(
+                        fontWeight: FontWeight.bold, color: Colors.white))
+              ],
+            ),
+            const SizedBox(
+              width: 100,
+            )
           ],
-          resolveDefaultColumnFilter: (column, resolver) {
-            if (column.field == 'nomComplet') {
-              return resolver<ClassYouImplemented>() as PlutoFilterType;
-            } else if (column.field == 'pieceJustificative') {
-              return resolver<ClassYouImplemented>() as PlutoFilterType;
-            } else if (column.field == 'libelle') {
-              return resolver<ClassYouImplemented>() as PlutoFilterType;
-            } else if (column.field == 'montant') {
-              return resolver<ClassYouImplemented>() as PlutoFilterType;
-            } else if (column.field == 'ligneBudgtaire') {
-              return resolver<ClassYouImplemented>() as PlutoFilterType;
-            } else if (column.field == 'departement') {
-              return resolver<ClassYouImplemented>() as PlutoFilterType;
-            } else if (column.field == 'typeOperation') {
-              return resolver<ClassYouImplemented>() as PlutoFilterType;
-            } else if (column.field == 'numeroOperation') {
-              return resolver<ClassYouImplemented>() as PlutoFilterType;
-            } else if (column.field == 'created') {
-              return resolver<ClassYouImplemented>() as PlutoFilterType;
-            }
-            return resolver<PlutoFilterTypeContains>() as PlutoFilterType;
-          },
         ),
       ),
     );

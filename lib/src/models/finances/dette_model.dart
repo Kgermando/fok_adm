@@ -7,10 +7,11 @@ class DetteModel {
   late String numeroOperation;
   late DateTime created;
   late String signature;
+  late bool approbation;
+  late bool statutPaie;
 
-  DetteModel( 
-    {
-      this.id,
+  DetteModel({
+    this.id,
     required this.nomComplet,
     required this.pieceJustificative,
     required this.libelle,
@@ -18,6 +19,8 @@ class DetteModel {
     required this.numeroOperation,
     required this.created,
     required this.signature,
+    required this.approbation,
+    required this.statutPaie,
   });
 
   factory DetteModel.fromSQL(List<dynamic> row) {
@@ -29,21 +32,23 @@ class DetteModel {
         montant: row[4],
         numeroOperation: row[5],
         created: row[6],
-        signature: row[7]
-    ); 
+        signature: row[7],
+        approbation: row[8],
+        statutPaie: row[9]);
   }
 
   factory DetteModel.fromJson(Map<String, dynamic> json) {
     return DetteModel(
-      id: json['id'],
-      nomComplet: json['nomComplet'],
-      pieceJustificative: json['pieceJustificative'],
-      libelle: json['libelle'],
-      montant: json['montant'],
-      numeroOperation: json['numeroOperation'],
-      created: DateTime.parse(json['created']),
-      signature: json['signature']
-    );
+        id: json['id'],
+        nomComplet: json['nomComplet'],
+        pieceJustificative: json['pieceJustificative'],
+        libelle: json['libelle'],
+        montant: json['montant'],
+        numeroOperation: json['numeroOperation'],
+        created: DateTime.parse(json['created']),
+        signature: json['signature'],
+        approbation: json['approbation'],
+        statutPaie: json['statutPaie']);
   }
 
   Map<String, dynamic> toJson() {
@@ -56,6 +61,8 @@ class DetteModel {
       'numeroOperation': numeroOperation,
       'created': created.toIso8601String(),
       'signature': signature,
+      'approbation': approbation,
+      'statutPaie': statutPaie
     };
   }
 }

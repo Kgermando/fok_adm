@@ -17,7 +17,6 @@ class TableDevis extends StatefulWidget {
 }
 
 class _TableDevisState extends State<TableDevis> {
-  Timer? timer;
   List<PlutoColumn> columns = [];
   List<PlutoRow> rows = [];
   PlutoGridStateManager? stateManager;
@@ -34,7 +33,6 @@ class _TableDevisState extends State<TableDevis> {
 
   @override
   void dispose() {
-    timer!.cancel();
     super.dispose();
   }
 

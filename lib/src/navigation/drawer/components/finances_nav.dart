@@ -88,18 +88,18 @@ class _FinancesNavState extends State<FinancesNav> {
                       .replace(FinanceRoutes.transactionsCreances);
                   // Routemaster.of(context).pop();
                 }),
-              DrawerWidget(
-                selected:
-                    widget.pageCurrente == FinanceRoutes.transactionsDepenses,
-                icon: Icons.arrow_right,
-                sizeIcon: 15.0,
-                title: 'Dépenses',
-                style: bodyText2,
-                onTap: () {
-                  Routemaster.of(context)
-                      .replace(FinanceRoutes.transactionsDepenses);
-                  // Routemaster.of(context).pop();
-                }),
+              // DrawerWidget(
+              //   selected:
+              //       widget.pageCurrente == FinanceRoutes.transactionsDepenses,
+              //   icon: Icons.arrow_right,
+              //   sizeIcon: 15.0,
+              //   title: 'Dépenses',
+              //   style: bodyText2,
+              //   onTap: () {
+              //     Routemaster.of(context)
+              //         .replace(FinanceRoutes.transactionsDepenses);
+              //     // Routemaster.of(context).pop();
+              //   }),
               DrawerWidget(
                   selected: widget.pageCurrente == FinanceRoutes.transactionsDettes,
                   icon: Icons.arrow_right,

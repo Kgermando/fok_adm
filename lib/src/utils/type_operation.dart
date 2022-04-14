@@ -1,7 +1,10 @@
 class TypeOperation {
-  List<String> typeCaisse = ['Encaissement', 'Décaissement'];
+  List<String> typeVereCaisse = ['Encaissement', 'Decaissement'];
   
-  List<String> typeVereCash = ['Encaissement', 'Décaissement'];
+  List<String> typeVereBanque = ['Retrait', 'Depot'];
+
+  // List<String> typeVereBanques = ['Virement', 'Depot'];
+  List<String> typeBanqueRetraitDepot = ['Virement', 'Retrait'];
 
   List<String> modePayemnt = ['Carte bancaire', 'Chèque', 'Mobile money', 'Bon de décaissement'];
 }
