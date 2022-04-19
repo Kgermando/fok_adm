@@ -265,9 +265,9 @@ class _FinExterneTransactionsState extends State<FinExterneTransactions> {
             labelText: 'Nom complet',
           ),
           keyboardType: TextInputType.text,
-          validator: (val) {
-            return 'Ce champs est obligatoire';
-          },
+          validator: (value) => value != null && value.isEmpty
+              ? 'Ce champs est obligatoire.'
+              : null,
           style: const TextStyle(),
         ));
   }
@@ -283,9 +283,9 @@ class _FinExterneTransactionsState extends State<FinExterneTransactions> {
             labelText: 'N° de la pièce justificative',
           ),
           keyboardType: TextInputType.text,
-          validator: (val) {
-            return 'Ce champs est obligatoire';
-          },
+          validator: (value) => value != null && value.isEmpty
+              ? 'Ce champs est obligatoire.'
+              : null,
           style: const TextStyle(),
         ));
   }
@@ -301,9 +301,9 @@ class _FinExterneTransactionsState extends State<FinExterneTransactions> {
             labelText: 'Libellé',
           ),
           keyboardType: TextInputType.text,
-          validator: (val) {
-            return 'Ce champs est obligatoire';
-          },
+          validator: (value) => value != null && value.isEmpty
+              ? 'Ce champs est obligatoire.'
+              : null,
           style: const TextStyle(),
         ));
   }
@@ -325,9 +325,9 @@ class _FinExterneTransactionsState extends State<FinExterneTransactions> {
                   labelText: 'Montant',
                 ),
                 keyboardType: TextInputType.text,
-                validator: (val) {
-                  return 'Ce champs est obligatoire';
-                },
+                validator: (value) => value != null && value.isEmpty
+                    ? 'Ce champs est obligatoire.'
+                    : null,
                 style: const TextStyle(),
               ),
             ),
@@ -364,9 +364,9 @@ class _FinExterneTransactionsState extends State<FinExterneTransactions> {
                             labelText: '${index + 1}. Nombre',
                           ),
                           keyboardType: TextInputType.text,
-                          validator: (val) {
-                            return 'Ce champs est obligatoire';
-                          },
+                          validator: (value) => value != null && value.isEmpty
+                              ? 'Ce champs est obligatoire.'
+                              : null,
                           style: const TextStyle(),
                         ))),
                 const SizedBox(width: p10),
@@ -381,9 +381,9 @@ class _FinExterneTransactionsState extends State<FinExterneTransactions> {
                             labelText: '${index + 1}. Coupure billet',
                           ),
                           keyboardType: TextInputType.text,
-                          validator: (val) {
-                            return 'Ce champs est obligatoire';
-                          },
+                          validator: (value) => value != null && value.isEmpty
+                              ? 'Ce champs est obligatoire.'
+                              : null,
                           style: const TextStyle(),
                         )))
               ],

@@ -16,7 +16,7 @@ class TableDette extends StatefulWidget {
 }
 
 class _TableDetteState extends State<TableDette> {
- Timer? timer;
+  Timer? timer;
   List<PlutoColumn> columns = [];
   List<PlutoRow> rows = [];
   PlutoGridStateManager? stateManager;

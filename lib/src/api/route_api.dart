@@ -70,3 +70,26 @@ var addvalorisationsUrl = Uri.parse(
 
 var devisUrl = Uri.parse("$mainUrl/devis/");
 var addDevissUrl = Uri.parse("$mainUrl/devis/insert-new-devis");
+
+
+// Logistiques
+var anguinsUrl = Uri.parse("$mainUrl/anguins/");
+var aaddAnguinsUrl = Uri.parse("$mainUrl/anguins/insert-new-anguin");
+
+var carburantsUrl = Uri.parse("$mainUrl/carburants/");
+var addCarburantsUrl = Uri.parse("$mainUrl/carburants/insert-new-carburant");
+
+var entretiensUrl = Uri.parse("$mainUrl/entretiens/");
+var addEntretiensUrl = Uri.parse("$mainUrl/entretiens/insert-new-entretien");
+
+var etatMaterielUrl = Uri.parse("$mainUrl/etat_materiels/");
+var addEtatMaterielUrl = Uri.parse("$mainUrl/etat_materiels/insert-new-etat-materiel");
+
+var immobiliersUrl = Uri.parse("$mainUrl/immobiliers/");
+var addImmobiliersUrl = Uri.parse("$mainUrl/immobiliers/insert-new-immobilier");
+
+var mobiliersUrl = Uri.parse("$mainUrl/mobiliers/");
+var addMobiliersUrl = Uri.parse("$mainUrl/mobiliers/insert-new-mobilier");
+
+var trajetsUrl = Uri.parse("$mainUrl/trajets/");
+var addTrajetssUrl = Uri.parse("$mainUrl/trajets/insert-new-trajet");

@@ -2,21 +2,20 @@
 
 import 'dart:convert';
 
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:fokad_admin/src/api/auth/auth_api.dart';
 import 'package:fokad_admin/src/api/route_api.dart';
 import 'package:fokad_admin/src/models/users/user_model.dart';
-import 'package:http/http.dart' as http;
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:http/http.dart' as http; 
 
 
 class UserApi {
   var client = http.Client();
+  final storage = const FlutterSecureStorage();
 
   Future<String?> getToken() async {
-    final prefs = await SharedPreferences.getInstance();
-    String? accessToken = prefs.getString("accessToken");
-    // print('accessToken $accessToken');
-    return accessToken;
+    final data = await storage.read(key: "accessToken");
+    return data;
   }
 
   Future<List<UserModel>> getAllData() async {
@@ -72,8 +71,7 @@ class UserApi {
   }
 
   Future<UserModel> insertData(UserModel userModel) async {
-    final prefs = await SharedPreferences.getInstance();
-    var accessToken = prefs.getString("accessToken");
+    final accessToken = await storage.read(key: 'accessToken');
 
     var data = userModel.toJson();
     var body = jsonEncode(data);
@@ -95,8 +93,7 @@ class UserApi {
   }
 
   Future<UserModel> updateData(int id, UserModel userModel) async {
-    final prefs = await SharedPreferences.getInstance();
-    var accessToken = prefs.getString("accessToken");
+    final accessToken = await storage.read(key: 'accessToken');
 
     var data = userModel.toJson();
     var body = jsonEncode(data);
@@ -116,10 +113,9 @@ class UserApi {
   }
 
   Future<void> deleteData(int id) async {
-    final prefs = await SharedPreferences.getInstance();
-    var accessToken = prefs.getString("accessToken");
-    var deleteAgentsUrl = Uri.parse("$mainUrl/user/delete-user/$id");
+    final accessToken = await storage.read(key: 'accessToken');
 
+    var deleteAgentsUrl = Uri.parse("$mainUrl/user/delete-user/$id");
     var res = await client.delete(deleteAgentsUrl, headers: <String, String>{
       'Content-Type': 'application/json; charset=UTF-8',
       'Authorization': 'Bearer $accessToken'

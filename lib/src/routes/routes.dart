@@ -23,6 +23,20 @@ import 'package:fokad_admin/src/pages/finances/transactions/components/dette_tra
 import 'package:fokad_admin/src/pages/finances/transactions/components/fin_externe_transactions.dart';
 import 'package:fokad_admin/src/pages/finances/transactions/components/paiement_transactions.dart';
 import 'package:fokad_admin/src/pages/finances/transactions/transactions_fincance.dart';
+import 'package:fokad_admin/src/pages/logistiques/automobile/add_anguin_auto.dart';
+import 'package:fokad_admin/src/pages/logistiques/automobile/add_carburant.dart';
+import 'package:fokad_admin/src/pages/logistiques/automobile/add_trajet_auto.dart';
+import 'package:fokad_admin/src/pages/logistiques/automobile/anguin_auto.dart';
+import 'package:fokad_admin/src/pages/logistiques/automobile/carburant_auto.dart';
+import 'package:fokad_admin/src/pages/logistiques/automobile/trajet_auto.dart';
+import 'package:fokad_admin/src/pages/logistiques/entretiens/add_entretien.dart';
+import 'package:fokad_admin/src/pages/logistiques/entretiens/entretien_page.dart';
+import 'package:fokad_admin/src/pages/logistiques/materiels/add_etat_materiel.dart';
+import 'package:fokad_admin/src/pages/logistiques/materiels/add_immobilier.dart';
+import 'package:fokad_admin/src/pages/logistiques/materiels/add_mobiler_materiel.dart';
+import 'package:fokad_admin/src/pages/logistiques/materiels/etat_materiel.dart';
+import 'package:fokad_admin/src/pages/logistiques/materiels/immobilier_materiel.dart';
+import 'package:fokad_admin/src/pages/logistiques/materiels/mobilier_materiel.dart';
 import 'package:fokad_admin/src/pages/rh/agents/agents_rh.dart';
 import 'package:fokad_admin/src/pages/rh/agents/components/add_agent.dart';
 import 'package:fokad_admin/src/pages/rh/agents/components/agent_page.dart';
@@ -85,7 +99,26 @@ class FinanceRoutes {
   static const comptabiliteBilan = "/comptabilite-bilan";
   static const comptabiliteJournal = "/comptabilite-journal";
   static const comptabiliteValorisation = "/comptabilite-valorisation";
-  
+}
+
+class LogistiqueRoutes {
+  static const logDashboard = "/log-dashboard";
+  static const logAnguinAuto = "/log-anguin-auto";
+  static const logAddAnguinAuto = "/log-add-anguin-auto";
+  static const logAddCarburantAuto = "/log-add-carburant-auto";
+  static const logCarburantAuto = "/log-carburant-auto";
+  static const logAddTrajetAuto = "/log-add-trajet-auto";
+  static const logTrajetAuto = "/log-trajet-auto";
+  static const logAddEntretien = "/log-add-entretien";
+  static const logEntretien = "/log-entretien";
+
+
+  static const logAddEtatMateriel = "/log-add-etat-materiel";
+  static const logEtatMateriel = "/log-etat-materiel";
+  static const logAddImmobilerMateriel = "/log-add-immobilier-materiel";
+  static const logImmobilierMateriel = "/log-immobilier-materiel";
+  static const logAddMobilierMateriel = "/log-add-mobilier-materiel";
+  static const logMobilierMateriel = "/log-mobilier-materiel";
 }
 
 class Routing {
@@ -143,7 +176,24 @@ class Routing {
       FinanceRoutes.comptabiliteJournal: (_) => const MaterialPage(child: JournalComptabilite()),
       FinanceRoutes.comptabiliteValorisation: (_) => const MaterialPage(child: ValorisationComptabilite()), 
 
+      // DEVIS
       DevisRoutes.devis: (_) => const MaterialPage(child: DevisPage()),
+
+      LogistiqueRoutes.logAddAnguinAuto: (_) => const MaterialPage(child: AddAnguinAuto()), 
+      LogistiqueRoutes.logAnguinAuto: (_) => const MaterialPage(child: AnguinAuto()), 
+      LogistiqueRoutes.logAddCarburantAuto: (_) => const MaterialPage(child: AddCarburantAuto()), 
+      LogistiqueRoutes.logCarburantAuto: (_) => const MaterialPage(child: CarburantAuto()), 
+      LogistiqueRoutes.logAddTrajetAuto: (_) => const MaterialPage(child: AddTrajetAuto()), 
+      LogistiqueRoutes.logTrajetAuto: (_) => const MaterialPage(child: TrajetAuto()),
+      LogistiqueRoutes.logAddEntretien: (_) => const MaterialPage(child: AddEntretienPage()),
+      LogistiqueRoutes.logEntretien: (_) => const MaterialPage(child: EntretienPage()),
+      LogistiqueRoutes.logAddEtatMateriel: (_) => const MaterialPage(child: AddEtatMateriel()),
+      LogistiqueRoutes.logEtatMateriel: (_) => const MaterialPage(child: EtatMateriel()),
+      LogistiqueRoutes.logAddImmobilerMateriel: (_) => const MaterialPage(child: AddImmobilierMateriel()),
+      LogistiqueRoutes.logImmobilierMateriel: (_) =>const MaterialPage(child: ImmobilierMateriel()),
+      LogistiqueRoutes.logAddMobilierMateriel: (_) => const MaterialPage(child: AddMobilerMateriel()),
+      LogistiqueRoutes.logMobilierMateriel: (_) => const MaterialPage(child: MobilierMateriel()),
+
     },
     onUnknownRoute: (_) => const MaterialPage(child: NotFoundPage()),
   );

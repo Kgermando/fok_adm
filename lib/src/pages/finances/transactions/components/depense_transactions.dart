@@ -255,9 +255,9 @@ class _DepenseTransactionsState extends State<DepenseTransactions> {
             labelText: 'Nom complet',
           ),
           keyboardType: TextInputType.text,
-          validator: (val) {
-            return 'Ce champs est obligatoire';
-          },
+          validator: (value) => value != null && value.isEmpty
+              ? 'Ce champs est obligatoire.'
+              : null,
           style: const TextStyle(),
         ));
   }
@@ -273,9 +273,9 @@ class _DepenseTransactionsState extends State<DepenseTransactions> {
             labelText: 'N° de la pièce justificative',
           ),
           keyboardType: TextInputType.text,
-          validator: (val) {
-            return 'Ce champs est obligatoire';
-          },
+          validator: (value) => value != null && value.isEmpty
+              ? 'Ce champs est obligatoire.'
+              : null,
           style: const TextStyle(),
         ));
   }
@@ -315,9 +315,9 @@ class _DepenseTransactionsState extends State<DepenseTransactions> {
                   labelText: 'Montant',
                 ),
                 keyboardType: TextInputType.text,
-                validator: (val) {
-                  return 'Ce champs est obligatoire';
-                },
+                validator: (value) => value != null && value.isEmpty
+              ? 'Ce champs est obligatoire.'
+              : null,
                 style: const TextStyle(),
               ),
             ),

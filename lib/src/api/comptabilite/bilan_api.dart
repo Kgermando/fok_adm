@@ -2,21 +2,19 @@
 
 import 'dart:convert';
 
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:fokad_admin/src/api/auth/auth_api.dart';
 import 'package:fokad_admin/src/api/route_api.dart';
 import 'package:fokad_admin/src/models/comptabilites/bilan_model.dart';
 import 'package:http/http.dart' as http;
-import 'package:shared_preferences/shared_preferences.dart';
-
 
 class BilanApi {
   var client = http.Client();
+  final storage = const FlutterSecureStorage();
 
-  Future<String?> getToken() async {
-    final prefs = await SharedPreferences.getInstance();
-    String? accessToken = prefs.getString("accessToken");
-    // print('accessToken $accessToken');
-    return accessToken;
+ Future<String?> getToken() async {
+    final data = await storage.read(key: "accessToken");
+    return data;
   }
 
   Future<List<BilanModel>> getAllData() async {
@@ -71,8 +69,7 @@ class BilanApi {
 
   Future<BilanModel> insertData(
       BilanModel bilanModel) async {
-    final prefs = await SharedPreferences.getInstance();
-    var accessToken = prefs.getString("accessToken");
+    final accessToken = await storage.read(key: 'accessToken');
 
     var data = bilanModel.toJson();
     var body = jsonEncode(data);
@@ -95,8 +92,7 @@ class BilanApi {
 
   Future<BilanModel> updateData(
       int id, BilanModel banqueModel) async {
-    final prefs = await SharedPreferences.getInstance();
-    var accessToken = prefs.getString("accessToken");
+    final accessToken = await storage.read(key: 'accessToken');
 
     var data = banqueModel.toJson();
     var body = jsonEncode(data);
@@ -117,8 +113,7 @@ class BilanApi {
   }
 
   Future<BilanModel> deleteData(int id) async {
-    final prefs = await SharedPreferences.getInstance();
-    var accessToken = prefs.getString("accessToken");
+    final accessToken = await storage.read(key: 'accessToken');
 
     var deleteUrl = Uri.parse(
         "$mainUrl/finances/comptabilite/bilans/delete-comptabilite-bilan/$id");

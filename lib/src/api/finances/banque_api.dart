@@ -2,22 +2,22 @@
 
 import 'dart:convert';
 
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:fokad_admin/src/api/auth/auth_api.dart';
 import 'package:fokad_admin/src/api/route_api.dart';
 import 'package:fokad_admin/src/models/finances/banque_model.dart';
 import 'package:http/http.dart' as http;
-import 'package:shared_preferences/shared_preferences.dart';
 
 
 class BanqueApi {
   var client = http.Client();
+  final storage = const FlutterSecureStorage();
 
-  Future<String?> getToken() async {
-    final prefs = await SharedPreferences.getInstance();
-    String? accessToken = prefs.getString("accessToken");
-    // print('accessToken $accessToken');
-    return accessToken;
+   Future<String?> getToken() async {
+    final data = await storage.read(key: "accessToken");
+    return data;
   }
+
 
   Future<List<BanqueModel>> getAllData() async {
     String? token = await getToken();
@@ -71,8 +71,7 @@ class BanqueApi {
   }
 
   Future<BanqueModel> insertData(BanqueModel banqueModel) async {
-    final prefs = await SharedPreferences.getInstance();
-    var accessToken = prefs.getString("accessToken");
+    final accessToken = await storage.read(key: 'accessToken');
 
     var data = banqueModel.toJson();
     var body = jsonEncode(data);
@@ -95,8 +94,7 @@ class BanqueApi {
   }
 
   Future<BanqueModel> updateData(int id, BanqueModel banqueModel) async {
-    final prefs = await SharedPreferences.getInstance();
-    var accessToken = prefs.getString("accessToken");
+    final accessToken = await storage.read(key: 'accessToken');
 
     var data = banqueModel.toJson();
     var body = jsonEncode(data);
@@ -116,8 +114,7 @@ class BanqueApi {
   }
 
   Future<BanqueModel> deleteData(int id) async {
-    final prefs = await SharedPreferences.getInstance();
-    var accessToken = prefs.getString("accessToken");
+    final accessToken = await storage.read(key: 'accessToken');
 
     var deleteUrl = Uri.parse("$mainUrl/finances/transactions/banques/delete-transaction-banque/$id");
 

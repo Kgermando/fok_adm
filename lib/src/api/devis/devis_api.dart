@@ -2,22 +2,22 @@
 
 import 'dart:convert';
 
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:fokad_admin/src/api/auth/auth_api.dart';
 import 'package:fokad_admin/src/api/route_api.dart';
 import 'package:fokad_admin/src/models/devis/devis_models.dart';
 import 'package:http/http.dart' as http;
-import 'package:shared_preferences/shared_preferences.dart';
 
 
 class DevisAPi {
    var client = http.Client();
+  final storage = const FlutterSecureStorage();
 
   Future<String?> getToken() async {
-    final prefs = await SharedPreferences.getInstance();
-    String? accessToken = prefs.getString("accessToken");
-    // print('accessToken $accessToken');
-    return accessToken;
+    final data = await storage.read(key: "accessToken");
+    return data;
   }
+
 
   Future<List<DevisModel>> getAllData() async {
     String? token = await getToken();
@@ -71,8 +71,7 @@ class DevisAPi {
   }
 
   Future<DevisModel> insertData(DevisModel devisModel) async {
-    final prefs = await SharedPreferences.getInstance();
-    var accessToken = prefs.getString("accessToken");
+    final accessToken = await storage.read(key: 'accessToken');
 
     var data = devisModel.toJson();
     var body = jsonEncode(data);
@@ -94,8 +93,7 @@ class DevisAPi {
   }
 
   Future<DevisModel> updateData(int id, DevisModel devisModel) async {
-    final prefs = await SharedPreferences.getInstance();
-    var accessToken = prefs.getString("accessToken");
+    final accessToken = await storage.read(key: 'accessToken');
 
     var data = devisModel.toJson();
     var body = jsonEncode(data);
@@ -116,8 +114,7 @@ class DevisAPi {
   }
 
   Future<DevisModel> deleteData(int id) async {
-    final prefs = await SharedPreferences.getInstance();
-    var accessToken = prefs.getString("accessToken");
+    final accessToken = await storage.read(key: 'accessToken');
 
     var deleteUrl = Uri.parse(
         "$mainUrl/devis/delete-devis/$id");

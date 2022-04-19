@@ -2,22 +2,22 @@
 
 import 'dart:convert';
 
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:fokad_admin/src/api/auth/auth_api.dart';
 import 'package:fokad_admin/src/api/route_api.dart';
 import 'package:fokad_admin/src/models/finances/fin_exterieur_model.dart';
 import 'package:http/http.dart' as http;
-import 'package:shared_preferences/shared_preferences.dart';
 
 
 class FinExterieurApi {
   var client = http.Client();
+  final storage = const FlutterSecureStorage();
 
-  Future<String?> getToken() async {
-    final prefs = await SharedPreferences.getInstance();
-    String? accessToken = prefs.getString("accessToken");
-    // print('accessToken $accessToken');
-    return accessToken;
+   Future<String?> getToken() async {
+    final data = await storage.read(key: "accessToken");
+    return data;
   }
+
 
   Future<List<FinanceExterieurModel>> getAllData() async {
     String? token = await getToken();
@@ -70,8 +70,7 @@ class FinExterieurApi {
   }
 
   Future<FinanceExterieurModel> insertData(FinanceExterieurModel financeExterieurModel) async {
-    final prefs = await SharedPreferences.getInstance();
-    var accessToken = prefs.getString("accessToken");
+    final accessToken = await storage.read(key: 'accessToken');
 
     var data = financeExterieurModel.toJson();
     var body = jsonEncode(data);
@@ -93,8 +92,7 @@ class FinExterieurApi {
   }
 
   Future<FinanceExterieurModel> updateData(int id, FinanceExterieurModel financeExterieurModel) async {
-    final prefs = await SharedPreferences.getInstance();
-    var accessToken = prefs.getString("accessToken");
+    final accessToken = await storage.read(key: 'accessToken');
 
     var data = financeExterieurModel.toJson();
     var body = jsonEncode(data);
@@ -115,8 +113,7 @@ class FinExterieurApi {
   }
 
   Future<FinanceExterieurModel> deleteData(int id) async {
-    final prefs = await SharedPreferences.getInstance();
-    var accessToken = prefs.getString("accessToken");
+    final accessToken = await storage.read(key: 'accessToken');
 
     var deleteUrl = Uri.parse(
         "$mainUrl/finances/transactions/banques/delete-transaction-finExterieur/$id");

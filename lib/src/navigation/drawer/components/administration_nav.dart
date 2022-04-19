@@ -1,6 +1,10 @@
 import 'package:badges/badges.dart';
 import 'package:flutter/material.dart';
+import 'package:fokad_admin/src/api/finances/creance_api.dart';
+import 'package:fokad_admin/src/api/finances/dette_api.dart';
 import 'package:fokad_admin/src/api/rh/paiement_salaire_api.dart';
+import 'package:fokad_admin/src/models/finances/creances_model.dart';
+import 'package:fokad_admin/src/models/finances/dette_model.dart';
 import 'package:fokad_admin/src/models/rh/paiement_salaire_model.dart';
 import 'package:fokad_admin/src/navigation/drawer/drawer_widget.dart';
 import 'package:fokad_admin/src/routes/routes.dart';
@@ -19,6 +23,8 @@ class _AdministrationNavState extends State<AdministrationNav> {
   bool isOpenAdmin = false;
 
   int countPaie = 0;
+  int nbrCreance = 0;
+  int nbrDette = 0;
 
   @override
   void initState() {
@@ -26,26 +32,32 @@ class _AdministrationNavState extends State<AdministrationNav> {
     super.initState();
   }
 
-  void getData() async {
+  Future<void> getData() async {
     List<PaiementSalaireModel> paiement =
         await PaiementSalaireApi().getAllData();
+    List<CreanceModel?> dataCreanceList = await CreanceApi().getAllData();
+    List<DetteModel?> dataDetteList = await DetteApi().getAllData();
 
     setState(() {
       countPaie =
           paiement.where((element) => element.approbation == false).length;
+      nbrCreance = dataCreanceList
+          .where((element) => element!.approbation == false)
+          .length;
+      nbrDette = dataDetteList.where((element) => element!.approbation == false).length;
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    final headline6 = Theme.of(context).textTheme.headline6;
+    final bodyMedium = Theme.of(context).textTheme.bodyMedium;
     final bodyText1 = Theme.of(context).textTheme.bodyText1;
     return ExpansionTile(
       leading: const Icon(
         Icons.admin_panel_settings,
         size: 30.0,
       ),
-      title: Text('Administration', style: headline6),
+      title: Text('Administration', style: bodyMedium),
       initiallyExpanded: false,
       onExpansionChanged: (val) {
         setState(() {

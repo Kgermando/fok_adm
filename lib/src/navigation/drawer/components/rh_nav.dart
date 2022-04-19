@@ -16,12 +16,12 @@ class _RhNavState extends State<RhNav> {
 
   @override
   Widget build(BuildContext context) {
-    final headline6 = Theme.of(context).textTheme.headline6;
+    final bodyMedium = Theme.of(context).textTheme.bodyMedium;
     final bodyText1 = Theme.of(context).textTheme.bodyText1;
 
     return ExpansionTile(
       leading: const Icon(Icons.group, size: 30.0),
-      title: Text('RH', style: headline6),
+      title: Text('RH', style: bodyMedium),
       initiallyExpanded: false,
       onExpansionChanged: (val) {
         setState(() {

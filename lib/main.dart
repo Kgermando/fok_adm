@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:fokad_admin/src/api/auth/auth_api.dart';
-import 'package:fokad_admin/src/controllers/app_state.dart';
 import 'package:fokad_admin/src/pages/administration/dashboard_administration.dart';
 import 'package:fokad_admin/src/pages/auth/login_auth.dart';
 import 'package:fokad_admin/src/provider/controller.dart';
@@ -46,7 +45,6 @@ class MyApp extends StatelessWidget {
           ChangeNotifierProvider(create: (context) => Controller()),
           ChangeNotifierProvider(create: (context) => ThemeProvider()),
           ChangeNotifierProvider(create: (context) => AuthApi()),
-          ChangeNotifierProvider(create: (context) => AppState())
         ],
         builder: (context, _) {
           final themeProvider = Provider.of<ThemeProvider>(context);

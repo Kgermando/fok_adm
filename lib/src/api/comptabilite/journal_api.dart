@@ -2,21 +2,20 @@
 
 import 'dart:convert';
 
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:fokad_admin/src/api/auth/auth_api.dart';
 import 'package:fokad_admin/src/api/route_api.dart';
 import 'package:fokad_admin/src/models/comptabilites/journal_model.dart';
 import 'package:http/http.dart' as http;
-import 'package:shared_preferences/shared_preferences.dart';
 
 
 class JournalApi {
   var client = http.Client();
+  final storage = const FlutterSecureStorage();
 
-  Future<String?> getToken() async {
-    final prefs = await SharedPreferences.getInstance();
-    String? accessToken = prefs.getString("accessToken");
-    // print('accessToken $accessToken');
-    return accessToken;
+   Future<String?> getToken() async {
+    final data = await storage.read(key: "accessToken");
+    return data;
   }
 
   Future<List<JournalModel>> getAllData() async {
@@ -72,8 +71,7 @@ class JournalApi {
 
   Future<JournalModel> insertData(
       JournalModel journalModel) async {
-    final prefs = await SharedPreferences.getInstance();
-    var accessToken = prefs.getString("accessToken");
+    final accessToken = await storage.read(key: 'accessToken');
 
     var data = journalModel.toJson();
     var body = jsonEncode(data);
@@ -96,8 +94,7 @@ class JournalApi {
 
   Future<JournalModel> updateData(
       int id, JournalModel journalModel) async {
-    final prefs = await SharedPreferences.getInstance();
-    var accessToken = prefs.getString("accessToken");
+    final accessToken = await storage.read(key: 'accessToken');
 
     var data = journalModel.toJson();
     var body = jsonEncode(data);
@@ -118,8 +115,7 @@ class JournalApi {
   }
 
   Future<JournalModel> deleteData(int id) async {
-    final prefs = await SharedPreferences.getInstance();
-    var accessToken = prefs.getString("accessToken");
+    final accessToken = await storage.read(key: 'accessToken');
 
     var deleteUrl = Uri.parse(
         "$mainUrl/finances/comptabilite/journals/delete-comptabilite-journal/$id");

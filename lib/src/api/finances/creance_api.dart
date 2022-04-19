@@ -2,20 +2,21 @@
 
 import 'dart:convert';
 
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:fokad_admin/src/api/auth/auth_api.dart';
 import 'package:fokad_admin/src/api/route_api.dart';
 import 'package:fokad_admin/src/models/finances/creances_model.dart';
 import 'package:http/http.dart' as http;
-import 'package:shared_preferences/shared_preferences.dart';
 
 class CreanceApi {
   var client = http.Client();
+  final storage = const FlutterSecureStorage();
 
-  Future<String?> getToken() async {
-    final prefs = await SharedPreferences.getInstance();
-    String? accessToken = prefs.getString("accessToken");
-    return accessToken;
+   Future<String?> getToken() async {
+    final data = await storage.read(key: "accessToken");
+    return data;
   }
+
 
   Future<List<CreanceModel>> getAllData() async {
     String? token = await getToken();
@@ -69,8 +70,7 @@ class CreanceApi {
   }
 
   Future<CreanceModel> insertData(CreanceModel creanceModel) async {
-    final prefs = await SharedPreferences.getInstance();
-    var accessToken = prefs.getString("accessToken");
+    final accessToken = await storage.read(key: 'accessToken');
 
     var data = creanceModel.toJson();
     var body = jsonEncode(data);
@@ -93,8 +93,7 @@ class CreanceApi {
   }
 
   Future<CreanceModel> updateData(int id, CreanceModel creanceModel) async {
-    final prefs = await SharedPreferences.getInstance();
-    var accessToken = prefs.getString("accessToken");
+    final accessToken = await storage.read(key: 'accessToken');
 
     var data = creanceModel.toJson();
     var body = jsonEncode(data);
@@ -114,8 +113,7 @@ class CreanceApi {
   }
 
   Future<CreanceModel> deleteData(int id) async {
-    final prefs = await SharedPreferences.getInstance();
-    var accessToken = prefs.getString("accessToken");
+    final accessToken = await storage.read(key: 'accessToken');
 
     var deleteUrl = Uri.parse("$mainUrl/finances/transactions/banques/delete-transaction-creance/$id");
 

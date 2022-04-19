@@ -16,13 +16,13 @@ class _FinancesNavState extends State<FinancesNav> {
   
   @override
   Widget build(BuildContext context) {
-    final headline6 = Theme.of(context).textTheme.headline6;
+    final bodyMedium = Theme.of(context).textTheme.bodyMedium;
     final bodyText1 = Theme.of(context).textTheme.bodyText1;
     final bodyText2 = Theme.of(context).textTheme.bodyText2;
     
     return ExpansionTile(
         leading: const Icon(Icons.monetization_on, size: 30.0),
-        title: Text('Finances', style: headline6),
+        title: Text('Finances', style: bodyMedium),
         initiallyExpanded: false,
         onExpansionChanged: (val) {
           setState(() {

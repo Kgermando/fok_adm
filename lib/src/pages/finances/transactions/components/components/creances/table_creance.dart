@@ -32,7 +32,6 @@ class _TableCreanceState extends State<TableCreance> {
     agentsColumn();
     getData();
     agentsRow();
-
     super.initState();
   }
 

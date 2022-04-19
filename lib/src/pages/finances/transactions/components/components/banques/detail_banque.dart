@@ -4,7 +4,6 @@ import 'package:fokad_admin/src/api/user/user_api.dart';
 import 'package:fokad_admin/src/constants/app_theme.dart';
 import 'package:fokad_admin/src/constants/responsive.dart';
 import 'package:fokad_admin/src/models/finances/banque_model.dart';
-import 'package:fokad_admin/src/models/rh/agent_model.dart';
 import 'package:fokad_admin/src/models/users/user_model.dart';
 import 'package:fokad_admin/src/navigation/drawer/drawer_menu.dart';
 import 'package:fokad_admin/src/navigation/header/custom_appbar.dart';
@@ -143,7 +142,7 @@ class _DetailBanqueState extends State<DetailBanque> {
             margin: const EdgeInsets.all(p16),
             width: (Responsive.isDesktop(context))
                 ? MediaQuery.of(context).size.width / 2
-                : MediaQuery.of(context).size.width / 1.5,
+                : MediaQuery.of(context).size.width,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(p10),
               border: Border.all(

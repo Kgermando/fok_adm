@@ -3,23 +3,21 @@
 import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
-// import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:fokad_admin/src/api/auth/api_error.dart';
 import 'package:fokad_admin/src/api/auth/token.dart';
 import 'package:fokad_admin/src/api/route_api.dart';
-import 'package:fokad_admin/src/helpers/user_preferences.dart';
+import 'package:fokad_admin/src/helpers/user_secure_storage.dart';
 import 'package:fokad_admin/src/models/users/user_model.dart';
 import 'package:http/http.dart' as http;
-import 'package:shared_preferences/shared_preferences.dart';
 
 class AuthApi extends ChangeNotifier {
   var client = http.Client();
+  final storage = const FlutterSecureStorage();
 
   Future<String?> getToken() async {
-    final prefs = await SharedPreferences.getInstance();
-    String? accessToken = prefs.getString("accessToken");
-    // print('agent accessToken $accessToken');
-    return accessToken;
+    final data = await storage.read(key: "accessToken");
+    return data;
   }
 
   Future<bool> login(String matricule, String passwordHash) async {
@@ -30,9 +28,9 @@ class AuthApi extends ChangeNotifier {
     if (resp.statusCode == 200) {
       Token token = Token.fromJson(json.decode(resp.body));
       // Store the tokens
-      UserPreferences.saveIdToken(token.id.toString()); // Id user
-      UserPreferences.saveAccessToken(token.accessToken);
-      UserPreferences.saveRefreshToken(token.refreshToken);
+      UserSecureStorage().saveIdToken(token.id.toString()); // Id user
+      UserSecureStorage().saveAccessToken(token.accessToken);
+      UserSecureStorage().saveRefreshToken(token.refreshToken);
       return true;
     } else {
       throw ApiError.fromJson(json.decode(resp.body));
@@ -63,8 +61,7 @@ class AuthApi extends ChangeNotifier {
           ascii.decode(base64.decode(base64.normalize(splittedJwt[1]))));
     }
 
-    final prefs = await SharedPreferences.getInstance();
-    final refreshToken = prefs.getString('refreshToken');
+    final refreshToken = await storage.read(key: 'refreshToken');
 
     if (refreshToken!.isNotEmpty) {
       var splittedJwt = refreshToken.split(".");
@@ -87,11 +84,11 @@ class AuthApi extends ChangeNotifier {
     if (resp.statusCode == 200) {
       Token token = Token.fromJson(json.decode(resp.body));
 
-      UserPreferences.saveAccessToken(token.accessToken);
-      UserPreferences.saveRefreshToken(token.refreshToken);
+      UserSecureStorage().saveAccessToken(token.accessToken);
+      UserSecureStorage().saveRefreshToken(token.refreshToken);
     } else {
-      UserPreferences.removeAccessToken();
-      UserPreferences.removeRefreshToken();
+      UserSecureStorage().removeAccessToken();
+      UserSecureStorage().removeRefreshToken();
       throw ApiError.fromJson(json.decode(resp.body));
     }
   }
@@ -141,14 +138,13 @@ class AuthApi extends ChangeNotifier {
     }
 
     var _keyIdToken = 'idToken';
-    final prefs = await SharedPreferences.getInstance();
-    final data = prefs.getString(_keyIdToken);
+    final data = await storage.read(key: _keyIdToken);
     String idPrefs = jsonDecode(data!);
     // print('idPrefs $idPrefs');
     int id = int.parse(idPrefs);
     var userIdUrl = Uri.parse("$mainUrl/user/$id");
     var resp = await client.get(
-      userIdUrl, 
+      userIdUrl,
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
         'Authorization': 'Bearer $token'
@@ -177,9 +173,9 @@ class AuthApi extends ChangeNotifier {
         },
       );
       if (resp.statusCode == 200) {
-        UserPreferences.removeIdToken();
-        UserPreferences.removeAccessToken();
-        UserPreferences.removeRefreshToken();
+        UserSecureStorage().removeIdToken();
+        UserSecureStorage().removeAccessToken();
+        UserSecureStorage().removeRefreshToken();
       }
     } catch (e) {
       throw Exception(['message']);

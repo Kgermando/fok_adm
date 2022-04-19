@@ -141,7 +141,7 @@ class _DetailCaisseState extends State<DetailCaisse> {
           margin: const EdgeInsets.all(p16),
           width: (Responsive.isDesktop(context))
               ? MediaQuery.of(context).size.width / 2
-              : MediaQuery.of(context).size.width / 1.5,
+              : MediaQuery.of(context).size.width,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(p10),
             border: Border.all(

@@ -187,9 +187,9 @@ class _DetteTransactionsState extends State<DetteTransactions> {
             labelText: 'Nom complet',
           ),
           keyboardType: TextInputType.text,
-          validator: (val) {
-            return 'Ce champs est obligatoire';
-          },
+          validator: (value) => value != null && value.isEmpty
+              ? 'Ce champs est obligatoire.'
+              : null,
           style: const TextStyle(),
         ));
   }
@@ -205,9 +205,9 @@ class _DetteTransactionsState extends State<DetteTransactions> {
             labelText: 'N° de la pièce justificative',
           ),
           keyboardType: TextInputType.text,
-          validator: (val) {
-            return 'Ce champs est obligatoire';
-          },
+          validator: (value) => value != null && value.isEmpty
+              ? 'Ce champs est obligatoire.'
+              : null,
           style: const TextStyle(),
         ));
   }
@@ -223,9 +223,9 @@ class _DetteTransactionsState extends State<DetteTransactions> {
             labelText: 'Libellé',
           ),
           keyboardType: TextInputType.text,
-          validator: (val) {
-            return 'Ce champs est obligatoire';
-          },
+          validator: (value) => value != null && value.isEmpty
+              ? 'Ce champs est obligatoire.'
+              : null,
           style: const TextStyle(),
         ));
   }
@@ -247,9 +247,9 @@ class _DetteTransactionsState extends State<DetteTransactions> {
                   labelText: 'Montant',
                 ),
                 keyboardType: TextInputType.text,
-                validator: (val) {
-                  return 'Ce champs est obligatoire';
-                },
+                validator: (value) => value != null && value.isEmpty
+                    ? 'Ce champs est obligatoire.'
+                    : null,
                 style: const TextStyle(),
               ),
             ),

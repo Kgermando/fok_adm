@@ -1292,7 +1292,7 @@ class _UpdatePaiementSalaireAdminState extends State<UpdatePaiementSalaireAdmin>
     await PaiementSalaireApi().updateData(widget.id, paiementSalaireModel);
     Routemaster.of(context).pop();
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-      content: const Text("Enregistrer avec succès!"),
+      content: const Text("Approbation effectué!"),
       backgroundColor: Colors.green[700],
     ));
   }

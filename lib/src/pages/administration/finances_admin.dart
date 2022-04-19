@@ -1,23 +1,56 @@
 import 'package:flutter/material.dart';
+import 'package:fokad_admin/src/api/finances/creance_api.dart';
+import 'package:fokad_admin/src/api/finances/dette_api.dart';
 import 'package:fokad_admin/src/constants/app_theme.dart';
 import 'package:fokad_admin/src/constants/responsive.dart';
+import 'package:fokad_admin/src/models/finances/creances_model.dart';
+import 'package:fokad_admin/src/models/finances/dette_model.dart';
 import 'package:fokad_admin/src/navigation/drawer/drawer_menu.dart';
 import 'package:fokad_admin/src/navigation/header/custom_appbar.dart';
+import 'package:fokad_admin/src/pages/administration/components/finances/transactions/table_creance_admin.dart';
+import 'package:fokad_admin/src/pages/administration/components/finances/transactions/table_dette_admin.dart';
 import 'package:fokad_admin/src/provider/controller.dart';
 import 'package:provider/provider.dart';
 
 class FinancesAdmin extends StatefulWidget {
-  const FinancesAdmin({ Key? key }) : super(key: key);
+  const FinancesAdmin({Key? key}) : super(key: key);
 
   @override
   State<FinancesAdmin> createState() => _FinancesAdminState();
 }
 
 class _FinancesAdminState extends State<FinancesAdmin> {
- final ScrollController _controllerScroll = ScrollController();
+  final ScrollController _controllerScroll = ScrollController();
+
+  bool isOpenFin1 = false;
+  bool isOpenFin2 = false;
+
+  int nbrCreance = 0;
+  int nbrDette = 0;
+
+  @override
+  initState() {
+    getData();
+    super.initState();
+  }
+
+  Future<void> getData() async {
+    List<CreanceModel?> dataCreanceList = await CreanceApi().getAllData();
+    List<DetteModel?> dataDetteList = await DetteApi().getAllData();
+    setState(() {
+
+       nbrCreance = dataCreanceList
+          .where((element) => element!.approbation == false)
+          .length;
+      nbrDette = dataDetteList
+          .where((element) => element!.approbation == false)
+          .length;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
+    final headline6 = Theme.of(context).textTheme.headline6;
     return Scaffold(
         key: context.read<Controller>().scaffoldKey,
         drawer: const DrawerMenu(),
@@ -42,8 +75,38 @@ class _FinancesAdminState extends State<FinancesAdmin> {
                         controller: _controllerScroll,
                         child: ListView(
                           controller: _controllerScroll,
-                          children: const [
-                            Text("Finances Admin"),
+                          children: [
+                            Card(
+                              color: const Color.fromARGB(255, 126, 170, 214),
+                              child: ExpansionTile(
+                                leading: const Icon(Icons.folder),
+                                title:
+                                    Text('Dossier Créances $nbrCreance', style: headline6),
+                                initiallyExpanded: false,
+                                onExpansionChanged: (val) {
+                                  setState(() {
+                                    isOpenFin1 = !val;
+                                  });
+                                },
+                                trailing: const Icon(Icons.arrow_drop_down),
+                                children: const [TableCreanceAdmin()],
+                              ),
+                            ),
+                            Card(
+                              color: const Color.fromARGB(255, 117, 190, 121),
+                              child: ExpansionTile(
+                                leading: const Icon(Icons.folder),
+                                title: Text('Dossier Dettes $nbrDette', style: headline6),
+                                initiallyExpanded: false,
+                                onExpansionChanged: (val) {
+                                  setState(() {
+                                    isOpenFin2 = !val;
+                                  });
+                                },
+                                trailing: const Icon(Icons.arrow_drop_down),
+                                children: const [TableDetteAdmin()],
+                              ),
+                            )
                           ],
                         ),
                       ))
