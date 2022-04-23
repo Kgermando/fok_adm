@@ -1,3 +1,4 @@
+import 'package:date_time_picker/date_time_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:fokad_admin/src/api/auth/auth_api.dart';
 import 'package:fokad_admin/src/api/logistiques/carburant_api.dart';
@@ -38,6 +39,8 @@ class _AddCarburantAutoState extends State<AddCarburantAuto> {
       TextEditingController();
   final TextEditingController numeroPlaqueController = TextEditingController();
   final TextEditingController qtyAchatController = TextEditingController();
+  final TextEditingController dateHeureSortieAnguinController =
+      TextEditingController();
 
   @override
   initState() {
@@ -63,6 +66,7 @@ class _AddCarburantAutoState extends State<AddCarburantAuto> {
     nomReceptionisteController.dispose();
     numeroPlaqueController.dispose();
     qtyAchatController.dispose();
+    dateHeureSortieAnguinController.dispose();
 
     super.dispose();
   }
@@ -170,16 +174,17 @@ class _AddCarburantAutoState extends State<AddCarburantAuto> {
                           Expanded(child: nomReceptionisteWidget())
                       ],
                     ),
-                    Row(
-                      children: [
-                        if (operationEntreSortie == 'Sortie')
+                    if (operationEntreSortie == 'Sortie')
+                      Row(
+                        children: [
                           Expanded(child: numeroPlaqueWidget()),
-                        const SizedBox(
-                          width: p10,
-                        ),
-                        Expanded(child: qtyAchatControllerWidget())
-                      ],
-                    ),
+                          const SizedBox(
+                            width: p10,
+                          ),
+                          Expanded(child: dateDebutEtFinWidget())
+                        ],
+                      ),
+                    qtyAchatControllerWidget(),
                     const SizedBox(
                       height: p20,
                     ),
@@ -382,44 +387,78 @@ class _AddCarburantAutoState extends State<AddCarburantAuto> {
           },
         ));
   }
-  
+
   Widget qtyAchatControllerWidget() {
     return Container(
-      margin: const EdgeInsets.only(bottom: p20),
-      child: TextFormField(
-        controller: qtyAchatController,
-        decoration: InputDecoration(
-          border:
-              OutlineInputBorder(borderRadius: BorderRadius.circular(10.0)),
-          labelText: 'Quantités',
-        ),
-        keyboardType: TextInputType.text,
-        style: const TextStyle(),
-        validator: (value) {
-          if (value != null && value.isEmpty) {
-            return 'Ce champs est obligatoire';
-          } else {
-            return null;
-          }
-        },
-      )
-    );
+        margin: const EdgeInsets.only(bottom: p20),
+        child: TextFormField(
+          controller: qtyAchatController,
+          decoration: InputDecoration(
+            border:
+                OutlineInputBorder(borderRadius: BorderRadius.circular(10.0)),
+            labelText: 'Quantités',
+          ),
+          keyboardType: TextInputType.text,
+          style: const TextStyle(),
+          validator: (value) {
+            if (value != null && value.isEmpty) {
+              return 'Ce champs est obligatoire';
+            } else {
+              return null;
+            }
+          },
+        ));
+  }
+
+  Widget dateDebutEtFinWidget() {
+    return Container(
+        margin: const EdgeInsets.only(bottom: p20),
+        child: DateTimePicker(
+          type: DateTimePickerType.dateTime,
+          decoration: InputDecoration(
+            prefixIcon: const Icon(Icons.date_range),
+            border:
+                OutlineInputBorder(borderRadius: BorderRadius.circular(10.0)),
+            labelText: 'Date Heure Sortie',
+          ),
+          controller: dateHeureSortieAnguinController,
+          timePickerEntryModeInput: true,
+          firstDate: DateTime(1930),
+          lastDate: DateTime(2100),
+          validator: (value) {
+            if (value != null && value.isEmpty) {
+              return 'Ce champs est obligatoire';
+            } else {
+              return null;
+            }
+          },
+        ));
   }
 
   Future<void> submit() async {
     final carburantModel = CarburantModel(
-      operationEntreSortie: operationEntreSortie.toString(),
-      typeCaburant: typeCaburant.toString(),
-      fournisseur: (fournisseurController.text == '') ? '-': fournisseurController.text,
-      nomeroFactureAchat: (nomeroFactureAchatController.text == '') ? '-' : nomeroFactureAchatController.text,
-      prixAchatParLitre: (prixAchatParLitreController.text == '') ? '-' : prixAchatParLitreController.text,
-      nomReceptioniste: (nomReceptionisteController.text == '') ? '-' : nomReceptionisteController.text,
-      numeroPlaque: (numeroPlaqueController.text == '') ? '-' : numeroPlaqueController.text,
-      dateHeureSortieAnguin: DateTime.now(),
-      created: DateTime.now(),
-      signature: signature.toString(),
-      qtyAchat: qtyAchatController.text
-    );
+        operationEntreSortie: operationEntreSortie.toString(),
+        typeCaburant: typeCaburant.toString(),
+        fournisseur: (fournisseurController.text == '')
+            ? '-'
+            : fournisseurController.text,
+        nomeroFactureAchat: (nomeroFactureAchatController.text == '')
+            ? '-'
+            : nomeroFactureAchatController.text,
+        prixAchatParLitre: (prixAchatParLitreController.text == '')
+            ? '-'
+            : prixAchatParLitreController.text,
+        nomReceptioniste: (nomReceptionisteController.text == '')
+            ? '-'
+            : nomReceptionisteController.text,
+        numeroPlaque: (numeroPlaqueController.text == '')
+            ? '-'
+            : numeroPlaqueController.text,
+        dateHeureSortieAnguin:
+            DateTime.parse((dateHeureSortieAnguinController.text == '') ? '0000-00-00 00:00:00.000' :dateHeureSortieAnguinController.text),
+        created: DateTime.now(),
+        signature: signature.toString(),
+        qtyAchat: qtyAchatController.text);
     await CarburantApi().insertData(carburantModel);
     Routemaster.of(context).replace(LogistiqueRoutes.logCarburantAuto);
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(

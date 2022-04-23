@@ -9,6 +9,11 @@ import 'package:fokad_admin/src/pages/administration/rh_admin.dart';
 import 'package:fokad_admin/src/pages/auth/login_auth.dart';
 import 'package:fokad_admin/src/pages/auth/profil_page.dart';
 import 'package:fokad_admin/src/pages/devis/devis_page.dart';
+import 'package:fokad_admin/src/pages/exploitations/dashboard/dashboard_exp.dart';
+import 'package:fokad_admin/src/pages/exploitations/projets/add_projet_exp.dart';
+import 'package:fokad_admin/src/pages/exploitations/projets/projets_expo.dart';
+import 'package:fokad_admin/src/pages/exploitations/taches/add_tache_exp.dart';
+import 'package:fokad_admin/src/pages/exploitations/taches/tache_exp.dart';
 import 'package:fokad_admin/src/pages/finances/budgets/budget_finance.dart';
 import 'package:fokad_admin/src/pages/finances/comptabilites/armotissement_comptabilite.dart';
 import 'package:fokad_admin/src/pages/finances/comptabilites/bilan_comptabilite.dart';
@@ -29,6 +34,7 @@ import 'package:fokad_admin/src/pages/logistiques/automobile/add_trajet_auto.dar
 import 'package:fokad_admin/src/pages/logistiques/automobile/anguin_auto.dart';
 import 'package:fokad_admin/src/pages/logistiques/automobile/carburant_auto.dart';
 import 'package:fokad_admin/src/pages/logistiques/automobile/trajet_auto.dart';
+import 'package:fokad_admin/src/pages/logistiques/dashboard/dashboard_log.dart';
 import 'package:fokad_admin/src/pages/logistiques/entretiens/add_entretien.dart';
 import 'package:fokad_admin/src/pages/logistiques/entretiens/entretien_page.dart';
 import 'package:fokad_admin/src/pages/logistiques/materiels/add_etat_materiel.dart';
@@ -121,6 +127,14 @@ class LogistiqueRoutes {
   static const logMobilierMateriel = "/log-mobilier-materiel";
 }
 
+class ExploitationRoutes {
+  static const expDashboard = "/exploitation-dashboard";
+  static const expProjetAdd = "/exploitation-projets-add";
+  static const expProjet = "/exploitation-projets";
+  static const expTacheAdd = "/exploitation-taches-add";
+  static const expTache = "/exploitation-taches";
+}
+
 class Routing {
 
   authLogin() async {
@@ -179,6 +193,8 @@ class Routing {
       // DEVIS
       DevisRoutes.devis: (_) => const MaterialPage(child: DevisPage()),
 
+      // LOGISTIQUES
+      LogistiqueRoutes.logDashboard: (_) => const MaterialPage(child: DashboardLog()), 
       LogistiqueRoutes.logAddAnguinAuto: (_) => const MaterialPage(child: AddAnguinAuto()), 
       LogistiqueRoutes.logAnguinAuto: (_) => const MaterialPage(child: AnguinAuto()), 
       LogistiqueRoutes.logAddCarburantAuto: (_) => const MaterialPage(child: AddCarburantAuto()), 
@@ -194,6 +210,13 @@ class Routing {
       LogistiqueRoutes.logAddMobilierMateriel: (_) => const MaterialPage(child: AddMobilerMateriel()),
       LogistiqueRoutes.logMobilierMateriel: (_) => const MaterialPage(child: MobilierMateriel()),
 
+
+      // Exploitations
+      ExploitationRoutes.expDashboard: (_) => const MaterialPage(child: DashboardExp()),
+      ExploitationRoutes.expProjetAdd: (_) => const MaterialPage(child: AddProjetExp()),
+      ExploitationRoutes.expProjet: (_) => const MaterialPage(child: ProjetsExp()),
+      // ExploitationRoutes.expTacheAdd: (_) => const MaterialPage(child: AddTacheExp()),
+      ExploitationRoutes.expTache: (_) => const MaterialPage(child: TacheExp()),
     },
     onUnknownRoute: (_) => const MaterialPage(child: NotFoundPage()),
   );

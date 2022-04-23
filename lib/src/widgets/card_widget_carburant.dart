@@ -21,7 +21,7 @@ class CardWidgetCarburant extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final width = MediaQuery.of(context).size.width / 6;
+    final width = MediaQuery.of(context).size.width / 4;
     return Material(
       elevation: 10.0,
       shape: RoundedRectangleBorder(
@@ -46,7 +46,7 @@ class CardWidgetCarburant extends StatelessWidget {
                     style: Responsive.isDesktop(context)
                         ? TextStyle(fontSize: 16, color: colorText)
                         : TextStyle(fontSize: 10, color: colorText),
-                    maxLines: 1,
+                    maxLines: 3,
                   ),
                 ),
                 IconButton(

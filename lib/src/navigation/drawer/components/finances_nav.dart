@@ -21,7 +21,7 @@ class _FinancesNavState extends State<FinancesNav> {
     final bodyText2 = Theme.of(context).textTheme.bodyText2;
     
     return ExpansionTile(
-        leading: const Icon(Icons.monetization_on, size: 30.0),
+        leading: const Icon(Icons.corporate_fare, size: 30.0),
         title: Text('Finances', style: bodyMedium),
         initiallyExpanded: false,
         onExpansionChanged: (val) {

@@ -6,7 +6,6 @@ import 'package:fokad_admin/src/models/logistiques/anguin_model.dart';
 import 'package:fokad_admin/src/navigation/drawer/drawer_menu.dart';
 import 'package:fokad_admin/src/navigation/header/custom_appbar.dart';
 import 'package:fokad_admin/src/pages/logistiques/automobile/add_trajet_auto.dart';
-import 'package:fokad_admin/src/pages/logistiques/automobile/components/table_trajet.dart';
 import 'package:fokad_admin/src/pages/logistiques/automobile/components/table_trajet_anguin.dart';
 import 'package:fokad_admin/src/widgets/print_widget.dart';
 import 'package:fokad_admin/src/widgets/title_widget.dart';

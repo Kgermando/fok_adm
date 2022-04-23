@@ -46,12 +46,12 @@ class _AddAnguinAutoState extends State<AddAnguinAuto> {
 
   @override
   initState() {
-    date();
+    getData();
     super.initState();
   }
 
   String? signature;
-  Future<void> date() async {
+  Future<void> getData() async {
     UserModel userModel = await AuthApi().getUserId();
     setState(() {
       signature = userModel.matricule;
@@ -395,6 +395,7 @@ class _AddAnguinAutoState extends State<AddAnguinAuto> {
             labelText: 'Date de fabrication',
           ),
           controller: dateFabricationController,
+          timePickerEntryModeInput: true,
           firstDate: DateTime(1930),
           lastDate: DateTime(2100),
           validator: (value) {

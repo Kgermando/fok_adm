@@ -93,3 +93,11 @@ var addMobiliersUrl = Uri.parse("$mainUrl/mobiliers/insert-new-mobilier");
 
 var trajetsUrl = Uri.parse("$mainUrl/trajets/");
 var addTrajetssUrl = Uri.parse("$mainUrl/trajets/insert-new-trajet");
+
+
+// Exploitations
+var projetsUrl = Uri.parse("$mainUrl/projets/");
+var addProjetssUrl = Uri.parse("$mainUrl/projets/insert-new-projet");
+
+var tachesUrl = Uri.parse("$mainUrl/taches/");
+var addTachessUrl = Uri.parse("$mainUrl/taches/insert-new-tache");

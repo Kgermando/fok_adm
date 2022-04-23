@@ -122,12 +122,12 @@ class _TableCarburantState extends State<TableCarburant> {
     return Column(
       children: [
         totalEssence(),
-        const SizedBox(height: p20),
-        totalMazoute(),
-        const SizedBox(height: p20),
-        totalPetrole(),
-        const SizedBox(height: p20),
-        totalHuileMoteur(),
+        // const SizedBox(height: p20),
+        // totalMazoute(),
+        // const SizedBox(height: p20),
+        // totalPetrole(),
+        // const SizedBox(height: p20),
+        // totalHuileMoteur(),
         const SizedBox(height: p20),
         Expanded(
           child: PlutoGrid(
@@ -198,7 +198,7 @@ class _TableCarburantState extends State<TableCarburant> {
           title: 'Ravitailement Essence', 
           icon: Icons.ev_station_sharp,
           qty: '$entrerEssence',
-          color: Colors.red.shade700,
+          color: Colors.green.shade700,
           colorText: Colors.white,
         ),
         CardWidgetCarburant(
@@ -212,25 +212,15 @@ class _TableCarburantState extends State<TableCarburant> {
           title: 'Disponible Essence',
           icon: Icons.ev_station_sharp,
           qty: '${entrerEssence - sortieEssence}',
-          color: Colors.red.shade700,
+          color: Colors.orange.shade700,
           colorText: Colors.white,
-        )
-      ],
-    );
-  }
+        ),
 
-  Widget totalMazoute() {
-    return Wrap(
-      alignment: WrapAlignment.spaceEvenly,
-      spacing: 12.0,
-      runSpacing: 12.0,
-      direction: Axis.horizontal,
-      children: [
         CardWidgetCarburant(
-          title: 'Mazoute',  
+          title: 'Mazoute',
           icon: Icons.ev_station_sharp,
           qty: '$entrerMazoute',
-          color: Colors.red.shade700,
+          color: Colors.green.shade700,
           colorText: Colors.white,
         ),
         CardWidgetCarburant(
@@ -244,25 +234,15 @@ class _TableCarburantState extends State<TableCarburant> {
           title: 'Mazoute',
           icon: Icons.ev_station_sharp,
           qty: '${entrerMazoute - sortieMazoute}',
-          color: Colors.red.shade700,
+          color: Colors.orange.shade700,
           colorText: Colors.white,
-        )
-      ],
-    );
-  }
+        ),
 
-  Widget totalPetrole() {
-    return Wrap(
-      alignment: WrapAlignment.spaceEvenly,
-      spacing: 12.0,
-      runSpacing: 12.0,
-      direction: Axis.horizontal,
-      children: [
         CardWidgetCarburant(
-          title: 'Petrole', 
+          title: 'Petrole',
           icon: Icons.ev_station_sharp,
           qty: '$entrerPetrole',
-          color: Colors.red.shade700,
+          color: Colors.green.shade700,
           colorText: Colors.white,
         ),
         CardWidgetCarburant(
@@ -276,25 +256,14 @@ class _TableCarburantState extends State<TableCarburant> {
           title: 'Petrole',
           icon: Icons.ev_station_sharp,
           qty: '${entrerPetrole - sortiePetrole}',
-          color: Colors.red.shade700,
+          color: Colors.orange.shade700,
           colorText: Colors.white,
-        )
-      ],
-    );
-  }
-
-  Widget totalHuileMoteur() {
-    return Wrap(
-      alignment: WrapAlignment.spaceEvenly,
-      spacing: 12.0,
-      runSpacing: 12.0,
-      direction: Axis.horizontal,
-      children: [
+        ),
         CardWidgetCarburant(
-          title: 'Huile Moteur', 
+          title: 'Huile Moteur',
           icon: Icons.ev_station_sharp,
           qty: '$entrerHuilleMoteur',
-          color: Colors.red.shade700,
+          color: Colors.green.shade700,
           colorText: Colors.white,
         ),
         CardWidgetCarburant(
@@ -308,12 +277,108 @@ class _TableCarburantState extends State<TableCarburant> {
           title: 'Huile Moteur',
           icon: Icons.ev_station_sharp,
           qty: '${entrerHuilleMoteur - sortieHuilleMoteur}',
-          color: Colors.red.shade700,
+          color: Colors.orange.shade700,
           colorText: Colors.white,
         )
       ],
     );
   }
+
+  // Widget totalMazoute() {
+  //   return Wrap(
+  //     alignment: WrapAlignment.spaceEvenly,
+  //     spacing: 12.0,
+  //     runSpacing: 12.0,
+  //     direction: Axis.horizontal,
+  //     children: [
+  //       CardWidgetCarburant(
+  //         title: 'Mazoute',  
+  //         icon: Icons.ev_station_sharp,
+  //         qty: '$entrerMazoute',
+  //         color: Colors.red.shade700,
+  //         colorText: Colors.white,
+  //       ),
+  //       CardWidgetCarburant(
+  //         title: 'Mazoute',
+  //         icon: Icons.ev_station_sharp,
+  //         qty: '$sortieMazoute',
+  //         color: Colors.red.shade700,
+  //         colorText: Colors.white,
+  //       ),
+  //       CardWidgetCarburant(
+  //         title: 'Mazoute',
+  //         icon: Icons.ev_station_sharp,
+  //         qty: '${entrerMazoute - sortieMazoute}',
+  //         color: Colors.red.shade700,
+  //         colorText: Colors.white,
+  //       )
+  //     ],
+  //   );
+  // }
+
+  // Widget totalPetrole() {
+  //   return Wrap(
+  //     alignment: WrapAlignment.spaceEvenly,
+  //     spacing: 12.0,
+  //     runSpacing: 12.0,
+  //     direction: Axis.horizontal,
+  //     children: [
+  //       CardWidgetCarburant(
+  //         title: 'Petrole', 
+  //         icon: Icons.ev_station_sharp,
+  //         qty: '$entrerPetrole',
+  //         color: Colors.red.shade700,
+  //         colorText: Colors.white,
+  //       ),
+  //       CardWidgetCarburant(
+  //         title: 'Petrole',
+  //         icon: Icons.ev_station_sharp,
+  //         qty: '$sortiePetrole',
+  //         color: Colors.red.shade700,
+  //         colorText: Colors.white,
+  //       ),
+  //       CardWidgetCarburant(
+  //         title: 'Petrole',
+  //         icon: Icons.ev_station_sharp,
+  //         qty: '${entrerPetrole - sortiePetrole}',
+  //         color: Colors.red.shade700,
+  //         colorText: Colors.white,
+  //       )
+  //     ],
+  //   );
+  // }
+
+  // Widget totalHuileMoteur() {
+  //   return Wrap(
+  //     alignment: WrapAlignment.spaceEvenly,
+  //     spacing: 12.0,
+  //     runSpacing: 12.0,
+  //     direction: Axis.horizontal,
+  //     children: [
+  //       CardWidgetCarburant(
+  //         title: 'Huile Moteur', 
+  //         icon: Icons.ev_station_sharp,
+  //         qty: '$entrerHuilleMoteur',
+  //         color: Colors.red.shade700,
+  //         colorText: Colors.white,
+  //       ),
+  //       CardWidgetCarburant(
+  //         title: 'Huile Moteur',
+  //         icon: Icons.ev_station_sharp,
+  //         qty: '$sortieHuilleMoteur',
+  //         color: Colors.red.shade700,
+  //         colorText: Colors.white,
+  //       ),
+  //       CardWidgetCarburant(
+  //         title: 'Huile Moteur',
+  //         icon: Icons.ev_station_sharp,
+  //         qty: '${entrerHuilleMoteur - sortieHuilleMoteur}',
+  //         color: Colors.red.shade700,
+  //         colorText: Colors.white,
+  //       )
+  //     ],
+  //   );
+  // }
 
   void agentsColumn() {
     columns = [

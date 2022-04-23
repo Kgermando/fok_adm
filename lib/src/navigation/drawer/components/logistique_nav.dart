@@ -23,7 +23,7 @@ class _LogistiqueNavState extends State<LogistiqueNav> {
     final bodyText2 = Theme.of(context).textTheme.bodyText2;
 
     return ExpansionTile(
-      leading: const Icon(Icons.monetization_on, size: 30.0),
+      leading: const Icon(Icons.brightness_low, size: 30.0),
       title: Text('Logistique', style: bodyMedium),
       initiallyExpanded: false,
       onExpansionChanged: (val) {
@@ -33,6 +33,17 @@ class _LogistiqueNavState extends State<LogistiqueNav> {
       },
       trailing: const Icon(Icons.arrow_drop_down),
       children: [
+        DrawerWidget(
+          selected: widget.pageCurrente == LogistiqueRoutes.logDashboard,
+          icon: Icons.dashboard,
+          sizeIcon: 20.0,
+          title: 'Dashboard',
+          style: bodyText1!,
+          onTap: () {
+            Routemaster.of(context).replace(LogistiqueRoutes.logDashboard);
+            // Routemaster.of(context).pop();
+          }
+        ),
         ExpansionTile(
           leading: const Icon(Icons.car_rental, size: 20.0),
           title: Text('Automobile', style: bodyText1),
@@ -150,7 +161,27 @@ class _LogistiqueNavState extends State<LogistiqueNav> {
                 // Routemaster.of(context).pop();
               }),
           ],
-        )
+        ),
+        DrawerWidget(
+            selected: widget.pageCurrente == DevisRoutes.devis,
+            icon: Icons.note_alt,
+            sizeIcon: 20.0,
+            title: 'Etat de besoin',
+            style: bodyText1,
+            onTap: () {
+              Routemaster.of(context).replace(DevisRoutes.devis);
+              // Routemaster.of(context).pop();
+            }),
+        DrawerWidget(
+            selected: widget.pageCurrente == RhRoutes.rhPerformence,
+            icon: Icons.multiline_chart_sharp,
+            sizeIcon: 20.0,
+            title: 'Performences',
+            style: bodyText1,
+            onTap: () {
+              Routemaster.of(context).replace(RhRoutes.rhPerformence);
+              // Routemaster.of(context).pop();
+            }),
       ],
     );
   }
