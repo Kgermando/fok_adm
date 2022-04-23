@@ -6,18 +6,18 @@ import 'package:fokad_admin/src/constants/responsive.dart';
 import 'package:fokad_admin/src/models/rh/paiement_salaire_model.dart';
 import 'package:fokad_admin/src/navigation/drawer/drawer_menu.dart';
 import 'package:fokad_admin/src/navigation/header/custom_appbar.dart';
-import 'package:fokad_admin/src/pages/finances/dd_finance/components/table_salaire_fin.dart';
+import 'package:fokad_admin/src/pages/finances/budgets/components/dep_budgets/table_budget_budget.dart';
 import 'package:fokad_admin/src/provider/controller.dart';
 import 'package:provider/provider.dart';
 
-class DepartementFin extends StatefulWidget {
-  const DepartementFin({Key? key}) : super(key: key);
+class DepBudget extends StatefulWidget {
+  const DepBudget({ Key? key }) : super(key: key);
 
   @override
-  State<DepartementFin> createState() => _DepartementFinState();
+  State<DepBudget> createState() => _DepBudgetState();
 }
 
-class _DepartementFinState extends State<DepartementFin> {
+class _DepBudgetState extends State<DepBudget> {
   final ScrollController _controllerScroll = ScrollController();
 
   bool isOpenRh1 = false;
@@ -36,8 +36,10 @@ class _DepartementFinState extends State<DepartementFin> {
     List<PaiementSalaireModel?> dataList =
         await PaiementSalaireApi().getAllData();
     setState(() {
-      nonPaye =
-          dataList.where((element) => element!.approbationDD != '-').toList().length;
+      nonPaye = dataList
+          .where((element) => element!.approbationDD != '-')
+          .toList()
+          .length;
     });
   }
 
@@ -75,7 +77,7 @@ class _DepartementFinState extends State<DepartementFin> {
                               child: ExpansionTile(
                                 leading: const Icon(Icons.folder),
                                 title:
-                                    Text('Dossier Salaires', style: headline6),
+                                    Text('Dossier Salaires budget', style: headline6),
                                 subtitle: Text(
                                     "Ces dossiers necessitent votre approbation",
                                     style: bodyMedium),
@@ -95,7 +97,7 @@ class _DepartementFinState extends State<DepartementFin> {
                                     const Icon(Icons.arrow_drop_down),
                                   ],
                                 ),
-                                children: const [TableSalairesFIN()],
+                                children: const [TableSalaireBudget()],
                               ),
                             ),
                           ],

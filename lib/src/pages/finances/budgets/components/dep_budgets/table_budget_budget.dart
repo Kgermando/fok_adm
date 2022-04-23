@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:fokad_admin/src/api/rh/paiement_salaire_api.dart';
 import 'package:fokad_admin/src/models/rh/paiement_salaire_model.dart';
@@ -8,14 +6,14 @@ import 'package:fokad_admin/src/widgets/print_widget.dart';
 import 'package:intl/intl.dart';
 import 'package:pluto_grid/pluto_grid.dart';
 
-class TableSalairesFIN extends StatefulWidget {
-  const TableSalairesFIN({Key? key}) : super(key: key);
+class TableSalaireBudget extends StatefulWidget {
+  const TableSalaireBudget({ Key? key }) : super(key: key);
 
   @override
-  State<TableSalairesFIN> createState() => _TableSalairesFINState();
+  State<TableSalaireBudget> createState() => _TableSalaireBudgetState();
 }
 
-class _TableSalairesFINState extends State<TableSalairesFIN> {
+class _TableSalaireBudgetState extends State<TableSalaireBudget> {
   List<PlutoColumn> columns = [];
   List<PlutoRow> rows = [];
   PlutoGridStateManager? stateManager;
@@ -203,7 +201,7 @@ class _TableSalairesFINState extends State<TableSalairesFIN> {
     List<PaiementSalaireModel?> dataList =
         await PaiementSalaireApi().getAllData();
     var data = dataList
-        .where((element) => element!.approbationDD == "Approved" &&  element.approbationBudget == "Approved")
+        .where((element) => element!.approbationDD == "Approved")
         .toList();
 
     if (mounted) {

@@ -15,6 +15,7 @@ import 'package:fokad_admin/src/pages/exploitations/projets/projets_expo.dart';
 import 'package:fokad_admin/src/pages/exploitations/taches/add_tache_exp.dart';
 import 'package:fokad_admin/src/pages/exploitations/taches/tache_exp.dart';
 import 'package:fokad_admin/src/pages/finances/budgets/budget_finance.dart';
+import 'package:fokad_admin/src/pages/finances/budgets/dep_budget.dart';
 import 'package:fokad_admin/src/pages/finances/comptabilites/armotissement_comptabilite.dart';
 import 'package:fokad_admin/src/pages/finances/comptabilites/bilan_comptabilite.dart';
 import 'package:fokad_admin/src/pages/finances/comptabilites/journal_comptabilite.dart';
@@ -121,7 +122,6 @@ class LogistiqueRoutes {
   static const logAddEntretien = "/log-add-entretien";
   static const logEntretien = "/log-entretien";
 
-
   static const logAddEtatMateriel = "/log-add-etat-materiel";
   static const logEtatMateriel = "/log-etat-materiel";
   static const logAddImmobilerMateriel = "/log-add-immobilier-materiel";
@@ -131,12 +131,14 @@ class LogistiqueRoutes {
 }
 
 class ExploitationRoutes {
+  
   static const expDashboard = "/exploitation-dashboard";
   static const expProjetAdd = "/exploitation-projets-add";
   static const expProjet = "/exploitation-projets";
   static const expTacheAdd = "/exploitation-taches-add";
   static const expTache = "/exploitation-taches";
 }
+
 
 class Routing {
 

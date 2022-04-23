@@ -926,6 +926,7 @@ class _UpdateAgentState extends State<UpdateAgent> {
 
   Future submit() async {
     final agentModel = AgentModel(
+      id: widget.agentModel.id,
         nom: nomController.text,
         postNom: postNomController.text,
         prenom: prenomController.text,
@@ -954,10 +955,10 @@ class _UpdateAgentState extends State<UpdateAgent> {
         signature: user!.matricule.toString(),
         created: DateTime.now());
 
-    await AgentsApi().insertData(agentModel);
+    await AgentsApi().updateData(widget.agentModel.id!,agentModel);
     Routemaster.of(context).replace(RhRoutes.rhAgent);
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-      content: const Text("Enregistrer agent avec succès!"),
+      content: const Text("Mis a jour agent avec succès!"),
       backgroundColor: Colors.green[700],
     ));
   }
