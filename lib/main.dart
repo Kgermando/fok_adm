@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:fokad_admin/src/api/auth/auth_api.dart';
+import 'package:fokad_admin/src/app_state/app_state.dart';
 import 'package:fokad_admin/src/pages/administration/dashboard_administration.dart';
 import 'package:fokad_admin/src/pages/auth/login_auth.dart';
 import 'package:fokad_admin/src/provider/controller.dart';
@@ -45,6 +46,7 @@ class MyApp extends StatelessWidget {
           ChangeNotifierProvider(create: (context) => Controller()),
           ChangeNotifierProvider(create: (context) => ThemeProvider()),
           ChangeNotifierProvider(create: (context) => AuthApi()),
+          ChangeNotifierProvider(create: (_) => AppState()),
         ],
         builder: (context, _) {
           final themeProvider = Provider.of<ThemeProvider>(context);
@@ -52,8 +54,16 @@ class MyApp extends StatelessWidget {
             title: 'FOKAD ADMINISTRATION',
             themeMode: themeProvider.themeMode,
             routerDelegate: RoutemasterDelegate(
-                observers: [TitleObserver()],
-                routesBuilder: (_) => Routing().routes),
+              observers: [TitleObserver()],
+              routesBuilder: (context) {
+                final appState = Provider.of<AppState>(context);
+                final isLoggedIn = appState.isLoggedIn;
+                print('isLoggedIn $isLoggedIn');
+                return isLoggedIn
+                    ? Routing().buildRouteMap(appState)
+                    : Routing().loggedOutRouteMap;
+              },
+            ),
             routeInformationParser: const RoutemasterParser(),
             theme: MyThemes.lightTheme,
             darkTheme: MyThemes.darkTheme,

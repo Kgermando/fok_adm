@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:fokad_admin/src/api/auth/auth_api.dart';
 import 'package:fokad_admin/src/api/finances/creance_api.dart';
 import 'package:fokad_admin/src/api/finances/dette_api.dart';
 import 'package:fokad_admin/src/constants/app_theme.dart';
 import 'package:fokad_admin/src/constants/responsive.dart';
 import 'package:fokad_admin/src/models/finances/creances_model.dart';
 import 'package:fokad_admin/src/models/finances/dette_model.dart';
+import 'package:fokad_admin/src/models/users/user_model.dart';
 import 'package:fokad_admin/src/navigation/drawer/drawer_menu.dart';
 import 'package:fokad_admin/src/navigation/header/custom_appbar.dart';
 import 'package:fokad_admin/src/pages/administration/components/finances/transactions/table_creance_admin.dart';
@@ -35,15 +37,16 @@ class _FinancesAdminState extends State<FinancesAdmin> {
   }
 
   Future<void> getData() async {
+    UserModel userLoggIn = await AuthApi().getUserId();
     List<CreanceModel?> dataCreanceList = await CreanceApi().getAllData();
     List<DetteModel?> dataDetteList = await DetteApi().getAllData();
     setState(() {
 
        nbrCreance = dataCreanceList
-          .where((element) => element!.approbation == false)
+          .where((element) => element!.approbationDG == userLoggIn.matricule)
           .length;
       nbrDette = dataDetteList
-          .where((element) => element!.approbation == false)
+          .where((element) => element!.approbationDG == userLoggIn.matricule)
           .length;
     });
   }

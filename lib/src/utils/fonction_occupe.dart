@@ -3,7 +3,7 @@ class FonctionOccupee {
   List<String> fonctionOccupeDropdown = [
     'Directeur',
     'Directeur adjoint',
-    'Chef de département',
+    'Directeur de département',
     'Chef de service',
     'Agent',
     'Sans fonction'
@@ -20,41 +20,33 @@ class FonctionOccupee {
 
 
   List<String> rhDropdown = [
-    'Directeur',
-    'Chef de département',
-    'Chef de service',
+    'Directeur de département',
     'Chef de service',
     'Agent'
   ];
 
    List<String> finDropdown = [
-    'Directeur',
-    'Chef de département',
-    'Chef de service',
+    'Directeur des finances',
+    'Directeur de département',
+    'Directeur de budget',
     'Chef de service',
     'Agent'
   ];
 
   List<String> expDropdown = [
-    'Directeur',
-    'Chef de département',
-    'Chef de service',
+    'Directeur de département',
     'Chef de service',
     'Agent'
   ];
 
   List<String> commDropdown = [
-    'Directeur',
-    'Chef de département',
-    'Chef de service',
+    'Directeur de département',
     'Chef de service',
     'Agent'
   ];
 
   List<String> logDropdown = [
-    'Directeur',
-    'Chef de département',
-    'Chef de service',
+    'Directeur de département',
     'Chef de service',
     'Agent'
   ];

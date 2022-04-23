@@ -11,15 +11,25 @@ var registerUrl = Uri.parse("$mainUrl/user/insert-new-user");
 var userAllUrl = Uri.parse("$mainUrl/user/users/");
 var userUrl = Uri.parse("$mainUrl/user/");
 
+
+
 // RH
-// Agent
 var listAgentsUrl = Uri.parse("$mainUrl/rh/agents/");
 var addAgentsUrl = Uri.parse("$mainUrl/rh/agents/insert-new-agent");
 var agentCountUrl = Uri.parse("$mainUrl/rh/agents/get-count/");
 
-// Paiement salaire
 var listPaiementSalaireUrl = Uri.parse("$mainUrl/rh/paiement-salaires/");
 var addPaiementSalaireUrl = Uri.parse("$mainUrl/rh/paiement-salaires/insert-new-paiement");
+
+var listPresenceUrl = Uri.parse("$mainUrl/rh/presences/");
+var addPresenceUrl =
+    Uri.parse("$mainUrl/rh/presences/insert-new-presence");
+
+var listPerformenceUrl = Uri.parse("$mainUrl/rh/performences/");
+var addPerformenceUrl =
+    Uri.parse("$mainUrl/rh/performences/insert-new-performence");
+
+
 
 // Finances
 var banqueUrl = Uri.parse("$mainUrl/finances/transactions/banques/");
@@ -32,10 +42,6 @@ var addCaisseUrl = Uri.parse(
 var creancesUrl = Uri.parse("$mainUrl/finances/transactions/creances/");
 var addCreancesUrl = Uri.parse(
     "$mainUrl/finances/transactions/creances/insert-new-transaction-creance");
-
-var depensesUrl = Uri.parse("$mainUrl/finances/transactions/depenses/");
-var adddepensesUrl = Uri.parse(
-    "$mainUrl/finances/transactions/depenses/insert-new-transaction-depense");
 
 var dettesUrl = Uri.parse("$mainUrl/finances/transactions/dettes/");
 var adddettesUrl = Uri.parse(
@@ -72,6 +78,7 @@ var devisUrl = Uri.parse("$mainUrl/devis/");
 var addDevissUrl = Uri.parse("$mainUrl/devis/insert-new-devis");
 
 
+
 // Logistiques
 var anguinsUrl = Uri.parse("$mainUrl/anguins/");
 var aaddAnguinsUrl = Uri.parse("$mainUrl/anguins/insert-new-anguin");
@@ -95,9 +102,66 @@ var trajetsUrl = Uri.parse("$mainUrl/trajets/");
 var addTrajetssUrl = Uri.parse("$mainUrl/trajets/insert-new-trajet");
 
 
+
 // Exploitations
 var projetsUrl = Uri.parse("$mainUrl/projets/");
 var addProjetssUrl = Uri.parse("$mainUrl/projets/insert-new-projet");
 
 var tachesUrl = Uri.parse("$mainUrl/taches/");
 var addTachessUrl = Uri.parse("$mainUrl/taches/insert-new-tache");
+
+var versementProjetsUrl = Uri.parse("$mainUrl/versements-projets/");
+var addVersementProjetsUrl = Uri.parse("$mainUrl/versements-projets/insert-new-insert-new-versement-projet");
+
+
+
+// COMM & MERKETING
+var prodModelsUrl = Uri.parse("$mainUrl/produit-models/");
+var addProdModelsUrl = Uri.parse("$mainUrl/prod-models/insert-new-produit-model");
+
+var stockGlobalUrl = Uri.parse("$mainUrl/stocks-global/");
+var addStockGlobalUrl = Uri.parse("$mainUrl/stocks-global/insert-new-stocks-global");
+
+var succursalesUrl = Uri.parse("$mainUrl/succursales/");
+var addSuccursalesUrl =
+    Uri.parse("$mainUrl/succursales/insert-new-succursale");
+
+var bonLivraisonsUrl = Uri.parse("$mainUrl/bon-livraisons/");
+var addBonLivraisonsUrl = Uri.parse("$mainUrl/bon-livraisons/insert-new-bon-livraison");
+
+var achatsUrl = Uri.parse("$mainUrl/achats/");
+var addAchatsUrl = Uri.parse("$mainUrl/achats/insert-new-achat");
+
+var cartsUrl = Uri.parse("$mainUrl/carts/");
+var addCartsUrl = Uri.parse("$mainUrl/carts/insert-new-cart");
+
+var facturesUrl = Uri.parse("$mainUrl/factures/");
+var addFacturesUrl = Uri.parse("$mainUrl/factures/insert-new-facture");
+
+var factureCreancesUrl = Uri.parse("$mainUrl/facture-creances/");
+var addFactureCreancesUrl = Uri.parse("$mainUrl/facture-creances/insert-new-facture-creance");
+
+var ventesUrl = Uri.parse("$mainUrl/ventes/");
+var addVentesUrl = Uri.parse("$mainUrl/ventes/insert-new-vente");
+
+var gainsUrl = Uri.parse("$mainUrl/gains/");
+var addGainsUrl = Uri.parse("$mainUrl/gains/insert-new-gain");
+
+var restitutionsUrl = Uri.parse("$mainUrl/restitutions/");
+var addRestitutionsUrl = Uri.parse("$mainUrl/restitutions/insert-new-restitution");
+
+var agendasUrl = Uri.parse("$mainUrl/agendas/");
+var addAgendasUrl = Uri.parse("$mainUrl/agendas/insert-new-agenda");
+
+var annuairesUrl = Uri.parse("$mainUrl/annuaires/");
+var addAnnuairesUrl = Uri.parse("$mainUrl/annuaires/insert-new-annuaire");
+
+var campaignsUrl = Uri.parse("$mainUrl/campaigns/");
+var addCampaignsUrl = Uri.parse("$mainUrl/campaigns/insert-new-campaign");
+
+
+
+// ARCHIVES
+var archvesUrl = Uri.parse("$mainUrl/archves/");
+var addArchvesUrl = Uri.parse("$mainUrl/archves/insert-new-archve");
+

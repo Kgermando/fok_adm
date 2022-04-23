@@ -1,10 +1,12 @@
 import 'package:date_time_picker/date_time_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:fokad_admin/src/api/auth/auth_api.dart';
 import 'package:fokad_admin/src/api/rh/agents_api.dart';
 import 'package:fokad_admin/src/constants/app_theme.dart';
 import 'package:fokad_admin/src/constants/responsive.dart';
 import 'package:fokad_admin/src/models/rh/agent_count_model.dart';
 import 'package:fokad_admin/src/models/rh/agent_model.dart';
+import 'package:fokad_admin/src/models/users/user_model.dart';
 import 'package:fokad_admin/src/navigation/drawer/drawer_menu.dart';
 import 'package:fokad_admin/src/navigation/header/custom_appbar.dart';
 import 'package:fokad_admin/src/provider/controller.dart';
@@ -111,10 +113,13 @@ class _AddAgentState extends State<AddAgent> {
     super.dispose();
   }
 
+  UserModel? user;
   AgentCountModel? agentCount;
   Future<void> getData() async {
+    UserModel userModel = await AuthApi().getUserId();
     final data = await AgentsApi().getCount();
     setState(() {
+      user = userModel;
       agentCount = data;
       print('agentCount ${agentCount!.count}');
     });
@@ -913,13 +918,15 @@ class _AddAgentState extends State<AddAgent> {
       statutAgent: false,
       createdAt: DateTime.now(),
       photo: '',
-      salaire: (salaireController.text == '' ) ? '-' : salaireController.text
+      salaire: (salaireController.text == '' ) ? '-' : salaireController.text,
+      signature: user!.matricule.toString(),
+      created: DateTime.now()
     );
 
     await AgentsApi().insertData(agentModel);
     Routemaster.of(context).replace(RhRoutes.rhAgent);
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-      content: const Text("Enregistrer avec succès!"),
+      content: const Text("Enregistrer agent avec succès!"),
       backgroundColor: Colors.green[700],
     ));
   }

@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:fokad_admin/src/api/rh/agents_api.dart';
 import 'package:fokad_admin/src/models/rh/agent_model.dart';
-import 'package:fokad_admin/src/pages/rh/agents/components/agent_page.dart';
+import 'package:fokad_admin/src/pages/rh/agents/components/detail_agent_page.dart';
 import 'package:fokad_admin/src/widgets/print_widget.dart';
 import 'package:intl/intl.dart';
 import 'package:pluto_grid/pluto_grid.dart';
@@ -38,17 +38,8 @@ class _TableAgentsState extends State<TableAgents> {
       onRowDoubleTap: (PlutoGridOnRowDoubleTapEvent tapEvent) {
         final dataList = tapEvent.row!.cells.values;
         final idPlutoRow = dataList.elementAt(0);
-
-        // Routemaster.of(context).push(RhRoutes.rhAgentPage);
-
         Navigator.of(context).push(MaterialPageRoute(
             builder: (context) => AgentPage(id: idPlutoRow.value)));
-
-        print("item ${idPlutoRow.value} ");
-
-        // print("${tapEvent.row!.cells.values} ");
-        // Routemaster.of(context).push(RhRoutes.rhAgentPage);
-        // print(Routemaster.of(context).push('${RhRoutes.rhAgentPage}/$id'));
       },
       onLoaded: (PlutoGridOnLoadedEvent event) {
         stateManager = event.stateManager;
@@ -283,8 +274,12 @@ class _TableAgentsState extends State<TableAgents> {
                 PlutoCell(value: DateFormat("dd-MM-yy").format(item.createdAt)),
             'departement': PlutoCell(value: item.departement),
             'servicesAffectation': PlutoCell(value: item.servicesAffectation),
-            'statutAgent':
-                PlutoCell(value: (item.statutAgent) ? 'Actif' : 'Inactif')
+            'statutAgent': PlutoCell(
+                value: (item.statutAgent)
+                    ? Text('Actif',
+                        style: TextStyle(color: Colors.green.shade700))
+                    : Text('Inactif',
+                        style: TextStyle(color: Colors.red.shade700)))
           }));
         }
         stateManager!.resetCurrentState();

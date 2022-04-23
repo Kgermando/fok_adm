@@ -1,11 +1,15 @@
 import 'package:badges/badges.dart';
 import 'package:flutter/material.dart';
+import 'package:fokad_admin/src/api/auth/auth_api.dart';
 import 'package:fokad_admin/src/api/finances/creance_api.dart';
 import 'package:fokad_admin/src/api/finances/dette_api.dart';
+import 'package:fokad_admin/src/api/rh/agents_api.dart';
 import 'package:fokad_admin/src/api/rh/paiement_salaire_api.dart';
 import 'package:fokad_admin/src/models/finances/creances_model.dart';
 import 'package:fokad_admin/src/models/finances/dette_model.dart';
+import 'package:fokad_admin/src/models/rh/agent_model.dart';
 import 'package:fokad_admin/src/models/rh/paiement_salaire_model.dart';
+import 'package:fokad_admin/src/models/users/user_model.dart';
 import 'package:fokad_admin/src/navigation/drawer/drawer_widget.dart';
 import 'package:fokad_admin/src/routes/routes.dart';
 import 'package:routemaster/routemaster.dart';
@@ -22,6 +26,7 @@ class AdministrationNav extends StatefulWidget {
 class _AdministrationNavState extends State<AdministrationNav> {
   bool isOpenAdmin = false;
 
+  int agentInactifs = 0;
   int countPaie = 0;
   int nbrCreance = 0;
   int nbrDette = 0;
@@ -33,18 +38,28 @@ class _AdministrationNavState extends State<AdministrationNav> {
   }
 
   Future<void> getData() async {
+    UserModel userLoggIn = await AuthApi().getUserId();
+    // RH
+    List<AgentModel> agents = await AgentsApi().getAllData();
+
+    // FInances
     List<PaiementSalaireModel> paiement =
         await PaiementSalaireApi().getAllData();
     List<CreanceModel?> dataCreanceList = await CreanceApi().getAllData();
     List<DetteModel?> dataDetteList = await DetteApi().getAllData();
 
     setState(() {
+       agentInactifs =
+          agents.where((element) => element.statutAgent == false).length;
+          
       countPaie =
-          paiement.where((element) => element.approbation == false).length;
+          paiement.where((element) => element.approbationDG == '-' && element.approbationFin != '-').length;
       nbrCreance = dataCreanceList
-          .where((element) => element!.approbation == false)
+          .where((element) => element!.approbationDG == userLoggIn.matricule)
           .length;
-      nbrDette = dataDetteList.where((element) => element!.approbation == false).length;
+      nbrDette = dataDetteList
+          .where((element) => element!.approbationDG == userLoggIn.matricule)
+          .length;
     });
   }
 
@@ -157,21 +172,21 @@ class _AdministrationNavState extends State<AdministrationNav> {
               // Routemaster.of(context).pop();
             }),
         DrawerWidget(
-          selected: widget.pageCurrente == DevisRoutes.devis,
-          icon: Icons.note_alt,
-          sizeIcon: 20.0,
-          title: 'Etat de besoin',
-          style: bodyText1,
-          badge: Badge(
-            badgeColor: Colors.blue,
-            badgeContent: const Text('1',
-                style: TextStyle(fontSize: 10.0, color: Colors.white)),
-            child: const Icon(Icons.notifications),
-          ),
-          onTap: () {
-            Routemaster.of(context).replace(DevisRoutes.devis);
-            // Routemaster.of(context).pop();
-          }),
+            selected: widget.pageCurrente == DevisRoutes.devis,
+            icon: Icons.note_alt,
+            sizeIcon: 20.0,
+            title: 'Etat de besoin',
+            style: bodyText1,
+            badge: Badge(
+              badgeColor: Colors.blue,
+              badgeContent: const Text('1',
+                  style: TextStyle(fontSize: 10.0, color: Colors.white)),
+              child: const Icon(Icons.notifications),
+            ),
+            onTap: () {
+              Routemaster.of(context).replace(DevisRoutes.devis);
+              // Routemaster.of(context).pop();
+            }),
       ],
     );
   }

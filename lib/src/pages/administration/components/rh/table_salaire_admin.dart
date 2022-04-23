@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:fokad_admin/src/api/rh/paiement_salaire_api.dart';
 import 'package:fokad_admin/src/models/rh/paiement_salaire_model.dart';
 import 'package:fokad_admin/src/pages/administration/components/rh/update_paiement_salaire.dart';
+import 'package:fokad_admin/src/pages/rh/paiements/components/paiement_bulletin.dart';
 import 'package:fokad_admin/src/widgets/print_widget.dart';
 import 'package:intl/intl.dart';
 import 'package:pluto_grid/pluto_grid.dart';
@@ -40,14 +41,8 @@ class _TableSalaireAdminState extends State<TableSalaireAdmin> {
         onRowDoubleTap: (PlutoGridOnRowDoubleTapEvent tapEvent) {
           final dataList = tapEvent.row!.cells.values;
           final idPlutoRow = dataList.elementAt(0);
-    
-          // Routemaster.of(context)
-          //     .push('${RhRoutes.rhAgentPage}/${idPlutoRow.value}');
-    
-          Navigator.of(context).push(MaterialPageRoute(
-              builder: (context) => UpdatePaiementSalaireAdmin(id: idPlutoRow.value)));
-    
-          print("item ${idPlutoRow.value} ");
+           Navigator.of(context).push(MaterialPageRoute(
+              builder: (context) => PaiementBulletin(id: idPlutoRow.value)));
         },
         onLoaded: (PlutoGridOnLoadedEvent event) {
           stateManager = event.stateManager;
@@ -196,10 +191,8 @@ void agentsColumn() {
   Future agentsRow() async {
     List<PaiementSalaireModel?> dataList =
         await PaiementSalaireApi().getAllData();
-    var data = dataList
-        .where((element) =>
-            element!.approbation == false)
-        .toList();
+    var data =
+        dataList.where((element) => element!.approbationDG == "-" && element.approbationFin != "-").toList();
 
     if (mounted) {
       setState(() {
@@ -211,17 +204,22 @@ void agentsColumn() {
             'nom': PlutoCell(value: item.nom),
             'matricule': PlutoCell(value: item.matricule),
             'departement': PlutoCell(value: item.departement),
-            'salaire': PlutoCell(value: item.salaire),
             'approbation': PlutoCell(
-                value:
-                    (item.approbation == true) ? "Approuvé" : "Non Approuvé"),
-            'createdAt': PlutoCell(value: DateFormat("dd-MM-yy").format(item.createdAt))
+                value: (item.approbationDG == "Approved")
+                    ? "Approuvé"
+                    : "Non Approuvé"),
+            'observation': PlutoCell(
+                value: (item.observation == true) ? "Payé" : "Non payé"),
+            'modePaiement': PlutoCell(value: item.modePaiement),
+            'createdAt': PlutoCell(
+                value: DateFormat("DD-MM-yy HH:mm").format(item.createdAt))
           }));
         }
         stateManager!.resetCurrentState();
       });
     }
   }
+
 }
 
 class ClassYouImplemented implements PlutoFilterType {

@@ -307,7 +307,7 @@ class _DetailCreanceAdminState extends State<DetailCreanceAdmin> {
           const SizedBox(
             height: p20,
           ),
-          if (creanceModel.approbation == true)
+          if (creanceModel.approbationDG == '')
             Row(
               children: [
                 Expanded(

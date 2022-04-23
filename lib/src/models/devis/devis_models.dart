@@ -1,17 +1,31 @@
 class DevisModel {
-  final int? id;
-  final String title;
-  final String priority;
-  final String departement;
-  final List list;
-  final bool approbation; // DG
-  final bool observation;
+  late int? id;
+  late String title;
+  late String priority;
+  late String departement;
+  late List list; // Choses a énumerer
+  late String ligneBudgtaire;
+  late String resources;
+  
+  late String approbationDG; // button radio OUi et NON if non text field
+  late String signatureDG;
+  late String signatureJustificationDG;
+ 
+  late String approbationFin;
+  late String signatureFin;
+  late String signatureJustificationFin;
 
-  /// Accuse reception
-  final String signatureDG;
-  final String signatureReception;
-  final String signatureEmission;
-  final DateTime created;
+  late String approbationBudget;
+  late String signatureBudget;
+  late String signatureJustificationBudget;
+
+  late String approbationDD;
+  late String signatureDD; // directeur de departement
+  late String signatureJustificationDD;
+
+  late String signature; // celui qui fait le document
+  late DateTime created;
+
 
   DevisModel(
       {this.id,
@@ -19,12 +33,23 @@ class DevisModel {
       required this.priority,
       required this.departement,
       required this.list,
-      required this.approbation,
-      required this.observation,
+      required this.ligneBudgtaire,  
+      required this.resources,
+      required this.approbationDG,
       required this.signatureDG,
-      required this.signatureReception,
-      required this.signatureEmission,
-      required this.created});
+      required this.signatureJustificationDG,
+      required this.approbationFin,
+      required this.signatureFin,
+      required this.signatureJustificationFin,
+      required this.approbationBudget,
+      required this.signatureBudget,
+      required this.signatureJustificationBudget,
+      required this.approbationDD,
+      required this.signatureDD,
+      required this.signatureJustificationDD,
+      required this.signature,
+      required this.created
+  });
 
   factory DevisModel.fromSQL(List<dynamic> row) {
     return DevisModel(
@@ -33,12 +58,22 @@ class DevisModel {
         priority: row[2],
         departement: row[3],
         list: row[4],
-        approbation: row[5],
-        observation: row[6],
-        signatureDG: row[7],
-        signatureReception: row[8],
-        signatureEmission: row[9],
-        created: row[10]
+        ligneBudgtaire: row[5],
+        resources: row[6],
+        approbationDG: row[7],
+        signatureDG: row[8],
+        signatureJustificationDG: row[9],
+        approbationFin: row[10],
+        signatureFin: row[11],
+        signatureJustificationFin: row[12],
+        approbationBudget: row[13],
+        signatureBudget: row[14],
+        signatureJustificationBudget: row[15],
+        approbationDD: row[16],
+        signatureDD: row[17],
+        signatureJustificationDD: row[18],
+        signature: row[19],
+        created: row[20]
     );
   }
 
@@ -49,11 +84,21 @@ class DevisModel {
         priority: json['priority'],
         departement: json['departement'],
         list: json['list'],
-        approbation: json['approbation'],
-        observation: json['observation'],
+        ligneBudgtaire: json['ligneBudgtaire'],
+        resources: json['resources'],
+        approbationDG: json['approbationDG'],
         signatureDG: json['signatureDG'],
-        signatureReception: json['signatureReception'],
-        signatureEmission: json['signatureEmission'],
+        signatureJustificationDG: json['signatureJustificationDG'],
+        approbationFin: json['approbationFin'],
+        signatureFin: json['signatureFin'],
+        signatureJustificationFin: json['signatureJustificationFin'],
+        approbationBudget: json['approbationBudget'],
+        signatureBudget: json['signatureBudget'],
+        signatureJustificationBudget: json['signatureJustificationBudget'],
+        approbationDD: json['approbationDD'],
+        signatureDD: json['signatureDD'],
+        signatureJustificationDD: json['signatureJustificationDD'],
+        signature: json['signature'],
         created: DateTime.parse(json['created'])
         
     );
@@ -66,11 +111,21 @@ class DevisModel {
       'priority': priority,
       'departement': departement,
       'list': list,
-      'approbation': approbation,
-      'observation': observation,
+      'ligneBudgtaire': ligneBudgtaire,
+      'resources': resources,
+      'approbationDG': approbationDG,
       'signatureDG': signatureDG,
-      'signatureReception': signatureReception,
-      'signatureEmission': signatureEmission,
+      'signatureJustificationDG': signatureJustificationDG,
+      'approbationFin': approbationFin,
+      'signatureFin': signatureFin,
+      'signatureJustificationFin': signatureJustificationFin,
+      'approbationBudget': approbationBudget,
+      'signatureBudget': signatureBudget,
+      'signatureJustificationBudget': signatureJustificationBudget,
+      'approbationDD': approbationDD,
+      'signatureDD': signatureDD,
+      'signatureJustificationDD': signatureJustificationDD,
+      'signature': signature,
       'created': created.toIso8601String()
     };
   }

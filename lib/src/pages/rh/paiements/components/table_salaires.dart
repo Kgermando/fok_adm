@@ -203,12 +203,12 @@ class _TableSalairesState extends State<TableSalaires> {
   Future agentsRow() async {
     List<PaiementSalaireModel?> dataList =
         await PaiementSalaireApi().getAllData();
-    var data =
-        dataList.where((element) => element!.approbation == true && element.observation == true).toList();
+    // var data =
+    //     dataList.where((element) => element!.approbationDG == "Approved" && element.observation == true).toList();
         
     if (mounted) {
       setState(() {
-        for (var item in data) {
+        for (var item in dataList) {
           id = item!.id;
           rows.add(PlutoRow(cells: {
             'id': PlutoCell(value: item.id),
@@ -217,14 +217,15 @@ class _TableSalairesState extends State<TableSalaires> {
             'matricule': PlutoCell(value: item.matricule),
             'departement': PlutoCell(value: item.departement),
             'approbation': PlutoCell(value:
-                (item.approbation == true) ? "Approuvé" : "Non Approuvé"),
+                (item.approbationDG == "Approved") ? "Approuvé" : "Non Approuvé"),
             'observation': PlutoCell(value: (item.observation == true) ? "Payé" : "Non payé"),
             'modePaiement': PlutoCell(value: item.modePaiement),
-            'createdAt': PlutoCell(value:  DateFormat("DD-MM-yy").format(item.createdAt))
+            'createdAt': PlutoCell(value:  DateFormat("DD-MM-yy HH:mm").format(item.createdAt))
           }));
+          stateManager!.resetCurrentState();
         }
-        stateManager!.resetCurrentState();
-      });
+        
+      }); 
     }
   }
 }

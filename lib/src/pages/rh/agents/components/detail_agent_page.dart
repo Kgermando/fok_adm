@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_switch/flutter_switch.dart';
+import 'package:fokad_admin/src/api/auth/auth_api.dart';
 import 'package:fokad_admin/src/api/rh/agents_api.dart';
 import 'package:fokad_admin/src/api/user/user_api.dart';
 import 'package:fokad_admin/src/constants/app_theme.dart';
@@ -8,11 +9,14 @@ import 'package:fokad_admin/src/models/rh/agent_model.dart';
 import 'package:fokad_admin/src/models/users/user_model.dart';
 import 'package:fokad_admin/src/navigation/drawer/drawer_menu.dart';
 import 'package:fokad_admin/src/navigation/header/custom_appbar.dart';
+import 'package:fokad_admin/src/pages/rh/agents/components/update_agent.dart';
 import 'package:fokad_admin/src/pages/rh/paiements/components/add_paiement_salaire.dart';
+import 'package:fokad_admin/src/provider/controller.dart';
 import 'package:fokad_admin/src/utils/loading.dart';
 import 'package:fokad_admin/src/widgets/print_widget.dart';
 import 'package:fokad_admin/src/widgets/title_widget.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 import 'package:routemaster/routemaster.dart';
 
 class AgentPage extends StatefulWidget {
@@ -36,9 +40,12 @@ class _AgentPageState extends State<AgentPage> {
     super.initState();
   }
 
+  UserModel? user;
   Future<void> getData() async {
+    UserModel userModel = await AuthApi().getUserId();
     final data = await UserApi().getAllData();
     setState(() {
+      user = userModel;
       userList = data;
     });
   }
@@ -82,7 +89,7 @@ class _AgentPageState extends State<AgentPage> {
                                     Expanded(
                                       child: CustomAppbar(
                                           title:
-                                              'Matricule ${agentModel!.matricule} '),
+                                              'Agent ${agentModel!.matricule} '),
                                     ),
                                   ],
                                 ),
@@ -132,10 +139,14 @@ class _AgentPageState extends State<AgentPage> {
                     Row(
                       children: [
                         compteSalaireWidget(agentModel),
+                        if (agentModel.fonctionOccupe == user!.fonctionOccupe)
                         statutAgentWidget(agentModel),
                         IconButton(
                             tooltip: 'Modifier',
-                            onPressed: () {},
+                            onPressed: () {
+                              Navigator.of(context).push(MaterialPageRoute(
+                                  builder: (context) => UpdateAgent(agentModel: agentModel)));
+                            },
                             icon: const Icon(Icons.edit)),
                         PrintWidget(
                             tooltip: 'Imprimer le document', onPressed: () {})
@@ -146,6 +157,7 @@ class _AgentPageState extends State<AgentPage> {
                 identiteWidet(agentModel),
                 serviceWidet(agentModel),
                 competenceExperienceWidet(agentModel),
+                infosEditeurWidet(agentModel)
               ],
             ),
           ),
@@ -160,8 +172,6 @@ class _AgentPageState extends State<AgentPage> {
         onPressed: () {
           Navigator.of(context).push(MaterialPageRoute(
               builder: (context) => AddPaiementSalaire(agentModel: agentModel)));
-
-          print("Paiement ${agentModel.id}");
         },
         icon: const Icon(Icons.payment));
   }
@@ -543,6 +553,29 @@ class _AgentPageState extends State<AgentPage> {
     );
   }
 
+  Widget infosEditeurWidet(AgentModel agentModel) {
+    final bodyMedium = Theme.of(context).textTheme.bodyMedium;
+    return Padding(
+      padding: const EdgeInsets.all(p10),
+      child: Column(
+        children: [
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text('Signature :',
+                  style: bodyMedium!.copyWith(fontWeight: FontWeight.bold)),
+              SelectableText(agentModel.signature,
+                  textAlign: TextAlign.justify, style: bodyMedium)
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
+
+
+
   agentStatutDialog(AgentModel agentModel) {
     statutAgent = agentModel.statutAgent;
     return showDialog(
@@ -624,7 +657,10 @@ class _AgentPageState extends State<AgentPage> {
         statutAgent: statutAgent,
         createdAt: DateTime.now(),
         photo: agentModel.photo,
-        salaire: agentModel.salaire);
+        salaire: agentModel.salaire,
+      signature: user!.matricule,
+      created: DateTime.now()
+    );
     await AgentsApi().updateData(agentModel.id!, agent);
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
       content: const Text("Mise à statut avec succès!"),
@@ -665,7 +701,7 @@ class _AgentPageState extends State<AgentPage> {
         role: role,
         isOnline: true,
         createdAt: DateTime.now(),
-        passwordHash: "password");
+        passwordHash: "12345678");
     await UserApi().insertData(userModel);
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
       content: const Text("Enregistrer avec succès!"),

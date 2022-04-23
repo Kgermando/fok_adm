@@ -13,7 +13,7 @@ import 'package:intl/intl.dart';
 import 'package:routemaster/routemaster.dart';
 
 class PaiementBulletin extends StatefulWidget {
-  const PaiementBulletin({ Key? key, this.id }) : super(key: key);
+  const PaiementBulletin({Key? key, this.id}) : super(key: key);
 
   final int? id;
 
@@ -26,12 +26,26 @@ class _PaiementBulletinState extends State<PaiementBulletin> {
   final _formKey = GlobalKey<FormState>();
   bool isLoading = false;
 
+  String approbationDGController = '-';
+  String approbationFinController = '-';
+  String approbationBudgetController = '-';
+  String approbationDDController = '-';
+  TextEditingController signatureJustificationDGController =
+      TextEditingController();
+  TextEditingController signatureJustificationFinController =
+      TextEditingController();
+  TextEditingController signatureJustificationBudgetController =
+      TextEditingController();
+  TextEditingController signatureJustificationDDController =
+      TextEditingController();
+
   @override
   void initState() {
     getData();
     super.initState();
   }
 
+  int? id;
   String? nom;
   String? postNom;
   String? prenom;
@@ -45,7 +59,8 @@ class _PaiementBulletinState extends State<PaiementBulletin> {
   bool observation = false; // Payé ou non Payé  // pour Finance
   String? modePaiement; // mode depayement
   DateTime createdAt = DateTime.now();
-  bool approbation = false; // pour DG
+  String? ligneBudgtaire;
+  String? resources;
   String? tauxJourHeureMoisSalaire;
   String? joursHeuresPayeA100PourecentSalaire;
   String? totalDuSalaire;
@@ -73,18 +88,30 @@ class _PaiementBulletinState extends State<PaiementBulletin> {
   String? netAPayer;
   String? montantPrisConsiderationCalculCotisationsINSS;
   String? totalDuBrut;
-  String? signatureDG;
-  String? signatureFinance;
-  String? signatureRH;
 
+  String? approbationDG;
+  String? signatureDG;
+  String? signatureJustificationDG;
+  String? approbationFin;
+  String? signatureFin;
+  String? signatureJustificationFin;
+  String? approbationBudget;
+  String? signatureBudget;
+  String? signatureJustificationBudget;
+  String? approbationDD;
+  String? signatureDD;
+  String? signatureJustificationDD;
+  String? signature;
+
+  UserModel? user;
   Future<void> getData() async {
-    UserModel user = await AuthApi().getUserId();
+    UserModel userModel = await AuthApi().getUserId();
     PaiementSalaireModel data =
         await PaiementSalaireApi().getOneData(widget.id!);
     if (!mounted) return;
     setState(() {
-      signatureFinance = user.matricule;
-
+      user = userModel;
+      id = data.id;
       nom = data.nom;
       postNom = data.postNom;
       prenom = data.prenom;
@@ -98,7 +125,8 @@ class _PaiementBulletinState extends State<PaiementBulletin> {
       observation = data.observation;
       modePaiement = data.modePaiement;
       createdAt = data.createdAt;
-      approbation = data.approbation;
+      ligneBudgtaire = data.ligneBudgtaire;
+      resources = data.resources;
       tauxJourHeureMoisSalaire = data.tauxJourHeureMoisSalaire;
       joursHeuresPayeA100PourecentSalaire =
           data.joursHeuresPayeA100PourecentSalaire;
@@ -132,9 +160,19 @@ class _PaiementBulletinState extends State<PaiementBulletin> {
       montantPrisConsiderationCalculCotisationsINSS =
           data.montantPrisConsiderationCalculCotisationsINSS;
       totalDuBrut = data.totalDuBrut;
+
+      approbationDG = data.approbationDG;
       signatureDG = data.signatureDG;
-      signatureFinance = data.signatureFinance;
-      signatureRH = data.signatureRH;
+      signatureJustificationDG = data.signatureJustificationDG;
+      approbationFin = data.approbationFin;
+      signatureFin = data.signatureFin;
+      signatureJustificationFin = data.signatureJustificationFin;
+      approbationBudget = data.approbationBudget;
+      signatureBudget = data.signatureBudget;
+      signatureJustificationBudget = data.signatureJustificationBudget;
+      approbationDD = data.approbationDD;
+      signatureDD = data.signatureDD;
+      signatureJustificationDD = data.signatureJustificationDD;
     });
   }
 
@@ -273,7 +311,11 @@ class _PaiementBulletinState extends State<PaiementBulletin> {
                     montantPrisConsiderationCalculCotisationsINSSWidget(),
                     const SizedBox(
                       height: p20,
-                    )
+                    ),
+                    infosEditeurWidget(),
+                    const SizedBox(
+                      height: p20,
+                    ),
                   ],
                 ),
               ),
@@ -281,7 +323,6 @@ class _PaiementBulletinState extends State<PaiementBulletin> {
           ],
         ));
   }
-
 
   Widget agentWidget() {
     final bodyMedium = Theme.of(context).textTheme.bodyMedium;
@@ -453,7 +494,7 @@ class _PaiementBulletinState extends State<PaiementBulletin> {
           children: [
             Expanded(
               child: Text(
-                'Approbation',
+                'Ligne Budgtaire',
                 style: bodyMedium.copyWith(fontWeight: FontWeight.bold),
               ),
             ),
@@ -461,16 +502,28 @@ class _PaiementBulletinState extends State<PaiementBulletin> {
               width: p10,
             ),
             Expanded(
-                child: (approbation)
-                    ? SelectableText(
-                        'Approuvé',
-                        style:
-                            bodyMedium.copyWith(color: Colors.green.shade700),
-                      )
-                    : SelectableText(
-                        'Non approuvé',
-                        style: bodyMedium.copyWith(color: Colors.red.shade700),
-                      ))
+                child: SelectableText(
+              ligneBudgtaire.toString(),
+              style: bodyMedium,
+            ))
+          ],
+        ),
+        Row(
+          children: [
+            Expanded(
+              child: Text(
+                'Resources',
+                style: bodyMedium.copyWith(fontWeight: FontWeight.bold),
+              ),
+            ),
+            const SizedBox(
+              width: p10,
+            ),
+            Expanded(
+                child: SelectableText(
+              resources.toString(),
+              style: bodyMedium,
+            ))
           ],
         ),
         Row(
@@ -488,12 +541,13 @@ class _PaiementBulletinState extends State<PaiementBulletin> {
                 child: (observation)
                     ? SelectableText(
                         'Payé',
-                        style:
-                            bodyMedium.copyWith(color: Colors.greenAccent.shade700),
+                        style: bodyMedium.copyWith(
+                            color: Colors.greenAccent.shade700),
                       )
                     : SelectableText(
                         'Non payé',
-                        style: bodyMedium.copyWith(color: Colors.redAccent.shade700),
+                        style: bodyMedium.copyWith(
+                            color: Colors.redAccent.shade700),
                       ))
           ],
         ),
@@ -518,7 +572,6 @@ class _PaiementBulletinState extends State<PaiementBulletin> {
       ],
     );
   }
-
 
   Widget salaireWidget() {
     final bodyMedium = Theme.of(context).textTheme.bodyMedium;
@@ -1219,4 +1272,787 @@ class _PaiementBulletinState extends State<PaiementBulletin> {
     );
   }
 
+  Widget infosEditeurWidget() {
+    final bodyMedium = Theme.of(context).textTheme.bodyMedium;
+    final bodySmall = Theme.of(context).textTheme.bodySmall;
+    List<String> dataList = ['Approved', 'Unapproved'];
+    return Container(
+      padding: const EdgeInsets.only(top: p16, bottom: p16),
+      decoration: const BoxDecoration(
+        border: Border(
+          // top: BorderSide(width: 1.0),
+          bottom: BorderSide(width: 1.0),
+        ),
+      ),
+      child: Column(
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Expanded(
+                  flex: 3,
+                  child: Text('Directeur Générale',
+                      style:
+                          bodyMedium!.copyWith(fontWeight: FontWeight.bold))),
+              Expanded(
+                flex: 3,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Expanded(
+                        flex: 3,
+                        child: Column(
+                          children: [
+                            Text(
+                              'Approbation',
+                              style: bodySmall,
+                            ),
+                            if (approbationDG != '-')
+                              SelectableText(
+                                approbationDG.toString(),
+                                style: bodyMedium.copyWith(
+                                    color: Colors.red.shade700),
+                              ),
+                            if (approbationDG == '-' && user!.fonctionOccupe == 'Directeur générale')
+                              Container(
+                                margin: const EdgeInsets.only(
+                                    bottom: p10, left: p5),
+                                child: DropdownButtonFormField<String>(
+                                  decoration: InputDecoration(
+                                    labelText: 'Approbation',
+                                    border: OutlineInputBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(5.0)),
+                                  ),
+                                  value: approbationDGController,
+                                  isExpanded: true,
+                                  items: dataList.map((String value) {
+                                    return DropdownMenuItem<String>(
+                                      value: value,
+                                      child: Text(value),
+                                    );
+                                  }).toList(),
+                                  onChanged: (value) {
+                                    setState(() {
+                                      approbationDGController = value!;
+                                    });
+                                  },
+                                ),
+                              )
+                          ],
+                        )),
+                    Expanded(
+                        flex: 2,
+                        child: Column(
+                          children: [
+                            Text(
+                              'Signature',
+                              style: bodySmall,
+                            ),
+                            SelectableText(
+                              signatureDG.toString(),
+                              style: bodyMedium,
+                            ),
+                          ],
+                        )),
+                    Expanded(
+                        flex: 2,
+                        child: Column(
+                          children: [
+                            Text(
+                              'Justification',
+                              style: bodySmall,
+                            ),
+                            if (approbationDG == 'Unapproved' &&
+                                signatureDG != '-')
+                              SelectableText(
+                                signatureJustificationDG.toString(),
+                                style: bodyMedium,
+                              ),
+                            if (approbationDG == 'Unapproved' &&
+                                user!.fonctionOccupe == 'Directeur générale')
+                              Container(
+                                  margin: const EdgeInsets.only(
+                                      bottom: p10, left: p5),
+                                  child: TextFormField(
+                                    controller:
+                                        signatureJustificationDGController,
+                                    decoration: InputDecoration(
+                                      border: OutlineInputBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(10.0)),
+                                      labelText: 'Quelque chose à dire',
+                                      hintText: 'Quelque chose à dire',
+                                    ),
+                                    keyboardType: TextInputType.text,
+                                    style: const TextStyle(),
+                                  )),
+                            if (approbationDG == 'Unapproved')
+                              IconButton(
+                                  onPressed: () {
+                                    submitUpdateDG();
+                                  },
+                                  icon: const Icon(Icons.send))
+                          ],
+                        ))
+                  ],
+                ),
+              ),
+            ],
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Expanded(
+                  flex: 3,
+                  child: Text('Directeur de Finance',
+                      style: bodyMedium.copyWith(fontWeight: FontWeight.bold))),
+              Expanded(
+                flex: 3,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Expanded(
+                        flex: 3,
+                        child: Column(
+                          children: [
+                            Text(
+                              'Approbation',
+                              style: bodySmall,
+                            ),
+                            if (approbationFin != '-')
+                              SelectableText(
+                                approbationFin.toString(),
+                                style: bodyMedium.copyWith(
+                                    color: Colors.green.shade700),
+                              ),
+                            if (approbationFin == '-' &&
+                                user!.fonctionOccupe == 'Directeur des finances')
+                              Container(
+                                margin: const EdgeInsets.only(
+                                    bottom: p10, left: p5),
+                                child: DropdownButtonFormField<String>(
+                                  decoration: InputDecoration(
+                                    labelText: 'Approbation',
+                                    border: OutlineInputBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(5.0)),
+                                  ),
+                                  value: approbationFinController,
+                                  isExpanded: true,
+                                  items: dataList.map((String value) {
+                                    return DropdownMenuItem<String>(
+                                      value: value,
+                                      child: Text(value),
+                                    );
+                                  }).toList(),
+                                  onChanged: (value) {
+                                    setState(() {
+                                      approbationFinController = value!;
+                                    });
+                                  },
+                                ),
+                              )
+                          ],
+                        )),
+                    Expanded(
+                        flex: 2,
+                        child: Column(
+                          children: [
+                            Text(
+                              'Signature',
+                              style: bodySmall,
+                            ),
+                            SelectableText(
+                              signatureFin.toString(),
+                              style: bodyMedium,
+                            ),
+                          ],
+                        )),
+                    Expanded(
+                        flex: 2,
+                        child: Column(
+                          children: [
+                            Text(
+                              'Justification',
+                              style: bodySmall,
+                            ),
+                            if (approbationFin == 'Unapproved' &&
+                                signatureFin != '-')
+                              SelectableText(
+                                signatureJustificationFin.toString(),
+                                style: bodyMedium,
+                              ),
+                            if (approbationFin == 'Unapproved' &&
+                                user!.fonctionOccupe ==
+                                    'Directeur des finances')
+                              Container(
+                                  margin: const EdgeInsets.only(
+                                      bottom: p10, left: p5),
+                                  child: TextFormField(
+                                    controller:
+                                        signatureJustificationFinController,
+                                    decoration: InputDecoration(
+                                      border: OutlineInputBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(10.0)),
+                                      labelText: 'Quelque chose à dire',
+                                      hintText: 'Quelque chose à dire',
+                                    ),
+                                    keyboardType: TextInputType.text,
+                                    style: const TextStyle(),
+                                  )),
+                            if (approbationFin == 'Unapproved')
+                              IconButton(
+                                  onPressed: () {
+                                    submitUpdateFIN();
+                                  },
+                                  icon: const Icon(Icons.send))
+                          ],
+                        ))
+                  ],
+                ),
+              ),
+            ],
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Expanded(
+                  flex: 3,
+                  child: Text('Budget',
+                      style: bodyMedium.copyWith(fontWeight: FontWeight.bold))),
+              Expanded(
+                flex: 3,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Expanded(
+                        flex: 3,
+                        child: Column(
+                          children: [
+                            Text(
+                              'Approbation',
+                              style: bodySmall,
+                            ),
+                            if (approbationBudget != '-')
+                              SelectableText(
+                                approbationBudget.toString(),
+                                style: bodyMedium.copyWith(
+                                    color: Colors.orange.shade700),
+                              ),
+                            if (approbationBudget == '-' &&
+                                user!.fonctionOccupe ==
+                                    'Directeur de budget')
+                              Container(
+                                margin: const EdgeInsets.only(
+                                    bottom: p10, left: p5),
+                                child: DropdownButtonFormField<String>(
+                                  decoration: InputDecoration(
+                                    labelText: 'Approbation',
+                                    border: OutlineInputBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(5.0)),
+                                  ),
+                                  value: approbationBudgetController,
+                                  isExpanded: true,
+                                  items: dataList.map((String value) {
+                                    return DropdownMenuItem<String>(
+                                      value: value,
+                                      child: Text(value),
+                                    );
+                                  }).toList(),
+                                  onChanged: (value) {
+                                    setState(() {
+                                      approbationBudgetController = value!;
+                                    });
+                                  },
+                                ),
+                              )
+                          ],
+                        )),
+                    Expanded(
+                        flex: 2,
+                        child: Column(
+                          children: [
+                            Text(
+                              'Signature',
+                              style: bodySmall,
+                            ),
+                            SelectableText(
+                              signatureBudget.toString(),
+                              style: bodyMedium,
+                            ),
+                          ],
+                        )),
+                    Expanded(
+                        flex: 2,
+                        child: Column(
+                          children: [
+                            Text(
+                              'Justification',
+                              style: bodySmall,
+                            ),
+                            if (approbationBudget == 'Unapproved' &&
+                                signatureBudget != '-')
+                              SelectableText(
+                                signatureJustificationBudget.toString(),
+                                style: bodyMedium,
+                              ),
+                            if (approbationBudget == 'Unapproved' &&
+                                user!.fonctionOccupe == 'Directeur de budget')
+                              Container(
+                                  margin: const EdgeInsets.only(
+                                      bottom: p10, left: p5),
+                                  child: TextFormField(
+                                    controller:
+                                        signatureJustificationBudgetController,
+                                    decoration: InputDecoration(
+                                      border: OutlineInputBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(10.0)),
+                                      labelText: 'Quelque chose à dire',
+                                      hintText: 'Quelque chose à dire',
+                                    ),
+                                    keyboardType: TextInputType.text,
+                                    style: const TextStyle(),
+                                  )),
+                            if (approbationBudget == 'Unapproved')
+                              IconButton(
+                                  onPressed: () {
+                                    submitUpdateBudget();
+                                  },
+                                  icon: const Icon(Icons.send))
+                          ],
+                        ))
+                  ],
+                ),
+              ),
+            ],
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Expanded(
+                  flex: 3,
+                  child: Text('Directeur de département',
+                      style: bodyMedium.copyWith(fontWeight: FontWeight.bold))),
+              Expanded(
+                flex: 3,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Expanded(
+                        flex: 3,
+                        child: Column(
+                          children: [
+                            Text(
+                              'Approbation',
+                              style: bodySmall,
+                            ),
+                            if (approbationDD != '-' &&
+                                user!.fonctionOccupe == 'Directeur de département')
+                              SelectableText(
+                                approbationDD.toString(),
+                                style: bodyMedium.copyWith(
+                                    color: Colors.blue.shade700),
+                              ),
+                            if (approbationDD == '-')
+                              Container(
+                                margin: const EdgeInsets.only(
+                                    bottom: p10, left: p5),
+                                child: DropdownButtonFormField<String>(
+                                  decoration: InputDecoration(
+                                    labelText: 'Approbation',
+                                    border: OutlineInputBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(5.0)),
+                                  ),
+                                  value: approbationDDController,
+                                  isExpanded: true,
+                                  items: dataList.map((String value) {
+                                    return DropdownMenuItem<String>(
+                                      value: value,
+                                      child: Text(value),
+                                    );
+                                  }).toList(),
+                                  onChanged: (value) {
+                                    setState(() {
+                                      approbationDDController = value!;
+                                    });
+                                  },
+                                ),
+                              )
+                          ],
+                        )),
+                    Expanded(
+                        flex: 2,
+                        child: Column(
+                          children: [
+                            Text(
+                              'Signature',
+                              style: bodySmall,
+                            ),
+                            SelectableText(
+                              signatureDD.toString(),
+                              style: bodyMedium,
+                            ),
+                          ],
+                        )),
+                    Expanded(
+                        flex: 2,
+                        child: Column(
+                          children: [
+                            Text(
+                              'Justification',
+                              style: bodySmall,
+                            ),
+                            if (approbationDD == 'Unapproved' &&
+                                signatureDD != '-')
+                              SelectableText(
+                                signatureJustificationDD.toString(),
+                                style: bodyMedium,
+                              ),
+                            if (approbationDD == 'Unapproved' &&
+                                user!.fonctionOccupe ==
+                                    'Directeur de département')
+                              Container(
+                                  margin: const EdgeInsets.only(
+                                      bottom: p10, left: p5),
+                                  child: TextFormField(
+                                    controller:
+                                        signatureJustificationDDController,
+                                    decoration: InputDecoration(
+                                      border: OutlineInputBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(10.0)),
+                                      labelText: 'Quelque chose à dire',
+                                      hintText: 'Quelque chose à dire',
+                                    ),
+                                    keyboardType: TextInputType.text,
+                                    style: const TextStyle(),
+                                  )),
+                            if (approbationDD == 'Unapproved')
+                              IconButton(
+                                  onPressed: () {
+                                    submitUpdateDD();
+                                  },
+                                  icon: const Icon(Icons.send))
+                          ],
+                        ))
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  Future<void> submitUpdateDG() async {
+    final paiementSalaireModel = PaiementSalaireModel(
+        id: id,
+        nom: nom.toString(),
+        postNom: postNom.toString(),
+        prenom: prenom.toString(),
+        telephone: telephone.toString(),
+        adresse: adresse.toString(),
+        departement: departement.toString(),
+        numeroSecuriteSociale: numeroSecuriteSociale.toString(),
+        matricule: matricule.toString(),
+        servicesAffectation: servicesAffectation.toString(),
+        salaire: salaireField.toString(),
+        observation: observation,
+        modePaiement: modePaiement.toString(),
+        createdAt: createdAt,
+        ligneBudgtaire: ligneBudgtaire.toString(),
+        resources: resources.toString(),
+        tauxJourHeureMoisSalaire: tauxJourHeureMoisSalaire.toString(),
+        joursHeuresPayeA100PourecentSalaire:
+            joursHeuresPayeA100PourecentSalaire.toString(),
+        totalDuSalaire: totalDuSalaire.toString(),
+        nombreHeureSupplementaires: nombreHeureSupplementaires.toString(),
+        tauxHeureSupplementaires: tauxHeureSupplementaires.toString(),
+        totalDuHeureSupplementaires: totalDuHeureSupplementaires.toString(),
+        supplementTravailSamediDimancheJoursFerie:
+            supplementTravailSamediDimancheJoursFerie.toString(),
+        prime: prime.toString(),
+        divers: divers.toString(),
+        joursCongesPaye: joursCongesPaye.toString(),
+        tauxCongesPaye: tauxCongesPaye.toString(),
+        totalDuCongePaye: totalDuCongePaye.toString(),
+        jourPayeMaladieAccident: jourPayeMaladieAccident.toString(),
+        tauxJournalierMaladieAccident: tauxJournalierMaladieAccident.toString(),
+        totalDuMaladieAccident: totalDuMaladieAccident.toString(),
+        pensionDeduction: pensionDeduction.toString(),
+        indemniteCompensatricesDeduction:
+            indemniteCompensatricesDeduction.toString(),
+        avancesDeduction: avancesDeduction.toString(),
+        diversDeduction: diversDeduction.toString(),
+        retenuesFiscalesDeduction: retenuesFiscalesDeduction.toString(),
+        nombreEnfantBeneficaireAllocationsFamiliales:
+            nombreEnfantBeneficaireAllocationsFamiliales.toString(),
+        nombreDeJoursAllocationsFamiliales:
+            nombreDeJoursAllocationsFamiliales.toString(),
+        tauxJoursAllocationsFamiliales:
+            tauxJoursAllocationsFamiliales.toString(),
+        totalAPayerAllocationsFamiliales:
+            totalAPayerAllocationsFamiliales.toString(),
+        netAPayer: netAPayer.toString(),
+        montantPrisConsiderationCalculCotisationsINSS:
+            montantPrisConsiderationCalculCotisationsINSS.toString(),
+        totalDuBrut: totalDuBrut.toString(),
+        approbationDG: approbationDGController.toString(),
+        signatureDG: signatureDG.toString(),
+        signatureJustificationDG: signatureJustificationDGController.text,
+        approbationFin: approbationFin.toString(),
+        signatureFin: signatureFin.toString(),
+        signatureJustificationFin: signatureJustificationFin.toString(),
+        approbationBudget: approbationBudget.toString(),
+        signatureBudget: signatureBudget.toString(),
+        signatureJustificationBudget: signatureJustificationBudget.toString(),
+        approbationDD: approbationDD.toString(),
+        signatureDD: signatureDD.toString(),
+        signatureJustificationDD: signatureJustificationDD.toString(),
+        signature: user!.matricule.toString());
+    await PaiementSalaireApi().updateData(id!, paiementSalaireModel);
+    Routemaster.of(context).pop();
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      content: const Text("Soumis avec succès!"),
+      backgroundColor: Colors.green[700],
+    ));
+  }
+
+  Future<void> submitUpdateFIN() async {
+    final paiementSalaireModel = PaiementSalaireModel(
+        id: id,
+        nom: nom.toString(),
+        postNom: postNom.toString(),
+        prenom: prenom.toString(),
+        telephone: telephone.toString(),
+        adresse: adresse.toString(),
+        departement: departement.toString(),
+        numeroSecuriteSociale: numeroSecuriteSociale.toString(),
+        matricule: matricule.toString(),
+        servicesAffectation: servicesAffectation.toString(),
+        salaire: salaireField.toString(),
+        observation: observation,
+        modePaiement: modePaiement.toString(),
+        createdAt: createdAt,
+        ligneBudgtaire: ligneBudgtaire.toString(),
+        resources: resources.toString(),
+        tauxJourHeureMoisSalaire: tauxJourHeureMoisSalaire.toString(),
+        joursHeuresPayeA100PourecentSalaire:
+            joursHeuresPayeA100PourecentSalaire.toString(),
+        totalDuSalaire: totalDuSalaire.toString(),
+        nombreHeureSupplementaires: nombreHeureSupplementaires.toString(),
+        tauxHeureSupplementaires: tauxHeureSupplementaires.toString(),
+        totalDuHeureSupplementaires: totalDuHeureSupplementaires.toString(),
+        supplementTravailSamediDimancheJoursFerie:
+            supplementTravailSamediDimancheJoursFerie.toString(),
+        prime: prime.toString(),
+        divers: divers.toString(),
+        joursCongesPaye: joursCongesPaye.toString(),
+        tauxCongesPaye: tauxCongesPaye.toString(),
+        totalDuCongePaye: totalDuCongePaye.toString(),
+        jourPayeMaladieAccident: jourPayeMaladieAccident.toString(),
+        tauxJournalierMaladieAccident: tauxJournalierMaladieAccident.toString(),
+        totalDuMaladieAccident: totalDuMaladieAccident.toString(),
+        pensionDeduction: pensionDeduction.toString(),
+        indemniteCompensatricesDeduction:
+            indemniteCompensatricesDeduction.toString(),
+        avancesDeduction: avancesDeduction.toString(),
+        diversDeduction: diversDeduction.toString(),
+        retenuesFiscalesDeduction: retenuesFiscalesDeduction.toString(),
+        nombreEnfantBeneficaireAllocationsFamiliales:
+            nombreEnfantBeneficaireAllocationsFamiliales.toString(),
+        nombreDeJoursAllocationsFamiliales:
+            nombreDeJoursAllocationsFamiliales.toString(),
+        tauxJoursAllocationsFamiliales:
+            tauxJoursAllocationsFamiliales.toString(),
+        totalAPayerAllocationsFamiliales:
+            totalAPayerAllocationsFamiliales.toString(),
+        netAPayer: netAPayer.toString(),
+        montantPrisConsiderationCalculCotisationsINSS:
+            montantPrisConsiderationCalculCotisationsINSS.toString(),
+        totalDuBrut: totalDuBrut.toString(),
+        approbationDG: approbationDG.toString(),
+        signatureDG: signatureDG.toString(),
+        signatureJustificationDG: signatureJustificationDG.toString(),
+
+        approbationFin: approbationFinController.toString(),
+        signatureFin: signatureFin.toString(),
+        signatureJustificationFin: signatureJustificationFinController.text,
+
+        approbationBudget: approbationBudget.toString(),
+        signatureBudget: signatureBudget.toString(),
+        signatureJustificationBudget: signatureJustificationBudget.toString(),
+        approbationDD: approbationDD.toString(),
+        signatureDD: signatureDD.toString(),
+        signatureJustificationDD: signatureJustificationDD.toString(),
+        signature: user!.matricule.toString());
+    await PaiementSalaireApi().updateData(id!, paiementSalaireModel);
+    Routemaster.of(context).pop();
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      content: const Text("Soumis avec succès!"),
+      backgroundColor: Colors.green[700],
+    ));
+  }
+
+  Future<void> submitUpdateBudget() async {
+    final paiementSalaireModel = PaiementSalaireModel(
+        id: id,
+        nom: nom.toString(),
+        postNom: postNom.toString(),
+        prenom: prenom.toString(),
+        telephone: telephone.toString(),
+        adresse: adresse.toString(),
+        departement: departement.toString(),
+        numeroSecuriteSociale: numeroSecuriteSociale.toString(),
+        matricule: matricule.toString(),
+        servicesAffectation: servicesAffectation.toString(),
+        salaire: salaireField.toString(),
+        observation: observation,
+        modePaiement: modePaiement.toString(),
+        createdAt: createdAt,
+        ligneBudgtaire: ligneBudgtaire.toString(),
+        resources: resources.toString(),
+        tauxJourHeureMoisSalaire: tauxJourHeureMoisSalaire.toString(),
+        joursHeuresPayeA100PourecentSalaire:
+            joursHeuresPayeA100PourecentSalaire.toString(),
+        totalDuSalaire: totalDuSalaire.toString(),
+        nombreHeureSupplementaires: nombreHeureSupplementaires.toString(),
+        tauxHeureSupplementaires: tauxHeureSupplementaires.toString(),
+        totalDuHeureSupplementaires: totalDuHeureSupplementaires.toString(),
+        supplementTravailSamediDimancheJoursFerie:
+            supplementTravailSamediDimancheJoursFerie.toString(),
+        prime: prime.toString(),
+        divers: divers.toString(),
+        joursCongesPaye: joursCongesPaye.toString(),
+        tauxCongesPaye: tauxCongesPaye.toString(),
+        totalDuCongePaye: totalDuCongePaye.toString(),
+        jourPayeMaladieAccident: jourPayeMaladieAccident.toString(),
+        tauxJournalierMaladieAccident: tauxJournalierMaladieAccident.toString(),
+        totalDuMaladieAccident: totalDuMaladieAccident.toString(),
+        pensionDeduction: pensionDeduction.toString(),
+        indemniteCompensatricesDeduction:
+            indemniteCompensatricesDeduction.toString(),
+        avancesDeduction: avancesDeduction.toString(),
+        diversDeduction: diversDeduction.toString(),
+        retenuesFiscalesDeduction: retenuesFiscalesDeduction.toString(),
+        nombreEnfantBeneficaireAllocationsFamiliales:
+            nombreEnfantBeneficaireAllocationsFamiliales.toString(),
+        nombreDeJoursAllocationsFamiliales:
+            nombreDeJoursAllocationsFamiliales.toString(),
+        tauxJoursAllocationsFamiliales:
+            tauxJoursAllocationsFamiliales.toString(),
+        totalAPayerAllocationsFamiliales:
+            totalAPayerAllocationsFamiliales.toString(),
+        netAPayer: netAPayer.toString(),
+        montantPrisConsiderationCalculCotisationsINSS:
+            montantPrisConsiderationCalculCotisationsINSS.toString(),
+        totalDuBrut: totalDuBrut.toString(),
+
+        approbationDG: approbationDG.toString(),
+        signatureDG: signatureDG.toString(),
+        signatureJustificationDG: signatureJustificationDG.toString(),
+
+        approbationFin: approbationFin.toString(),
+        signatureFin: signatureFin.toString(),
+        signatureJustificationFin: signatureJustificationFin.toString(),
+
+        approbationBudget: approbationBudgetController.toString(),
+        signatureBudget: signatureBudget.toString(),
+        signatureJustificationBudget: signatureJustificationBudgetController.text,
+
+        approbationDD: approbationDD.toString(),
+        signatureDD: signatureDD.toString(),
+        signatureJustificationDD: signatureJustificationDD.toString(),
+        signature: user!.matricule.toString());
+    await PaiementSalaireApi().updateData(id!, paiementSalaireModel);
+    Routemaster.of(context).pop();
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      content: const Text("Soumis avec succès!"),
+      backgroundColor: Colors.green[700],
+    ));
+  }
+
+  Future<void> submitUpdateDD() async {
+    final paiementSalaireModel = PaiementSalaireModel(
+        id: id,
+        nom: nom.toString(),
+        postNom: postNom.toString(),
+        prenom: prenom.toString(),
+        telephone: telephone.toString(),
+        adresse: adresse.toString(),
+        departement: departement.toString(),
+        numeroSecuriteSociale: numeroSecuriteSociale.toString(),
+        matricule: matricule.toString(),
+        servicesAffectation: servicesAffectation.toString(),
+        salaire: salaireField.toString(),
+        observation: observation,
+        modePaiement: modePaiement.toString(),
+        createdAt: createdAt,
+        ligneBudgtaire: ligneBudgtaire.toString(),
+        resources: resources.toString(),
+        tauxJourHeureMoisSalaire: tauxJourHeureMoisSalaire.toString(),
+        joursHeuresPayeA100PourecentSalaire:
+            joursHeuresPayeA100PourecentSalaire.toString(),
+        totalDuSalaire: totalDuSalaire.toString(),
+        nombreHeureSupplementaires: nombreHeureSupplementaires.toString(),
+        tauxHeureSupplementaires: tauxHeureSupplementaires.toString(),
+        totalDuHeureSupplementaires: totalDuHeureSupplementaires.toString(),
+        supplementTravailSamediDimancheJoursFerie:
+            supplementTravailSamediDimancheJoursFerie.toString(),
+        prime: prime.toString(),
+        divers: divers.toString(),
+        joursCongesPaye: joursCongesPaye.toString(),
+        tauxCongesPaye: tauxCongesPaye.toString(),
+        totalDuCongePaye: totalDuCongePaye.toString(),
+        jourPayeMaladieAccident: jourPayeMaladieAccident.toString(),
+        tauxJournalierMaladieAccident: tauxJournalierMaladieAccident.toString(),
+        totalDuMaladieAccident: totalDuMaladieAccident.toString(),
+        pensionDeduction: pensionDeduction.toString(),
+        indemniteCompensatricesDeduction:
+            indemniteCompensatricesDeduction.toString(),
+        avancesDeduction: avancesDeduction.toString(),
+        diversDeduction: diversDeduction.toString(),
+        retenuesFiscalesDeduction: retenuesFiscalesDeduction.toString(),
+        nombreEnfantBeneficaireAllocationsFamiliales:
+            nombreEnfantBeneficaireAllocationsFamiliales.toString(),
+        nombreDeJoursAllocationsFamiliales:
+            nombreDeJoursAllocationsFamiliales.toString(),
+        tauxJoursAllocationsFamiliales:
+            tauxJoursAllocationsFamiliales.toString(),
+        totalAPayerAllocationsFamiliales:
+            totalAPayerAllocationsFamiliales.toString(),
+        netAPayer: netAPayer.toString(),
+        montantPrisConsiderationCalculCotisationsINSS:
+            montantPrisConsiderationCalculCotisationsINSS.toString(),
+        totalDuBrut: totalDuBrut.toString(),
+
+        approbationDG: approbationDG.toString(),
+        signatureDG: signatureDG.toString(),
+        signatureJustificationDG: signatureJustificationDG.toString(),
+        approbationFin: approbationFin.toString(),
+        signatureFin: signatureFin.toString(),
+        signatureJustificationFin: signatureJustificationFin.toString(),
+
+        approbationBudget: approbationBudget.toString(),
+        signatureBudget: signatureBudget.toString(),
+        signatureJustificationBudget: signatureJustificationBudget.toString(),
+
+        approbationDD: approbationDDController.toString(),
+        signatureDD: signatureDD.toString(),
+        signatureJustificationDD: signatureJustificationDDController.text,
+        
+        signature: user!.matricule.toString());
+    await PaiementSalaireApi().updateData(id!, paiementSalaireModel);
+    Routemaster.of(context).pop();
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      content: const Text("Soumis avec succès!"),
+      backgroundColor: Colors.green[700],
+    ));
+  }
 }

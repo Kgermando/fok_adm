@@ -28,10 +28,8 @@ class _PaiementRhState extends State<PaiementRh> {
   }
 
   AgentModel? agentModel;
-
   Future<void> getData() async {
     AgentModel data = await AgentsApi().getOneData(id!);
-
     setState(() {
       agentModel = data;
     });

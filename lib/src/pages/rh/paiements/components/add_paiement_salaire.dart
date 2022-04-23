@@ -122,37 +122,15 @@ class _AddPaiementSalaireState extends State<AddPaiementSalaire> {
     super.dispose();
   }
 
-  // String? matricule;
-  // String? nom;
-  // String? postNom;
-  // String? prenom;
-  // String? telephone;
-  // String? adresse;
-  // String? departement;
-  // String? numeroSecuriteSociale;
-  // String? servicesAffectation;
-  // String? salaireField;
 
-  String? signatureRH;
+  String? signature;
 
   Future<void> getData() async {
     UserModel user = await AuthApi().getUserId();
     // AgentModel data = await AgentsApi().getOneData(widget.id!);
     if (!mounted) return;
     setState(() {
-      signatureRH = user.matricule;
-      
-      // matricule = data.matricule;
-      // nom = data.nom;
-      // postNom = data.postNom;
-      // prenom = data.prenom;
-      // telephone = data.telephone;
-      // adresse = data.adresse;
-      // departement = data.departement;
-      // numeroSecuriteSociale = data.numeroSecuriteSociale;
-      // numeroSecuriteSociale = data.numeroSecuriteSociale;
-      // servicesAffectation = data.servicesAffectation;
-      // salaireField = data.salaire;
+      signature = user.matricule;
     });
   }
 
@@ -1332,63 +1310,81 @@ class _AddPaiementSalaireState extends State<AddPaiementSalaire> {
 
   Future<void> submit() async {
     final paiementSalaireModel = PaiementSalaireModel(
-        nom: widget.agentModel!.nom,
-        postNom: widget.agentModel!.postNom,
-        prenom: widget.agentModel!.prenom,
-        telephone: widget.agentModel!.telephone,
-        adresse: widget.agentModel!.adresse,
-        departement: widget.agentModel!.departement,
-        numeroSecuriteSociale: widget.agentModel!.numeroSecuriteSociale,
-        matricule: widget.agentModel!.matricule,
-        servicesAffectation: widget.agentModel!.servicesAffectation,
-        salaire: widget.agentModel!.salaire,
-        observation: false, // Finance
-        modePaiement: '',
-        createdAt: DateTime.now(),
-        approbation: false, // Administration
-        tauxJourHeureMoisSalaire: (tauxJourHeureMoisSalaire.toString() == '') ? '-' : tauxJourHeureMoisSalaire.toString(),
-        joursHeuresPayeA100PourecentSalaire:
-          (joursHeuresPayeA100PourecentSalaireController.text == '') ? '-' : joursHeuresPayeA100PourecentSalaireController.text,
-        totalDuSalaire: (totalDuSalaireController.text == '') ? '-' : totalDuSalaireController.text,
-        nombreHeureSupplementaires: (nombreHeureSupplementairesController.text == '') ? '-' : nombreHeureSupplementairesController.text,
-        tauxHeureSupplementaires: (tauxHeureSupplementairesController.text == '') ? '-' : tauxHeureSupplementairesController.text,
-        totalDuHeureSupplementaires: (totalDuHeureSupplementairesController.text == '') ? '-' : totalDuHeureSupplementairesController.text,
-        supplementTravailSamediDimancheJoursFerie:
-          (supplementTravailSamediDimancheJoursFerieController.text == '') ? '-' : supplementTravailSamediDimancheJoursFerieController.text,
-        prime: (primeController.text == '') ? '-' : primeController.text,
-        divers: (diversController.text == '') ? '-' : diversController.text,
-        joursCongesPaye: (joursCongesPayeController.text == '') ? '-' : joursCongesPayeController.text,
-        tauxCongesPaye: (tauxCongesPayeController.text == '') ? '-' : tauxCongesPayeController.text,
-        totalDuCongePaye: (totalDuCongePayeController.text == '') ? '-' : totalDuCongePayeController.text,
-        jourPayeMaladieAccident: (jourPayeMaladieAccidentController.text == '') ? '-' : jourPayeMaladieAccidentController.text,
-        tauxJournalierMaladieAccident:
-          (tauxJournalierMaladieAccidentController.text == '') ? '-' : tauxJournalierMaladieAccidentController.text,
-        totalDuMaladieAccident: (totalDuMaladieAccidentController.text == '') ? '-' : totalDuMaladieAccidentController.text,
-        pensionDeduction: (pensionDeductionController.text == '') ? '-' : pensionDeductionController.text,
-        indemniteCompensatricesDeduction:
-            (indemniteCompensatricesDeductionController.text == '') ? '-' : indemniteCompensatricesDeductionController.text,
-        avancesDeduction: (avancesDeductionController.text == '') ? '-' : avancesDeductionController.text,
-        diversDeduction: (diversDeductionController.text == '') ? '-' : diversDeductionController.text,
-        retenuesFiscalesDeduction: (retenuesFiscalesDeductionController.text == '') ? '-' : retenuesFiscalesDeductionController.text,
-        nombreEnfantBeneficaireAllocationsFamiliales:
-          (nombreEnfantBeneficaireAllocationsFamilialesController.text == '') ? '-' : retenuesFiscalesDeductionController.text,
-        nombreDeJoursAllocationsFamiliales:
-          (nombreDeJoursAllocationsFamilialesController.text == '') ? '-' : nombreDeJoursAllocationsFamilialesController.text,
-        tauxJoursAllocationsFamiliales:
-          (tauxJoursAllocationsFamilialesController.text == '') ? '-' : tauxJoursAllocationsFamilialesController.text,
-        totalAPayerAllocationsFamiliales:
-            (totalAPayerAllocationsFamilialesController.text == '') ? '-' : totalAPayerAllocationsFamilialesController.text,
-        netAPayer: (netAPayerController.text == '') ? '-' : netAPayerController.text,
-        montantPrisConsiderationCalculCotisationsINSS:
-          (montantPrisConsiderationCalculCotisationsINSSController.text == '') ? '-' : montantPrisConsiderationCalculCotisationsINSSController.text,
-        totalDuBrut: (totalDuBrutController.text == '') ? '-' : totalDuBrutController.text,
-        signatureDG: '-',
-        signatureFinance: '-',
-        signatureRH: (signatureRH.toString() == '') ? '-' : signatureRH.toString());
+      nom: widget.agentModel!.nom,
+      postNom: widget.agentModel!.postNom,
+      prenom: widget.agentModel!.prenom,
+      telephone: widget.agentModel!.telephone,
+      adresse: widget.agentModel!.adresse,
+      departement: widget.agentModel!.departement,
+      numeroSecuriteSociale: widget.agentModel!.numeroSecuriteSociale,
+      matricule: widget.agentModel!.matricule,
+      servicesAffectation: widget.agentModel!.servicesAffectation,
+      salaire: widget.agentModel!.salaire,
+      observation: false, // Finance
+      modePaiement: '',
+      createdAt: DateTime.now(),
+      ligneBudgtaire: '-',
+      resources: '-',
+      tauxJourHeureMoisSalaire: (tauxJourHeureMoisSalaire.toString() == '') ? '-' : tauxJourHeureMoisSalaire.toString(),
+      joursHeuresPayeA100PourecentSalaire:
+        (joursHeuresPayeA100PourecentSalaireController.text == '') ? '-' : joursHeuresPayeA100PourecentSalaireController.text,
+      totalDuSalaire: (totalDuSalaireController.text == '') ? '-' : totalDuSalaireController.text,
+      nombreHeureSupplementaires: (nombreHeureSupplementairesController.text == '') ? '-' : nombreHeureSupplementairesController.text,
+      tauxHeureSupplementaires: (tauxHeureSupplementairesController.text == '') ? '-' : tauxHeureSupplementairesController.text,
+      totalDuHeureSupplementaires: (totalDuHeureSupplementairesController.text == '') ? '-' : totalDuHeureSupplementairesController.text,
+      supplementTravailSamediDimancheJoursFerie:
+        (supplementTravailSamediDimancheJoursFerieController.text == '') ? '-' : supplementTravailSamediDimancheJoursFerieController.text,
+      prime: (primeController.text == '') ? '-' : primeController.text,
+      divers: (diversController.text == '') ? '-' : diversController.text,
+      joursCongesPaye: (joursCongesPayeController.text == '') ? '-' : joursCongesPayeController.text,
+      tauxCongesPaye: (tauxCongesPayeController.text == '') ? '-' : tauxCongesPayeController.text,
+      totalDuCongePaye: (totalDuCongePayeController.text == '') ? '-' : totalDuCongePayeController.text,
+      jourPayeMaladieAccident: (jourPayeMaladieAccidentController.text == '') ? '-' : jourPayeMaladieAccidentController.text,
+      tauxJournalierMaladieAccident:
+        (tauxJournalierMaladieAccidentController.text == '') ? '-' : tauxJournalierMaladieAccidentController.text,
+      totalDuMaladieAccident: (totalDuMaladieAccidentController.text == '') ? '-' : totalDuMaladieAccidentController.text,
+      pensionDeduction: (pensionDeductionController.text == '') ? '-' : pensionDeductionController.text,
+      indemniteCompensatricesDeduction:
+          (indemniteCompensatricesDeductionController.text == '') ? '-' : indemniteCompensatricesDeductionController.text,
+      avancesDeduction: (avancesDeductionController.text == '') ? '-' : avancesDeductionController.text,
+      diversDeduction: (diversDeductionController.text == '') ? '-' : diversDeductionController.text,
+      retenuesFiscalesDeduction: (retenuesFiscalesDeductionController.text == '') ? '-' : retenuesFiscalesDeductionController.text,
+      nombreEnfantBeneficaireAllocationsFamiliales:
+        (nombreEnfantBeneficaireAllocationsFamilialesController.text == '') ? '-' : retenuesFiscalesDeductionController.text,
+      nombreDeJoursAllocationsFamiliales:
+        (nombreDeJoursAllocationsFamilialesController.text == '') ? '-' : nombreDeJoursAllocationsFamilialesController.text,
+      tauxJoursAllocationsFamiliales:
+        (tauxJoursAllocationsFamilialesController.text == '') ? '-' : tauxJoursAllocationsFamilialesController.text,
+      totalAPayerAllocationsFamiliales:
+          (totalAPayerAllocationsFamilialesController.text == '') ? '-' : totalAPayerAllocationsFamilialesController.text,
+      netAPayer: (netAPayerController.text == '') ? '-' : netAPayerController.text,
+      montantPrisConsiderationCalculCotisationsINSS:
+        (montantPrisConsiderationCalculCotisationsINSSController.text == '') ? '-' : montantPrisConsiderationCalculCotisationsINSSController.text,
+      totalDuBrut: (totalDuBrutController.text == '') ? '-' : totalDuBrutController.text,
+      
+      approbationDG: '-',
+      signatureDG: '-',
+      signatureJustificationDG: '-',
+
+      approbationFin: '-',
+      signatureFin: '-',
+      signatureJustificationFin: '-',
+
+      approbationBudget: '-',
+      signatureBudget: '-',
+      signatureJustificationBudget: '-',
+
+      approbationDD: '-',
+      signatureDD: '-',
+      signatureJustificationDD: '-',
+
+      signature: signature.toString(),
+        
+    );
     await PaiementSalaireApi().insertData(paiementSalaireModel);
     Routemaster.of(context).pop();
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-      content: const Text("Enregistrer avec succès!"),
+      content: const Text("soumis avec succès!"),
       backgroundColor: Colors.green[700],
     ));
   }
