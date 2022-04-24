@@ -2,9 +2,11 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:fokad_admin/src/api/auth/auth_api.dart';
+import 'package:fokad_admin/src/api/budgets/ligne_budgetaire_api.dart';
 import 'package:fokad_admin/src/api/finances/banque_api.dart';
 import 'package:fokad_admin/src/constants/app_theme.dart';
 import 'package:fokad_admin/src/constants/responsive.dart';
+import 'package:fokad_admin/src/models/budgets/ligne_budgetaire_model.dart';
 import 'package:fokad_admin/src/models/finances/banque_model.dart';
 import 'package:fokad_admin/src/navigation/drawer/drawer_menu.dart';
 import 'package:fokad_admin/src/navigation/header/custom_appbar.dart';
@@ -43,13 +45,15 @@ class _BanqueTransactionsState extends State<BanqueTransactions> {
 
   List<TextEditingController> coupureBilletControllerList = [];
   List<TextEditingController> nombreBilletControllerList = [];
-  String? ligneBudgtaire;
+  // String? ligneBudgtaire;
   String? departement;
   String? typeOperation;
+  // String? resources;
 
   final List<String> typeCaisse = TypeOperation().typeVereCaisse;
   final List<String> typeBanque = TypeOperation().typeVereBanque;
-  final List<String> typeBanqueRetraitDepot = TypeOperation().typeBanqueRetraitDepot;
+  final List<String> typeBanqueRetraitDepot =
+      TypeOperation().typeBanqueRetraitDepot;
   final List<String> departementList = Dropdown().departement;
 
   late List<Map<String, dynamic>> _values;
@@ -84,13 +88,16 @@ class _BanqueTransactionsState extends State<BanqueTransactions> {
     super.dispose();
   }
 
+  List<LigneBudgetaireModel> ligneBudgetaireList = [];
   String? matricule;
   int numberItem = 0;
 
   Future<void> getData() async {
     final userModel = await AuthApi().getUserId();
     final data = await BanqueApi().getAllData();
+    final ligneBudgetaire = await LIgneBudgetaireApi().getAllData();
     setState(() {
+      ligneBudgetaireList = ligneBudgetaire;
       matricule = userModel.matricule;
       numberItem = data.length;
     });
@@ -212,38 +219,27 @@ class _BanqueTransactionsState extends State<BanqueTransactions> {
                                 Expanded(child: montantWidget())
                               ],
                             ),
-                            // ligneBudgtaireWidget(),
-                            // Row(
-                            //   children: [
-                            //     Expanded(child: deperatmentWidget()),
-                            //     const SizedBox(
-                            //       width: p10,
-                            //     ),
-                            //     Expanded(child: )
-                            //   ],
-                            // ),
-                            // typeOperationWidget(),
                             if (count == 0)
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.end,
-                              children: [
-                                IconButton(
-                                    icon: const Icon(Icons.add),
-                                    onPressed: () {
-                                      setState(() {
-                                        final coupureBillet =
-                                            TextEditingController();
-                                        final nombreBillet =
-                                            TextEditingController();
-                                        nombreBilletControllerList
-                                            .add(nombreBillet);
-                                        coupureBilletControllerList
-                                            .add(coupureBillet);
-                                        count++;
-                                      });
-                                    })
-                              ],
-                            ),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.end,
+                                children: [
+                                  IconButton(
+                                      icon: const Icon(Icons.add),
+                                      onPressed: () {
+                                        setState(() {
+                                          final coupureBillet =
+                                              TextEditingController();
+                                          final nombreBillet =
+                                              TextEditingController();
+                                          nombreBilletControllerList
+                                              .add(nombreBillet);
+                                          coupureBilletControllerList
+                                              .add(coupureBillet);
+                                          count++;
+                                        });
+                                      })
+                                ],
+                              ),
                             SizedBox(
                                 height: 400,
                                 width: double.infinity,
@@ -322,38 +318,37 @@ class _BanqueTransactionsState extends State<BanqueTransactions> {
                                 Expanded(child: montantWidget())
                               ],
                             ),
-                            Row(
-                              children: [
-                                Expanded(child: deperatmentWidget()),
-                                const SizedBox(
-                                  width: p10,
-                                ),
-                                Expanded(child: ligneBudgtaireWidget())
-                              ],
-                            ),
-                            // typeOperationWidgetRetrait()
+                            deperatmentWidget(),
+                            // Row(
+                            //   children: [
+                            //     Expanded(child: ligneBudgtaireWidget()),
+                            //     const SizedBox(
+                            //       width: p10,
+                            //     ),
+                            //     Expanded(child: resourcesWidget())
+                            //   ],
+                            // ),
                             if (count == 0)
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.end,
-                              children: [
-                                IconButton(
-                                  icon: const Icon(Icons.add),
-                                  onPressed: () {
-                                    setState(() {
-                                      final coupureBillet =
-                                          TextEditingController();
-                                      final nombreBillet =
-                                          TextEditingController();
-                                      nombreBilletControllerList
-                                          .add(nombreBillet);
-                                      coupureBilletControllerList
-                                          .add(coupureBillet);
-                                      count++;
-                                    });
-                                  }
-                                )
-                              ],
-                            ),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.end,
+                                children: [
+                                  IconButton(
+                                      icon: const Icon(Icons.add),
+                                      onPressed: () {
+                                        setState(() {
+                                          final coupureBillet =
+                                              TextEditingController();
+                                          final nombreBillet =
+                                              TextEditingController();
+                                          nombreBilletControllerList
+                                              .add(nombreBillet);
+                                          coupureBilletControllerList
+                                              .add(coupureBillet);
+                                          count++;
+                                        });
+                                      })
+                                ],
+                              ),
                             SizedBox(
                                 height: 400,
                                 width: double.infinity,
@@ -557,32 +552,6 @@ class _BanqueTransactionsState extends State<BanqueTransactions> {
     );
   }
 
-  Widget ligneBudgtaireWidget() {
-    return Container(
-      margin: const EdgeInsets.only(bottom: p20),
-      child: DropdownButtonFormField<String>(
-        decoration: InputDecoration(
-          labelText: 'Ligne Budgetaire',
-          labelStyle: const TextStyle(),
-          border: OutlineInputBorder(borderRadius: BorderRadius.circular(5.0)),
-          contentPadding: const EdgeInsets.only(left: 5.0),
-        ),
-        value: ligneBudgtaire,
-        isExpanded: true,
-        items: typeCaisse.map((String value) {
-          return DropdownMenuItem<String>(
-            value: value,
-            child: Text(value),
-          );
-        }).toList(),
-        onChanged: (value) {
-          setState(() {
-            ligneBudgtaire = value!;
-          });
-        },
-      ),
-    );
-  }
 
   Widget deperatmentWidget() {
     return Container(
@@ -706,16 +675,29 @@ class _BanqueTransactionsState extends State<BanqueTransactions> {
         libelle: libelleController.text,
         montant: montantController.text,
         coupureBillet: jsonList,
-        ligneBudgtaire: '',
-        departement: '',
+        ligneBudgtaire: '-',
+        resources: '-',
+        departement: '-',
         typeOperation: 'Depot',
         numeroOperation: 'FOKAD-Banque-${numberItem + 1}',
-        created: DateTime.now(),
-        signature: matricule.toString());
+        approbationDG: '-',
+        signatureDG: '-',
+        signatureJustificationDG: '-',
+        approbationFin: '-',
+        signatureFin: '-',
+        signatureJustificationFin: '-',
+        approbationBudget: '-',
+        signatureBudget: '-',
+        signatureJustificationBudget: '-',
+        approbationDD: '-',
+        signatureDD: '-',
+        signatureJustificationDD: '-',
+        signature: matricule.toString(),
+        created: DateTime.now());
     await BanqueApi().insertData(banqueModel);
     Routemaster.of(context).pop();
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-      content: const Text("Enregistrer avec succès!"),
+      content: const Text("Dépôt effectué avec succès!"),
       backgroundColor: Colors.green[700],
     ));
   }
@@ -728,16 +710,29 @@ class _BanqueTransactionsState extends State<BanqueTransactions> {
         libelle: libelleController.text,
         montant: montantController.text,
         coupureBillet: jsonList,
-        ligneBudgtaire: ligneBudgtaire.toString(),
+        ligneBudgtaire: '-',
+        resources: '-',
         departement: departement.toString(),
         typeOperation: 'Retrait',
-        numeroOperation: 'FOKAD-Banque-${numberItem + 1}',
-        created: DateTime.now(),
-        signature: matricule.toString());
+        numeroOperation: 'Transaction-Banque-${numberItem + 1}',
+        approbationDG: '-',
+        signatureDG: '-',
+        signatureJustificationDG: '-',
+        approbationFin: '-',
+        signatureFin: '-',
+        signatureJustificationFin: '-',
+        approbationBudget: '-',
+        signatureBudget: '-',
+        signatureJustificationBudget: '-',
+        approbationDD: '-',
+        signatureDD: '-',
+        signatureJustificationDD: '-',
+        signature: matricule.toString(),
+        created: DateTime.now());
     await BanqueApi().insertData(banqueModel);
     Routemaster.of(context).pop();
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-      content: const Text("Enregistrer avec succès!"),
+      content: const Text("Retrait soumis avec succès!"),
       backgroundColor: Colors.green[700],
     ));
   }

@@ -1804,7 +1804,7 @@ class _PaiementBulletinState extends State<PaiementBulletin> {
             montantPrisConsiderationCalculCotisationsINSS.toString(),
         totalDuBrut: totalDuBrut.toString(),
         approbationDG: approbationDGController.toString(),
-        signatureDG: signatureDG.toString(),
+        signatureDG: user!.matricule.toString(),
         signatureJustificationDG: signatureJustificationDGController.text,
         approbationFin: approbationFin.toString(),
         signatureFin: signatureFin.toString(),
@@ -1815,7 +1815,7 @@ class _PaiementBulletinState extends State<PaiementBulletin> {
         approbationDD: approbationDD.toString(),
         signatureDD: signatureDD.toString(),
         signatureJustificationDD: signatureJustificationDD.toString(),
-        signature: user!.matricule.toString());
+        signature: signature.toString());
     await PaiementSalaireApi().updateData(id!, paiementSalaireModel);
     Routemaster.of(context).pop();
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
@@ -1877,12 +1877,13 @@ class _PaiementBulletinState extends State<PaiementBulletin> {
         montantPrisConsiderationCalculCotisationsINSS:
             montantPrisConsiderationCalculCotisationsINSS.toString(),
         totalDuBrut: totalDuBrut.toString(),
+
         approbationDG: approbationDG.toString(),
         signatureDG: signatureDG.toString(),
         signatureJustificationDG: signatureJustificationDG.toString(),
 
         approbationFin: approbationFinController.toString(),
-        signatureFin: signatureFin.toString(),
+        signatureFin: user!.matricule.toString(),
         signatureJustificationFin: signatureJustificationFinController.text,
 
         approbationBudget: approbationBudget.toString(),
@@ -1891,7 +1892,7 @@ class _PaiementBulletinState extends State<PaiementBulletin> {
         approbationDD: approbationDD.toString(),
         signatureDD: signatureDD.toString(),
         signatureJustificationDD: signatureJustificationDD.toString(),
-        signature: user!.matricule.toString());
+        signature: signature.toString());
     await PaiementSalaireApi().updateData(id!, paiementSalaireModel);
     Routemaster.of(context).pop();
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
@@ -1963,13 +1964,13 @@ class _PaiementBulletinState extends State<PaiementBulletin> {
         signatureJustificationFin: signatureJustificationFin.toString(),
 
         approbationBudget: approbationBudgetController.toString(),
-        signatureBudget: signatureBudget.toString(),
+        signatureBudget: user!.matricule.toString(),
         signatureJustificationBudget: signatureJustificationBudgetController.text,
 
         approbationDD: approbationDD.toString(),
         signatureDD: signatureDD.toString(),
         signatureJustificationDD: signatureJustificationDD.toString(),
-        signature: user!.matricule.toString());
+        signature: signature.toString());
     await PaiementSalaireApi().updateData(id!, paiementSalaireModel);
     Routemaster.of(context).pop();
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
@@ -2035,6 +2036,7 @@ class _PaiementBulletinState extends State<PaiementBulletin> {
         approbationDG: approbationDG.toString(),
         signatureDG: signatureDG.toString(),
         signatureJustificationDG: signatureJustificationDG.toString(),
+
         approbationFin: approbationFin.toString(),
         signatureFin: signatureFin.toString(),
         signatureJustificationFin: signatureJustificationFin.toString(),
@@ -2044,10 +2046,10 @@ class _PaiementBulletinState extends State<PaiementBulletin> {
         signatureJustificationBudget: signatureJustificationBudget.toString(),
 
         approbationDD: approbationDDController.toString(),
-        signatureDD: signatureDD.toString(),
+        signatureDD: user!.matricule.toString(),
         signatureJustificationDD: signatureJustificationDDController.text,
         
-        signature: user!.matricule.toString());
+        signature: signature.toString());
     await PaiementSalaireApi().updateData(id!, paiementSalaireModel);
     Routemaster.of(context).pop();
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(

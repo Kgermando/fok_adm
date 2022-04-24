@@ -43,7 +43,7 @@ class _DetailCreanceAdminState extends State<DetailCreanceAdmin> {
   String? numeroOperation;
   DateTime? created;
   String? signature;
-  bool approbation = false;
+  String approbation = '';
   bool statutPaie = false;
 
   @override
@@ -65,7 +65,7 @@ class _DetailCreanceAdminState extends State<DetailCreanceAdmin> {
       numeroOperation = data.numeroOperation;
       created = data.created;
       signature = data.signature;
-      approbation = data.approbation;
+      approbation = data.approbationDG;
       statutPaie = data.statutPaie;
     });
   }
@@ -307,7 +307,7 @@ class _DetailCreanceAdminState extends State<DetailCreanceAdmin> {
           const SizedBox(
             height: p20,
           ),
-          if (creanceModel.approbationDG == '')
+          if (creanceModel.approbationDG == '-')
             Row(
               children: [
                 Expanded(
@@ -315,102 +315,104 @@ class _DetailCreanceAdminState extends State<DetailCreanceAdmin> {
                       textAlign: TextAlign.start,
                       style: bodyMedium.copyWith(fontWeight: FontWeight.bold)),
                 ),
-                Expanded(
-                  child: (creanceModel.approbation)
-                      ? SelectableText("Approuvé",
-                          textAlign: TextAlign.start,
-                          style:
-                              bodyMedium.copyWith(color: Colors.blue.shade700))
-                      : SelectableText("Non approuvé",
-                          textAlign: TextAlign.start,
-                          style: bodyMedium.copyWith(
-                              color: Colors.blueGrey.shade700)),
-                )
+                if (creanceModel.approbationDG == "Approved")
+                  Expanded(
+                    child: SelectableText(creanceModel.approbationDG,
+                        textAlign: TextAlign.start,
+                        style:
+                            bodyMedium.copyWith(color: Colors.blue.shade700)),
+                  ),
+                if (creanceModel.approbationDG == "Unapproved")
+                  Expanded(
+                    child: SelectableText(creanceModel.approbationDG,
+                        textAlign: TextAlign.start,
+                        style: bodyMedium.copyWith(color: Colors.red.shade700)),
+                  ),
               ],
             ),
-          if (creanceModel.approbation == false)
-            const SizedBox(
-              height: p20,
-            ),
-          (isLoading) ? loading() : approbationWidget(),
-          const SizedBox(
-            height: p20,
-          )
+          // if (creanceModel.approbation == false)
+          //   const SizedBox(
+          //     height: p20,
+          //   ),
+          // (isLoading) ? loading() : approbationWidget(),
+          // const SizedBox(
+          //   height: p20,
+          // )
         ],
       ),
     );
   }
 
-  Color getColor(Set<MaterialState> states) {
-    const Set<MaterialState> interactiveStates = <MaterialState>{
-      MaterialState.pressed,
-      MaterialState.hovered,
-      MaterialState.focused,
-    };
-    if (states.any(interactiveStates.contains)) {
-      return Colors.orange;
-    }
-    return Colors.green;
-  }
+  // Color getColor(Set<MaterialState> states) {
+  //   const Set<MaterialState> interactiveStates = <MaterialState>{
+  //     MaterialState.pressed,
+  //     MaterialState.hovered,
+  //     MaterialState.focused,
+  //   };
+  //   if (states.any(interactiveStates.contains)) {
+  //     return Colors.orange;
+  //   }
+  //   return Colors.green;
+  // }
 
-  Widget approbationWidget() {
-    final bodyMedium = Theme.of(context).textTheme.bodyMedium;
-    return Container(
-      padding: const EdgeInsets.only(top: p16, bottom: p16),
-      decoration: const BoxDecoration(
-        borderRadius: BorderRadius.all(Radius.circular(20)),
-        border: Border(
-            // bottom: BorderSide(width: 1.0),
-            ),
-      ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Expanded(
-              flex: 3,
-              child: Text('Approbation',
-                  style: bodyMedium!.copyWith(fontWeight: FontWeight.bold))),
-          Expanded(
-            flex: 3,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Checkbox(
-                    checkColor: Colors.white,
-                    fillColor: MaterialStateProperty.resolveWith(getColor),
-                    value: approbation,
-                    onChanged: (bool? value) {
-                      setState(() {
-                        isLoading = true;
-                        approbation = value!;
-                        submit();
-                      });
-                    })
-              ],
-            ),
-          ),
-        ],
-      ),
-    );
-  }
+  // Widget approbationWidget() {
+  //   final bodyMedium = Theme.of(context).textTheme.bodyMedium;
+  //   return Container(
+  //     padding: const EdgeInsets.only(top: p16, bottom: p16),
+  //     decoration: const BoxDecoration(
+  //       borderRadius: BorderRadius.all(Radius.circular(20)),
+  //       border: Border(
+  //           // bottom: BorderSide(width: 1.0),
+  //           ),
+  //     ),
+  //     child: Row(
+  //       mainAxisAlignment: MainAxisAlignment.center,
+  //       children: [
+  //         Expanded(
+  //             flex: 3,
+  //             child: Text('Approbation',
+  //                 style: bodyMedium!.copyWith(fontWeight: FontWeight.bold))),
+  //         Expanded(
+  //           flex: 3,
+  //           child: Row(
+  //             mainAxisAlignment: MainAxisAlignment.center,
+  //             children: [
+  //               Checkbox(
+  //                   checkColor: Colors.white,
+  //                   fillColor: MaterialStateProperty.resolveWith(getColor),
+  //                   value: approbation,
+  //                   onChanged: (bool? value) {
+  //                     setState(() {
+  //                       isLoading = true;
+  //                       approbation = value!;
+  //                       submit();
+  //                     });
+  //                   })
+  //             ],
+  //           ),
+  //         ),
+  //       ],
+  //     ),
+  //   );
+  // }
 
-  Future<void> submit() async {
-    final creanceModel = CreanceModel(
-        id: id,
-        nomComplet: nomComplet.toString(),
-        pieceJustificative: pieceJustificative.toString(),
-        libelle: libelle.toString(),
-        montant: montant.toString(),
-        numeroOperation: numeroOperation.toString(),
-        created: created!,
-        signature: signature.toString(),
-        approbation: approbation,
-        statutPaie: statutPaie);
-    await CreanceApi().updateData(id!, creanceModel);
-    Routemaster.of(context).pop();
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-      content: const Text("Approbation effectué!"),
-      backgroundColor: Colors.green[700],
-    ));
-  }
+  // Future<void> submit() async {
+  //   final creanceModel = CreanceModel(
+  //       id: id,
+  //       nomComplet: nomComplet.toString(),
+  //       pieceJustificative: pieceJustificative.toString(),
+  //       libelle: libelle.toString(),
+  //       montant: montant.toString(),
+  //       numeroOperation: numeroOperation.toString(),
+  //       created: created!,
+  //       signature: signature.toString(),
+  //       approbation: approbation,
+  //       statutPaie: statutPaie);
+  //   await CreanceApi().updateData(id!, creanceModel);
+  //   Routemaster.of(context).pop();
+  //   ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+  //     content: const Text("Approbation effectué!"),
+  //     backgroundColor: Colors.green[700],
+  //   ));
+  // }
 }

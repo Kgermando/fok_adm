@@ -1,14 +1,17 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:fokad_admin/src/api/auth/auth_api.dart';
+import 'package:fokad_admin/src/api/budgets/ligne_budgetaire_api.dart';
 import 'package:fokad_admin/src/api/finances/fin_exterieur_api.dart';
 import 'package:fokad_admin/src/constants/app_theme.dart';
 import 'package:fokad_admin/src/constants/responsive.dart';
+import 'package:fokad_admin/src/models/budgets/ligne_budgetaire_model.dart';
 import 'package:fokad_admin/src/models/finances/fin_exterieur_model.dart';
 import 'package:fokad_admin/src/navigation/drawer/drawer_menu.dart';
 import 'package:fokad_admin/src/navigation/header/custom_appbar.dart';
 import 'package:fokad_admin/src/pages/finances/transactions/components/components/fin_exterieur/table_fin_exterieur.dart';
 import 'package:fokad_admin/src/provider/controller.dart';
-import 'package:fokad_admin/src/routes/routes.dart';
 import 'package:fokad_admin/src/utils/type_operation.dart';
 import 'package:fokad_admin/src/widgets/btn_widget.dart';
 import 'package:fokad_admin/src/widgets/print_widget.dart';
@@ -40,9 +43,13 @@ class _FinExterneTransactionsState extends State<FinExterneTransactions> {
   List<TextEditingController> coupureBilletControllerList = [];
   List<TextEditingController> nombreBilletControllerList = [];
   String? ligneBudgtaire;
+  String? resourceFin;
   String? typeOperation;
 
   final List<String> typeCaisse = TypeOperation().typeVereCaisse;
+
+  late List<Map<String, dynamic>> _values;
+  late String _result;
 
   late int count;
 
@@ -51,8 +58,9 @@ class _FinExterneTransactionsState extends State<FinExterneTransactions> {
     setState(() {
       getData();
       count = 0;
+      _result = '';
+      _values = [];
     });
-
     super.initState();
   }
 
@@ -72,16 +80,17 @@ class _FinExterneTransactionsState extends State<FinExterneTransactions> {
     super.dispose();
   }
 
+  List<LigneBudgetaireModel> ligneBudgetaireList = [];
   String? matricule;
   int numberItem = 0;
-
   Future<void> getData() async {
     final userModel = await AuthApi().getUserId();
     final data = await FinExterieurApi().getAllData();
-
+    var budgets = await LIgneBudgetaireApi().getAllData();
     setState(() {
       matricule = userModel.matricule;
       numberItem = data.length;
+      ligneBudgetaireList = budgets;
     });
   }
 
@@ -175,60 +184,40 @@ class _FinExterneTransactionsState extends State<FinExterneTransactions> {
                                 Expanded(child: montantWidget())
                               ],
                             ),
+                            typeOperationWidget(),
                             Row(
                               children: [
+                                if (typeOperation != 'Depot de fond')
                                 Expanded(child: ligneBudgtaireWidget()),
                                 const SizedBox(
                                   width: p10,
                                 ),
-                                Expanded(child: typeOperationWidget())
+                                Expanded(child: resourcesWidget())
                               ],
                             ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                SelectableText('Coupure de billet',
-                                    style:
-                                        Theme.of(context).textTheme.bodyText2),
-                                Row(
-                                  children: [
-                                    IconButton(
-                                        onPressed: () {
-                                          setState(() {
-                                            final coupureBillet =
-                                                TextEditingController();
-                                            final nombreBillet =
-                                                TextEditingController();
-                                            nombreBilletControllerList
-                                                .add(nombreBillet);
-                                            coupureBilletControllerList
-                                                .add(coupureBillet);
-                                            count++;
-                                          });
-                                        },
-                                        icon: const Icon(Icons.add)),
-                                    if (count > 0)
-                                      IconButton(
-                                          onPressed: () {
-                                            setState(() {
-                                              final coupureBillet =
-                                                  TextEditingController();
-                                              final nombreBillet =
-                                                  TextEditingController();
-                                              nombreBilletControllerList
-                                                  .remove(nombreBillet);
-                                              coupureBilletControllerList
-                                                  .remove(coupureBillet);
-                                              count--;
-                                            });
-                                          },
-                                          icon: const Icon(Icons.close)),
-                                  ],
-                                ),
-                              ],
-                            ),
+                            if (count == 0)
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.end,
+                                children: [
+                                  IconButton(
+                                      icon: const Icon(Icons.add),
+                                      onPressed: () {
+                                        setState(() {
+                                          final coupureBillet =
+                                              TextEditingController();
+                                          final nombreBillet =
+                                              TextEditingController();
+                                          nombreBilletControllerList
+                                              .add(nombreBillet);
+                                          coupureBilletControllerList
+                                              .add(coupureBillet);
+                                          count++;
+                                        });
+                                      })
+                                ],
+                              ),
                             SizedBox(
-                                height: 300,
+                                height: 400,
                                 width: double.infinity,
                                 child: coupureBilletWidget()),
                             const SizedBox(
@@ -351,41 +340,79 @@ class _FinExterneTransactionsState extends State<FinExterneTransactions> {
           itemCount: count,
           shrinkWrap: true,
           itemBuilder: (context, index) {
-            return Row(
+            return Column(
               children: [
-                Expanded(
-                    child: Container(
-                        margin: const EdgeInsets.only(bottom: p20),
-                        child: TextFormField(
-                          controller: nombreBilletControllerList[index],
-                          decoration: InputDecoration(
-                            border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(10.0)),
-                            labelText: '${index + 1}. Nombre',
-                          ),
-                          keyboardType: TextInputType.text,
-                          validator: (value) => value != null && value.isEmpty
-                              ? 'Ce champs est obligatoire.'
-                              : null,
-                          style: const TextStyle(),
-                        ))),
-                const SizedBox(width: p10),
-                Expanded(
-                    child: Container(
-                        margin: const EdgeInsets.only(bottom: p20),
-                        child: TextFormField(
-                          controller: coupureBilletControllerList[index],
-                          decoration: InputDecoration(
-                            border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(10.0)),
-                            labelText: '${index + 1}. Coupure billet',
-                          ),
-                          keyboardType: TextInputType.text,
-                          validator: (value) => value != null && value.isEmpty
-                              ? 'Ce champs est obligatoire.'
-                              : null,
-                          style: const TextStyle(),
-                        )))
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    SelectableText('Coupure de billet',
+                        style: Theme.of(context).textTheme.bodyText2),
+                    Row(
+                      children: [
+                        IconButton(
+                            onPressed: () {
+                              setState(() {
+                                final coupureBillet = TextEditingController();
+                                final nombreBillet = TextEditingController();
+                                nombreBilletControllerList.add(nombreBillet);
+                                coupureBilletControllerList.add(coupureBillet);
+                                count++;
+                                onUpdate(
+                                    index,
+                                    nombreBilletControllerList[index].text,
+                                    coupureBilletControllerList[index].text);
+                              });
+                            },
+                            icon: const Icon(Icons.add)),
+                        if (count > 0)
+                          IconButton(
+                              onPressed: () {
+                                setState(() {
+                                  final coupureBillet = TextEditingController();
+                                  final nombreBillet = TextEditingController();
+                                  nombreBilletControllerList
+                                      .remove(nombreBillet);
+                                  coupureBilletControllerList
+                                      .remove(coupureBillet);
+                                  count--;
+                                });
+                              },
+                              icon: const Icon(Icons.close)),
+                      ],
+                    ),
+                  ],
+                ),
+                Row(
+                  children: [
+                    Expanded(
+                        child: Container(
+                            margin: const EdgeInsets.only(bottom: p20),
+                            child: TextFormField(
+                              controller: nombreBilletControllerList[index],
+                              decoration: InputDecoration(
+                                border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(10.0)),
+                                labelText: '${index + 1}. Nombre',
+                              ),
+                              keyboardType: TextInputType.text,
+                              style: const TextStyle(),
+                            ))),
+                    const SizedBox(width: p10),
+                    Expanded(
+                        child: Container(
+                            margin: const EdgeInsets.only(bottom: p20),
+                            child: TextFormField(
+                              controller: coupureBilletControllerList[index],
+                              decoration: InputDecoration(
+                                border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(10.0)),
+                                labelText: '${index + 1}. Coupure billet',
+                              ),
+                              keyboardType: TextInputType.text,
+                              style: const TextStyle(),
+                            )))
+                  ],
+                ),
               ],
             );
           }),
@@ -393,6 +420,7 @@ class _FinExterneTransactionsState extends State<FinExterneTransactions> {
   }
 
   Widget ligneBudgtaireWidget() {
+    var dataList = ligneBudgetaireList.map((e) => e.nomLigneBudgetaire).toList();
     return Container(
       margin: const EdgeInsets.only(bottom: p20),
       child: DropdownButtonFormField<String>(
@@ -404,7 +432,7 @@ class _FinExterneTransactionsState extends State<FinExterneTransactions> {
         ),
         value: ligneBudgtaire,
         isExpanded: true,
-        items: typeCaisse.map((String value) {
+        items: dataList.map((String value) {
           return DropdownMenuItem<String>(
             value: value,
             child: Text(value),
@@ -419,7 +447,39 @@ class _FinExterneTransactionsState extends State<FinExterneTransactions> {
     );
   }
 
+  Widget resourcesWidget() {
+    List<String> resourceList = [
+      'finPropre',
+      'finExterieur'
+    ];
+    return Container(
+      margin: const EdgeInsets.only(bottom: p20),
+      child: DropdownButtonFormField<String>(
+        decoration: InputDecoration(
+          labelText: 'Resources Financières',
+          labelStyle: const TextStyle(),
+          border: OutlineInputBorder(borderRadius: BorderRadius.circular(5.0)),
+          contentPadding: const EdgeInsets.only(left: 5.0),
+        ),
+        value: resourceFin,
+        isExpanded: true,
+        items: resourceList.map((String value) {
+          return DropdownMenuItem<String>(
+            value: value,
+            child: Text(value),
+          );
+        }).toList(),
+        onChanged: (value) {
+          setState(() {
+            resourceFin = value!;
+          });
+        },
+      ),
+    );
+  }
+
   Widget typeOperationWidget() {
+    List<String> typeOperationList = ['Retrait de fond', 'Depot de fond'];
     return Container(
       margin: const EdgeInsets.only(bottom: p20),
       child: DropdownButtonFormField<String>(
@@ -431,7 +491,7 @@ class _FinExterneTransactionsState extends State<FinExterneTransactions> {
         ),
         value: typeOperation,
         isExpanded: true,
-        items: typeCaisse.map((String value) {
+        items: typeOperationList.map((String value) {
           return DropdownMenuItem<String>(
             value: value,
             child: Text(value),
@@ -446,18 +506,65 @@ class _FinExterneTransactionsState extends State<FinExterneTransactions> {
     );
   }
 
+  onUpdate(int key, String nombreBillet, String coupureBillet) {
+    int foundKey = -1;
+    for (var map in _values) {
+      if (map.containsKey('id')) {
+        if (map['id'] == key) {
+          foundKey = key;
+          break;
+        }
+      }
+    }
+
+    if (-1 != foundKey) {
+      _values.removeWhere((map) {
+        return map['id'] == foundKey;
+      });
+    }
+    Map<String, dynamic> json = {
+      'id': key,
+      'nombreBillet': nombreBillet,
+      'coupureBillet': coupureBillet
+    };
+    _values.add(json);
+    setState(() {
+      _result = _prettyPrint(_values);
+      print('_values $_values');
+    });
+  }
+
+  String _prettyPrint(jsonObject) {
+    var encoder = const JsonEncoder.withIndent('  ');
+    return encoder.convert(jsonObject);
+  }
+
   Future submit() async {
+    final jsonList = _values.map((item) => jsonEncode(item)).toList();
     final financeExterieurModel = FinanceExterieurModel(
         nomComplet: nomCompletController.text,
         pieceJustificative: pieceJustificativeController.text,
         libelle: libelleController.text,
         montant: montantController.text,
-        coupureBillet: [],
-        ligneBudgtaire: ligneBudgtaire.toString(),
+        coupureBillet: jsonList,
+        ligneBudgtaire: (typeOperation == 'Depot de fond') ? '-' : ligneBudgtaire.toString(),
         typeOperation: typeOperation.toString(),
-        created: DateTime.now(),
-        numeroOperation: 'FOKAD-Fin-Ext-${numberItem + 1}',
-        signature: matricule.toString());
+        numeroOperation: 'Transaction-Fin-$resourceFin-${numberItem + 1}',
+        ressourceFin: resourceFin.toString(),
+        approbationDG: '-',
+        signatureDG: '-',
+        signatureJustificationDG: '-',
+        approbationFin: '-',
+        signatureFin: '-',
+        signatureJustificationFin: '-',
+        approbationBudget: '-',
+        signatureBudget: '-',
+        signatureJustificationBudget: '-',
+        approbationDD: '-',
+        signatureDD: '-',
+        signatureJustificationDD: '-',
+        signature: matricule.toString(),
+        created: DateTime.now());
 
     await FinExterieurApi().insertData(financeExterieurModel);
     Routemaster.of(context).pop();

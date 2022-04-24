@@ -213,7 +213,7 @@ class _TableSalaireFinState extends State<TableSalaireFin> {
         await PaiementSalaireApi().getAllData();
     var data = dataList
         .where((element) =>
-            element!.approbation == true && element.observation == false)
+            element!.approbationDG == true && element.observation == false)
         .toList();
 
     if (mounted) {
@@ -226,9 +226,7 @@ class _TableSalaireFinState extends State<TableSalaireFin> {
             'nom': PlutoCell(value: item.nom),
             'matricule': PlutoCell(value: item.matricule),
             'departement': PlutoCell(value: item.departement),
-            'approbation': PlutoCell(
-                value:
-                    (item.approbation == true) ? "Approuvé" : "Non Approuvé"),
+            'approbation': PlutoCell( value: item.approbationDG),
             'salaire': PlutoCell(value: item.salaire),
             'modePaiement': PlutoCell(value: item.modePaiement),
             'createdAt':

@@ -44,7 +44,7 @@ class _DetailDetteAdminState extends State<DetailDetteAdmin> {
   String? numeroOperation;
   DateTime? created;
   String? signature;
-  bool approbation = false;
+  String approbation = "";
   bool statutPaie = false;
 
   @override
@@ -65,7 +65,7 @@ class _DetailDetteAdminState extends State<DetailDetteAdmin> {
       numeroOperation = data.numeroOperation;
       created = data.created;
       signature = data.signature;
-      approbation = data.approbation;
+      approbation = data.approbationDG;
       statutPaie = data.statutPaie;
     });
   }
@@ -306,7 +306,7 @@ class _DetailDetteAdminState extends State<DetailDetteAdmin> {
           const SizedBox(
             height: p20,
           ),
-          if (detteModel.approbation == true)
+          if (detteModel.approbationDG == "Approved")
           Row(
             children: [
               Expanded(
@@ -314,27 +314,31 @@ class _DetailDetteAdminState extends State<DetailDetteAdmin> {
                     textAlign: TextAlign.start,
                     style: bodyMedium.copyWith(fontWeight: FontWeight.bold)),
               ),
+              if (detteModel.approbationDG == "Approved")
               Expanded(
-                child: (detteModel.approbation)
-                    ? SelectableText("Approuvé",
+                child: SelectableText(detteModel.approbationDG,
                         textAlign: TextAlign.start,
-                        style: bodyMedium.copyWith(color: Colors.blue.shade700))
-                    : SelectableText("Non approuvé",
-                        textAlign: TextAlign.start,
-                        style: bodyMedium.copyWith(
-                            color: Colors.blueGrey.shade700)),
-              )
+                        style:
+                            bodyMedium.copyWith(color: Colors.blue.shade700)),
+              ),
+              if (detteModel.approbationDG == "Unapproved")
+              Expanded(
+                child: SelectableText(detteModel.approbationDG,
+                    textAlign: TextAlign.start,
+                    style:
+                        bodyMedium.copyWith(color: Colors.red.shade700)),
+              ),
             ],
           ),
 
-          if (detteModel.approbation == false)
-            const SizedBox(
-              height: p20,
-            ),
-          (isLoading) ? loading() : approbationWidget(),
-          const SizedBox(
-            height: p20,
-          )
+          // if (detteModel.approbationDG == "-")
+          //   const SizedBox(
+          //     height: p20,
+          //   ),
+          // (isLoading) ? loading() : approbationWidget(),
+          // const SizedBox(
+          //   height: p20,
+          // )
         ],
       ),
     );
@@ -353,61 +357,22 @@ class _DetailDetteAdminState extends State<DetailDetteAdmin> {
     return Colors.green;
   }
 
-  Widget approbationWidget() {
-    final bodyMedium = Theme.of(context).textTheme.bodyMedium;
-    return Container(
-      padding: const EdgeInsets.only(top: p16, bottom: p16),
-      decoration: const BoxDecoration(
-        borderRadius: BorderRadius.all(Radius.circular(20)),
-        border: Border(
-            // bottom: BorderSide(width: 1.0),
-            ),
-      ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Expanded(
-              flex: 3,
-              child: Text('Approbation',
-                  style: bodyMedium!.copyWith(fontWeight: FontWeight.bold))),
-          Expanded(
-            flex: 3,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Checkbox(
-                    checkColor: Colors.white,
-                    fillColor: MaterialStateProperty.resolveWith(getColor),
-                    value: approbation,
-                    onChanged: (bool? value) {
-                      setState(() {
-                        isLoading = true;
-                        approbation = value!;
-                        submit();
-                      });
-                    })
-              ],
-            ),
-          ),
-        ],
-      ),
-    );
-  }
+  
 
 
   Future<void> submit() async {
-    final detteModel = DetteModel(
-        id: id,
-        nomComplet: nomComplet.toString(),
-        pieceJustificative: pieceJustificative.toString(),
-        libelle: libelle.toString(),
-        montant: montant.toString(),
-        numeroOperation: numeroOperation.toString(),
-        created: created!,
-        signature: signature.toString(),
-        approbation: approbation,
-        statutPaie: statutPaie);
-    await DetteApi().updateData(id!, detteModel);
+    // final detteModel = DetteModel(
+    //     id: id,
+    //     nomComplet: nomComplet.toString(),
+    //     pieceJustificative: pieceJustificative.toString(),
+    //     libelle: libelle.toString(),
+    //     montant: montant.toString(),
+    //     numeroOperation: numeroOperation.toString(),
+    //     created: created!,
+    //     signature: signature.toString(),
+    //     approbation: approbation,
+    //     statutPaie: statutPaie);
+    // await DetteApi().updateData(id!, detteModel);
     Routemaster.of(context).pop();
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
       content: const Text("Approbation effectué!"),

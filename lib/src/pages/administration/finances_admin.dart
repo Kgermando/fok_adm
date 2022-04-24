@@ -1,14 +1,18 @@
+import 'package:badges/badges.dart';
 import 'package:flutter/material.dart';
 import 'package:fokad_admin/src/api/auth/auth_api.dart';
+import 'package:fokad_admin/src/api/budgets/ligne_budgetaire_api.dart';
 import 'package:fokad_admin/src/api/finances/creance_api.dart';
 import 'package:fokad_admin/src/api/finances/dette_api.dart';
 import 'package:fokad_admin/src/constants/app_theme.dart';
 import 'package:fokad_admin/src/constants/responsive.dart';
+import 'package:fokad_admin/src/models/budgets/ligne_budgetaire_model.dart';
 import 'package:fokad_admin/src/models/finances/creances_model.dart';
 import 'package:fokad_admin/src/models/finances/dette_model.dart';
 import 'package:fokad_admin/src/models/users/user_model.dart';
 import 'package:fokad_admin/src/navigation/drawer/drawer_menu.dart';
 import 'package:fokad_admin/src/navigation/header/custom_appbar.dart';
+import 'package:fokad_admin/src/pages/administration/components/budgets/ligne_budgetaire_admin.dart';
 import 'package:fokad_admin/src/pages/administration/components/finances/transactions/table_creance_admin.dart';
 import 'package:fokad_admin/src/pages/administration/components/finances/transactions/table_dette_admin.dart';
 import 'package:fokad_admin/src/provider/controller.dart';
@@ -25,10 +29,13 @@ class _FinancesAdminState extends State<FinancesAdmin> {
   final ScrollController _controllerScroll = ScrollController();
 
   bool isOpenFin1 = false;
-  bool isOpenFin2 = false;
+  bool isOpenFin2 = false;  
+  bool isOpenBudget = false;
+
 
   int nbrCreance = 0;
   int nbrDette = 0;
+  int nbrBudget = 0;
 
   @override
   initState() {
@@ -40,13 +47,16 @@ class _FinancesAdminState extends State<FinancesAdmin> {
     UserModel userLoggIn = await AuthApi().getUserId();
     List<CreanceModel?> dataCreanceList = await CreanceApi().getAllData();
     List<DetteModel?> dataDetteList = await DetteApi().getAllData();
+    List<LigneBudgetaireModel?> dataLigneBudgetaireList = await LIgneBudgetaireApi().getAllData();
     setState(() {
-
        nbrCreance = dataCreanceList
-          .where((element) => element!.approbationDG == userLoggIn.matricule)
+          .where((element) => element!.approbationDG == "-")
           .length;
       nbrDette = dataDetteList
-          .where((element) => element!.approbationDG == userLoggIn.matricule)
+          .where((element) => element!.approbationDG == "-")
+          .length;
+      nbrBudget = dataLigneBudgetaireList
+          .where((element) => element!.approbationDG == "-")
           .length;
     });
   }
@@ -54,6 +64,7 @@ class _FinancesAdminState extends State<FinancesAdmin> {
   @override
   Widget build(BuildContext context) {
     final headline6 = Theme.of(context).textTheme.headline6;
+    final bodyMedium = Theme.of(context).textTheme.bodyMedium;
     return Scaffold(
         key: context.read<Controller>().scaffoldKey,
         drawer: const DrawerMenu(),
@@ -109,7 +120,8 @@ class _FinancesAdminState extends State<FinancesAdmin> {
                                 trailing: const Icon(Icons.arrow_drop_down),
                                 children: const [TableDetteAdmin()],
                               ),
-                            )
+                            ),
+                            
                           ],
                         ),
                       ))

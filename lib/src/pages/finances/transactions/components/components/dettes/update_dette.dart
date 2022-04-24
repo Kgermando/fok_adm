@@ -1,44 +1,58 @@
 import 'package:flutter/material.dart';
 import 'package:fokad_admin/src/api/auth/auth_api.dart';
-import 'package:fokad_admin/src/api/finances/creance_api.dart';
+import 'package:fokad_admin/src/api/finances/dette_api.dart';
 import 'package:fokad_admin/src/constants/app_theme.dart';
 import 'package:fokad_admin/src/constants/responsive.dart';
-import 'package:fokad_admin/src/models/finances/creances_model.dart';
+import 'package:fokad_admin/src/models/finances/dette_model.dart';
 import 'package:fokad_admin/src/navigation/drawer/drawer_menu.dart';
 import 'package:fokad_admin/src/navigation/header/custom_appbar.dart';
-import 'package:fokad_admin/src/pages/finances/transactions/components/components/creances/table_creance.dart';
-import 'package:fokad_admin/src/provider/controller.dart';
 import 'package:fokad_admin/src/widgets/btn_widget.dart';
 import 'package:fokad_admin/src/widgets/print_widget.dart';
 import 'package:fokad_admin/src/widgets/title_widget.dart';
-import 'package:provider/provider.dart';
 import 'package:routemaster/routemaster.dart';
 
-class CreanceTransactions extends StatefulWidget {
-  const CreanceTransactions({Key? key}) : super(key: key);
+class UpdateDette extends StatefulWidget {
+  const UpdateDette({Key? key, required this.detteModel}) : super(key: key);
+  final DetteModel detteModel;
 
   @override
-  State<CreanceTransactions> createState() => _CreanceTransactionsState();
+  State<UpdateDette> createState() => _UpdateDetteState();
 }
 
-class _CreanceTransactionsState extends State<CreanceTransactions> {
+class _UpdateDetteState extends State<UpdateDette> {
   final controller = ScrollController();
   final _formKey = GlobalKey<FormState>();
 
   bool isLoading = false;
 
-  final TextEditingController nomCompletController = TextEditingController();
-  final TextEditingController pieceJustificativeController =
-      TextEditingController();
-  final TextEditingController libelleController = TextEditingController();
-  final TextEditingController montantController = TextEditingController();
+  TextEditingController nomCompletController = TextEditingController();
+  TextEditingController pieceJustificativeController = TextEditingController();
+  TextEditingController libelleController = TextEditingController();
+  TextEditingController montantController = TextEditingController();
+
+  int numberItem = 0;
 
   @override
   void initState() {
-    setState(() {
-      getData();
-    });
+    nomCompletController =
+        TextEditingController(text: widget.detteModel.nomComplet);
+    pieceJustificativeController =
+        TextEditingController(text: widget.detteModel.pieceJustificative);
+    libelleController = TextEditingController(text: widget.detteModel.libelle);
+    montantController = TextEditingController(text: widget.detteModel.montant);
+    getData();
     super.initState();
+  }
+
+  String? matricule;
+
+  Future<void> getData() async {
+    final userModel = await AuthApi().getUserId();
+    final data = await DetteApi().getAllData();
+    setState(() {
+      matricule = userModel.matricule;
+      numberItem = data.length;
+    });
   }
 
   @override
@@ -50,32 +64,10 @@ class _CreanceTransactionsState extends State<CreanceTransactions> {
     super.dispose();
   }
 
-  String? matricule;
-  int numberItem = 0;
-
-  Future<void> getData() async {
-    final userModel = await AuthApi().getUserId();
-    final data = await CreanceApi().getAllData();
-    setState(() {
-      matricule = userModel.matricule;
-      numberItem = data.length;
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        key: context.read<Controller>().scaffoldKey,
         drawer: const DrawerMenu(),
-        floatingActionButton: FloatingActionButton(
-            foregroundColor: Colors.white,
-            backgroundColor: Colors.purple.shade700,
-            child: const Icon(Icons.add),
-            onPressed: () {
-              setState(() {
-                transactionsDialogCreance();
-              });
-            }),
         body: SafeArea(
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -87,92 +79,72 @@ class _CreanceTransactionsState extends State<CreanceTransactions> {
               Expanded(
                 flex: 5,
                 child: Padding(
-                  padding: const EdgeInsets.all(p10),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: const [
-                      CustomAppbar(title: 'Créances'),
-                      Expanded(child: TableCreance())
-                    ],
-                  ),
-                ),
+                    padding: const EdgeInsets.all(p10), child: pageUpdate()),
               ),
             ],
           ),
         ));
   }
 
-  transactionsDialogCreance() {
-    return showDialog(
-        context: context,
-        // barrierDismissible: false,
-        builder: (context) {
-          return StatefulBuilder(builder: (context, StateSetter setState) {
-            return Dialog(
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(p8),
+  pageUpdate() {
+    return Form(
+      key: _formKey,
+      child: Card(
+        child: Padding(
+          padding: const EdgeInsets.all(p16),
+          child: SizedBox(
+            width: Responsive.isDesktop(context)
+                ? MediaQuery.of(context).size.width / 2
+                : MediaQuery.of(context).size.width,
+            child: ListView(
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    TitleWidget(title: widget.detteModel.nomComplet),
+                    PrintWidget(onPressed: () {})
+                  ],
                 ),
-                backgroundColor: Colors.transparent,
-                child: Form(
-                  key: _formKey,
-                  child: Card(
-                    child: Padding(
-                      padding: const EdgeInsets.all(p16),
-                      child: SizedBox(
-                        width: Responsive.isDesktop(context)
-                            ? MediaQuery.of(context).size.width / 2
-                            : MediaQuery.of(context).size.width,
-                        child: ListView(
-                          children: [
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                const TitleWidget(title: 'Ajout une Créance'),
-                                PrintWidget(onPressed: () {})
-                              ],
-                            ),
-                            const SizedBox(
-                              height: p20,
-                            ),
-                            Row(
-                              children: [
-                                Expanded(child: nomCompletWidget()),
-                                const SizedBox(
-                                  width: p10,
-                                ),
-                                Expanded(child: pieceJustificativeWidget())
-                              ],
-                            ),
-                            Row(
-                              children: [
-                                Expanded(child: libelleWidget()),
-                                const SizedBox(
-                                  width: p10,
-                                ),
-                                Expanded(child: montantWidget())
-                              ],
-                            ),
-                            const SizedBox(
-                              height: p20,
-                            ),
-                            BtnWidget(
-                                title: 'Soumettre',
-                                isLoading: isLoading,
-                                press: () {
-                                  final form = _formKey.currentState!;
-                                  if (form.validate()) {
-                                    submit();
-                                    form.reset();
-                                  }
-                                })
-                          ],
-                        ),
-                      ),
+                const SizedBox(
+                  height: p20,
+                ),
+                Row(
+                  children: [
+                    Expanded(child: nomCompletWidget()),
+                    const SizedBox(
+                      width: p10,
                     ),
-                  ),
-                ));
-          });
-        });
+                    Expanded(child: pieceJustificativeWidget())
+                  ],
+                ),
+                Row(
+                  children: [
+                    Expanded(child: libelleWidget()),
+                    const SizedBox(
+                      width: p10,
+                    ),
+                    Expanded(child: montantWidget())
+                  ],
+                ),
+                const SizedBox(
+                  height: p20,
+                ),
+                BtnWidget(
+                    title: 'Soumettre',
+                    isLoading: isLoading,
+                    press: () {
+                      final form = _formKey.currentState!;
+                      if (form.validate()) {
+                        submit();
+                        form.reset();
+                      }
+                    })
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
   }
 
   Widget nomCompletWidget() {
@@ -264,13 +236,13 @@ class _CreanceTransactionsState extends State<CreanceTransactions> {
   }
 
   Future submit() async {
-    final creanceModel = CreanceModel(
+    final detteModel = DetteModel(
         nomComplet: nomCompletController.text,
         pieceJustificative: pieceJustificativeController.text,
         libelle: libelleController.text,
         montant: montantController.text,
-        numeroOperation: 'Transaction-Creance-${numberItem + 1}',
-        statutPaie: false,
+        numeroOperation: 'Transaction-Dette-${numberItem + 1}',
+        statutPaie: true,
         approbationDG: '-',
         signatureDG: '-',
         signatureJustificationDG: '-',
@@ -285,10 +257,11 @@ class _CreanceTransactionsState extends State<CreanceTransactions> {
         signatureJustificationDD: '-',
         signature: matricule.toString(),
         created: DateTime.now());
-    await CreanceApi().insertData(creanceModel);
+
+    await DetteApi().insertData(detteModel);
     Routemaster.of(context).pop();
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-      content: const Text("Somis avec succès!"),
+      content: const Text("Enregistrer avec succès!"),
       backgroundColor: Colors.green[700],
     ));
   }

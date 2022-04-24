@@ -282,7 +282,7 @@ class _TableDetteState extends State<TableDette> {
             'libelle': PlutoCell(value: item.libelle),
             'montant': PlutoCell(value: item.montant),
             'numeroOperation': PlutoCell(value: item.numeroOperation),
-            'approbation': PlutoCell(value: (item.approbation) ? "Approuvé": "Non approuvé"),
+            'approbation': PlutoCell(value: item.approbationDG),
             'created': PlutoCell(
                 value: DateFormat("DD-MM-yy H:mm").format(item.created))
           }));

@@ -270,11 +270,23 @@ class _DetteTransactionsState extends State<DetteTransactions> {
         pieceJustificative: pieceJustificativeController.text,
         libelle: libelleController.text,
         montant: montantController.text,
-        created: DateTime.now(),
-        numeroOperation: 'FOKAD-Dette-${numberItem + 1}',
+        numeroOperation: 'Transaction-Dette-${numberItem + 1}',
+        statutPaie: false,
+        approbationDG: '-',
+        signatureDG: '-',
+        signatureJustificationDG: '-',
+        approbationFin: '-',
+        signatureFin: '-',
+        signatureJustificationFin: '-',
+        approbationBudget: '-',
+        signatureBudget: '-',
+        signatureJustificationBudget: '-',
+        approbationDD: '-',
+        signatureDD: '-',
+        signatureJustificationDD: '-',
         signature: matricule.toString(),
-        approbation: false,
-        statutPaie: false);
+        created: DateTime.now(),
+    );
     await DetteApi().insertData(detteModel);
     Routemaster.of(context).pop();
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(

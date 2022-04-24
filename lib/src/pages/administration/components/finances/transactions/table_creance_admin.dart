@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:fokad_admin/src/api/finances/creance_api.dart';
 import 'package:fokad_admin/src/models/finances/creances_model.dart';
 import 'package:fokad_admin/src/pages/administration/components/finances/transactions/detail_creance_admin.dart';
-import 'package:fokad_admin/src/pages/finances/transactions/components/components/creances/detail_creance.dart';
 import 'package:fokad_admin/src/widgets/print_widget.dart';
 import 'package:intl/intl.dart';
 import 'package:pluto_grid/pluto_grid.dart';
@@ -285,8 +284,7 @@ class _TableCreanceAdminState extends State<TableCreanceAdmin> {
             'libelle': PlutoCell(value: item.libelle),
             'montant': PlutoCell(value: item.montant),
             'numeroOperation': PlutoCell(value: item.numeroOperation),
-            'approbation': PlutoCell(
-                value: (item.approbation) ? "Approuvé" : "Non approuvé"),
+            'approbation': PlutoCell(value: item.approbationDG),
             'created': PlutoCell(
                 value: DateFormat("DD-MM-yy H:mm").format(item.created))
           }));

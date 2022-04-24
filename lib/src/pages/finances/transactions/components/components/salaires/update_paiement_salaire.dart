@@ -40,6 +40,8 @@ class _UpdatePaiementSalaireState extends State<UpdatePaiementSalaire> {
   String? prenom;
   String? telephone;
   String? adresse;
+  String? ligneBudgtaire;
+  String? resources;
   String? departement;
   String? numeroSecuriteSociale;
   String? matricule;
@@ -76,9 +78,20 @@ class _UpdatePaiementSalaireState extends State<UpdatePaiementSalaire> {
   String? netAPayer;
   String? montantPrisConsiderationCalculCotisationsINSS;
   String? totalDuBrut;
+  String? approbationDG;
   String? signatureDG;
-  String? signatureFinance;
-  String? signatureRH;
+  String? signatureJustificationDG;
+  String? approbationFin;
+  String? signatureFin;
+  String? signatureJustificationFin;
+  String? approbationBudget;
+  String? signatureBudget;
+  String? signatureJustificationBudget;
+  String? approbationDD;
+  String? signatureDD;
+  String? signatureJustificationDD;
+  String? signature;
+  
 
   Future<void> getData() async {
     UserModel user = await AuthApi().getUserId();
@@ -86,13 +99,15 @@ class _UpdatePaiementSalaireState extends State<UpdatePaiementSalaire> {
         await PaiementSalaireApi().getOneData(widget.id);
     if (!mounted) return;
     setState(() {
-      signatureFinance = user.matricule;
+      signature = user.matricule;
 
       nom = data.nom;
       postNom = data.postNom;
       prenom = data.prenom;
       telephone = data.telephone;
       adresse = data.adresse;
+      ligneBudgtaire = data.ligneBudgtaire;
+      resources = data.resources;
       departement = data.departement;
       numeroSecuriteSociale = data.numeroSecuriteSociale;
       matricule = data.matricule;
@@ -101,7 +116,6 @@ class _UpdatePaiementSalaireState extends State<UpdatePaiementSalaire> {
       observation = data.observation;
       // modePaiement = data.modePaiement;
       createdAt = data.createdAt;
-      approbation = data.approbation;
       tauxJourHeureMoisSalaire = data.tauxJourHeureMoisSalaire;
       joursHeuresPayeA100PourecentSalaire =
           data.joursHeuresPayeA100PourecentSalaire;
@@ -135,9 +149,18 @@ class _UpdatePaiementSalaireState extends State<UpdatePaiementSalaire> {
       montantPrisConsiderationCalculCotisationsINSS =
           data.montantPrisConsiderationCalculCotisationsINSS;
       totalDuBrut = data.totalDuBrut;
-      signatureDG = data.signatureDG;
-      // signatureFinance = data.signatureFinance;
-      signatureRH = data.signatureRH;
+      approbationDG = approbationDG;
+      signatureDG = signatureDG;
+      signatureJustificationDG = signatureJustificationDG;
+      approbationFin = approbationFin;
+      signatureFin = signatureFin;
+      signatureJustificationFin = signatureJustificationFin;
+      approbationBudget = approbationBudget;
+      signatureBudget = signatureBudget;
+      signatureJustificationBudget = signatureJustificationBudget;
+      approbationDD = approbationDD;
+      signatureDD = signatureDD;
+      signatureJustificationDD = signatureJustificationDD;
     });
   }
 
@@ -1296,6 +1319,8 @@ class _UpdatePaiementSalaireState extends State<UpdatePaiementSalaire> {
         prenom: prenom.toString(),
         telephone: telephone.toString(),
         adresse: adresse.toString(),
+        ligneBudgtaire: ligneBudgtaire.toString(),
+        resources: resources.toString(),
         departement: departement.toString(),
         numeroSecuriteSociale: numeroSecuriteSociale.toString(),
         matricule: matricule.toString(),
@@ -1304,7 +1329,6 @@ class _UpdatePaiementSalaireState extends State<UpdatePaiementSalaire> {
         observation: observation, // Finance
         modePaiement: modePaiement.toString(),
         createdAt: DateTime.now(),
-        approbation: approbation, // Administration
         tauxJourHeureMoisSalaire: tauxJourHeureMoisSalaire.toString(),
         joursHeuresPayeA100PourecentSalaire:
             joursHeuresPayeA100PourecentSalaire.toString(),
@@ -1340,9 +1364,20 @@ class _UpdatePaiementSalaireState extends State<UpdatePaiementSalaire> {
         montantPrisConsiderationCalculCotisationsINSS:
             montantPrisConsiderationCalculCotisationsINSS.toString(),
         totalDuBrut: totalDuBrut.toString(),
-        signatureDG: '',
-        signatureFinance: signatureFinance.toString(),
-        signatureRH: signatureRH.toString());
+        approbationDG: approbationDG.toString(),
+        signatureDG: signatureDG.toString(),
+        signatureJustificationDG: signatureJustificationDG.toString(),
+        approbationFin: approbationFin.toString(),
+        signatureFin: signatureFin.toString(),
+        signatureJustificationFin: signatureJustificationFin.toString(),
+        approbationBudget: approbationBudget.toString(),
+        signatureBudget: signatureBudget.toString(),
+        signatureJustificationBudget: signatureJustificationBudget.toString(),
+        approbationDD: approbationDD.toString(),
+        signatureDD: signatureDD.toString(),
+        signatureJustificationDD: signatureJustificationDD.toString(),
+        signature: signature.toString(),
+    );
     await PaiementSalaireApi().updateData(widget.id, paiementSalaireModel);
     Routemaster.of(context).pop();
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(

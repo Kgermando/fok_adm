@@ -77,7 +77,12 @@ var addvalorisationsUrl = Uri.parse(
 var devisUrl = Uri.parse("$mainUrl/devis/");
 var addDevissUrl = Uri.parse("$mainUrl/devis/insert-new-devis");
 
+// Budget
+var budgetDepartementsUrl = Uri.parse("$mainUrl/budgets/departements/");
+var addBudgetDepartementsUrl = Uri.parse("$mainUrl/budgets/departements/insert-new-departement-budget");
 
+var ligneBudgetairesUrl = Uri.parse("$mainUrl/budgets/ligne-budgetaires/");
+var addbudgetLigneBudgetairesUrl = Uri.parse("$mainUrl/budgets/ligne-budgetaires/insert-new-ligne-budgetaire");
 
 // Logistiques
 var anguinsUrl = Uri.parse("$mainUrl/anguins/");

@@ -21,7 +21,7 @@ class DepartementBudgetModel {
   late String approbationDD;
   late String signatureDD;  // directeur de departement
   late String signatureJustificationDD;
-   
+
   late String signature; // celui qui fait le document
   late DateTime created;
 

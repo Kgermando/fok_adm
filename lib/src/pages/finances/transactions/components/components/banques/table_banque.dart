@@ -96,6 +96,8 @@ class _TableBanqueState extends State<TableBanque> {
                     return resolver<ClassYouImplemented>() as PlutoFilterType;
                   } else if (column.field == 'ligneBudgtaire') {
                     return resolver<ClassYouImplemented>() as PlutoFilterType;
+                  } else if (column.field == 'resources') {
+                    return resolver<ClassYouImplemented>() as PlutoFilterType;
                   } else if (column.field == 'departement') {
                     return resolver<ClassYouImplemented>() as PlutoFilterType;
                   } else if (column.field == 'typeOperation') {
@@ -240,6 +242,18 @@ class _TableBanqueState extends State<TableBanque> {
       ),
       PlutoColumn(
         readOnly: true,
+        title: 'resources',
+        field: 'resources',
+        type: PlutoColumnType.text(),
+        enableRowDrag: true,
+        enableContextMenu: false,
+        enableDropToResize: true,
+        titleTextAlign: PlutoColumnTextAlign.left,
+        width: 150,
+        minWidth: 150,
+      ),
+      PlutoColumn(
+        readOnly: true,
         title: 'Département',
         field: 'departement',
         type: PlutoColumnType.text(),
@@ -305,6 +319,7 @@ class _TableBanqueState extends State<TableBanque> {
             'montant': PlutoCell(value: NumberFormat.decimalPattern('fr')
                     .format(double.parse(item.montant))),
             'ligneBudgtaire': PlutoCell(value: item.ligneBudgtaire),
+            'resources': PlutoCell(value: item.resources),
             'departement': PlutoCell(value: item.departement),
             'typeOperation': PlutoCell(value: item.typeOperation),
             'numeroOperation': PlutoCell(value: item.numeroOperation),

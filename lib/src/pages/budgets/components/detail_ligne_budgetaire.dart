@@ -1,40 +1,31 @@
 import 'package:flutter/material.dart';
 import 'package:fokad_admin/src/api/auth/auth_api.dart';
 import 'package:fokad_admin/src/api/budgets/ligne_budgetaire_api.dart';
-import 'package:fokad_admin/src/api/finances/banque_api.dart';
 import 'package:fokad_admin/src/api/user/user_api.dart';
 import 'package:fokad_admin/src/constants/app_theme.dart';
 import 'package:fokad_admin/src/constants/responsive.dart';
 import 'package:fokad_admin/src/models/budgets/ligne_budgetaire_model.dart';
-import 'package:fokad_admin/src/models/finances/banque_model.dart';
 import 'package:fokad_admin/src/models/users/user_model.dart';
 import 'package:fokad_admin/src/navigation/drawer/drawer_menu.dart';
 import 'package:fokad_admin/src/navigation/header/custom_appbar.dart';
 import 'package:fokad_admin/src/widgets/print_widget.dart';
 import 'package:fokad_admin/src/widgets/title_widget.dart';
 import 'package:intl/intl.dart';
-import 'package:pluto_grid/pluto_grid.dart';
 import 'package:routemaster/routemaster.dart';
 
-class DetailBanque extends StatefulWidget {
-  const DetailBanque({Key? key, required this.id}) : super(key: key);
+class DetailLigneBudgetaire extends StatefulWidget {
+  const DetailLigneBudgetaire({Key? key, required this.id}) : super(key: key);
   final int id;
 
   @override
-  State<DetailBanque> createState() => _DetailBanqueState();
+  State<DetailLigneBudgetaire> createState() => _DetailLigneBudgetaireState();
 }
 
-class _DetailBanqueState extends State<DetailBanque> {
-  final ScrollController _controllerScroll = ScrollController();
+class _DetailLigneBudgetaireState extends State<DetailLigneBudgetaire> {
+    final ScrollController _controllerScroll = ScrollController();
   bool isLoading = false;
-  List<UserModel> userList = [];
+  
 
-  bool statutAgent = false;
-
-  List<PlutoColumn> columns = [];
-  List<PlutoRow> rows = [];
-  PlutoGridStateManager? stateManager;
-  PlutoGridSelectingMode gridSelectingMode = PlutoGridSelectingMode.row;
 
   String approbationDGController = '-';
   String approbationFinController = '-';
@@ -47,35 +38,25 @@ class _DetailBanqueState extends State<DetailBanque> {
   TextEditingController signatureJustificationBudgetController =
       TextEditingController();
   TextEditingController signatureJustificationDDController =
-      TextEditingController();
-
-  List coupureBillet = [];
-  String? ligneBudgtaire;
-  String? resources;
+    TextEditingController();
 
   @override
   initState() {
     getData();
-    agentsColumn();
-    agentsRow();
     super.initState();
   }
 
-  List<LigneBudgetaireModel> ligneBudgetaireList = [];
+  List<UserModel> userList = [];
   UserModel? user;
   Future<void> getData() async {
     final dataUser = await UserApi().getAllData();
     UserModel userModel = await AuthApi().getUserId();
-    BanqueModel data = await BanqueApi().getOneData(widget.id);
-    var budgets = await LIgneBudgetaireApi().getAllData();
     setState(() {
       userList = dataUser;
       user = userModel;
-      coupureBillet = data.coupureBillet;
-      ligneBudgetaireList = budgets;
     });
   }
-
+  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -93,12 +74,12 @@ class _DetailBanqueState extends State<DetailBanque> {
                 flex: 5,
                 child: Padding(
                     padding: const EdgeInsets.all(p10),
-                    child: FutureBuilder<BanqueModel>(
-                        future: BanqueApi().getOneData(widget.id),
+                    child: FutureBuilder<LigneBudgetaireModel>(
+                        future: LIgneBudgetaireApi().getOneData(widget.id),
                         builder: (BuildContext context,
-                            AsyncSnapshot<BanqueModel> snapshot) {
+                            AsyncSnapshot<LigneBudgetaireModel> snapshot) {
                           if (snapshot.hasData) {
-                            BanqueModel? banqueModel = snapshot.data;
+                            LigneBudgetaireModel? data = snapshot.data;
                             return Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
@@ -114,7 +95,7 @@ class _DetailBanqueState extends State<DetailBanque> {
                                     const SizedBox(width: p10),
                                     Expanded(
                                       child: CustomAppbar(
-                                          title: '${banqueModel!.nomComplet} '),
+                                          title: data!.nomLigneBudgetaire),
                                     ),
                                   ],
                                 ),
@@ -122,7 +103,7 @@ class _DetailBanqueState extends State<DetailBanque> {
                                     child: Scrollbar(
                                         controller: _controllerScroll,
                                         isAlwaysShown: true,
-                                        child: pageDetail(banqueModel)))
+                                        child: pageDetail(data)))
                               ],
                             );
                           } else {
@@ -136,7 +117,7 @@ class _DetailBanqueState extends State<DetailBanque> {
         ));
   }
 
-  Widget pageDetail(BanqueModel banqueModel) {
+  Widget pageDetail(LigneBudgetaireModel data) {
     return Row(mainAxisAlignment: MainAxisAlignment.center, children: [
       Card(
         elevation: 10,
@@ -158,7 +139,7 @@ class _DetailBanqueState extends State<DetailBanque> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  TitleWidget(title: banqueModel.libelle),
+                  TitleWidget(title: data.periodeBudget),
                   Column(
                     children: [
                       Row(
@@ -172,20 +153,17 @@ class _DetailBanqueState extends State<DetailBanque> {
                         ],
                       ),
                       SelectableText(
-                          DateFormat("dd-MM-yy").format(banqueModel.created),
+                          DateFormat("dd-MM-yy").format(data.created),
                           textAlign: TextAlign.start),
                     ],
                   )
                 ],
               ),
-              dataWidget(banqueModel),
-              SizedBox(
-                height: 300,
-                width: double.infinity,
-                child: tableauList(),
+              dataWidget(data),
+              infosEditeurWidget(data),
+              const SizedBox(
+                height: p20,
               ),
-              if (banqueModel.typeOperation == 'Retrait')
-              infosEditeurWidget(banqueModel)
             ],
           ),
         ),
@@ -193,7 +171,7 @@ class _DetailBanqueState extends State<DetailBanque> {
     ]);
   }
 
-  Widget dataWidget(BanqueModel banqueModel) {
+   Widget dataWidget(LigneBudgetaireModel data) {
     final bodyMedium = Theme.of(context).textTheme.bodyMedium;
     return Padding(
       padding: const EdgeInsets.all(p10),
@@ -202,12 +180,12 @@ class _DetailBanqueState extends State<DetailBanque> {
           Row(
             children: [
               Expanded(
-                child: Text('Nom Complet :',
+                child: Text('Ligne Budgetaire :',
                     textAlign: TextAlign.start,
                     style: bodyMedium!.copyWith(fontWeight: FontWeight.bold)),
               ),
               Expanded(
-                child: SelectableText(banqueModel.nomComplet,
+                child: SelectableText(data.nomLigneBudgetaire,
                     textAlign: TextAlign.start, style: bodyMedium),
               )
             ],
@@ -215,12 +193,12 @@ class _DetailBanqueState extends State<DetailBanque> {
           Row(
             children: [
               Expanded(
-                child: Text('Pièce justificative :',
+                child: Text('Département :',
                     textAlign: TextAlign.start,
                     style: bodyMedium.copyWith(fontWeight: FontWeight.bold)),
               ),
               Expanded(
-                child: SelectableText(banqueModel.pieceJustificative,
+                child: SelectableText(data.departement,
                     textAlign: TextAlign.start, style: bodyMedium),
               )
             ],
@@ -228,12 +206,12 @@ class _DetailBanqueState extends State<DetailBanque> {
           Row(
             children: [
               Expanded(
-                child: Text('Libellé :',
+                child: Text('Periode Budgetaire :',
                     textAlign: TextAlign.start,
                     style: bodyMedium.copyWith(fontWeight: FontWeight.bold)),
               ),
               Expanded(
-                child: SelectableText(banqueModel.libelle,
+                child: SelectableText(data.periodeBudget,
                     textAlign: TextAlign.start, style: bodyMedium),
               )
             ],
@@ -241,54 +219,25 @@ class _DetailBanqueState extends State<DetailBanque> {
           Row(
             children: [
               Expanded(
-                child: Text('Montant :',
+                child: Text('Unité Choisie :',
                     textAlign: TextAlign.start,
                     style: bodyMedium.copyWith(fontWeight: FontWeight.bold)),
               ),
               Expanded(
-                child: SelectableText(banqueModel.montant,
+                child: SelectableText(data.uniteChoisie,
                     textAlign: TextAlign.start, style: bodyMedium),
               )
             ],
           ),
-          if (banqueModel.typeOperation != 'Depot')
-            Row(
-              children: [
+          Row(
+            children: [
                 Expanded(
-                  child: Text('Département :',
+                  child: Text('Nombre d\'unité :',
                       textAlign: TextAlign.start,
                       style: bodyMedium.copyWith(fontWeight: FontWeight.bold)),
                 ),
                 Expanded(
-                  child: SelectableText(banqueModel.departement,
-                      textAlign: TextAlign.start, style: bodyMedium),
-                )
-              ],
-            ),
-          if (banqueModel.typeOperation != 'Depot')
-            Row(
-              children: [
-                Expanded(
-                  child: Text('Ligne budgtaire :',
-                      textAlign: TextAlign.start,
-                      style: bodyMedium.copyWith(fontWeight: FontWeight.bold)),
-                ),
-                Expanded(
-                  child: SelectableText(banqueModel.ligneBudgtaire,
-                      textAlign: TextAlign.start, style: bodyMedium),
-                )
-              ],
-            ),
-          if (banqueModel.typeOperation != 'Depot')
-            Row(
-              children: [
-                Expanded(
-                  child: Text('Resources previsionnelle :',
-                      textAlign: TextAlign.start,
-                      style: bodyMedium.copyWith(fontWeight: FontWeight.bold)),
-                ),
-                Expanded(
-                  child: SelectableText(banqueModel.resources,
+                  child: SelectableText(data.nombreUnite,
                       textAlign: TextAlign.start, style: bodyMedium),
                 )
               ],
@@ -296,12 +245,25 @@ class _DetailBanqueState extends State<DetailBanque> {
           Row(
             children: [
               Expanded(
-                child: Text('Type d\'opération :',
+                child: Text('Coût Unitaire :',
                     textAlign: TextAlign.start,
                     style: bodyMedium.copyWith(fontWeight: FontWeight.bold)),
               ),
               Expanded(
-                child: SelectableText(banqueModel.typeOperation,
+                child: SelectableText(data.coutUnitaire,
+                    textAlign: TextAlign.start, style: bodyMedium),
+              )
+            ],
+            ),
+          Row(
+            children: [
+              Expanded(
+                child: Text('Coût Total :',
+                    textAlign: TextAlign.start,
+                    style: bodyMedium.copyWith(fontWeight: FontWeight.bold)),
+              ),
+              Expanded(
+                child: SelectableText(data.coutTotal,
                     textAlign: TextAlign.start, style: bodyMedium),
               )
             ],
@@ -309,12 +271,12 @@ class _DetailBanqueState extends State<DetailBanque> {
           Row(
             children: [
               Expanded(
-                child: Text('Numéro d\'opération :',
+                child: Text('Caisse :',
                     textAlign: TextAlign.start,
                     style: bodyMedium.copyWith(fontWeight: FontWeight.bold)),
               ),
               Expanded(
-                child: SelectableText(banqueModel.numeroOperation,
+                child: SelectableText(data.caisse,
                     textAlign: TextAlign.start, style: bodyMedium),
               )
             ],
@@ -322,12 +284,38 @@ class _DetailBanqueState extends State<DetailBanque> {
           Row(
             children: [
               Expanded(
-                child: Text('signature :',
+                child: Text('Banque :',
                     textAlign: TextAlign.start,
                     style: bodyMedium.copyWith(fontWeight: FontWeight.bold)),
               ),
               Expanded(
-                child: SelectableText(banqueModel.signature,
+                child: SelectableText(data.banque,
+                    textAlign: TextAlign.start, style: bodyMedium),
+              )
+            ],
+          ),
+          Row(
+            children: [
+              Expanded(
+                child: Text('Financement Propre :',
+                    textAlign: TextAlign.start,
+                    style: bodyMedium.copyWith(fontWeight: FontWeight.bold)),
+              ),
+              Expanded(
+                child: SelectableText(data.finPropre,
+                    textAlign: TextAlign.start, style: bodyMedium),
+              )
+            ],
+          ),
+          Row(
+            children: [
+              Expanded(
+                child: Text('Financement Exterieur :',
+                    textAlign: TextAlign.start,
+                    style: bodyMedium.copyWith(fontWeight: FontWeight.bold)),
+              ),
+              Expanded(
+                child: SelectableText(data.finExterieur,
                     textAlign: TextAlign.start, style: bodyMedium),
               )
             ],
@@ -337,74 +325,7 @@ class _DetailBanqueState extends State<DetailBanque> {
     );
   }
 
-  Widget tableauList() {
-    return PlutoGrid(
-      columns: columns,
-      rows: rows,
-      onLoaded: (PlutoGridOnLoadedEvent event) {
-        stateManager = event.stateManager;
-        stateManager!.setShowColumnFilter(true);
-      },
-    );
-  }
-
-  void agentsColumn() {
-    columns = [
-      PlutoColumn(
-        readOnly: true,
-        title: 'N°',
-        field: 'id',
-        type: PlutoColumnType.number(),
-        enableRowDrag: true,
-        enableContextMenu: false,
-        enableDropToResize: true,
-        titleTextAlign: PlutoColumnTextAlign.left,
-        width: 100,
-        minWidth: 80,
-      ),
-      PlutoColumn(
-        readOnly: true,
-        title: 'nombreBillet',
-        field: 'nombreBillet',
-        type: PlutoColumnType.text(),
-        enableRowDrag: true,
-        enableContextMenu: false,
-        enableDropToResize: true,
-        titleTextAlign: PlutoColumnTextAlign.left,
-        width: 150,
-        minWidth: 150,
-      ),
-      PlutoColumn(
-        readOnly: true,
-        title: 'coupureBillet',
-        field: 'coupureBillet',
-        type: PlutoColumnType.text(),
-        enableRowDrag: true,
-        enableContextMenu: false,
-        enableDropToResize: true,
-        titleTextAlign: PlutoColumnTextAlign.left,
-        width: 150,
-        minWidth: 150,
-      ),
-    ];
-  }
-
-  Future agentsRow() async {
-    if (mounted) {
-      setState(() {
-        for (var item in coupureBillet) {
-          rows.add(PlutoRow(cells: {
-            'id': PlutoCell(value: item[0]['id']),
-            'nombreBillet': PlutoCell(value: item[1]['nombreBillet']),
-            'coupureBillet': PlutoCell(value: item[2]['coupureBillet'])
-          }));
-        }
-        stateManager!.resetCurrentState();
-      });
-    }
-  }
-
-  Widget infosEditeurWidget(BanqueModel data) {
+  Widget infosEditeurWidget(LigneBudgetaireModel data) {
     final bodyMedium = Theme.of(context).textTheme.bodyMedium;
     final bodySmall = Theme.of(context).textTheme.bodySmall;
     List<String> dataList = ['Approved', 'Unapproved'];
@@ -701,10 +622,7 @@ class _DetailBanqueState extends State<DetailBanque> {
                                     });
                                   },
                                 ),
-                              ),
-                            if (data.approbationBudget == '-' &&
-                                user!.fonctionOccupe == 'Directeur de budget')
-                              ligneBudgtaireWidget()
+                              )
                           ],
                         )),
                     Expanded(
@@ -716,7 +634,7 @@ class _DetailBanqueState extends State<DetailBanque> {
                               style: bodySmall,
                             ),
                             SelectableText(
-                              data.signatureBudget.toString(),
+                             data. signatureBudget.toString(),
                               style: bodyMedium,
                             ),
                           ],
@@ -887,64 +805,42 @@ class _DetailBanqueState extends State<DetailBanque> {
     );
   }
 
-  Widget ligneBudgtaireWidget() {
-    var dataList =
-        ligneBudgetaireList.map((e) => e.nomLigneBudgetaire).toList();
-    return Container(
-      margin: const EdgeInsets.only(bottom: p20),
-      child: DropdownButtonFormField<String>(
-        decoration: InputDecoration(
-          labelText: 'Ligne Budgetaire',
-          labelStyle: const TextStyle(),
-          border: OutlineInputBorder(borderRadius: BorderRadius.circular(5.0)),
-          contentPadding: const EdgeInsets.only(left: 5.0),
-        ),
-        value: ligneBudgtaire,
-        isExpanded: true,
-        items: dataList.map((String value) {
-          return DropdownMenuItem<String>(
-            value: value,
-            child: Text(value),
-          );
-        }).toList(),
-        onChanged: (value) {
-          setState(() {
-            ligneBudgtaire = value!;
-          });
-        },
-      ),
+
+  Future<void> submitUpdateDG(LigneBudgetaireModel data) async {
+    final ligneBudgetaireModel = LigneBudgetaireModel(
+      nomLigneBudgetaire: data.nomLigneBudgetaire, 
+      departement: data.departement, 
+      periodeBudget: data.periodeBudget, 
+      uniteChoisie: data.uniteChoisie, 
+      nombreUnite: data.nombreUnite, 
+      coutUnitaire: data.coutUnitaire, 
+      coutTotal: data.coutTotal, 
+      caisse: data.caisse, 
+      banque: data.banque, 
+      finPropre: data.finPropre, 
+      finExterieur: data.finExterieur, 
+
+      approbationDG: approbationDGController.toString(),
+      signatureDG: user!.matricule.toString(),
+      signatureJustificationDG: signatureJustificationDGController.text,
+
+      approbationFin: data.approbationFin.toString(),
+      signatureFin: data.signatureFin.toString(),
+      signatureJustificationFin: data.signatureJustificationFin.toString(),
+
+      approbationBudget: data.approbationBudget.toString(),
+      signatureBudget: data.signatureBudget.toString(),
+      signatureJustificationBudget: data.signatureJustificationBudget.toString(),
+
+      approbationDD: data.approbationDD.toString(),
+      signatureDD: data.signatureDD.toString(),
+      signatureJustificationDD: data.signatureJustificationDD.toString(),
+
+      signature: data.signature,
+      created: data.created
     );
-  }
 
-  Future<void> submitUpdateDG(BanqueModel data) async {
-    final banqueModel = BanqueModel(
-        nomComplet: data.nomComplet,
-        pieceJustificative: data.pieceJustificative,
-        libelle: data.libelle,
-        montant: data.montant,
-        coupureBillet: data.coupureBillet,
-        ligneBudgtaire: data.ligneBudgtaire,
-        resources: data.resources,
-        departement: data.departement,
-        typeOperation: data.typeOperation,
-        numeroOperation: data.numeroOperation,
-        approbationDG: approbationDGController.toString(),
-        signatureDG: user!.matricule.toString(),
-        signatureJustificationDG: signatureJustificationDGController.text,
-        approbationFin: data.approbationFin.toString(),
-        signatureFin: data.signatureFin.toString(),
-        signatureJustificationFin: data.signatureJustificationFin.toString(),
-        approbationBudget: data.approbationBudget.toString(),
-        signatureBudget: data.signatureBudget.toString(),
-        signatureJustificationBudget:
-            data.signatureJustificationBudget.toString(),
-        approbationDD: data.approbationDD.toString(),
-        signatureDD: data.signatureDD.toString(),
-        signatureJustificationDD: data.signatureJustificationDD.toString(),
-        signature: data.signature,
-        created: data.created);
-
-    await BanqueApi().updateData(data.id!, banqueModel);
+    await LIgneBudgetaireApi().updateData(data.id!, ligneBudgetaireModel);
     Routemaster.of(context).pop();
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
       content: const Text("Soumis avec succès!"),
@@ -952,34 +848,39 @@ class _DetailBanqueState extends State<DetailBanque> {
     ));
   }
 
-  Future<void> submitUpdateFIN(BanqueModel data) async {
-    final banqueModel = BanqueModel(
-        nomComplet: data.nomComplet,
-        pieceJustificative: data.pieceJustificative,
-        libelle: data.libelle,
-        montant: data.montant,
-        coupureBillet: data.coupureBillet,
-        ligneBudgtaire: data.ligneBudgtaire,
-        resources: data.resources,
-        departement: data.departement,
-        typeOperation: data.typeOperation,
-        numeroOperation: data.numeroOperation,
-        approbationDG: data.approbationDG.toString(),
-        signatureDG: data.signatureDG.toString(),
-        signatureJustificationDG: data.signatureJustificationDG.toString(),
-        approbationFin: approbationFinController.toString(),
-        signatureFin: user!.matricule.toString(),
-        signatureJustificationFin: signatureJustificationFinController.text,
-        approbationBudget: data.approbationBudget.toString(),
-        signatureBudget: data.signatureBudget.toString(),
-        signatureJustificationBudget:
-            data.signatureJustificationBudget.toString(),
-        approbationDD: data.approbationDD.toString(),
-        signatureDD: data.signatureDD.toString(),
-        signatureJustificationDD: data.signatureJustificationDD.toString(),
-        signature: data.signature,
-        created: data.created);
-    await BanqueApi().updateData(data.id!, banqueModel);
+  Future<void> submitUpdateFIN(LigneBudgetaireModel data) async {
+    final ligneBudgetaireModel = LigneBudgetaireModel(
+      nomLigneBudgetaire: data.nomLigneBudgetaire,
+      departement: data.departement,
+      periodeBudget: data.periodeBudget,
+      uniteChoisie: data.uniteChoisie,
+      nombreUnite: data.nombreUnite,
+      coutUnitaire: data.coutUnitaire,
+      coutTotal: data.coutTotal,
+      caisse: data.caisse,
+      banque: data.banque,
+      finPropre: data.finPropre,
+      finExterieur: data.finExterieur,
+      approbationDG: data.approbationDG.toString(),
+      signatureDG: data.signatureDG.toString(),
+      signatureJustificationDG: data.signatureJustificationDG.toString(),
+
+      approbationFin: approbationFinController.toString(),
+      signatureFin: user!.matricule.toString(),
+      signatureJustificationFin: signatureJustificationFinController.text,
+
+      approbationBudget: data.approbationBudget.toString(),
+      signatureBudget: data.signatureBudget.toString(),
+      signatureJustificationBudget: data.signatureJustificationBudget.toString(),
+      approbationDD: data.approbationDD.toString(),
+      signatureDD: data.signatureDD.toString(),
+      signatureJustificationDD: data.signatureJustificationDD.toString(),
+
+      signature: data.signature,
+      created: data.created
+    );
+
+    await LIgneBudgetaireApi().updateData(data.id!, ligneBudgetaireModel);
     Routemaster.of(context).pop();
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
       content: const Text("Soumis avec succès!"),
@@ -987,35 +888,42 @@ class _DetailBanqueState extends State<DetailBanque> {
     ));
   }
 
-  Future<void> submitUpdateBudget(BanqueModel data) async {
-    final banqueModel = BanqueModel(
-        nomComplet: data.nomComplet,
-        pieceJustificative: data.pieceJustificative,
-        libelle: data.libelle,
-        montant: data.montant,
-        coupureBillet: data.coupureBillet,
-        ligneBudgtaire: ligneBudgtaire.toString(),
-        resources: 'banque',
-        departement: data.departement,
-        typeOperation: data.typeOperation,
-        numeroOperation: data.numeroOperation,
-        approbationDG: data.approbationDG.toString(),
-        signatureDG: data.signatureDG.toString(),
-        signatureJustificationDG: data.signatureJustificationDG.toString(),
-        approbationFin: data.approbationFin.toString(),
-        signatureFin: data.signatureFin.toString(),
-        signatureJustificationFin: data.signatureJustificationFin.toString(),
-        approbationBudget: approbationBudgetController.toString(),
-        signatureBudget: user!.matricule.toString(),
-        signatureJustificationBudget:
-            signatureJustificationBudgetController.text,
-        approbationDD: data.approbationDD.toString(),
-        signatureDD: data.signatureDD.toString(),
-        signatureJustificationDD: data.signatureJustificationDD.toString(),
-        signature: data.signature,
-        created: data.created);
+  Future<void> submitUpdateBudget(LigneBudgetaireModel data) async {
+    final ligneBudgetaireModel = LigneBudgetaireModel(
+     nomLigneBudgetaire: data.nomLigneBudgetaire,
+      departement: data.departement,
+      periodeBudget: data.periodeBudget,
+      uniteChoisie: data.uniteChoisie,
+      nombreUnite: data.nombreUnite,
+      coutUnitaire: data.coutUnitaire,
+      coutTotal: data.coutTotal,
+      caisse: data.caisse,
+      banque: data.banque,
+      finPropre: data.finPropre,
+      finExterieur: data.finExterieur,
 
-    await BanqueApi().updateData(data.id!, banqueModel);
+      approbationDG: data.approbationDG.toString(),
+      signatureDG: data.signatureDG.toString(),
+      signatureJustificationDG: data.signatureJustificationDG.toString(),
+
+      approbationFin: data.approbationFin.toString(),
+      signatureFin: data.signatureFin.toString(),
+      signatureJustificationFin: data.signatureJustificationFin.toString(),
+
+      approbationBudget: approbationBudgetController.toString(),
+      signatureBudget: user!.matricule.toString(),
+      signatureJustificationBudget:
+          signatureJustificationBudgetController.text,
+
+      approbationDD: data.approbationDD.toString(),
+      signatureDD: data.signatureDD.toString(),
+      signatureJustificationDD: data.signatureJustificationDD.toString(),
+
+      signature: data.signature,
+      created: data.created
+    );
+
+    await LIgneBudgetaireApi().updateData(data.id!, ligneBudgetaireModel);
     Routemaster.of(context).pop();
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
       content: const Text("Soumis avec succès!"),
@@ -1023,35 +931,41 @@ class _DetailBanqueState extends State<DetailBanque> {
     ));
   }
 
-  Future<void> submitUpdateDD(BanqueModel data) async {
-    final banqueModel = BanqueModel(
-        nomComplet: data.nomComplet,
-        pieceJustificative: data.pieceJustificative,
-        libelle: data.libelle,
-        montant: data.montant,
-        coupureBillet: data.coupureBillet,
-        ligneBudgtaire: data.ligneBudgtaire,
-        resources: data.resources,
-        departement: data.departement,
-        typeOperation: data.typeOperation,
-        numeroOperation: data.numeroOperation,
-        approbationDG: data.approbationDG.toString(),
-        signatureDG: data.signatureDG.toString(),
-        signatureJustificationDG: data.signatureJustificationDG.toString(),
-        approbationFin: data.approbationFin.toString(),
-        signatureFin: data.signatureFin.toString(),
-        signatureJustificationFin: data.signatureJustificationFin.toString(),
-        approbationBudget: data.approbationBudget.toString(),
-        signatureBudget: data.signatureBudget.toString(),
-        signatureJustificationBudget:
-            data.signatureJustificationBudget.toString(),
-        approbationDD: approbationDDController.toString(),
-        signatureDD: user!.matricule.toString(),
-        signatureJustificationDD: signatureJustificationDDController.text,
-        signature: data.signature.toString(),
-        created: data.created);
+  Future<void> submitUpdateDD(LigneBudgetaireModel data) async {
+    final ligneBudgetaireModel = LigneBudgetaireModel(
+     nomLigneBudgetaire: data.nomLigneBudgetaire,
+      departement: data.departement,
+      periodeBudget: data.periodeBudget,
+      uniteChoisie: data.uniteChoisie,
+      nombreUnite: data.nombreUnite,
+      coutUnitaire: data.coutUnitaire,
+      coutTotal: data.coutTotal,
+      caisse: data.caisse,
+      banque: data.banque,
+      finPropre: data.finPropre,
+      finExterieur: data.finExterieur,
 
-    await BanqueApi().updateData(data.id!, banqueModel);
+      approbationDG: data.approbationDG.toString(),
+      signatureDG: data.signatureDG.toString(),
+      signatureJustificationDG: data.signatureJustificationDG.toString(),
+
+      approbationFin: data.approbationFin.toString(),
+      signatureFin: data.signatureFin.toString(),
+      signatureJustificationFin: data.signatureJustificationFin.toString(),
+
+      approbationBudget: data.approbationBudget.toString(),
+      signatureBudget: data.signatureBudget.toString(),
+      signatureJustificationBudget: data.signatureJustificationBudget.toString(),
+
+      approbationDD: approbationDDController.toString(),
+      signatureDD: user!.matricule.toString(),
+      signatureJustificationDD: signatureJustificationDDController.text,
+
+      signature: data.signature.toString(),
+      created: data.created
+    );
+
+    await LIgneBudgetaireApi().updateData(data.id!, ligneBudgetaireModel);
     Routemaster.of(context).pop();
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
       content: const Text("Soumis avec succès!"),
