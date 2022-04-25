@@ -12,14 +12,21 @@ class DepeartementBudgetApi {
   var client = http.Client();
   final storage = const FlutterSecureStorage();
 
+
   Future<String?> getToken() async {
     final data = await storage.read(key: "accessToken");
     return data;
   }
 
+  
+
   Future<List<DepartementBudgetModel>> getAllData() async {
     String? token = await getToken();
-
+    
+    Map<String, String> headers = {
+      'Authorization': 'Bearer $token',
+      'Content-Type': 'application/x-www-form-urlencoded'
+    };
     if (token!.isNotEmpty) {
       var splittedJwt = token.split(".");
       var payload = json.decode(
@@ -27,10 +34,7 @@ class DepeartementBudgetApi {
     }
     var resp = await client.get(
       budgetDepartementsUrl,
-      headers: <String, String>{
-        'Content-Type': 'application/json; charset=UTF-8',
-        'Authorization': 'Bearer $token'
-      },
+      headers: headers
     );
 
     if (resp.statusCode == 200) {

@@ -7,6 +7,7 @@ class PresenceModel {
   late DateTime sortie;
   late bool presence;
   late String motif;
+  
   late String approbationDG; // button radio OUi et NON if non text field
   late String signatureDG;
   late String signatureJustificationDG;

@@ -21,7 +21,7 @@ class _FinancesNavState extends State<FinancesNav> {
     final bodyText2 = Theme.of(context).textTheme.bodyText2;
     
     return ExpansionTile(
-        leading: const Icon(Icons.corporate_fare, size: 30.0),
+        leading: const Icon(Icons.account_balance, size: 30.0),
         title: Text('Finances', style: bodyMedium),
         initiallyExpanded: false,
         onExpansionChanged: (val) {
@@ -88,18 +88,6 @@ class _FinancesNavState extends State<FinancesNav> {
                       .replace(FinanceRoutes.transactionsCreances);
                   // Routemaster.of(context).pop();
                 }),
-              // DrawerWidget(
-              //   selected:
-              //       widget.pageCurrente == FinanceRoutes.transactionsDepenses,
-              //   icon: Icons.arrow_right,
-              //   sizeIcon: 15.0,
-              //   title: 'Dépenses',
-              //   style: bodyText2,
-              //   onTap: () {
-              //     Routemaster.of(context)
-              //         .replace(FinanceRoutes.transactionsDepenses);
-              //     // Routemaster.of(context).pop();
-              //   }),
               DrawerWidget(
                   selected: widget.pageCurrente == FinanceRoutes.transactionsDettes,
                   icon: Icons.arrow_right,
@@ -116,7 +104,7 @@ class _FinancesNavState extends State<FinancesNav> {
                 selected: widget.pageCurrente == FinanceRoutes.transactionsFinancementExterne,
                 icon: Icons.arrow_right,
                 sizeIcon: 15.0,
-                title: 'Fin. externes',
+                title: 'Autres Fin.',
                 style: bodyText2,
                 onTap: () {
                   Routemaster.of(context)
@@ -139,75 +127,7 @@ class _FinancesNavState extends State<FinancesNav> {
               ),
             ],
           ),
-          ExpansionTile(
-            leading: const Icon(Icons.analytics, size: 20.0),
-            title: Text('Comptabilités', style: bodyText1),
-            initiallyExpanded: false,
-            onExpansionChanged: (val) {
-              setState(() {
-                isOpenTransaction = !val;
-              });
-            },
-            children: [
-              DrawerWidget(
-                  selected: widget.pageCurrente == FinanceRoutes.comptabiliteBilan,
-                  icon: Icons.arrow_right,
-                  sizeIcon: 15.0,
-                  title: 'Bilan',
-                  style: bodyText2,
-                  onTap: () {
-                    Routemaster.of(context)
-                      .replace(FinanceRoutes.comptabiliteBilan);
-                  // Routemaster.of(context).pop();
-                  }),
-              DrawerWidget(
-                  selected: widget.pageCurrente == FinanceRoutes.comptabiliteJournal,
-                  icon: Icons.arrow_right,
-                  sizeIcon: 15.0,
-                  title: 'Journal',
-                  style: bodyText2,
-                  onTap: () {
-                    Routemaster.of(context)
-                      .replace(FinanceRoutes.comptabiliteJournal);
-                  // Routemaster.of(context).pop();
-                  }),
-              DrawerWidget(
-                  selected: widget.pageCurrente == FinanceRoutes.comptabiliteValorisation,
-                  icon: Icons.arrow_right,
-                  sizeIcon: 15.0,
-                  title: 'Valorisation',
-                  style: bodyText2,
-                  onTap: () {
-                    Routemaster.of(context)
-                      .replace(FinanceRoutes.comptabiliteValorisation);
-                  // Routemaster.of(context).pop();
-                  }),
-              DrawerWidget(
-                  selected: widget.pageCurrente == FinanceRoutes.comptabiliteAmortissement,
-                  icon: Icons.arrow_right,
-                  sizeIcon: 15.0,
-                  title: 'Amortissement',
-                  style: bodyText2,
-                  onTap: () {
-                    Routemaster.of(context)
-                      .replace(FinanceRoutes.comptabiliteAmortissement);
-                  // Routemaster.of(context).pop();
-                  
-                  }),
-            ],
-          ),
-          DrawerWidget(
-            selected: widget.pageCurrente == FinanceRoutes.financeBudget,
-            icon: Icons.maps_home_work_outlined,
-            sizeIcon: 20.0,
-            title: 'Budget',
-            style: bodyText1,
-            onTap: () {
-              Routemaster.of(context)
-                      .replace(FinanceRoutes.financeBudget);
-                  // Routemaster.of(context).pop();
-            }
-          ),
+         
           DrawerWidget(
             selected: widget.pageCurrente ==  DevisRoutes.devis,
             icon: Icons.note_alt,

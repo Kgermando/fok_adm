@@ -10,4 +10,5 @@ class Controller extends ChangeNotifier {
       _scaffoldKey.currentState!.openDrawer();
     }
   }
+
 }
