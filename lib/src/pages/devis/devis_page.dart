@@ -445,12 +445,23 @@ class _DevisPageState extends State<DevisPage> {
         priority: priority.toString(),
         departement: departement.toString(),
         list: jsonList,
-        approbation: false,
-        observation: false,
-        signatureDG: '',
-        signatureReception: '',
-        signatureEmission: matricule.toString(),
-        created: DateTime.now());
+        ligneBudgtaire: '-',
+        resources: '-',
+        approbationDG: '-',
+        signatureDG: '-',
+        signatureJustificationDG: '-',
+        approbationFin: '-',
+        signatureFin: '-',
+        signatureJustificationFin: '-',
+        approbationBudget: '-',
+        signatureBudget: '-',
+        signatureJustificationBudget: '-',
+        approbationDD: '-',
+        signatureDD: '-',
+        signatureJustificationDD: '-',
+        signature: matricule.toString(),
+        created: DateTime.now()
+    );
     await DevisAPi().insertData(devisModel);
     Routemaster.of(context).pop();
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(

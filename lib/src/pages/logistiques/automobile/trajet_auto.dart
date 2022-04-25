@@ -5,9 +5,7 @@ import 'package:fokad_admin/src/navigation/drawer/drawer_menu.dart';
 import 'package:fokad_admin/src/navigation/header/custom_appbar.dart';
 import 'package:fokad_admin/src/pages/logistiques/automobile/components/table_trajet.dart';
 import 'package:fokad_admin/src/provider/controller.dart';
-import 'package:fokad_admin/src/routes/routes.dart';
 import 'package:provider/provider.dart';
-import 'package:routemaster/routemaster.dart';
 
 class TrajetAuto extends StatefulWidget {
   const TrajetAuto({ Key? key }) : super(key: key);
@@ -22,12 +20,6 @@ class _TrajetAutoState extends State<TrajetAuto> {
     return Scaffold(
       key: context.read<Controller>().scaffoldKey,
       drawer: const DrawerMenu(),
-      // floatingActionButton: FloatingActionButton(
-      //     child: const Icon(Icons.add),
-      //     onPressed: () {
-      //       Routemaster.of(context)
-      //           .replace(LogistiqueRoutes.logAddTrajetAuto);
-      //     }),
       body: SafeArea(
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,

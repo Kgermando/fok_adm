@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:fokad_admin/src/api/comptabilite/valorisation_api.dart';
 import 'package:fokad_admin/src/models/comptabilites/valorisation_model.dart';
-import 'package:fokad_admin/src/pages/finances/comptabilites/components/valorisations/detail_valorisation.dart';
+import 'package:fokad_admin/src/pages/comptabilites/components/valorisations/detail_valorisation.dart';
 import 'package:fokad_admin/src/widgets/print_widget.dart';
 import 'package:intl/intl.dart';
 import 'package:pluto_grid/pluto_grid.dart';

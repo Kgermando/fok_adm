@@ -6,9 +6,8 @@ import 'package:fokad_admin/src/constants/responsive.dart';
 import 'package:fokad_admin/src/models/comptabilites/amortissement_model.dart';
 import 'package:fokad_admin/src/navigation/drawer/drawer_menu.dart';
 import 'package:fokad_admin/src/navigation/header/custom_appbar.dart';
-import 'package:fokad_admin/src/pages/finances/comptabilites/components/amortissements/table_amortissement.dart';
+import 'package:fokad_admin/src/pages/comptabilites/components/amortissements/table_amortissement.dart';
 import 'package:fokad_admin/src/provider/controller.dart';
-import 'package:fokad_admin/src/routes/routes.dart';
 import 'package:fokad_admin/src/widgets/btn_widget.dart';
 import 'package:fokad_admin/src/widgets/print_widget.dart';
 import 'package:fokad_admin/src/widgets/title_widget.dart';
@@ -95,8 +94,7 @@ class _AmortissementComptabiliteState extends State<AmortissementComptabilite> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: const [
                       CustomAppbar(title: 'Amortissement'),
-                      Expanded(
-                          child: TableAmortissement())
+                      Expanded(child: TableAmortissement())
                     ],
                   ),
                 ),
@@ -269,8 +267,21 @@ class _AmortissementComptabiliteState extends State<AmortissementComptabilite> {
         intitule: intituleController.text,
         montant: montantController.text,
         typeJournal: typeJournalController.text,
-        created: DateTime.now(),
-        signature: matricule.toString());
+        approbationDG: '-',
+        signatureDG: '-',
+        signatureJustificationDG: '-',
+        approbationFin: '-',
+        signatureFin: '-',
+        signatureJustificationFin: '-',
+        approbationBudget: '-',
+        signatureBudget: '-',
+        signatureJustificationBudget: '-',
+        approbationDD: '-',
+        signatureDD: '-',
+        signatureJustificationDD: '-',
+        signature: matricule.toString(),
+      created: DateTime.now(),
+    );
     await AmortissementApi().insertData(amortissementModel);
     Routemaster.of(context).pop();
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(

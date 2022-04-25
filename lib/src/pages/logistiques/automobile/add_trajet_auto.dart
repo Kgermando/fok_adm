@@ -7,10 +7,8 @@ import 'package:fokad_admin/src/models/logistiques/trajet_model.dart';
 import 'package:fokad_admin/src/models/users/user_model.dart';
 import 'package:fokad_admin/src/navigation/drawer/drawer_menu.dart';
 import 'package:fokad_admin/src/navigation/header/custom_appbar.dart';
-import 'package:fokad_admin/src/provider/controller.dart';
 import 'package:fokad_admin/src/widgets/btn_widget.dart';
 import 'package:fokad_admin/src/widgets/print_widget.dart';
-import 'package:provider/provider.dart';
 import 'package:routemaster/routemaster.dart';
 
 class AddTrajetAuto extends StatefulWidget {
@@ -355,8 +353,20 @@ class _AddTrajetAutoState extends State<AddTrajetAuto> {
         mission: missionController.text,
         kilometrageSorite: kilometrageSoriteController.text,
         kilometrageRetour: kilometrageRetourController.text,
-        created: DateTime.now(),
-        signature: signature.toString());
+        approbationDG: '-',
+        signatureDG: '-',
+        signatureJustificationDG: '-',
+        approbationFin: '-',
+        signatureFin: '-',
+        signatureJustificationFin: '-',
+        approbationBudget: '-',
+        signatureBudget: '-',
+        signatureJustificationBudget: '-',
+        approbationDD: '-',
+        signatureDD: '-',
+        signatureJustificationDD: '-',
+        signature: signature.toString(),
+        created: DateTime.now());
     await TrajetApi().insertData(trajetModel);
     Routemaster.of(context).pop();
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(

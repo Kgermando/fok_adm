@@ -6,8 +6,7 @@ import 'package:fokad_admin/src/constants/responsive.dart';
 import 'package:fokad_admin/src/models/comptabilites/bilan_model.dart';
 import 'package:fokad_admin/src/navigation/drawer/drawer_menu.dart';
 import 'package:fokad_admin/src/navigation/header/custom_appbar.dart';
-import 'package:fokad_admin/src/pages/finances/comptabilites/components/bilan/table_bilan.dart';
-import 'package:fokad_admin/src/routes/routes.dart';
+import 'package:fokad_admin/src/pages/comptabilites/components/bilan/table_bilan.dart';
 import 'package:fokad_admin/src/widgets/bar_chart_widget.dart';
 import 'package:fokad_admin/src/widgets/btn_widget.dart';
 import 'package:fokad_admin/src/widgets/pie_chart_widget.dart';
@@ -121,8 +120,7 @@ class _BilanComptabiliteState extends State<BilanComptabilite> {
                             const SizedBox(
                               height: p10,
                             ),
-                            const Expanded(
-                              child: TableBilan())
+                            const Expanded(child: TableBilan())
                           ],
                         ),
                       ))
@@ -297,8 +295,21 @@ class _BilanComptabiliteState extends State<BilanComptabilite> {
         intitule: intituleController.text,
         montant: montantController.text,
         typeBilan: typeBilanController.text,
-        created: DateTime.now(),
-        signature: matricule.toString());
+        approbationDG: '-',
+        signatureDG: '-',
+        signatureJustificationDG: '-',
+        approbationFin: '-',
+        signatureFin: '-',
+        signatureJustificationFin: '-',
+        approbationBudget: '-',
+        signatureBudget: '-',
+        signatureJustificationBudget: '-',
+        approbationDD: '-',
+        signatureDD: '-',
+        signatureJustificationDD: '-',
+        signature: matricule.toString(),
+        created: DateTime.now()
+      );
     await BilanApi().insertData(bilanModel);
     Routemaster.of(context).pop();
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(

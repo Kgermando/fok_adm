@@ -186,7 +186,12 @@ class _TableDevisState extends State<TableDevis> {
 
   Future agentsRow() async {
     List<DevisModel?> dataList = await DevisAPi().getAllData();
-    var data = dataList.where((element) => element!.departement == departement && element.approbation == true  || element.approbation == false).toList();
+    var data = dataList.where((element) => element!.departement == departement && 
+      element.approbationDG == 'Approved'  || element.departement == 'Administration' && 
+      element.approbationDG == 'Unapproved' || element.departement == 'Finances' && 
+      element.approbationDG == 'Approved' && element.approbationFin == 'Unapproved'
+    ).toList();
+    
     if (mounted) {
       setState(() {
         for (var item in data) {
@@ -196,8 +201,8 @@ class _TableDevisState extends State<TableDevis> {
             'title': PlutoCell(value: item.title),
             'priority': PlutoCell(value: item.priority),
             'departement': PlutoCell(value: item.departement),
-            'approbation': PlutoCell(value: item.approbation),
-            'observation': PlutoCell(value: item.observation),
+            'approbation': PlutoCell(value: item.approbationDG),
+            'observation': PlutoCell(value: item.approbationFin),
             'created': PlutoCell(
                 value: DateFormat("DD-MM-yy H:mm").format(item.created))
           }));

@@ -38,7 +38,9 @@ class Dropdown {
 
   List<String> departement = [
     'Administration',
-    'Comptabilité et Finance',
+    'Finances',
+    'Comptabilites',
+    'Budgets',
     'Ressources Humaines',
     'Exploitations',
     'Commercial et Marketing',

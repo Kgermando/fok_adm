@@ -9,10 +9,8 @@ import 'package:fokad_admin/src/models/logistiques/entretien_model.dart';
 import 'package:fokad_admin/src/models/users/user_model.dart';
 import 'package:fokad_admin/src/navigation/drawer/drawer_menu.dart';
 import 'package:fokad_admin/src/navigation/header/custom_appbar.dart';
-import 'package:fokad_admin/src/provider/controller.dart';
 import 'package:fokad_admin/src/widgets/btn_widget.dart';
 import 'package:fokad_admin/src/widgets/print_widget.dart';
-import 'package:provider/provider.dart';
 import 'package:routemaster/routemaster.dart';
 
 class AddEntretienPage extends StatefulWidget {
@@ -177,12 +175,12 @@ class _AddEntretienPageState extends State<AddEntretienPage> {
                         Expanded(child: dureeTravauxWidget())
                       ],
                     ),
-                    
                     if (count == 0)
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Text("Objets remplacé", style: Theme.of(context).textTheme.bodyLarge),
+                          Text("Objets remplacé",
+                              style: Theme.of(context).textTheme.bodyLarge),
                           IconButton(
                               icon: const Icon(Icons.add),
                               onPressed: () {
@@ -466,20 +464,32 @@ class _AddEntretienPageState extends State<AddEntretienPage> {
   Future<void> submit() async {
     final jsonList = _values.map((item) => jsonEncode(item)).toList();
     final entretienModel = EntretienModel(
-        nom: nomController.text,
-        modele: modeleController.text,
-        marque: marqueController.text,
-        etatObjet: etatObjetController.text,
-        objetRemplace: jsonList,
-        dureeTravaux: dureeTravauxController.text,
-        created: DateTime.now(),
-        signature: signature.toString());
+      nom: nomController.text,
+      modele: modeleController.text,
+      marque: marqueController.text,
+      etatObjet: etatObjetController.text,
+      objetRemplace: jsonList,
+      dureeTravaux: dureeTravauxController.text,
+      approbationDG: '-',
+      signatureDG: '-',
+      signatureJustificationDG: '-',
+      approbationFin: '-',
+      signatureFin: '-',
+      signatureJustificationFin: '-',
+      approbationBudget: '-',
+      signatureBudget: '-',
+      signatureJustificationBudget: '-',
+      approbationDD: '-',
+      signatureDD: '-',
+      signatureJustificationDD: '-',
+      signature: signature.toString(),
+      created: DateTime.now()
+    );
     await EntretienApi().insertData(entretienModel);
     Routemaster.of(context).pop();
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
       content: const Text("Enregistrer avec succès!"),
       backgroundColor: Colors.green[700],
     ));
-
   }
 }

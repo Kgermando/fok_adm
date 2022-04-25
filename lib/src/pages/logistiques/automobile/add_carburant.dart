@@ -437,7 +437,7 @@ class _AddCarburantAutoState extends State<AddCarburantAuto> {
 
   Future<void> submit() async {
     final carburantModel = CarburantModel(
-        operationEntreSortie: operationEntreSortie.toString(),
+      operationEntreSortie: operationEntreSortie.toString(),
         typeCaburant: typeCaburant.toString(),
         fournisseur: (fournisseurController.text == '')
             ? '-'
@@ -454,11 +454,26 @@ class _AddCarburantAutoState extends State<AddCarburantAuto> {
         numeroPlaque: (numeroPlaqueController.text == '')
             ? '-'
             : numeroPlaqueController.text,
-        dateHeureSortieAnguin:
-            DateTime.parse((dateHeureSortieAnguinController.text == '') ? '0000-00-00 00:00:00.000' :dateHeureSortieAnguinController.text),
-        created: DateTime.now(),
-        signature: signature.toString(),
-        qtyAchat: qtyAchatController.text);
+        dateHeureSortieAnguin: DateTime.parse(
+            (dateHeureSortieAnguinController.text == '')
+                ? '0000-00-00 00:00:00.000'
+                : dateHeureSortieAnguinController.text),
+      qtyAchat: qtyAchatController.text,
+      approbationDG: '-',
+      signatureDG: '-',
+      signatureJustificationDG: '-',
+      approbationFin: '-',
+      signatureFin: '-',
+      signatureJustificationFin: '-',
+      approbationBudget: '-',
+      signatureBudget: '-',
+      signatureJustificationBudget: '-',
+      approbationDD: '-',
+      signatureDD: '-',
+      signatureJustificationDD: '-',
+      signature: signature.toString(),
+      created: DateTime.now()
+    );
     await CarburantApi().insertData(carburantModel);
     Routemaster.of(context).replace(LogistiqueRoutes.logCarburantAuto);
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(

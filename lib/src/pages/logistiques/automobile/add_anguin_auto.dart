@@ -18,7 +18,7 @@ class AddAnguinAuto extends StatefulWidget {
 
   @override
   State<AddAnguinAuto> createState() => _AddAnguinAutoState();
-} 
+}
 
 class _AddAnguinAutoState extends State<AddAnguinAuto> {
   final ScrollController _controllerScroll = ScrollController();
@@ -498,23 +498,34 @@ class _AddAnguinAutoState extends State<AddAnguinAuto> {
 
   Future<void> submit() async {
     final anguinModel = AnguinModel(
-      nom: nomController.text,
-      modele: modeleController.text,
-      marque: marqueController.text,
-      numeroChassie: numeroChassieController.text,
-      couleur: couleurController.text,
-      genre: genreController.text,
-      qtyMaxReservoir: qtyMaxReservoirController.text,
-      dateFabrication: DateTime.parse(dateFabricationController.text),
-      nomeroPLaque: nomeroPLaqueController.text,
-      nomeroEntreprise: nomeroEntrepriseController.text,
-      kilometrageInitiale: kilometrageInitialeController.text,
-      provenance: provenanceController.text,
-      created: DateTime.now(),
-      signature: signature.toString(),
-      typeCaburant: typeCaburantController.text,
-      typeMoteur: typeMoteurController.text
-    );
+        nom: nomController.text,
+        modele: modeleController.text,
+        marque: marqueController.text,
+        numeroChassie: numeroChassieController.text,
+        couleur: couleurController.text,
+        genre: genreController.text,
+        qtyMaxReservoir: qtyMaxReservoirController.text,
+        dateFabrication: DateTime.parse(dateFabricationController.text),
+        nomeroPLaque: nomeroPLaqueController.text,
+        nomeroEntreprise: nomeroEntrepriseController.text,
+        kilometrageInitiale: kilometrageInitialeController.text,
+        provenance: provenanceController.text,
+        typeCaburant: typeCaburantController.text,
+        typeMoteur: typeMoteurController.text,
+        approbationDG: '-',
+        signatureDG: '-',
+        signatureJustificationDG: '-',
+        approbationFin: '-',
+        signatureFin: '-',
+        signatureJustificationFin: '-',
+        approbationBudget: '-',
+        signatureBudget: '-',
+        signatureJustificationBudget: '-',
+        approbationDD: '-',
+        signatureDD: '-',
+        signatureJustificationDD: '-',
+        signature: signature.toString(),
+        created: DateTime.now());
 
     await AnguinApi().insertData(anguinModel);
     Routemaster.of(context).replace(LogistiqueRoutes.logAnguinAuto);

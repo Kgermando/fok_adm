@@ -294,8 +294,20 @@ class _AddImmobilierMaterielState extends State<AddImmobilierMateriel> {
         numeroCertificat: numeroCertificatController.text,
         superficie: superficieController.text,
         dateAcquisition: DateTime.parse(dateAcquisitionController.text),
-        created: DateTime.now(),
-        signature: signature.toString());
+        approbationDG: '-',
+        signatureDG: '-',
+        signatureJustificationDG: '-',
+        approbationFin: '-',
+        signatureFin: '-',
+        signatureJustificationFin: '-',
+        approbationBudget: '-',
+        signatureBudget: '-',
+        signatureJustificationBudget: '-',
+        approbationDD: '-',
+        signatureDD: '-',
+        signatureJustificationDD: '-',
+        signature: signature.toString(),
+        created: DateTime.now());
     await ImmobilierApi().insertData(immobilierModel);
     Routemaster.of(context).replace(LogistiqueRoutes.logImmobilierMateriel);
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
