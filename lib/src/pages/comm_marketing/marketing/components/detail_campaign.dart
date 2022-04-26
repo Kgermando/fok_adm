@@ -1,33 +1,27 @@
 import 'package:flutter/material.dart';
 import 'package:fokad_admin/src/api/auth/auth_api.dart';
 import 'package:fokad_admin/src/api/budgets/ligne_budgetaire_api.dart';
-import 'package:fokad_admin/src/api/exploitations/projets_api.dart';
+import 'package:fokad_admin/src/api/comm_marketing/marketing/campaign_api.dart';
 import 'package:fokad_admin/src/constants/app_theme.dart';
 import 'package:fokad_admin/src/constants/responsive.dart';
 import 'package:fokad_admin/src/models/budgets/ligne_budgetaire_model.dart';
-import 'package:fokad_admin/src/models/exploitations/projet_model.dart';
+import 'package:fokad_admin/src/models/comm_maketing/campaign_model.dart';
 import 'package:fokad_admin/src/models/users/user_model.dart';
 import 'package:fokad_admin/src/navigation/drawer/drawer_menu.dart';
 import 'package:fokad_admin/src/navigation/header/custom_appbar.dart';
-import 'package:fokad_admin/src/pages/exploitations/projets/components/table_agent_projet.dart';
-import 'package:fokad_admin/src/pages/exploitations/projets/components/table_tache.dart';
-import 'package:fokad_admin/src/pages/exploitations/projets/components/table_versement.dart';
-import 'package:fokad_admin/src/pages/exploitations/taches/add_tache_exp.dart';
-import 'package:fokad_admin/src/pages/exploitations/versements/add_versement_projet.dart';
 import 'package:fokad_admin/src/widgets/print_widget.dart';
 import 'package:intl/intl.dart';
 import 'package:routemaster/routemaster.dart';
-import 'package:simple_speed_dial/simple_speed_dial.dart';
- 
-class DetailProjet extends StatefulWidget {
-  const DetailProjet({Key? key, required this.id}) : super(key: key);
-  final int id;
+
+class DetailCampaign extends StatefulWidget {
+  const DetailCampaign({Key? key, this.id}) : super(key: key);
+  final int? id;
 
   @override
-  State<DetailProjet> createState() => _DetailProjetState();
+  State<DetailCampaign> createState() => _DetailCampaignState();
 }
 
-class _DetailProjetState extends State<DetailProjet> {
+class _DetailCampaignState extends State<DetailCampaign> {
   final GlobalKey<ScaffoldState> _key = GlobalKey();
   final ScrollController _controllerScroll = ScrollController();
   bool isLoading = false;
@@ -51,31 +45,27 @@ class _DetailProjetState extends State<DetailProjet> {
     super.initState();
   }
 
-  ProjetModel? projetModel;
-  List listAgentEtRole = [];
-
+  CampaignModel? projetModel;
   String? ligneBudgtaire;
   String? resource;
   List<LigneBudgetaireModel> ligneBudgetaireList = [];
   UserModel? user;
   Future<void> getData() async {
     UserModel userModel = await AuthApi().getUserId();
-    ProjetModel data = await ProjetsApi().getOneData(widget.id);
+    CampaignModel data = await CampaignApi().getOneData(widget.id!);
     var budgets = await LIgneBudgetaireApi().getAllData();
     setState(() {
       projetModel = data;
       user = userModel;
       ligneBudgetaireList = budgets;
-      listAgentEtRole = data.listAgentEtRole;
     });
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      key: _key,
+        key: _key,
         drawer: const DrawerMenu(),
-        floatingActionButton: speedialWidget(),
         body: SafeArea(
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -88,12 +78,12 @@ class _DetailProjetState extends State<DetailProjet> {
                 flex: 5,
                 child: Padding(
                     padding: const EdgeInsets.all(p10),
-                    child: FutureBuilder<ProjetModel>(
-                        future: ProjetsApi().getOneData(widget.id),
+                    child: FutureBuilder<CampaignModel>(
+                        future: CampaignApi().getOneData(widget.id!),
                         builder: (BuildContext context,
-                            AsyncSnapshot<ProjetModel> snapshot) {
+                            AsyncSnapshot<CampaignModel> snapshot) {
                           if (snapshot.hasData) {
-                            ProjetModel? data = snapshot.data;
+                            CampaignModel? data = snapshot.data;
                             return Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
@@ -108,8 +98,8 @@ class _DetailProjetState extends State<DetailProjet> {
                                     ),
                                     const SizedBox(width: p10),
                                     Expanded(
-                                      child:
-                                          CustomAppbar(title: data!.nomProjet,
+                                      child: CustomAppbar(
+                                          title: data!.typeProduit,
                                           controllerMenu: () =>
                                               _key.currentState!.openDrawer()),
                                     ),
@@ -133,7 +123,7 @@ class _DetailProjetState extends State<DetailProjet> {
         ));
   }
 
-  Widget pageDetail(ProjetModel data) {
+  Widget pageDetail(CampaignModel data) {
     return Row(mainAxisAlignment: MainAxisAlignment.center, children: [
       Card(
         elevation: 10,
@@ -175,12 +165,7 @@ class _DetailProjetState extends State<DetailProjet> {
                 ],
               ),
               dataWidget(data),
-              const SizedBox(height: 300, child: TableTache()),
-              const SizedBox(height: 300, child: TableVersement()),
-              infosEditeurWidget(data),
-              SizedBox(
-                  height: 500,
-                  child: ListAgentProjet(listAgentEtRole: listAgentEtRole))
+              infosEditeurWidget(data)
             ],
           ),
         ),
@@ -188,7 +173,7 @@ class _DetailProjetState extends State<DetailProjet> {
     ]);
   }
 
-  Widget dataWidget(ProjetModel data) {
+  Widget dataWidget(CampaignModel data) {
     final bodyMedium = Theme.of(context).textTheme.bodyMedium;
     return Padding(
       padding: const EdgeInsets.all(p10),
@@ -197,12 +182,12 @@ class _DetailProjetState extends State<DetailProjet> {
           Row(
             children: [
               Expanded(
-                child: Text('Nom Projet :',
+                child: Text('Type Produit :',
                     textAlign: TextAlign.start,
                     style: bodyMedium!.copyWith(fontWeight: FontWeight.bold)),
               ),
               Expanded(
-                child: SelectableText(data.nomProjet,
+                child: SelectableText(data.typeProduit,
                     textAlign: TextAlign.start, style: bodyMedium),
               )
             ],
@@ -210,111 +195,7 @@ class _DetailProjetState extends State<DetailProjet> {
           Row(
             children: [
               Expanded(
-                child: Text('Responsable :',
-                    textAlign: TextAlign.start,
-                    style: bodyMedium.copyWith(fontWeight: FontWeight.bold)),
-              ),
-              Expanded(
-                child: SelectableText(data.responsable,
-                    textAlign: TextAlign.start, style: bodyMedium),
-              )
-            ],
-          ),
-          Row(
-            children: [
-              Expanded(
-                child: Text('Objectifs :',
-                    textAlign: TextAlign.start,
-                    style: bodyMedium.copyWith(fontWeight: FontWeight.bold)),
-              ),
-              Expanded(
-                child: SelectableText(data.objectifs,
-                    textAlign: TextAlign.start, style: bodyMedium),
-              )
-            ],
-          ),
-          Row(
-            children: [
-              Expanded(
-                child: Text('Description :',
-                    textAlign: TextAlign.start,
-                    style: bodyMedium.copyWith(fontWeight: FontWeight.bold)),
-              ),
-              Expanded(
-                child: SelectableText(data.description,
-                    textAlign: TextAlign.start, style: bodyMedium),
-              )
-            ],
-          ),
-          Row(
-            children: [
-              Expanded(
-                child: Text('Resources :',
-                    textAlign: TextAlign.start,
-                    style: bodyMedium.copyWith(fontWeight: FontWeight.bold)),
-              ),
-              Expanded(
-                child: SelectableText(data.resources,
-                    textAlign: TextAlign.start, style: bodyMedium),
-              )
-            ],
-          ),
-          Row(
-            children: [
-              Expanded(
-                child: Text('Responsabilite :',
-                    textAlign: TextAlign.start,
-                    style: bodyMedium.copyWith(fontWeight: FontWeight.bold)),
-              ),
-              Expanded(
-                child: SelectableText(data.responsabilite,
-                    textAlign: TextAlign.start, style: bodyMedium),
-              )
-            ],
-          ),
-          Row(
-            children: [
-              Expanded(
-                child: Text('Communication :',
-                    textAlign: TextAlign.start,
-                    style: bodyMedium.copyWith(fontWeight: FontWeight.bold)),
-              ),
-              Expanded(
-                child: SelectableText(data.communication,
-                    textAlign: TextAlign.start, style: bodyMedium),
-              )
-            ],
-          ),
-          Row(
-            children: [
-              Expanded(
-                child: Text('Processus de Verification :',
-                    textAlign: TextAlign.start,
-                    style: bodyMedium.copyWith(fontWeight: FontWeight.bold)),
-              ),
-              Expanded(
-                child: SelectableText(data.processusVerification,
-                    textAlign: TextAlign.start, style: bodyMedium),
-              )
-            ],
-          ),
-          Row(
-            children: [
-              Expanded(
-                child: Text('Problème potient et risque :',
-                    textAlign: TextAlign.start,
-                    style: bodyMedium.copyWith(fontWeight: FontWeight.bold)),
-              ),
-              Expanded(
-                child: SelectableText(data.problemePotientEtRisque,
-                    textAlign: TextAlign.start, style: bodyMedium),
-              )
-            ],
-          ),
-          Row(
-            children: [
-              Expanded(
-                child: Text('Date de Debut et Fin :',
+                child: Text('Date Debut Et Fin :',
                     textAlign: TextAlign.start,
                     style: bodyMedium.copyWith(fontWeight: FontWeight.bold)),
               ),
@@ -327,12 +208,39 @@ class _DetailProjetState extends State<DetailProjet> {
           Row(
             children: [
               Expanded(
-                child: Text('Budget detailé :',
+                child: Text('Agent Affectés :',
                     textAlign: TextAlign.start,
                     style: bodyMedium.copyWith(fontWeight: FontWeight.bold)),
               ),
               Expanded(
-                child: SelectableText(data.budgetDetail,
+                child: Column(
+                  children: [
+                    SelectableText('${data.agentAffectes.length} agents',
+                        textAlign: TextAlign.start, style: bodyMedium),
+                    SizedBox(
+                        height: 200,
+                        child: Wrap(
+                          children:
+                              List.generate(data.agentAffectes.length, (index) {
+                            var agent = data.agentAffectes[index];
+                            return SelectableText(agent,
+                                textAlign: TextAlign.start, style: bodyMedium);
+                          }),
+                        )),
+                  ],
+                ),
+              )
+            ],
+          ),
+          Row(
+            children: [
+              Expanded(
+                child: Text('Coût de la Campagne :',
+                    textAlign: TextAlign.start,
+                    style: bodyMedium.copyWith(fontWeight: FontWeight.bold)),
+              ),
+              Expanded(
+                child: SelectableText(data.coutCampaign,
                     textAlign: TextAlign.start, style: bodyMedium),
               )
             ],
@@ -340,12 +248,12 @@ class _DetailProjetState extends State<DetailProjet> {
           Row(
             children: [
               Expanded(
-                child: Text('Recette attendus :',
+                child: Text('Lieu Cible :',
                     textAlign: TextAlign.start,
                     style: bodyMedium.copyWith(fontWeight: FontWeight.bold)),
               ),
               Expanded(
-                child: SelectableText(data.recetteAttendus,
+                child: SelectableText(data.lieuCible,
                     textAlign: TextAlign.start, style: bodyMedium),
               )
             ],
@@ -353,12 +261,12 @@ class _DetailProjetState extends State<DetailProjet> {
           Row(
             children: [
               Expanded(
-                child: Text('Signature :',
+                child: Text('Promotion :',
                     textAlign: TextAlign.start,
                     style: bodyMedium.copyWith(fontWeight: FontWeight.bold)),
               ),
               Expanded(
-                child: SelectableText(data.signature,
+                child: SelectableText(data.promotion,
                     textAlign: TextAlign.start, style: bodyMedium),
               )
             ],
@@ -366,65 +274,22 @@ class _DetailProjetState extends State<DetailProjet> {
           Row(
             children: [
               Expanded(
-                child: Text('Type Financement :',
+                child: Text('Objetctifs :',
                     textAlign: TextAlign.start,
                     style: bodyMedium.copyWith(fontWeight: FontWeight.bold)),
               ),
               Expanded(
-                child: SelectableText(data.typeFinancement,
+                child: SelectableText(data.objetctifs,
                     textAlign: TextAlign.start, style: bodyMedium),
               )
             ],
-          ),
+          )
         ],
       ),
     );
   }
 
-  SpeedDial speedialWidget() {
-    return SpeedDial(
-      child: const Icon(
-        Icons.menu,
-        color: Colors.white,
-      ),
-      closedForegroundColor: themeColor,
-      openForegroundColor: Colors.white,
-      closedBackgroundColor: themeColor,
-      openBackgroundColor: themeColor,
-      speedDialChildren: <SpeedDialChild>[
-        SpeedDialChild(
-          child: Row(
-            children: const [
-              Icon(Icons.add),
-              Icon(Icons.monetization_on),
-            ],
-          ),
-          foregroundColor: Colors.black,
-          backgroundColor: Colors.green.shade700,
-          label: 'Versement',
-          onPressed: () {
-            Navigator.of(context).push(MaterialPageRoute(
-                builder: (context) =>
-                    AddVersementProjet(projetModel: projetModel!)));
-          },
-        ),
-        SpeedDialChild(
-            child: Row(
-              children: const [
-                Icon(Icons.add),
-                Icon(Icons.content_paste_sharp),
-              ],
-            ),
-            foregroundColor: Colors.white,
-            backgroundColor: Colors.blue.shade700,
-            label: 'Nouvelle tache',
-            onPressed: () => Navigator.of(context).push(MaterialPageRoute(
-                builder: (context) => AddTacheExp(projetModel: projetModel!)))),
-      ],
-    );
-  }
-
-  Widget infosEditeurWidget(ProjetModel data) {
+  Widget infosEditeurWidget(CampaignModel data) {
     final bodyMedium = Theme.of(context).textTheme.bodyMedium;
     final bodySmall = Theme.of(context).textTheme.bodySmall;
     List<String> dataList = ['Approved', 'Unapproved'];
@@ -969,23 +834,17 @@ class _DetailProjetState extends State<DetailProjet> {
     );
   }
 
-  Future<void> submitUpdateDG(ProjetModel data) async {
-    final projetModel = ProjetModel(
-        nomProjet: data.nomProjet,
-        responsable: data.responsable,
-        objectifs: data.objectifs,
-        description: data.description,
+  Future<void> submitUpdateDG(CampaignModel data) async {
+    final campaignModel = CampaignModel(
+        typeProduit: data.typeProduit,
+        dateDebutEtFin: data.dateDebutEtFin,
+        agentAffectes: data.agentAffectes,
+        coutCampaign: data.coutCampaign,
+        lieuCible: data.lieuCible,
+        promotion: data.promotion,
+        objetctifs: data.objetctifs,
         ligneBudgtaire: data.ligneBudgtaire,
         resources: data.resources,
-        responsabilite: data.responsabilite,
-        communication: data.communication,
-        processusVerification: data.processusVerification,
-        problemePotientEtRisque: data.problemePotientEtRisque,
-        dateDebutEtFin: data.dateDebutEtFin,
-        budgetDetail: data.budgetDetail,
-        recetteAttendus: data.recetteAttendus,
-        listAgentEtRole: data.listAgentEtRole,
-        typeFinancement: data.typeFinancement,
         approbationDG: approbationDGController.toString(),
         signatureDG: user!.matricule.toString(),
         signatureJustificationDG: signatureJustificationDGController.text,
@@ -1001,7 +860,7 @@ class _DetailProjetState extends State<DetailProjet> {
         signatureJustificationDD: data.signatureJustificationDD.toString(),
         signature: data.signature,
         created: data.created);
-    await ProjetsApi().updateData(data.id!, projetModel);
+    await CampaignApi().updateData(data.id!, campaignModel);
     Routemaster.of(context).pop();
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
       content: const Text("Soumis avec succès!"),
@@ -1009,39 +868,33 @@ class _DetailProjetState extends State<DetailProjet> {
     ));
   }
 
-  Future<void> submitUpdateFIN(ProjetModel data) async {
-    final projetModel = ProjetModel(
-        nomProjet: data.nomProjet,
-        responsable: data.responsable,
-        objectifs: data.objectifs,
-        description: data.description,
-        ligneBudgtaire: data.ligneBudgtaire,
-        resources: data.resources,
-        responsabilite: data.responsabilite,
-        communication: data.communication,
-        processusVerification: data.processusVerification,
-        problemePotientEtRisque: data.problemePotientEtRisque,
-        dateDebutEtFin: data.dateDebutEtFin,
-        budgetDetail: data.budgetDetail,
-        recetteAttendus: data.recetteAttendus,
-        listAgentEtRole: data.listAgentEtRole,
-        typeFinancement: data.typeFinancement,
-        approbationDG: data.approbationDG.toString(),
-        signatureDG: data.signatureDG.toString(),
-        signatureJustificationDG: data.signatureJustificationDG.toString(),
-        approbationFin: approbationFinController.toString(),
-        signatureFin: user!.matricule.toString(),
-        signatureJustificationFin: signatureJustificationFinController.text,
-        approbationBudget: data.approbationBudget.toString(),
-        signatureBudget: data.signatureBudget.toString(),
-        signatureJustificationBudget:
-            data.signatureJustificationBudget.toString(),
-        approbationDD: data.approbationDD.toString(),
-        signatureDD: data.signatureDD.toString(),
-        signatureJustificationDD: data.signatureJustificationDD.toString(),
-        signature: data.signature,
-        created: data.created);
-    await ProjetsApi().updateData(data.id!, projetModel);
+  Future<void> submitUpdateFIN(CampaignModel data) async {
+    final campaignModel = CampaignModel(
+       typeProduit: data.typeProduit,
+      dateDebutEtFin: data.dateDebutEtFin,
+      agentAffectes: data.agentAffectes,
+      coutCampaign: data.coutCampaign,
+      lieuCible: data.lieuCible,
+      promotion: data.promotion,
+      objetctifs: data.objetctifs,
+      ligneBudgtaire: data.ligneBudgtaire,
+      resources: data.resources,
+     approbationDG: data.approbationDG.toString(),
+      signatureDG: data.signatureDG.toString(),
+      signatureJustificationDG: data.signatureJustificationDG.toString(),
+      approbationFin: approbationFinController.toString(),
+      signatureFin: user!.matricule.toString(),
+      signatureJustificationFin: signatureJustificationFinController.text,
+      approbationBudget: data.approbationBudget.toString(),
+      signatureBudget: data.signatureBudget.toString(),
+      signatureJustificationBudget:
+          data.signatureJustificationBudget.toString(),
+      approbationDD: data.approbationDD.toString(),
+      signatureDD: data.signatureDD.toString(),
+      signatureJustificationDD: data.signatureJustificationDD.toString(),
+      signature: data.signature,
+      created: data.created);
+    await CampaignApi().updateData(data.id!, campaignModel);
     Routemaster.of(context).pop();
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
       content: const Text("Soumis avec succès!"),
@@ -1049,23 +902,17 @@ class _DetailProjetState extends State<DetailProjet> {
     ));
   }
 
-  Future<void> submitUpdateBudget(ProjetModel data) async {
-    final projetModel = ProjetModel(
-        nomProjet: data.nomProjet,
-        responsable: data.responsable,
-        objectifs: data.objectifs,
-        description: data.description,
+  Future<void> submitUpdateBudget(CampaignModel data) async {
+    final campaignModel = CampaignModel(
+        typeProduit: data.typeProduit,
+        dateDebutEtFin: data.dateDebutEtFin,
+        agentAffectes: data.agentAffectes,
+        coutCampaign: data.coutCampaign,
+        lieuCible: data.lieuCible,
+        promotion: data.promotion,
+        objetctifs: data.objetctifs,
         ligneBudgtaire: data.ligneBudgtaire,
         resources: data.resources,
-        responsabilite: data.responsabilite,
-        communication: data.communication,
-        processusVerification: data.processusVerification,
-        problemePotientEtRisque: data.problemePotientEtRisque,
-        dateDebutEtFin: data.dateDebutEtFin,
-        budgetDetail: data.budgetDetail,
-        recetteAttendus: data.recetteAttendus,
-        listAgentEtRole: data.listAgentEtRole,
-        typeFinancement: data.typeFinancement,
         approbationDG: data.approbationDG.toString(),
         signatureDG: data.signatureDG.toString(),
         signatureJustificationDG: data.signatureJustificationDG.toString(),
@@ -1081,8 +928,7 @@ class _DetailProjetState extends State<DetailProjet> {
         signatureJustificationDD: data.signatureJustificationDD.toString(),
         signature: data.signature,
         created: data.created);
-
-    await ProjetsApi().updateData(data.id!, projetModel);
+    await CampaignApi().updateData(data.id!, campaignModel);
     Routemaster.of(context).pop();
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
       content: const Text("Soumis avec succès!"),
@@ -1090,23 +936,17 @@ class _DetailProjetState extends State<DetailProjet> {
     ));
   }
 
-  Future<void> submitUpdateDD(ProjetModel data) async {
-    final projetModel = ProjetModel(
-        nomProjet: data.nomProjet,
-        responsable: data.responsable,
-        objectifs: data.objectifs,
-        description: data.description,
+  Future<void> submitUpdateDD(CampaignModel data) async {
+    final campaignModel = CampaignModel(
+        typeProduit: data.typeProduit,
+        dateDebutEtFin: data.dateDebutEtFin,
+        agentAffectes: data.agentAffectes,
+        coutCampaign: data.coutCampaign,
+        lieuCible: data.lieuCible,
+        promotion: data.promotion,
+        objetctifs: data.objetctifs,
         ligneBudgtaire: data.ligneBudgtaire,
         resources: data.resources,
-        responsabilite: data.responsabilite,
-        communication: data.communication,
-        processusVerification: data.processusVerification,
-        problemePotientEtRisque: data.problemePotientEtRisque,
-        dateDebutEtFin: data.dateDebutEtFin,
-        budgetDetail: data.budgetDetail,
-        recetteAttendus: data.recetteAttendus,
-        listAgentEtRole: data.listAgentEtRole,
-        typeFinancement: data.typeFinancement,
         approbationDG: data.approbationDG.toString(),
         signatureDG: data.signatureDG.toString(),
         signatureJustificationDG: data.signatureJustificationDG.toString(),
@@ -1122,7 +962,8 @@ class _DetailProjetState extends State<DetailProjet> {
         signatureJustificationDD: signatureJustificationDDController.text,
         signature: data.signature.toString(),
         created: data.created);
-    await ProjetsApi().updateData(data.id!, projetModel);
+    
+    await CampaignApi().updateData(data.id!, campaignModel);
     Routemaster.of(context).pop();
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
       content: const Text("Soumis avec succès!"),

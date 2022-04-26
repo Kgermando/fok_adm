@@ -3,24 +3,35 @@ import 'package:fokad_admin/src/constants/app_theme.dart';
 import 'package:fokad_admin/src/constants/responsive.dart';
 import 'package:fokad_admin/src/navigation/drawer/drawer_menu.dart';
 import 'package:fokad_admin/src/navigation/header/custom_appbar.dart';
-import 'package:fokad_admin/src/pages/administration/components/comm_marketing/table_campaign_dg.dart';
+import 'package:fokad_admin/src/pages/comm_marketing/marketing/components/table_campaign.dart';
+import 'package:fokad_admin/src/routes/routes.dart';
+import 'package:routemaster/routemaster.dart';
 
-class CommMarketingAdmin extends StatefulWidget {
-  const CommMarketingAdmin({ Key? key }) : super(key: key);
+class CampaignMarketing extends StatefulWidget {
+  const CampaignMarketing({ Key? key }) : super(key: key);
 
   @override
-  State<CommMarketingAdmin> createState() => _CommMarketingAdminState();
+  State<CampaignMarketing> createState() => _CampaignMarketingState();
 }
 
-class _CommMarketingAdminState extends State<CommMarketingAdmin> {
+class _CampaignMarketingState extends State<CampaignMarketing> {
   final GlobalKey<ScaffoldState> _key = GlobalKey();
-  final ScrollController _controllerScroll = ScrollController();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         key: _key,
         drawer: const DrawerMenu(),
+        floatingActionButton: FloatingActionButton(
+            child: Row(
+              children: const [
+                Icon(Icons.add),
+                Icon(Icons.car_rental),
+              ],
+            ),
+            onPressed: () {
+              // Routemaster.of(context).push(.expProjetAdd);
+            }),
         body: SafeArea(
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -36,19 +47,11 @@ class _CommMarketingAdminState extends State<CommMarketingAdmin> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      CustomAppbar(title: 'Commercial & Marketing',
+                      CustomAppbar(
+                          title: 'Geston des campaigns',
                           controllerMenu: () =>
                               _key.currentState!.openDrawer()),
-                      Expanded(
-                          child: Scrollbar(
-                        controller: _controllerScroll,
-                        child: ListView(
-                          controller: _controllerScroll,
-                          children: const [
-                            TableCampaignDG()
-                          ],
-                        ),
-                      ))
+                      const Expanded(child: TableCampaign())
                     ],
                   ),
                 ),

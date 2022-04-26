@@ -2,11 +2,13 @@ class CampaignModel {
   late int? id;
   late String typeProduit;
   late String dateDebutEtFin;
-  late List agentAffectes;
+  late List<String> agentAffectes;
   late String coutCampaign;
   late String lieuCible;
   late String promotion;
   late String objetctifs;
+  late String ligneBudgtaire;
+  late String resources;
 
   late String approbationDG; // button radio OUi et NON if non text field
   late String signatureDG;
@@ -19,7 +21,7 @@ class CampaignModel {
   late String approbationBudget;
   late String signatureBudget;
   late String signatureJustificationBudget;
-
+ 
   late String approbationDD;
   late String signatureDD; // directeur de departement
   late String signatureJustificationDD;
@@ -35,6 +37,8 @@ class CampaignModel {
     required this.lieuCible,
     required this.promotion,
     required this.objetctifs,
+    required this.ligneBudgtaire,
+    required this.resources,
     required this.approbationDG,
     required this.signatureDG,
     required this.signatureJustificationDG,
@@ -54,28 +58,31 @@ class CampaignModel {
 
    factory CampaignModel.fromSQL(List<dynamic> row) {
     return CampaignModel(
-        id: row[0],
-        typeProduit: row[1],
-        dateDebutEtFin: row[2],
-        agentAffectes: row[3],
-        coutCampaign: row[4],
-        lieuCible: row[5],
-        promotion: row[6],
-        objetctifs: row[7],
-        approbationDG: row[8],
-        signatureDG: row[9],
-        signatureJustificationDG: row[10],
-        approbationFin: row[11],
-        signatureFin: row[12],
-        signatureJustificationFin: row[13],
-        approbationBudget: row[14],
-        signatureBudget: row[15],
-        signatureJustificationBudget: row[16],
-        approbationDD: row[17],
-        signatureDD: row[18],
-        signatureJustificationDD: row[19],
-        signature: row[20],
-        created: row[21]);
+      id: row[0],
+      typeProduit: row[1],
+      dateDebutEtFin: row[2],
+      agentAffectes: row[3],
+      coutCampaign: row[4],
+      lieuCible: row[5],
+      promotion: row[6],
+      objetctifs: row[7],
+      ligneBudgtaire: row[8],
+      resources: row[9],
+      approbationDG: row[10],
+      signatureDG: row[11],
+      signatureJustificationDG: row[12],
+      approbationFin: row[13],
+      signatureFin: row[14],
+      signatureJustificationFin: row[15],
+      approbationBudget: row[16],
+      signatureBudget: row[17],
+      signatureJustificationBudget: row[18],
+      approbationDD: row[19],
+      signatureDD: row[20],
+      signatureJustificationDD: row[21],
+      signature: row[22],
+      created: row[23]
+    );
   }
 
   factory CampaignModel.fromJson(Map<String, dynamic> json) {
@@ -88,6 +95,8 @@ class CampaignModel {
         lieuCible: json['lieuCible'],
         promotion: json['promotion'],
         objetctifs: json['objetctifs'],
+        ligneBudgtaire: json['ligneBudgtaire'],
+        resources: json['resources'],
         approbationDG: json['approbationDG'],
         signatureDG: json['signatureDG'],
         signatureJustificationDG: json['signatureJustificationDG'],
@@ -114,6 +123,8 @@ class CampaignModel {
       'lieuCible': lieuCible,
       'promotion': promotion,
       'objetctifs': objetctifs,
+      'ligneBudgtaire': ligneBudgtaire,
+      'resources': resources,
       'approbationDG': approbationDG,
       'signatureDG': signatureDG,
       'signatureJustificationDG': signatureJustificationDG,
