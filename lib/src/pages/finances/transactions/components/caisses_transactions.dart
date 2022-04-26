@@ -28,6 +28,7 @@ class CaisseTransactions extends StatefulWidget {
 }
 
 class _CaisseTransactionsState extends State<CaisseTransactions> {
+  final GlobalKey<ScaffoldState> _key = GlobalKey();
   final controller = ScrollController();
   final ScrollController _controllerBillet = ScrollController();
 
@@ -99,7 +100,7 @@ class _CaisseTransactionsState extends State<CaisseTransactions> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        key: context.read<Controller>().scaffoldKey,
+        key: _key,
         drawer: const DrawerMenu(),
         floatingActionButton: speedialWidget(),
         body: SafeArea(
@@ -116,9 +117,11 @@ class _CaisseTransactionsState extends State<CaisseTransactions> {
                   padding: const EdgeInsets.all(p10),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
-                    children: const [
-                      CustomAppbar(title: 'Livre de Caisse'),
-                      Expanded(child: TableCaisse())
+                    children: [
+                      CustomAppbar(title: 'Livre de Caisse',
+                          controllerMenu: () =>
+                              _key.currentState!.openDrawer()),
+                      const Expanded(child: TableCaisse())
                     ],
                   ),
                 ),
@@ -635,31 +638,30 @@ class _CaisseTransactionsState extends State<CaisseTransactions> {
 
   Future submitEncaissement() async {
     final caisseModel = CaisseModel(
-      nomComplet: nomCompletController.text,
-      pieceJustificative: pieceJustificativeController.text,
-      libelle: libelleController.text,
-      montant: montantController.text,
-      coupureBillet: [],
-      ligneBudgtaire: '-',
-      resources: '-',
-      departement: '-',
-      typeOperation: 'Encaissement',
-      numeroOperation: 'Transaction-Caisse-${numberItem + 1}',
-      approbationDG: '-',
-      signatureDG: '-',
-      signatureJustificationDG: '-',
-      approbationFin: '-',
-      signatureFin: '-',
-      signatureJustificationFin: '-',
-      approbationBudget: '-',
-      signatureBudget: '-',
-      signatureJustificationBudget: '-',
-      approbationDD: '-',
-      signatureDD: '-',
-      signatureJustificationDD: '-',
-      signature: matricule.toString(),
-      created: DateTime.now()
-    );
+        nomComplet: nomCompletController.text,
+        pieceJustificative: pieceJustificativeController.text,
+        libelle: libelleController.text,
+        montant: montantController.text,
+        coupureBillet: [],
+        ligneBudgtaire: '-',
+        resources: '-',
+        departement: '-',
+        typeOperation: 'Encaissement',
+        numeroOperation: 'Transaction-Caisse-${numberItem + 1}',
+        approbationDG: '-',
+        signatureDG: '-',
+        signatureJustificationDG: '-',
+        approbationFin: '-',
+        signatureFin: '-',
+        signatureJustificationFin: '-',
+        approbationBudget: '-',
+        signatureBudget: '-',
+        signatureJustificationBudget: '-',
+        approbationDD: '-',
+        signatureDD: '-',
+        signatureJustificationDD: '-',
+        signature: matricule.toString(),
+        created: DateTime.now());
     await CaisseApi().insertData(caisseModel);
     Routemaster.of(context).pop();
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
@@ -694,8 +696,7 @@ class _CaisseTransactionsState extends State<CaisseTransactions> {
         signatureDD: '-',
         signatureJustificationDD: '-',
         signature: matricule.toString(),
-        created: DateTime.now()
-    );
+        created: DateTime.now());
     await CaisseApi().insertData(caisseModel);
     Routemaster.of(context).pop();
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(

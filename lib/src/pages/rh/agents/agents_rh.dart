@@ -17,9 +17,10 @@ class AgentsRh extends StatefulWidget {
 }
 
 class _AgentsRhState extends State<AgentsRh> {
-   final ScrollController _controllerScroll = ScrollController();
-  
-   @override
+  final GlobalKey<ScaffoldState> _key = GlobalKey();
+  final ScrollController _controllerScroll = ScrollController();
+
+  @override
   void dispose() {
     _controllerScroll.dispose();
     super.dispose();
@@ -28,7 +29,7 @@ class _AgentsRhState extends State<AgentsRh> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        key: context.read<Controller>().scaffoldKey,
+        key: _key,
         drawer: const DrawerMenu(),
         floatingActionButton: FloatingActionButton(
           onPressed: () => Routemaster.of(context).push(RhRoutes.rhAgentAdd),
@@ -48,11 +49,11 @@ class _AgentsRhState extends State<AgentsRh> {
                   padding: const EdgeInsets.all(p10),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
-                    children: const [
-                      CustomAppbar(title: 'Liste des Agents'),
-                      Expanded(
-                          child: TableAgents()
-                        )
+                    children: [
+                      CustomAppbar(title: 'Liste des Agents',
+                          controllerMenu: () =>
+                              _key.currentState!.openDrawer()),
+                      const Expanded(child: TableAgents())
                     ],
                   ),
                 ),
@@ -61,7 +62,4 @@ class _AgentsRhState extends State<AgentsRh> {
           ),
         ));
   }
-
-
- 
 }

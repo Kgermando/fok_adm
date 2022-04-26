@@ -19,6 +19,7 @@ class DetailEtatMateriel extends StatefulWidget {
 }
 
 class _DetailEtatMaterielState extends State<DetailEtatMateriel> {
+  final GlobalKey<ScaffoldState> _key = GlobalKey();
   final ScrollController _controllerScroll = ScrollController();
   bool isLoading = false;
 
@@ -54,7 +55,7 @@ class _DetailEtatMaterielState extends State<DetailEtatMateriel> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        // key: context.read<Controller>().scaffoldKey,
+        key: _key,
         drawer: const DrawerMenu(),
         body: SafeArea(
           child: Row(
@@ -89,7 +90,9 @@ class _DetailEtatMaterielState extends State<DetailEtatMateriel> {
                                     const SizedBox(width: p10),
                                     Expanded(
                                       child:
-                                          CustomAppbar(title: '${data!.nom} '),
+                                          CustomAppbar(title: data!.nom,
+                                          controllerMenu: () =>
+                                              _key.currentState!.openDrawer()),
                                     ),
                                   ],
                                 ),
@@ -226,20 +229,24 @@ class _DetailEtatMaterielState extends State<DetailEtatMateriel> {
                     textAlign: TextAlign.start,
                     style: bodyMedium.copyWith(fontWeight: FontWeight.bold)),
               ),
-              if(data.statut == 'Actif') 
-              Expanded(
-                child: SelectableText(data.statut,
-                    textAlign: TextAlign.start, style: bodyMedium.copyWith(color: Colors.green.shade700)),
-              ),
+              if (data.statut == 'Actif')
+                Expanded(
+                  child: SelectableText(data.statut,
+                      textAlign: TextAlign.start,
+                      style: bodyMedium.copyWith(color: Colors.green.shade700)),
+                ),
               if (data.statut == 'Inactif')
                 Expanded(
                   child: SelectableText(data.statut,
-                      textAlign: TextAlign.start, style: bodyMedium.copyWith(color: Colors.orange.shade700)),
+                      textAlign: TextAlign.start,
+                      style:
+                          bodyMedium.copyWith(color: Colors.orange.shade700)),
                 ),
               if (data.statut == 'Declaser')
                 Expanded(
                   child: SelectableText(data.statut,
-                      textAlign: TextAlign.start, style: bodyMedium.copyWith(color: Colors.red.shade700)),
+                      textAlign: TextAlign.start,
+                      style: bodyMedium.copyWith(color: Colors.red.shade700)),
                 )
             ],
           ),

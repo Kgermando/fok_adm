@@ -22,6 +22,7 @@ class DetteTransactions extends StatefulWidget {
 }
 
 class _DetteTransactionsState extends State<DetteTransactions> {
+  final GlobalKey<ScaffoldState> _key = GlobalKey();
   final controller = ScrollController();
   final _formKey = GlobalKey<FormState>();
 
@@ -66,7 +67,7 @@ class _DetteTransactionsState extends State<DetteTransactions> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        key: context.read<Controller>().scaffoldKey,
+        key: _key,
         drawer: const DrawerMenu(),
         floatingActionButton: FloatingActionButton(
             foregroundColor: Colors.white,
@@ -91,9 +92,11 @@ class _DetteTransactionsState extends State<DetteTransactions> {
                   padding: const EdgeInsets.all(p10),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
-                    children: const [
-                      CustomAppbar(title: 'Dettes'),
-                      Expanded(child: TableDette())
+                    children: [
+                      CustomAppbar(title: 'Dettes',
+                          controllerMenu: () =>
+                              _key.currentState!.openDrawer()),
+                      const Expanded(child: TableDette())
                     ],
                   ),
                 ),
@@ -266,26 +269,26 @@ class _DetteTransactionsState extends State<DetteTransactions> {
 
   Future submit() async {
     final detteModel = DetteModel(
-        nomComplet: nomCompletController.text,
-        pieceJustificative: pieceJustificativeController.text,
-        libelle: libelleController.text,
-        montant: montantController.text,
-        numeroOperation: 'Transaction-Dette-${numberItem + 1}',
-        statutPaie: false,
-        approbationDG: '-',
-        signatureDG: '-',
-        signatureJustificationDG: '-',
-        approbationFin: '-',
-        signatureFin: '-',
-        signatureJustificationFin: '-',
-        approbationBudget: '-',
-        signatureBudget: '-',
-        signatureJustificationBudget: '-',
-        approbationDD: '-',
-        signatureDD: '-',
-        signatureJustificationDD: '-',
-        signature: matricule.toString(),
-        created: DateTime.now(),
+      nomComplet: nomCompletController.text,
+      pieceJustificative: pieceJustificativeController.text,
+      libelle: libelleController.text,
+      montant: montantController.text,
+      numeroOperation: 'Transaction-Dette-${numberItem + 1}',
+      statutPaie: false,
+      approbationDG: '-',
+      signatureDG: '-',
+      signatureJustificationDG: '-',
+      approbationFin: '-',
+      signatureFin: '-',
+      signatureJustificationFin: '-',
+      approbationBudget: '-',
+      signatureBudget: '-',
+      signatureJustificationBudget: '-',
+      approbationDD: '-',
+      signatureDD: '-',
+      signatureJustificationDD: '-',
+      signature: matricule.toString(),
+      created: DateTime.now(),
     );
     await DetteApi().insertData(detteModel);
     Routemaster.of(context).pop();

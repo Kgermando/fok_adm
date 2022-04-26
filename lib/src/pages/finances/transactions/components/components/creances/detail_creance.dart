@@ -24,6 +24,7 @@ class DetailCreance extends StatefulWidget {
 }
 
 class _DetailCreanceState extends State<DetailCreance> {
+  final GlobalKey<ScaffoldState> _key = GlobalKey();
   final ScrollController _controllerScroll = ScrollController();
   bool isLoading = false;
   List<UserModel> userList = [];
@@ -68,61 +69,64 @@ class _DetailCreanceState extends State<DetailCreance> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        drawer: const DrawerMenu(),
-        body: SafeArea(
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              if (Responsive.isDesktop(context))
-                const Expanded(
-                  child: DrawerMenu(),
-                ),
-              Expanded(
-                flex: 5,
-                child: Padding(
-                    padding: const EdgeInsets.all(p10),
-                    child: FutureBuilder<CreanceModel>(
-                        future: CreanceApi().getOneData(widget.id!),
-                        builder: (BuildContext context,
-                            AsyncSnapshot<CreanceModel> snapshot) {
-                          if (snapshot.hasData) {
-                            CreanceModel? creanceModel = snapshot.data;
-                            return Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Row(
-                                  children: [
-                                    SizedBox(
-                                      width: p20,
-                                      child: IconButton(
-                                          onPressed: () =>
-                                              Routemaster.of(context).pop(),
-                                          icon: const Icon(Icons.arrow_back)),
-                                    ),
-                                    const SizedBox(width: p10),
-                                    Expanded(
-                                      child: CustomAppbar(
-                                          title:
-                                              '${creanceModel!.nomComplet} '),
-                                    ),
-                                  ],
-                                ),
-                                Expanded(
-                                    child: Scrollbar(
-                                        controller: _controllerScroll,
-                                        isAlwaysShown: true,
-                                        child: pageDetail(creanceModel)))
-                              ],
-                            );
-                          } else {
-                            return const Center(
-                                child: CircularProgressIndicator());
-                          }
-                        })),
+      key: _key,
+      drawer: const DrawerMenu(),
+      body: SafeArea(
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            if (Responsive.isDesktop(context))
+              const Expanded(
+                child: DrawerMenu(),
               ),
-            ],
-          ),
-        ));
+            Expanded(
+              flex: 5,
+              child: Padding(
+                  padding: const EdgeInsets.all(p10),
+                  child: FutureBuilder<CreanceModel>(
+                      future: CreanceApi().getOneData(widget.id!),
+                      builder: (BuildContext context,
+                          AsyncSnapshot<CreanceModel> snapshot) {
+                        if (snapshot.hasData) {
+                          CreanceModel? creanceModel = snapshot.data;
+                          return Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Row(
+                                children: [
+                                  SizedBox(
+                                    width: p20,
+                                    child: IconButton(
+                                        onPressed: () =>
+                                            Routemaster.of(context).pop(),
+                                        icon: const Icon(Icons.arrow_back)),
+                                  ),
+                                  const SizedBox(width: p10),
+                                  Expanded(
+                                    child: CustomAppbar(
+                                        title:
+                                            creanceModel!.nomComplet,
+                                          controllerMenu: () =>
+                                              _key.currentState!.openDrawer()),
+                                  ),
+                                ],
+                              ),
+                              Expanded(
+                                  child: Scrollbar(
+                                      controller: _controllerScroll,
+                                      isAlwaysShown: true,
+                                      child: pageDetail(creanceModel)))
+                            ],
+                          );
+                        } else {
+                          return const Center(
+                              child: CircularProgressIndicator());
+                        }
+                      })),
+            ),
+          ],
+        ),
+      ));
   }
 
   Widget pageDetail(CreanceModel creanceModel) {

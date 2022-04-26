@@ -27,6 +27,7 @@ class DetailDevis extends StatefulWidget {
 }
 
 class _DetailDevisState extends State<DetailDevis> {
+  final GlobalKey<ScaffoldState> _key = GlobalKey();
   final ScrollController _controllerScroll = ScrollController();
   bool isLoading = false;
   List<UserModel> userList = [];
@@ -81,7 +82,7 @@ class _DetailDevisState extends State<DetailDevis> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        // key: context.read<Controller>().scaffoldKey,
+        key: _key,
         drawer: const DrawerMenu(),
         body: SafeArea(
           child: Row(
@@ -116,7 +117,9 @@ class _DetailDevisState extends State<DetailDevis> {
                                     const SizedBox(width: p10),
                                     Expanded(
                                       child: CustomAppbar(
-                                          title: '${data!.title} '),
+                                          title: data!.title,
+                                          controllerMenu: () =>
+                                              _key.currentState!.openDrawer()),
                                     ),
                                   ],
                                 ),

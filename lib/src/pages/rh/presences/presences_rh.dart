@@ -7,19 +7,20 @@ import 'package:fokad_admin/src/provider/controller.dart';
 import 'package:provider/provider.dart';
 
 class PresenceRh extends StatefulWidget {
-  const PresenceRh({ Key? key }) : super(key: key);
+  const PresenceRh({Key? key}) : super(key: key);
 
   @override
   State<PresenceRh> createState() => _PresenceRhState();
 }
 
 class _PresenceRhState extends State<PresenceRh> {
+  final GlobalKey<ScaffoldState> _key = GlobalKey();
   final ScrollController _controllerScroll = ScrollController();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        key: context.read<Controller>().scaffoldKey,
+        key: _key,
         drawer: const DrawerMenu(),
         body: SafeArea(
           child: Row(
@@ -36,7 +37,9 @@ class _PresenceRhState extends State<PresenceRh> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const CustomAppbar(title: 'Liste des presences'),
+                      CustomAppbar(title: 'Liste des presences',
+                          controllerMenu: () =>
+                              _key.currentState!.openDrawer()),
                       Expanded(
                           child: Scrollbar(
                         controller: _controllerScroll,

@@ -20,6 +20,7 @@ class AddMobilerMateriel extends StatefulWidget {
 }
 
 class _AddMobilerMaterielState extends State<AddMobilerMateriel> {
+  final GlobalKey<ScaffoldState> _key = GlobalKey();
   final ScrollController _controllerScroll = ScrollController();
   final _formKey = GlobalKey<FormState>();
   bool isLoading = false;
@@ -61,7 +62,7 @@ class _AddMobilerMaterielState extends State<AddMobilerMateriel> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        // key: context.read<Controller>().scaffoldKey,
+        key: _key,
         drawer: const DrawerMenu(),
         body: SafeArea(
           child: Row(
@@ -88,9 +89,11 @@ class _AddMobilerMaterielState extends State<AddMobilerMateriel> {
                                 },
                                 icon: const Icon(Icons.arrow_back)),
                           ),
-                          const Expanded(
+                           Expanded(
                               flex: 5,
-                              child: CustomAppbar(title: 'Ajout mobilier')),
+                              child: CustomAppbar(title: 'Ajout mobilier',
+                                  controllerMenu: () =>
+                                      _key.currentState!.openDrawer())),
                         ],
                       ),
                       Expanded(

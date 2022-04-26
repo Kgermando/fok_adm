@@ -19,6 +19,7 @@ class DetailMobilier extends StatefulWidget {
 }
 
 class _DetailMobilierState extends State<DetailMobilier> {
+  final GlobalKey<ScaffoldState> _key = GlobalKey();
   final ScrollController _controllerScroll = ScrollController();
   bool isLoading = false;
 
@@ -54,7 +55,7 @@ class _DetailMobilierState extends State<DetailMobilier> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        // key: context.read<Controller>().scaffoldKey,
+        key: _key,
         drawer: const DrawerMenu(),
         body: SafeArea(
           child: Row(
@@ -89,7 +90,9 @@ class _DetailMobilierState extends State<DetailMobilier> {
                                     const SizedBox(width: p10),
                                     Expanded(
                                       child:
-                                          CustomAppbar(title: '${data!.nom} '),
+                                          CustomAppbar(title: data!.nom,
+                                          controllerMenu: () =>
+                                              _key.currentState!.openDrawer()),
                                     ),
                                   ],
                                 ),

@@ -8,46 +8,50 @@ import 'package:fokad_admin/src/routes/routes.dart';
 import 'package:routemaster/routemaster.dart';
 
 class EtatMateriel extends StatefulWidget {
-  const EtatMateriel({ Key? key }) : super(key: key);
+  const EtatMateriel({Key? key}) : super(key: key);
 
   @override
   State<EtatMateriel> createState() => _EtatMaterielState();
 }
 
 class _EtatMaterielState extends State<EtatMateriel> {
+  final GlobalKey<ScaffoldState> _key = GlobalKey();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // key: context.read<Controller>().scaffoldKey,
-      drawer: const DrawerMenu(),
-      floatingActionButton: FloatingActionButton(
-          child: const Icon(Icons.add),
-          onPressed: () {
-            Routemaster.of(context).push(LogistiqueRoutes.logAddEtatMateriel);
-          }),
-      body: SafeArea(
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            if (Responsive.isDesktop(context))
-              const Expanded(
-                child: DrawerMenu(),
-              ),
-            Expanded(
-              flex: 5,
-              child: Padding(
-                padding: const EdgeInsets.all(p10),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: const [
-                    CustomAppbar(title: 'Etat des materiels'),
-                    Expanded(child: TableEtatMateriel())
-                  ],
+        // key: _key,
+        drawer: const DrawerMenu(),
+        floatingActionButton: FloatingActionButton(
+            child: const Icon(Icons.add),
+            onPressed: () {
+              Routemaster.of(context).push(LogistiqueRoutes.logAddEtatMateriel);
+            }),
+        body: SafeArea(
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              if (Responsive.isDesktop(context))
+                const Expanded(
+                  child: DrawerMenu(),
+                ),
+              Expanded(
+                flex: 5,
+                child: Padding(
+                  padding: const EdgeInsets.all(p10),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      CustomAppbar(title: 'Etat des materiels',
+                          controllerMenu: () =>
+                              _key.currentState!.openDrawer()),
+                      const Expanded(child: TableEtatMateriel())
+                    ],
+                  ),
                 ),
               ),
-            ),
-          ],
-        ),
-      ));
+            ],
+          ),
+        ));
   }
 }

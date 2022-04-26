@@ -23,6 +23,7 @@ class AmortissementComptabilite extends StatefulWidget {
 }
 
 class _AmortissementComptabiliteState extends State<AmortissementComptabilite> {
+  final GlobalKey<ScaffoldState> _key = GlobalKey();
   final controller = ScrollController();
   bool isLoading = false;
 
@@ -67,7 +68,7 @@ class _AmortissementComptabiliteState extends State<AmortissementComptabilite> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        key: context.read<Controller>().scaffoldKey,
+        key: _key,
         drawer: const DrawerMenu(),
         floatingActionButton: FloatingActionButton(
             foregroundColor: Colors.white,
@@ -92,9 +93,11 @@ class _AmortissementComptabiliteState extends State<AmortissementComptabilite> {
                   padding: const EdgeInsets.all(p10),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
-                    children: const [
-                      CustomAppbar(title: 'Amortissement'),
-                      Expanded(child: TableAmortissement())
+                    children: [
+                      CustomAppbar(title: 'Amortissement',
+                          controllerMenu: () =>
+                              _key.currentState!.openDrawer()),
+                      const Expanded(child: TableAmortissement())
                     ],
                   ),
                 ),
@@ -262,24 +265,24 @@ class _AmortissementComptabiliteState extends State<AmortissementComptabilite> {
 
   Future submit() async {
     final amortissementModel = AmortissementModel(
-        titleArmotissement: titleArmotissementController.text,
-        comptes: comptesController.text,
-        intitule: intituleController.text,
-        montant: montantController.text,
-        typeJournal: typeJournalController.text,
-        approbationDG: '-',
-        signatureDG: '-',
-        signatureJustificationDG: '-',
-        approbationFin: '-',
-        signatureFin: '-',
-        signatureJustificationFin: '-',
-        approbationBudget: '-',
-        signatureBudget: '-',
-        signatureJustificationBudget: '-',
-        approbationDD: '-',
-        signatureDD: '-',
-        signatureJustificationDD: '-',
-        signature: matricule.toString(),
+      titleArmotissement: titleArmotissementController.text,
+      comptes: comptesController.text,
+      intitule: intituleController.text,
+      montant: montantController.text,
+      typeJournal: typeJournalController.text,
+      approbationDG: '-',
+      signatureDG: '-',
+      signatureJustificationDG: '-',
+      approbationFin: '-',
+      signatureFin: '-',
+      signatureJustificationFin: '-',
+      approbationBudget: '-',
+      signatureBudget: '-',
+      signatureJustificationBudget: '-',
+      approbationDD: '-',
+      signatureDD: '-',
+      signatureJustificationDD: '-',
+      signature: matricule.toString(),
       created: DateTime.now(),
     );
     await AmortissementApi().insertData(amortissementModel);

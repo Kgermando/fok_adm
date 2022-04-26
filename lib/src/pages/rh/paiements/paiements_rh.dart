@@ -17,6 +17,7 @@ class PaiementRh extends StatefulWidget {
 }
 
 class _PaiementRhState extends State<PaiementRh> {
+  final GlobalKey<ScaffoldState> _key = GlobalKey();
   final ScrollController _controllerScroll = ScrollController();
 
   int? id;
@@ -38,31 +39,33 @@ class _PaiementRhState extends State<PaiementRh> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      key: context.read<Controller>().scaffoldKey,
-      drawer: const DrawerMenu(),
-      body: SafeArea(
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            if (Responsive.isDesktop(context))
-              const Expanded(
-                child: DrawerMenu(),
-              ),
-            Expanded(
-              flex: 5,
-              child: Padding(
-                padding: const EdgeInsets.all(p10),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: const [
-                    CustomAppbar(title: 'Liste des paiements'),
-                    Expanded(child: TableSalaires())
-                  ],
+        key: _key,
+        drawer: const DrawerMenu(),
+        body: SafeArea(
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              if (Responsive.isDesktop(context))
+                const Expanded(
+                  child: DrawerMenu(),
+                ),
+              Expanded(
+                flex: 5,
+                child: Padding(
+                  padding: const EdgeInsets.all(p10),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      CustomAppbar(title: 'Liste des paiements',
+                          controllerMenu: () =>
+                              _key.currentState!.openDrawer()),
+                      const Expanded(child: TableSalaires())
+                    ],
+                  ),
                 ),
               ),
-            ),
-          ],
-        ),
-      ));
+            ],
+          ),
+        ));
   }
 }

@@ -23,6 +23,7 @@ class JournalComptabilite extends StatefulWidget {
 }
 
 class _JournalComptabiliteState extends State<JournalComptabilite> {
+  final GlobalKey<ScaffoldState> _key = GlobalKey();
   final controller = ScrollController();
 
   bool isLoading = false;
@@ -67,7 +68,7 @@ class _JournalComptabiliteState extends State<JournalComptabilite> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        key: context.read<Controller>().scaffoldKey,
+        key: _key,
         drawer: const DrawerMenu(),
         floatingActionButton: FloatingActionButton(
             foregroundColor: Colors.white,
@@ -93,7 +94,9 @@ class _JournalComptabiliteState extends State<JournalComptabilite> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const CustomAppbar(title: 'Journal'),
+                      CustomAppbar(title: 'Journal',
+                          controllerMenu: () =>
+                              _key.currentState!.openDrawer()),
                       Expanded(
                           child: Scrollbar(
                         controller: controller,
@@ -319,7 +322,7 @@ class _JournalComptabiliteState extends State<JournalComptabilite> {
         signatureDD: '-',
         signatureJustificationDD: '-',
         signature: matricule.toString(),
-        created:  DateTime.now());
+        created: DateTime.now());
     await JournalApi().insertData(journalModel);
     Routemaster.of(context).pop();
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(

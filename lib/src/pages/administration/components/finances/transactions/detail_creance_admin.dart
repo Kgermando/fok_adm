@@ -23,6 +23,7 @@ class DetailCreanceAdmin extends StatefulWidget {
 }
 
 class _DetailCreanceAdminState extends State<DetailCreanceAdmin> {
+  final GlobalKey<ScaffoldState> _key = GlobalKey();
   final ScrollController _controllerScroll = ScrollController();
   bool isLoading = false;
   List<UserModel> userList = [];
@@ -73,6 +74,7 @@ class _DetailCreanceAdminState extends State<DetailCreanceAdmin> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: _key,
         drawer: const DrawerMenu(),
         body: SafeArea(
           child: Row(
@@ -108,7 +110,8 @@ class _DetailCreanceAdminState extends State<DetailCreanceAdmin> {
                                     Expanded(
                                       child: CustomAppbar(
                                           title:
-                                              '${creanceModel!.nomComplet} '),
+                                              '${creanceModel!.nomComplet}',
+                                        controllerMenu: () => _key.currentState!.openDrawer()),
                                     ),
                                   ],
                                 ),

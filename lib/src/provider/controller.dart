@@ -9,6 +9,6 @@ class Controller extends ChangeNotifier {
     if (!_scaffoldKey.currentState!.isDrawerOpen) {
       _scaffoldKey.currentState!.openDrawer();
     }
+    notifyListeners();
   }
-
 }

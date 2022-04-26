@@ -24,6 +24,7 @@ class AddPaiementSalaire extends StatefulWidget {
 }
 
 class _AddPaiementSalaireState extends State<AddPaiementSalaire> {
+  final GlobalKey<ScaffoldState> _key = GlobalKey();
   final ScrollController _controllerScroll = ScrollController();
   final _formKey = GlobalKey<FormState>();
   bool isLoading = false;
@@ -122,7 +123,6 @@ class _AddPaiementSalaireState extends State<AddPaiementSalaire> {
     super.dispose();
   }
 
-
   String? signature;
 
   Future<void> getData() async {
@@ -137,7 +137,7 @@ class _AddPaiementSalaireState extends State<AddPaiementSalaire> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        // key: context.read<Controller>().scaffoldKey,
+        key: _key,
         drawer: const DrawerMenu(),
         body: SafeArea(
           child: Row(
@@ -163,8 +163,10 @@ class _AddPaiementSalaireState extends State<AddPaiementSalaire> {
                                 icon: const Icon(Icons.arrow_back)),
                           ),
                           const SizedBox(width: p10),
-                          const Expanded(
-                              child: CustomAppbar(title: 'Nouvelle feuille')),
+                          Expanded(
+                              child: CustomAppbar(title: 'Nouvelle feuille',
+                                  controllerMenu: () =>
+                                      _key.currentState!.openDrawer())),
                         ],
                       ),
                       Expanded(
@@ -487,7 +489,7 @@ class _AddPaiementSalaireState extends State<AddPaiementSalaire> {
                   children: [
                     Expanded(
                         child: joursHeuresPayeA100PourecentSalaireWidget()),
-                    Expanded( child: totalDuSalaireWidget())
+                    Expanded(child: totalDuSalaireWidget())
                   ],
                 ),
               ],
@@ -696,10 +698,7 @@ class _AddPaiementSalaireState extends State<AddPaiementSalaire> {
               flex: 3,
               child: Text('Prime',
                   style: bodyLarge!.copyWith(fontWeight: FontWeight.bold))),
-          Expanded(
-            flex: 3,
-            child: primeFielWidget()
-          ),
+          Expanded(flex: 3, child: primeFielWidget()),
         ],
       ),
     );
@@ -961,10 +960,7 @@ class _AddPaiementSalaireState extends State<AddPaiementSalaire> {
               flex: 3,
               child: Text('Total brut dû',
                   style: bodyLarge!.copyWith(fontWeight: FontWeight.bold))),
-          Expanded(
-            flex: 3,
-            child: totalDuBrutFieldWidget()
-          ),
+          Expanded(flex: 3, child: totalDuBrutFieldWidget()),
         ],
       ),
     );
@@ -1136,10 +1132,8 @@ class _AddPaiementSalaireState extends State<AddPaiementSalaire> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Expanded(
-                      child: tauxJoursAllocationsFamilialesWidget()),
-                    Expanded(
-                      child: totalAPayerAllocationsFamilialesWidget())
+                    Expanded(child: tauxJoursAllocationsFamilialesWidget()),
+                    Expanded(child: totalAPayerAllocationsFamilialesWidget())
                   ],
                 ),
               ],
@@ -1159,9 +1153,7 @@ class _AddPaiementSalaireState extends State<AddPaiementSalaire> {
             border:
                 OutlineInputBorder(borderRadius: BorderRadius.circular(10.0)),
             labelText: 'Nombre des enfants béneficaire',
-            
             hintText: 'Nombre des enfants béneficaire',
-            
           ),
           keyboardType: TextInputType.text,
           style: const TextStyle(),
@@ -1177,9 +1169,7 @@ class _AddPaiementSalaireState extends State<AddPaiementSalaire> {
             border:
                 OutlineInputBorder(borderRadius: BorderRadius.circular(10.0)),
             labelText: 'Nombre des Jours',
-            
             hintText: 'Nombre des Jours',
-            
           ),
           keyboardType: TextInputType.text,
           style: const TextStyle(),
@@ -1195,9 +1185,7 @@ class _AddPaiementSalaireState extends State<AddPaiementSalaire> {
             border:
                 OutlineInputBorder(borderRadius: BorderRadius.circular(10.0)),
             labelText: 'Taux journalier',
-            
             hintText: 'Taux journalier',
-            
           ),
           keyboardType: TextInputType.text,
           style: const TextStyle(),
@@ -1213,9 +1201,7 @@ class _AddPaiementSalaireState extends State<AddPaiementSalaire> {
             border:
                 OutlineInputBorder(borderRadius: BorderRadius.circular(10.0)),
             labelText: 'Total à payer',
-            
             hintText: 'Total à payer',
-            
           ),
           keyboardType: TextInputType.text,
           style: const TextStyle(),
@@ -1238,10 +1224,7 @@ class _AddPaiementSalaireState extends State<AddPaiementSalaire> {
               flex: 3,
               child: Text('Net à payer',
                   style: bodyLarge!.copyWith(fontWeight: FontWeight.bold))),
-          Expanded(
-            flex: 3,
-            child: netAPayerFieldWidget()
-          ),
+          Expanded(flex: 3, child: netAPayerFieldWidget()),
         ],
       ),
     );
@@ -1256,9 +1239,7 @@ class _AddPaiementSalaireState extends State<AddPaiementSalaire> {
             border:
                 OutlineInputBorder(borderRadius: BorderRadius.circular(10.0)),
             labelText: 'Total à payer',
-            
             hintText: 'Total à payer',
-            
           ),
           keyboardType: TextInputType.text,
           style: const TextStyle(),
@@ -1284,9 +1265,9 @@ class _AddPaiementSalaireState extends State<AddPaiementSalaire> {
                   'Montant pris en consideration pour le calcul des cotisations INSS',
                   style: bodyLarge!.copyWith(fontWeight: FontWeight.bold))),
           Expanded(
-            flex: 3,
-            child: montantPrisConsiderationCalculCotisationsINSSFieldWidget()
-          ),
+              flex: 3,
+              child:
+                  montantPrisConsiderationCalculCotisationsINSSFieldWidget()),
         ],
       ),
     );
@@ -1325,43 +1306,94 @@ class _AddPaiementSalaireState extends State<AddPaiementSalaire> {
       createdAt: DateTime.now(),
       ligneBudgtaire: '-',
       resources: '-',
-      tauxJourHeureMoisSalaire: (tauxJourHeureMoisSalaire.toString() == '') ? '-' : tauxJourHeureMoisSalaire.toString(),
+      tauxJourHeureMoisSalaire: (tauxJourHeureMoisSalaire.toString() == '')
+          ? '-'
+          : tauxJourHeureMoisSalaire.toString(),
       joursHeuresPayeA100PourecentSalaire:
-        (joursHeuresPayeA100PourecentSalaireController.text == '') ? '-' : joursHeuresPayeA100PourecentSalaireController.text,
-      totalDuSalaire: (totalDuSalaireController.text == '') ? '-' : totalDuSalaireController.text,
-      nombreHeureSupplementaires: (nombreHeureSupplementairesController.text == '') ? '-' : nombreHeureSupplementairesController.text,
-      tauxHeureSupplementaires: (tauxHeureSupplementairesController.text == '') ? '-' : tauxHeureSupplementairesController.text,
-      totalDuHeureSupplementaires: (totalDuHeureSupplementairesController.text == '') ? '-' : totalDuHeureSupplementairesController.text,
+          (joursHeuresPayeA100PourecentSalaireController.text == '')
+              ? '-'
+              : joursHeuresPayeA100PourecentSalaireController.text,
+      totalDuSalaire: (totalDuSalaireController.text == '')
+          ? '-'
+          : totalDuSalaireController.text,
+      nombreHeureSupplementaires:
+          (nombreHeureSupplementairesController.text == '')
+              ? '-'
+              : nombreHeureSupplementairesController.text,
+      tauxHeureSupplementaires: (tauxHeureSupplementairesController.text == '')
+          ? '-'
+          : tauxHeureSupplementairesController.text,
+      totalDuHeureSupplementaires:
+          (totalDuHeureSupplementairesController.text == '')
+              ? '-'
+              : totalDuHeureSupplementairesController.text,
       supplementTravailSamediDimancheJoursFerie:
-        (supplementTravailSamediDimancheJoursFerieController.text == '') ? '-' : supplementTravailSamediDimancheJoursFerieController.text,
+          (supplementTravailSamediDimancheJoursFerieController.text == '')
+              ? '-'
+              : supplementTravailSamediDimancheJoursFerieController.text,
       prime: (primeController.text == '') ? '-' : primeController.text,
       divers: (diversController.text == '') ? '-' : diversController.text,
-      joursCongesPaye: (joursCongesPayeController.text == '') ? '-' : joursCongesPayeController.text,
-      tauxCongesPaye: (tauxCongesPayeController.text == '') ? '-' : tauxCongesPayeController.text,
-      totalDuCongePaye: (totalDuCongePayeController.text == '') ? '-' : totalDuCongePayeController.text,
-      jourPayeMaladieAccident: (jourPayeMaladieAccidentController.text == '') ? '-' : jourPayeMaladieAccidentController.text,
+      joursCongesPaye: (joursCongesPayeController.text == '')
+          ? '-'
+          : joursCongesPayeController.text,
+      tauxCongesPaye: (tauxCongesPayeController.text == '')
+          ? '-'
+          : tauxCongesPayeController.text,
+      totalDuCongePaye: (totalDuCongePayeController.text == '')
+          ? '-'
+          : totalDuCongePayeController.text,
+      jourPayeMaladieAccident: (jourPayeMaladieAccidentController.text == '')
+          ? '-'
+          : jourPayeMaladieAccidentController.text,
       tauxJournalierMaladieAccident:
-        (tauxJournalierMaladieAccidentController.text == '') ? '-' : tauxJournalierMaladieAccidentController.text,
-      totalDuMaladieAccident: (totalDuMaladieAccidentController.text == '') ? '-' : totalDuMaladieAccidentController.text,
-      pensionDeduction: (pensionDeductionController.text == '') ? '-' : pensionDeductionController.text,
+          (tauxJournalierMaladieAccidentController.text == '')
+              ? '-'
+              : tauxJournalierMaladieAccidentController.text,
+      totalDuMaladieAccident: (totalDuMaladieAccidentController.text == '')
+          ? '-'
+          : totalDuMaladieAccidentController.text,
+      pensionDeduction: (pensionDeductionController.text == '')
+          ? '-'
+          : pensionDeductionController.text,
       indemniteCompensatricesDeduction:
-          (indemniteCompensatricesDeductionController.text == '') ? '-' : indemniteCompensatricesDeductionController.text,
-      avancesDeduction: (avancesDeductionController.text == '') ? '-' : avancesDeductionController.text,
-      diversDeduction: (diversDeductionController.text == '') ? '-' : diversDeductionController.text,
-      retenuesFiscalesDeduction: (retenuesFiscalesDeductionController.text == '') ? '-' : retenuesFiscalesDeductionController.text,
+          (indemniteCompensatricesDeductionController.text == '')
+              ? '-'
+              : indemniteCompensatricesDeductionController.text,
+      avancesDeduction: (avancesDeductionController.text == '')
+          ? '-'
+          : avancesDeductionController.text,
+      diversDeduction: (diversDeductionController.text == '')
+          ? '-'
+          : diversDeductionController.text,
+      retenuesFiscalesDeduction:
+          (retenuesFiscalesDeductionController.text == '')
+              ? '-'
+              : retenuesFiscalesDeductionController.text,
       nombreEnfantBeneficaireAllocationsFamiliales:
-        (nombreEnfantBeneficaireAllocationsFamilialesController.text == '') ? '-' : retenuesFiscalesDeductionController.text,
+          (nombreEnfantBeneficaireAllocationsFamilialesController.text == '')
+              ? '-'
+              : retenuesFiscalesDeductionController.text,
       nombreDeJoursAllocationsFamiliales:
-        (nombreDeJoursAllocationsFamilialesController.text == '') ? '-' : nombreDeJoursAllocationsFamilialesController.text,
+          (nombreDeJoursAllocationsFamilialesController.text == '')
+              ? '-'
+              : nombreDeJoursAllocationsFamilialesController.text,
       tauxJoursAllocationsFamiliales:
-        (tauxJoursAllocationsFamilialesController.text == '') ? '-' : tauxJoursAllocationsFamilialesController.text,
+          (tauxJoursAllocationsFamilialesController.text == '')
+              ? '-'
+              : tauxJoursAllocationsFamilialesController.text,
       totalAPayerAllocationsFamiliales:
-          (totalAPayerAllocationsFamilialesController.text == '') ? '-' : totalAPayerAllocationsFamilialesController.text,
-      netAPayer: (netAPayerController.text == '') ? '-' : netAPayerController.text,
+          (totalAPayerAllocationsFamilialesController.text == '')
+              ? '-'
+              : totalAPayerAllocationsFamilialesController.text,
+      netAPayer:
+          (netAPayerController.text == '') ? '-' : netAPayerController.text,
       montantPrisConsiderationCalculCotisationsINSS:
-        (montantPrisConsiderationCalculCotisationsINSSController.text == '') ? '-' : montantPrisConsiderationCalculCotisationsINSSController.text,
-      totalDuBrut: (totalDuBrutController.text == '') ? '-' : totalDuBrutController.text,
-      
+          (montantPrisConsiderationCalculCotisationsINSSController.text == '')
+              ? '-'
+              : montantPrisConsiderationCalculCotisationsINSSController.text,
+      totalDuBrut:
+          (totalDuBrutController.text == '') ? '-' : totalDuBrutController.text,
+
       approbationDG: '-',
       signatureDG: '-',
       signatureJustificationDG: '-',
@@ -1379,7 +1411,6 @@ class _AddPaiementSalaireState extends State<AddPaiementSalaire> {
       signatureJustificationDD: '-',
 
       signature: signature.toString(),
-        
     );
     await PaiementSalaireApi().insertData(paiementSalaireModel);
     Routemaster.of(context).pop();

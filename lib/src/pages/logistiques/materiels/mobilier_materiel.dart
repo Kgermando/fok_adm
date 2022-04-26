@@ -9,19 +9,20 @@ import 'package:fokad_admin/src/routes/routes.dart';
 import 'package:provider/provider.dart';
 import 'package:routemaster/routemaster.dart';
 
-
 class MobilierMateriel extends StatefulWidget {
-  const MobilierMateriel({ Key? key }) : super(key: key);
+  const MobilierMateriel({Key? key}) : super(key: key);
 
   @override
   State<MobilierMateriel> createState() => _MobilierMaterielState();
 }
 
 class _MobilierMaterielState extends State<MobilierMateriel> {
+  final GlobalKey<ScaffoldState> _key = GlobalKey();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        key: context.read<Controller>().scaffoldKey,
+        key: _key,
         drawer: const DrawerMenu(),
         floatingActionButton: FloatingActionButton(
             child: const Icon(Icons.add),
@@ -43,9 +44,11 @@ class _MobilierMaterielState extends State<MobilierMateriel> {
                   padding: const EdgeInsets.all(p10),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
-                    children: const [
-                      CustomAppbar(title: 'Mobilier'),
-                      Expanded(child: TableMobilier())
+                    children: [
+                      CustomAppbar(title: 'Mobilier',
+                          controllerMenu: () =>
+                              _key.currentState!.openDrawer()),
+                      const Expanded(child: TableMobilier())
                     ],
                   ),
                 ),

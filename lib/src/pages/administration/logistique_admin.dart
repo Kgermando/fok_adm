@@ -13,12 +13,13 @@ class LogistiquesAdmin extends StatefulWidget {
 }
 
 class _LogistiquesAdminState extends State<LogistiquesAdmin> {
+  final GlobalKey<ScaffoldState> _key = GlobalKey();
   final ScrollController _controllerScroll = ScrollController();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        // key: context.read<Controller>().scaffoldKey,
+        // key: _key,
         drawer: const DrawerMenu(),
         body: SafeArea(
           child: Row(
@@ -35,7 +36,9 @@ class _LogistiquesAdminState extends State<LogistiquesAdmin> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const CustomAppbar(title: 'Logistiques Admin'),
+                      CustomAppbar(title: 'Logistiques Admin',
+                          controllerMenu: () =>
+                              _key.currentState!.openDrawer()),
                       Expanded(
                           child: Scrollbar(
                         controller: _controllerScroll,

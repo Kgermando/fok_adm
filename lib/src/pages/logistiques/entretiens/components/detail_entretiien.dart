@@ -20,6 +20,7 @@ class DetailEntretien extends StatefulWidget {
 }
 
 class _DetailEntretienState extends State<DetailEntretien> {
+  final GlobalKey<ScaffoldState> _key = GlobalKey();
   final ScrollController _controllerScroll = ScrollController();
   bool isLoading = false;
 
@@ -27,7 +28,6 @@ class _DetailEntretienState extends State<DetailEntretien> {
   List<PlutoRow> rows = [];
   PlutoGridStateManager? stateManager;
   PlutoGridSelectingMode gridSelectingMode = PlutoGridSelectingMode.row;
-
 
   String? nom;
   String? modele;
@@ -63,7 +63,7 @@ class _DetailEntretienState extends State<DetailEntretien> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        // key: context.read<Controller>().scaffoldKey,
+        key: _key,
         drawer: const DrawerMenu(),
         body: SafeArea(
           child: Row(
@@ -98,7 +98,9 @@ class _DetailEntretienState extends State<DetailEntretien> {
                                     const SizedBox(width: p10),
                                     Expanded(
                                       child:
-                                          CustomAppbar(title: '${data!.nom} '),
+                                          CustomAppbar(title: data!.nom,
+                                          controllerMenu: () =>
+                                              _key.currentState!.openDrawer()),
                                     ),
                                   ],
                                 ),
@@ -163,10 +165,7 @@ class _DetailEntretienState extends State<DetailEntretien> {
                 ],
               ),
               dataWidget(data),
-              SizedBox(
-                height: 500,
-                child: tableObjetRemplace()
-              )
+              SizedBox(height: 500, child: tableObjetRemplace())
             ],
           ),
         ),

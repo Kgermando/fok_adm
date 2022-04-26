@@ -18,6 +18,7 @@ class DepartementFin extends StatefulWidget {
 }
 
 class _DepartementFinState extends State<DepartementFin> {
+  final GlobalKey<ScaffoldState> _key = GlobalKey();
   final ScrollController _controllerScroll = ScrollController();
 
   bool isOpenRh1 = false;
@@ -36,8 +37,10 @@ class _DepartementFinState extends State<DepartementFin> {
     List<PaiementSalaireModel?> dataList =
         await PaiementSalaireApi().getAllData();
     setState(() {
-      nonPaye =
-          dataList.where((element) => element!.approbationDD != '-').toList().length;
+      nonPaye = dataList
+          .where((element) => element!.approbationDD != '-')
+          .toList()
+          .length;
     });
   }
 
@@ -46,7 +49,7 @@ class _DepartementFinState extends State<DepartementFin> {
     final headline6 = Theme.of(context).textTheme.headline6;
     final bodyMedium = Theme.of(context).textTheme.bodyMedium;
     return Scaffold(
-        key: context.read<Controller>().scaffoldKey,
+        key: _key,
         drawer: const DrawerMenu(),
         body: SafeArea(
           child: Row(
@@ -63,7 +66,9 @@ class _DepartementFinState extends State<DepartementFin> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const CustomAppbar(title: 'Département de finance'),
+                      CustomAppbar(title: 'Département de finance',
+                          controllerMenu: () =>
+                              _key.currentState!.openDrawer()),
                       Expanded(
                           child: Scrollbar(
                         controller: _controllerScroll,

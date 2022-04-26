@@ -25,6 +25,7 @@ class DetailBanque extends StatefulWidget {
 }
 
 class _DetailBanqueState extends State<DetailBanque> {
+  final GlobalKey<ScaffoldState> _key = GlobalKey();
   final ScrollController _controllerScroll = ScrollController();
   bool isLoading = false;
   List<UserModel> userList = [];
@@ -79,7 +80,7 @@ class _DetailBanqueState extends State<DetailBanque> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        // key: context.read<Controller>().scaffoldKey,
+        key: _key,
         drawer: const DrawerMenu(),
         body: SafeArea(
           child: Row(
@@ -114,7 +115,9 @@ class _DetailBanqueState extends State<DetailBanque> {
                                     const SizedBox(width: p10),
                                     Expanded(
                                       child: CustomAppbar(
-                                          title: '${banqueModel!.nomComplet} '),
+                                          title: banqueModel!.nomComplet,
+                                          controllerMenu: () =>
+                                              _key.currentState!.openDrawer()),
                                     ),
                                   ],
                                 ),
@@ -185,7 +188,7 @@ class _DetailBanqueState extends State<DetailBanque> {
                 child: tableauList(),
               ),
               if (banqueModel.typeOperation == 'Retrait')
-              infosEditeurWidget(banqueModel)
+                infosEditeurWidget(banqueModel)
             ],
           ),
         ),

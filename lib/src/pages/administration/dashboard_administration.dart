@@ -15,6 +15,8 @@ class DashboardAdministration extends StatefulWidget {
 }
 
 class _DashboardAdministrationState extends State<DashboardAdministration> {
+  final GlobalKey<ScaffoldState> _key = GlobalKey();
+
   @override
   initState() {
     super.initState();
@@ -23,7 +25,7 @@ class _DashboardAdministrationState extends State<DashboardAdministration> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        key: context.read<Controller>().scaffoldKey,
+        key: _key,
         drawer: const DrawerMenu(),
         body: SafeArea(
           child: Row(
@@ -40,7 +42,9 @@ class _DashboardAdministrationState extends State<DashboardAdministration> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const CustomAppbar(title: 'Tableau de bord'),
+                       CustomAppbar(title: 'Tableau de bord',
+                          controllerMenu: () =>
+                              _key.currentState!.openDrawer()),
                       Expanded(
                           child: ListView(
                         children: const [

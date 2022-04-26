@@ -20,6 +20,7 @@ class AddTrajetAuto extends StatefulWidget {
 }
 
 class _AddTrajetAutoState extends State<AddTrajetAuto> {
+  final GlobalKey<ScaffoldState> _key = GlobalKey();
   final ScrollController _controllerScroll = ScrollController();
   final _formKey = GlobalKey<FormState>();
   bool isLoading = false;
@@ -69,7 +70,7 @@ class _AddTrajetAutoState extends State<AddTrajetAuto> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        // key: context.read<Controller>().scaffoldKey,
+        key: _key,
         drawer: const DrawerMenu(),
         body: SafeArea(
           child: Row(
@@ -96,9 +97,11 @@ class _AddTrajetAutoState extends State<AddTrajetAuto> {
                                 },
                                 icon: const Icon(Icons.arrow_back)),
                           ),
-                          const Expanded(
+                           Expanded(
                               flex: 5,
-                              child: CustomAppbar(title: 'Ajout Trajet')),
+                              child: CustomAppbar(title: 'Ajout Trajet',
+                                  controllerMenu: () =>
+                                      _key.currentState!.openDrawer())),
                         ],
                       ),
                       Expanded(

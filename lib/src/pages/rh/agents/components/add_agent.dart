@@ -30,6 +30,7 @@ class AddAgent extends StatefulWidget {
 }
 
 class _AddAgentState extends State<AddAgent> {
+  final GlobalKey<ScaffoldState> _key = GlobalKey();
   final ScrollController _controllerScroll = ScrollController();
   final _formKey = GlobalKey<FormState>();
   bool isLoading = false;
@@ -128,7 +129,7 @@ class _AddAgentState extends State<AddAgent> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        key: context.read<Controller>().scaffoldKey,
+        key: _key,
         drawer: const DrawerMenu(),
         body: SafeArea(
           child: Row(
@@ -145,7 +146,9 @@ class _AddAgentState extends State<AddAgent> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const CustomAppbar(title: 'Nouveau agent'),
+                       CustomAppbar(title: 'Nouveau agent',
+                          controllerMenu: () =>
+                              _key.currentState!.openDrawer()),
                       Expanded(
                           child: Scrollbar(
                         controller: _controllerScroll,
@@ -350,7 +353,6 @@ class _AddAgentState extends State<AddAgent> {
               return null;
             }
           },
-          
         ));
   }
 
@@ -373,7 +375,6 @@ class _AddAgentState extends State<AddAgent> {
               return null;
             }
           },
-          
         ));
   }
 
@@ -418,7 +419,6 @@ class _AddAgentState extends State<AddAgent> {
               return null;
             }
           },
-          
         ));
   }
 
@@ -433,7 +433,7 @@ class _AddAgentState extends State<AddAgent> {
             labelText: 'Adresse',
           ),
           keyboardType: TextInputType.text,
-           style: const TextStyle(),
+          style: const TextStyle(),
           validator: (value) {
             if (value != null && value.isEmpty) {
               return 'Ce champs est obligatoire';
@@ -441,7 +441,6 @@ class _AddAgentState extends State<AddAgent> {
               return null;
             }
           },
-         
         ));
   }
 
@@ -516,7 +515,6 @@ class _AddAgentState extends State<AddAgent> {
         ));
   }
 
- 
   Widget numeroSecuriteSocialeWidget() {
     return Container(
         margin: const EdgeInsets.only(bottom: p20),
@@ -536,7 +534,6 @@ class _AddAgentState extends State<AddAgent> {
               return null;
             }
           },
-          
         ));
   }
 
@@ -813,7 +810,7 @@ class _AddAgentState extends State<AddAgent> {
             labelText: 'Formation',
           ),
           keyboardType: TextInputType.text,
-           style: const TextStyle(),
+          style: const TextStyle(),
           validator: (value) {
             if (value != null && value.isEmpty) {
               return 'Ce champs est obligatoire';
@@ -821,7 +818,6 @@ class _AddAgentState extends State<AddAgent> {
               return null;
             }
           },
-         
         )
 
         //     HtmlEditor(
@@ -859,69 +855,81 @@ class _AddAgentState extends State<AddAgent> {
               return null;
             }
           },
-          
         ));
   }
 
   Widget salaireWidget() {
     return Container(
-      margin: const EdgeInsets.only(bottom: p20),
-      child: TextFormField(
-        minLines: 5,
-        maxLines: 100,
-        controller: salaireController,
-        decoration: InputDecoration(
-          border:
-              OutlineInputBorder(borderRadius: BorderRadius.circular(10.0)),
-          labelText: 'Salaire',
-        ),
-        keyboardType: TextInputType.text,
-        style: const TextStyle(),
-        validator: (value) {
-          if (value != null && value.isEmpty) {
-            return 'Ce champs est obligatoire';
-          } else {
-            return null;
-          }
-        },
-        
-      )
-    );
+        margin: const EdgeInsets.only(bottom: p20),
+        child: TextFormField(
+          controller: salaireController,
+          decoration: InputDecoration(
+            border:
+                OutlineInputBorder(borderRadius: BorderRadius.circular(10.0)),
+            labelText: 'Salaire',
+          ),
+          keyboardType: TextInputType.text,
+          style: const TextStyle(),
+          validator: (value) {
+            if (value != null && value.isEmpty) {
+              return 'Ce champs est obligatoire';
+            } else {
+              return null;
+            }
+          },
+        ));
   }
 
   Future submit() async {
     final agentModel = AgentModel(
-      nom: (nomController.text == '') ? '-' : nomController.text,
-      postNom: (postNomController.text == '') ? '-' : postNomController.text,
-      prenom: (prenomController.text == '') ? '-' : prenomController.text,
-      email: (emailController.text == '') ? '-' : emailController.text,
-      telephone: (telephoneController.text == '') ? '-' : telephoneController.text,
-      adresse: (adresseController.text == '') ? '-' : telephoneController.text,
-      sexe: (sexe.toString() == '') ? '-' : sexe.toString(),
-      role: (role.toString() == '') ? '-' : role.toString(),
-      matricule: (matricule == '') ? '-' : matricule,
-      numeroSecuriteSociale: (numeroSecuriteSocialeController.text == "") 
-        ? "-" : numeroSecuriteSocialeController.text,
-      dateNaissance: (dateNaissanceController.text == '') ? DateTime.now() : DateTime.parse(dateNaissanceController.text),
-      lieuNaissance: (lieuNaissanceController.text == '') ? '-' : lieuNaissanceController.text,
-      nationalite: (nationalite.toString() == '') ? '-' : nationalite.toString(),
-      typeContrat: (typeContrat.toString() == '') ? '-' : typeContrat.toString(),
-      departement: (departement.toString() == '') ? '-' : departement.toString(),
-      servicesAffectation: (servicesAffectation.toString() == '') ? '-' : servicesAffectation.toString(),
-      dateDebutContrat: (dateDebutContratController.text == '') ? DateTime.now() : DateTime.parse(dateDebutContratController.text),
-      dateFinContrat: DateTime.parse((dateFinContratController.text == "")
-          ? "2099-12-31 00:00:00"
-          : dateFinContratController.text),
-      fonctionOccupe: (fonctionOccupe.toString() == '') ? '-' : fonctionOccupe.toString(),
-      competance: (competanceController.toString() == '') ? '-' : competanceController.toString(),
-      experience: (experienceController.text == '') ? '-' : experienceController.text,
-      statutAgent: false,
-      createdAt: DateTime.now(),
-      photo: '',
-      salaire: (salaireController.text == '' ) ? '-' : salaireController.text,
-      signature: user!.matricule.toString(),
-      created: DateTime.now()
-    );
+        nom: (nomController.text == '') ? '-' : nomController.text,
+        postNom: (postNomController.text == '') ? '-' : postNomController.text,
+        prenom: (prenomController.text == '') ? '-' : prenomController.text,
+        email: (emailController.text == '') ? '-' : emailController.text,
+        telephone:
+            (telephoneController.text == '') ? '-' : telephoneController.text,
+        adresse:
+            (adresseController.text == '') ? '-' : telephoneController.text,
+        sexe: (sexe.toString() == '') ? '-' : sexe.toString(),
+        role: (role.toString() == '') ? '-' : role.toString(),
+        matricule: (matricule == '') ? '-' : matricule,
+        numeroSecuriteSociale: (numeroSecuriteSocialeController.text == "")
+            ? "-"
+            : numeroSecuriteSocialeController.text,
+        dateNaissance: (dateNaissanceController.text == '')
+            ? DateTime.now()
+            : DateTime.parse(dateNaissanceController.text),
+        lieuNaissance: (lieuNaissanceController.text == '')
+            ? '-'
+            : lieuNaissanceController.text,
+        nationalite:
+            (nationalite.toString() == '') ? '-' : nationalite.toString(),
+        typeContrat:
+            (typeContrat.toString() == '') ? '-' : typeContrat.toString(),
+        departement:
+            (departement.toString() == '') ? '-' : departement.toString(),
+        servicesAffectation: (servicesAffectation.toString() == '')
+            ? '-'
+            : servicesAffectation.toString(),
+        dateDebutContrat: (dateDebutContratController.text == '')
+            ? DateTime.now()
+            : DateTime.parse(dateDebutContratController.text),
+        dateFinContrat: DateTime.parse((dateFinContratController.text == "")
+            ? "2099-12-31 00:00:00"
+            : dateFinContratController.text),
+        fonctionOccupe:
+            (fonctionOccupe.toString() == '') ? '-' : fonctionOccupe.toString(),
+        competance: (competanceController.toString() == '')
+            ? '-'
+            : competanceController.toString(),
+        experience:
+            (experienceController.text == '') ? '-' : experienceController.text,
+        statutAgent: false,
+        createdAt: DateTime.now(),
+        photo: '',
+        salaire: (salaireController.text == '') ? '-' : salaireController.text,
+        signature: user!.matricule.toString(),
+        created: DateTime.now());
 
     await AgentsApi().insertData(agentModel);
     Routemaster.of(context).replace(RhRoutes.rhAgent);

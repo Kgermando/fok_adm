@@ -11,7 +11,7 @@ import 'package:intl/intl.dart';
 import 'package:routemaster/routemaster.dart';
 
 class DetailImmobilier extends StatefulWidget {
-  const DetailImmobilier({ Key? key, this.id }) : super(key: key);
+  const DetailImmobilier({Key? key, this.id}) : super(key: key);
   final int? id;
 
   @override
@@ -19,6 +19,7 @@ class DetailImmobilier extends StatefulWidget {
 }
 
 class _DetailImmobilierState extends State<DetailImmobilier> {
+  final GlobalKey<ScaffoldState> _key = GlobalKey();
   final ScrollController _controllerScroll = ScrollController();
   bool isLoading = false;
 
@@ -54,7 +55,7 @@ class _DetailImmobilierState extends State<DetailImmobilier> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        // key: context.read<Controller>().scaffoldKey,
+        key: _key,
         drawer: const DrawerMenu(),
         body: SafeArea(
           child: Row(
@@ -88,8 +89,10 @@ class _DetailImmobilierState extends State<DetailImmobilier> {
                                     ),
                                     const SizedBox(width: p10),
                                     Expanded(
-                                      child:
-                                          CustomAppbar(title: '${data!.typeAllocation} '),
+                                      child: CustomAppbar(
+                                          title: data!.typeAllocation,
+                                          controllerMenu: () =>
+                                              _key.currentState!.openDrawer()),
                                     ),
                                   ],
                                 ),
@@ -229,7 +232,8 @@ class _DetailImmobilierState extends State<DetailImmobilier> {
               Expanded(
                 child: SelectableText(
                     DateFormat("dd-MM-yy").format(data.dateAcquisition),
-                    textAlign: TextAlign.start, style: bodyMedium),
+                    textAlign: TextAlign.start,
+                    style: bodyMedium),
               )
             ],
           ),

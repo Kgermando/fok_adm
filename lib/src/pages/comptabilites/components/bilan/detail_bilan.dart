@@ -22,7 +22,8 @@ class DetailBilan extends StatefulWidget {
 }
 
 class _DetailBilanState extends State<DetailBilan> {
-   final ScrollController _controllerScroll = ScrollController();
+  final GlobalKey<ScaffoldState> _key = GlobalKey();
+  final ScrollController _controllerScroll = ScrollController();
   bool isLoading = false;
   List<UserModel> userList = [];
 
@@ -60,11 +61,11 @@ class _DetailBilanState extends State<DetailBilan> {
       user = userModel;
     });
   }
-  
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        // key: context.read<Controller>().scaffoldKey,
+        key: _key,
         drawer: const DrawerMenu(),
         body: SafeArea(
           child: Row(
@@ -99,8 +100,9 @@ class _DetailBilanState extends State<DetailBilan> {
                                     const SizedBox(width: p10),
                                     Expanded(
                                       child: CustomAppbar(
-                                          title:
-                                              '${data!.titleBilan} '),
+                                          title: data!.titleBilan,
+                                          controllerMenu: () =>
+                                              _key.currentState!.openDrawer()),
                                     ),
                                   ],
                                 ),
@@ -173,9 +175,6 @@ class _DetailBilanState extends State<DetailBilan> {
     ]);
   }
 
-
-
-  
   Widget dataWidget(BilanModel data) {
     final bodyMedium = Theme.of(context).textTheme.bodyMedium;
     return Padding(
@@ -851,8 +850,4 @@ class _DetailBilanState extends State<DetailBilan> {
       backgroundColor: Colors.green[700],
     ));
   }
-
-
-
-
 }

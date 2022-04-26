@@ -4,16 +4,15 @@ import 'package:fokad_admin/src/constants/responsive.dart';
 import 'package:fokad_admin/src/models/menu_item.dart';
 import 'package:fokad_admin/src/models/users/user_model.dart';
 import 'package:fokad_admin/src/navigation/header/header_item.dart';
-import 'package:fokad_admin/src/provider/controller.dart';
 import 'package:fokad_admin/src/utils/menu_items.dart';
 import 'package:fokad_admin/src/utils/menu_options.dart';
-import 'package:provider/provider.dart';
 import 'package:badges/badges.dart';
 
 class CustomAppbar extends StatefulWidget {
-  const CustomAppbar({Key? key, required this.title}) : super(key: key);
+  const CustomAppbar({Key? key, required this.title, required this.controllerMenu}) : super(key: key);
 
   final String title;
+  final VoidCallback controllerMenu;
 
   @override
   _CustomAppbarState createState() => _CustomAppbarState();
@@ -31,7 +30,7 @@ class _CustomAppbarState extends State<CustomAppbar> {
           children: [
             if (!Responsive.isDesktop(context))
               IconButton(
-                onPressed: context.read<Controller>().controlMenu,
+                onPressed: widget.controllerMenu,
                 icon: const Icon(
                   Icons.menu,
                 ),

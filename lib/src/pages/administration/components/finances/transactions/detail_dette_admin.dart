@@ -24,6 +24,7 @@ class DetailDetteAdmin extends StatefulWidget {
 }
 
 class _DetailDetteAdminState extends State<DetailDetteAdmin> {
+  final GlobalKey<ScaffoldState> _key = GlobalKey();
  final ScrollController _controllerScroll = ScrollController();
   bool isLoading = false;
   List<UserModel> userList = [];
@@ -73,6 +74,7 @@ class _DetailDetteAdminState extends State<DetailDetteAdmin> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: _key,
         drawer: const DrawerMenu(),
         body: SafeArea(
           child: Row(
@@ -107,7 +109,9 @@ class _DetailDetteAdminState extends State<DetailDetteAdmin> {
                                     const SizedBox(width: p10),
                                     Expanded(
                                       child: CustomAppbar(
-                                          title: '${detteModel!.nomComplet} '),
+                                          title: detteModel!.nomComplet,
+                                          controllerMenu: () =>
+                                              _key.currentState!.openDrawer()),
                                     ),
                                   ],
                                 ),

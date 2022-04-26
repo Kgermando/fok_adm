@@ -13,13 +13,14 @@ import 'package:fokad_admin/src/provider/controller.dart';
 import 'package:provider/provider.dart';
 
 class DepartementRH extends StatefulWidget {
-  const DepartementRH({ Key? key }) : super(key: key);
+  const DepartementRH({Key? key}) : super(key: key);
 
   @override
   State<DepartementRH> createState() => _DepartementRHState();
 }
 
 class _DepartementRHState extends State<DepartementRH> {
+  final GlobalKey<ScaffoldState> _key = GlobalKey();
   final ScrollController _controllerScroll = ScrollController();
 
   bool isOpenRh1 = false;
@@ -49,7 +50,7 @@ class _DepartementRHState extends State<DepartementRH> {
     final headline6 = Theme.of(context).textTheme.headline6;
     final bodyMedium = Theme.of(context).textTheme.bodyMedium;
     return Scaffold(
-        key: context.read<Controller>().scaffoldKey,
+        key: _key,
         drawer: const DrawerMenu(),
         body: SafeArea(
           child: Row(
@@ -66,7 +67,9 @@ class _DepartementRHState extends State<DepartementRH> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const CustomAppbar(title: 'DD RH'),
+                      CustomAppbar(title: 'DD RH',
+                          controllerMenu: () =>
+                              _key.currentState!.openDrawer()),
                       Expanded(
                           child: Scrollbar(
                         controller: _controllerScroll,

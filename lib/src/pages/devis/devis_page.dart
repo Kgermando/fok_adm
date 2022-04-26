@@ -26,6 +26,7 @@ class DevisPage extends StatefulWidget {
 }
 
 class _DevisPageState extends State<DevisPage> {
+  final GlobalKey<ScaffoldState> _key = GlobalKey();
   final _form = GlobalKey<FormState>();
   bool isLoading = false;
 
@@ -85,7 +86,7 @@ class _DevisPageState extends State<DevisPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        key: context.read<Controller>().scaffoldKey,
+        key: _key,
         drawer: const DrawerMenu(),
         floatingActionButton: FloatingActionButton(
             tooltip: 'Nouveau devis',
@@ -105,9 +106,11 @@ class _DevisPageState extends State<DevisPage> {
                   padding: const EdgeInsets.all(p10),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
-                    children: const [
-                      CustomAppbar(title: 'Etat de besoin'),
-                      Expanded(child: TableDevis())
+                    children: [
+                      CustomAppbar(title: 'Etat de besoin',
+                          controllerMenu: () =>
+                              _key.currentState!.openDrawer()),
+                      const Expanded(child: TableDevis())
                     ],
                   ),
                 ),
@@ -460,8 +463,7 @@ class _DevisPageState extends State<DevisPage> {
         signatureDD: '-',
         signatureJustificationDD: '-',
         signature: matricule.toString(),
-        created: DateTime.now()
-    );
+        created: DateTime.now());
     await DevisAPi().insertData(devisModel);
     Routemaster.of(context).pop();
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(

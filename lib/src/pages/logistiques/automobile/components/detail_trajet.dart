@@ -10,7 +10,6 @@ import 'package:fokad_admin/src/widgets/title_widget.dart';
 import 'package:intl/intl.dart';
 import 'package:routemaster/routemaster.dart';
 
-
 class DetailTrajet extends StatefulWidget {
   const DetailTrajet({Key? key, this.id}) : super(key: key);
   final int? id;
@@ -20,6 +19,7 @@ class DetailTrajet extends StatefulWidget {
 }
 
 class _DetailTrajetState extends State<DetailTrajet> {
+  final GlobalKey<ScaffoldState> _key = GlobalKey();
   final ScrollController _controllerScroll = ScrollController();
   bool isLoading = false;
 
@@ -59,7 +59,7 @@ class _DetailTrajetState extends State<DetailTrajet> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        // key: context.read<Controller>().scaffoldKey,
+        key: _key,
         drawer: const DrawerMenu(),
         body: SafeArea(
           child: Row(
@@ -94,7 +94,9 @@ class _DetailTrajetState extends State<DetailTrajet> {
                                     const SizedBox(width: p10),
                                     Expanded(
                                       child: CustomAppbar(
-                                          title: '${data!.nomeroEntreprise} '),
+                                          title: data!.nomeroEntreprise,
+                                          controllerMenu: () =>
+                                              _key.currentState!.openDrawer()),
                                     ),
                                   ],
                                 ),

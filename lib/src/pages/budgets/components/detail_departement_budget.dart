@@ -22,6 +22,7 @@ class DetailDepartmentBudget extends StatefulWidget {
 }
 
 class _DetailDepartmentBudgetState extends State<DetailDepartmentBudget> {
+  final GlobalKey<ScaffoldState> _key = GlobalKey();
   final ScrollController _controllerScroll = ScrollController();
 
   @override
@@ -51,7 +52,7 @@ class _DetailDepartmentBudgetState extends State<DetailDepartmentBudget> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        // key: context.read<Controller>().scaffoldKey,
+        key: _key,
         drawer: const DrawerMenu(),
         body: SafeArea(
           child: Row(
@@ -70,7 +71,8 @@ class _DetailDepartmentBudgetState extends State<DetailDepartmentBudget> {
                         builder: (BuildContext context,
                             AsyncSnapshot<DepartementBudgetModel> snapshot) {
                           if (snapshot.hasData) {
-                            DepartementBudgetModel? departementBudgetModel = snapshot.data;
+                            DepartementBudgetModel? departementBudgetModel =
+                                snapshot.data;
                             return Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
@@ -86,7 +88,10 @@ class _DetailDepartmentBudgetState extends State<DetailDepartmentBudget> {
                                     const SizedBox(width: p10),
                                     Expanded(
                                       child: CustomAppbar(
-                                          title: departementBudgetModel!.departement),
+                                          title: departementBudgetModel!
+                                              .departement,
+                                          controllerMenu: () =>
+                                              _key.currentState!.openDrawer()),
                                     ),
                                   ],
                                 ),
@@ -106,60 +111,55 @@ class _DetailDepartmentBudgetState extends State<DetailDepartmentBudget> {
   }
 
   Widget pageDetail(DepartementBudgetModel data) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Card(
-          elevation: 10,
-          child: Container(
-            margin: const EdgeInsets.all(p16),
-            width: (Responsive.isDesktop(context))
-                ? MediaQuery.of(context).size.width / 2
-                : MediaQuery.of(context).size.width,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(p10),
-              border: Border.all(
-                color: Colors.blueGrey.shade700,
-                width: 2.0,
-              ),
-            ),
-            child: ListView(
-              controller: _controllerScroll,
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    TitleWidget(title: data.periodeBudget),
-                    Column(
-                      children: [
-                        Row(
-                          children: [
-                            IconButton(
-                                tooltip: 'Modifier',
-                                onPressed: () {},
-                                icon: const Icon(Icons.edit)),
-                            PrintWidget(
-                                tooltip: 'Imprimer le document', onPressed: () {})
-                          ],
-                        ),
-                        SelectableText(
-                          DateFormat("dd-MM-yy")
-                              .format(data.created),
-                          textAlign: TextAlign.start),
-                      ],
-                    )
-                  ],
-                ),
-                dataWidget(data),
-                const LigneBudgetaire(),
-              ],
+    return Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+      Card(
+        elevation: 10,
+        child: Container(
+          margin: const EdgeInsets.all(p16),
+          width: (Responsive.isDesktop(context))
+              ? MediaQuery.of(context).size.width / 2
+              : MediaQuery.of(context).size.width,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(p10),
+            border: Border.all(
+              color: Colors.blueGrey.shade700,
+              width: 2.0,
             ),
           ),
+          child: ListView(
+            controller: _controllerScroll,
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  TitleWidget(title: data.periodeBudget),
+                  Column(
+                    children: [
+                      Row(
+                        children: [
+                          IconButton(
+                              tooltip: 'Modifier',
+                              onPressed: () {},
+                              icon: const Icon(Icons.edit)),
+                          PrintWidget(
+                              tooltip: 'Imprimer le document', onPressed: () {})
+                        ],
+                      ),
+                      SelectableText(
+                          DateFormat("dd-MM-yy").format(data.created),
+                          textAlign: TextAlign.start),
+                    ],
+                  )
+                ],
+              ),
+              dataWidget(data),
+              const LigneBudgetaire(),
+            ],
+          ),
         ),
-      ]
-    );
+      ),
+    ]);
   }
-
 
   Widget dataWidget(DepartementBudgetModel data) {
     final bodyMedium = Theme.of(context).textTheme.bodyMedium;
@@ -202,7 +202,8 @@ class _DetailDepartmentBudgetState extends State<DetailDepartmentBudget> {
               ),
               Expanded(
                 child: SelectableText(data.totalGlobalDispo,
-                    textAlign: TextAlign.start, style: bodyMedium.copyWith(color: Colors.blueGrey)),
+                    textAlign: TextAlign.start,
+                    style: bodyMedium.copyWith(color: Colors.blueGrey)),
               )
             ],
           ),
@@ -236,9 +237,4 @@ class _DetailDepartmentBudgetState extends State<DetailDepartmentBudget> {
       ),
     );
   }
-
-
-
-
-
 }

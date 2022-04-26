@@ -170,6 +170,8 @@ class Routing {
 
         // Administration
         AdminRoutes.home: (_) => const MaterialPage(child: DashboardAdministration()),
+        AdminRoutes.adminDashboard: (_) =>
+            const MaterialPage(child: DashboardAdministration()),
         AdminRoutes.adminRH: (_) => const MaterialPage(child: RhAdmin()),
         AdminRoutes.adminFinance: (_) => const MaterialPage(child: FinancesAdmin()),
         AdminRoutes.adminExploitation: (_) => const MaterialPage(child: ExploitationsAdmin()),

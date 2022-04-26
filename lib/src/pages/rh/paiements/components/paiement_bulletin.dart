@@ -22,6 +22,7 @@ class PaiementBulletin extends StatefulWidget {
 }
 
 class _PaiementBulletinState extends State<PaiementBulletin> {
+  final GlobalKey<ScaffoldState> _key = GlobalKey();
   final ScrollController _controllerScroll = ScrollController();
   final _formKey = GlobalKey<FormState>();
   bool isLoading = false;
@@ -179,6 +180,7 @@ class _PaiementBulletinState extends State<PaiementBulletin> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: _key,
       drawer: const DrawerMenu(),
       body: SafeArea(
           child: Row(
@@ -204,8 +206,10 @@ class _PaiementBulletinState extends State<PaiementBulletin> {
                             icon: const Icon(Icons.arrow_back)),
                       ),
                       const SizedBox(width: p10),
-                      const Expanded(
-                          child: CustomAppbar(title: 'Bulletin de paie')),
+                      Expanded(
+                          child: CustomAppbar(title: 'Bulletin de paie',
+                              controllerMenu: () =>
+                                  _key.currentState!.openDrawer())),
                     ],
                   ),
                   Expanded(

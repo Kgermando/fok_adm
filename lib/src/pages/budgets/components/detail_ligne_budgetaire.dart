@@ -22,10 +22,9 @@ class DetailLigneBudgetaire extends StatefulWidget {
 }
 
 class _DetailLigneBudgetaireState extends State<DetailLigneBudgetaire> {
-    final ScrollController _controllerScroll = ScrollController();
+  final GlobalKey<ScaffoldState> _key = GlobalKey();
+  final ScrollController _controllerScroll = ScrollController();
   bool isLoading = false;
-  
-
 
   String approbationDGController = '-';
   String approbationFinController = '-';
@@ -38,7 +37,7 @@ class _DetailLigneBudgetaireState extends State<DetailLigneBudgetaire> {
   TextEditingController signatureJustificationBudgetController =
       TextEditingController();
   TextEditingController signatureJustificationDDController =
-    TextEditingController();
+      TextEditingController();
 
   @override
   initState() {
@@ -56,11 +55,11 @@ class _DetailLigneBudgetaireState extends State<DetailLigneBudgetaire> {
       user = userModel;
     });
   }
-  
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        // key: context.read<Controller>().scaffoldKey,
+        key: _key,
         drawer: const DrawerMenu(),
         body: SafeArea(
           child: Row(
@@ -95,7 +94,9 @@ class _DetailLigneBudgetaireState extends State<DetailLigneBudgetaire> {
                                     const SizedBox(width: p10),
                                     Expanded(
                                       child: CustomAppbar(
-                                          title: data!.nomLigneBudgetaire),
+                                          title: data!.nomLigneBudgetaire,
+                                        controllerMenu: () =>
+                                            _key.currentState!.openDrawer()),
                                     ),
                                   ],
                                 ),
@@ -171,7 +172,7 @@ class _DetailLigneBudgetaireState extends State<DetailLigneBudgetaire> {
     ]);
   }
 
-   Widget dataWidget(LigneBudgetaireModel data) {
+  Widget dataWidget(LigneBudgetaireModel data) {
     final bodyMedium = Theme.of(context).textTheme.bodyMedium;
     return Padding(
       padding: const EdgeInsets.all(p10),
@@ -231,17 +232,17 @@ class _DetailLigneBudgetaireState extends State<DetailLigneBudgetaire> {
           ),
           Row(
             children: [
-                Expanded(
-                  child: Text('Nombre d\'unité :',
-                      textAlign: TextAlign.start,
-                      style: bodyMedium.copyWith(fontWeight: FontWeight.bold)),
-                ),
-                Expanded(
-                  child: SelectableText(data.nombreUnite,
-                      textAlign: TextAlign.start, style: bodyMedium),
-                )
-              ],
-            ),
+              Expanded(
+                child: Text('Nombre d\'unité :',
+                    textAlign: TextAlign.start,
+                    style: bodyMedium.copyWith(fontWeight: FontWeight.bold)),
+              ),
+              Expanded(
+                child: SelectableText(data.nombreUnite,
+                    textAlign: TextAlign.start, style: bodyMedium),
+              )
+            ],
+          ),
           Row(
             children: [
               Expanded(
@@ -254,7 +255,7 @@ class _DetailLigneBudgetaireState extends State<DetailLigneBudgetaire> {
                     textAlign: TextAlign.start, style: bodyMedium),
               )
             ],
-            ),
+          ),
           Row(
             children: [
               Expanded(
@@ -634,7 +635,7 @@ class _DetailLigneBudgetaireState extends State<DetailLigneBudgetaire> {
                               style: bodySmall,
                             ),
                             SelectableText(
-                             data. signatureBudget.toString(),
+                              data.signatureBudget.toString(),
                               style: bodyMedium,
                             ),
                           ],
@@ -805,40 +806,34 @@ class _DetailLigneBudgetaireState extends State<DetailLigneBudgetaire> {
     );
   }
 
-
   Future<void> submitUpdateDG(LigneBudgetaireModel data) async {
     final ligneBudgetaireModel = LigneBudgetaireModel(
-      nomLigneBudgetaire: data.nomLigneBudgetaire, 
-      departement: data.departement, 
-      periodeBudget: data.periodeBudget, 
-      uniteChoisie: data.uniteChoisie, 
-      nombreUnite: data.nombreUnite, 
-      coutUnitaire: data.coutUnitaire, 
-      coutTotal: data.coutTotal, 
-      caisse: data.caisse, 
-      banque: data.banque, 
-      finPropre: data.finPropre, 
-      finExterieur: data.finExterieur, 
-
-      approbationDG: approbationDGController.toString(),
-      signatureDG: user!.matricule.toString(),
-      signatureJustificationDG: signatureJustificationDGController.text,
-
-      approbationFin: data.approbationFin.toString(),
-      signatureFin: data.signatureFin.toString(),
-      signatureJustificationFin: data.signatureJustificationFin.toString(),
-
-      approbationBudget: data.approbationBudget.toString(),
-      signatureBudget: data.signatureBudget.toString(),
-      signatureJustificationBudget: data.signatureJustificationBudget.toString(),
-
-      approbationDD: data.approbationDD.toString(),
-      signatureDD: data.signatureDD.toString(),
-      signatureJustificationDD: data.signatureJustificationDD.toString(),
-
-      signature: data.signature,
-      created: data.created
-    );
+        nomLigneBudgetaire: data.nomLigneBudgetaire,
+        departement: data.departement,
+        periodeBudget: data.periodeBudget,
+        uniteChoisie: data.uniteChoisie,
+        nombreUnite: data.nombreUnite,
+        coutUnitaire: data.coutUnitaire,
+        coutTotal: data.coutTotal,
+        caisse: data.caisse,
+        banque: data.banque,
+        finPropre: data.finPropre,
+        finExterieur: data.finExterieur,
+        approbationDG: approbationDGController.toString(),
+        signatureDG: user!.matricule.toString(),
+        signatureJustificationDG: signatureJustificationDGController.text,
+        approbationFin: data.approbationFin.toString(),
+        signatureFin: data.signatureFin.toString(),
+        signatureJustificationFin: data.signatureJustificationFin.toString(),
+        approbationBudget: data.approbationBudget.toString(),
+        signatureBudget: data.signatureBudget.toString(),
+        signatureJustificationBudget:
+            data.signatureJustificationBudget.toString(),
+        approbationDD: data.approbationDD.toString(),
+        signatureDD: data.signatureDD.toString(),
+        signatureJustificationDD: data.signatureJustificationDD.toString(),
+        signature: data.signature,
+        created: data.created);
 
     await LIgneBudgetaireApi().updateData(data.id!, ligneBudgetaireModel);
     Routemaster.of(context).pop();
@@ -850,35 +845,32 @@ class _DetailLigneBudgetaireState extends State<DetailLigneBudgetaire> {
 
   Future<void> submitUpdateFIN(LigneBudgetaireModel data) async {
     final ligneBudgetaireModel = LigneBudgetaireModel(
-      nomLigneBudgetaire: data.nomLigneBudgetaire,
-      departement: data.departement,
-      periodeBudget: data.periodeBudget,
-      uniteChoisie: data.uniteChoisie,
-      nombreUnite: data.nombreUnite,
-      coutUnitaire: data.coutUnitaire,
-      coutTotal: data.coutTotal,
-      caisse: data.caisse,
-      banque: data.banque,
-      finPropre: data.finPropre,
-      finExterieur: data.finExterieur,
-      approbationDG: data.approbationDG.toString(),
-      signatureDG: data.signatureDG.toString(),
-      signatureJustificationDG: data.signatureJustificationDG.toString(),
-
-      approbationFin: approbationFinController.toString(),
-      signatureFin: user!.matricule.toString(),
-      signatureJustificationFin: signatureJustificationFinController.text,
-
-      approbationBudget: data.approbationBudget.toString(),
-      signatureBudget: data.signatureBudget.toString(),
-      signatureJustificationBudget: data.signatureJustificationBudget.toString(),
-      approbationDD: data.approbationDD.toString(),
-      signatureDD: data.signatureDD.toString(),
-      signatureJustificationDD: data.signatureJustificationDD.toString(),
-
-      signature: data.signature,
-      created: data.created
-    );
+        nomLigneBudgetaire: data.nomLigneBudgetaire,
+        departement: data.departement,
+        periodeBudget: data.periodeBudget,
+        uniteChoisie: data.uniteChoisie,
+        nombreUnite: data.nombreUnite,
+        coutUnitaire: data.coutUnitaire,
+        coutTotal: data.coutTotal,
+        caisse: data.caisse,
+        banque: data.banque,
+        finPropre: data.finPropre,
+        finExterieur: data.finExterieur,
+        approbationDG: data.approbationDG.toString(),
+        signatureDG: data.signatureDG.toString(),
+        signatureJustificationDG: data.signatureJustificationDG.toString(),
+        approbationFin: approbationFinController.toString(),
+        signatureFin: user!.matricule.toString(),
+        signatureJustificationFin: signatureJustificationFinController.text,
+        approbationBudget: data.approbationBudget.toString(),
+        signatureBudget: data.signatureBudget.toString(),
+        signatureJustificationBudget:
+            data.signatureJustificationBudget.toString(),
+        approbationDD: data.approbationDD.toString(),
+        signatureDD: data.signatureDD.toString(),
+        signatureJustificationDD: data.signatureJustificationDD.toString(),
+        signature: data.signature,
+        created: data.created);
 
     await LIgneBudgetaireApi().updateData(data.id!, ligneBudgetaireModel);
     Routemaster.of(context).pop();
@@ -890,38 +882,32 @@ class _DetailLigneBudgetaireState extends State<DetailLigneBudgetaire> {
 
   Future<void> submitUpdateBudget(LigneBudgetaireModel data) async {
     final ligneBudgetaireModel = LigneBudgetaireModel(
-     nomLigneBudgetaire: data.nomLigneBudgetaire,
-      departement: data.departement,
-      periodeBudget: data.periodeBudget,
-      uniteChoisie: data.uniteChoisie,
-      nombreUnite: data.nombreUnite,
-      coutUnitaire: data.coutUnitaire,
-      coutTotal: data.coutTotal,
-      caisse: data.caisse,
-      banque: data.banque,
-      finPropre: data.finPropre,
-      finExterieur: data.finExterieur,
-
-      approbationDG: data.approbationDG.toString(),
-      signatureDG: data.signatureDG.toString(),
-      signatureJustificationDG: data.signatureJustificationDG.toString(),
-
-      approbationFin: data.approbationFin.toString(),
-      signatureFin: data.signatureFin.toString(),
-      signatureJustificationFin: data.signatureJustificationFin.toString(),
-
-      approbationBudget: approbationBudgetController.toString(),
-      signatureBudget: user!.matricule.toString(),
-      signatureJustificationBudget:
-          signatureJustificationBudgetController.text,
-
-      approbationDD: data.approbationDD.toString(),
-      signatureDD: data.signatureDD.toString(),
-      signatureJustificationDD: data.signatureJustificationDD.toString(),
-
-      signature: data.signature,
-      created: data.created
-    );
+        nomLigneBudgetaire: data.nomLigneBudgetaire,
+        departement: data.departement,
+        periodeBudget: data.periodeBudget,
+        uniteChoisie: data.uniteChoisie,
+        nombreUnite: data.nombreUnite,
+        coutUnitaire: data.coutUnitaire,
+        coutTotal: data.coutTotal,
+        caisse: data.caisse,
+        banque: data.banque,
+        finPropre: data.finPropre,
+        finExterieur: data.finExterieur,
+        approbationDG: data.approbationDG.toString(),
+        signatureDG: data.signatureDG.toString(),
+        signatureJustificationDG: data.signatureJustificationDG.toString(),
+        approbationFin: data.approbationFin.toString(),
+        signatureFin: data.signatureFin.toString(),
+        signatureJustificationFin: data.signatureJustificationFin.toString(),
+        approbationBudget: approbationBudgetController.toString(),
+        signatureBudget: user!.matricule.toString(),
+        signatureJustificationBudget:
+            signatureJustificationBudgetController.text,
+        approbationDD: data.approbationDD.toString(),
+        signatureDD: data.signatureDD.toString(),
+        signatureJustificationDD: data.signatureJustificationDD.toString(),
+        signature: data.signature,
+        created: data.created);
 
     await LIgneBudgetaireApi().updateData(data.id!, ligneBudgetaireModel);
     Routemaster.of(context).pop();
@@ -933,37 +919,32 @@ class _DetailLigneBudgetaireState extends State<DetailLigneBudgetaire> {
 
   Future<void> submitUpdateDD(LigneBudgetaireModel data) async {
     final ligneBudgetaireModel = LigneBudgetaireModel(
-     nomLigneBudgetaire: data.nomLigneBudgetaire,
-      departement: data.departement,
-      periodeBudget: data.periodeBudget,
-      uniteChoisie: data.uniteChoisie,
-      nombreUnite: data.nombreUnite,
-      coutUnitaire: data.coutUnitaire,
-      coutTotal: data.coutTotal,
-      caisse: data.caisse,
-      banque: data.banque,
-      finPropre: data.finPropre,
-      finExterieur: data.finExterieur,
-
-      approbationDG: data.approbationDG.toString(),
-      signatureDG: data.signatureDG.toString(),
-      signatureJustificationDG: data.signatureJustificationDG.toString(),
-
-      approbationFin: data.approbationFin.toString(),
-      signatureFin: data.signatureFin.toString(),
-      signatureJustificationFin: data.signatureJustificationFin.toString(),
-
-      approbationBudget: data.approbationBudget.toString(),
-      signatureBudget: data.signatureBudget.toString(),
-      signatureJustificationBudget: data.signatureJustificationBudget.toString(),
-
-      approbationDD: approbationDDController.toString(),
-      signatureDD: user!.matricule.toString(),
-      signatureJustificationDD: signatureJustificationDDController.text,
-
-      signature: data.signature.toString(),
-      created: data.created
-    );
+        nomLigneBudgetaire: data.nomLigneBudgetaire,
+        departement: data.departement,
+        periodeBudget: data.periodeBudget,
+        uniteChoisie: data.uniteChoisie,
+        nombreUnite: data.nombreUnite,
+        coutUnitaire: data.coutUnitaire,
+        coutTotal: data.coutTotal,
+        caisse: data.caisse,
+        banque: data.banque,
+        finPropre: data.finPropre,
+        finExterieur: data.finExterieur,
+        approbationDG: data.approbationDG.toString(),
+        signatureDG: data.signatureDG.toString(),
+        signatureJustificationDG: data.signatureJustificationDG.toString(),
+        approbationFin: data.approbationFin.toString(),
+        signatureFin: data.signatureFin.toString(),
+        signatureJustificationFin: data.signatureJustificationFin.toString(),
+        approbationBudget: data.approbationBudget.toString(),
+        signatureBudget: data.signatureBudget.toString(),
+        signatureJustificationBudget:
+            data.signatureJustificationBudget.toString(),
+        approbationDD: approbationDDController.toString(),
+        signatureDD: user!.matricule.toString(),
+        signatureJustificationDD: signatureJustificationDDController.text,
+        signature: data.signature.toString(),
+        created: data.created);
 
     await LIgneBudgetaireApi().updateData(data.id!, ligneBudgetaireModel);
     Routemaster.of(context).pop();

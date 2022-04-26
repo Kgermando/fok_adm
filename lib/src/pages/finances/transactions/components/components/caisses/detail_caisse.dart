@@ -25,6 +25,7 @@ class DetailCaisse extends StatefulWidget {
 }
 
 class _DetailCaisseState extends State<DetailCaisse> {
+  final GlobalKey<ScaffoldState> _key = GlobalKey();
   final ScrollController _controllerScroll = ScrollController();
   bool isLoading = false;
   List<UserModel> userList = [];
@@ -81,7 +82,7 @@ class _DetailCaisseState extends State<DetailCaisse> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        // key: context.read<Controller>().scaffoldKey,
+        key: _key,
         drawer: const DrawerMenu(),
         body: SafeArea(
           child: Row(
@@ -116,7 +117,9 @@ class _DetailCaisseState extends State<DetailCaisse> {
                                     const SizedBox(width: p10),
                                     Expanded(
                                       child: CustomAppbar(
-                                          title: '${caisseModel!.nomComplet} '),
+                                          title: caisseModel!.nomComplet,
+                                          controllerMenu: () =>
+                                              _key.currentState!.openDrawer()),
                                     ),
                                   ],
                                 ),
@@ -187,7 +190,7 @@ class _DetailCaisseState extends State<DetailCaisse> {
                 child: tableauList(),
               ),
               if (caisseModel.typeOperation == 'Encaissement')
-              infosEditeurWidget(caisseModel)
+                infosEditeurWidget(caisseModel)
             ],
           ),
         ),
@@ -391,7 +394,6 @@ class _DetailCaisseState extends State<DetailCaisse> {
       });
     }
   }
-
 
   Widget infosEditeurWidget(CaisseModel data) {
     final bodyMedium = Theme.of(context).textTheme.bodyMedium;
@@ -693,7 +695,7 @@ class _DetailCaisseState extends State<DetailCaisse> {
                               ),
                             if (data.approbationBudget == '-' &&
                                 user!.fonctionOccupe == 'Directeur de budget')
-                             ligneBudgtaireWidget()
+                              ligneBudgtaireWidget()
                           ],
                         )),
                     Expanded(
@@ -1047,5 +1049,4 @@ class _DetailCaisseState extends State<DetailCaisse> {
       backgroundColor: Colors.green[700],
     ));
   }
-
 }

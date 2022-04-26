@@ -9,18 +9,17 @@ import 'package:fokad_admin/src/models/users/user_model.dart';
 import 'package:fokad_admin/src/navigation/drawer/drawer_menu.dart';
 import 'package:fokad_admin/src/navigation/header/custom_appbar.dart';
 import 'package:fokad_admin/src/pages/administration/components/budgets/ligne_budgetaire_admin.dart';
-import 'package:fokad_admin/src/provider/controller.dart';
-import 'package:provider/provider.dart';
 
 class BudgetsAdmin extends StatefulWidget {
-  const BudgetsAdmin({ Key? key }) : super(key: key);
+  const BudgetsAdmin({Key? key}) : super(key: key);
 
   @override
   State<BudgetsAdmin> createState() => _BudgetsAdminState();
 }
 
 class _BudgetsAdminState extends State<BudgetsAdmin> {
- final ScrollController _controllerScroll = ScrollController();
+  final GlobalKey<ScaffoldState> _key = GlobalKey();
+  final ScrollController _controllerScroll = ScrollController();
 
   bool isOpenBudget = false;
 
@@ -48,7 +47,7 @@ class _BudgetsAdminState extends State<BudgetsAdmin> {
     final headline6 = Theme.of(context).textTheme.headline6;
     final bodyMedium = Theme.of(context).textTheme.bodyMedium;
     return Scaffold(
-        key: context.read<Controller>().scaffoldKey,
+        key: _key,
         drawer: const DrawerMenu(),
         body: SafeArea(
           child: Row(
@@ -65,7 +64,8 @@ class _BudgetsAdminState extends State<BudgetsAdmin> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const CustomAppbar(title: 'Budgets Admin'),
+                      CustomAppbar(
+                          title: 'Budgets Admin', controllerMenu: () => _key.currentState!.openDrawer()),
                       Expanded(
                           child: Scrollbar(
                         controller: _controllerScroll,

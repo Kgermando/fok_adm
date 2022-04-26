@@ -19,6 +19,7 @@ class DetailCaburant extends StatefulWidget {
 }
 
 class _DetailCaburantState extends State<DetailCaburant> {
+  final GlobalKey<ScaffoldState> _key = GlobalKey();
   final ScrollController _controllerScroll = ScrollController();
   bool isLoading = false;
 
@@ -62,7 +63,7 @@ class _DetailCaburantState extends State<DetailCaburant> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        // key: context.read<Controller>().scaffoldKey,
+        key: _key,
         drawer: const DrawerMenu(),
         body: SafeArea(
           child: Row(
@@ -96,8 +97,10 @@ class _DetailCaburantState extends State<DetailCaburant> {
                                     ),
                                     const SizedBox(width: p10),
                                     Expanded(
-                                      child:
-                                          CustomAppbar(title: '${data!.typeCaburant} '),
+                                      child: CustomAppbar(
+                                          title: data!.typeCaburant,
+                                          controllerMenu: () =>
+                                              _key.currentState!.openDrawer()),
                                     ),
                                   ],
                                 ),
@@ -141,7 +144,8 @@ class _DetailCaburantState extends State<DetailCaburant> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  TitleWidget(title: (data.operationEntreSortie == 'Entrer')
+                  TitleWidget(
+                      title: (data.operationEntreSortie == 'Entrer')
                           ? 'Ravitaillement'
                           : 'Consommation'),
                   Column(
@@ -189,9 +193,10 @@ class _DetailCaburantState extends State<DetailCaburant> {
                     (data.operationEntreSortie == 'Entrer')
                         ? 'Ravitaillement'
                         : 'Consommation',
-                    textAlign: TextAlign.start, style: (data.operationEntreSortie == 'Entrer') 
-                      ? bodyMedium.copyWith(color: Colors.green.shade700)
-                      : bodyMedium.copyWith(color: Colors.red.shade700)),
+                    textAlign: TextAlign.start,
+                    style: (data.operationEntreSortie == 'Entrer')
+                        ? bodyMedium.copyWith(color: Colors.green.shade700)
+                        : bodyMedium.copyWith(color: Colors.red.shade700)),
               )
             ],
           ),
@@ -295,7 +300,8 @@ class _DetailCaburantState extends State<DetailCaburant> {
               ),
               Expanded(
                 child: SelectableText(
-                    DateFormat("dd-MM-yy HH:mm").format(data.dateHeureSortieAnguin),
+                    DateFormat("dd-MM-yy HH:mm")
+                        .format(data.dateHeureSortieAnguin),
                     textAlign: TextAlign.start,
                     style: bodyMedium),
               )

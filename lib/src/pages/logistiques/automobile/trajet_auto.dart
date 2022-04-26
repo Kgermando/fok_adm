@@ -8,41 +8,44 @@ import 'package:fokad_admin/src/provider/controller.dart';
 import 'package:provider/provider.dart';
 
 class TrajetAuto extends StatefulWidget {
-  const TrajetAuto({ Key? key }) : super(key: key);
+  const TrajetAuto({Key? key}) : super(key: key);
 
   @override
   State<TrajetAuto> createState() => _TrajetAutoState();
 }
 
 class _TrajetAutoState extends State<TrajetAuto> {
+  final GlobalKey<ScaffoldState> _key = GlobalKey();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      key: context.read<Controller>().scaffoldKey,
-      drawer: const DrawerMenu(),
-      body: SafeArea(
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            if (Responsive.isDesktop(context))
-              const Expanded(
-                child: DrawerMenu(),
-              ),
-            Expanded(
-              flex: 5,
-              child: Padding(
-                padding: const EdgeInsets.all(p10),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: const [
-                    CustomAppbar(title: 'Geston des trajets'),
-                    Expanded(child: TableTrajet())
-                  ],
+        key: _key,
+        drawer: const DrawerMenu(),
+        body: SafeArea(
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              if (Responsive.isDesktop(context))
+                const Expanded(
+                  child: DrawerMenu(),
+                ),
+              Expanded(
+                flex: 5,
+                child: Padding(
+                  padding: const EdgeInsets.all(p10),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      CustomAppbar(title: 'Geston des trajets',
+                          controllerMenu: () =>
+                              _key.currentState!.openDrawer()),
+                      const Expanded(child: TableTrajet())
+                    ],
+                  ),
                 ),
               ),
-            ),
-          ],
-        ),
-      ));
+            ],
+          ),
+        ));
   }
 }

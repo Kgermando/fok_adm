@@ -22,6 +22,7 @@ class DetailValorisation extends StatefulWidget {
 }
 
 class _DetailValorisationState extends State<DetailValorisation> {
+  final GlobalKey<ScaffoldState> _key = GlobalKey();
   final ScrollController _controllerScroll = ScrollController();
   bool isLoading = false;
   List<UserModel> userList = [];
@@ -64,7 +65,7 @@ class _DetailValorisationState extends State<DetailValorisation> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        // key: context.read<Controller>().scaffoldKey,
+        key: _key,
         drawer: const DrawerMenu(),
         body: SafeArea(
           child: Row(
@@ -99,7 +100,9 @@ class _DetailValorisationState extends State<DetailValorisation> {
                                     const SizedBox(width: p10),
                                     Expanded(
                                       child:
-                                          CustomAppbar(title: data!.intitule),
+                                          CustomAppbar(title: data!.intitule,
+                                          controllerMenu: () =>
+                                              _key.currentState!.openDrawer()),
                                     ),
                                   ],
                                 ),
@@ -763,8 +766,7 @@ class _DetailValorisationState extends State<DetailValorisation> {
         signatureDD: data.signatureDD.toString(),
         signatureJustificationDD: data.signatureJustificationDD.toString(),
         signature: data.signature,
-        created: data.created
-    );
+        created: data.created);
     await ValorisationApi().updateData(data.id!, valorisationModel);
     Routemaster.of(context).pop();
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(

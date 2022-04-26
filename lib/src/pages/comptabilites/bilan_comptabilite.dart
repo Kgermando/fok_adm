@@ -22,6 +22,7 @@ class BilanComptabilite extends StatefulWidget {
 }
 
 class _BilanComptabiliteState extends State<BilanComptabilite> {
+  final GlobalKey<ScaffoldState> _key = GlobalKey();
   final controller = ScrollController();
 
   bool isLoading = false;
@@ -66,7 +67,7 @@ class _BilanComptabiliteState extends State<BilanComptabilite> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        // key: context.read<Controller>().scaffoldKey,
+        key: _key,
         drawer: const DrawerMenu(),
         floatingActionButton: FloatingActionButton(
             foregroundColor: Colors.white,
@@ -92,7 +93,9 @@ class _BilanComptabiliteState extends State<BilanComptabilite> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const CustomAppbar(title: 'Bilan'),
+                      CustomAppbar(title: 'Bilan',
+                          controllerMenu: () =>
+                              _key.currentState!.openDrawer()),
                       Expanded(
                           child: Scrollbar(
                         controller: controller,
@@ -308,8 +311,7 @@ class _BilanComptabiliteState extends State<BilanComptabilite> {
         signatureDD: '-',
         signatureJustificationDD: '-',
         signature: matricule.toString(),
-        created: DateTime.now()
-      );
+        created: DateTime.now());
     await BilanApi().insertData(bilanModel);
     Routemaster.of(context).pop();
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(

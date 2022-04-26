@@ -1,4 +1,3 @@
-
 import 'package:badges/badges.dart';
 import 'package:flutter/material.dart';
 import 'package:fokad_admin/src/api/auth/auth_api.dart';
@@ -13,13 +12,14 @@ import 'package:fokad_admin/src/pages/administration/components/rh/table_agent_a
 import 'package:fokad_admin/src/pages/administration/components/rh/table_salaire_admin.dart';
 
 class RhAdmin extends StatefulWidget {
-  const RhAdmin({ Key? key }) : super(key: key);
+  const RhAdmin({Key? key}) : super(key: key);
 
   @override
   State<RhAdmin> createState() => _RhAdminState();
 }
 
 class _RhAdminState extends State<RhAdmin> {
+  final GlobalKey<ScaffoldState> _key = GlobalKey();
   final ScrollController _controllerScroll = ScrollController();
 
   bool isOpenRh1 = false;
@@ -49,7 +49,7 @@ class _RhAdminState extends State<RhAdmin> {
     final headline6 = Theme.of(context).textTheme.headline6;
     final bodyMedium = Theme.of(context).textTheme.bodyMedium;
     return Scaffold(
-        // key: context.read<Controller>().scaffoldKey,
+        // key: _key,
         drawer: const DrawerMenu(),
         body: SafeArea(
           child: Row(
@@ -66,7 +66,7 @@ class _RhAdminState extends State<RhAdmin> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const CustomAppbar(title: 'RH Admin'),
+                      CustomAppbar(title: 'RH Admin', controllerMenu: () => _key.currentState!.openDrawer()),
                       Expanded(
                           child: Scrollbar(
                         controller: _controllerScroll,
@@ -77,35 +77,37 @@ class _RhAdminState extends State<RhAdmin> {
                               color: const Color.fromARGB(255, 126, 170, 214),
                               child: ExpansionTile(
                                 leading: const Icon(Icons.folder),
-                                  title: Text('Dossier Salaires', style: headline6),
-                                  subtitle: Text("Ces dossiers necessitent votre approbation", style: bodyMedium),
-                                  initiallyExpanded: false,
-                                  onExpansionChanged: (val) {
-                                    setState(() {
-                                      isOpenRh1 = !val;
-                                    });
-                                  },
-                                  trailing: Row(
-                                    children: [
-                                      Badge(
-                                        elevation: 10,
-                                        badgeContent: Text(agentInactifs.toString()),
-                                        position: const BadgePosition(top: 20.0),
-                                      ),
-                                      const Icon(Icons.arrow_drop_down),
-                                    ],
-                                  ),
-                                  children: const [
-                                    TableSalaireAdmin()
+                                title:
+                                    Text('Dossier Salaires', style: headline6),
+                                subtitle: Text(
+                                    "Ces dossiers necessitent votre approbation",
+                                    style: bodyMedium),
+                                initiallyExpanded: false,
+                                onExpansionChanged: (val) {
+                                  setState(() {
+                                    isOpenRh1 = !val;
+                                  });
+                                },
+                                trailing: Row(
+                                  children: [
+                                    Badge(
+                                      elevation: 10,
+                                      badgeContent:
+                                          Text(agentInactifs.toString()),
+                                      position: const BadgePosition(top: 20.0),
+                                    ),
+                                    const Icon(Icons.arrow_drop_down),
                                   ],
                                 ),
+                                children: const [TableSalaireAdmin()],
                               ),
-
+                            ),
                             Card(
                               color: const Color.fromARGB(255, 117, 190, 121),
                               child: ExpansionTile(
                                 leading: const Icon(Icons.folder),
-                                title: Text('Dossier employés', style: headline6),
+                                title:
+                                    Text('Dossier employés', style: headline6),
                                 subtitle: Text(
                                     "Ces dossiers necessitent votre approbation",
                                     style: bodyMedium),
@@ -126,9 +128,7 @@ class _RhAdminState extends State<RhAdmin> {
                                     const Icon(Icons.arrow_drop_down),
                                   ],
                                 ),
-                                children: const [
-                                  TableAgentAdmin()
-                                ],
+                                children: const [TableAgentAdmin()],
                               ),
                             )
                           ],

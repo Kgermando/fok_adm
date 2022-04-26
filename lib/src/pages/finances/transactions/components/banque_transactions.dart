@@ -29,6 +29,7 @@ class BanqueTransactions extends StatefulWidget {
 }
 
 class _BanqueTransactionsState extends State<BanqueTransactions> {
+  final GlobalKey<ScaffoldState> _key = GlobalKey();
   final controller = ScrollController();
   final ScrollController _controllerBillet = ScrollController();
   final _form = GlobalKey<FormState>();
@@ -106,7 +107,7 @@ class _BanqueTransactionsState extends State<BanqueTransactions> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        key: context.read<Controller>().scaffoldKey,
+        key: _key,
         drawer: const DrawerMenu(),
         floatingActionButton: speedialWidget(),
         body: SafeArea(
@@ -123,9 +124,11 @@ class _BanqueTransactionsState extends State<BanqueTransactions> {
                   padding: const EdgeInsets.all(p10),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
-                    children: const [
-                      CustomAppbar(title: 'Transactions Banque'),
-                      Expanded(child: TableBanque())
+                    children: [
+                      CustomAppbar(title: 'Transactions Banque',
+                          controllerMenu: () =>
+                              _key.currentState!.openDrawer()),
+                      const Expanded(child: TableBanque())
                     ],
                   ),
                 ),
@@ -551,7 +554,6 @@ class _BanqueTransactionsState extends State<BanqueTransactions> {
           }),
     );
   }
-
 
   Widget deperatmentWidget() {
     return Container(

@@ -22,6 +22,7 @@ class AddCarburantAuto extends StatefulWidget {
 }
 
 class _AddCarburantAutoState extends State<AddCarburantAuto> {
+  final GlobalKey<ScaffoldState> _key = GlobalKey();
   final ScrollController _controllerScroll = ScrollController();
   final _formKey = GlobalKey<FormState>();
   bool isLoading = false;
@@ -74,7 +75,7 @@ class _AddCarburantAutoState extends State<AddCarburantAuto> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        // key: context.read<Controller>().scaffoldKey,
+        key: _key,
         drawer: const DrawerMenu(),
         body: SafeArea(
           child: Row(
@@ -101,9 +102,11 @@ class _AddCarburantAutoState extends State<AddCarburantAuto> {
                                 },
                                 icon: const Icon(Icons.arrow_back)),
                           ),
-                          const Expanded(
+                           Expanded(
                               flex: 5,
-                              child: CustomAppbar(title: 'Ajout Carburant')),
+                              child: CustomAppbar(title: 'Ajout Carburant',
+                                  controllerMenu: () =>
+                                      _key.currentState!.openDrawer())),
                         ],
                       ),
                       Expanded(
@@ -437,7 +440,7 @@ class _AddCarburantAutoState extends State<AddCarburantAuto> {
 
   Future<void> submit() async {
     final carburantModel = CarburantModel(
-      operationEntreSortie: operationEntreSortie.toString(),
+        operationEntreSortie: operationEntreSortie.toString(),
         typeCaburant: typeCaburant.toString(),
         fournisseur: (fournisseurController.text == '')
             ? '-'
@@ -458,22 +461,21 @@ class _AddCarburantAutoState extends State<AddCarburantAuto> {
             (dateHeureSortieAnguinController.text == '')
                 ? '0000-00-00 00:00:00.000'
                 : dateHeureSortieAnguinController.text),
-      qtyAchat: qtyAchatController.text,
-      approbationDG: '-',
-      signatureDG: '-',
-      signatureJustificationDG: '-',
-      approbationFin: '-',
-      signatureFin: '-',
-      signatureJustificationFin: '-',
-      approbationBudget: '-',
-      signatureBudget: '-',
-      signatureJustificationBudget: '-',
-      approbationDD: '-',
-      signatureDD: '-',
-      signatureJustificationDD: '-',
-      signature: signature.toString(),
-      created: DateTime.now()
-    );
+        qtyAchat: qtyAchatController.text,
+        approbationDG: '-',
+        signatureDG: '-',
+        signatureJustificationDG: '-',
+        approbationFin: '-',
+        signatureFin: '-',
+        signatureJustificationFin: '-',
+        approbationBudget: '-',
+        signatureBudget: '-',
+        signatureJustificationBudget: '-',
+        approbationDD: '-',
+        signatureDD: '-',
+        signatureJustificationDD: '-',
+        signature: signature.toString(),
+        created: DateTime.now());
     await CarburantApi().insertData(carburantModel);
     Routemaster.of(context).replace(LogistiqueRoutes.logCarburantAuto);
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(

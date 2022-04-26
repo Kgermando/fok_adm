@@ -21,6 +21,7 @@ class AddImmobilierMateriel extends StatefulWidget {
 }
 
 class _AddImmobilierMaterielState extends State<AddImmobilierMateriel> {
+  final GlobalKey<ScaffoldState> _key = GlobalKey();
   final ScrollController _controllerScroll = ScrollController();
   final _formKey = GlobalKey<FormState>();
   bool isLoading = false;
@@ -64,7 +65,7 @@ class _AddImmobilierMaterielState extends State<AddImmobilierMateriel> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        // key: context.read<Controller>().scaffoldKey,
+        key: _key,
         drawer: const DrawerMenu(),
         body: SafeArea(
           child: Row(
@@ -91,9 +92,11 @@ class _AddImmobilierMaterielState extends State<AddImmobilierMateriel> {
                                 },
                                 icon: const Icon(Icons.arrow_back)),
                           ),
-                          const Expanded(
+                           Expanded(
                               flex: 5,
-                              child: CustomAppbar(title: 'Ajout Immaterielle')),
+                              child: CustomAppbar(title: 'Ajout Immaterielle',
+                                  controllerMenu: () =>
+                                      _key.currentState!.openDrawer())),
                         ],
                       ),
                       Expanded(

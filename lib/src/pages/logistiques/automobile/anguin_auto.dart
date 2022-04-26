@@ -17,21 +17,23 @@ class AnguinAuto extends StatefulWidget {
 }
 
 class _AnguinAutoState extends State<AnguinAuto> {
+  final GlobalKey<ScaffoldState> _key = GlobalKey();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        key: context.read<Controller>().scaffoldKey,
+        key: _key,
         drawer: const DrawerMenu(),
         floatingActionButton: FloatingActionButton(
-          child: Row(
-            children: const [
-              Icon(Icons.add),
-              Icon(Icons.car_rental),
-            ],
-          ),
-          onPressed: () {
-          Routemaster.of(context).push(LogistiqueRoutes.logAddAnguinAuto);
-        }),
+            child: Row(
+              children: const [
+                Icon(Icons.add),
+                Icon(Icons.car_rental),
+              ],
+            ),
+            onPressed: () {
+              Routemaster.of(context).push(LogistiqueRoutes.logAddAnguinAuto);
+            }),
         body: SafeArea(
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -46,9 +48,11 @@ class _AnguinAutoState extends State<AnguinAuto> {
                   padding: const EdgeInsets.all(p10),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
-                    children: const [
-                      CustomAppbar(title: 'Geston des anguins'),
-                      Expanded(child: TableAnguin())
+                    children: [
+                      CustomAppbar(title: 'Geston des anguins',
+                          controllerMenu: () =>
+                              _key.currentState!.openDrawer()),
+                      const Expanded(child: TableAnguin())
                     ],
                   ),
                 ),

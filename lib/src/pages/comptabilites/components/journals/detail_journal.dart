@@ -22,6 +22,7 @@ class DetailJournal extends StatefulWidget {
 }
 
 class _DetailJournalState extends State<DetailJournal> {
+  final GlobalKey<ScaffoldState> _key = GlobalKey();
   final ScrollController _controllerScroll = ScrollController();
   bool isLoading = false;
   List<UserModel> userList = [];
@@ -64,6 +65,7 @@ class _DetailJournalState extends State<DetailJournal> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: _key,
         drawer: const DrawerMenu(),
         body: SafeArea(
           child: Row(
@@ -99,7 +101,9 @@ class _DetailJournalState extends State<DetailJournal> {
                                     Expanded(
                                       child: CustomAppbar(
                                           title:
-                                              '${data!.titleBilan} '),
+                                              data!.titleBilan,
+                                          controllerMenu: () =>
+                                              _key.currentState!.openDrawer()),
                                     ),
                                   ],
                                 ),

@@ -25,6 +25,7 @@ class ValorisationComptabilite extends StatefulWidget {
 }
 
 class _ValorisationComptabiliteState extends State<ValorisationComptabilite> {
+  final GlobalKey<ScaffoldState> _key = GlobalKey();
   final controller = ScrollController();
 
   bool isLoading = false;
@@ -70,7 +71,7 @@ class _ValorisationComptabiliteState extends State<ValorisationComptabilite> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        key: context.read<Controller>().scaffoldKey,
+        key: _key,
         drawer: const DrawerMenu(),
         floatingActionButton: FloatingActionButton(
             foregroundColor: Colors.white,
@@ -96,7 +97,9 @@ class _ValorisationComptabiliteState extends State<ValorisationComptabilite> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const CustomAppbar(title: 'Valorisation'),
+                      CustomAppbar(title: 'Valorisation',
+                          controllerMenu: () =>
+                              _key.currentState!.openDrawer()),
                       Expanded(
                           child: Scrollbar(
                         controller: controller,

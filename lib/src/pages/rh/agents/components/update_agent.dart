@@ -29,6 +29,7 @@ class UpdateAgent extends StatefulWidget {
 }
 
 class _UpdateAgentState extends State<UpdateAgent> {
+  final GlobalKey<ScaffoldState> _key = GlobalKey();
   final ScrollController _controllerScroll = ScrollController();
   final _formKey = GlobalKey<FormState>();
   bool isLoading = false;
@@ -161,6 +162,7 @@ class _UpdateAgentState extends State<UpdateAgent> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: _key,
         drawer: const DrawerMenu(),
         body: SafeArea(
           child: Row(
@@ -187,7 +189,9 @@ class _UpdateAgentState extends State<UpdateAgent> {
                           ),
                           const SizedBox(width: p10),
                           Expanded(
-                            child: CustomAppbar(title: 'Agent $matricule '),
+                            child: CustomAppbar(title: 'Agent $matricule',
+                                controllerMenu: () =>
+                                    _key.currentState!.openDrawer()),
                           ),
                         ],
                       ),

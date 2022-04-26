@@ -25,6 +25,7 @@ class DetailFinExterieur extends StatefulWidget {
 }
 
 class _DetailFinExterieurState extends State<DetailFinExterieur> {
+  final GlobalKey<ScaffoldState> _key = GlobalKey();
   final ScrollController _controllerScroll = ScrollController();
   bool isLoading = false;
   List<UserModel> userList = [];
@@ -79,7 +80,7 @@ class _DetailFinExterieurState extends State<DetailFinExterieur> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        // key: context.read<Controller>().scaffoldKey,
+        key: _key,
         drawer: const DrawerMenu(),
         body: SafeArea(
           child: Row(
@@ -116,7 +117,9 @@ class _DetailFinExterieurState extends State<DetailFinExterieur> {
                                     Expanded(
                                       child: CustomAppbar(
                                           title:
-                                              '${financeExterieurModel!.nomComplet} '),
+                                              financeExterieurModel!.nomComplet,
+                                          controllerMenu: () =>
+                                              _key.currentState!.openDrawer()),
                                     ),
                                   ],
                                 ),

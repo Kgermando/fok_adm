@@ -21,6 +21,7 @@ class AddEntretienPage extends StatefulWidget {
 }
 
 class _AddEntretienPageState extends State<AddEntretienPage> {
+  final GlobalKey<ScaffoldState> _key = GlobalKey();
   final ScrollController _controllerScroll = ScrollController();
   final ScrollController _controllerEtatObjet = ScrollController();
   final _formKey = GlobalKey<FormState>();
@@ -86,7 +87,7 @@ class _AddEntretienPageState extends State<AddEntretienPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        // key: context.read<Controller>().scaffoldKey,
+        key: _key,
         drawer: const DrawerMenu(),
         body: SafeArea(
           child: Row(
@@ -113,9 +114,11 @@ class _AddEntretienPageState extends State<AddEntretienPage> {
                                 },
                                 icon: const Icon(Icons.arrow_back)),
                           ),
-                          const Expanded(
+                           Expanded(
                               flex: 5,
-                              child: CustomAppbar(title: 'Nouveau entretien')),
+                              child: CustomAppbar(title: 'Nouveau entretien',
+                                  controllerMenu: () =>
+                                      _key.currentState!.openDrawer())),
                         ],
                       ),
                       Expanded(
@@ -464,27 +467,26 @@ class _AddEntretienPageState extends State<AddEntretienPage> {
   Future<void> submit() async {
     final jsonList = _values.map((item) => jsonEncode(item)).toList();
     final entretienModel = EntretienModel(
-      nom: nomController.text,
-      modele: modeleController.text,
-      marque: marqueController.text,
-      etatObjet: etatObjetController.text,
-      objetRemplace: jsonList,
-      dureeTravaux: dureeTravauxController.text,
-      approbationDG: '-',
-      signatureDG: '-',
-      signatureJustificationDG: '-',
-      approbationFin: '-',
-      signatureFin: '-',
-      signatureJustificationFin: '-',
-      approbationBudget: '-',
-      signatureBudget: '-',
-      signatureJustificationBudget: '-',
-      approbationDD: '-',
-      signatureDD: '-',
-      signatureJustificationDD: '-',
-      signature: signature.toString(),
-      created: DateTime.now()
-    );
+        nom: nomController.text,
+        modele: modeleController.text,
+        marque: marqueController.text,
+        etatObjet: etatObjetController.text,
+        objetRemplace: jsonList,
+        dureeTravaux: dureeTravauxController.text,
+        approbationDG: '-',
+        signatureDG: '-',
+        signatureJustificationDG: '-',
+        approbationFin: '-',
+        signatureFin: '-',
+        signatureJustificationFin: '-',
+        approbationBudget: '-',
+        signatureBudget: '-',
+        signatureJustificationBudget: '-',
+        approbationDD: '-',
+        signatureDD: '-',
+        signatureJustificationDD: '-',
+        signature: signature.toString(),
+        created: DateTime.now());
     await EntretienApi().insertData(entretienModel);
     Routemaster.of(context).pop();
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(

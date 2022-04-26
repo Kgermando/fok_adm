@@ -23,6 +23,7 @@ class UpdatePaiementSalaire extends StatefulWidget {
 }
 
 class _UpdatePaiementSalaireState extends State<UpdatePaiementSalaire> {
+  final GlobalKey<ScaffoldState> _key = GlobalKey();
   final ScrollController _controllerScroll = ScrollController();
   final _formKey = GlobalKey<FormState>();
   bool isLoading = false;
@@ -192,8 +193,10 @@ class _UpdatePaiementSalaireState extends State<UpdatePaiementSalaire> {
                             icon: const Icon(Icons.arrow_back)),
                       ),
                       const SizedBox(width: p10),
-                      const Expanded(
-                          child: CustomAppbar(title: 'Feuille de paie')),
+                      Expanded(
+                          child: CustomAppbar(title: 'Feuille de paie',
+                              controllerMenu: () =>
+                                  _key.currentState!.openDrawer())),
                     ],
                   ),
                   Expanded(

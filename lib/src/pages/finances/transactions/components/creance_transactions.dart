@@ -22,6 +22,7 @@ class CreanceTransactions extends StatefulWidget {
 }
 
 class _CreanceTransactionsState extends State<CreanceTransactions> {
+  final GlobalKey<ScaffoldState> _key = GlobalKey();
   final controller = ScrollController();
   final _formKey = GlobalKey<FormState>();
 
@@ -65,7 +66,7 @@ class _CreanceTransactionsState extends State<CreanceTransactions> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        key: context.read<Controller>().scaffoldKey,
+        key: _key,
         drawer: const DrawerMenu(),
         floatingActionButton: FloatingActionButton(
             foregroundColor: Colors.white,
@@ -90,9 +91,11 @@ class _CreanceTransactionsState extends State<CreanceTransactions> {
                   padding: const EdgeInsets.all(p10),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
-                    children: const [
-                      CustomAppbar(title: 'Créances'),
-                      Expanded(child: TableCreance())
+                    children: [
+                      CustomAppbar(title: 'Créances',
+                          controllerMenu: () =>
+                              _key.currentState!.openDrawer()),
+                      const Expanded(child: TableCreance())
                     ],
                   ),
                 ),

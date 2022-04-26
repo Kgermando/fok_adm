@@ -22,6 +22,7 @@ class DetailAmortissement extends StatefulWidget {
 }
 
 class _DetailAmortissementState extends State<DetailAmortissement> {
+  final GlobalKey<ScaffoldState> _key = GlobalKey();
   final ScrollController _controllerScroll = ScrollController();
   bool isLoading = false;
   List<UserModel> userList = [];
@@ -64,7 +65,7 @@ class _DetailAmortissementState extends State<DetailAmortissement> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        // key: context.read<Controller>().scaffoldKey,
+        key: _key,
         drawer: const DrawerMenu(),
         body: SafeArea(
           child: Row(
@@ -100,7 +101,9 @@ class _DetailAmortissementState extends State<DetailAmortissement> {
                                     Expanded(
                                       child: CustomAppbar(
                                           title:
-                                              '${data!.titleArmotissement} '),
+                                              data!.titleArmotissement,
+                                          controllerMenu: () =>
+                                              _key.currentState!.openDrawer()),
                                     ),
                                   ],
                                 ),
@@ -780,8 +783,7 @@ class _DetailAmortissementState extends State<DetailAmortissement> {
         signatureDD: data.signatureDD.toString(),
         signatureJustificationDD: data.signatureJustificationDD.toString(),
         signature: data.signature,
-        created: data.created
-    );
+        created: data.created);
     await AmortissementApi().updateData(data.id!, amortissementModel);
     Routemaster.of(context).pop();
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(

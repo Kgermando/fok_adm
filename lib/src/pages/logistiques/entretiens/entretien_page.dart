@@ -10,46 +10,49 @@ import 'package:provider/provider.dart';
 import 'package:routemaster/routemaster.dart';
 
 class EntretienPage extends StatefulWidget {
-  const EntretienPage({ Key? key }) : super(key: key);
+  const EntretienPage({Key? key}) : super(key: key);
 
   @override
   State<EntretienPage> createState() => _EntretienPageState();
 }
 
 class _EntretienPageState extends State<EntretienPage> {
+  final GlobalKey<ScaffoldState> _key = GlobalKey();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      key: context.read<Controller>().scaffoldKey,
-      drawer: const DrawerMenu(),
-      floatingActionButton: FloatingActionButton(
-          child: const Icon(Icons.add),
-          onPressed: () {
-            Routemaster.of(context).push(LogistiqueRoutes.logAddEntretien);
-          }),
-      body: SafeArea(
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            if (Responsive.isDesktop(context))
-              const Expanded(
-                child: DrawerMenu(),
-              ),
-            Expanded(
-              flex: 5,
-              child: Padding(
-                padding: const EdgeInsets.all(p10),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: const [
-                    CustomAppbar(title: 'Geston des entretiens'),
-                    Expanded(child: TableEntretien())
-                  ],
+        key: _key,
+        drawer: const DrawerMenu(),
+        floatingActionButton: FloatingActionButton(
+            child: const Icon(Icons.add),
+            onPressed: () {
+              Routemaster.of(context).push(LogistiqueRoutes.logAddEntretien);
+            }),
+        body: SafeArea(
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              if (Responsive.isDesktop(context))
+                const Expanded(
+                  child: DrawerMenu(),
+                ),
+              Expanded(
+                flex: 5,
+                child: Padding(
+                  padding: const EdgeInsets.all(p10),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      CustomAppbar(title: 'Geston des entretiens',
+                          controllerMenu: () =>
+                              _key.currentState!.openDrawer()),
+                      const Expanded(child: TableEntretien())
+                    ],
+                  ),
                 ),
               ),
-            ),
-          ],
-        ),
-      ));
+            ],
+          ),
+        ));
   }
 }

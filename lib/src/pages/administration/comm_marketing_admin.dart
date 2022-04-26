@@ -3,8 +3,6 @@ import 'package:fokad_admin/src/constants/app_theme.dart';
 import 'package:fokad_admin/src/constants/responsive.dart';
 import 'package:fokad_admin/src/navigation/drawer/drawer_menu.dart';
 import 'package:fokad_admin/src/navigation/header/custom_appbar.dart';
-import 'package:fokad_admin/src/provider/controller.dart';
-import 'package:provider/provider.dart';
 
 class CommMarketingAdmin extends StatefulWidget {
   const CommMarketingAdmin({ Key? key }) : super(key: key);
@@ -14,12 +12,13 @@ class CommMarketingAdmin extends StatefulWidget {
 }
 
 class _CommMarketingAdminState extends State<CommMarketingAdmin> {
+  final GlobalKey<ScaffoldState> _key = GlobalKey();
   final ScrollController _controllerScroll = ScrollController();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        key: context.read<Controller>().scaffoldKey,
+        key: _key,
         drawer: const DrawerMenu(),
         body: SafeArea(
           child: Row(
@@ -36,7 +35,9 @@ class _CommMarketingAdminState extends State<CommMarketingAdmin> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const CustomAppbar(title: 'Commercial & Marketing'),
+                      CustomAppbar(title: 'Commercial & Marketing',
+                          controllerMenu: () =>
+                              _key.currentState!.openDrawer()),
                       Expanded(
                           child: Scrollbar(
                         controller: _controllerScroll,

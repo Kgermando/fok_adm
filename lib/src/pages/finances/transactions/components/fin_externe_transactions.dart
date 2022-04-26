@@ -27,6 +27,7 @@ class FinExterneTransactions extends StatefulWidget {
 }
 
 class _FinExterneTransactionsState extends State<FinExterneTransactions> {
+  final GlobalKey<ScaffoldState> _key = GlobalKey();
   final controller = ScrollController();
   final ScrollController _controllerBillet = ScrollController();
   final _formKey = GlobalKey<FormState>();
@@ -97,7 +98,7 @@ class _FinExterneTransactionsState extends State<FinExterneTransactions> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        key: context.read<Controller>().scaffoldKey,
+        key: _key,
         drawer: const DrawerMenu(),
         floatingActionButton: FloatingActionButton(
             foregroundColor: Colors.white,
@@ -122,9 +123,11 @@ class _FinExterneTransactionsState extends State<FinExterneTransactions> {
                   padding: const EdgeInsets.all(p10),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
-                    children: const [
-                      CustomAppbar(title: 'Fin. Externe'),
-                      Expanded(child: TableFinExterieur())
+                    children: [
+                      CustomAppbar(title: 'Fin. Externe',
+                          controllerMenu: () =>
+                              _key.currentState!.openDrawer()),
+                      const Expanded(child: TableFinExterieur())
                     ],
                   ),
                 ),
@@ -188,7 +191,7 @@ class _FinExterneTransactionsState extends State<FinExterneTransactions> {
                             Row(
                               children: [
                                 if (typeOperation != 'Depot de fond')
-                                Expanded(child: ligneBudgtaireWidget()),
+                                  Expanded(child: ligneBudgtaireWidget()),
                                 const SizedBox(
                                   width: p10,
                                 ),
@@ -420,7 +423,8 @@ class _FinExterneTransactionsState extends State<FinExterneTransactions> {
   }
 
   Widget ligneBudgtaireWidget() {
-    var dataList = ligneBudgetaireList.map((e) => e.nomLigneBudgetaire).toList();
+    var dataList =
+        ligneBudgetaireList.map((e) => e.nomLigneBudgetaire).toList();
     return Container(
       margin: const EdgeInsets.only(bottom: p20),
       child: DropdownButtonFormField<String>(
@@ -448,10 +452,7 @@ class _FinExterneTransactionsState extends State<FinExterneTransactions> {
   }
 
   Widget resourcesWidget() {
-    List<String> resourceList = [
-      'finPropre',
-      'finExterieur'
-    ];
+    List<String> resourceList = ['finPropre', 'finExterieur'];
     return Container(
       margin: const EdgeInsets.only(bottom: p20),
       child: DropdownButtonFormField<String>(
@@ -547,7 +548,9 @@ class _FinExterneTransactionsState extends State<FinExterneTransactions> {
         libelle: libelleController.text,
         montant: montantController.text,
         coupureBillet: jsonList,
-        ligneBudgtaire: (typeOperation == 'Depot de fond') ? '-' : ligneBudgtaire.toString(),
+        ligneBudgtaire: (typeOperation == 'Depot de fond')
+            ? '-'
+            : ligneBudgtaire.toString(),
         typeOperation: typeOperation.toString(),
         numeroOperation: 'Transaction-Fin-$resourceFin-${numberItem + 1}',
         ressourceFin: resourceFin.toString(),

@@ -21,6 +21,7 @@ class DetailAnguin extends StatefulWidget {
 }
 
 class _DetailAnguinState extends State<DetailAnguin> {
+  final GlobalKey<ScaffoldState> _key = GlobalKey();
   final ScrollController _controllerScroll = ScrollController();
   bool isLoading = false;
 
@@ -55,7 +56,7 @@ class _DetailAnguinState extends State<DetailAnguin> {
       marque = data.marque;
       numeroChassie = data.numeroChassie;
       couleur = data.couleur;
-      genre =  data.genre;
+      genre = data.genre;
       qtyMaxReservoir = data.qtyMaxReservoir;
       dateFabrication = data.dateFabrication;
       nomeroPLaque = data.nomeroPLaque;
@@ -65,24 +66,26 @@ class _DetailAnguinState extends State<DetailAnguin> {
       created = data.created;
       signature = data.signature;
     });
-  } 
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        // key: context.read<Controller>().scaffoldKey,
+        key: _key,
         drawer: const DrawerMenu(),
         floatingActionButton: FloatingActionButton(
-          child: Row(
-            children: const [
-              Icon(Icons.add),
-              Icon(Icons.place),
-            ],
-          ),
-          onPressed: () {
-          Navigator.of(context).push(MaterialPageRoute(
-              builder: (context) => AddTrajetAuto(numeroMatricule: nomeroEntreprise,)));
-        }),
+            child: Row(
+              children: const [
+                Icon(Icons.add),
+                Icon(Icons.place),
+              ],
+            ),
+            onPressed: () {
+              Navigator.of(context).push(MaterialPageRoute(
+                  builder: (context) => AddTrajetAuto(
+                        numeroMatricule: nomeroEntreprise,
+                      )));
+            }),
         body: SafeArea(
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -115,8 +118,10 @@ class _DetailAnguinState extends State<DetailAnguin> {
                                     ),
                                     const SizedBox(width: p10),
                                     Expanded(
-                                      child: CustomAppbar(
-                                          title: '${data!.nom} '),
+                                      child:
+                                          CustomAppbar(title: data!.nom,
+                                          controllerMenu: () =>
+                                              _key.currentState!.openDrawer()),
                                     ),
                                   ],
                                 ),
@@ -138,7 +143,7 @@ class _DetailAnguinState extends State<DetailAnguin> {
         ));
   }
 
-   Widget pageDetail(AnguinModel data) {
+  Widget pageDetail(AnguinModel data) {
     return Row(mainAxisAlignment: MainAxisAlignment.center, children: [
       Card(
         elevation: 10,
@@ -182,9 +187,10 @@ class _DetailAnguinState extends State<DetailAnguin> {
               ),
               dataWidget(data),
               SizedBox(
-                height: 500,
-                child: TableTrajetAnguin(numeroEntreprise: data.nomeroEntreprise,)
-              )
+                  height: 500,
+                  child: TableTrajetAnguin(
+                    numeroEntreprise: data.nomeroEntreprise,
+                  ))
             ],
           ),
         ),
@@ -250,33 +256,32 @@ class _DetailAnguinState extends State<DetailAnguin> {
               )
             ],
           ),
-          
-            Row(
-              children: [
-                Expanded(
-                  child: Text('Couleur :',
-                      textAlign: TextAlign.start,
-                      style: bodyMedium.copyWith(fontWeight: FontWeight.bold)),
-                ),
-                Expanded(
-                  child: SelectableText(data.couleur,
-                      textAlign: TextAlign.start, style: bodyMedium),
-                )
-              ],
-            ),
-            Row(
-              children: [
-                Expanded(
-                  child: Text('Genre :',
-                      textAlign: TextAlign.start,
-                      style: bodyMedium.copyWith(fontWeight: FontWeight.bold)),
-                ),
-                Expanded(
-                  child: SelectableText(data.genre,
-                      textAlign: TextAlign.start, style: bodyMedium),
-                )
-              ],
-            ),
+          Row(
+            children: [
+              Expanded(
+                child: Text('Couleur :',
+                    textAlign: TextAlign.start,
+                    style: bodyMedium.copyWith(fontWeight: FontWeight.bold)),
+              ),
+              Expanded(
+                child: SelectableText(data.couleur,
+                    textAlign: TextAlign.start, style: bodyMedium),
+              )
+            ],
+          ),
+          Row(
+            children: [
+              Expanded(
+                child: Text('Genre :',
+                    textAlign: TextAlign.start,
+                    style: bodyMedium.copyWith(fontWeight: FontWeight.bold)),
+              ),
+              Expanded(
+                child: SelectableText(data.genre,
+                    textAlign: TextAlign.start, style: bodyMedium),
+              )
+            ],
+          ),
           Row(
             children: [
               Expanded(
@@ -298,8 +303,10 @@ class _DetailAnguinState extends State<DetailAnguin> {
                     style: bodyMedium.copyWith(fontWeight: FontWeight.bold)),
               ),
               Expanded(
-                child: SelectableText(DateFormat("dd-MM-yy").format(data.created),
-                    textAlign: TextAlign.start, style: bodyMedium),
+                child: SelectableText(
+                    DateFormat("dd-MM-yy").format(data.created),
+                    textAlign: TextAlign.start,
+                    style: bodyMedium),
               )
             ],
           ),

@@ -13,13 +13,14 @@ import 'package:fokad_admin/src/provider/controller.dart';
 import 'package:provider/provider.dart';
 
 class DepBudget extends StatefulWidget {
-  const DepBudget({ Key? key }) : super(key: key);
+  const DepBudget({Key? key}) : super(key: key);
 
   @override
   State<DepBudget> createState() => _DepBudgetState();
 }
 
 class _DepBudgetState extends State<DepBudget> {
+  final GlobalKey<ScaffoldState> _key = GlobalKey();
   final ScrollController _controllerScroll = ScrollController();
 
   bool isOpenBudget1 = false;
@@ -50,7 +51,7 @@ class _DepBudgetState extends State<DepBudget> {
     final headline6 = Theme.of(context).textTheme.headline6;
     final bodyMedium = Theme.of(context).textTheme.bodyMedium;
     return Scaffold(
-        key: context.read<Controller>().scaffoldKey,
+        key: _key,
         drawer: const DrawerMenu(),
         body: SafeArea(
           child: Row(
@@ -67,7 +68,9 @@ class _DepBudgetState extends State<DepBudget> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const CustomAppbar(title: 'Département de finance'),
+                       CustomAppbar(title: 'Département de finance',
+                          controllerMenu: () =>
+                              _key.currentState!.openDrawer()),
                       Expanded(
                           child: Scrollbar(
                         controller: _controllerScroll,
@@ -129,10 +132,10 @@ class _DepBudgetState extends State<DepBudget> {
                                 ),
                                 children: const [
                                   TableDepartementBudgetDD(),
-                                  LigneBudgetaire()],
+                                  LigneBudgetaire()
+                                ],
                               ),
                             ),
-                            
                           ],
                         ),
                       ))

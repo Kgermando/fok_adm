@@ -10,18 +10,19 @@ import 'package:provider/provider.dart';
 import 'package:routemaster/routemaster.dart';
 
 class CarburantAuto extends StatefulWidget {
-  const CarburantAuto({ Key? key }) : super(key: key);
+  const CarburantAuto({Key? key}) : super(key: key);
 
   @override
   State<CarburantAuto> createState() => _CarburantAutoState();
 }
 
 class _CarburantAutoState extends State<CarburantAuto> {
+  final GlobalKey<ScaffoldState> _key = GlobalKey();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      key: context.read<Controller>().scaffoldKey,
-      drawer: const DrawerMenu(),
+        key: _key,
+        drawer: const DrawerMenu(),
         floatingActionButton: FloatingActionButton(
             child: const Icon(Icons.add),
             onPressed: () {
@@ -42,9 +43,11 @@ class _CarburantAutoState extends State<CarburantAuto> {
                   padding: const EdgeInsets.all(p10),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
-                    children: const [
-                      CustomAppbar(title: 'Geston des carburants'),
-                      Expanded(child: TableCarburant())
+                    children: [
+                      CustomAppbar(title: 'Geston des carburants',
+                          controllerMenu: () =>
+                              _key.currentState!.openDrawer()),
+                      const Expanded(child: TableCarburant())
                     ],
                   ),
                 ),

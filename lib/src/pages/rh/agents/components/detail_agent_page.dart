@@ -28,6 +28,7 @@ class AgentPage extends StatefulWidget {
 }
 
 class _AgentPageState extends State<AgentPage> {
+  final GlobalKey<ScaffoldState> _key = GlobalKey();
   final ScrollController _controllerScroll = ScrollController();
   bool isLoading = false;
   List<UserModel> userList = [];
@@ -53,7 +54,7 @@ class _AgentPageState extends State<AgentPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        // key: context.read<Controller>().scaffoldKey,
+        key: _key,
         drawer: const DrawerMenu(),
         body: SafeArea(
           child: Row(
@@ -89,7 +90,9 @@ class _AgentPageState extends State<AgentPage> {
                                     Expanded(
                                       child: CustomAppbar(
                                           title:
-                                              'Agent ${agentModel!.matricule} '),
+                                              'Agent ${agentModel!.matricule}',
+                                          controllerMenu: () =>
+                                              _key.currentState!.openDrawer()),
                                     ),
                                   ],
                                 ),
@@ -139,13 +142,14 @@ class _AgentPageState extends State<AgentPage> {
                     Row(
                       children: [
                         compteSalaireWidget(agentModel),
-                        if (agentModel.fonctionOccupe == user!.fonctionOccupe)
-                        statutAgentWidget(agentModel),
+                        // if (agentModel.fonctionOccupe == user!.fonctionOccupe)
+                          statutAgentWidget(agentModel),
                         IconButton(
                             tooltip: 'Modifier',
                             onPressed: () {
                               Navigator.of(context).push(MaterialPageRoute(
-                                  builder: (context) => UpdateAgent(agentModel: agentModel)));
+                                  builder: (context) =>
+                                      UpdateAgent(agentModel: agentModel)));
                             },
                             icon: const Icon(Icons.edit)),
                         PrintWidget(
@@ -171,7 +175,8 @@ class _AgentPageState extends State<AgentPage> {
         tooltip: 'Paiement',
         onPressed: () {
           Navigator.of(context).push(MaterialPageRoute(
-              builder: (context) => AddPaiementSalaire(agentModel: agentModel)));
+              builder: (context) =>
+                  AddPaiementSalaire(agentModel: agentModel)));
         },
         icon: const Icon(Icons.payment));
   }
@@ -558,23 +563,16 @@ class _AgentPageState extends State<AgentPage> {
     return Padding(
       padding: const EdgeInsets.all(p10),
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text('Signature :',
-                  style: bodyMedium!.copyWith(fontWeight: FontWeight.bold)),
-              SelectableText(agentModel.signature,
-                  textAlign: TextAlign.justify, style: bodyMedium)
-            ],
-          ),
+          Text('Signature :',
+              style: bodyMedium!.copyWith(fontWeight: FontWeight.bold)),
+          SelectableText(agentModel.signature,
+              textAlign: TextAlign.justify, style: bodyMedium)
         ],
       ),
     );
   }
-
-
-
 
   agentStatutDialog(AgentModel agentModel) {
     statutAgent = agentModel.statutAgent;
@@ -608,10 +606,14 @@ class _AgentPageState extends State<AgentPage> {
                             updateAgent(agentModel);
                             // isLoading == false;
                           } else {
-                            createUser(agentModel.nom, agentModel.prenom,
-                              agentModel.matricule, agentModel.departement, 
-                              agentModel.servicesAffectation, 
-                              agentModel.fonctionOccupe,  agentModel.role);
+                            createUser(
+                                agentModel.nom,
+                                agentModel.prenom,
+                                agentModel.matricule,
+                                agentModel.departement,
+                                agentModel.servicesAffectation,
+                                agentModel.fonctionOccupe,
+                                agentModel.role);
                             updateAgent(agentModel);
                             // isLoading == false;
                           }
@@ -658,9 +660,8 @@ class _AgentPageState extends State<AgentPage> {
         createdAt: DateTime.now(),
         photo: agentModel.photo,
         salaire: agentModel.salaire,
-      signature: user!.matricule,
-      created: DateTime.now()
-    );
+        signature: user!.matricule,
+        created: DateTime.now());
     await AgentsApi().updateData(agentModel.id!, agent);
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
       content: const Text("Mise à statut avec succès!"),

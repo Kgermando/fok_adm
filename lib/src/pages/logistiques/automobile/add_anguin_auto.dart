@@ -21,6 +21,7 @@ class AddAnguinAuto extends StatefulWidget {
 }
 
 class _AddAnguinAutoState extends State<AddAnguinAuto> {
+  final GlobalKey<ScaffoldState> _key = GlobalKey();
   final ScrollController _controllerScroll = ScrollController();
   final _formKey = GlobalKey<FormState>();
   bool isLoading = false;
@@ -83,7 +84,7 @@ class _AddAnguinAutoState extends State<AddAnguinAuto> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        // key: context.read<Controller>().scaffoldKey,
+        key: _key,
         drawer: const DrawerMenu(),
         body: SafeArea(
           child: Row(
@@ -110,9 +111,11 @@ class _AddAnguinAutoState extends State<AddAnguinAuto> {
                                 },
                                 icon: const Icon(Icons.arrow_back)),
                           ),
-                          const Expanded(
+                          Expanded(
                               flex: 5,
-                              child: CustomAppbar(title: 'Ajout anguin')),
+                              child: CustomAppbar(title: 'Ajout anguin',
+                                  controllerMenu: () =>
+                                      _key.currentState!.openDrawer())),
                         ],
                       ),
                       Expanded(

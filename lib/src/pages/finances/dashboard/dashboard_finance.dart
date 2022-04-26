@@ -9,13 +9,14 @@ import 'package:fokad_admin/src/widgets/dashboard_card_widget.dart';
 import 'package:provider/provider.dart';
 
 class DashboardFinance extends StatefulWidget {
-  const DashboardFinance({ Key? key }) : super(key: key);
+  const DashboardFinance({Key? key}) : super(key: key);
 
   @override
   State<DashboardFinance> createState() => _DashboardFinanceState();
 }
 
 class _DashboardFinanceState extends State<DashboardFinance> {
+  final GlobalKey<ScaffoldState> _key = GlobalKey();
   final scrollController = ScrollController();
 
   @override
@@ -23,13 +24,13 @@ class _DashboardFinanceState extends State<DashboardFinance> {
     scrollController.dispose();
     super.dispose();
   }
-  
+
   @override
   Widget build(BuildContext context) {
     double montant = 25312.00;
 
     return Scaffold(
-      key: context.read<Controller>().scaffoldKey,
+        key: _key,
         drawer: const DrawerMenu(),
         body: SafeArea(
           child: Row(
@@ -46,10 +47,12 @@ class _DashboardFinanceState extends State<DashboardFinance> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const CustomAppbar(title: 'Finance Dashboard'),
+                      CustomAppbar(title: 'Finance Dashboard',
+                          controllerMenu: () =>
+                              _key.currentState!.openDrawer()),
                       Expanded(
-                        child: ListView(
-                         controller: scrollController,
+                          child: ListView(
+                        controller: scrollController,
                         children: [
                           const SizedBox(height: p10),
                           Wrap(
@@ -180,16 +183,13 @@ class _DashboardFinanceState extends State<DashboardFinance> {
                                   ],
                                 ),
                         ],
-                        )
-                      )
-                      
+                      ))
                     ],
                   ),
                 ),
               ),
             ],
           ),
-        )
-    );
+        ));
   }
 }
