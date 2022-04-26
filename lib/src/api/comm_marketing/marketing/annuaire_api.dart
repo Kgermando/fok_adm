@@ -45,6 +45,35 @@ class AnnuaireApi {
     }
   }
 
+  Future<List<AnnuaireModel>> getAllDataSearch(String query) async {
+    String? token = await getToken();
+
+    if (token!.isNotEmpty) {
+      var splittedJwt = token.split(".");
+      var payload = json.decode(
+          ascii.decode(base64.decode(base64.normalize(splittedJwt[1]))));
+    }
+    var getSearchUrl = Uri.parse("$mainUrl/annuaires/search/$query");
+    var resp = await client.get(
+      getSearchUrl,
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+        'Authorization': 'Bearer $token'
+      },
+    );
+
+    if (resp.statusCode == 200) {
+      List<dynamic> bodyList = json.decode(resp.body);
+      List<AnnuaireModel> data = [];
+      for (var u in bodyList) {
+        data.add(AnnuaireModel.fromJson(u));
+      }
+      return data;
+    } else {
+      throw Exception(jsonDecode(resp.body)['message']);
+    }
+  }
+
   Future<AnnuaireModel> getOneData(int id) async {
     String? token = await getToken();
 
