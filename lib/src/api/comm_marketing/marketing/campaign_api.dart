@@ -5,11 +5,11 @@ import 'dart:convert';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:fokad_admin/src/api/auth/auth_api.dart';
 import 'package:fokad_admin/src/api/route_api.dart';
-import 'package:fokad_admin/src/models/devis/devis_models.dart';
+import 'package:fokad_admin/src/models/comm_maketing/campaign_model.dart';
 import 'package:http/http.dart' as http;
 
-class DevisAPi {
-  var client = http.Client();
+class CampaignApi {
+   var client = http.Client();
   final storage = const FlutterSecureStorage();
 
   Future<String?> getToken() async {
@@ -17,8 +17,7 @@ class DevisAPi {
     return data;
   }
 
-
-  Future<List<DevisModel>> getAllData() async {
+  Future<List<CampaignModel>> getAllData() async {
     String? token = await getToken();
 
     if (token!.isNotEmpty) {
@@ -27,7 +26,7 @@ class DevisAPi {
           ascii.decode(base64.decode(base64.normalize(splittedJwt[1]))));
     }
     var resp = await client.get(
-      devisUrl,
+      campaignsUrl,
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
         'Authorization': 'Bearer $token'
@@ -36,9 +35,9 @@ class DevisAPi {
 
     if (resp.statusCode == 200) {
       List<dynamic> bodyList = json.decode(resp.body);
-      List<DevisModel> data = [];
+      List<CampaignModel> data = [];
       for (var u in bodyList) {
-        data.add(DevisModel.fromJson(u));
+        data.add(CampaignModel.fromJson(u));
       }
       return data;
     } else {
@@ -46,7 +45,7 @@ class DevisAPi {
     }
   }
 
-  Future<DevisModel> getOneData(int id) async {
+  Future<CampaignModel> getOneData(int id) async {
     String? token = await getToken();
 
     if (token!.isNotEmpty) {
@@ -54,7 +53,7 @@ class DevisAPi {
       var payload = json.decode(
           ascii.decode(base64.decode(base64.normalize(splittedJwt[1]))));
     }
-    var getUrl = Uri.parse("$mainUrl/devis/$id");
+    var getUrl = Uri.parse("$mainUrl/campaigns/$id");
     var resp = await client.get(
       getUrl,
       headers: <String, String>{
@@ -63,41 +62,40 @@ class DevisAPi {
       },
     );
     if (resp.statusCode == 200) {
-      return DevisModel.fromJson(json.decode(resp.body));
+      return CampaignModel.fromJson(json.decode(resp.body));
     } else {
       throw Exception(json.decode(resp.body)['message']);
     }
   }
 
-  Future<DevisModel> insertData(DevisModel devisModel) async {
+  Future<CampaignModel> insertData(CampaignModel campaignModel) async {
     final accessToken = await storage.read(key: 'accessToken');
 
-    var data = devisModel.toJson();
+    var data = campaignModel.toJson();
     var body = jsonEncode(data);
 
-    var resp = await client.post(addDevissUrl,
+    var resp = await client.post(addCampaignsUrl,
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
           'Authorization': 'Bearer $accessToken'
         },
         body: body);
     if (resp.statusCode == 200) {
-      return DevisModel.fromJson(json.decode(resp.body));
+      return CampaignModel.fromJson(json.decode(resp.body));
     } else if (resp.statusCode == 401) {
       await AuthApi().refreshAccessToken();
-      return insertData(devisModel);
+      return insertData(campaignModel);
     } else {
       throw Exception(json.decode(resp.body)['message']);
     }
   }
 
-  Future<DevisModel> updateData(int id, DevisModel devisModel) async {
+  Future<CampaignModel> updateData(int id, CampaignModel campaignModel) async {
     final accessToken = await storage.read(key: 'accessToken');
 
-    var data = devisModel.toJson();
+    var data = campaignModel.toJson();
     var body = jsonEncode(data);
-    var updateUrl = Uri.parse(
-        "$mainUrl/devis/update-devis/$id");
+    var updateUrl = Uri.parse("$mainUrl/campaigns/update-campaign/$id");
 
     var res = await client.put(updateUrl,
         headers: <String, String>{
@@ -106,24 +104,23 @@ class DevisAPi {
         },
         body: body);
     if (res.statusCode == 200) {
-      return DevisModel.fromJson(json.decode(res.body));
+      return CampaignModel.fromJson(json.decode(res.body));
     } else {
       throw Exception(json.decode(res.body)['message']);
     }
   }
 
-  Future<DevisModel> deleteData(int id) async {
+  Future<CampaignModel> deleteData(int id) async {
     final accessToken = await storage.read(key: 'accessToken');
 
-    var deleteUrl = Uri.parse(
-        "$mainUrl/devis/delete-devis/$id");
+    var deleteUrl = Uri.parse("$mainUrl/campaigns/delete-campaign/$id");
 
     var res = await client.delete(deleteUrl, headers: <String, String>{
       'Content-Type': 'application/json; charset=UTF-8',
       'Authorization': 'Bearer $accessToken'
     });
     if (res.statusCode == 200) {
-      return DevisModel.fromJson(json.decode(res.body)['data']);
+      return CampaignModel.fromJson(json.decode(res.body)['data']);
     } else {
       throw Exception(json.decode(res.body)['message']);
     }

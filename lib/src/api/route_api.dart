@@ -123,7 +123,7 @@ var addRapportsUrl = Uri.parse("$mainUrl/rapports/insert-new-insert-new-rapport"
 
 
 
-// COMM & MERKETING
+// COMMERCIAL
 var prodModelsUrl = Uri.parse("$mainUrl/produit-models/");
 var addProdModelsUrl = Uri.parse("$mainUrl/prod-models/insert-new-produit-model");
 
@@ -158,6 +158,7 @@ var addGainsUrl = Uri.parse("$mainUrl/gains/insert-new-gain");
 var restitutionsUrl = Uri.parse("$mainUrl/restitutions/");
 var addRestitutionsUrl = Uri.parse("$mainUrl/restitutions/insert-new-restitution");
 
+// Marketing
 var agendasUrl = Uri.parse("$mainUrl/agendas/");
 var addAgendasUrl = Uri.parse("$mainUrl/agendas/insert-new-agenda");
 
