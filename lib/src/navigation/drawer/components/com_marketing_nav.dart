@@ -4,15 +4,15 @@ import 'package:fokad_admin/src/navigation/drawer/drawer_widget.dart';
 import 'package:fokad_admin/src/routes/routes.dart';
 import 'package:routemaster/routemaster.dart';
 
-class BudgetNav extends StatefulWidget {
-  const BudgetNav({ Key? key, required this.pageCurrente }) : super(key: key);
+class ComMarketing extends StatefulWidget {
+  const ComMarketing({ Key? key, required this.pageCurrente }) : super(key: key);
   final String pageCurrente;
 
   @override
-  State<BudgetNav> createState() => _BudgetNavState();
+  State<ComMarketing> createState() => _ComMarketingState();
 }
 
-class _BudgetNavState extends State<BudgetNav> {
+class _ComMarketingState extends State<ComMarketing> {
   bool isOpenBudget = false;
 
   @override
@@ -22,7 +22,7 @@ class _BudgetNavState extends State<BudgetNav> {
 
     return ExpansionTile(
       leading: const Icon(Icons.fact_check, size: 30.0),
-      title: AutoSizeText('Budgets', maxLines: 1, style: bodyLarge),
+      title: AutoSizeText('Comm. & Marketing', maxLines: 1, style: bodyLarge),
       initiallyExpanded: false,
       onExpansionChanged: (val) {
         setState(() {
@@ -32,15 +32,15 @@ class _BudgetNavState extends State<BudgetNav> {
       trailing: const Icon(Icons.arrow_drop_down),
       children: [
         DrawerWidget(
-            selected: widget.pageCurrente == BudgetRoutes.budgetDashboard,
+            selected: widget.pageCurrente == ComMarketingRoutes.comMarketingDashboard,
             icon: Icons.dashboard,
             sizeIcon: 20.0,
             title: 'Dashboard',
             style: bodyText1!,
             onTap: () {
               Routemaster.of(context).replace(
-                BudgetRoutes.budgetDashboard,
-            );
+                ComMarketingRoutes.comMarketingDashboard,
+              );
               // Routemaster.of(context).pop();
             }),
       ],

@@ -8,6 +8,8 @@ import 'package:fokad_admin/src/pages/administration/rh_admin.dart';
 import 'package:fokad_admin/src/pages/auth/login_auth.dart';
 import 'package:fokad_admin/src/pages/auth/profil_page.dart';
 import 'package:fokad_admin/src/pages/budgets/budget_finance.dart';
+import 'package:fokad_admin/src/pages/comm_marketing/dashboard/dashboard_com_marketing.dart';
+import 'package:fokad_admin/src/pages/comm_marketing/marketing/annuaire_marketing.dart';
 import 'package:fokad_admin/src/pages/comptabilites/armotissement_comptabilite.dart';
 import 'package:fokad_admin/src/pages/comptabilites/bilan_comptabilite.dart';
 import 'package:fokad_admin/src/pages/comptabilites/dashboard_comptabilite.dart';
@@ -150,6 +152,27 @@ class ExploitationRoutes {
   static const expDD = "/exp-dd";
 }
 
+class ComMarketingRoutes {
+  static const comMarketingDashboard = "/com-marketing-dashboard";
+  static const comMarketingAnnuaire = "/com-marketing-annuaire";
+  static const comMarketingAgenda = "/com-marketing-agenda";
+  static const comMarketingCampaign = "/com-marketing-campaign";
+  static const comMarketingProduitModel = "/com-marketing-produit-model";
+  static const comMarketingStockGlobal = "/com-marketing-stock-global";
+  static const comMarketingSuccursale = "/com-marketing-succursale";
+  static const comMarketingAchat = "/com-marketing-achat";
+  static const comMarketingBonLivraison = "/com-marketing-bon-livraison";
+  static const comMarketingcart = "/com-marketing-cart";
+  static const comMarketingCreance = "/com-marketing-creance";
+  static const comMarketingFacture = "/com-marketing-facture";
+  static const comMarketingGain = "/com-marketing-gain";
+  static const comMarketingHistoryRavitaillement = "/com-marketing-history-ravitaillement";
+  static const comMarketingHistoryLivraison = "/com-marketing-history-livraison";
+  static const comMarketingnumberFact = "/com-marketing-number-fact";
+  static const comMarketingRestitution = "/com-marketing-restitution";
+  static const comMarketingVente = "/com-marketing-vente";
+}
+
 
 class Routing {
 
@@ -239,8 +262,17 @@ class Routing {
         ExploitationRoutes.expProjet: (_) => const MaterialPage(child: ProjetsExp()),
         // ExploitationRoutes.expTacheAdd: (_) => const MaterialPage(child: AddTacheExp()),
         ExploitationRoutes.expTache: (_) => const MaterialPage(child: TacheExp()),
-      },
 
+
+
+        ComMarketingRoutes.comMarketingDashboard: (_) => const MaterialPage(child: ComMarketing()),
+        ComMarketingRoutes.comMarketingAnnuaire : (_) =>
+            const MaterialPage(child: AnnuaireMarketing()),
+        ComMarketingRoutes.comMarketingAgenda : (_) => const MaterialPage(child: AgentPage()),
+        
+         
+
+      },
     );
   }
 

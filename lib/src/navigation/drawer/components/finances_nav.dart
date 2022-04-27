@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:fokad_admin/src/navigation/drawer/drawer_widget.dart';
 import 'package:fokad_admin/src/routes/routes.dart';
@@ -16,13 +17,13 @@ class _FinancesNavState extends State<FinancesNav> {
   
   @override
   Widget build(BuildContext context) {
-    final bodyMedium = Theme.of(context).textTheme.bodyMedium;
+    final bodyLarge = Theme.of(context).textTheme.bodyLarge;
     final bodyText1 = Theme.of(context).textTheme.bodyText1;
     final bodyText2 = Theme.of(context).textTheme.bodyText2;
     
     return ExpansionTile(
         leading: const Icon(Icons.account_balance, size: 30.0),
-        title: Text('Finances', style: bodyMedium),
+        title: AutoSizeText('Finances', maxLines: 1, style: bodyLarge),
         initiallyExpanded: false,
         onExpansionChanged: (val) {
           setState(() {

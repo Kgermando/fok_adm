@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:badges/badges.dart';
 import 'package:flutter/material.dart';
 import 'package:fokad_admin/src/api/auth/auth_api.dart';
@@ -65,14 +66,14 @@ class _AdministrationNavState extends State<AdministrationNav> {
 
   @override
   Widget build(BuildContext context) {
-    final bodyMedium = Theme.of(context).textTheme.bodyMedium;
+    final bodyLarge = Theme.of(context).textTheme.bodyLarge;
     final bodyText1 = Theme.of(context).textTheme.bodyText1;
     return ExpansionTile(
       leading: const Icon(
         Icons.admin_panel_settings,
         size: 30.0,
       ),
-      title: Text('Administration', style: bodyMedium),
+      title: AutoSizeText('Administration', maxLines: 1,  style: bodyLarge),
       initiallyExpanded: false,
       onExpansionChanged: (val) {
         setState(() {
