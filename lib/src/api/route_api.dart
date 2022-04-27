@@ -158,6 +158,18 @@ var addGainsUrl = Uri.parse("$mainUrl/gains/insert-new-gain");
 var restitutionsUrl = Uri.parse("$mainUrl/restitutions/");
 var addRestitutionsUrl = Uri.parse("$mainUrl/restitutions/insert-new-restitution");
 
+var numberFactsUrl = Uri.parse("$mainUrl/number-facts/");
+var addNumberFactsUrl =
+    Uri.parse("$mainUrl/number-facts/insert-new-number-fact");
+
+var historyRavitaillementsUrl = Uri.parse("$mainUrl/history-ravitaillements/");
+var addHistoryRavitaillementsUrl =
+    Uri.parse("$mainUrl/history-ravitaillements/insert-new-history-ravitaillement");
+
+var historyLivraisonUrl = Uri.parse("$mainUrl/history-livraisons/");
+var addHistoryLivraisonUrl =
+    Uri.parse("$mainUrl/history-livraisons/insert-new-history_livraison");
+
 // Marketing
 var agendasUrl = Uri.parse("$mainUrl/agendas/");
 var addAgendasUrl = Uri.parse("$mainUrl/agendas/insert-new-agenda");

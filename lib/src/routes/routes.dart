@@ -8,6 +8,7 @@ import 'package:fokad_admin/src/pages/administration/rh_admin.dart';
 import 'package:fokad_admin/src/pages/auth/login_auth.dart';
 import 'package:fokad_admin/src/pages/auth/profil_page.dart';
 import 'package:fokad_admin/src/pages/budgets/budget_finance.dart';
+import 'package:fokad_admin/src/pages/comm_marketing/c_m_dd/c_m_dd.dart';
 import 'package:fokad_admin/src/pages/comm_marketing/dashboard/dashboard_com_marketing.dart';
 import 'package:fokad_admin/src/pages/comm_marketing/marketing/annuaire_marketing.dart';
 import 'package:fokad_admin/src/pages/comptabilites/armotissement_comptabilite.dart';
@@ -153,6 +154,7 @@ class ExploitationRoutes {
 }
 
 class ComMarketingRoutes {
+  static const comMarketingDD = "/com-marketing-dd";
   static const comMarketingDashboard = "/com-marketing-dashboard";
   static const comMarketingAnnuaire = "/com-marketing-annuaire";
   static const comMarketingAgenda = "/com-marketing-agenda";
@@ -265,6 +267,7 @@ class Routing {
 
 
 
+        ComMarketingRoutes.comMarketingDD: (_) => const MaterialPage(child: CMDD()),
         ComMarketingRoutes.comMarketingDashboard: (_) => const MaterialPage(child: ComMarketing()),
         ComMarketingRoutes.comMarketingAnnuaire : (_) =>
             const MaterialPage(child: AnnuaireMarketing()),

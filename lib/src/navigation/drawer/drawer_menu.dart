@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:fokad_admin/src/navigation/drawer/components/administration_nav.dart';
 import 'package:fokad_admin/src/navigation/drawer/components/budget_nav.dart';
+import 'package:fokad_admin/src/navigation/drawer/components/com_marketing_nav.dart';
 import 'package:fokad_admin/src/navigation/drawer/components/comptabilite_nav.dart';
 import 'package:fokad_admin/src/navigation/drawer/components/exploitation_nav.dart';
 import 'package:fokad_admin/src/navigation/drawer/components/finances_nav.dart';
@@ -45,6 +46,7 @@ class _DrawerMenuState extends State<DrawerMenu> {
             ComptabiliteNav(pageCurrente: pageCurrente),
             FinancesNav(pageCurrente: pageCurrente),
             ExploitationNav(pageCurrente: pageCurrente),
+            ComMarketing(pageCurrente: pageCurrente),
             LogistiqueNav(pageCurrente: pageCurrente)
           ],
         ),

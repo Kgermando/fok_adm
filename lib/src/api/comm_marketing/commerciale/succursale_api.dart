@@ -5,11 +5,11 @@ import 'dart:convert';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:fokad_admin/src/api/auth/auth_api.dart';
 import 'package:fokad_admin/src/api/route_api.dart';
-import 'package:fokad_admin/src/models/comm_maketing/prod_model.dart';
+import 'package:fokad_admin/src/models/comm_maketing/succursale_model.dart';
 import 'package:http/http.dart' as http;
 
-class ProduitModelApi {
-  var client = http.Client();
+class SuccursaleApi {
+   var client = http.Client();
   final storage = const FlutterSecureStorage();
 
   Future<String?> getToken() async {
@@ -17,7 +17,7 @@ class ProduitModelApi {
     return data;
   }
 
-  Future<List<ProductModel>> getAllData() async {
+  Future<List<SuccursaleModel>> getAllData() async {
     String? token = await getToken();
 
     if (token!.isNotEmpty) {
@@ -26,7 +26,7 @@ class ProduitModelApi {
           ascii.decode(base64.decode(base64.normalize(splittedJwt[1]))));
     }
     var resp = await client.get(
-      prodModelsUrl,
+      succursalesUrl,
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
         'Authorization': 'Bearer $token'
@@ -35,9 +35,9 @@ class ProduitModelApi {
 
     if (resp.statusCode == 200) {
       List<dynamic> bodyList = json.decode(resp.body);
-      List<ProductModel> data = [];
+      List<SuccursaleModel> data = [];
       for (var u in bodyList) {
-        data.add(ProductModel.fromJson(u));
+        data.add(SuccursaleModel.fromJson(u));
       }
       return data;
     } else {
@@ -45,7 +45,7 @@ class ProduitModelApi {
     }
   }
 
-  Future<ProductModel> getOneData(int id) async {
+  Future<SuccursaleModel> getOneData(int id) async {
     String? token = await getToken();
 
     if (token!.isNotEmpty) {
@@ -53,7 +53,7 @@ class ProduitModelApi {
       var payload = json.decode(
           ascii.decode(base64.decode(base64.normalize(splittedJwt[1]))));
     }
-    var getUrl = Uri.parse("$mainUrl/produit-models/$id");
+    var getUrl = Uri.parse("$mainUrl/succursales/$id");
     var resp = await client.get(
       getUrl,
       headers: <String, String>{
@@ -62,40 +62,41 @@ class ProduitModelApi {
       },
     );
     if (resp.statusCode == 200) {
-      return ProductModel.fromJson(json.decode(resp.body));
+      return SuccursaleModel.fromJson(json.decode(resp.body));
     } else {
       throw Exception(json.decode(resp.body)['message']);
     }
   }
 
-  Future<ProductModel> insertData(ProductModel productModel) async {
+  Future<SuccursaleModel> insertData(SuccursaleModel succursaleModel) async {
     final accessToken = await storage.read(key: 'accessToken');
 
-    var data = productModel.toJson();
+    var data = succursaleModel.toJson();
     var body = jsonEncode(data);
 
-    var resp = await client.post(addProdModelsUrl,
+    var resp = await client.post(addSuccursalesUrl,
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
           'Authorization': 'Bearer $accessToken'
         },
         body: body);
     if (resp.statusCode == 200) {
-      return ProductModel.fromJson(json.decode(resp.body));
+      return SuccursaleModel.fromJson(json.decode(resp.body));
     } else if (resp.statusCode == 401) {
       await AuthApi().refreshAccessToken();
-      return insertData(productModel);
+      return insertData(succursaleModel);
     } else {
       throw Exception(json.decode(resp.body)['message']);
     }
   }
 
-  Future<ProductModel> updateData(int id, ProductModel productModel) async {
+  Future<SuccursaleModel> updateData(int id, SuccursaleModel succursaleModel) async {
     final accessToken = await storage.read(key: 'accessToken');
 
-    var data = productModel.toJson();
+    var data = succursaleModel.toJson();
     var body = jsonEncode(data);
-    var updateUrl = Uri.parse("$mainUrl/produit-models/update-produit-model/$id");
+    var updateUrl =
+        Uri.parse("$mainUrl/succursales/update-succursale/$id");
 
     var res = await client.put(updateUrl,
         headers: <String, String>{
@@ -104,23 +105,24 @@ class ProduitModelApi {
         },
         body: body);
     if (res.statusCode == 200) {
-      return ProductModel.fromJson(json.decode(res.body));
+      return SuccursaleModel.fromJson(json.decode(res.body));
     } else {
       throw Exception(json.decode(res.body)['message']);
     }
   }
 
-  Future<ProductModel> deleteData(int id) async {
+  Future<SuccursaleModel> deleteData(int id) async {
     final accessToken = await storage.read(key: 'accessToken');
 
-    var deleteUrl = Uri.parse("$mainUrl/produit-models/delete-produit-model/$id");
+    var deleteUrl =
+        Uri.parse("$mainUrl/succursales/delete-succursale/$id");
 
     var res = await client.delete(deleteUrl, headers: <String, String>{
       'Content-Type': 'application/json; charset=UTF-8',
       'Authorization': 'Bearer $accessToken'
     });
     if (res.statusCode == 200) {
-      return ProductModel.fromJson(json.decode(res.body)['data']);
+      return SuccursaleModel.fromJson(json.decode(res.body)['data']);
     } else {
       throw Exception(json.decode(res.body)['message']);
     }

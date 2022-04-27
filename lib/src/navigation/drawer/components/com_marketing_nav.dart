@@ -13,12 +13,14 @@ class ComMarketing extends StatefulWidget {
 }
 
 class _ComMarketingState extends State<ComMarketing> {
-  bool isOpenBudget = false;
+  bool isOpenComMarketing1 = false;
+  bool isOpenComMarketing2 = false;
 
   @override
   Widget build(BuildContext context) {
     final bodyLarge = Theme.of(context).textTheme.bodyLarge;
     final bodyText1 = Theme.of(context).textTheme.bodyText1;
+    final bodyText2 = Theme.of(context).textTheme.bodyText2;
 
     return ExpansionTile(
       leading: const Icon(Icons.fact_check, size: 30.0),
@@ -26,23 +28,84 @@ class _ComMarketingState extends State<ComMarketing> {
       initiallyExpanded: false,
       onExpansionChanged: (val) {
         setState(() {
-          isOpenBudget = !val;
+          isOpenComMarketing1 = !val;
         });
       },
       trailing: const Icon(Icons.arrow_drop_down),
       children: [
         DrawerWidget(
-            selected: widget.pageCurrente == ComMarketingRoutes.comMarketingDashboard,
+          selected: widget.pageCurrente == ComMarketingRoutes.comMarketingDashboard,
+          icon: Icons.dashboard,
+          sizeIcon: 20.0,
+          title: 'Dashboard',
+          style: bodyText1!,
+          onTap: () {
+            Routemaster.of(context).replace(
+              ComMarketingRoutes.comMarketingDashboard,
+            );
+            // Routemaster.of(context).pop();
+          }),
+          DrawerWidget(
+            selected:
+                widget.pageCurrente == ComMarketingRoutes.comMarketingDD,
             icon: Icons.dashboard,
             sizeIcon: 20.0,
-            title: 'Dashboard',
-            style: bodyText1!,
+            title: 'DD',
+            style: bodyText1,
             onTap: () {
               Routemaster.of(context).replace(
-                ComMarketingRoutes.comMarketingDashboard,
+                ComMarketingRoutes.comMarketingDD,
               );
               // Routemaster.of(context).pop();
             }),
+         ExpansionTile(
+            leading: const Icon(Icons.compare_arrows, size: 20.0),
+            title: Text('Marketing', style: bodyText1),
+            initiallyExpanded: false,
+            onExpansionChanged: (val) {
+              setState(() {
+                isOpenComMarketing2 = !val;
+              });
+            },
+            children: [
+              DrawerWidget(
+                selected:
+                    widget.pageCurrente == ComMarketingRoutes.comMarketingAnnuaire,
+                icon: Icons.arrow_right,
+                sizeIcon: 15.0,
+                title: 'Annuaire',
+                style: bodyText2!,
+                onTap: () {
+                  Routemaster.of(context)
+                      .replace(ComMarketingRoutes.comMarketingAnnuaire);
+                  // Routemaster.of(context).pop();
+                }),
+              DrawerWidget(
+                selected: widget.pageCurrente == ComMarketingRoutes.comMarketingAgenda,
+                icon: Icons.arrow_right,
+                sizeIcon: 15.0,
+                title: 'Agenda',
+                style: bodyText2,
+                onTap: () {
+                  Routemaster.of(context)
+                      .replace(ComMarketingRoutes.comMarketingAgenda);
+                  // Routemaster.of(context).pop();
+                }
+              ),
+              DrawerWidget(
+                selected: widget.pageCurrente ==
+                    ComMarketingRoutes.comMarketingCampaign,
+                icon: Icons.arrow_right,
+                sizeIcon: 15.0,
+                title: 'Campaigns',
+                style: bodyText2,
+                onTap: () {
+                  Routemaster.of(context)
+                      .replace(ComMarketingRoutes.comMarketingCampaign);
+                  // Routemaster.of(context).pop();
+                }),
+            ],
+          )
       ],
     );
   }
