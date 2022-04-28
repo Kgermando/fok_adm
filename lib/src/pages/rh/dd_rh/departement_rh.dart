@@ -74,10 +74,10 @@ class _DepartementRHState extends State<DepartementRH> {
                           controllerMenu: () =>
                               _key.currentState!.openDrawer()),
                       Expanded(
-                          child: Scrollbar(
-                        controller: _controllerScroll,
-                        child: ListView(
-                          controller: _controllerScroll,
+                          child: SingleChildScrollView(
+                        // controller: _controllerScroll,
+                        child: Column(
+                          // controller: _controllerScroll,
                           children: [
                             Card(
                               color: const Color.fromARGB(255, 126, 170, 214),

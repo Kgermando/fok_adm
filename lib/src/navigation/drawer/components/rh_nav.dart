@@ -42,6 +42,16 @@ class _RhNavState extends State<RhNav> {
               // Routemaster.of(context).pop();
             }),
         DrawerWidget(
+            selected: widget.pageCurrente == RhRoutes.rhDD,
+            icon: Icons.real_estate_agent_sharp,
+            sizeIcon: 20.0,
+            title: 'Directeur de Département',
+            style: bodyText1,
+            onTap: () {
+              Routemaster.of(context).replace(RhRoutes.rhDD);
+              // Routemaster.of(context).pop();
+            }),
+        DrawerWidget(
             selected: widget.pageCurrente == RhRoutes.rhPaiement,
             icon: Icons.real_estate_agent_sharp,
             sizeIcon: 20.0,

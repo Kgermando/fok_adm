@@ -13,8 +13,6 @@ import 'package:fokad_admin/src/navigation/drawer/drawer_menu.dart';
 import 'package:fokad_admin/src/navigation/header/custom_appbar.dart';
 import 'package:fokad_admin/src/pages/administration/components/finances/transactions/table_creance_admin.dart';
 import 'package:fokad_admin/src/pages/administration/components/finances/transactions/table_dette_admin.dart';
-import 'package:fokad_admin/src/provider/controller.dart';
-import 'package:provider/provider.dart';
 
 class FinancesAdmin extends StatefulWidget {
   const FinancesAdmin({Key? key}) : super(key: key);
@@ -44,7 +42,6 @@ class _FinancesAdminState extends State<FinancesAdmin> {
   }
 
   Future<void> getData() async {
-    UserModel userLoggIn = await AuthApi().getUserId();
     List<CreanceModel?> dataCreanceList = await CreanceApi().getAllData();
     List<DetteModel?> dataDetteList = await DetteApi().getAllData();
     List<LigneBudgetaireModel?> dataLigneBudgetaireList = await LIgneBudgetaireApi().getAllData();

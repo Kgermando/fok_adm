@@ -1,11 +1,9 @@
 import 'package:badges/badges.dart';
 import 'package:flutter/material.dart';
-import 'package:fokad_admin/src/api/auth/auth_api.dart';
 import 'package:fokad_admin/src/api/budgets/ligne_budgetaire_api.dart';
 import 'package:fokad_admin/src/constants/app_theme.dart';
 import 'package:fokad_admin/src/constants/responsive.dart';
 import 'package:fokad_admin/src/models/budgets/ligne_budgetaire_model.dart';
-import 'package:fokad_admin/src/models/users/user_model.dart';
 import 'package:fokad_admin/src/navigation/drawer/drawer_menu.dart';
 import 'package:fokad_admin/src/navigation/header/custom_appbar.dart';
 import 'package:fokad_admin/src/pages/administration/components/budgets/ligne_budgetaire_admin.dart';
@@ -32,7 +30,6 @@ class _BudgetsAdminState extends State<BudgetsAdmin> {
   }
 
   Future<void> getData() async {
-    UserModel userLoggIn = await AuthApi().getUserId();
     List<LigneBudgetaireModel?> dataLigneBudgetaireList =
         await LIgneBudgetaireApi().getAllData();
     setState(() {

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fokad_admin/src/pages/administration/budgets_admin.dart';
 import 'package:fokad_admin/src/pages/administration/comm_marketing_admin.dart';
 import 'package:fokad_admin/src/pages/administration/dashboard_administration.dart';
 import 'package:fokad_admin/src/pages/administration/exploitations_admin.dart';
@@ -83,6 +84,8 @@ class AdminRoutes {
   static const home = "/";
   static const adminDashboard = "/admin-dashboard";
   static const adminRH = "/admin-rh";
+  static const adminBudget = "/admin-budget";
+  static const adminComptabilite = "/admin-comptabilite";
   static const adminFinance = "/admin-finances";
   static const adminExploitation = "/admin-exploitations";
   static const adminCommMarketing = "/admin-commercial-marketing";
@@ -207,6 +210,7 @@ class Routing {
         AdminRoutes.adminDashboard: (_) =>
             const MaterialPage(child: DashboardAdministration()),
         AdminRoutes.adminRH: (_) => const MaterialPage(child: RhAdmin()),
+        AdminRoutes.adminBudget: (_) => const MaterialPage(child: BudgetsAdmin()),
         AdminRoutes.adminFinance: (_) => const MaterialPage(child: FinancesAdmin()),
         AdminRoutes.adminExploitation: (_) => const MaterialPage(child: ExploitationsAdmin()),
         AdminRoutes.adminCommMarketing: (_) => const MaterialPage(child: CommMarketingAdmin()),

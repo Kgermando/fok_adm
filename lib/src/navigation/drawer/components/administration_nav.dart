@@ -93,6 +93,22 @@ class _AdministrationNavState extends State<AdministrationNav> {
               // Routemaster.of(context).pop();
             }),
         DrawerWidget(
+            selected: widget.pageCurrente == AdminRoutes.adminBudget,
+            icon: Icons.monetization_on,
+            sizeIcon: 20.0,
+            title: 'Budgets',
+            style: bodyText1,
+            badge: Badge(
+              badgeColor: Colors.blue,
+              badgeContent: const Text('3',
+                  style: TextStyle(fontSize: 10.0, color: Colors.white)),
+              child: const Icon(Icons.notifications),
+            ),
+            onTap: () {
+              Routemaster.of(context).replace(AdminRoutes.adminBudget);
+              // Routemaster.of(context).pop();
+            }),
+        DrawerWidget(
             selected: widget.pageCurrente == AdminRoutes.adminFinance,
             icon: Icons.monetization_on,
             sizeIcon: 20.0,
@@ -108,18 +124,34 @@ class _AdministrationNavState extends State<AdministrationNav> {
               Routemaster.of(context).replace(AdminRoutes.adminFinance);
               // Routemaster.of(context).pop();
             }),
+        // DrawerWidget(
+        //     selected: widget.pageCurrente == AdminRoutes.adminComptabilite,
+        //     icon: Icons.monetization_on,
+        //     sizeIcon: 20.0,
+        //     title: 'Comptabilités',
+        //     style: bodyText1,
+        //     badge: Badge(
+        //       badgeColor: Colors.blue,
+        //       badgeContent: const Text('3',
+        //           style: TextStyle(fontSize: 10.0, color: Colors.white)),
+        //       child: const Icon(Icons.notifications),
+        //     ),
+        //     onTap: () {
+        //       Routemaster.of(context).replace(AdminRoutes.adminComptabilite);
+        //       // Routemaster.of(context).pop();
+        //     }),
         DrawerWidget(
             selected: widget.pageCurrente == AdminRoutes.adminRH,
             icon: Icons.group,
             sizeIcon: 20.0,
             title: 'RH',
             style: bodyText1,
-            badge: Badge(
-              badgeColor: Colors.blue,
-              badgeContent: Text('$countPaie',
-                  style: const TextStyle(fontSize: 10.0, color: Colors.white)),
-              child: const Icon(Icons.notifications),
-            ),
+            // badge: Badge(
+            //   badgeColor: Colors.blue,
+            //   badgeContent: Text('$countPaie',
+            //       style: const TextStyle(fontSize: 10.0, color: Colors.white)),
+            //   child: const Icon(Icons.notifications),
+            // ),
             onTap: () {
               Routemaster.of(context).replace(AdminRoutes.adminRH);
               // Routemaster.of(context).pop();
@@ -130,12 +162,12 @@ class _AdministrationNavState extends State<AdministrationNav> {
             sizeIcon: 20.0,
             title: 'Exploitations',
             style: bodyText1,
-            badge: Badge(
-              badgeColor: Colors.blue,
-              badgeContent: const Text('12',
-                  style: TextStyle(fontSize: 10.0, color: Colors.white)),
-              child: const Icon(Icons.notifications),
-            ),
+            // badge: Badge(
+            //   badgeColor: Colors.blue,
+            //   badgeContent: const Text('12',
+            //       style: TextStyle(fontSize: 10.0, color: Colors.white)),
+            //   child: const Icon(Icons.notifications),
+            // ),
             onTap: () {
               Routemaster.of(context).replace(AdminRoutes.adminExploitation);
               // Routemaster.of(context).pop();
@@ -146,12 +178,12 @@ class _AdministrationNavState extends State<AdministrationNav> {
             sizeIcon: 20.0,
             title: 'Comm. & Marketing',
             style: bodyText1,
-            badge: Badge(
-              badgeColor: Colors.blue,
-              badgeContent: const Text('2',
-                  style: TextStyle(fontSize: 10.0, color: Colors.white)),
-              child: const Icon(Icons.notifications),
-            ),
+            // badge: Badge(
+            //   badgeColor: Colors.blue,
+            //   badgeContent: const Text('2',
+            //       style: TextStyle(fontSize: 10.0, color: Colors.white)),
+            //   child: const Icon(Icons.notifications),
+            // ),
             onTap: () {
               Routemaster.of(context).replace(AdminRoutes.adminCommMarketing);
               // Routemaster.of(context).pop();
@@ -162,12 +194,12 @@ class _AdministrationNavState extends State<AdministrationNav> {
             sizeIcon: 20.0,
             title: 'Logistiques',
             style: bodyText1,
-            badge: Badge(
-              badgeColor: Colors.blue,
-              badgeContent: const Text('1',
-                  style: TextStyle(fontSize: 10.0, color: Colors.white)),
-              child: const Icon(Icons.notifications),
-            ),
+            // badge: Badge(
+            //   badgeColor: Colors.blue,
+            //   badgeContent: const Text('1',
+            //       style: TextStyle(fontSize: 10.0, color: Colors.white)),
+            //   child: const Icon(Icons.notifications),
+            // ),
             onTap: () {
               Routemaster.of(context).replace(AdminRoutes.adminLogistique);
               // Routemaster.of(context).pop();
@@ -178,12 +210,12 @@ class _AdministrationNavState extends State<AdministrationNav> {
             sizeIcon: 20.0,
             title: 'Etat de besoin',
             style: bodyText1,
-            badge: Badge(
-              badgeColor: Colors.blue,
-              badgeContent: const Text('1',
-                  style: TextStyle(fontSize: 10.0, color: Colors.white)),
-              child: const Icon(Icons.notifications),
-            ),
+            // badge: Badge(
+            //   badgeColor: Colors.blue,
+            //   badgeContent: const Text('1',
+            //       style: TextStyle(fontSize: 10.0, color: Colors.white)),
+            //   child: const Icon(Icons.notifications),
+            // ),
             onTap: () {
               Routemaster.of(context).replace(DevisRoutes.devis);
               // Routemaster.of(context).pop();

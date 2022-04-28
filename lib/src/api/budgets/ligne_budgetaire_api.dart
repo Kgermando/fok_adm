@@ -26,7 +26,7 @@ class LIgneBudgetaireApi {
           ascii.decode(base64.decode(base64.normalize(splittedJwt[1]))));
     }
     var resp = await client.get(
-      addbudgetLigneBudgetairesUrl,
+      ligneBudgetairesUrl,
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
         'Authorization': 'Bearer $token'
