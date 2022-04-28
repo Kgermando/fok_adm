@@ -23,7 +23,7 @@ class StocksGlobalMOdel {
   late String signatureJustificationDD;
   late String signature; // celui qui fait le document
   late DateTime created;
-
+ 
   StocksGlobalMOdel({
     this.id,
     required this.idProduct,

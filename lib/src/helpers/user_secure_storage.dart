@@ -21,16 +21,17 @@ class UserSecureStorage {
       return user;
     } else {
       final user = UserModel(
-          nom: 'nom',
-          prenom: 'prenom',
-          matricule: 'matricule',
-          departement: 'departement',
-          servicesAffectation: 'servicesAffectation',
-          fonctionOccupe: 'fonctionOccupe',
-          role: 'role',
+          nom: '-',
+          prenom: '-',
+          matricule: '-',
+          departement: '-',
+          servicesAffectation: '-',
+          fonctionOccupe: '-',
+          role: '-',
           isOnline: false,
           createdAt: DateTime.now(),
-          passwordHash: 'passwordHash');
+          passwordHash: '-',
+          succursale: '-');
       return user;
     }
   }

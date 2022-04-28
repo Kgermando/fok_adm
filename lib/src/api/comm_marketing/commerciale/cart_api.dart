@@ -127,4 +127,20 @@ class CartApi {
       throw Exception(json.decode(res.body)['message']);
     }
   }
+
+  Future<CartModel> deleteAllData() async {
+    final accessToken = await storage.read(key: 'accessToken');
+
+    var deleteUrl = Uri.parse("$mainUrl/carts/delete-all-cart");
+
+    var res = await client.delete(deleteUrl, headers: <String, String>{
+      'Content-Type': 'application/json; charset=UTF-8',
+      'Authorization': 'Bearer $accessToken'
+    });
+    if (res.statusCode == 200) {
+      return CartModel.fromJson(json.decode(res.body)['data']);
+    } else {
+      throw Exception(json.decode(res.body)['message']);
+    }
+  }
 }

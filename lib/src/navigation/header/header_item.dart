@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:fokad_admin/src/constants/app_theme.dart';
 import 'package:fokad_admin/src/constants/responsive.dart';
@@ -17,14 +18,16 @@ class HeaderItem extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           if (Responsive.isDesktop(context))
-          Text(
+          AutoSizeText(
             title.toUpperCase(),
+            maxLines: 1,
             overflow: TextOverflow.ellipsis,
             style: headlineMedium
           ),
           
           if (!Responsive.isDesktop(context))
-          Text(title.toUpperCase(),
+          AutoSizeText(title.toUpperCase(),
+            maxLines: 1,
             overflow: TextOverflow.ellipsis,
             style: headline6
           ),

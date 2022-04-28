@@ -1,14 +1,17 @@
 import 'package:badges/badges.dart';
 import 'package:flutter/material.dart';
 import 'package:fokad_admin/src/api/auth/auth_api.dart';
+import 'package:fokad_admin/src/api/comm_marketing/commerciale/succursale_api.dart';
 import 'package:fokad_admin/src/api/comm_marketing/marketing/campaign_api.dart';
 import 'package:fokad_admin/src/constants/app_theme.dart';
 import 'package:fokad_admin/src/constants/responsive.dart';
 import 'package:fokad_admin/src/models/comm_maketing/campaign_model.dart';
+import 'package:fokad_admin/src/models/comm_maketing/succursale_model.dart';
 import 'package:fokad_admin/src/models/users/user_model.dart';
 import 'package:fokad_admin/src/navigation/drawer/drawer_menu.dart';
 import 'package:fokad_admin/src/navigation/header/custom_appbar.dart';
 import 'package:fokad_admin/src/pages/comm_marketing/c_m_dd/components/table_campaign_dd.dart';
+import 'package:fokad_admin/src/pages/comm_marketing/c_m_dd/components/table_succursale_dd.dart';
 
 class CMDD extends StatefulWidget {
   const CMDD({ Key? key }) : super(key: key);
@@ -25,6 +28,7 @@ class _CMDDState extends State<CMDD> {
   bool isOpenRh2 = false;
 
   int campaignCount = 0;
+  int succursaleCount = 0;
 
   @override
   void initState() {
@@ -36,10 +40,12 @@ class _CMDDState extends State<CMDD> {
     UserModel userLoggIn = await AuthApi().getUserId();
     // RH
     List<CampaignModel> campaign = await CampaignApi().getAllData();
-
+    List<SuccursaleModel> succursale = await SuccursaleApi().getAllData();
     setState(() {
       campaignCount =
           campaign.where((element) => element.approbationDD == '-').length;
+      succursaleCount =
+          succursale.where((element) => element.approbationDD == '-').length;
     });
   }
 
@@ -102,6 +108,35 @@ class _CMDDState extends State<CMDD> {
                                   ],
                                 ),
                                 children: const [TableCampaignDD()],
+                              ),
+                            ),
+                            Card(
+                              color: const Color.fromARGB(255, 126, 170, 214),
+                              child: ExpansionTile(
+                                leading: const Icon(Icons.folder),
+                                title:
+                                    Text('Dossier Succursale', style: headline6),
+                                subtitle: Text(
+                                    "Ces dossiers necessitent votre approbation",
+                                    style: bodyMedium),
+                                initiallyExpanded: false,
+                                onExpansionChanged: (val) {
+                                  setState(() {
+                                    isOpenRh1 = !val;
+                                  });
+                                },
+                                trailing: Row(
+                                  children: [
+                                    Badge(
+                                      elevation: 10,
+                                      badgeContent:
+                                          Text(succursaleCount.toString()),
+                                      position: const BadgePosition(top: 20.0),
+                                    ),
+                                    const Icon(Icons.arrow_drop_down),
+                                  ],
+                                ),
+                                children: const [TableSuccursaleDD()],
                               ),
                             ),
                           ],

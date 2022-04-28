@@ -292,7 +292,7 @@ class _UpdateAgentState extends State<UpdateAgent> {
                         ),
                         Expanded(child: servicesAffectationWidget())
                       ],
-                    ),
+                    ), 
                     Row(
                       children: [
                         Expanded(child: roleWidget()),

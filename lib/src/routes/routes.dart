@@ -9,6 +9,12 @@ import 'package:fokad_admin/src/pages/auth/login_auth.dart';
 import 'package:fokad_admin/src/pages/auth/profil_page.dart';
 import 'package:fokad_admin/src/pages/budgets/budget_finance.dart';
 import 'package:fokad_admin/src/pages/comm_marketing/c_m_dd/c_m_dd.dart';
+import 'package:fokad_admin/src/pages/comm_marketing/commercial/prod_model/components/add_update_prod_model.dart';
+import 'package:fokad_admin/src/pages/comm_marketing/commercial/prod_model/prod_model_page.dart';
+import 'package:fokad_admin/src/pages/comm_marketing/commercial/stocks_global/components/add_stock_global.dart';
+import 'package:fokad_admin/src/pages/comm_marketing/commercial/stocks_global/stocks_global_page.dart';
+import 'package:fokad_admin/src/pages/comm_marketing/commercial/succursale/components/add_succursale.dart';
+import 'package:fokad_admin/src/pages/comm_marketing/commercial/succursale/succursale_page.dart';
 import 'package:fokad_admin/src/pages/comm_marketing/dashboard/dashboard_com_marketing.dart';
 import 'package:fokad_admin/src/pages/comm_marketing/marketing/annuaire_marketing.dart';
 import 'package:fokad_admin/src/pages/comptabilites/armotissement_comptabilite.dart';
@@ -160,8 +166,11 @@ class ComMarketingRoutes {
   static const comMarketingAgenda = "/com-marketing-agenda";
   static const comMarketingCampaign = "/com-marketing-campaign";
   static const comMarketingProduitModel = "/com-marketing-produit-model";
+  static const comMarketingProduitModelAdd = "/com-marketing-produit-model-add";
   static const comMarketingStockGlobal = "/com-marketing-stock-global";
+  static const comMarketingStockGlobalAdd = "/com-marketing-stock-global-add";
   static const comMarketingSuccursale = "/com-marketing-succursale";
+  static const comMarketingSuccursaleAdd = "/com-marketing-succursale-add";
   static const comMarketingAchat = "/com-marketing-achat";
   static const comMarketingBonLivraison = "/com-marketing-bon-livraison";
   static const comMarketingcart = "/com-marketing-cart";
@@ -272,6 +281,17 @@ class Routing {
         ComMarketingRoutes.comMarketingAnnuaire : (_) =>
             const MaterialPage(child: AnnuaireMarketing()),
         ComMarketingRoutes.comMarketingAgenda : (_) => const MaterialPage(child: AgentPage()),
+
+        ComMarketingRoutes.comMarketingProduitModel: (_) => const MaterialPage(child: ProduitModelPage()),
+        ComMarketingRoutes.comMarketingProduitModelAdd: (_) => const MaterialPage(child: AddUpdateProModel()),
+        ComMarketingRoutes.comMarketingStockGlobal: (_) =>
+            const MaterialPage(child: StockGlobalPage()),
+        ComMarketingRoutes.comMarketingStockGlobalAdd: (_) =>
+            const MaterialPage(child: AddStockGlobal()),
+      ComMarketingRoutes.comMarketingSuccursale: (_) =>
+            const MaterialPage(child: SuccursalePage()),
+      ComMarketingRoutes.comMarketingSuccursaleAdd: (_) =>
+            const MaterialPage(child: AddSurrsale()),
         
          
 

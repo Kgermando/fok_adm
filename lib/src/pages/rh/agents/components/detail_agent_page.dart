@@ -11,13 +11,12 @@ import 'package:fokad_admin/src/navigation/drawer/drawer_menu.dart';
 import 'package:fokad_admin/src/navigation/header/custom_appbar.dart';
 import 'package:fokad_admin/src/pages/rh/agents/components/update_agent.dart';
 import 'package:fokad_admin/src/pages/rh/paiements/components/add_paiement_salaire.dart';
-import 'package:fokad_admin/src/provider/controller.dart';
 import 'package:fokad_admin/src/utils/loading.dart';
 import 'package:fokad_admin/src/widgets/print_widget.dart';
 import 'package:fokad_admin/src/widgets/title_widget.dart';
 import 'package:intl/intl.dart';
-import 'package:provider/provider.dart';
 import 'package:routemaster/routemaster.dart';
+import 'package:simple_speed_dial/simple_speed_dial.dart';
 
 class AgentPage extends StatefulWidget {
   const AgentPage({Key? key, this.id}) : super(key: key);
@@ -41,13 +40,16 @@ class _AgentPageState extends State<AgentPage> {
     super.initState();
   }
 
+  AgentModel? agentModel;
   UserModel? user;
   Future<void> getData() async {
     UserModel userModel = await AuthApi().getUserId();
     final data = await UserApi().getAllData();
+    var agent = await AgentsApi().getOneData(widget.id!);
     setState(() {
       user = userModel;
       userList = data;
+      agentModel = agent;
     });
   }
 
@@ -56,6 +58,7 @@ class _AgentPageState extends State<AgentPage> {
     return Scaffold(
         key: _key,
         drawer: const DrawerMenu(),
+        floatingActionButton: speedialWidget(agentModel!),
         body: SafeArea(
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -141,24 +144,13 @@ class _AgentPageState extends State<AgentPage> {
                     const TitleWidget(title: 'Curriculum vitæ'),
                     Row(
                       children: [
-                        compteSalaireWidget(agentModel),
-                        // if (agentModel.fonctionOccupe == user!.fonctionOccupe)
-                          statutAgentWidget(agentModel),
-                        IconButton(
-                            tooltip: 'Modifier',
-                            onPressed: () {
-                              Navigator.of(context).push(MaterialPageRoute(
-                                  builder: (context) =>
-                                      UpdateAgent(agentModel: agentModel)));
-                            },
-                            icon: const Icon(Icons.edit)),
                         PrintWidget(
                             tooltip: 'Imprimer le document', onPressed: () {})
                       ],
                     )
                   ],
                 ),
-                identiteWidet(agentModel),
+                identiteWidget(agentModel),
                 serviceWidet(agentModel),
                 competenceExperienceWidet(agentModel),
                 infosEditeurWidet(agentModel)
@@ -168,6 +160,70 @@ class _AgentPageState extends State<AgentPage> {
         ),
       ],
     );
+  }
+
+  SpeedDial speedialWidget(AgentModel agentModel) {
+    return SpeedDial(
+      child: const Icon(
+        Icons.menu,
+        color: Colors.white,
+      ),
+      closedForegroundColor: themeColor,
+      openForegroundColor: Colors.white,
+      closedBackgroundColor: themeColor,
+      openBackgroundColor: themeColor,
+      speedDialChildren: <SpeedDialChild>[
+        SpeedDialChild(
+          child: Row(
+            children: const [
+              Icon(Icons.add),
+              Icon(Icons.monetization_on),
+            ],
+          ),
+          foregroundColor: Colors.black,
+          backgroundColor: Colors.green.shade700,
+          label: 'Modifier CV agent',
+          onPressed: () {
+            modifierWidget(agentModel);
+          },
+        ),
+        SpeedDialChild(
+          child: Row(
+            children: const [
+              Icon(Icons.add),
+              Icon(Icons.monetization_on),
+            ],
+          ),
+          foregroundColor: Colors.black,
+          backgroundColor: Colors.green.shade700,
+          label: 'Changer le statut agent',
+          onPressed: () {
+            statutAgentWidget(agentModel);
+          },
+        ),
+        SpeedDialChild(
+            child: Row(
+              children: const [
+                Icon(Icons.add),
+                Icon(Icons.content_paste_sharp),
+              ],
+            ),
+            foregroundColor: Colors.white,
+            backgroundColor: Colors.blue.shade700,
+            label: 'Paiement',
+            onPressed: () => compteSalaireWidget(agentModel)),
+      ],
+    );
+  }
+
+  Widget modifierWidget(AgentModel agentModel) {
+    return IconButton(
+        tooltip: 'Modifier',
+        onPressed: () {
+          Navigator.of(context).push(MaterialPageRoute(
+              builder: (context) => UpdateAgent(agentModel: agentModel)));
+        },
+        icon: const Icon(Icons.edit));
   }
 
   Widget compteSalaireWidget(AgentModel agentModel) {
@@ -189,7 +245,7 @@ class _AgentPageState extends State<AgentPage> {
         icon: const Icon(Icons.person));
   }
 
-  Widget identiteWidet(AgentModel agentModel) {
+  Widget identiteWidget(AgentModel agentModel) {
     final bodyMedium = Theme.of(context).textTheme.bodyMedium;
     return Padding(
       padding: const EdgeInsets.all(p10),
@@ -702,7 +758,8 @@ class _AgentPageState extends State<AgentPage> {
         role: role,
         isOnline: true,
         createdAt: DateTime.now(),
-        passwordHash: "12345678");
+        passwordHash: "12345678",
+        succursale: '-');
     await UserApi().insertData(userModel);
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
       content: const Text("Enregistrer avec succès!"),
