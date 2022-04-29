@@ -54,24 +54,24 @@ var addfinExterieurUrl = Uri.parse(
 
 // Comptabilité
 var amortissementsUrl =
-    Uri.parse("$mainUrl/finances/comptabilite/amortissements/");
+    Uri.parse("$mainUrl/comptabilite/amortissements/");
 var addamortissementsUrl = Uri.parse(
-    "$mainUrl/finances/comptabilite/amortissements/insert-new-transaction-amortissement");
+    "$mainUrl/comptabilite/amortissements/insert-new-amortissement");
 
 var bilansUrl =
-    Uri.parse("$mainUrl/finances/comptabilite/bilans/");
+    Uri.parse("$mainUrl/comptabilite/bilans/");
 var addbilansUrl = Uri.parse(
-    "$mainUrl/finances/comptabilite/bilans/insert-new-transaction-bilan");
+    "$mainUrl/comptabilite/bilans/insert-new-bilan");
 
 
-var journalsUrl = Uri.parse("$mainUrl/finances/comptabilite/journals/");
+var journalsUrl = Uri.parse("$mainUrl/comptabilite/journals/");
 var addjournalsUrl = Uri.parse(
-    "$mainUrl/finances/comptabilite/journals/insert-new-transaction-journal");
+    "$mainUrl/comptabilite/journals/insert-new-journal");
 
 
-var valorisationsUrl = Uri.parse("$mainUrl/finances/comptabilite/valorisations/");
+var valorisationsUrl = Uri.parse("$mainUrl/comptabilite/valorisations/");
 var addvalorisationsUrl = Uri.parse(
-    "$mainUrl/finances/comptabilite/valorisations/insert-new-transaction-valorisation");
+    "$mainUrl/comptabilite/valorisations/insert-new-valorisation");
 
 
 var devisUrl = Uri.parse("$mainUrl/devis/");

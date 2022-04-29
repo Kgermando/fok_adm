@@ -1,5 +1,4 @@
 import 'package:auto_size_text/auto_size_text.dart';
-import 'package:badges/badges.dart';
 import 'package:flutter/material.dart';
 import 'package:fokad_admin/src/api/auth/auth_api.dart';
 import 'package:fokad_admin/src/api/finances/creance_api.dart';
@@ -94,64 +93,40 @@ class _AdministrationNavState extends State<AdministrationNav> {
             }),
         DrawerWidget(
             selected: widget.pageCurrente == AdminRoutes.adminBudget,
-            icon: Icons.monetization_on,
+            icon: Icons.fact_check,
             sizeIcon: 20.0,
             title: 'Budgets',
             style: bodyText1,
-            badge: Badge(
-              badgeColor: Colors.blue,
-              badgeContent: const Text('3',
-                  style: TextStyle(fontSize: 10.0, color: Colors.white)),
-              child: const Icon(Icons.notifications),
-            ),
             onTap: () {
               Routemaster.of(context).replace(AdminRoutes.adminBudget);
               // Routemaster.of(context).pop();
             }),
         DrawerWidget(
             selected: widget.pageCurrente == AdminRoutes.adminFinance,
-            icon: Icons.monetization_on,
+            icon: Icons.account_balance,
             sizeIcon: 20.0,
             title: 'Finances',
             style: bodyText1,
-            badge: Badge(
-              badgeColor: Colors.blue,
-              badgeContent: const Text('3',
-                  style: TextStyle(fontSize: 10.0, color: Colors.white)),
-              child: const Icon(Icons.notifications),
-            ),
             onTap: () {
               Routemaster.of(context).replace(AdminRoutes.adminFinance);
               // Routemaster.of(context).pop();
             }),
-        // DrawerWidget(
-        //     selected: widget.pageCurrente == AdminRoutes.adminComptabilite,
-        //     icon: Icons.monetization_on,
-        //     sizeIcon: 20.0,
-        //     title: 'Comptabilités',
-        //     style: bodyText1,
-        //     badge: Badge(
-        //       badgeColor: Colors.blue,
-        //       badgeContent: const Text('3',
-        //           style: TextStyle(fontSize: 10.0, color: Colors.white)),
-        //       child: const Icon(Icons.notifications),
-        //     ),
-        //     onTap: () {
-        //       Routemaster.of(context).replace(AdminRoutes.adminComptabilite);
-        //       // Routemaster.of(context).pop();
-        //     }),
+        DrawerWidget(
+            selected: widget.pageCurrente == AdminRoutes.adminComptabilite,
+            icon: Icons.table_view,
+            sizeIcon: 20.0,
+            title: 'Comptabilités',
+            style: bodyText1,
+            onTap: () {
+              Routemaster.of(context).replace(AdminRoutes.adminComptabilite);
+              // Routemaster.of(context).pop();
+            }),
         DrawerWidget(
             selected: widget.pageCurrente == AdminRoutes.adminRH,
             icon: Icons.group,
             sizeIcon: 20.0,
             title: 'RH',
             style: bodyText1,
-            // badge: Badge(
-            //   badgeColor: Colors.blue,
-            //   badgeContent: Text('$countPaie',
-            //       style: const TextStyle(fontSize: 10.0, color: Colors.white)),
-            //   child: const Icon(Icons.notifications),
-            // ),
             onTap: () {
               Routemaster.of(context).replace(AdminRoutes.adminRH);
               // Routemaster.of(context).pop();
@@ -162,12 +137,6 @@ class _AdministrationNavState extends State<AdministrationNav> {
             sizeIcon: 20.0,
             title: 'Exploitations',
             style: bodyText1,
-            // badge: Badge(
-            //   badgeColor: Colors.blue,
-            //   badgeContent: const Text('12',
-            //       style: TextStyle(fontSize: 10.0, color: Colors.white)),
-            //   child: const Icon(Icons.notifications),
-            // ),
             onTap: () {
               Routemaster.of(context).replace(AdminRoutes.adminExploitation);
               // Routemaster.of(context).pop();
@@ -178,12 +147,6 @@ class _AdministrationNavState extends State<AdministrationNav> {
             sizeIcon: 20.0,
             title: 'Comm. & Marketing',
             style: bodyText1,
-            // badge: Badge(
-            //   badgeColor: Colors.blue,
-            //   badgeContent: const Text('2',
-            //       style: TextStyle(fontSize: 10.0, color: Colors.white)),
-            //   child: const Icon(Icons.notifications),
-            // ),
             onTap: () {
               Routemaster.of(context).replace(AdminRoutes.adminCommMarketing);
               // Routemaster.of(context).pop();
@@ -194,12 +157,6 @@ class _AdministrationNavState extends State<AdministrationNav> {
             sizeIcon: 20.0,
             title: 'Logistiques',
             style: bodyText1,
-            // badge: Badge(
-            //   badgeColor: Colors.blue,
-            //   badgeContent: const Text('1',
-            //       style: TextStyle(fontSize: 10.0, color: Colors.white)),
-            //   child: const Icon(Icons.notifications),
-            // ),
             onTap: () {
               Routemaster.of(context).replace(AdminRoutes.adminLogistique);
               // Routemaster.of(context).pop();
@@ -210,12 +167,6 @@ class _AdministrationNavState extends State<AdministrationNav> {
             sizeIcon: 20.0,
             title: 'Etat de besoin',
             style: bodyText1,
-            // badge: Badge(
-            //   badgeColor: Colors.blue,
-            //   badgeContent: const Text('1',
-            //       style: TextStyle(fontSize: 10.0, color: Colors.white)),
-            //   child: const Icon(Icons.notifications),
-            // ),
             onTap: () {
               Routemaster.of(context).replace(DevisRoutes.devis);
               // Routemaster.of(context).pop();

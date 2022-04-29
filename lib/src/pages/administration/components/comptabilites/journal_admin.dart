@@ -1,22 +1,22 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:fokad_admin/src/api/comptabilite/bilan_api.dart';
-import 'package:fokad_admin/src/models/comptabilites/bilan_model.dart';
-import 'package:fokad_admin/src/pages/comptabilites/components/bilan/detail_bilan.dart';
+import 'package:fokad_admin/src/api/comptabilite/journal_api.dart';
+import 'package:fokad_admin/src/models/comptabilites/journal_model.dart';
+import 'package:fokad_admin/src/pages/comptabilites/components/journals/detail_journal.dart';
 import 'package:fokad_admin/src/widgets/print_widget.dart';
 import 'package:intl/intl.dart';
 import 'package:pluto_grid/pluto_grid.dart';
 
-class TableBilan extends StatefulWidget {
-  const TableBilan({ Key? key }) : super(key: key);
+
+class JournalAdmin extends StatefulWidget {
+  const JournalAdmin({ Key? key }) : super(key: key);
 
   @override
-  State<TableBilan> createState() => _TableBilanState();
+  State<JournalAdmin> createState() => _JournalAdminState();
 }
 
-class _TableBilanState extends State<TableBilan> {
-  Timer? timer;
+class _JournalAdminState extends State<JournalAdmin> {
   List<PlutoColumn> columns = [];
   List<PlutoRow> rows = [];
   PlutoGridStateManager? stateManager;
@@ -27,17 +27,9 @@ class _TableBilanState extends State<TableBilan> {
   @override
   initState() {
     agentsColumn();
-    timer = Timer.periodic(const Duration(milliseconds: 500), (t) {
-      agentsRow();
-    });
+    agentsRow();
 
     super.initState();
-  }
-
-  @override
-  void dispose() {
-    timer!.cancel();
-    super.dispose();
   }
 
   @override
@@ -52,7 +44,7 @@ class _TableBilanState extends State<TableBilan> {
           final idPlutoRow = dataList.elementAt(0);
 
           Navigator.of(context).push(MaterialPageRoute(
-              builder: (context) => DetailBilan(id: idPlutoRow.value)));
+              builder: (context) => DetailJournal(id: idPlutoRow.value)));
         },
         onLoaded: (PlutoGridOnLoadedEvent event) {
           stateManager = event.stateManager;
@@ -80,7 +72,7 @@ class _TableBilanState extends State<TableBilan> {
                 return resolver<ClassYouImplemented>() as PlutoFilterType;
               } else if (column.field == 'montant') {
                 return resolver<ClassYouImplemented>() as PlutoFilterType;
-              } else if (column.field == 'typeBilan') {
+              } else if (column.field == 'typeJournal') {
                 return resolver<ClassYouImplemented>() as PlutoFilterType;
               }
               return resolver<PlutoFilterTypeContains>() as PlutoFilterType;
@@ -155,8 +147,8 @@ class _TableBilanState extends State<TableBilan> {
       ),
       PlutoColumn(
         readOnly: true,
-        title: 'Type de bilan',
-        field: 'typeBilan',
+        title: 'Type de journal',
+        field: 'typeJournal',
         type: PlutoColumnType.text(),
         enableRowDrag: true,
         enableContextMenu: false,
@@ -181,8 +173,8 @@ class _TableBilanState extends State<TableBilan> {
   }
 
   Future agentsRow() async {
-    List<BilanModel?> dataList = await BilanApi().getAllData();
-    var data = dataList;
+    List<JournalModel?> dataList = await JournalApi().getAllData();
+    var data = dataList.where((element) => element!.approbationDG == "-");
 
     if (mounted) {
       setState(() {
@@ -194,7 +186,7 @@ class _TableBilanState extends State<TableBilan> {
             'comptes': PlutoCell(value: item.comptes),
             'intitule': PlutoCell(value: item.intitule),
             'montant': PlutoCell(value: item.montant),
-            'typeBilan': PlutoCell(value: item.typeBilan),
+            'typeJournal': PlutoCell(value: item.typeJournal),
             'created': PlutoCell(
                 value: DateFormat("DD-MM-yy H:mm").format(item.created))
           }));

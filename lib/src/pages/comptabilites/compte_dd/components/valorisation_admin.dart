@@ -1,22 +1,21 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:fokad_admin/src/api/comptabilite/bilan_api.dart';
-import 'package:fokad_admin/src/models/comptabilites/bilan_model.dart';
-import 'package:fokad_admin/src/pages/comptabilites/components/bilan/detail_bilan.dart';
+import 'package:fokad_admin/src/api/comptabilite/valorisation_api.dart';
+import 'package:fokad_admin/src/models/comptabilites/valorisation_model.dart';
+import 'package:fokad_admin/src/pages/comptabilites/components/valorisations/detail_valorisation.dart';
 import 'package:fokad_admin/src/widgets/print_widget.dart';
 import 'package:intl/intl.dart';
 import 'package:pluto_grid/pluto_grid.dart';
 
-class TableBilan extends StatefulWidget {
-  const TableBilan({ Key? key }) : super(key: key);
+class ValorisationDD extends StatefulWidget {
+  const ValorisationDD({ Key? key }) : super(key: key);
 
   @override
-  State<TableBilan> createState() => _TableBilanState();
+  State<ValorisationDD> createState() => _ValorisationDDState();
 }
 
-class _TableBilanState extends State<TableBilan> {
-  Timer? timer;
+class _ValorisationDDState extends State<ValorisationDD> {
   List<PlutoColumn> columns = [];
   List<PlutoRow> rows = [];
   PlutoGridStateManager? stateManager;
@@ -27,17 +26,9 @@ class _TableBilanState extends State<TableBilan> {
   @override
   initState() {
     agentsColumn();
-    timer = Timer.periodic(const Duration(milliseconds: 500), (t) {
-      agentsRow();
-    });
+    agentsRow();
 
     super.initState();
-  }
-
-  @override
-  void dispose() {
-    timer!.cancel();
-    super.dispose();
   }
 
   @override
@@ -52,7 +43,7 @@ class _TableBilanState extends State<TableBilan> {
           final idPlutoRow = dataList.elementAt(0);
 
           Navigator.of(context).push(MaterialPageRoute(
-              builder: (context) => DetailBilan(id: idPlutoRow.value)));
+              builder: (context) => DetailValorisation(id: idPlutoRow.value)));
         },
         onLoaded: (PlutoGridOnLoadedEvent event) {
           stateManager = event.stateManager;
@@ -72,15 +63,17 @@ class _TableBilanState extends State<TableBilan> {
               ClassYouImplemented(),
             ],
             resolveDefaultColumnFilter: (column, resolver) {
-              if (column.field == 'titleBilan') {
-                return resolver<ClassYouImplemented>() as PlutoFilterType;
-              } else if (column.field == 'comptes') {
+              if (column.field == 'numeroOrdre') {
                 return resolver<ClassYouImplemented>() as PlutoFilterType;
               } else if (column.field == 'intitule') {
                 return resolver<ClassYouImplemented>() as PlutoFilterType;
-              } else if (column.field == 'montant') {
+              } else if (column.field == 'quantite') {
                 return resolver<ClassYouImplemented>() as PlutoFilterType;
-              } else if (column.field == 'typeBilan') {
+              } else if (column.field == 'prixUnitaire') {
+                return resolver<ClassYouImplemented>() as PlutoFilterType;
+              } else if (column.field == 'prixTotal') {
+                return resolver<ClassYouImplemented>() as PlutoFilterType;
+              } else if (column.field == 'source') {
                 return resolver<ClassYouImplemented>() as PlutoFilterType;
               }
               return resolver<PlutoFilterTypeContains>() as PlutoFilterType;
@@ -107,8 +100,8 @@ class _TableBilanState extends State<TableBilan> {
       ),
       PlutoColumn(
         readOnly: true,
-        title: 'Titre du bilan',
-        field: 'titleBilan',
+        title: 'Numéro d\'ordre',
+        field: 'numeroOrdre',
         type: PlutoColumnType.text(),
         enableRowDrag: true,
         enableContextMenu: false,
@@ -119,19 +112,7 @@ class _TableBilanState extends State<TableBilan> {
       ),
       PlutoColumn(
         readOnly: true,
-        title: 'Comptes',
-        field: 'comptes',
-        type: PlutoColumnType.text(),
-        enableRowDrag: true,
-        enableContextMenu: false,
-        enableDropToResize: true,
-        titleTextAlign: PlutoColumnTextAlign.left,
-        width: 150,
-        minWidth: 150,
-      ),
-      PlutoColumn(
-        readOnly: true,
-        title: 'Intitulé',
+        title: 'Intitule',
         field: 'intitule',
         type: PlutoColumnType.text(),
         enableRowDrag: true,
@@ -143,8 +124,8 @@ class _TableBilanState extends State<TableBilan> {
       ),
       PlutoColumn(
         readOnly: true,
-        title: 'Montant',
-        field: 'montant',
+        title: 'Quantité',
+        field: 'quantite',
         type: PlutoColumnType.text(),
         enableRowDrag: true,
         enableContextMenu: false,
@@ -155,8 +136,32 @@ class _TableBilanState extends State<TableBilan> {
       ),
       PlutoColumn(
         readOnly: true,
-        title: 'Type de bilan',
-        field: 'typeBilan',
+        title: 'Prix unitaire',
+        field: 'prixUnitaire',
+        type: PlutoColumnType.text(),
+        enableRowDrag: true,
+        enableContextMenu: false,
+        enableDropToResize: true,
+        titleTextAlign: PlutoColumnTextAlign.left,
+        width: 150,
+        minWidth: 150,
+      ),
+      PlutoColumn(
+        readOnly: true,
+        title: 'Prix total',
+        field: 'prixTotal',
+        type: PlutoColumnType.text(),
+        enableRowDrag: true,
+        enableContextMenu: false,
+        enableDropToResize: true,
+        titleTextAlign: PlutoColumnTextAlign.left,
+        width: 150,
+        minWidth: 150,
+      ),
+      PlutoColumn(
+        readOnly: true,
+        title: 'Source',
+        field: 'source',
         type: PlutoColumnType.text(),
         enableRowDrag: true,
         enableContextMenu: false,
@@ -181,8 +186,8 @@ class _TableBilanState extends State<TableBilan> {
   }
 
   Future agentsRow() async {
-    List<BilanModel?> dataList = await BilanApi().getAllData();
-    var data = dataList;
+    List<ValorisationModel?> dataList = await ValorisationApi().getAllData();
+    var data = dataList.where((element) => element!.approbationDD == "-");
 
     if (mounted) {
       setState(() {
@@ -190,11 +195,12 @@ class _TableBilanState extends State<TableBilan> {
           id = item!.id;
           rows.add(PlutoRow(cells: {
             'id': PlutoCell(value: item.id),
-            'titleBilan': PlutoCell(value: item.titleBilan),
-            'comptes': PlutoCell(value: item.comptes),
+            'numeroOrdre': PlutoCell(value: item.numeroOrdre),
             'intitule': PlutoCell(value: item.intitule),
-            'montant': PlutoCell(value: item.montant),
-            'typeBilan': PlutoCell(value: item.typeBilan),
+            'quantite': PlutoCell(value: item.quantite),
+            'prixUnitaire': PlutoCell(value: item.prixUnitaire),
+            'prixTotal': PlutoCell(value: item.prixTotal),
+            'source': PlutoCell(value: item.source),
             'created': PlutoCell(
                 value: DateFormat("DD-MM-yy H:mm").format(item.created))
           }));

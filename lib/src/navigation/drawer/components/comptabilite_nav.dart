@@ -43,13 +43,25 @@ class _ComptabiliteNavState extends State<ComptabiliteNav> {
               // Routemaster.of(context).pop();
             }),
         DrawerWidget(
-            selected: widget.pageCurrente == ComptabiliteRoutes.comptabiliteBilan,
+            selected: widget.pageCurrente == ComptabiliteRoutes.comptabiliteDD,
+            icon: Icons.manage_accounts,
+            sizeIcon: 15.0,
+            title: 'Directeur département',
+            style: bodyText2!,
+            onTap: () {
+              Routemaster.of(context).replace(ComptabiliteRoutes.comptabiliteDD);
+              // Routemaster.of(context).pop();
+            }),
+        DrawerWidget(
+            selected:
+                widget.pageCurrente == ComptabiliteRoutes.comptabiliteBilan,
             icon: Icons.arrow_right,
             sizeIcon: 15.0,
             title: 'Bilan',
-            style: bodyText2!,
+            style: bodyText2,
             onTap: () {
-              Routemaster.of(context).replace(ComptabiliteRoutes.comptabiliteBilan);
+              Routemaster.of(context)
+                  .replace(ComptabiliteRoutes.comptabiliteBilan);
               // Routemaster.of(context).pop();
             }),
         DrawerWidget(

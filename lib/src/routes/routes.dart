@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:fokad_admin/src/pages/administration/budgets_admin.dart';
 import 'package:fokad_admin/src/pages/administration/comm_marketing_admin.dart';
+import 'package:fokad_admin/src/pages/administration/comptes_admin.dart';
 import 'package:fokad_admin/src/pages/administration/dashboard_administration.dart';
 import 'package:fokad_admin/src/pages/administration/exploitations_admin.dart';
 import 'package:fokad_admin/src/pages/administration/finances_admin.dart';
@@ -20,6 +21,7 @@ import 'package:fokad_admin/src/pages/comm_marketing/dashboard/dashboard_com_mar
 import 'package:fokad_admin/src/pages/comm_marketing/marketing/annuaire_marketing.dart';
 import 'package:fokad_admin/src/pages/comptabilites/armotissement_comptabilite.dart';
 import 'package:fokad_admin/src/pages/comptabilites/bilan_comptabilite.dart';
+import 'package:fokad_admin/src/pages/comptabilites/compte_dd/compte_dd.dart';
 import 'package:fokad_admin/src/pages/comptabilites/dashboard_comptabilite.dart';
 import 'package:fokad_admin/src/pages/comptabilites/journal_comptabilite.dart';
 import 'package:fokad_admin/src/pages/comptabilites/valorisation_comptabilite.dart';
@@ -61,6 +63,7 @@ import 'package:fokad_admin/src/pages/rh/paiements/components/add_paiement_salai
 import 'package:fokad_admin/src/pages/rh/paiements/components/paiement_bulletin.dart';
 import 'package:fokad_admin/src/pages/rh/paiements/paiements_rh.dart';
 import 'package:fokad_admin/src/pages/rh/performences/performences_rh.dart';
+import 'package:fokad_admin/src/pages/rh/presences/components/add_presence.dart';
 import 'package:fokad_admin/src/pages/rh/presences/presences_rh.dart';
 import 'package:fokad_admin/src/pages/screens/help_screen.dart';
 import 'package:fokad_admin/src/pages/screens/settings_screen.dart';
@@ -101,6 +104,7 @@ class RhRoutes {
   static const rhPaiementAdd = "/rh-paiements-add";
   static const rhPaiementBulletin = "/rh-paiements-bulletin/:id";
   static const rhPresence = "/rh-presences";
+  static const rhPresenceAdd = "/rh-presences-add";
   static const rhPerformence = "/rh-performence";
   static const rhDD = "/rh-dd";
 }
@@ -212,6 +216,7 @@ class Routing {
         AdminRoutes.adminRH: (_) => const MaterialPage(child: RhAdmin()),
         AdminRoutes.adminBudget: (_) => const MaterialPage(child: BudgetsAdmin()),
         AdminRoutes.adminFinance: (_) => const MaterialPage(child: FinancesAdmin()),
+        AdminRoutes.adminComptabilite: (_) =>const MaterialPage(child: CompteAdmin()),
         AdminRoutes.adminExploitation: (_) => const MaterialPage(child: ExploitationsAdmin()),
         AdminRoutes.adminCommMarketing: (_) => const MaterialPage(child: CommMarketingAdmin()),
         AdminRoutes.adminLogistique: (_) => const MaterialPage(child: LogistiquesAdmin()), 
@@ -225,6 +230,7 @@ class Routing {
         "${RhRoutes.rhPaiementAdd}/:id": (info) => const MaterialPage(child: AddPaiementSalaire()),
         RhRoutes.rhPaiementBulletin: (info) => MaterialPage(child: PaiementBulletin(id: info.queryParameters['id'] as int)),
         RhRoutes.rhPresence: (_) => const MaterialPage(child: PresenceRh()),
+        RhRoutes.rhPresenceAdd: (_) => const MaterialPage(child: AddPresence()),
         RhRoutes.rhPerformence: (_) => const MaterialPage(child: PerformenceRH()),
         RhRoutes.rhDD: (_) => const MaterialPage(child: DepartementRH()),
 
@@ -243,7 +249,9 @@ class Routing {
         FinanceRoutes.finDD: (_) => const MaterialPage(child: DepartementFin()), 
         
         // Comptabilite
-        ComptabiliteRoutes.comptabiliteDashboard: (_) => const MaterialPage(child: DashboardComptabilite()), 
+        ComptabiliteRoutes.comptabiliteDD: (_) => const MaterialPage(child: CompteDD()), 
+        ComptabiliteRoutes.comptabiliteDashboard: (_) =>
+            const MaterialPage(child: DashboardComptabilite()), 
         ComptabiliteRoutes.comptabiliteAmortissement: (_) =>
             const MaterialPage(child: AmortissementComptabilite()), 
         ComptabiliteRoutes.comptabiliteBilan: (_) => const MaterialPage(child: BilanComptabilite()),

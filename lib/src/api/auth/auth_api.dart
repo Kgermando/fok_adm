@@ -33,7 +33,8 @@ class AuthApi extends ChangeNotifier {
       UserSecureStorage().saveRefreshToken(token.refreshToken);
       return true;
     } else {
-      throw ApiError.fromJson(json.decode(resp.body));
+      // throw ApiError.fromJson(json.decode(resp.body));
+      return false;
     }
   }
 

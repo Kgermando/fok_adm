@@ -1,22 +1,20 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:fokad_admin/src/api/auth/auth_api.dart';
-import 'package:fokad_admin/src/api/devis/devis_api.dart';
-import 'package:fokad_admin/src/models/devis/devis_models.dart';
-import 'package:fokad_admin/src/pages/devis/components/detail_devis.dart';
+import 'package:fokad_admin/src/api/rh/presence_api.dart';
+import 'package:fokad_admin/src/models/rh/presence_model.dart';
+import 'package:fokad_admin/src/pages/rh/presences/components/detail_presence.dart';
 import 'package:fokad_admin/src/widgets/print_widget.dart';
 import 'package:intl/intl.dart';
 import 'package:pluto_grid/pluto_grid.dart';
 
-class TableDevis extends StatefulWidget {
-  const TableDevis({ Key? key }) : super(key: key);
+class TablePresence extends StatefulWidget {
+  const TablePresence({ Key? key }) : super(key: key);
 
   @override
-  State<TableDevis> createState() => _TableDevisState();
+  State<TablePresence> createState() => _TablePresenceState();
 }
 
-class _TableDevisState extends State<TableDevis> {
+class _TablePresenceState extends State<TablePresence> {
   List<PlutoColumn> columns = [];
   List<PlutoRow> rows = [];
   PlutoGridStateManager? stateManager;
@@ -31,26 +29,6 @@ class _TableDevisState extends State<TableDevis> {
     super.initState();
   }
 
-  @override
-  void dispose() {
-    super.dispose();
-  }
-
-  String? matricule;
-  String? departement;
-  String? servicesAffectation;
-  String? fonctionOccupe;
-
-  Future<void> getData() async {
-    final userModel = await AuthApi().getUserId();
-    setState(() {
-      matricule = userModel.matricule;
-      departement = userModel.departement;
-      servicesAffectation = userModel.servicesAffectation;
-      fonctionOccupe = userModel.fonctionOccupe;
-    });
-  }
-
 
   @override
   Widget build(BuildContext context) {
@@ -61,7 +39,7 @@ class _TableDevisState extends State<TableDevis> {
         final dataList = tapEvent.row!.cells.values;
         final idPlutoRow = dataList.elementAt(0);
         Navigator.of(context).push(MaterialPageRoute(
-            builder: (context) => DetailDevis(id: idPlutoRow.value)));
+            builder: (context) => DetailPresence(id: idPlutoRow.value)));
       },
       onLoaded: (PlutoGridOnLoadedEvent event) {
         stateManager = event.stateManager;
@@ -81,15 +59,11 @@ class _TableDevisState extends State<TableDevis> {
             ClassYouImplemented(),
           ],
           resolveDefaultColumnFilter: (column, resolver) {
-            if (column.field == 'title') {
+            if (column.field == 'arrive') {
               return resolver<ClassYouImplemented>() as PlutoFilterType;
-            } else if (column.field == 'priority') {
+            } else if (column.field == 'sortie') {
               return resolver<ClassYouImplemented>() as PlutoFilterType;
-            } else if (column.field == 'departement') {
-              return resolver<ClassYouImplemented>() as PlutoFilterType;
-            } else if (column.field == 'approbation') {
-              return resolver<ClassYouImplemented>() as PlutoFilterType;
-            } else if (column.field == 'observation') {
+            } else if (column.field == 'finJournee') {
               return resolver<ClassYouImplemented>() as PlutoFilterType;
             } else if (column.field == 'created') {
               return resolver<ClassYouImplemented>() as PlutoFilterType;
@@ -117,8 +91,8 @@ class _TableDevisState extends State<TableDevis> {
       ),
       PlutoColumn(
         readOnly: true,
-        title: 'Titre',
-        field: 'title',
+        title: 'Heure d\'arrivé',
+        field: 'arrive',
         type: PlutoColumnType.text(),
         enableRowDrag: true,
         enableContextMenu: false,
@@ -129,8 +103,8 @@ class _TableDevisState extends State<TableDevis> {
       ),
       PlutoColumn(
         readOnly: true,
-        title: 'Priorité',
-        field: 'priority',
+        title: 'Heure de sortie',
+        field: 'sortie',
         type: PlutoColumnType.text(),
         enableRowDrag: true,
         enableContextMenu: false,
@@ -141,32 +115,8 @@ class _TableDevisState extends State<TableDevis> {
       ),
       PlutoColumn(
         readOnly: true,
-        title: 'Département',
-        field: 'departement',
-        type: PlutoColumnType.text(),
-        enableRowDrag: true,
-        enableContextMenu: false,
-        enableDropToResize: true,
-        titleTextAlign: PlutoColumnTextAlign.left,
-        width: 150,
-        minWidth: 150,
-      ),
-      PlutoColumn(
-        readOnly: true,
-        title: 'Approbation',
-        field: 'approbation',
-        type: PlutoColumnType.text(),
-        enableRowDrag: true,
-        enableContextMenu: false,
-        enableDropToResize: true,
-        titleTextAlign: PlutoColumnTextAlign.left,
-        width: 150,
-        minWidth: 150,
-      ),
-      PlutoColumn(
-        readOnly: true,
-        title: 'Observation',
-        field: 'observation',
+        title: 'Fin de Journée',
+        field: 'finJournee',
         type: PlutoColumnType.text(),
         enableRowDrag: true,
         enableContextMenu: false,
@@ -191,24 +141,21 @@ class _TableDevisState extends State<TableDevis> {
   }
 
   Future agentsRow() async {
-    List<DevisModel?> dataList = await DevisAPi().getAllData();
-    var data = dataList.where((element) => element!.departement == departement && 
-      element.approbationDG == 'Approved'  || element.departement == 'Administration' && 
-      element.approbationDG == 'Unapproved' || element.departement == 'Finances' && 
-      element.approbationDG == 'Approved' && element.approbationFin == 'Unapproved'
-    ).toList();
-    
+    List<PresenceModel?> dataList = await PresenceApi().getAllData();
+    var data = dataList;
+
     if (mounted) {
       setState(() {
         for (var item in data) {
           id = item!.id;
           rows.add(PlutoRow(cells: {
             'id': PlutoCell(value: item.id),
-            'title': PlutoCell(value: item.title),
-            'priority': PlutoCell(value: item.priority),
-            'departement': PlutoCell(value: item.departement),
-            'approbation': PlutoCell(value: item.approbationDG),
-            'observation': PlutoCell(value: item.approbationFin),
+            'arrive': PlutoCell(value:  DateFormat("DD-MM-yy H:mm").format(item.arrive)),
+            'sortie': PlutoCell(value:  DateFormat("DD-MM-yy H:mm").format(item.sortie)),
+            'finJournee': PlutoCell(value: (item.finJournee) 
+              ? Text("Journée fini", style: TextStyle(color: Colors.green.shade700))
+              : Text("Journée en cours",
+                        style: TextStyle(color: Colors.orange.shade700))),
             'created': PlutoCell(
                 value: DateFormat("DD-MM-yy H:mm").format(item.created))
           }));

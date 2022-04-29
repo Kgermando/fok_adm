@@ -76,7 +76,7 @@ class _BudgetsAdminState extends State<BudgetsAdmin> {
                                   title:
                                       Text('Dossier Budgets', style: headline6),
                                   subtitle: Text(
-                                      "Ces dossiers necessitent votre approbation",
+                                      "Vous avez $nbrBudget dossiers necessitent votre approbation",
                                       style: bodyMedium),
                                   initiallyExpanded: false,
                                   onExpansionChanged: (val) {
@@ -84,18 +84,7 @@ class _BudgetsAdminState extends State<BudgetsAdmin> {
                                       isOpenBudget = !val;
                                     });
                                   },
-                                  trailing: Row(
-                                    children: [
-                                      Badge(
-                                        elevation: 10,
-                                        badgeContent:
-                                            Text(nbrBudget.toString()),
-                                        position:
-                                            const BadgePosition(top: 20.0),
-                                      ),
-                                      const Icon(Icons.arrow_drop_down),
-                                    ],
-                                  ),
+                                  trailing: const Icon(Icons.arrow_drop_down),
                                   children: const [LigneBudgetaireAdmin()],
                                 )),
                           ],

@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:fokad_admin/src/api/comptabilite/bilan_api.dart';
 import 'package:fokad_admin/src/models/comptabilites/bilan_model.dart';
@@ -8,16 +6,15 @@ import 'package:fokad_admin/src/widgets/print_widget.dart';
 import 'package:intl/intl.dart';
 import 'package:pluto_grid/pluto_grid.dart';
 
-class TableBilan extends StatefulWidget {
-  const TableBilan({ Key? key }) : super(key: key);
+class BilanDD extends StatefulWidget {
+  const BilanDD({ Key? key }) : super(key: key);
 
   @override
-  State<TableBilan> createState() => _TableBilanState();
+  State<BilanDD> createState() => _BilanDDState();
 }
 
-class _TableBilanState extends State<TableBilan> {
-  Timer? timer;
-  List<PlutoColumn> columns = [];
+class _BilanDDState extends State<BilanDD> {
+    List<PlutoColumn> columns = [];
   List<PlutoRow> rows = [];
   PlutoGridStateManager? stateManager;
   PlutoGridSelectingMode gridSelectingMode = PlutoGridSelectingMode.row;
@@ -27,18 +24,11 @@ class _TableBilanState extends State<TableBilan> {
   @override
   initState() {
     agentsColumn();
-    timer = Timer.periodic(const Duration(milliseconds: 500), (t) {
-      agentsRow();
-    });
+    agentsRow();
 
     super.initState();
   }
 
-  @override
-  void dispose() {
-    timer!.cancel();
-    super.dispose();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -182,7 +172,7 @@ class _TableBilanState extends State<TableBilan> {
 
   Future agentsRow() async {
     List<BilanModel?> dataList = await BilanApi().getAllData();
-    var data = dataList;
+    var data = dataList.where((element) => element!.approbationDD == "-");
 
     if (mounted) {
       setState(() {

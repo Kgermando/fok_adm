@@ -19,7 +19,7 @@ class _LogistiquesAdminState extends State<LogistiquesAdmin> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        // key: _key,
+        key: _key,
         drawer: const DrawerMenu(),
         body: SafeArea(
           child: Row(

@@ -43,7 +43,7 @@ class _RhNavState extends State<RhNav> {
             }),
         DrawerWidget(
             selected: widget.pageCurrente == RhRoutes.rhDD,
-            icon: Icons.real_estate_agent_sharp,
+            icon: Icons.manage_accounts,
             sizeIcon: 20.0,
             title: 'Directeur de Département',
             style: bodyText1,
@@ -63,7 +63,7 @@ class _RhNavState extends State<RhNav> {
             }),
         DrawerWidget(
             selected: widget.pageCurrente == RhRoutes.rhPresence,
-            icon: Icons.person,
+            icon: Icons.co_present,
             sizeIcon: 20.0,
             title: 'Présences des agents',
             style: bodyText1,

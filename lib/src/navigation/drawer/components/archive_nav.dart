@@ -4,15 +4,15 @@ import 'package:fokad_admin/src/navigation/drawer/drawer_widget.dart';
 import 'package:fokad_admin/src/routes/routes.dart';
 import 'package:routemaster/routemaster.dart';
 
-class BudgetNav extends StatefulWidget {
-  const BudgetNav({ Key? key, required this.pageCurrente }) : super(key: key);
+class ArchiveNav extends StatefulWidget {
+  const ArchiveNav({ Key? key, required this.pageCurrente }) : super(key: key);
   final String pageCurrente;
 
   @override
-  State<BudgetNav> createState() => _BudgetNavState();
+  State<ArchiveNav> createState() => _ArchiveNavState();
 }
 
-class _BudgetNavState extends State<BudgetNav> {
+class _ArchiveNavState extends State<ArchiveNav> {
   bool isOpenBudget = false;
 
   @override
@@ -21,8 +21,8 @@ class _BudgetNavState extends State<BudgetNav> {
     final bodyText1 = Theme.of(context).textTheme.bodyText1;
 
     return ExpansionTile(
-      leading: const Icon(Icons.fact_check, size: 30.0),
-      title: AutoSizeText('Budgets', maxLines: 1, style: bodyLarge),
+      leading: const Icon(Icons.archive, size: 30.0),
+      title: AutoSizeText('Archive', maxLines: 1, style: bodyLarge),
       initiallyExpanded: false,
       onExpansionChanged: (val) {
         setState(() {
@@ -37,18 +37,6 @@ class _BudgetNavState extends State<BudgetNav> {
             sizeIcon: 20.0,
             title: 'Dashboard',
             style: bodyText1!,
-            onTap: () {
-              Routemaster.of(context).replace(
-                BudgetRoutes.budgetDashboard,
-            );
-              // Routemaster.of(context).pop();
-            }),
-        DrawerWidget(
-            selected: widget.pageCurrente == BudgetRoutes.budgetDashboard,
-            icon: Icons.manage_accounts,
-            sizeIcon: 20.0,
-            title: 'Directeur de département',
-            style: bodyText1,
             onTap: () {
               Routemaster.of(context).replace(
                 BudgetRoutes.budgetDashboard,

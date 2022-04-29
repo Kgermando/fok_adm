@@ -1,16 +1,15 @@
-import 'package:badges/badges.dart';
 import 'package:flutter/material.dart';
+import 'package:fokad_admin/src/api/budgets/ligne_budgetaire_api.dart';
 import 'package:fokad_admin/src/api/rh/paiement_salaire_api.dart';
 import 'package:fokad_admin/src/constants/app_theme.dart';
 import 'package:fokad_admin/src/constants/responsive.dart';
+import 'package:fokad_admin/src/models/budgets/ligne_budgetaire_model.dart';
 import 'package:fokad_admin/src/models/rh/paiement_salaire_model.dart';
 import 'package:fokad_admin/src/navigation/drawer/drawer_menu.dart';
 import 'package:fokad_admin/src/navigation/header/custom_appbar.dart';
 import 'package:fokad_admin/src/pages/budgets/components/dep_budgets/table_departement_budget_dd.dart';
 import 'package:fokad_admin/src/pages/budgets/components/dep_budgets/table_salaire_budget.dart';
 import 'package:fokad_admin/src/pages/budgets/components/ligne_budgetaire.dart';
-import 'package:fokad_admin/src/provider/controller.dart';
-import 'package:provider/provider.dart';
 
 class DepBudget extends StatefulWidget {
   const DepBudget({Key? key}) : super(key: key);
@@ -27,6 +26,7 @@ class _DepBudgetState extends State<DepBudget> {
   bool isOpenBudget2 = false;
 
   int nonPaye = 0;
+  int nbrBudget = 0;
 
   @override
   void initState() {
@@ -35,13 +35,17 @@ class _DepBudgetState extends State<DepBudget> {
   }
 
   Future<void> getData() async {
-    // UserModel userLoggIn = await AuthApi().getUserId();
     List<PaiementSalaireModel?> dataList =
         await PaiementSalaireApi().getAllData();
+    List<LigneBudgetaireModel?> dataLigneBudgetaireList =
+        await LIgneBudgetaireApi().getAllData();
     setState(() {
       nonPaye = dataList
           .where((element) => element!.approbationDD != '-')
           .toList()
+          .length;
+      nbrBudget = dataLigneBudgetaireList
+          .where((element) => element!.approbationDD == "-")
           .length;
     });
   }
@@ -84,7 +88,7 @@ class _DepBudgetState extends State<DepBudget> {
                                 title:
                                     Text('Dossier Salaires', style: headline6),
                                 subtitle: Text(
-                                    "Ces dossiers necessitent votre approbation",
+                                    "Vous avez $nonPaye dossiers necessitent votre approbation",
                                     style: bodyMedium),
                                 initiallyExpanded: false,
                                 onExpansionChanged: (val) {
@@ -92,16 +96,7 @@ class _DepBudgetState extends State<DepBudget> {
                                     isOpenBudget1 = !val;
                                   });
                                 },
-                                trailing: Row(
-                                  children: [
-                                    Badge(
-                                      elevation: 10,
-                                      badgeContent: Text(nonPaye.toString()),
-                                      position: const BadgePosition(top: 20.0),
-                                    ),
-                                    const Icon(Icons.arrow_drop_down),
-                                  ],
-                                ),
+                                trailing: const Icon(Icons.arrow_drop_down),
                                 children: const [TableSalaireBudget()],
                               ),
                             ),
@@ -112,7 +107,7 @@ class _DepBudgetState extends State<DepBudget> {
                                 title: Text('Dossier budgetaire',
                                     style: headline6),
                                 subtitle: Text(
-                                    "Ces dossiers necessitent votre approbation",
+                                    "Vous avez $nonPaye dossiers necessitent votre approbation",
                                     style: bodyMedium),
                                 initiallyExpanded: false,
                                 onExpansionChanged: (val) {
@@ -120,16 +115,7 @@ class _DepBudgetState extends State<DepBudget> {
                                     isOpenBudget2 = !val;
                                   });
                                 },
-                                trailing: Row(
-                                  children: [
-                                    Badge(
-                                      elevation: 10,
-                                      badgeContent: Text(nonPaye.toString()),
-                                      position: const BadgePosition(top: 20.0),
-                                    ),
-                                    const Icon(Icons.arrow_drop_down),
-                                  ],
-                                ),
+                                trailing: const Icon(Icons.arrow_drop_down),
                                 children: const [
                                   TableDepartementBudgetDD(),
                                   LigneBudgetaire()

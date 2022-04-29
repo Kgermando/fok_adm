@@ -43,6 +43,16 @@ class _FinancesNavState extends State<FinancesNav> {
               // Routemaster.of(context).pop();
             }
           ),
+        DrawerWidget(
+            selected: widget.pageCurrente == FinanceRoutes.financeDashboard,
+            icon: Icons.manage_accounts,
+            sizeIcon: 20.0,
+            title: 'Directeur de département',
+            style: bodyText1,
+            onTap: () {
+              Routemaster.of(context).replace(FinanceRoutes.financeDashboard);
+              // Routemaster.of(context).pop();
+            }),
           ExpansionTile(
             leading: const Icon(Icons.compare_arrows, size: 20.0),
             title: Text('Transactions', style: bodyText1),

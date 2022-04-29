@@ -88,7 +88,7 @@ class _CMDDState extends State<CMDD> {
                                 title:
                                     Text('Dossier Campagnes', style: headline6),
                                 subtitle: Text(
-                                    "Ces dossiers necessitent votre approbation",
+                                    "Vous avez $campaignCount dossiers necessitent votre approbation",
                                     style: bodyMedium),
                                 initiallyExpanded: false,
                                 onExpansionChanged: (val) {
@@ -96,17 +96,7 @@ class _CMDDState extends State<CMDD> {
                                     isOpenRh1 = !val;
                                   });
                                 },
-                                trailing: Row(
-                                  children: [
-                                    Badge(
-                                      elevation: 10,
-                                      badgeContent:
-                                          Text(campaignCount.toString()),
-                                      position: const BadgePosition(top: 20.0),
-                                    ),
-                                    const Icon(Icons.arrow_drop_down),
-                                  ],
-                                ),
+                                trailing: const Icon(Icons.arrow_drop_down),
                                 children: const [TableCampaignDD()],
                               ),
                             ),
@@ -117,7 +107,7 @@ class _CMDDState extends State<CMDD> {
                                 title:
                                     Text('Dossier Succursale', style: headline6),
                                 subtitle: Text(
-                                    "Ces dossiers necessitent votre approbation",
+                                    "Vous avez $succursaleCount dossiers necessitent votre approbation",
                                     style: bodyMedium),
                                 initiallyExpanded: false,
                                 onExpansionChanged: (val) {
@@ -125,17 +115,7 @@ class _CMDDState extends State<CMDD> {
                                     isOpenRh1 = !val;
                                   });
                                 },
-                                trailing: Row(
-                                  children: [
-                                    Badge(
-                                      elevation: 10,
-                                      badgeContent:
-                                          Text(succursaleCount.toString()),
-                                      position: const BadgePosition(top: 20.0),
-                                    ),
-                                    const Icon(Icons.arrow_drop_down),
-                                  ],
-                                ),
+                                trailing: const Icon(Icons.arrow_drop_down),
                                 children: const [TableSuccursaleDD()],
                               ),
                             ),

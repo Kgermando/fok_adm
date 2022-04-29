@@ -24,6 +24,7 @@ class BilanComptabilite extends StatefulWidget {
 class _BilanComptabiliteState extends State<BilanComptabilite> {
   final GlobalKey<ScaffoldState> _key = GlobalKey();
   final controller = ScrollController();
+  final _formKey = GlobalKey<FormState>();
 
   bool isLoading = false;
 
@@ -105,7 +106,12 @@ class _BilanComptabiliteState extends State<BilanComptabilite> {
                             const SizedBox(
                               height: p20,
                             ),
-                            PrintWidget(onPressed: (() {})),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              children: [
+                                PrintWidget(onPressed: (() {})),
+                              ],
+                            ),
                             const SizedBox(
                               height: p10,
                             ),
@@ -115,9 +121,9 @@ class _BilanComptabiliteState extends State<BilanComptabilite> {
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceEvenly,
                                   children: const [
-                                    BarChartWidget(),
-                                    BarChartWidget(),
-                                    PieChartWidget()
+                                    Expanded(child: BarChartWidget()),
+                                    Expanded(child: BarChartWidget()),
+                                    Expanded(child: PieChartWidget())
                                   ],
                                 )),
                             const SizedBox(
@@ -147,52 +153,61 @@ class _BilanComptabiliteState extends State<BilanComptabilite> {
                   borderRadius: BorderRadius.circular(p8),
                 ),
                 backgroundColor: Colors.transparent,
-                child: Card(
-                  child: Padding(
-                    padding: const EdgeInsets.all(p16),
-                    child: SizedBox(
-                      width: Responsive.isDesktop(context)
-                          ? MediaQuery.of(context).size.width / 2
-                          : MediaQuery.of(context).size.width,
-                      child: ListView(
-                        children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              const TitleWidget(title: 'Nouveau Bilan'),
-                              PrintWidget(onPressed: () {})
-                            ],
-                          ),
-                          const SizedBox(
-                            height: p20,
-                          ),
-                          Row(
-                            children: [
-                              Expanded(child: titleBilanWidget()),
-                              const SizedBox(
-                                width: p10,
-                              ),
-                              Expanded(child: comptesWidget())
-                            ],
-                          ),
-                          Row(
-                            children: [
-                              Expanded(child: intituleWidget()),
-                              const SizedBox(
-                                width: p10,
-                              ),
-                              Expanded(child: montantWidget())
-                            ],
-                          ),
-                          typeBilanWidget(),
-                          const SizedBox(
-                            height: p20,
-                          ),
-                          BtnWidget(
-                              title: 'Soumettre',
-                              isLoading: isLoading,
-                              press: () {})
-                        ],
+                child: Form(
+                  key: _formKey,
+                  child: Card(
+                    child: Padding(
+                      padding: const EdgeInsets.all(p16),
+                      child: SizedBox(
+                        width: Responsive.isDesktop(context)
+                            ? MediaQuery.of(context).size.width / 2
+                            : MediaQuery.of(context).size.width,
+                        child: ListView(
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                const TitleWidget(title: 'Nouveau Bilan'),
+                                PrintWidget(onPressed: () {})
+                              ],
+                            ),
+                            const SizedBox(
+                              height: p20,
+                            ),
+                            Row(
+                              children: [
+                                Expanded(child: titleBilanWidget()),
+                                const SizedBox(
+                                  width: p10,
+                                ),
+                                Expanded(child: comptesWidget())
+                              ],
+                            ),
+                            Row(
+                              children: [
+                                Expanded(child: intituleWidget()),
+                                const SizedBox(
+                                  width: p10,
+                                ),
+                                Expanded(child: montantWidget())
+                              ],
+                            ),
+                            typeBilanWidget(),
+                            const SizedBox(
+                              height: p20,
+                            ),
+                            BtnWidget(
+                                title: 'Soumettre',
+                                isLoading: isLoading,
+                                press: () {
+                                  final form = _formKey.currentState!;
+                                  if (form.validate()) {
+                                    submit();
+                                    form.reset();
+                                  }
+                                })
+                          ],
+                        ),
                       ),
                     ),
                   ),
@@ -212,8 +227,12 @@ class _BilanComptabiliteState extends State<BilanComptabilite> {
             labelText: 'Titre du bilan',
           ),
           keyboardType: TextInputType.text,
-          validator: (val) {
-            return 'Ce champs est obligatoire';
+           validator: (value) {
+            if (value != null && value.isEmpty) {
+              return 'Ce champs est obligatoire';
+            } else {
+              return null;
+            }
           },
           style: const TextStyle(),
         ));
@@ -230,8 +249,12 @@ class _BilanComptabiliteState extends State<BilanComptabilite> {
             labelText: 'Comptes',
           ),
           keyboardType: TextInputType.text,
-          validator: (val) {
-            return 'Ce champs est obligatoire';
+           validator: (value) {
+            if (value != null && value.isEmpty) {
+              return 'Ce champs est obligatoire';
+            } else {
+              return null;
+            }
           },
           style: const TextStyle(),
         ));
@@ -248,8 +271,12 @@ class _BilanComptabiliteState extends State<BilanComptabilite> {
             labelText: 'Intitulé',
           ),
           keyboardType: TextInputType.text,
-          validator: (val) {
-            return 'Ce champs est obligatoire';
+           validator: (value) {
+            if (value != null && value.isEmpty) {
+              return 'Ce champs est obligatoire';
+            } else {
+              return null;
+            }
           },
           style: const TextStyle(),
         ));
@@ -266,8 +293,12 @@ class _BilanComptabiliteState extends State<BilanComptabilite> {
             labelText: 'Montant',
           ),
           keyboardType: TextInputType.text,
-          validator: (val) {
-            return 'Ce champs est obligatoire';
+           validator: (value) {
+            if (value != null && value.isEmpty) {
+              return 'Ce champs est obligatoire';
+            } else {
+              return null;
+            }
           },
           style: const TextStyle(),
         ));

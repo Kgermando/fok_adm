@@ -7,11 +7,9 @@ import 'package:fokad_admin/src/models/comptabilites/amortissement_model.dart';
 import 'package:fokad_admin/src/navigation/drawer/drawer_menu.dart';
 import 'package:fokad_admin/src/navigation/header/custom_appbar.dart';
 import 'package:fokad_admin/src/pages/comptabilites/components/amortissements/table_amortissement.dart';
-import 'package:fokad_admin/src/provider/controller.dart';
 import 'package:fokad_admin/src/widgets/btn_widget.dart';
 import 'package:fokad_admin/src/widgets/print_widget.dart';
 import 'package:fokad_admin/src/widgets/title_widget.dart';
-import 'package:provider/provider.dart';
 import 'package:routemaster/routemaster.dart';
 
 class AmortissementComptabilite extends StatefulWidget {
@@ -24,6 +22,7 @@ class AmortissementComptabilite extends StatefulWidget {
 
 class _AmortissementComptabiliteState extends State<AmortissementComptabilite> {
   final GlobalKey<ScaffoldState> _key = GlobalKey();
+  final _formKey = GlobalKey<FormState>();
   final controller = ScrollController();
   bool isLoading = false;
 
@@ -32,7 +31,7 @@ class _AmortissementComptabiliteState extends State<AmortissementComptabilite> {
   final TextEditingController comptesController = TextEditingController();
   final TextEditingController intituleController = TextEditingController();
   final TextEditingController montantController = TextEditingController();
-  final TextEditingController typeJournalController = TextEditingController();
+
 
   @override
   void initState() {
@@ -48,11 +47,10 @@ class _AmortissementComptabiliteState extends State<AmortissementComptabilite> {
     comptesController.dispose();
     intituleController.dispose();
     montantController.dispose();
-    montantController.dispose();
-    typeJournalController.dispose();
     super.dispose();
   }
 
+  String? typeCompte;
   String? matricule;
   int numberItem = 0;
 
@@ -94,7 +92,8 @@ class _AmortissementComptabiliteState extends State<AmortissementComptabilite> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      CustomAppbar(title: 'Amortissement',
+                      CustomAppbar(
+                          title: 'Amortissement',
                           controllerMenu: () =>
                               _key.currentState!.openDrawer()),
                       const Expanded(child: TableAmortissement())
@@ -118,53 +117,62 @@ class _AmortissementComptabiliteState extends State<AmortissementComptabilite> {
                   borderRadius: BorderRadius.circular(p8),
                 ),
                 backgroundColor: Colors.transparent,
-                child: Card(
-                  child: Padding(
-                    padding: const EdgeInsets.all(p16),
-                    child: SizedBox(
-                      width: Responsive.isDesktop(context)
-                          ? MediaQuery.of(context).size.width / 2
-                          : MediaQuery.of(context).size.width,
-                      child: ListView(
-                        children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              const TitleWidget(
-                                  title: 'Nouvelle armotissement'),
-                              PrintWidget(onPressed: () {})
-                            ],
-                          ),
-                          const SizedBox(
-                            height: p20,
-                          ),
-                          Row(
-                            children: [
-                              Expanded(child: titleArmotissementWidget()),
-                              const SizedBox(
-                                width: p10,
-                              ),
-                              Expanded(child: comptesWidget())
-                            ],
-                          ),
-                          Row(
-                            children: [
-                              Expanded(child: intituleWidget()),
-                              const SizedBox(
-                                width: p10,
-                              ),
-                              Expanded(child: montantWidget())
-                            ],
-                          ),
-                          typeJournalWidget(),
-                          const SizedBox(
-                            height: p20,
-                          ),
-                          BtnWidget(
-                              title: 'Soumettre',
-                              isLoading: isLoading,
-                              press: () {})
-                        ],
+                child: Form(
+                  key: _formKey,
+                  child: Card(
+                    child: Padding(
+                      padding: const EdgeInsets.all(p16),
+                      child: SizedBox(
+                        width: Responsive.isDesktop(context)
+                            ? MediaQuery.of(context).size.width / 2
+                            : MediaQuery.of(context).size.width,
+                        child: ListView(
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                const TitleWidget(
+                                    title: 'Nouvelle armotissement'),
+                                PrintWidget(onPressed: () {})
+                              ],
+                            ),
+                            const SizedBox(
+                              height: p20,
+                            ),
+                            Row(
+                              children: [
+                                Expanded(child: titleArmotissementWidget()),
+                                const SizedBox(
+                                  width: p10,
+                                ),
+                                Expanded(child: comptesWidget())
+                              ],
+                            ),
+                            Row(
+                              children: [
+                                Expanded(child: intituleWidget()),
+                                const SizedBox(
+                                  width: p10,
+                                ),
+                                Expanded(child: montantWidget())
+                              ],
+                            ),
+                            typeJournalWidget(),
+                            const SizedBox(
+                              height: p20,
+                            ),
+                            BtnWidget(
+                                title: 'Soumettre',
+                                isLoading: isLoading,
+                                press: () {
+                                  final form = _formKey.currentState!;
+                                  if (form.validate()) {
+                                    submit();
+                                    form.reset();
+                                  }
+                                })
+                          ],
+                        ),
                       ),
                     ),
                   ),
@@ -184,8 +192,12 @@ class _AmortissementComptabiliteState extends State<AmortissementComptabilite> {
             labelText: 'Titre d\'armotissement',
           ),
           keyboardType: TextInputType.text,
-          validator: (val) {
-            return 'Ce champs est obligatoire';
+           validator: (value) {
+            if (value != null && value.isEmpty) {
+              return 'Ce champs est obligatoire';
+            } else {
+              return null;
+            }
           },
           style: const TextStyle(),
         ));
@@ -202,8 +214,12 @@ class _AmortissementComptabiliteState extends State<AmortissementComptabilite> {
             labelText: 'Comptes',
           ),
           keyboardType: TextInputType.text,
-          validator: (val) {
-            return 'Ce champs est obligatoire';
+           validator: (value) {
+            if (value != null && value.isEmpty) {
+              return 'Ce champs est obligatoire';
+            } else {
+              return null;
+            }
           },
           style: const TextStyle(),
         ));
@@ -220,8 +236,12 @@ class _AmortissementComptabiliteState extends State<AmortissementComptabilite> {
             labelText: 'Intitulé',
           ),
           keyboardType: TextInputType.text,
-          validator: (val) {
-            return 'Ce champs est obligatoire';
+          validator: (value) {
+            if (value != null && value.isEmpty) {
+              return 'Ce champs est obligatoire';
+            } else {
+              return null;
+            }
           },
           style: const TextStyle(),
         ));
@@ -238,29 +258,44 @@ class _AmortissementComptabiliteState extends State<AmortissementComptabilite> {
             labelText: 'Montant',
           ),
           keyboardType: TextInputType.text,
-          validator: (val) {
-            return 'Ce champs est obligatoire';
+           validator: (value) {
+            if (value != null && value.isEmpty) {
+              return 'Ce champs est obligatoire';
+            } else {
+              return null;
+            }
           },
           style: const TextStyle(),
         ));
   }
 
+
   Widget typeJournalWidget() {
+    List<String> typeCompteList = ['Actifs', 'Passifs'];
     return Container(
-        margin: const EdgeInsets.only(bottom: p20),
-        child: TextFormField(
-          controller: typeJournalController,
-          decoration: InputDecoration(
-            border:
-                OutlineInputBorder(borderRadius: BorderRadius.circular(10.0)),
-            labelText: 'Type de Journal',
-          ),
-          keyboardType: TextInputType.text,
-          validator: (val) {
-            return 'Ce champs est obligatoire';
-          },
-          style: const TextStyle(),
-        ));
+      margin: const EdgeInsets.only(bottom: p20),
+      child: DropdownButtonFormField<String>(
+        decoration: InputDecoration(
+          labelText: 'Département',
+          labelStyle: const TextStyle(),
+          border: OutlineInputBorder(borderRadius: BorderRadius.circular(5.0)),
+          contentPadding: const EdgeInsets.only(left: 5.0),
+        ),
+        value: typeCompte,
+        isExpanded: true,
+        items: typeCompteList.map((String value) {
+          return DropdownMenuItem<String>(
+            value: value,
+            child: Text(value),
+          );
+        }).toList(),
+        onChanged: (value) {
+          setState(() {
+            typeCompte = value!;
+          });
+        },
+      ),
+    );
   }
 
   Future submit() async {
@@ -269,7 +304,7 @@ class _AmortissementComptabiliteState extends State<AmortissementComptabilite> {
       comptes: comptesController.text,
       intitule: intituleController.text,
       montant: montantController.text,
-      typeJournal: typeJournalController.text,
+      typeJournal: typeCompte.toString(),
       approbationDG: '-',
       signatureDG: '-',
       signatureJustificationDG: '-',

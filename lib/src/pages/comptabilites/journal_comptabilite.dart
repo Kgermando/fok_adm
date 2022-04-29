@@ -7,12 +7,10 @@ import 'package:fokad_admin/src/models/comptabilites/journal_model.dart';
 import 'package:fokad_admin/src/navigation/drawer/drawer_menu.dart';
 import 'package:fokad_admin/src/navigation/header/custom_appbar.dart';
 import 'package:fokad_admin/src/pages/comptabilites/components/journals/table_journal.dart';
-import 'package:fokad_admin/src/provider/controller.dart';
 import 'package:fokad_admin/src/widgets/btn_widget.dart';
 import 'package:fokad_admin/src/widgets/pie_chart_widget.dart';
 import 'package:fokad_admin/src/widgets/print_widget.dart';
 import 'package:fokad_admin/src/widgets/title_widget.dart';
-import 'package:provider/provider.dart';
 import 'package:routemaster/routemaster.dart';
 
 class JournalComptabilite extends StatefulWidget {
@@ -25,6 +23,7 @@ class JournalComptabilite extends StatefulWidget {
 class _JournalComptabiliteState extends State<JournalComptabilite> {
   final GlobalKey<ScaffoldState> _key = GlobalKey();
   final controller = ScrollController();
+  final _formKey = GlobalKey<FormState>();
 
   bool isLoading = false;
 
@@ -158,52 +157,61 @@ class _JournalComptabiliteState extends State<JournalComptabilite> {
                   borderRadius: BorderRadius.circular(p8),
                 ),
                 backgroundColor: Colors.transparent,
-                child: Card(
-                  child: Padding(
-                    padding: const EdgeInsets.all(p16),
-                    child: SizedBox(
-                      width: Responsive.isDesktop(context)
-                          ? MediaQuery.of(context).size.width / 2
-                          : MediaQuery.of(context).size.width,
-                      child: ListView(
-                        children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              const TitleWidget(title: 'Nouveau journal'),
-                              PrintWidget(onPressed: () {})
-                            ],
-                          ),
-                          const SizedBox(
-                            height: p20,
-                          ),
-                          Row(
-                            children: [
-                              Expanded(child: titleBilanWidget()),
-                              const SizedBox(
-                                width: p10,
-                              ),
-                              Expanded(child: comptesWidget())
-                            ],
-                          ),
-                          Row(
-                            children: [
-                              Expanded(child: intituleWidget()),
-                              const SizedBox(
-                                width: p10,
-                              ),
-                              Expanded(child: montantWidget())
-                            ],
-                          ),
-                          typeJournalWidget(),
-                          const SizedBox(
-                            height: p20,
-                          ),
-                          BtnWidget(
-                              title: 'Soumettre',
-                              isLoading: isLoading,
-                              press: () {})
-                        ],
+                child: Form(
+                  key: _formKey,
+                  child: Card(
+                    child: Padding(
+                      padding: const EdgeInsets.all(p16),
+                      child: SizedBox(
+                        width: Responsive.isDesktop(context)
+                            ? MediaQuery.of(context).size.width / 2
+                            : MediaQuery.of(context).size.width,
+                        child: ListView(
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                const TitleWidget(title: 'Nouveau journal'),
+                                PrintWidget(onPressed: () {})
+                              ],
+                            ),
+                            const SizedBox(
+                              height: p20,
+                            ),
+                            Row(
+                              children: [
+                                Expanded(child: titleBilanWidget()),
+                                const SizedBox(
+                                  width: p10,
+                                ),
+                                Expanded(child: comptesWidget())
+                              ],
+                            ),
+                            Row(
+                              children: [
+                                Expanded(child: intituleWidget()),
+                                const SizedBox(
+                                  width: p10,
+                                ),
+                                Expanded(child: montantWidget())
+                              ],
+                            ),
+                            typeJournalWidget(),
+                            const SizedBox(
+                              height: p20,
+                            ),
+                             BtnWidget(
+                                title: 'Soumettre',
+                                isLoading: isLoading,
+                                press: () {
+                                  final form = _formKey.currentState!;
+                                  if (form.validate()) {
+                                    submit();
+                                    form.reset();
+                                  }
+                                })
+                          ],
+                        ),
                       ),
                     ),
                   ),

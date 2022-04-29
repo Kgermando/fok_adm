@@ -48,9 +48,9 @@ class _ComMarketingState extends State<ComMarketing> {
           DrawerWidget(
             selected:
                 widget.pageCurrente == ComMarketingRoutes.comMarketingDD,
-            icon: Icons.dashboard,
+            icon: Icons.manage_accounts,
             sizeIcon: 20.0,
-            title: 'DD',
+            title: 'Directeur de Département',
             style: bodyText1,
             onTap: () {
               Routemaster.of(context).replace(
@@ -59,7 +59,7 @@ class _ComMarketingState extends State<ComMarketing> {
               // Routemaster.of(context).pop();
             }),
          ExpansionTile(
-            leading: const Icon(Icons.compare_arrows, size: 20.0),
+            leading: const Icon(Icons.visibility, size: 20.0),
             title: Text('Marketing', style: bodyText1),
             initiallyExpanded: false,
             onExpansionChanged: (val) {
@@ -68,6 +68,7 @@ class _ComMarketingState extends State<ComMarketing> {
               });
             },
             children: [
+        
               DrawerWidget(
                 selected:
                     widget.pageCurrente == ComMarketingRoutes.comMarketingAnnuaire,
@@ -105,7 +106,163 @@ class _ComMarketingState extends State<ComMarketing> {
                   // Routemaster.of(context).pop();
                 }),
             ],
-          )
+          ),
+        ExpansionTile(
+          leading: const Icon(Icons.store, size: 20.0),
+          title: Text('Commercial', style: bodyText1),
+          initiallyExpanded: false,
+          onExpansionChanged: (val) {
+            setState(() {
+              isOpenComMarketing2 = !val;
+            });
+          },
+          children: [
+            DrawerWidget(
+                selected: widget.pageCurrente ==
+                    ComMarketingRoutes.comMarketingAnnuaire,
+                icon: Icons.arrow_right,
+                sizeIcon: 15.0,
+                title: 'Produit modèle',
+                style: bodyText2,
+                onTap: () {
+                  Routemaster.of(context)
+                      .replace(ComMarketingRoutes.comMarketingAnnuaire);
+                  // Routemaster.of(context).pop();
+                }),
+            DrawerWidget(
+                selected: widget.pageCurrente ==
+                    ComMarketingRoutes.comMarketingAgenda,
+                icon: Icons.arrow_right,
+                sizeIcon: 15.0,
+                title: 'Stocks global',
+                style: bodyText2,
+                onTap: () {
+                  Routemaster.of(context)
+                      .replace(ComMarketingRoutes.comMarketingAgenda);
+                  // Routemaster.of(context).pop();
+                }),
+            DrawerWidget(
+                selected: widget.pageCurrente ==
+                    ComMarketingRoutes.comMarketingCampaign,
+                icon: Icons.arrow_right,
+                sizeIcon: 15.0,
+                title: 'Succursale',
+                style: bodyText2,
+                onTap: () {
+                  Routemaster.of(context)
+                      .replace(ComMarketingRoutes.comMarketingCampaign);
+                  // Routemaster.of(context).pop();
+                }),
+            DrawerWidget(
+                selected: widget.pageCurrente ==
+                    ComMarketingRoutes.comMarketingCampaign,
+                icon: Icons.arrow_right,
+                sizeIcon: 15.0,
+                title: 'Ventes',
+                style: bodyText2,
+                onTap: () {
+                  Routemaster.of(context)
+                      .replace(ComMarketingRoutes.comMarketingCampaign);
+                  // Routemaster.of(context).pop();
+                }),
+            DrawerWidget(
+                selected: widget.pageCurrente ==
+                    ComMarketingRoutes.comMarketingCampaign,
+                icon: Icons.arrow_right,
+                sizeIcon: 15.0,
+                title: 'Achats',
+                style: bodyText2,
+                onTap: () {
+                  Routemaster.of(context)
+                      .replace(ComMarketingRoutes.comMarketingCampaign);
+                  // Routemaster.of(context).pop();
+                }),
+            DrawerWidget(
+                selected: widget.pageCurrente ==
+                    ComMarketingRoutes.comMarketingCampaign,
+                icon: Icons.arrow_right,
+                sizeIcon: 15.0,
+                title: 'Bon de livraison',
+                style: bodyText2,
+                onTap: () {
+                  Routemaster.of(context)
+                      .replace(ComMarketingRoutes.comMarketingCampaign);
+                  // Routemaster.of(context).pop();
+                }),
+            DrawerWidget(
+                selected: widget.pageCurrente ==
+                    ComMarketingRoutes.comMarketingCampaign,
+                icon: Icons.arrow_right,
+                sizeIcon: 15.0,
+                title: 'Restitution du produit',
+                style: bodyText2,
+                onTap: () {
+                  Routemaster.of(context)
+                      .replace(ComMarketingRoutes.comMarketingCampaign);
+                  // Routemaster.of(context).pop();
+                }),
+            DrawerWidget(
+                selected: widget.pageCurrente ==
+                    ComMarketingRoutes.comMarketingCampaign,
+                icon: Icons.arrow_right,
+                sizeIcon: 15.0,
+                title: 'Factures',
+                style: bodyText2,
+                onTap: () {
+                  Routemaster.of(context)
+                      .replace(ComMarketingRoutes.comMarketingCampaign);
+                  // Routemaster.of(context).pop();
+                }),
+            DrawerWidget(
+                selected: widget.pageCurrente ==
+                    ComMarketingRoutes.comMarketingCampaign,
+                icon: Icons.arrow_right,
+                sizeIcon: 15.0,
+                title: 'Factures créance',
+                style: bodyText2,
+                onTap: () {
+                  Routemaster.of(context)
+                      .replace(ComMarketingRoutes.comMarketingCampaign);
+                  // Routemaster.of(context).pop();
+                }),
+            DrawerWidget(
+                selected: widget.pageCurrente ==
+                    ComMarketingRoutes.comMarketingCampaign,
+                icon: Icons.arrow_right,
+                sizeIcon: 15.0,
+                title: 'Historique de ravitaillement',
+                style: bodyText2,
+                onTap: () {
+                  Routemaster.of(context)
+                      .replace(ComMarketingRoutes.comMarketingCampaign);
+                  // Routemaster.of(context).pop();
+                }),
+            DrawerWidget(
+                selected: widget.pageCurrente ==
+                    ComMarketingRoutes.comMarketingCampaign,
+                icon: Icons.arrow_right,
+                sizeIcon: 15.0,
+                title: 'Historique de livraison',
+                style: bodyText2,
+                onTap: () {
+                  Routemaster.of(context)
+                      .replace(ComMarketingRoutes.comMarketingCampaign);
+                  // Routemaster.of(context).pop();
+                }),
+            DrawerWidget(
+                selected: widget.pageCurrente ==
+                    ComMarketingRoutes.comMarketingCampaign,
+                icon: Icons.arrow_right,
+                sizeIcon: 15.0,
+                title: 'Panier',
+                style: bodyText2,
+                onTap: () {
+                  Routemaster.of(context)
+                      .replace(ComMarketingRoutes.comMarketingCampaign);
+                  // Routemaster.of(context).pop();
+                }),
+          ],
+        )
       ],
     );
   }

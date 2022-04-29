@@ -7,13 +7,11 @@ import 'package:fokad_admin/src/models/comptabilites/valorisation_model.dart';
 import 'package:fokad_admin/src/navigation/drawer/drawer_menu.dart';
 import 'package:fokad_admin/src/navigation/header/custom_appbar.dart';
 import 'package:fokad_admin/src/pages/comptabilites/components/valorisations/table_valorisation.dart';
-import 'package:fokad_admin/src/provider/controller.dart';
 import 'package:fokad_admin/src/widgets/bar_chart_widget.dart';
 import 'package:fokad_admin/src/widgets/btn_widget.dart';
 import 'package:fokad_admin/src/widgets/pie_chart_widget.dart';
 import 'package:fokad_admin/src/widgets/print_widget.dart';
 import 'package:fokad_admin/src/widgets/title_widget.dart';
-import 'package:provider/provider.dart';
 import 'package:routemaster/routemaster.dart';
 
 class ValorisationComptabilite extends StatefulWidget {
@@ -27,6 +25,7 @@ class ValorisationComptabilite extends StatefulWidget {
 class _ValorisationComptabiliteState extends State<ValorisationComptabilite> {
   final GlobalKey<ScaffoldState> _key = GlobalKey();
   final controller = ScrollController();
+  final _formKey = GlobalKey<FormState>();
 
   bool isLoading = false;
 
@@ -150,60 +149,69 @@ class _ValorisationComptabiliteState extends State<ValorisationComptabilite> {
                   borderRadius: BorderRadius.circular(p8),
                 ),
                 backgroundColor: Colors.transparent,
-                child: Card(
-                  child: Padding(
-                    padding: const EdgeInsets.all(p16),
-                    child: SizedBox(
-                      width: Responsive.isDesktop(context)
-                          ? MediaQuery.of(context).size.width / 2
-                          : MediaQuery.of(context).size.width,
-                      child: ListView(
-                        children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              const TitleWidget(title: 'Nouveau Valorisation'),
-                              PrintWidget(onPressed: () {})
-                            ],
-                          ),
-                          const SizedBox(
-                            height: p20,
-                          ),
-                          Row(
-                            children: [
-                              Expanded(child: numeroOrdreWidget()),
-                              const SizedBox(
-                                width: p10,
-                              ),
-                              Expanded(child: intituleWidget())
-                            ],
-                          ),
-                          Row(
-                            children: [
-                              Expanded(child: quantiteWidget()),
-                              const SizedBox(
-                                width: p10,
-                              ),
-                              Expanded(child: prixUnitaireWidget())
-                            ],
-                          ),
-                          Row(
-                            children: [
-                              Expanded(child: prixTotalWidget()),
-                              const SizedBox(
-                                width: p10,
-                              ),
-                              Expanded(child: sourcelWidget())
-                            ],
-                          ),
-                          const SizedBox(
-                            height: p20,
-                          ),
-                          BtnWidget(
-                              title: 'Soumettre',
-                              isLoading: isLoading,
-                              press: () {})
-                        ],
+                child: Form(
+                  key: _formKey,
+                  child: Card(
+                    child: Padding(
+                      padding: const EdgeInsets.all(p16),
+                      child: SizedBox(
+                        width: Responsive.isDesktop(context)
+                            ? MediaQuery.of(context).size.width / 2
+                            : MediaQuery.of(context).size.width,
+                        child: ListView(
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                const TitleWidget(title: 'Nouveau Valorisation'),
+                                PrintWidget(onPressed: () {})
+                              ],
+                            ),
+                            const SizedBox(
+                              height: p20,
+                            ),
+                            Row(
+                              children: [
+                                Expanded(child: numeroOrdreWidget()),
+                                const SizedBox(
+                                  width: p10,
+                                ),
+                                Expanded(child: intituleWidget())
+                              ],
+                            ),
+                            Row(
+                              children: [
+                                Expanded(child: quantiteWidget()),
+                                const SizedBox(
+                                  width: p10,
+                                ),
+                                Expanded(child: prixUnitaireWidget())
+                              ],
+                            ),
+                            Row(
+                              children: [
+                                Expanded(child: prixTotalWidget()),
+                                const SizedBox(
+                                  width: p10,
+                                ),
+                                Expanded(child: sourcelWidget())
+                              ],
+                            ),
+                            const SizedBox(
+                              height: p20,
+                            ),
+                            BtnWidget(
+                                title: 'Soumettre',
+                                isLoading: isLoading,
+                                press: () {
+                                  final form = _formKey.currentState!;
+                                  if (form.validate()) {
+                                    submit();
+                                    form.reset();
+                                  }
+                                })
+                          ],
+                        ),
                       ),
                     ),
                   ),
