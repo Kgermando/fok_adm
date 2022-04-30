@@ -1,9 +1,9 @@
 class PresenceModel {
   late int? id;
   late DateTime arrive;
-  late List<String> arriveAgent;
+  late List  arriveAgent;
   late DateTime sortie;
-  late List<String> sortieAgent;
+  late List sortieAgent;
   late String remarque;
   late bool finJournee;
   late String signature; // celui qui fait le document

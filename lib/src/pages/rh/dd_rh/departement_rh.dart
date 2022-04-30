@@ -1,6 +1,5 @@
 import 'package:badges/badges.dart';
 import 'package:flutter/material.dart';
-import 'package:fokad_admin/src/api/auth/auth_api.dart';
 import 'package:fokad_admin/src/api/rh/agents_api.dart';
 import 'package:fokad_admin/src/api/user/user_api.dart';
 import 'package:fokad_admin/src/constants/app_theme.dart';
@@ -21,7 +20,6 @@ class DepartementRH extends StatefulWidget {
 
 class _DepartementRHState extends State<DepartementRH> {
   final GlobalKey<ScaffoldState> _key = GlobalKey();
-  final ScrollController _controllerScroll = ScrollController();
 
   bool isOpenRh1 = false;
   bool isOpenRh2 = false;
@@ -36,7 +34,6 @@ class _DepartementRHState extends State<DepartementRH> {
   }
 
   Future<void> getData() async {
-    UserModel userLoggIn = await AuthApi().getUserId();
     // RH
     List<AgentModel> agents = await AgentsApi().getAllData();
     List<UserModel> users = await UserApi().getAllData();
@@ -70,14 +67,12 @@ class _DepartementRHState extends State<DepartementRH> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      CustomAppbar(title: 'DD RH',
+                      CustomAppbar(title: 'Directeur de Département RH',
                           controllerMenu: () =>
                               _key.currentState!.openDrawer()),
                       Expanded(
                           child: SingleChildScrollView(
-                        // controller: _controllerScroll,
                         child: Column(
-                          // controller: _controllerScroll,
                           children: [
                             Card(
                               color: const Color.fromARGB(255, 126, 170, 214),
@@ -86,7 +81,7 @@ class _DepartementRHState extends State<DepartementRH> {
                                 title:
                                     Text('Dossier Salaires', style: headline6),
                                 subtitle: Text(
-                                    "Ces dossiers necessitent votre approbation",
+                                    "Vous $agentInactifs dossiers necessitent votre approbation",
                                     style: bodyMedium),
                                 initiallyExpanded: false,
                                 onExpansionChanged: (val) {
@@ -94,28 +89,18 @@ class _DepartementRHState extends State<DepartementRH> {
                                     isOpenRh1 = !val;
                                   });
                                 },
-                                trailing: Row(
-                                  children: [
-                                    Badge(
-                                      elevation: 10,
-                                      badgeContent:
-                                          Text(agentInactifs.toString()),
-                                      position: const BadgePosition(top: 20.0),
-                                    ),
-                                    const Icon(Icons.arrow_drop_down),
-                                  ],
-                                ),
+                                trailing: const Icon(Icons.arrow_drop_down),
                                 children: const [TableSalairesDD()],
                               ),
                             ),
                             Card(
-                              color: const Color.fromARGB(255, 126, 170, 214),
+                              color: const Color.fromARGB(255, 238, 56, 32),
                               child: ExpansionTile(
                                 leading: const Icon(Icons.folder),
                                 title:
                                     Text('Dossier utilisateurs actifs', style: headline6),
                                 subtitle: Text(
-                                    "Ces dossiers necessitent votre approbation",
+                                    "Vous $userAcount dossiers necessitent votre approbation",
                                     style: bodyMedium),
                                 initiallyExpanded: false,
                                 onExpansionChanged: (val) {
@@ -123,17 +108,7 @@ class _DepartementRHState extends State<DepartementRH> {
                                     isOpenRh1 = !val;
                                   });
                                 },
-                                trailing: Row(
-                                  children: [
-                                    Badge(
-                                      elevation: 10,
-                                      badgeContent:
-                                          Text(userAcount.toString()),
-                                      position: const BadgePosition(top: 20.0),
-                                    ),
-                                    const Icon(Icons.arrow_drop_down),
-                                  ],
-                                ),
+                                trailing: const Icon(Icons.arrow_drop_down),
                                 children: const [TableUsers()],
                               ),
                             ),

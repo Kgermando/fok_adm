@@ -15,27 +15,44 @@ import 'package:fokad_admin/src/widgets/print_widget.dart';
 import 'package:fokad_admin/src/widgets/title_widget.dart';
 import 'package:routemaster/routemaster.dart';
 
-class AddPresence extends StatefulWidget {
-  const AddPresence({Key? key}) : super(key: key);
+class ArrivePresence extends StatefulWidget {
+  const ArrivePresence({Key? key, required this.presenceModel})
+      : super(key: key);
+  final PresenceModel presenceModel;
 
   @override
-  State<AddPresence> createState() => _AddPresenceState();
+  State<ArrivePresence> createState() => _ArrivePresenceState();
 }
 
-class _AddPresenceState extends State<AddPresence> {
+class _ArrivePresenceState extends State<ArrivePresence> {
   final GlobalKey<ScaffoldState> _key = GlobalKey();
   // final ScrollController _controllerScroll = ScrollController();
   final _formKey = GlobalKey<FormState>();
   bool isLoading = false;
 
-  List<UserModel> arriveAgentList = [];
-  List<UserModel> sortieAgentList = [];
+  int? id;
+  DateTime? arrive;
+  List arriveAgent = [];
+  DateTime? sortie;
+  List sortieAgent = [];
   TextEditingController remarqueController = TextEditingController();
   bool finJournee = false;
+
+  List<UserModel> arriveAgentList = [];
 
   @override
   void initState() {
     getData();
+    setState(() {
+      id = widget.presenceModel.id;
+      arrive = widget.presenceModel.arrive;
+      arriveAgent = widget.presenceModel.arriveAgent;
+      sortie = widget.presenceModel.sortie;
+      sortieAgent = widget.presenceModel.sortieAgent;
+      remarqueController =
+          TextEditingController(text: widget.presenceModel.remarque);
+      finJournee = widget.presenceModel.finJournee;
+    });
     super.initState();
   }
 
@@ -101,9 +118,7 @@ class _AddPresenceState extends State<AddPresence> {
                         ],
                       ),
                       Expanded(
-                          child: SingleChildScrollView(
-                        child: addPageWidget(),
-                      ))
+                          child: SingleChildScrollView(child: addPageWidget()))
                     ],
                   ),
                 ),
@@ -128,6 +143,7 @@ class _AddPresenceState extends State<AddPresence> {
                     ? MediaQuery.of(context).size.width / 2
                     : MediaQuery.of(context).size.width,
                 child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -140,6 +156,7 @@ class _AddPresenceState extends State<AddPresence> {
                       height: p20,
                     ),
                     Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         if (agentAffectesList.isEmpty)
                           const SelectableText(
@@ -176,35 +193,15 @@ class _AddPresenceState extends State<AddPresence> {
     );
   }
 
-  Widget remarqueWidget() {
-    return Container(
-        margin: const EdgeInsets.only(bottom: p20),
-        child: TextFormField(
-          controller: remarqueController,
-          keyboardType: TextInputType.multiline,
-          minLines: 2,
-          maxLines: 5,
-          decoration: InputDecoration(
-            border:
-                OutlineInputBorder(borderRadius: BorderRadius.circular(10.0)),
-            labelText: 'Remarque de la journée',
-          ),
-          style: const TextStyle(),
-          validator: (value) {
-            if (value != null && value.isEmpty) {
-              return 'Ce champs est obligatoire';
-            } else {
-              return null;
-            }
-          },
-        ));
-  }
-
   Widget agentAffectesWidget() {
+    List<UserModel> presenceList = [];
+    for (var u in widget.presenceModel.arriveAgent) {
+      presenceList.add(UserModel.fromJson(u));
+    }
+
     List<UserModel> dataList = [];
     var userAgentList = agentAffectesList;
-    var presenceList = presenceAgentList;
-    
+
     dataList = userAgentList.toSet().difference(presenceList.toSet()).toList();
 
     return Container(
@@ -257,14 +254,14 @@ class _AddPresenceState extends State<AddPresence> {
     final presenceModel = PresenceModel(
         arrive: DateTime.now(),
         arriveAgent: jsonList,
-        sortie: DateTime.now(),
-        sortieAgent: sortieAgentList,
+        sortie: widget.presenceModel.sortie,
+        sortieAgent: widget.presenceModel.sortieAgent,
         remarque: remarqueController.text,
         finJournee: finJournee,
         signature: user!.matricule,
         created: DateTime.now());
 
-    await PresenceApi().insertData(presenceModel);
+    await PresenceApi().updateData(widget.presenceModel.id!, presenceModel);
     Routemaster.of(context).pop();
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
       content: const Text("soumis avec succès!"),

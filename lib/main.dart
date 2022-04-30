@@ -3,8 +3,6 @@ import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:fokad_admin/src/api/auth/auth_api.dart';
 import 'package:fokad_admin/src/app_state/app_state.dart';
-import 'package:fokad_admin/src/pages/administration/dashboard_administration.dart';
-import 'package:fokad_admin/src/pages/auth/login_auth.dart';
 import 'package:fokad_admin/src/provider/controller.dart';
 import 'package:fokad_admin/src/provider/theme_provider.dart';
 import 'package:fokad_admin/src/routes/routes.dart';
@@ -74,46 +72,5 @@ class MyApp extends StatelessWidget {
             ],
           );
         });
-  }
-}
-
-class CheckAuth extends StatefulWidget {
-  const CheckAuth({Key? key}) : super(key: key);
-
-  @override
-  _CheckAuthState createState() => _CheckAuthState();
-}
-
-class _CheckAuthState extends State<CheckAuth> {
-  @override
-  void initState() {
-    super.initState();
-    authLogin();
-  }
-
-  bool? auth;
-
-  authLogin() async {
-    bool isloggIn = await AuthApi().isLoggedIn();
-
-    if (isloggIn) {
-      return const DashboardAdministration();
-    } else {
-      return const LoginPage();
-    }
-  }
-
-  // authLogin() {
-  //   // AuthHttp().logout();
-  //   if (auth == true) {
-  //     return const DashboardAdministration();
-  //   } else {
-  //     return const LoginPage();
-  //   }
-  // }
-
-  @override
-  Widget build(BuildContext context) {
-    return authLogin();
   }
 }

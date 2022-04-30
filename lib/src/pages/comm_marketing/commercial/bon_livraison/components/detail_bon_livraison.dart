@@ -409,7 +409,7 @@ class _DetailBonLivraisonState extends State<DetailBonLivraison> {
 
     if (achatList.isNotEmpty) {
       // Filter de la QuantityAchat de stock succursale
-      var achatQtyId = achatList.map((e) => e.id).first;
+      // var achatQtyId = achatList.map((e) => e.id).first;
       var achatQty = achatList.map((e) => e.quantityAchat).first;
       var achatQtyRestante = achatList.map((e) => e.quantity).first;
       var pAU = achatList.map((e) => e.priceAchatUnit).first;

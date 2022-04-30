@@ -7,11 +7,12 @@ import 'package:fokad_admin/src/models/rh/presence_model.dart';
 import 'package:fokad_admin/src/models/users/user_model.dart';
 import 'package:fokad_admin/src/navigation/drawer/drawer_menu.dart';
 import 'package:fokad_admin/src/navigation/header/custom_appbar.dart';
+import 'package:fokad_admin/src/pages/rh/presences/components/arrive_presence.dart';
 import 'package:fokad_admin/src/pages/rh/presences/components/sortie_presence.dart';
 import 'package:fokad_admin/src/widgets/title_widget.dart';
 import 'package:intl/intl.dart';
-import 'package:pluto_grid/pluto_grid.dart';
 import 'package:routemaster/routemaster.dart';
+import 'package:simple_speed_dial/simple_speed_dial.dart';
 
 class DetailPresence extends StatefulWidget {
   const DetailPresence({Key? key, required this.id}) : super(key: key);
@@ -25,11 +26,6 @@ class _DetailPresenceState extends State<DetailPresence> {
   final GlobalKey<ScaffoldState> _key = GlobalKey();
   final ScrollController _controllerScroll = ScrollController();
   bool isLoading = false;
-
-  List<PlutoColumn> columns = [];
-  List<PlutoRow> rows = [];
-  PlutoGridStateManager? stateManager;
-  PlutoGridSelectingMode gridSelectingMode = PlutoGridSelectingMode.row;
 
   @override
   initState() {
@@ -53,13 +49,7 @@ class _DetailPresenceState extends State<DetailPresence> {
     return Scaffold(
         key: _key,
         drawer: const DrawerMenu(),
-        floatingActionButton: FloatingActionButton(
-          child: const Icon(Icons.co_present),
-          onPressed: () {
-            Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) => SortiePresence(presenceModel: presence!)));
-          }
-        ),
+        floatingActionButton: (presence != null) ? (presence!.finJournee) ? Container() : speedialWidget() : Container(),
         body: SafeArea(
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -93,7 +83,8 @@ class _DetailPresenceState extends State<DetailPresence> {
                                     const SizedBox(width: p10),
                                     Expanded(
                                       child: CustomAppbar(
-                                          title: "Presence du ${DateFormat("dd-MM-yy").format(data!.created)}",
+                                          title:
+                                              "Présence du ${DateFormat("dd-MM-yy").format(data!.created)}",
                                           controllerMenu: () =>
                                               _key.currentState!.openDrawer()),
                                     ),
@@ -118,6 +109,8 @@ class _DetailPresenceState extends State<DetailPresence> {
   }
 
   Widget pageDetail(PresenceModel data) {
+    final bodyLarge = Theme.of(context).textTheme.bodyLarge;
+    final bodyMedium = Theme.of(context).textTheme.bodyMedium;
     return Row(mainAxisAlignment: MainAxisAlignment.center, children: [
       Card(
         elevation: 10,
@@ -137,23 +130,167 @@ class _DetailPresenceState extends State<DetailPresence> {
             controller: _controllerScroll,
             children: [
               Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  TitleWidget(title: "Presence du ${DateFormat("dd-MM-yy").format(data.created)}"),
-                  Column(
-                    children: [
-                      SelectableText(
-                          DateFormat("dd-MM-yy").format(data.created),
-                          textAlign: TextAlign.start),
-                    ],
-                  )
+                  TitleWidget(
+                      title:
+                          "Presence du ${DateFormat("dd-MM-yy").format(data.created)}"),
                 ],
               ),
-              // dataWidget(data),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  (data.finJournee) 
+                    ? SelectableText("Journée fini.", style: bodyMedium!.copyWith(color: Colors.red.shade700))
+                    : SelectableText("Journée en cours...", style: bodyMedium!.copyWith(color: Colors.orange.shade700)),
+                ],
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Expanded(child: SelectableText("ENTRER",
+                    textAlign: TextAlign.center,
+                    style: bodyLarge!.copyWith(color: Colors.blue.shade700, fontWeight: FontWeight.bold)),
+                  ),
+                  const SizedBox(
+                    width: p20,
+                  ),
+                  Expanded(
+                    child: SelectableText("SORTIE",
+                      textAlign: TextAlign.center,
+                      style:
+                            bodyLarge.copyWith(color: Colors.green.shade700,
+                            fontWeight: FontWeight.bold)),
+                  ),
+                ],
+              ),
+              Row(
+                children: [
+                  Expanded(child: listAgentEntrer(data)),
+                  const SizedBox(
+                    width: p20,
+                  ),
+                  Expanded(child: listAgentSorties(data))
+                ],
+              ),
+              
+              if (data.finJournee) dataWidget(data),
             ],
           ),
         ),
       ),
     ]);
+  }
+
+  Widget dataWidget(PresenceModel data) {
+    final bodyMedium = Theme.of(context).textTheme.bodyMedium;
+    return Padding(
+      padding: const EdgeInsets.all(p10),
+      child: Column(
+        children: [
+          Row(
+            children: [
+              Expanded(
+                child: Text('Rapport de la journée :',
+                    textAlign: TextAlign.start,
+                    style: bodyMedium!.copyWith(fontWeight: FontWeight.bold)),
+              ),
+              Expanded(
+                child: SelectableText(data.remarque,
+                    textAlign: TextAlign.start, style: bodyMedium),
+              )
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget listAgentEntrer(PresenceModel data) {
+    List<UserModel> dataList = [];
+    for (var u in data.arriveAgent) {
+      dataList.add(UserModel.fromJson(u));
+    }
+    return Container(
+      margin: const EdgeInsets.only(bottom: 20.0),
+      height: MediaQuery.of(context).size.height / 2,
+      child: ListView.builder(
+          itemCount: dataList.length,
+          itemBuilder: (BuildContext context, index) {
+            final agent = dataList[index];
+            return ListTile(
+              leading: Icon(
+                Icons.check_circle_rounded,
+                color: Colors.green.shade700,
+              ),
+              title: Text('${agent.nom} ${agent.prenom} <<${agent.matricule}>>'),
+              subtitle: Text("Heure: ${DateFormat("HH:mm").format(data.created)}"),
+            );
+          }),
+    );
+  }
+
+  Widget listAgentSorties(PresenceModel data) {
+    List<UserModel> dataList = [];
+    for (var u in data.sortieAgent) {
+      dataList.add(UserModel.fromJson(u));
+    }
+    return Container(
+      margin: const EdgeInsets.only(bottom: 20.0),
+      height: MediaQuery.of(context).size.height / 2,
+      child: ListView.builder(
+          itemCount: dataList.length,
+          itemBuilder: (BuildContext context, index) {
+            final agent = dataList[index];
+            return ListTile(
+              leading: Icon(
+                Icons.check_circle_rounded,
+                color: Colors.green.shade700,
+              ),
+              title:
+                  Text('${agent.nom} ${agent.prenom} <<${agent.matricule}>>'),
+              subtitle:
+                  Text("Heure: ${DateFormat("HH:mm").format(data.created)}"),
+            );
+          }),
+    );
+  }
+
+
+  SpeedDial speedialWidget() {
+    return SpeedDial(
+      child: const Icon(
+        Icons.menu,
+        color: Colors.white,
+      ),
+      closedForegroundColor: themeColor,
+      openForegroundColor: Colors.white,
+      closedBackgroundColor: themeColor,
+      openBackgroundColor: themeColor,
+      speedDialChildren: <SpeedDialChild>[
+        SpeedDialChild(
+          child: const Icon(Icons.check_box_outline_blank),
+          foregroundColor: Colors.black,
+          backgroundColor: Colors.green.shade700,
+          label: 'Sorties',
+          onPressed: () {
+             Navigator.of(context).push(MaterialPageRoute(
+                builder: (context) =>
+                    SortiePresence(presenceModel: presence!)));
+          },
+        ),
+        SpeedDialChild(
+          child: const Icon(Icons.check_box),
+          foregroundColor: Colors.white,
+          backgroundColor: Colors.orange.shade700,
+          label: 'Entrer',
+          onPressed: () {
+             Navigator.of(context).push(MaterialPageRoute(
+                builder: (context) =>
+                    ArrivePresence(presenceModel: presence!)));
+          },
+        )
+      ],
+    );
   }
 }

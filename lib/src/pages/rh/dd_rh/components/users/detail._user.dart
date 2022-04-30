@@ -11,6 +11,7 @@ import 'package:fokad_admin/src/widgets/title_widget.dart';
 import 'package:intl/intl.dart';
 import 'package:pluto_grid/pluto_grid.dart';
 import 'package:routemaster/routemaster.dart';
+import 'package:simple_speed_dial/simple_speed_dial.dart';
 
 class DetailUser extends StatefulWidget {
   const DetailUser({Key? key, required this.id}) : super(key: key);
@@ -34,10 +35,25 @@ class _DetailUserState extends State<DetailUser> {
   PlutoGridSelectingMode gridSelectingMode = PlutoGridSelectingMode.row;
 
   @override
+  void initState() {
+    getData();
+    super.initState();
+  }
+
+  UserModel? user;
+  Future<void> getData() async {
+    var userModel = await UserApi().getOneData(widget.id);
+    setState(() {
+      user = userModel;
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
         key: _key,
         drawer: const DrawerMenu(),
+        floatingActionButton: speedialWidget(),
         body: SafeArea(
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -117,45 +133,24 @@ class _DetailUserState extends State<DetailUser> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  if (data.isOnline)
-                    Container(
-                      width: 5,
-                      height: 5,
-                      decoration: const BoxDecoration(
-                        color: Colors.green,
-                        shape: BoxShape.circle,
-                      ),
-                    ),
-                  TitleWidget(title: data.matricule),
+                  Row(
+                    children: [
+                      TitleWidget(title: data.matricule),
+                      if (data.isOnline)
+                        Container(
+                          width: 5,
+                          height: 5,
+                          decoration: const BoxDecoration(
+                            color: Colors.green,
+                            shape: BoxShape.circle,
+                          ),
+                        ),
+                    ],
+                  ),
                   Column(
                     children: [
-                      Row(
-                        children: [
-                          IconButton(
-                              tooltip: 'Mettre à jour',
-                              onPressed: () {
-                                Navigator.of(context).push(MaterialPageRoute(
-                                    builder: (context) =>
-                                        UpdateUser(userModel: data)));
-                              },
-                              icon: const Icon(Icons.edit)),
-                          IconButton(
-                              tooltip: 'Retirer l\'utilisateur',
-                              onPressed: () async {
-                                await UserApi().deleteData(data.id!);
-                                Routemaster.of(context).pop();
-                                ScaffoldMessenger.of(context)
-                                    .showSnackBar(SnackBar(
-                                  content: const Text(
-                                      "Compte supprimé avec succès!"),
-                                  backgroundColor: Colors.red.shade700,
-                                ));
-                              },
-                              icon: const Icon(Icons.edit)),
-                          PrintWidget(
-                              tooltip: 'Imprimer le document', onPressed: () {})
-                        ],
-                      ),
+                      PrintWidget(
+                              tooltip: 'Imprimer le document', onPressed: () {}),
                       SelectableText(
                           DateFormat("dd-MM-yy").format(data.createdAt),
                           textAlign: TextAlign.start),
@@ -169,6 +164,15 @@ class _DetailUserState extends State<DetailUser> {
         ),
       ),
     ]);
+  }
+
+  Widget dialogWidget() {
+    return const Dialog(
+      child: AlertDialog(
+        title: Text("data"),
+        content: Text("data"),
+      ),
+    );
   }
 
   Widget dataWidget(UserModel data) {
@@ -268,22 +272,91 @@ class _DetailUserState extends State<DetailUser> {
               )
             ],
           ),
-          if (data.succursale != '-')
-            Row(
-              children: [
-                Expanded(
-                  child: Text('Succursale :',
-                      textAlign: TextAlign.start,
-                      style: bodyMedium.copyWith(fontWeight: FontWeight.bold)),
-                ),
-                Expanded(
-                  child: SelectableText(data.succursale,
-                      textAlign: TextAlign.start, style: bodyMedium),
-                )
-              ],
-            ),
+          // if (data.succursale != '-')
+          Row(
+            children: [
+              Expanded(
+                child: Text('Succursale :',
+                    textAlign: TextAlign.start,
+                    style: bodyMedium.copyWith(fontWeight: FontWeight.bold)),
+              ),
+              Expanded(
+                child: SelectableText(data.succursale,
+                    textAlign: TextAlign.start, style: bodyMedium),
+              )
+            ],
+          ),
         ],
       ),
     );
   }
+
+  SpeedDial speedialWidget() {
+    return SpeedDial(
+      child: const Icon(
+        Icons.menu,
+        color: Colors.white,
+      ),
+      closedForegroundColor: themeColor,
+      openForegroundColor: Colors.white,
+      closedBackgroundColor: themeColor,
+      openBackgroundColor: themeColor,
+      speedDialChildren: <SpeedDialChild>[
+        SpeedDialChild(
+          child: const Icon(Icons.check_box_outline_blank),
+          foregroundColor: Colors.black,
+          backgroundColor: Colors.green.shade700,
+          label: 'Supprimer l\'accès',
+          onPressed: () => deletteAccesUser(),
+        ),
+        SpeedDialChild(
+          child: const Icon(Icons.check_box),
+          foregroundColor: Colors.white,
+          backgroundColor: Colors.orange.shade700,
+          label: 'Mettre à jour',
+          onPressed: () {
+            Navigator.of(context).push(MaterialPageRoute(
+                builder: (context) => UpdateUser(userModel: user!)));
+          },
+        )
+      ],
+    );
+  }
+
+    Widget deletteAccesUser() {
+    return IconButton(
+      color: Colors.red,
+      icon: const Icon(Icons.person_off),
+      tooltip: 'Supprimer l\'accès cet utilisateur',
+      onPressed: () => showDialog<String>(
+        context: context,
+        builder: (BuildContext context) => AlertDialog(
+          title: const Text('Etes-vous sûr de vouloir restituer la quantité?'),
+          content: const Text(
+              'Cette action permet de restitutuer la quantité chez l\'expediteur.'),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () => Navigator.pop(context, 'Annuler'),
+              child: const Text('Annuler'),
+            ),
+            TextButton(
+              onPressed: () async {
+                  await UserApi().deleteData(user!.id!);
+                    Routemaster.of(context).pop();
+                    ScaffoldMessenger.of(context)
+                        .showSnackBar(SnackBar(
+                      content: const Text(
+                          "Compte supprimé avec succès!"),
+                      backgroundColor: Colors.red.shade700,
+                    ));
+                Routemaster.of(context).pop();
+              },
+              child: const Text('OK'),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
 }

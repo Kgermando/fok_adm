@@ -847,6 +847,7 @@ class _UpdateAgentState extends State<UpdateAgent> {
     return Container(
         margin: const EdgeInsets.only(bottom: p20),
         child: TextFormField(
+          keyboardType: TextInputType.multiline,
           minLines: 5,
           maxLines: 100,
           controller: competanceController,
@@ -855,7 +856,6 @@ class _UpdateAgentState extends State<UpdateAgent> {
                 OutlineInputBorder(borderRadius: BorderRadius.circular(10.0)),
             labelText: 'Formation',
           ),
-          keyboardType: TextInputType.text,
           style: const TextStyle(),
           validator: (value) {
             if (value != null && value.isEmpty) {
@@ -884,6 +884,7 @@ class _UpdateAgentState extends State<UpdateAgent> {
     return Container(
         margin: const EdgeInsets.only(bottom: p20),
         child: TextFormField(
+          keyboardType: TextInputType.multiline,
           minLines: 5,
           maxLines: 100,
           controller: experienceController,
@@ -892,7 +893,6 @@ class _UpdateAgentState extends State<UpdateAgent> {
                 OutlineInputBorder(borderRadius: BorderRadius.circular(10.0)),
             labelText: 'Experience',
           ),
-          keyboardType: TextInputType.text,
           style: const TextStyle(),
           validator: (value) {
             if (value != null && value.isEmpty) {

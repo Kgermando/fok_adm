@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:fokad_admin/src/constants/app_theme.dart';
 
@@ -35,15 +36,15 @@ class DrawerWidget extends StatelessWidget {
     return Card(
       color: colorCard,
       child: ListTile(
-        // selected: selected,
-        // selectedColor: color,
-        // selectedTileColor: selectedTileColor,
         dense: true,
         leading: Icon(icon,
             size: sizeIcon,
             // color: color,
             color: color),
-        title: Text(title, style: style.copyWith(color: color)),
+        title: AutoSizeText(
+          title, 
+          maxLines: 2,
+          style: style.copyWith(color: color)),
         trailing: badge,
         onTap: onTap,
         style: ListTileStyle.drawer,

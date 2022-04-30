@@ -63,7 +63,7 @@ class _RhNavState extends State<RhNav> {
             }),
         DrawerWidget(
             selected: widget.pageCurrente == RhRoutes.rhPresence,
-            icon: Icons.co_present,
+            icon: Icons.checklist_outlined,
             sizeIcon: 20.0,
             title: 'Présences des agents',
             style: bodyText1,

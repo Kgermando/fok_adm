@@ -144,10 +144,28 @@ class _AddAgentState extends State<AddAgent> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                       CustomAppbar(title: 'Nouveau agent',
-                          controllerMenu: () =>
-                              _key.currentState!.openDrawer()),
-                      Expanded(
+                      Row(
+                        children: [
+                          SizedBox(
+                            width: 20.0,
+                            child: IconButton(
+                                onPressed: () {
+                                  Routemaster.of(context).pop();
+                                },
+                                icon: const Icon(Icons.arrow_back)),
+                          ),
+                          const SizedBox(
+                            width: p10,
+                          ),
+                          Expanded(
+                              flex: 5,
+                              child: CustomAppbar(
+                                  title: 'Nouveau agent',
+                                  controllerMenu: () =>
+                                      _key.currentState!.openDrawer())),
+                        ],
+                      ),
+                      Expanded( 
                           child: Scrollbar(
                         controller: _controllerScroll,
                         child: addAgentWidget(),
@@ -799,6 +817,7 @@ class _AddAgentState extends State<AddAgent> {
     return Container(
         margin: const EdgeInsets.only(bottom: p20),
         child: TextFormField(
+          keyboardType: TextInputType.multiline,
           minLines: 5,
           maxLines: 100,
           controller: competanceController,
@@ -807,7 +826,7 @@ class _AddAgentState extends State<AddAgent> {
                 OutlineInputBorder(borderRadius: BorderRadius.circular(10.0)),
             labelText: 'Formation',
           ),
-          keyboardType: TextInputType.text,
+          
           style: const TextStyle(),
           validator: (value) {
             if (value != null && value.isEmpty) {
@@ -836,6 +855,7 @@ class _AddAgentState extends State<AddAgent> {
     return Container(
         margin: const EdgeInsets.only(bottom: p20),
         child: TextFormField(
+          keyboardType: TextInputType.multiline,
           minLines: 5,
           maxLines: 100,
           controller: experienceController,
@@ -844,7 +864,6 @@ class _AddAgentState extends State<AddAgent> {
                 OutlineInputBorder(borderRadius: BorderRadius.circular(10.0)),
             labelText: 'Experience',
           ),
-          keyboardType: TextInputType.text,
           style: const TextStyle(),
           validator: (value) {
             if (value != null && value.isEmpty) {

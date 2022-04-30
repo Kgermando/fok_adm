@@ -25,6 +25,9 @@ class PresenceApi {
       var splittedJwt = token.split(".");
       var payload = json.decode(
           ascii.decode(base64.decode(base64.normalize(splittedJwt[1]))));
+
+      // print("payload $payload");
+      // print("payload token $token");
     }
     var resp = await client.get(
       listPresenceUrl,
@@ -40,7 +43,7 @@ class PresenceApi {
       for (var u in bodyList) {
         data.add(PresenceModel.fromJson(u));
       }
-      return data;
+      return data; 
     } else {
       throw Exception(jsonDecode(resp.body)['message']);
     }
@@ -92,14 +95,12 @@ class PresenceApi {
     }
   }
 
-  Future<PresenceModel> updateData(
-      int id, PresenceModel presenceModel) async {
+   Future<PresenceModel> updateData(int id, PresenceModel presenceModel) async {
     final accessToken = await storage.read(key: 'accessToken');
 
     var data = presenceModel.toJson();
     var body = jsonEncode(data);
-    var updateUrl =
-        Uri.parse("$mainUrl/rh/presences/update-presence/$id");
+    var updateUrl = Uri.parse("$mainUrl/rh/presences/update-presence/$id");
 
     var res = await client.put(updateUrl,
         headers: <String, String>{
@@ -114,6 +115,7 @@ class PresenceApi {
     }
   }
 
+  
   Future<PresenceModel> deleteData(int id) async {
     final accessToken = await storage.read(key: 'accessToken');
 

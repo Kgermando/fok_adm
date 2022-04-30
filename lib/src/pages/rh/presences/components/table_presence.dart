@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:fokad_admin/src/api/auth/auth_api.dart';
 import 'package:fokad_admin/src/api/rh/presence_api.dart';
 import 'package:fokad_admin/src/models/rh/presence_model.dart';
 import 'package:fokad_admin/src/pages/rh/presences/components/detail_presence.dart';
@@ -98,8 +97,8 @@ class _TablePresenceState extends State<TablePresence> {
         enableContextMenu: false,
         enableDropToResize: true,
         titleTextAlign: PlutoColumnTextAlign.left,
-        width: 150,
-        minWidth: 150,
+        width: 200,
+        minWidth: 200,
       ),
       PlutoColumn(
         readOnly: true,
@@ -110,20 +109,20 @@ class _TablePresenceState extends State<TablePresence> {
         enableContextMenu: false,
         enableDropToResize: true,
         titleTextAlign: PlutoColumnTextAlign.left,
-        width: 150,
-        minWidth: 150,
+        width: 200,
+        minWidth: 200,
       ),
       PlutoColumn(
         readOnly: true,
-        title: 'Fin de Journée',
+        title: 'Journée',
         field: 'finJournee',
         type: PlutoColumnType.text(),
         enableRowDrag: true,
         enableContextMenu: false,
         enableDropToResize: true,
         titleTextAlign: PlutoColumnTextAlign.left,
-        width: 150,
-        minWidth: 150,
+        width: 200,
+        minWidth: 200,
       ),
       PlutoColumn(
         readOnly: true,
@@ -134,8 +133,8 @@ class _TablePresenceState extends State<TablePresence> {
         enableContextMenu: false,
         enableDropToResize: true,
         titleTextAlign: PlutoColumnTextAlign.left,
-        width: 150,
-        minWidth: 150,
+        width: 200,
+        minWidth: 200,
       ),
     ];
   }
@@ -150,14 +149,13 @@ class _TablePresenceState extends State<TablePresence> {
           id = item!.id;
           rows.add(PlutoRow(cells: {
             'id': PlutoCell(value: item.id),
-            'arrive': PlutoCell(value:  DateFormat("DD-MM-yy H:mm").format(item.arrive)),
-            'sortie': PlutoCell(value:  DateFormat("DD-MM-yy H:mm").format(item.sortie)),
+            'arrive': PlutoCell(value:  DateFormat("dd-MM-yyyy HH:mm").format(item.arrive)),
+            'sortie': PlutoCell(value: (item.finJournee) ? DateFormat("dd-MM-yyyy HH:mm").format(item.sortie) : "-" ),
             'finJournee': PlutoCell(value: (item.finJournee) 
-              ? Text("Journée fini", style: TextStyle(color: Colors.green.shade700))
-              : Text("Journée en cours",
-                        style: TextStyle(color: Colors.orange.shade700))),
+              ? "Journée fini"
+              : 'Journée en cours'),
             'created': PlutoCell(
-                value: DateFormat("DD-MM-yy H:mm").format(item.created))
+                value: DateFormat("dd-MM-yyyy HH:mm").format(item.created))
           }));
         }
         stateManager!.resetCurrentState();

@@ -1,15 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
-
-class PieChartWidget extends StatefulWidget {
+class PieChartWidget extends StatelessWidget {
   const PieChartWidget({ Key? key }) : super(key: key);
+  
 
-  @override
-  State<PieChartWidget> createState() => _PieChartWidgetState();
-}
-
-class _PieChartWidgetState extends State<PieChartWidget> {
   @override
   Widget build(BuildContext context) {
     final List<ChartData> chartData = [
@@ -17,20 +12,18 @@ class _PieChartWidgetState extends State<PieChartWidget> {
       ChartData('Steve', 38),
       ChartData('Jack', 34),
       ChartData('Others', 52)
-  ];
+    ];
 
     return SfCircularChart(
-      legend: Legend(isVisible: true, isResponsive: true),
-      series: <CircularSeries>[
-        // Render pie chart
-        PieSeries<ChartData, String>(
-                dataSource: chartData,
-                pointColorMapper:(ChartData data, _) => data.color,
-                xValueMapper: (ChartData data, _) => data.x,
-                yValueMapper: (ChartData data, _) => data.y
-            )
-        ]
-    );
+        legend: Legend(isVisible: true, isResponsive: true),
+        series: <CircularSeries>[
+          // Render pie chart
+          PieSeries<ChartData, String>(
+              dataSource: chartData,
+              // pointColorMapper: (ChartData data, _) => data.color,
+              xValueMapper: (ChartData data, _) => data.x,
+              yValueMapper: (ChartData data, _) => data.y)
+        ]);
   }
 }
 
@@ -40,3 +33,4 @@ class ChartData {
   final double y;
   final Color? color;
 }
+
