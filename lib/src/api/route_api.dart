@@ -17,6 +17,7 @@ var userUrl = Uri.parse("$mainUrl/user/");
 var listAgentsUrl = Uri.parse("$mainUrl/rh/agents/");
 var addAgentsUrl = Uri.parse("$mainUrl/rh/agents/insert-new-agent");
 var agentCountUrl = Uri.parse("$mainUrl/rh/agents/get-count/");
+var agentChartPieSexeUrl = Uri.parse("$mainUrl/rh/agents/chart-pie-sexe/");
 
 var listPaiementSalaireUrl = Uri.parse("$mainUrl/rh/paiement-salaires/");
 var addPaiementSalaireUrl = Uri.parse("$mainUrl/rh/paiement-salaires/insert-new-paiement");

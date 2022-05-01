@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fokad_admin/src/api/rh/agents_api.dart';
-import 'package:fokad_admin/src/models/rh/agent_model.dart';
+import 'package:fokad_admin/src/models/rh/agent_count_model.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
 class DashRHPieWidget extends StatefulWidget {
@@ -17,9 +17,9 @@ class _DashRHPieWidgetState extends State<DashRHPieWidget> {
     super.initState();
   }
 
-  List<AgentModel> agentList = [];
+  List<AgentPieChartModel> agentList = [];
   Future<void> getData() async {
-    var agents = await AgentsApi().getAllData();
+    var agents = await AgentsApi().getChartPieSexe();
     setState(() {
       agentList = agents;
     });
@@ -33,11 +33,11 @@ class _DashRHPieWidgetState extends State<DashRHPieWidget> {
           legend: Legend(isVisible: true, isResponsive: true),
           series: <CircularSeries>[
             // Render pie chart
-            PieSeries<AgentModel, String>(
+            PieSeries<AgentPieChartModel, String>(
                 dataSource: agentList,
                 // pointColorMapper: (ChartData data, _) => data.color,
-                xValueMapper: (AgentModel data, _) => data.sexe,
-                yValueMapper: (AgentModel data, _) => data.sexe.length)
+                xValueMapper: (AgentPieChartModel data, _) => data.sexe,
+                yValueMapper: (AgentPieChartModel data, _) => data.count)
           ]),
     );
   }

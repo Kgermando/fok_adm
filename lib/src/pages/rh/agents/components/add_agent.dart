@@ -826,7 +826,6 @@ class _AddAgentState extends State<AddAgent> {
                 OutlineInputBorder(borderRadius: BorderRadius.circular(10.0)),
             labelText: 'Formation',
           ),
-          
           style: const TextStyle(),
           validator: (value) {
             if (value != null && value.isEmpty) {
@@ -837,18 +836,7 @@ class _AddAgentState extends State<AddAgent> {
           },
         )
 
-        //     HtmlEditor(
-        //     controller: competanceController, //required
-        //     htmlEditorOptions: const HtmlEditorOptions(
-        //       hint: "Your text here...",
-        //       //initalText: "text content initial, if any",
-        //     ),
-        //     otherOptions: const OtherOptions(
-        //       height: 400,
-        //     ),
-        // )
-
-        );
+    );
   }
 
   Widget experienceWidget() {
@@ -936,9 +924,9 @@ class _AddAgentState extends State<AddAgent> {
             : dateFinContratController.text),
         fonctionOccupe:
             (fonctionOccupe.toString() == '') ? '-' : fonctionOccupe.toString(),
-        competance: (competanceController.toString() == '')
+        competance: (competanceController.text == '')
             ? '-'
-            : competanceController.toString(),
+            : competanceController.text,
         experience:
             (experienceController.text == '') ? '-' : experienceController.text,
         statutAgent: false,

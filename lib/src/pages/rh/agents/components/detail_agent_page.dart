@@ -58,7 +58,7 @@ class _AgentPageState extends State<AgentPage> {
     return Scaffold(
         key: _key,
         drawer: const DrawerMenu(),
-        floatingActionButton: speedialWidget(agentModel!),
+        floatingActionButton: (agentModel != null) ? speedialWidget(agentModel!) : Container(),
         body: SafeArea(
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -174,40 +174,25 @@ class _AgentPageState extends State<AgentPage> {
       openBackgroundColor: themeColor,
       speedDialChildren: <SpeedDialChild>[
         SpeedDialChild(
-          child: Row(
-            children: const [
-              Icon(Icons.add),
-              Icon(Icons.monetization_on),
-            ],
-          ),
-          foregroundColor: Colors.black,
-          backgroundColor: Colors.green.shade700,
+          child: const Icon(Icons.content_paste_sharp, size: 15.0,),
+          foregroundColor: Colors.white,
+          backgroundColor: Colors.orange.shade700,
           label: 'Modifier CV agent',
           onPressed: () {
             modifierWidget(agentModel);
           },
         ),
         SpeedDialChild(
-          child: Row(
-            children: const [
-              Icon(Icons.add),
-              Icon(Icons.monetization_on),
-            ],
-          ),
-          foregroundColor: Colors.black,
-          backgroundColor: Colors.green.shade700,
+          child: const Icon(Icons.safety_divider, size: 15.0),
+          foregroundColor: Colors.white,
+          backgroundColor: Colors.red.shade700,
           label: 'Changer le statut agent',
           onPressed: () {
             statutAgentWidget(agentModel);
           },
         ),
         SpeedDialChild(
-            child: Row(
-              children: const [
-                Icon(Icons.add),
-                Icon(Icons.content_paste_sharp),
-              ],
-            ),
+            child: const Icon(Icons.monetization_on),
             foregroundColor: Colors.white,
             backgroundColor: Colors.blue.shade700,
             label: 'Paiement',
@@ -589,12 +574,14 @@ class _AgentPageState extends State<AgentPage> {
     return Padding(
       padding: const EdgeInsets.all(p10),
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text('Formation :',
-                  style: bodyMedium!.copyWith(fontWeight: FontWeight.bold)),
+                textAlign: TextAlign.start,
+                style: bodyMedium!.copyWith(fontWeight: FontWeight.bold)),
               SelectableText(agentModel.competance!,
                   textAlign: TextAlign.justify, style: bodyMedium)
             ],
@@ -604,7 +591,8 @@ class _AgentPageState extends State<AgentPage> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text('Experience :',
-                  style: bodyMedium.copyWith(fontWeight: FontWeight.bold)),
+                textAlign: TextAlign.start,
+                style: bodyMedium.copyWith(fontWeight: FontWeight.bold)),
               SelectableText(agentModel.experience!,
                   textAlign: TextAlign.justify, style: bodyMedium)
             ],

@@ -51,7 +51,11 @@ class ServiceAffectation {
 
   List<String> logDropdown = [
     'Supervision',
-    'Controle materiels et qualité',
+    'Construction & architecture',
+    'Planification & wherehouse',
+    'Maintenance preventive',
+    'Maintenance curative',
+    'Controle et qualité',
     'Commande et livraison materiels'
   ];
 }

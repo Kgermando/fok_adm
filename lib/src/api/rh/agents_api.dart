@@ -133,6 +133,37 @@ class AgentsApi {
     }
   }
 
+
+  Future<List<AgentPieChartModel>> getChartPieSexe() async {
+    String? token = await getToken();
+
+    if (token!.isNotEmpty) {
+      var splittedJwt = token.split(".");
+      var payload = json.decode(
+          ascii.decode(base64.decode(base64.normalize(splittedJwt[1]))));
+    }
+    var resp = await client.get(
+      agentChartPieSexeUrl,
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+        'Authorization': 'Bearer $token'
+      },
+    );
+    if (resp.statusCode == 200) {
+      List<dynamic> bodyList = json.decode(resp.body);
+      List<AgentPieChartModel> data = [];
+      for (var row in bodyList) {
+        data.add(AgentPieChartModel.fromJson(row));
+      }
+      return data;
+    } else {
+      throw Exception(jsonDecode(resp.body)['message']);
+    }
+  }
+
+
+
+
   Future<AgentModel> insertData(AgentModel agentModel) async {
     final accessToken = await storage.read(key: 'accessToken');
 

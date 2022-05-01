@@ -61,17 +61,12 @@ class AuthApi extends ChangeNotifier {
       var payload = json.decode(
           ascii.decode(base64.decode(base64.normalize(splittedJwt[1]))));
     }
-
     final refreshToken = await storage.read(key: 'refreshToken');
-
     if (refreshToken!.isNotEmpty) {
       var splittedJwt = refreshToken.split(".");
       var payload = json.decode(
           ascii.decode(base64.decode(base64.normalize(splittedJwt[1]))));
     }
-
-    // print('refreshToken $refreshToken');
-
     var data = {'refresh_token': refreshToken};
     var body = jsonEncode(data);
     var resp = await client.post(
@@ -81,10 +76,8 @@ class AuthApi extends ChangeNotifier {
         'Content-Type': 'application/json; charset=UTF-8'
       },
     );
-
     if (resp.statusCode == 200) {
       Token token = Token.fromJson(json.decode(resp.body));
-
       UserSecureStorage().saveAccessToken(token.accessToken);
       UserSecureStorage().saveRefreshToken(token.refreshToken);
     } else {
