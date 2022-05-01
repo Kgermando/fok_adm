@@ -31,6 +31,7 @@ import 'package:fokad_admin/src/pages/exploitations/expl_dd/exploitaion_dd.dart'
 import 'package:fokad_admin/src/pages/exploitations/projets/add_projet_exp.dart';
 import 'package:fokad_admin/src/pages/exploitations/projets/projets_expo.dart';
 import 'package:fokad_admin/src/pages/exploitations/taches/tache_exp.dart';
+import 'package:fokad_admin/src/pages/exploitations/versements/versement_projet.dart';
 import 'package:fokad_admin/src/pages/finances/dashboard/dashboard_finance.dart';
 import 'package:fokad_admin/src/pages/finances/dd_finance/departement_fin.dart';
 import 'package:fokad_admin/src/pages/finances/transactions/components/banque_transactions.dart';
@@ -164,6 +165,7 @@ class ExploitationRoutes {
   static const expProjet = "/exploitation-projets";
   static const expTacheAdd = "/exploitation-taches-add";
   static const expTache = "/exploitation-taches";
+   static const expVirement = "/exploitation-virement";
   static const expDD = "/exp-dd";
 }
 
@@ -285,7 +287,7 @@ class Routing {
         ExploitationRoutes.expDashboard: (_) => const MaterialPage(child: DashboardExp()),
         ExploitationRoutes.expProjetAdd: (_) => const MaterialPage(child: AddProjetExp()),
         ExploitationRoutes.expProjet: (_) => const MaterialPage(child: ProjetsExp()),
-        // ExploitationRoutes.expTacheAdd: (_) => const MaterialPage(child: AddTacheExp()),
+        ExploitationRoutes.expVirement: (_) => const MaterialPage(child: VersementProjet()),
         ExploitationRoutes.expTache: (_) => const MaterialPage(child: TacheExp()),
 
 

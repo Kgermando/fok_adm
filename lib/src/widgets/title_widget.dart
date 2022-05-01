@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:fokad_admin/src/constants/app_theme.dart';
 import 'package:fokad_admin/src/constants/responsive.dart';
@@ -15,8 +16,9 @@ class TitleWidget extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Text(
+          AutoSizeText(
             title,
+            maxLines: 1,
             textAlign: TextAlign.center,
             style:  Responsive.isDesktop(context) 
               ? headlineMedium!.copyWith(fontWeight: FontWeight.bold)

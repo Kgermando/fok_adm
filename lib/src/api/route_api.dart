@@ -117,7 +117,7 @@ var tachesUrl = Uri.parse("$mainUrl/taches/");
 var addTachessUrl = Uri.parse("$mainUrl/taches/insert-new-tache");
 
 var versementProjetsUrl = Uri.parse("$mainUrl/versements-projets/");
-var addVersementProjetsUrl = Uri.parse("$mainUrl/versements-projets/insert-new-insert-new-versement-projet");
+var addVersementProjetsUrl = Uri.parse("$mainUrl/versements-projets/insert-new-versement-projet");
 
 var rapporsUrl = Uri.parse("$mainUrl/rapports/");
 var addRapportsUrl = Uri.parse("$mainUrl/rapports/insert-new-rapport");
