@@ -46,13 +46,13 @@ class _LogistiqueNavState extends State<LogistiqueNav> {
           }
         ),
         DrawerWidget(
-            selected: widget.pageCurrente == LogistiqueRoutes.logDashboard,
+            selected: widget.pageCurrente == LogistiqueRoutes.logDD,
             icon: Icons.manage_accounts,
             sizeIcon: 20.0,
             title: 'Directeur de département',
             style: bodyText1,
             onTap: () {
-              Routemaster.of(context).replace(LogistiqueRoutes.logDashboard);
+              Routemaster.of(context).replace(LogistiqueRoutes.logDD);
               // Routemaster.of(context).pop();
             }),
         ExpansionTile(

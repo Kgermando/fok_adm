@@ -8,6 +8,7 @@ import 'package:pluto_grid/pluto_grid.dart';
 
 class TableAnguin extends StatefulWidget {
   const TableAnguin({Key? key}) : super(key: key);
+  
 
   @override
   State<TableAnguin> createState() => _TableAnguinState();
@@ -213,11 +214,11 @@ class _TableAnguinState extends State<TableAnguin> {
             'numeroChassie': PlutoCell(value: item.numeroChassie),
             'qtyMaxReservoir': PlutoCell(value: item.qtyMaxReservoir),
             'dateFabrication': PlutoCell(
-                value: DateFormat("dd-MM-yy").format(item.dateFabrication)),
+                value: DateFormat("dd-MM-yyyy").format(item.dateFabrication)),
             'nomeroPLaque': PlutoCell(value: item.nomeroPLaque),
             'nomeroEntreprise': PlutoCell(value: item.nomeroEntreprise),
             'created': PlutoCell(
-                value: DateFormat("dd-MM-yy H:mm").format(item.created))
+                value: DateFormat("dd-MM-yy HH:mm").format(item.created))
           }));
         }
         stateManager!.resetCurrentState();

@@ -5,6 +5,7 @@ import 'package:fokad_admin/src/constants/responsive.dart';
 import 'package:fokad_admin/src/models/logistiques/trajet_model.dart';
 import 'package:fokad_admin/src/navigation/drawer/drawer_menu.dart';
 import 'package:fokad_admin/src/navigation/header/custom_appbar.dart';
+import 'package:fokad_admin/src/pages/logistiques/automobile/components/update_trajet.dart';
 import 'package:fokad_admin/src/widgets/print_widget.dart';
 import 'package:fokad_admin/src/widgets/title_widget.dart';
 import 'package:intl/intl.dart';
@@ -146,15 +147,18 @@ class _DetailTrajetState extends State<DetailTrajet> {
                       Row(
                         children: [
                           IconButton(
-                              tooltip: 'Modifier',
-                              onPressed: () {},
-                              icon: const Icon(Icons.edit)),
+                            tooltip: "Ajout kilometrage retour",
+                            onPressed: () {
+                              Navigator.of(context).push(MaterialPageRoute(
+                                    builder: (context) =>
+                                        UpdateTrajet(trajetModel: data)));
+                            }, icon: Icon(Icons.traffic_outlined, color: Colors.red.shade700,)),
                           PrintWidget(
-                              tooltip: 'Imprimer le document', onPressed: () {})
+                              tooltip: 'Imprimer le document', onPressed: () {}),
                         ],
                       ),
                       SelectableText(
-                          DateFormat("dd-MM-yy").format(data.created),
+                          DateFormat("dd-MM-yy HH:mm").format(data.created),
                           textAlign: TextAlign.start),
                     ],
                   )
@@ -177,102 +181,139 @@ class _DetailTrajetState extends State<DetailTrajet> {
           Row(
             children: [
               Expanded(
+                flex: 1,
                 child: Text('Numero attribué :',
                     textAlign: TextAlign.start,
                     style: bodyMedium!.copyWith(fontWeight: FontWeight.bold)),
               ),
               Expanded(
+                flex: 3,
                 child: SelectableText(data.nomeroEntreprise,
                     textAlign: TextAlign.start, style: bodyMedium),
               )
             ],
           ),
+          Divider(
+            color: Colors.amber.shade700,
+          ),
           Row(
             children: [
               Expanded(
+                flex: 1,
                 child: Text('Nom complet :',
                     textAlign: TextAlign.start,
                     style: bodyMedium.copyWith(fontWeight: FontWeight.bold)),
               ),
               Expanded(
+                flex: 3,
                 child: SelectableText(data.nomUtilisateur,
                     textAlign: TextAlign.start, style: bodyMedium),
               )
             ],
           ),
+          Divider(
+            color: Colors.amber.shade700,
+          ),
           Row(
             children: [
               Expanded(
+                flex: 1,
                 child: Text('Trajet De... :',
                     textAlign: TextAlign.start,
                     style: bodyMedium.copyWith(fontWeight: FontWeight.bold)),
               ),
               Expanded(
+                flex: 3,
                 child: SelectableText(data.trajetDe,
                     textAlign: TextAlign.start, style: bodyMedium),
               )
             ],
           ),
+          Divider(
+            color: Colors.amber.shade700,
+          ),
           Row(
             children: [
               Expanded(
+                flex: 1,
                 child: Text('Trajet A... :',
                     textAlign: TextAlign.start,
                     style: bodyMedium.copyWith(fontWeight: FontWeight.bold)),
               ),
               Expanded(
+                flex: 3,
                 child: SelectableText(data.trajetA,
                     textAlign: TextAlign.start, style: bodyMedium),
               )
             ],
           ),
+          Divider(
+            color: Colors.amber.shade700,
+          ),
           Row(
             children: [
               Expanded(
+                flex: 1,
                 child: Text('Mission :',
                     textAlign: TextAlign.start,
                     style: bodyMedium.copyWith(fontWeight: FontWeight.bold)),
               ),
               Expanded(
+                flex: 3,
                 child: SelectableText(data.mission,
                     textAlign: TextAlign.start, style: bodyMedium),
               )
             ],
           ),
+          Divider(
+            color: Colors.amber.shade700,
+          ),
           Row(
             children: [
               Expanded(
+                flex: 1,
                 child: Text('Kilometrage de sorite :',
                     textAlign: TextAlign.start,
                     style: bodyMedium.copyWith(fontWeight: FontWeight.bold)),
               ),
               Expanded(
+                flex: 3,
                 child: SelectableText(data.kilometrageSorite,
                     textAlign: TextAlign.start, style: bodyMedium),
               )
             ],
           ),
+          Divider(
+            color: Colors.amber.shade700,
+          ),
           Row(
             children: [
               Expanded(
+                flex: 1,
                 child: Text('Kilometrage de retour :',
                     textAlign: TextAlign.start,
                     style: bodyMedium.copyWith(fontWeight: FontWeight.bold)),
               ),
               Expanded(
+                flex: 3,
                 child: SelectableText(data.kilometrageRetour,
                     textAlign: TextAlign.start, style: bodyMedium),
               )
             ],
           ),
+          Divider(
+            color: Colors.amber.shade700,
+          ),
           Row(
             children: [
               Expanded(
+                flex: 1,
                 child: Text('signature :',
                     textAlign: TextAlign.start,
                     style: bodyMedium.copyWith(fontWeight: FontWeight.bold)),
               ),
               Expanded(
+                flex: 3,
                 child: SelectableText(data.signature,
                     textAlign: TextAlign.start, style: bodyMedium),
               )

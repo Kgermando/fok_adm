@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:fokad_admin/src/api/auth/auth_api.dart';
-import 'package:fokad_admin/src/api/comm_marketing/commerciale/achat_api.dart';
 import 'package:fokad_admin/src/api/comm_marketing/commerciale/restitution_api.dart';
 import 'package:fokad_admin/src/api/comm_marketing/commerciale/stock_global_api.dart';
 import 'package:fokad_admin/src/constants/app_theme.dart';
 import 'package:fokad_admin/src/constants/responsive.dart';
-import 'package:fokad_admin/src/models/comm_maketing/achat_model.dart';
 import 'package:fokad_admin/src/models/comm_maketing/restitution_model.dart';
 import 'package:fokad_admin/src/models/comm_maketing/stocks_global_model.dart';
 import 'package:fokad_admin/src/models/users/user_model.dart';
@@ -165,7 +163,6 @@ class _DetailRestitutionState extends State<DetailRestitution> {
   }
 
   Widget dataWidget(RestitutionModel data) {
-    final bodyMedium = Theme.of(context).textTheme.bodyMedium;
     final bodyText2 = Theme.of(context).textTheme.bodyText2;
     return Padding(
       padding: const EdgeInsets.all(p10),

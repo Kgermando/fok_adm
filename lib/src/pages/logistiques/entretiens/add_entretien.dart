@@ -28,7 +28,7 @@ class _AddEntretienPageState extends State<AddEntretienPage> {
   bool isLoading = false;
 
   late List<Map<String, dynamic>> _values;
-  late String _result;
+  late String result;
 
   late int count;
 
@@ -48,7 +48,7 @@ class _AddEntretienPageState extends State<AddEntretienPage> {
     setState(() {
       data();
       count = 0;
-      _result = '';
+      result = '';
       _values = [];
     });
     super.initState();

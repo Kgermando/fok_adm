@@ -150,7 +150,7 @@ class _DetailEtatMaterielState extends State<DetailEtatMateriel> {
                         ],
                       ),
                       SelectableText(
-                          DateFormat("dd-MM-yy").format(data.created),
+                          DateFormat("dd-MM-yy HH:mm").format(data.created),
                           textAlign: TextAlign.start),
                     ],
                   )
@@ -183,6 +183,9 @@ class _DetailEtatMaterielState extends State<DetailEtatMateriel> {
               )
             ],
           ),
+          Divider(
+            color: Colors.amber.shade700,
+          ),
           Row(
             children: [
               Expanded(
@@ -195,6 +198,9 @@ class _DetailEtatMaterielState extends State<DetailEtatMateriel> {
                     textAlign: TextAlign.start, style: bodyMedium),
               )
             ],
+          ),
+          Divider(
+            color: Colors.amber.shade700,
           ),
           Row(
             children: [
@@ -209,6 +215,9 @@ class _DetailEtatMaterielState extends State<DetailEtatMateriel> {
               )
             ],
           ),
+          Divider(
+            color: Colors.amber.shade700,
+          ),
           Row(
             children: [
               Expanded(
@@ -221,6 +230,9 @@ class _DetailEtatMaterielState extends State<DetailEtatMateriel> {
                     textAlign: TextAlign.start, style: bodyMedium),
               )
             ],
+          ),
+          Divider(
+            color: Colors.amber.shade700,
           ),
           Row(
             children: [
@@ -249,6 +261,9 @@ class _DetailEtatMaterielState extends State<DetailEtatMateriel> {
                       style: bodyMedium.copyWith(color: Colors.red.shade700)),
                 )
             ],
+          ),
+          Divider(
+            color: Colors.amber.shade700,
           ),
           Row(
             children: [

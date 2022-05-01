@@ -10,12 +10,12 @@ class AnguinModel {
   late DateTime dateFabrication;
   late String nomeroPLaque;
   // numero que l'entreprise donne donne a ses anguins
-  late String nomeroEntreprise; 
+  late String nomeroEntreprise;
   late String kilometrageInitiale;
   late String provenance;
   late String typeCaburant;
   late String typeMoteur;
-  
+
   late String approbationDG; // button radio OUi et NON if non text field
   late String signatureDG;
   late String signatureJustificationDG;
@@ -34,7 +34,6 @@ class AnguinModel {
 
   late String signature; // celui qui fait le document
   late DateTime created;
-
 
   AnguinModel(
       {this.id,
@@ -65,8 +64,7 @@ class AnguinModel {
       required this.signatureDD,
       required this.signatureJustificationDD,
       required this.signature,
-      required this.created
-    });
+      required this.created});
 
   factory AnguinModel.fromSQL(List<dynamic> row) {
     return AnguinModel(
@@ -85,21 +83,20 @@ class AnguinModel {
         provenance: row[12],
         typeCaburant: row[13],
         typeMoteur: row[14],
-        approbationDG: row[6],
-        signatureDG: row[7],
-        signatureJustificationDG: row[8],
-        approbationFin: row[9],
-        signatureFin: row[10],
-        signatureJustificationFin: row[11],
-        approbationBudget: row[12],
-        signatureBudget: row[13],
-        signatureJustificationBudget: row[14],
-        approbationDD: row[15],
-        signatureDD: row[16],
-        signatureJustificationDD: row[17],
-        signature: row[18],
-        created: row[19]
-    );
+        approbationDG: row[15],
+        signatureDG: row[16],
+        signatureJustificationDG: row[17],
+        approbationFin: row[18],
+        signatureFin: row[19],
+        signatureJustificationFin: row[20],
+        approbationBudget: row[21],
+        signatureBudget: row[22],
+        signatureJustificationBudget: row[23],
+        approbationDD: row[24],
+        signatureDD: row[25],
+        signatureJustificationDD: row[26],
+        signature: row[27],
+        created: row[28]);
   }
 
   factory AnguinModel.fromJson(Map<String, dynamic> json) {
@@ -132,8 +129,7 @@ class AnguinModel {
         signatureDD: json['signatureDD'],
         signatureJustificationDD: json['signatureJustificationDD'],
         signature: json['signature'],
-        created: DateTime.parse(json['created'])
-    );
+        created: DateTime.parse(json['created']));
   }
 
   Map<String, dynamic> toJson() {

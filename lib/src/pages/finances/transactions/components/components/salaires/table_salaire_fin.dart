@@ -213,7 +213,7 @@ class _TableSalaireFinState extends State<TableSalaireFin> {
         await PaiementSalaireApi().getAllData();
     var data = dataList
         .where((element) =>
-            element!.approbationDG == true && element.observation == false)
+            element!.approbationDG == "Approved" && element.observation == false)
         .toList();
 
     if (mounted) {

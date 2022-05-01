@@ -96,7 +96,7 @@ class _TableTrajetState extends State<TableTrajet> {
       ),
       PlutoColumn(
         readOnly: true,
-        title: 'Nom complet',
+        title: 'Nom Utilisateur',
         field: 'nomUtilisateur',
         type: PlutoColumnType.text(),
         enableRowDrag: true,

@@ -97,8 +97,8 @@ class _DetailEntretienState extends State<DetailEntretien> {
                                     ),
                                     const SizedBox(width: p10),
                                     Expanded(
-                                      child:
-                                          CustomAppbar(title: data!.nom,
+                                      child: CustomAppbar(
+                                          title: data!.nom,
                                           controllerMenu: () =>
                                               _key.currentState!.openDrawer()),
                                     ),
@@ -192,6 +192,9 @@ class _DetailEntretienState extends State<DetailEntretien> {
               )
             ],
           ),
+          Divider(
+            color: Colors.amber.shade700,
+          ),
           Row(
             children: [
               Expanded(
@@ -204,6 +207,9 @@ class _DetailEntretienState extends State<DetailEntretien> {
                     textAlign: TextAlign.start, style: bodyMedium),
               )
             ],
+          ),
+          Divider(
+            color: Colors.amber.shade700,
           ),
           Row(
             children: [
@@ -218,6 +224,9 @@ class _DetailEntretienState extends State<DetailEntretien> {
               )
             ],
           ),
+          Divider(
+            color: Colors.amber.shade700,
+          ),
           Row(
             children: [
               Expanded(
@@ -230,6 +239,9 @@ class _DetailEntretienState extends State<DetailEntretien> {
                     textAlign: TextAlign.start, style: bodyMedium),
               )
             ],
+          ),
+          Divider(
+            color: Colors.amber.shade700,
           ),
           Row(
             children: [
@@ -348,14 +360,19 @@ class _DetailEntretienState extends State<DetailEntretien> {
   }
 
   Future agentsRow() async {
+    List<ObjetRemplace> objetRemplaceList = [];
+    for (var item in objetRemplace) {
+      objetRemplaceList.add(ObjetRemplace.fromJson(item));
+    }
+
     if (mounted) {
       setState(() {
-        for (var item in objetRemplace) {
+        for (var item in objetRemplaceList) {
           rows.add(PlutoRow(cells: {
-            'nomObjet': PlutoCell(value: item[0]['nomObjet']),
-            'cout': PlutoCell(value: item[1]['cout']),
-            'caracteristique': PlutoCell(value: item[2]['caracteristique']),
-            'observation': PlutoCell(value: item[3]['observation'])
+            'nomObjet': PlutoCell(value: item.nomObjet),
+            'cout': PlutoCell(value: item.cout),
+            'caracteristique': PlutoCell(value: item.caracteristique),
+            'observation': PlutoCell(value: item.observation)
           }));
           stateManager!.resetCurrentState();
         }
@@ -380,4 +397,25 @@ class ClassYouImplemented implements PlutoFilterType {
       };
 
   const ClassYouImplemented();
+}
+
+class ObjetRemplace {
+  final String nomObjet;
+  final String cout;
+  final String caracteristique;
+  final String observation;
+
+  ObjetRemplace(
+      {required this.nomObjet,
+      required this.cout,
+      required this.caracteristique,
+      required this.observation});
+
+  factory ObjetRemplace.fromJson(Map<String, dynamic> json) {
+    return ObjetRemplace(
+        nomObjet: json['nomObjet'],
+        cout: json['cout'],
+        caracteristique: json['caracteristique'],
+        observation: json['observation']);
+  }
 }

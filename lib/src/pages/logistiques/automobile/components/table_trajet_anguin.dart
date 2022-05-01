@@ -2,16 +2,18 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:fokad_admin/src/api/logistiques/trajet_api.dart';
+import 'package:fokad_admin/src/models/logistiques/anguin_model.dart';
 import 'package:fokad_admin/src/models/logistiques/trajet_model.dart';
 import 'package:fokad_admin/src/pages/logistiques/automobile/components/detail_trajet.dart';
 import 'package:fokad_admin/src/widgets/print_widget.dart';
+import 'package:fokad_admin/src/widgets/title_widget.dart';
 import 'package:intl/intl.dart';
 import 'package:pluto_grid/pluto_grid.dart';
 
 class TableTrajetAnguin extends StatefulWidget {
-  const TableTrajetAnguin({Key? key, required this.numeroEntreprise})
+  const TableTrajetAnguin({Key? key, required this.anguinModel})
       : super(key: key);
-  final String numeroEntreprise;
+  final AnguinModel anguinModel;
 
   @override
   State<TableTrajetAnguin> createState() => _TableTrajetAnguinState();
@@ -51,8 +53,11 @@ class _TableTrajetAnguinState extends State<TableTrajetAnguin> {
       },
       createHeader: (PlutoGridStateManager header) {
         return Row(
-          mainAxisAlignment: MainAxisAlignment.end,
-          children: [PrintWidget(onPressed: () {})],
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            const TitleWidget(title: "Trajets"),
+            PrintWidget(onPressed: () {})
+          ],
         );
       },
       configuration: PlutoGridConfiguration(
@@ -101,7 +106,7 @@ class _TableTrajetAnguinState extends State<TableTrajetAnguin> {
       ),
       PlutoColumn(
         readOnly: true,
-        title: 'Nom complet',
+        title: 'Nom Utilisateur',
         field: 'nomUtilisateur',
         type: PlutoColumnType.text(),
         enableRowDrag: true,
@@ -190,7 +195,7 @@ class _TableTrajetAnguinState extends State<TableTrajetAnguin> {
     List<TrajetModel?> dataList = await TrajetApi().getAllData();
     var data = dataList
         .where(
-            (element) => element!.nomeroEntreprise == widget.numeroEntreprise)
+            (element) => element!.nomeroEntreprise == widget.anguinModel.nomeroEntreprise)
         .toList();
 
     if (mounted) {
@@ -207,7 +212,7 @@ class _TableTrajetAnguinState extends State<TableTrajetAnguin> {
             'kilometrageSorite': PlutoCell(value: item.kilometrageSorite),
             'kilometrageRetour': PlutoCell(value: item.kilometrageRetour),
             'created': PlutoCell(
-                value: DateFormat("dd-MM-yy H:mm").format(item.created))
+                value: DateFormat("dd-MM-yy HH:mm").format(item.created))
           }));
         }
         stateManager!.resetCurrentState();

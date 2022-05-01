@@ -102,6 +102,7 @@ class _AddCarburantAutoState extends State<AddCarburantAuto> {
                                 },
                                 icon: const Icon(Icons.arrow_back)),
                           ),
+                          const SizedBox(width: p10),
                            Expanded(
                               flex: 5,
                               child: CustomAppbar(title: 'Ajout Carburant',

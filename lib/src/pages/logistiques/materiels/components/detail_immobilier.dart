@@ -183,6 +183,9 @@ class _DetailImmobilierState extends State<DetailImmobilier> {
               )
             ],
           ),
+          Divider(
+            color: Colors.amber.shade700,
+          ),
           Row(
             children: [
               Expanded(
@@ -195,6 +198,9 @@ class _DetailImmobilierState extends State<DetailImmobilier> {
                     textAlign: TextAlign.start, style: bodyMedium),
               )
             ],
+          ),
+          Divider(
+            color: Colors.amber.shade700,
           ),
           Row(
             children: [
@@ -209,6 +215,9 @@ class _DetailImmobilierState extends State<DetailImmobilier> {
               )
             ],
           ),
+          Divider(
+            color: Colors.amber.shade700,
+          ),
           Row(
             children: [
               Expanded(
@@ -221,6 +230,9 @@ class _DetailImmobilierState extends State<DetailImmobilier> {
                     textAlign: TextAlign.start, style: bodyMedium),
               )
             ],
+          ),
+          Divider(
+            color: Colors.amber.shade700,
           ),
           Row(
             children: [
@@ -236,6 +248,9 @@ class _DetailImmobilierState extends State<DetailImmobilier> {
                     style: bodyMedium),
               )
             ],
+          ),
+          Divider(
+            color: Colors.amber.shade700,
           ),
           Row(
             children: [

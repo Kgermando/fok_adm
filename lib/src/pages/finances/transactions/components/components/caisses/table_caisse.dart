@@ -50,7 +50,6 @@ class _TableCaisseState extends State<TableCaisse> {
           .toList();
       for (var item in recetteList) {
         recette += double.parse(item!.montant);
-        print('recette1 $recette');
       }
       for (var item in depensesList) {
         depenses += double.parse(item!.montant);

@@ -167,7 +167,6 @@ class _DetailBonLivraisonState extends State<DetailBonLivraison> {
   }
 
   Widget dataWidget(BonLivraisonModel data) {
-    final bodyMedium = Theme.of(context).textTheme.bodyMedium;
     final bodyText2 = Theme.of(context).textTheme.bodyText2;
     return Padding(
       padding: const EdgeInsets.all(p10),

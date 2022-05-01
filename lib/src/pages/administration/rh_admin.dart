@@ -1,4 +1,4 @@
-import 'package:badges/badges.dart';
+
 import 'package:flutter/material.dart';
 import 'package:fokad_admin/src/api/rh/agents_api.dart';
 import 'package:fokad_admin/src/constants/app_theme.dart';
@@ -7,7 +7,6 @@ import 'package:fokad_admin/src/models/rh/agent_model.dart';
 import 'package:fokad_admin/src/navigation/drawer/drawer_menu.dart';
 import 'package:fokad_admin/src/navigation/header/custom_appbar.dart';
 import 'package:fokad_admin/src/pages/administration/components/rh/table_agent_admin.dart';
-import 'package:fokad_admin/src/pages/administration/components/rh/table_salaire_admin.dart';
 
 class RhAdmin extends StatefulWidget {
   const RhAdmin({Key? key}) : super(key: key);

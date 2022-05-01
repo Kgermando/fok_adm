@@ -44,7 +44,6 @@ class _AchatItemWidgetState extends State<AchatItemWidget> {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
-    var role = int.parse(user!.role) < 3;
     return Visibility(
       visible: isActive,
       child: Responsive.isDesktop(context)
@@ -253,7 +252,7 @@ class _AchatItemWidgetState extends State<AchatItemWidget> {
         double.parse(controllerQuantityCart.text);
     final achatModel = AchatModel(
         idProduct: widget.achat.idProduct,
-        quantity: widget.achat.quantity,
+        quantity: qty.toString(),
         quantityAchat: widget.achat.quantityAchat,
         priceAchatUnit: widget.achat.priceAchatUnit,
         prixVenteUnit: widget.achat.prixVenteUnit,

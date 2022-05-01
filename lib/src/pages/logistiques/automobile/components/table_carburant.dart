@@ -4,7 +4,6 @@ import 'package:fokad_admin/src/constants/app_theme.dart';
 import 'package:fokad_admin/src/models/logistiques/carburant_model.dart';
 import 'package:fokad_admin/src/pages/logistiques/automobile/components/detail_carburant.dart';
 import 'package:fokad_admin/src/widgets/card_widget_carburant.dart';
-import 'package:fokad_admin/src/widgets/dashboard_card_widget.dart';
 import 'package:fokad_admin/src/widgets/print_widget.dart';
 import 'package:intl/intl.dart';
 import 'package:pluto_grid/pluto_grid.dart';

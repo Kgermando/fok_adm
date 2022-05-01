@@ -428,7 +428,6 @@ class _DevisPageState extends State<DevisPage> {
     _values.add(json);
     setState(() {
       result = _prettyPrint(_values);
-      print('_values $_values');
     });
   }
 

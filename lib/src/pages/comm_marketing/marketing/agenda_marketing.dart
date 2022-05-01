@@ -31,7 +31,6 @@ class AgendaMarketing extends StatefulWidget {
 class _AgendaMarketingState extends State<AgendaMarketing> {
   final GlobalKey<ScaffoldState> _key = GlobalKey();
   bool isLoading = false;
-  final ScrollController _controllerScrollList = ScrollController();
 
   @override
   initState() {

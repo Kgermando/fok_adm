@@ -65,7 +65,6 @@ class _CartPageState extends State<CartPage> {
 
   @override
   Widget build(BuildContext context) {
-    var role = int.parse(user!.role) <= 3;
     return Scaffold(
         key: _key,
         drawer: const DrawerMenu(),
@@ -358,6 +357,7 @@ class _CartPageState extends State<CartPage> {
     List<CreanceCartModel> creanceList = [];
     creanceList.add(creanceCartModel);
 
+    // ignore: unused_local_variable
     CreanceCartModel? creance;
 
     for (var item in creanceList) {

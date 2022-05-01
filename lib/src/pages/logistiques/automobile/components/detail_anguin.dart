@@ -168,18 +168,10 @@ class _DetailAnguinState extends State<DetailAnguin> {
                   TitleWidget(title: data.modele),
                   Column(
                     children: [
-                      Row(
-                        children: [
-                          IconButton(
-                              tooltip: 'Modifier',
-                              onPressed: () {},
-                              icon: const Icon(Icons.edit)),
-                          PrintWidget(
-                              tooltip: 'Imprimer le document', onPressed: () {})
-                        ],
-                      ),
+                      PrintWidget(
+                          tooltip: 'Imprimer le document', onPressed: () {}),
                       SelectableText(
-                          DateFormat("dd-MM-yy").format(data.created),
+                          DateFormat("dd-MM-yy HH:mm").format(data.created),
                           textAlign: TextAlign.start),
                     ],
                   )
@@ -189,7 +181,7 @@ class _DetailAnguinState extends State<DetailAnguin> {
               SizedBox(
                   height: 500,
                   child: TableTrajetAnguin(
-                    numeroEntreprise: data.nomeroEntreprise,
+                    anguinModel: data,
                   ))
             ],
           ),
@@ -207,102 +199,139 @@ class _DetailAnguinState extends State<DetailAnguin> {
           Row(
             children: [
               Expanded(
-                child: Text('Nom Complet :',
+                flex: 1,
+                child: Text('Type anguin :',
                     textAlign: TextAlign.start,
                     style: bodyMedium!.copyWith(fontWeight: FontWeight.bold)),
               ),
               Expanded(
+                flex: 3,
                 child: SelectableText(data.nom,
                     textAlign: TextAlign.start, style: bodyMedium),
               )
             ],
           ),
+          Divider(
+            color: Colors.amber.shade700,
+          ),
           Row(
             children: [
               Expanded(
+                flex: 1,
                 child: Text('Modèle :',
                     textAlign: TextAlign.start,
                     style: bodyMedium.copyWith(fontWeight: FontWeight.bold)),
               ),
               Expanded(
+                flex: 3,
                 child: SelectableText(data.modele,
                     textAlign: TextAlign.start, style: bodyMedium),
               )
             ],
           ),
+          Divider(
+            color: Colors.amber.shade700,
+          ),
           Row(
             children: [
               Expanded(
+                flex: 1,
                 child: Text('Marque :',
                     textAlign: TextAlign.start,
                     style: bodyMedium.copyWith(fontWeight: FontWeight.bold)),
               ),
               Expanded(
+                flex: 3,
                 child: SelectableText(data.marque,
                     textAlign: TextAlign.start, style: bodyMedium),
               )
             ],
           ),
+          Divider(
+            color: Colors.amber.shade700,
+          ),
           Row(
             children: [
               Expanded(
+                flex: 1,
                 child: Text('Numero chassie :',
                     textAlign: TextAlign.start,
                     style: bodyMedium.copyWith(fontWeight: FontWeight.bold)),
               ),
               Expanded(
+                flex: 3,
                 child: SelectableText(data.numeroChassie,
                     textAlign: TextAlign.start, style: bodyMedium),
               )
             ],
           ),
+          Divider(
+            color: Colors.amber.shade700,
+          ),
           Row(
             children: [
               Expanded(
+                flex: 1,
                 child: Text('Couleur :',
                     textAlign: TextAlign.start,
                     style: bodyMedium.copyWith(fontWeight: FontWeight.bold)),
               ),
               Expanded(
+                flex: 3,
                 child: SelectableText(data.couleur,
                     textAlign: TextAlign.start, style: bodyMedium),
               )
             ],
           ),
+          Divider(
+            color: Colors.amber.shade700,
+          ),
           Row(
             children: [
               Expanded(
+                flex: 1,
                 child: Text('Genre :',
                     textAlign: TextAlign.start,
                     style: bodyMedium.copyWith(fontWeight: FontWeight.bold)),
               ),
               Expanded(
+                flex: 3,
                 child: SelectableText(data.genre,
                     textAlign: TextAlign.start, style: bodyMedium),
               )
             ],
           ),
+          Divider(
+            color: Colors.amber.shade700,
+          ),
           Row(
             children: [
               Expanded(
+                flex: 1,
                 child: Text('Quantité max du reservoir :',
                     textAlign: TextAlign.start,
                     style: bodyMedium.copyWith(fontWeight: FontWeight.bold)),
               ),
               Expanded(
+                flex: 3,
                 child: SelectableText(data.qtyMaxReservoir,
                     textAlign: TextAlign.start, style: bodyMedium),
               )
             ],
           ),
+          Divider(
+            color: Colors.amber.shade700,
+          ),
           Row(
             children: [
               Expanded(
+                flex: 1,
                 child: Text('Date de fabrication :',
                     textAlign: TextAlign.start,
                     style: bodyMedium.copyWith(fontWeight: FontWeight.bold)),
               ),
               Expanded(
+                flex: 3,
                 child: SelectableText(
                     DateFormat("dd-MM-yy").format(data.created),
                     textAlign: TextAlign.start,
@@ -310,66 +339,91 @@ class _DetailAnguinState extends State<DetailAnguin> {
               )
             ],
           ),
+          Divider(
+            color: Colors.amber.shade700,
+          ),
           Row(
             children: [
               Expanded(
+                flex: 1,
                 child: Text('numéro plaque :',
                     textAlign: TextAlign.start,
                     style: bodyMedium.copyWith(fontWeight: FontWeight.bold)),
               ),
               Expanded(
+                flex: 3,
                 child: SelectableText(data.nomeroPLaque,
                     textAlign: TextAlign.start, style: bodyMedium),
               )
             ],
           ),
+          Divider(
+            color: Colors.amber.shade700,
+          ),
           Row(
             children: [
               Expanded(
+                flex: 1,
                 child: Text('Numéro attribué :',
                     textAlign: TextAlign.start,
                     style: bodyMedium.copyWith(fontWeight: FontWeight.bold)),
               ),
               Expanded(
+                flex: 3,
                 child: SelectableText(data.nomeroEntreprise,
                     textAlign: TextAlign.start, style: bodyMedium),
               )
             ],
           ),
+          Divider(
+            color: Colors.amber.shade700,
+          ),
           Row(
             children: [
               Expanded(
+                flex: 1,
                 child: Text('kilometrage Initiale :',
                     textAlign: TextAlign.start,
                     style: bodyMedium.copyWith(fontWeight: FontWeight.bold)),
               ),
               Expanded(
+                flex: 3,
                 child: SelectableText(data.kilometrageInitiale,
                     textAlign: TextAlign.start, style: bodyMedium),
               )
             ],
           ),
+          Divider(
+            color: Colors.amber.shade700,
+          ),
           Row(
             children: [
               Expanded(
+                flex: 1,
                 child: Text('Provenance :',
                     textAlign: TextAlign.start,
                     style: bodyMedium.copyWith(fontWeight: FontWeight.bold)),
               ),
               Expanded(
+                flex: 3,
                 child: SelectableText(data.provenance,
                     textAlign: TextAlign.start, style: bodyMedium),
               )
             ],
           ),
+          Divider(
+            color: Colors.amber.shade700,
+          ),
           Row(
             children: [
               Expanded(
+                flex: 1,
                 child: Text('signature :',
                     textAlign: TextAlign.start,
                     style: bodyMedium.copyWith(fontWeight: FontWeight.bold)),
               ),
               Expanded(
+                flex: 3,
                 child: SelectableText(data.signature,
                     textAlign: TextAlign.start, style: bodyMedium),
               )

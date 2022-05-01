@@ -1,13 +1,10 @@
-import 'package:badges/badges.dart';
 import 'package:flutter/material.dart';
-import 'package:fokad_admin/src/api/auth/auth_api.dart';
 import 'package:fokad_admin/src/api/comm_marketing/commerciale/succursale_api.dart';
 import 'package:fokad_admin/src/api/comm_marketing/marketing/campaign_api.dart';
 import 'package:fokad_admin/src/constants/app_theme.dart';
 import 'package:fokad_admin/src/constants/responsive.dart';
 import 'package:fokad_admin/src/models/comm_maketing/campaign_model.dart';
 import 'package:fokad_admin/src/models/comm_maketing/succursale_model.dart';
-import 'package:fokad_admin/src/models/users/user_model.dart';
 import 'package:fokad_admin/src/navigation/drawer/drawer_menu.dart';
 import 'package:fokad_admin/src/navigation/header/custom_appbar.dart';
 import 'package:fokad_admin/src/pages/comm_marketing/c_m_dd/components/table_campaign_dd.dart';
@@ -37,7 +34,6 @@ class _CMDDState extends State<CMDD> {
   }
 
   Future<void> getData() async {
-    UserModel userLoggIn = await AuthApi().getUserId();
     // RH
     List<CampaignModel> campaign = await CampaignApi().getAllData();
     List<SuccursaleModel> succursale = await SuccursaleApi().getAllData();

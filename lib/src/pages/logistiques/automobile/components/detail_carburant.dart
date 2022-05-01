@@ -150,18 +150,10 @@ class _DetailCaburantState extends State<DetailCaburant> {
                           : 'Consommation'),
                   Column(
                     children: [
-                      Row(
-                        children: [
-                          IconButton(
-                              tooltip: 'Modifier',
-                              onPressed: () {},
-                              icon: const Icon(Icons.edit)),
-                          PrintWidget(
-                              tooltip: 'Imprimer le document', onPressed: () {})
-                        ],
-                      ),
+                      PrintWidget(
+                          tooltip: 'Imprimer le document', onPressed: () {}),
                       SelectableText(
-                          DateFormat("dd-MM-yy").format(data.created),
+                          DateFormat("dd-MM-yy HH:mm").format(data.created),
                           textAlign: TextAlign.start),
                     ],
                   )
@@ -184,11 +176,13 @@ class _DetailCaburantState extends State<DetailCaburant> {
           Row(
             children: [
               Expanded(
+                flex: 1,
                 child: Text('Type d\'operation :',
                     textAlign: TextAlign.start,
                     style: bodyMedium!.copyWith(fontWeight: FontWeight.bold)),
               ),
               Expanded(
+                flex: 3,
                 child: SelectableText(
                     (data.operationEntreSortie == 'Entrer')
                         ? 'Ravitaillement'
@@ -203,102 +197,139 @@ class _DetailCaburantState extends State<DetailCaburant> {
           Row(
             children: [
               Expanded(
+                flex: 1,
                 child: Text('Type de Caburant :',
                     textAlign: TextAlign.start,
                     style: bodyMedium.copyWith(fontWeight: FontWeight.bold)),
               ),
               Expanded(
+                flex: 3,
                 child: SelectableText(data.typeCaburant,
                     textAlign: TextAlign.start, style: bodyMedium),
               ),
             ],
           ),
+          Divider(
+            color: Colors.amber.shade700,
+          ),
           Row(
             children: [
               Expanded(
+                flex: 1,
                 child: Text('Fournisseur :',
                     textAlign: TextAlign.start,
                     style: bodyMedium.copyWith(fontWeight: FontWeight.bold)),
               ),
               Expanded(
+                flex: 3,
                 child: SelectableText(data.fournisseur,
                     textAlign: TextAlign.start, style: bodyMedium),
               )
             ],
           ),
+          Divider(
+            color: Colors.amber.shade700,
+          ),
           Row(
             children: [
               Expanded(
+                flex: 1,
                 child: Text('Numero Facture d\'Achat :',
                     textAlign: TextAlign.start,
                     style: bodyMedium.copyWith(fontWeight: FontWeight.bold)),
               ),
               Expanded(
+                flex: 3,
                 child: SelectableText(data.nomeroFactureAchat,
                     textAlign: TextAlign.start, style: bodyMedium),
               )
             ],
           ),
+          Divider(
+            color: Colors.amber.shade700,
+          ),
           Row(
             children: [
               Expanded(
+                flex: 1,
                 child: Text('Prix d\'achat par Litre :',
                     textAlign: TextAlign.start,
                     style: bodyMedium.copyWith(fontWeight: FontWeight.bold)),
               ),
               Expanded(
+                flex: 3,
                 child: SelectableText(data.prixAchatParLitre,
                     textAlign: TextAlign.start, style: bodyMedium),
               )
             ],
           ),
+          Divider(
+            color: Colors.amber.shade700,
+          ),
           Row(
             children: [
               Expanded(
+                flex: 1,
                 child: Text('Quantité :',
                     textAlign: TextAlign.start,
                     style: bodyMedium.copyWith(fontWeight: FontWeight.bold)),
               ),
               Expanded(
+                flex: 3,
                 child: SelectableText('${data.qtyAchat} L',
                     textAlign: TextAlign.start, style: bodyMedium),
               )
             ],
           ),
+          Divider(
+            color: Colors.amber.shade700,
+          ),
           Row(
             children: [
               Expanded(
+                flex: 1,
                 child: Text('Nom du Receptioniste :',
                     textAlign: TextAlign.start,
                     style: bodyMedium.copyWith(fontWeight: FontWeight.bold)),
               ),
               Expanded(
+                flex: 3,
                 child: SelectableText(data.nomReceptioniste,
                     textAlign: TextAlign.start, style: bodyMedium),
               )
             ],
           ),
+          Divider(
+            color: Colors.amber.shade700,
+          ),
           Row(
             children: [
               Expanded(
+                flex: 1,
                 child: Text('Numero de la Plaque :',
                     textAlign: TextAlign.start,
                     style: bodyMedium.copyWith(fontWeight: FontWeight.bold)),
               ),
               Expanded(
+                flex: 3,
                 child: SelectableText(data.numeroPlaque,
                     textAlign: TextAlign.start, style: bodyMedium),
               )
             ],
           ),
+          Divider(
+            color: Colors.amber.shade700,
+          ),
           Row(
             children: [
               Expanded(
+                flex: 1,
                 child: Text('Date et Heure de Sortie :',
                     textAlign: TextAlign.start,
                     style: bodyMedium.copyWith(fontWeight: FontWeight.bold)),
               ),
               Expanded(
+                flex: 3,
                 child: SelectableText(
                     DateFormat("dd-MM-yy HH:mm")
                         .format(data.dateHeureSortieAnguin),
@@ -307,14 +338,19 @@ class _DetailCaburantState extends State<DetailCaburant> {
               )
             ],
           ),
+          Divider(
+            color: Colors.amber.shade700,
+          ),
           Row(
             children: [
               Expanded(
+                flex: 1,
                 child: Text('Signature :',
                     textAlign: TextAlign.start,
                     style: bodyMedium.copyWith(fontWeight: FontWeight.bold)),
               ),
               Expanded(
+                flex: 3,
                 child: SelectableText(data.signature,
                     textAlign: TextAlign.start, style: bodyMedium),
               )

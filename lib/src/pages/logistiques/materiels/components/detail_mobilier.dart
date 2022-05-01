@@ -183,6 +183,9 @@ class _DetailMobilierState extends State<DetailMobilier> {
               )
             ],
           ),
+          Divider(
+            color: Colors.amber.shade700,
+          ),
           Row(
             children: [
               Expanded(
@@ -195,6 +198,9 @@ class _DetailMobilierState extends State<DetailMobilier> {
                     textAlign: TextAlign.start, style: bodyMedium),
               )
             ],
+          ),
+          Divider(
+            color: Colors.amber.shade700,
           ),
           Row(
             children: [
@@ -209,6 +215,9 @@ class _DetailMobilierState extends State<DetailMobilier> {
               )
             ],
           ),
+          Divider(
+            color: Colors.amber.shade700,
+          ),
           Row(
             children: [
               Expanded(
@@ -222,6 +231,9 @@ class _DetailMobilierState extends State<DetailMobilier> {
               )
             ],
           ),
+          Divider(
+            color: Colors.amber.shade700,
+          ),
           Row(
             children: [
               Expanded(
@@ -234,6 +246,9 @@ class _DetailMobilierState extends State<DetailMobilier> {
                     textAlign: TextAlign.start, style: bodyMedium),
               )
             ],
+          ),
+          Divider(
+            color: Colors.amber.shade700,
           ),
           Row(
             children: [

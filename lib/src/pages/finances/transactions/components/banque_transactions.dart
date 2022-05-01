@@ -56,7 +56,7 @@ class _BanqueTransactionsState extends State<BanqueTransactions> {
   final List<String> departementList = Dropdown().departement;
 
   late List<Map<String, dynamic>> _values;
-  late String _result;
+  late String result;
 
   late int count;
 
@@ -65,7 +65,7 @@ class _BanqueTransactionsState extends State<BanqueTransactions> {
     setState(() {
       getData();
       count = 0;
-      _result = '';
+      result = '';
       _values = [];
     });
     super.initState();
@@ -657,7 +657,7 @@ class _BanqueTransactionsState extends State<BanqueTransactions> {
     };
     _values.add(json);
     setState(() {
-      _result = _prettyPrint(_values);
+      result = _prettyPrint(_values);
       print('_values $_values');
     });
   }

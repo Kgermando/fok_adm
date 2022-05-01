@@ -11,6 +11,7 @@ import 'package:fokad_admin/src/navigation/header/custom_appbar.dart';
 import 'package:fokad_admin/src/routes/routes.dart';
 import 'package:fokad_admin/src/widgets/btn_widget.dart';
 import 'package:fokad_admin/src/widgets/print_widget.dart';
+import 'package:fokad_admin/src/widgets/title_widget.dart';
 import 'package:routemaster/routemaster.dart';
 
 class AddAnguinAuto extends StatefulWidget {
@@ -111,6 +112,7 @@ class _AddAnguinAutoState extends State<AddAnguinAuto> {
                                 },
                                 icon: const Icon(Icons.arrow_back)),
                           ),
+                          const SizedBox(width: p10),
                           Expanded(
                               flex: 5,
                               child: CustomAppbar(title: 'Ajout anguin',
@@ -150,8 +152,10 @@ class _AddAnguinAutoState extends State<AddAnguinAuto> {
                   controller: _controllerScroll,
                   children: [
                     Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [PrintWidget(onPressed: () {})],
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        const TitleWidget(title: "Ajout un anguin"),
+                        PrintWidget(onPressed: () {})],
                     ),
                     const SizedBox(
                       height: p20,
@@ -241,7 +245,7 @@ class _AddAnguinAutoState extends State<AddAnguinAuto> {
           decoration: InputDecoration(
             border:
                 OutlineInputBorder(borderRadius: BorderRadius.circular(10.0)),
-            labelText: 'Nom',
+            labelText: 'Type anguin',
           ),
           keyboardType: TextInputType.text,
           style: const TextStyle(),

@@ -52,6 +52,7 @@ import 'package:fokad_admin/src/pages/logistiques/automobile/trajet_auto.dart';
 import 'package:fokad_admin/src/pages/logistiques/dashboard/dashboard_log.dart';
 import 'package:fokad_admin/src/pages/logistiques/entretiens/add_entretien.dart';
 import 'package:fokad_admin/src/pages/logistiques/entretiens/entretien_page.dart';
+import 'package:fokad_admin/src/pages/logistiques/log_dd/log_dd.dart';
 import 'package:fokad_admin/src/pages/logistiques/materiels/add_etat_materiel.dart';
 import 'package:fokad_admin/src/pages/logistiques/materiels/add_immobilier.dart';
 import 'package:fokad_admin/src/pages/logistiques/materiels/add_mobiler_materiel.dart';
@@ -271,7 +272,9 @@ class Routing {
         DevisRoutes.devis: (_) => const MaterialPage(child: DevisPage()),
 
         // LOGISTIQUES
-        LogistiqueRoutes.logDashboard: (_) => const MaterialPage(child: DashboardLog()), 
+        LogistiqueRoutes.logDD: (_) => const MaterialPage(child: LogDD()), 
+        LogistiqueRoutes.logDashboard: (_) =>
+            const MaterialPage(child: DashboardLog()), 
         LogistiqueRoutes.logAddAnguinAuto: (_) => const MaterialPage(child: AddAnguinAuto()), 
         LogistiqueRoutes.logAnguinAuto: (_) => const MaterialPage(child: AnguinAuto()), 
         LogistiqueRoutes.logAddCarburantAuto: (_) => const MaterialPage(child: AddCarburantAuto()), 
