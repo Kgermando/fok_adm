@@ -10,7 +10,7 @@ import 'package:intl/intl.dart';
 import 'package:pluto_grid/pluto_grid.dart';
 
 class TableDevis extends StatefulWidget {
-  const TableDevis({ Key? key }) : super(key: key);
+  const TableDevis({Key? key}) : super(key: key);
 
   @override
   State<TableDevis> createState() => _TableDevisState();
@@ -27,6 +27,7 @@ class _TableDevisState extends State<TableDevis> {
   @override
   initState() {
     agentsColumn();
+    getData();
     agentsRow();
     super.initState();
   }
@@ -50,7 +51,6 @@ class _TableDevisState extends State<TableDevis> {
       fonctionOccupe = userModel.fonctionOccupe;
     });
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -192,12 +192,17 @@ class _TableDevisState extends State<TableDevis> {
 
   Future agentsRow() async {
     List<DevisModel?> dataList = await DevisAPi().getAllData();
-    var data = dataList.where((element) => element!.departement == departement && 
-      element.approbationDG == 'Approved'  || element.departement == 'Administration' && 
-      element.approbationDG == 'Unapproved' || element.departement == 'Finances' && 
-      element.approbationDG == 'Approved' && element.approbationFin == 'Unapproved'
-    ).toList();
-    
+    var data = dataList
+        .where((element) =>
+            element!.departement == departement &&
+                element.approbationDG == 'Approved' ||
+            element.departement == 'Administration' &&
+                element.approbationDG == 'Unapproved' ||
+            element.departement == 'Finances' &&
+                element.approbationDG == 'Approved' &&
+                element.approbationFin == 'Unapproved')
+        .toList();
+
     if (mounted) {
       setState(() {
         for (var item in data) {
@@ -210,10 +215,10 @@ class _TableDevisState extends State<TableDevis> {
             'approbation': PlutoCell(value: item.approbationDG),
             'observation': PlutoCell(value: item.approbationFin),
             'created': PlutoCell(
-                value: DateFormat("DD-MM-yy H:mm").format(item.created))
+                value: DateFormat("dd-MM-yy HH:mm").format(item.created))
           }));
+          stateManager!.resetCurrentState();
         }
-        stateManager!.resetCurrentState();
       });
     }
   }

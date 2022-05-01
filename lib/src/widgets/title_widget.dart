@@ -24,7 +24,7 @@ class TitleWidget extends StatelessWidget {
               ? headlineMedium!.copyWith(fontWeight: FontWeight.bold)
               : headline6!.copyWith(fontWeight: FontWeight.bold)
           ),
-          const SizedBox(height: p20,)
+          const SizedBox(height: p20)
         ],
       ),
     );

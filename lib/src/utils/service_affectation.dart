@@ -24,11 +24,20 @@ class ServiceAffectation {
 
    List<String> finDropdown = [
     'Supervision',
-    'Comptable',
     'Caisse',
-    'Finance',
-    'Transactions',
-    'Budget',
+    'Banque',
+    'Créances',
+    'Dettes',
+  ];
+
+  List<String> budgetDropdown = [
+    'Supervision',
+    'Verification',
+  ];
+
+  List<String> comptableDropdown = [
+    'Supervision',
+    'Verification',
   ];
 
   List<String> expDropdown = [

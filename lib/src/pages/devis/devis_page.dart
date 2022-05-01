@@ -31,7 +31,7 @@ class _DevisPageState extends State<DevisPage> {
   final ScrollController _controllerScrollList = ScrollController();
 
   late List<Map<String, dynamic>> _values;
-  late String _result;
+  late String result;
 
   final List<String> departementList = Dropdown().departement;
   final List<String> priorityList = PriorityDropdown().priorityDropdown;
@@ -51,7 +51,7 @@ class _DevisPageState extends State<DevisPage> {
     setState(() {
       getData();
       count = 0;
-      _result = '';
+      result = '';
       _values = [];
     });
     super.initState();
@@ -105,7 +105,8 @@ class _DevisPageState extends State<DevisPage> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      CustomAppbar(title: 'Etat de besoin',
+                      CustomAppbar(
+                          title: 'Etat de besoin',
                           controllerMenu: () =>
                               _key.currentState!.openDrawer()),
                       const Expanded(child: TableDevis())
@@ -166,55 +167,12 @@ class _DevisPageState extends State<DevisPage> {
                                 SelectableText('Devis',
                                     style:
                                         Theme.of(context).textTheme.bodyText2),
-                                Row(
-                                  children: [
-                                    IconButton(
-                                        onPressed: () {
-                                          setState(() {
-                                            final nbreController =
-                                                TextEditingController();
-                                            final descriptionController =
-                                                TextEditingController();
-                                            final fraisController =
-                                                TextEditingController();
-                                            listNbreController
-                                                .add(nbreController);
-                                            listDescriptionController
-                                                .add(descriptionController);
-                                            listFraisController
-                                                .add(fraisController);
-                                            count++;
-                                          });
-                                        },
-                                        icon: const Icon(Icons.add)),
-                                    if (count > 0)
-                                      IconButton(
-                                          onPressed: () {
-                                            setState(() {
-                                              final nbreController =
-                                                  TextEditingController();
-                                              final descriptionController =
-                                                  TextEditingController();
-                                              final fraisController =
-                                                  TextEditingController();
-                                              listNbreController
-                                                  .remove(nbreController);
-                                              listDescriptionController.remove(
-                                                  descriptionController);
-                                              listFraisController
-                                                  .remove(fraisController);
-                                              count--;
-                                            });
-                                          },
-                                          icon: const Icon(Icons.close)),
-                                  ],
-                                ),
                               ],
                             ),
                             SizedBox(
                                 height: 400,
                                 width: double.infinity,
-                                child: coupureBilletWidget()),
+                                child: listDynamictWidget()),
                             const SizedBox(
                               height: p20,
                             ),
@@ -313,7 +271,7 @@ class _DevisPageState extends State<DevisPage> {
     );
   }
 
-  Widget coupureBilletWidget() {
+  Widget listDynamictWidget() {
     return Scrollbar(
       controller: _controllerScrollList,
       isAlwaysShown: true,
@@ -324,6 +282,46 @@ class _DevisPageState extends State<DevisPage> {
           itemBuilder: (context, index) {
             return Column(
               children: [
+                Row(
+                  children: [
+                    IconButton(
+                        onPressed: () {
+                          setState(() {
+                            final nbreController = TextEditingController();
+                            final descriptionController =
+                                TextEditingController();
+                            final fraisController = TextEditingController();
+                            listNbreController.add(nbreController);
+                            listDescriptionController
+                                .add(descriptionController);
+                            listFraisController.add(fraisController);
+                            count++;
+                            onUpdate(
+                                index,
+                                listNbreController[index].text,
+                                listDescriptionController[index].text,
+                                listFraisController[index].text);
+                          });
+                        },
+                        icon: const Icon(Icons.add)),
+                    if (count > 0)
+                      IconButton(
+                          onPressed: () {
+                            setState(() {
+                              final nbreController = TextEditingController();
+                              final descriptionController =
+                                  TextEditingController();
+                              final fraisController = TextEditingController();
+                              listNbreController.remove(nbreController);
+                              listDescriptionController
+                                  .remove(descriptionController);
+                              listFraisController.remove(fraisController);
+                              count--;
+                            });
+                          },
+                          icon: const Icon(Icons.close)),
+                  ],
+                ),
                 Row(
                   children: [
                     Expanded(
@@ -429,7 +427,7 @@ class _DevisPageState extends State<DevisPage> {
     };
     _values.add(json);
     setState(() {
-      _result = _prettyPrint(_values);
+      result = _prettyPrint(_values);
       print('_values $_values');
     });
   }
