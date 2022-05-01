@@ -3,10 +3,9 @@ import 'package:fokad_admin/src/constants/app_theme.dart';
 import 'package:fokad_admin/src/constants/responsive.dart';
 import 'package:fokad_admin/src/navigation/drawer/drawer_menu.dart';
 import 'package:fokad_admin/src/navigation/header/custom_appbar.dart';
-import 'package:fokad_admin/src/provider/controller.dart';
 import 'package:fokad_admin/src/widgets/animation_line_chart.dart';
 import 'package:fokad_admin/src/widgets/dashboard_card_widget.dart';
-import 'package:provider/provider.dart';
+
 
 class DashboardFinance extends StatefulWidget {
   const DashboardFinance({Key? key}) : super(key: key);

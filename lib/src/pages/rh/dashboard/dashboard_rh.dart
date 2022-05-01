@@ -8,7 +8,7 @@ import 'package:fokad_admin/src/navigation/drawer/drawer_menu.dart';
 import 'package:fokad_admin/src/navigation/header/custom_appbar.dart';
 import 'package:fokad_admin/src/pages/rh/dashboard/components/dash_number_widget.dart';
 import 'package:fokad_admin/src/pages/rh/dashboard/components/dash_pie_wdget.dart';
-import 'package:fokad_admin/src/widgets/pie_chart_widget.dart';
+
 
 class DashboardRh extends StatefulWidget {
   const DashboardRh({Key? key}) : super(key: key);
@@ -83,6 +83,7 @@ class _DashboardRhState extends State<DashboardRh> {
                           controller: _controllerScroll,
                           children: [
                             Wrap(
+                              alignment: WrapAlignment.spaceEvenly,
                               children: [
                                 DashNumberWidget(
                                     number: '$agentsCount',

@@ -21,7 +21,6 @@ import 'package:fokad_admin/src/navigation/drawer/drawer_menu.dart';
 import 'package:fokad_admin/src/navigation/header/custom_appbar.dart';
 import 'package:fokad_admin/src/pages/comm_marketing/commercial/cart/components/cart_item_widget.dart';
 import 'package:fokad_admin/src/utils/loading.dart';
-import 'package:fokad_admin/src/widgets/print_widget.dart';
 import 'package:intl/intl.dart';
 import 'package:routemaster/routemaster.dart';
 import 'package:simple_speed_dial/simple_speed_dial.dart';
@@ -286,6 +285,7 @@ class _CartPageState extends State<CartPage> {
     List<FactureCartModel> factureList = [];
     factureList.add(factureCartModel);
 
+    // ignore: unused_local_variable
     FactureCartModel? facture;
 
     for (var item in factureList) {

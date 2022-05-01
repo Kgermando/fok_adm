@@ -7,6 +7,8 @@ import 'package:fokad_admin/src/pages/administration/exploitations_admin.dart';
 import 'package:fokad_admin/src/pages/administration/finances_admin.dart';
 import 'package:fokad_admin/src/pages/administration/logistique_admin.dart';
 import 'package:fokad_admin/src/pages/administration/rh_admin.dart';
+import 'package:fokad_admin/src/pages/auth/change_password.dart';
+import 'package:fokad_admin/src/pages/auth/forgot_password.dart';
 import 'package:fokad_admin/src/pages/auth/login_auth.dart';
 import 'package:fokad_admin/src/pages/auth/profil_page.dart';
 import 'package:fokad_admin/src/pages/budgets/budget_finance.dart';
@@ -79,6 +81,8 @@ class UserRoutes {
   static const helps = "/helps";
   static const settings = "/settings";
   static const splash = "/splash";
+  static const forgotPassword = "/forgot-password";
+  static const changePassword = "/change-password";
 }
 
 class DevisRoutes {
@@ -211,6 +215,8 @@ class Routing {
         UserRoutes.profile: (_) => const MaterialPage(child: ProfilPage()), 
         UserRoutes.helps: (_) => const MaterialPage(child: HelpScreen()),  
         UserRoutes.settings: (_) => const MaterialPage(child: SettingsScreen()),
+        // UserRoutes.forgotPassword: (_) => const MaterialPage(child: ForgotPassword()),
+        // UserRoutes.changePassword: (_) => const MaterialPage(child: ChangePassword()),
 
         // Administration
         AdminRoutes.home: (_) => const MaterialPage(child: DashboardAdministration()),
