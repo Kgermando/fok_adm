@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:fokad_admin/src/api/rh/presence_api.dart';
 import 'package:fokad_admin/src/models/rh/presence_model.dart';
@@ -7,7 +9,7 @@ import 'package:intl/intl.dart';
 import 'package:pluto_grid/pluto_grid.dart';
 
 class TablePresence extends StatefulWidget {
-  const TablePresence({ Key? key }) : super(key: key);
+  const TablePresence({Key? key}) : super(key: key);
 
   @override
   State<TablePresence> createState() => _TablePresenceState();
@@ -24,10 +26,12 @@ class _TablePresenceState extends State<TablePresence> {
   @override
   initState() {
     agentsColumn();
-    agentsRow();
+    Timer.periodic(const Duration(milliseconds: 500), ((timer) {
+      agentsRow();
+      timer.cancel();
+    }));
     super.initState();
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -149,11 +153,14 @@ class _TablePresenceState extends State<TablePresence> {
           id = item!.id;
           rows.add(PlutoRow(cells: {
             'id': PlutoCell(value: item.id),
-            'arrive': PlutoCell(value:  DateFormat("dd-MM-yyyy HH:mm").format(item.arrive)),
-            'sortie': PlutoCell(value: (item.finJournee) ? DateFormat("dd-MM-yyyy HH:mm").format(item.sortie) : "-" ),
-            'finJournee': PlutoCell(value: (item.finJournee) 
-              ? "Journée fini"
-              : 'Journée en cours'),
+            'arrive': PlutoCell(
+                value: DateFormat("dd-MM-yyyy HH:mm").format(item.arrive)),
+            'sortie': PlutoCell(
+                value: (item.finJournee)
+                    ? DateFormat("dd-MM-yyyy HH:mm").format(item.sortie)
+                    : "-"),
+            'finJournee': PlutoCell(
+                value: (item.finJournee) ? "Journée fini" : 'Journée en cours'),
             'created': PlutoCell(
                 value: DateFormat("dd-MM-yyyy HH:mm").format(item.created))
           }));

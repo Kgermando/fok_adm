@@ -26,7 +26,10 @@ class _TableSalairesState extends State<TableSalaires> {
   @override
   initState() {
     agentsColumn();
-    agentsRow();
+    Timer.periodic(const Duration(milliseconds: 500), ((timer) {
+      agentsRow();
+      timer.cancel();
+    }));
     super.initState();
   }
 
@@ -41,7 +44,6 @@ class _TableSalairesState extends State<TableSalaires> {
 
         Navigator.of(context).push(MaterialPageRoute(
             builder: (context) => PaiementBulletin(id: idPlutoRow.value)));
-
       },
       onLoaded: (PlutoGridOnLoadedEvent event) {
         stateManager = event.stateManager;
@@ -205,7 +207,7 @@ class _TableSalairesState extends State<TableSalaires> {
         await PaiementSalaireApi().getAllData();
     // var data =
     //     dataList.where((element) => element!.approbationDG == "Approved" && element.observation == true).toList();
-        
+
     if (mounted) {
       setState(() {
         for (var item in dataList) {
@@ -216,16 +218,19 @@ class _TableSalairesState extends State<TableSalaires> {
             'nom': PlutoCell(value: item.nom),
             'matricule': PlutoCell(value: item.matricule),
             'departement': PlutoCell(value: item.departement),
-            'approbation': PlutoCell(value:
-                (item.approbationDG == "Approved") ? "Approuvé" : "Non Approuvé"),
-            'observation': PlutoCell(value: (item.observation == true) ? "Payé" : "Non payé"),
+            'approbation': PlutoCell(
+                value: (item.approbationDG == "Approved")
+                    ? "Approuvé"
+                    : "Non Approuvé"),
+            'observation': PlutoCell(
+                value: (item.observation == true) ? "Payé" : "Non payé"),
             'modePaiement': PlutoCell(value: item.modePaiement),
-            'createdAt': PlutoCell(value:  DateFormat("DD-MM-yy HH:mm").format(item.createdAt))
+            'createdAt': PlutoCell(
+                value: DateFormat("DD-MM-yy HH:mm").format(item.createdAt))
           }));
           stateManager!.resetCurrentState();
         }
-        
-      }); 
+      });
     }
   }
 }

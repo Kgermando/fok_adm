@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:fokad_admin/src/api/rh/agents_api.dart';
 import 'package:fokad_admin/src/models/rh/agent_count_model.dart';
@@ -13,7 +15,10 @@ class DashRHPieWidget extends StatefulWidget {
 class _DashRHPieWidgetState extends State<DashRHPieWidget> {
   @override
   void initState() {
-    getData();
+    Timer.periodic(const Duration(milliseconds: 500), ((timer) {
+      getData();
+      timer.cancel();
+    }));
     super.initState();
   }
 

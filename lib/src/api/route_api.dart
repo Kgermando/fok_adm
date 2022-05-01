@@ -120,7 +120,7 @@ var versementProjetsUrl = Uri.parse("$mainUrl/versements-projets/");
 var addVersementProjetsUrl = Uri.parse("$mainUrl/versements-projets/insert-new-insert-new-versement-projet");
 
 var rapporsUrl = Uri.parse("$mainUrl/rapports/");
-var addRapportsUrl = Uri.parse("$mainUrl/rapports/insert-new-insert-new-rapport");
+var addRapportsUrl = Uri.parse("$mainUrl/rapports/insert-new-rapport");
 
 
 

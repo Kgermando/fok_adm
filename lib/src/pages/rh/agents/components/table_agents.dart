@@ -26,7 +26,10 @@ class _TableAgentsState extends State<TableAgents> {
   @override
   initState() {
     agentsColumn();
-    agentsRow();
+    Timer.periodic(const Duration(milliseconds: 500), ((timer) {
+      agentsRow();
+      timer.cancel();
+    }));
     super.initState();
   }
 

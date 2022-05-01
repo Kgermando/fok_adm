@@ -20,7 +20,6 @@ final _lightColors = [
   Colors.orange.shade700,
 ];
 
-
 class AnnuaireMarketing extends StatefulWidget {
   const AnnuaireMarketing({Key? key}) : super(key: key);
 
@@ -53,7 +52,7 @@ class _AnnuaireMarketingState extends State<AnnuaireMarketing> {
 
   void debounce(
     VoidCallback callback, {
-    Duration duration = const Duration(milliseconds: 1000),
+    Duration duration = const Duration(milliseconds: 500),
   }) {
     if (debouncer != null) {
       debouncer!.cancel();
@@ -72,8 +71,7 @@ class _AnnuaireMarketingState extends State<AnnuaireMarketing> {
             child: const Icon(Icons.add),
             onPressed: () {
               Navigator.of(context).push(MaterialPageRoute(
-                builder: (context) =>
-                    const AddUpdateAnnuaire(),
+                builder: (context) => const AddUpdateAnnuaire(),
               ));
             }),
         body: SafeArea(
@@ -158,13 +156,13 @@ class _AnnuaireMarketingState extends State<AnnuaireMarketing> {
       );
 
   Future searchAchat(String query) async => debounce(() async {
-      final list = await AnnuaireApi().getAllDataSearch(query);
-      if (!mounted) return;
-      setState(() {
-        this.query = query;
-        annuaireList = list;
+        final list = await AnnuaireApi().getAllDataSearch(query);
+        if (!mounted) return;
+        setState(() {
+          this.query = query;
+          annuaireList = list;
+        });
       });
-    });
 
   Widget buildAnnuaire(AnnuaireModel annuaireModel, int index) {
     final bodyText1 = Theme.of(context).textTheme.bodyText1;

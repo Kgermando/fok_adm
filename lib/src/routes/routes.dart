@@ -27,6 +27,7 @@ import 'package:fokad_admin/src/pages/comptabilites/journal_comptabilite.dart';
 import 'package:fokad_admin/src/pages/comptabilites/valorisation_comptabilite.dart';
 import 'package:fokad_admin/src/pages/devis/devis_page.dart';
 import 'package:fokad_admin/src/pages/exploitations/dashboard/dashboard_exp.dart';
+import 'package:fokad_admin/src/pages/exploitations/expl_dd/exploitaion_dd.dart';
 import 'package:fokad_admin/src/pages/exploitations/projets/add_projet_exp.dart';
 import 'package:fokad_admin/src/pages/exploitations/projets/projets_expo.dart';
 import 'package:fokad_admin/src/pages/exploitations/taches/tache_exp.dart';
@@ -280,6 +281,7 @@ class Routing {
 
 
         // Exploitations
+        ExploitationRoutes.expDD: (_) => const MaterialPage(child: ExploitationDD()),
         ExploitationRoutes.expDashboard: (_) => const MaterialPage(child: DashboardExp()),
         ExploitationRoutes.expProjetAdd: (_) => const MaterialPage(child: AddProjetExp()),
         ExploitationRoutes.expProjet: (_) => const MaterialPage(child: ProjetsExp()),

@@ -26,7 +26,10 @@ class _TableSalairesDDState extends State<TableSalairesDD> {
   @override
   initState() {
     agentsColumn();
-    agentsRow();
+    Timer.periodic(const Duration(milliseconds: 500), ((timer) {
+      agentsRow();
+      timer.cancel();
+    }));
     super.initState();
   }
 
@@ -205,7 +208,7 @@ class _TableSalairesDDState extends State<TableSalairesDD> {
   Future agentsRow() async {
     List<PaiementSalaireModel?> dataList =
         await PaiementSalaireApi().getAllData();
-    var data = 
+    var data =
         dataList.where((element) => element!.approbationDD == "-").toList();
 
     if (mounted) {

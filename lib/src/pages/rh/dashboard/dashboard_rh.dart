@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:fokad_admin/src/api/rh/agents_api.dart';
 import 'package:fokad_admin/src/constants/app_theme.dart';
@@ -27,7 +29,11 @@ class _DashboardRhState extends State<DashboardRh> {
 
   @override
   void initState() {
-    getData();
+    Timer.periodic(const Duration(milliseconds: 500), ((timer) {
+      getData();
+      timer.cancel();
+    }));
+
     super.initState();
   }
 

@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:fokad_admin/src/api/auth/auth_api.dart';
 import 'package:fokad_admin/src/api/rh/paiement_salaire_api.dart';
@@ -42,7 +44,11 @@ class _PaiementBulletinState extends State<PaiementBulletin> {
 
   @override
   void initState() {
-    getData();
+    Timer.periodic(const Duration(milliseconds: 500), ((timer) {
+      getData();
+      timer.cancel();
+    }));
+
     super.initState();
   }
 
@@ -207,7 +213,8 @@ class _PaiementBulletinState extends State<PaiementBulletin> {
                       ),
                       const SizedBox(width: p10),
                       Expanded(
-                          child: CustomAppbar(title: 'Bulletin de paie',
+                          child: CustomAppbar(
+                              title: 'Bulletin de paie',
                               controllerMenu: () =>
                                   _key.currentState!.openDrawer())),
                     ],
@@ -1317,7 +1324,8 @@ class _PaiementBulletinState extends State<PaiementBulletin> {
                                 style: bodyMedium.copyWith(
                                     color: Colors.red.shade700),
                               ),
-                            if (approbationDG == '-' && user!.fonctionOccupe == 'Directeur générale')
+                            if (approbationDG == '-' &&
+                                user!.fonctionOccupe == 'Directeur générale')
                               Container(
                                 margin: const EdgeInsets.only(
                                     bottom: p10, left: p5),
@@ -1431,7 +1439,8 @@ class _PaiementBulletinState extends State<PaiementBulletin> {
                                     color: Colors.green.shade700),
                               ),
                             if (approbationFin == '-' &&
-                                user!.fonctionOccupe == 'Directeur des finances')
+                                user!.fonctionOccupe ==
+                                    'Directeur des finances')
                               Container(
                                 margin: const EdgeInsets.only(
                                     bottom: p10, left: p5),
@@ -1546,8 +1555,7 @@ class _PaiementBulletinState extends State<PaiementBulletin> {
                                     color: Colors.orange.shade700),
                               ),
                             if (approbationBudget == '-' &&
-                                user!.fonctionOccupe ==
-                                    'Directeur de budget')
+                                user!.fonctionOccupe == 'Directeur de budget')
                               Container(
                                 margin: const EdgeInsets.only(
                                     bottom: p10, left: p5),
@@ -1655,7 +1663,8 @@ class _PaiementBulletinState extends State<PaiementBulletin> {
                               style: bodySmall,
                             ),
                             if (approbationDD != '-' &&
-                                user!.fonctionOccupe == 'Directeur de département')
+                                user!.fonctionOccupe ==
+                                    'Directeur de département')
                               SelectableText(
                                 approbationDD.toString(),
                                 style: bodyMedium.copyWith(
@@ -1881,15 +1890,12 @@ class _PaiementBulletinState extends State<PaiementBulletin> {
         montantPrisConsiderationCalculCotisationsINSS:
             montantPrisConsiderationCalculCotisationsINSS.toString(),
         totalDuBrut: totalDuBrut.toString(),
-
         approbationDG: approbationDG.toString(),
         signatureDG: signatureDG.toString(),
         signatureJustificationDG: signatureJustificationDG.toString(),
-
         approbationFin: approbationFinController.toString(),
         signatureFin: user!.matricule.toString(),
         signatureJustificationFin: signatureJustificationFinController.text,
-
         approbationBudget: approbationBudget.toString(),
         signatureBudget: signatureBudget.toString(),
         signatureJustificationBudget: signatureJustificationBudget.toString(),
@@ -1958,19 +1964,16 @@ class _PaiementBulletinState extends State<PaiementBulletin> {
         montantPrisConsiderationCalculCotisationsINSS:
             montantPrisConsiderationCalculCotisationsINSS.toString(),
         totalDuBrut: totalDuBrut.toString(),
-
         approbationDG: approbationDG.toString(),
         signatureDG: signatureDG.toString(),
         signatureJustificationDG: signatureJustificationDG.toString(),
-
         approbationFin: approbationFin.toString(),
         signatureFin: signatureFin.toString(),
         signatureJustificationFin: signatureJustificationFin.toString(),
-
         approbationBudget: approbationBudgetController.toString(),
         signatureBudget: user!.matricule.toString(),
-        signatureJustificationBudget: signatureJustificationBudgetController.text,
-
+        signatureJustificationBudget:
+            signatureJustificationBudgetController.text,
         approbationDD: approbationDD.toString(),
         signatureDD: signatureDD.toString(),
         signatureJustificationDD: signatureJustificationDD.toString(),
@@ -2036,23 +2039,18 @@ class _PaiementBulletinState extends State<PaiementBulletin> {
         montantPrisConsiderationCalculCotisationsINSS:
             montantPrisConsiderationCalculCotisationsINSS.toString(),
         totalDuBrut: totalDuBrut.toString(),
-
         approbationDG: approbationDG.toString(),
         signatureDG: signatureDG.toString(),
         signatureJustificationDG: signatureJustificationDG.toString(),
-
         approbationFin: approbationFin.toString(),
         signatureFin: signatureFin.toString(),
         signatureJustificationFin: signatureJustificationFin.toString(),
-
         approbationBudget: approbationBudget.toString(),
         signatureBudget: signatureBudget.toString(),
         signatureJustificationBudget: signatureJustificationBudget.toString(),
-
         approbationDD: approbationDDController.toString(),
         signatureDD: user!.matricule.toString(),
         signatureJustificationDD: signatureJustificationDDController.text,
-        
         signature: signature.toString());
     await PaiementSalaireApi().updateData(id!, paiementSalaireModel);
     Routemaster.of(context).pop();

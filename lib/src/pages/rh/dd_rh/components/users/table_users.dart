@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:fokad_admin/src/api/user/user_api.dart';
 import 'package:fokad_admin/src/models/users/user_model.dart';
@@ -7,7 +9,7 @@ import 'package:intl/intl.dart';
 import 'package:pluto_grid/pluto_grid.dart';
 
 class TableUsers extends StatefulWidget {
-  const TableUsers({ Key? key }) : super(key: key);
+  const TableUsers({Key? key}) : super(key: key);
 
   @override
   State<TableUsers> createState() => _TableUsersState();
@@ -24,7 +26,10 @@ class _TableUsersState extends State<TableUsers> {
   @override
   void initState() {
     agentsColumn();
-    agentsRow();
+    Timer.periodic(const Duration(milliseconds: 500), ((timer) {
+      agentsRow();
+      timer.cancel();
+    }));
     super.initState();
   }
 
@@ -199,7 +204,6 @@ class _TableUsersState extends State<TableUsers> {
         width: 150,
         minWidth: 150,
       ),
-     
       PlutoColumn(
         readOnly: true,
         title: 'Online',
@@ -245,24 +249,24 @@ class _TableUsersState extends State<TableUsers> {
             'fonctionOccupe': PlutoCell(value: item.fonctionOccupe),
             'role': PlutoCell(value: item.role),
             'succursale': PlutoCell(value: item.succursale),
-            'isOnline': PlutoCell(value: (item.isOnline) 
-              ? Container(
-                  width: 5,
-                  height: 5,
-                  decoration: BoxDecoration(
-                    color: Colors.green.shade700,
-                    shape: BoxShape.circle,
-                  ),
-                )
-              : Container(
-                  width: 5,
-                  height: 5,
-                  decoration: BoxDecoration(
-                    color: Colors.red.shade700,
-                    shape: BoxShape.circle,
-                  ),
-                )
-              ),
+            'isOnline': PlutoCell(
+                value: (item.isOnline)
+                    ? Container(
+                        width: 5,
+                        height: 5,
+                        decoration: BoxDecoration(
+                          color: Colors.green.shade700,
+                          shape: BoxShape.circle,
+                        ),
+                      )
+                    : Container(
+                        width: 5,
+                        height: 5,
+                        decoration: BoxDecoration(
+                          color: Colors.red.shade700,
+                          shape: BoxShape.circle,
+                        ),
+                      )),
             'createdAt': PlutoCell(
                 value: DateFormat("dd-MM-yy H:mm").format(item.createdAt))
           }));

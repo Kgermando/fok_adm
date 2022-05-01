@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:badges/badges.dart';
 import 'package:flutter/material.dart';
 import 'package:fokad_admin/src/api/rh/agents_api.dart';
@@ -29,7 +31,11 @@ class _DepartementRHState extends State<DepartementRH> {
 
   @override
   void initState() {
-    getData();
+    Timer.periodic(const Duration(milliseconds: 500), ((timer) {
+      getData();
+      timer.cancel();
+    }));
+    
     super.initState();
   }
 
