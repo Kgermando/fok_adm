@@ -2,12 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:fokad_admin/src/api/budgets/ligne_budgetaire_api.dart';
 import 'package:fokad_admin/src/models/budgets/ligne_budgetaire_model.dart';
 import 'package:fokad_admin/src/pages/budgets/components/detail_ligne_budgetaire.dart';
+import 'package:fokad_admin/src/utils/class_implemented.dart';
 import 'package:fokad_admin/src/widgets/print_widget.dart';
 import 'package:intl/intl.dart';
 import 'package:pluto_grid/pluto_grid.dart';
 
 class LigneBudgetaireAdmin extends StatefulWidget {
-  const LigneBudgetaireAdmin({ Key? key }) : super(key: key);
+  const LigneBudgetaireAdmin({Key? key}) : super(key: key);
 
   @override
   State<LigneBudgetaireAdmin> createState() => _LigneBudgetaireAdminState();
@@ -58,33 +59,33 @@ class _LigneBudgetaireAdminState extends State<LigneBudgetaireAdmin> {
             filters: const [
               ...FilterHelper.defaultFilters,
               // custom filter
-              ClassYouImplemented(),
+              ClassFilterImplemented(),
             ],
             resolveDefaultColumnFilter: (column, resolver) {
               if (column.field == 'nomLigneBudgetaire') {
-                return resolver<ClassYouImplemented>() as PlutoFilterType;
+                return resolver<ClassFilterImplemented>() as PlutoFilterType;
               } else if (column.field == 'departement') {
-                return resolver<ClassYouImplemented>() as PlutoFilterType;
+                return resolver<ClassFilterImplemented>() as PlutoFilterType;
               } else if (column.field == 'periodeBudget') {
-                return resolver<ClassYouImplemented>() as PlutoFilterType;
+                return resolver<ClassFilterImplemented>() as PlutoFilterType;
               } else if (column.field == 'uniteChoisie') {
-                return resolver<ClassYouImplemented>() as PlutoFilterType;
+                return resolver<ClassFilterImplemented>() as PlutoFilterType;
               } else if (column.field == 'nombreUnite') {
-                return resolver<ClassYouImplemented>() as PlutoFilterType;
+                return resolver<ClassFilterImplemented>() as PlutoFilterType;
               } else if (column.field == 'coutUnitaire') {
-                return resolver<ClassYouImplemented>() as PlutoFilterType;
+                return resolver<ClassFilterImplemented>() as PlutoFilterType;
               } else if (column.field == 'coutTotal') {
-                return resolver<ClassYouImplemented>() as PlutoFilterType;
+                return resolver<ClassFilterImplemented>() as PlutoFilterType;
               } else if (column.field == 'caisse') {
-                return resolver<ClassYouImplemented>() as PlutoFilterType;
+                return resolver<ClassFilterImplemented>() as PlutoFilterType;
               } else if (column.field == 'banque') {
-                return resolver<ClassYouImplemented>() as PlutoFilterType;
+                return resolver<ClassFilterImplemented>() as PlutoFilterType;
               } else if (column.field == 'finPropre') {
-                return resolver<ClassYouImplemented>() as PlutoFilterType;
+                return resolver<ClassFilterImplemented>() as PlutoFilterType;
               } else if (column.field == 'finExterieur') {
-                return resolver<ClassYouImplemented>() as PlutoFilterType;
+                return resolver<ClassFilterImplemented>() as PlutoFilterType;
               } else if (column.field == 'created') {
-                return resolver<ClassYouImplemented>() as PlutoFilterType;
+                return resolver<ClassFilterImplemented>() as PlutoFilterType;
               }
               return resolver<PlutoFilterTypeContains>() as PlutoFilterType;
             },
@@ -259,7 +260,9 @@ class _LigneBudgetaireAdminState extends State<LigneBudgetaireAdmin> {
     List<LigneBudgetaireModel?> dataList =
         await LIgneBudgetaireApi().getAllData();
     var data = dataList
-        .where((element) => element!.approbationDD == "Approved" && element.approbationBudget == "Approved")
+        .where((element) =>
+            element!.approbationDD == "Approved" &&
+            element.approbationBudget == "Approved")
         .toList();
 
     if (mounted) {
@@ -289,20 +292,3 @@ class _LigneBudgetaireAdminState extends State<LigneBudgetaireAdmin> {
   }
 }
 
-class ClassYouImplemented implements PlutoFilterType {
-  @override
-  String get title => 'recherche';
-
-  @override
-  get compare => ({
-        required String? base,
-        required String? search,
-        required PlutoColumn? column,
-      }) {
-        var keys = search!.split(',').map((e) => e.toUpperCase()).toList();
-
-        return keys.contains(base!.toUpperCase());
-      };
-
-  const ClassYouImplemented();
-}

@@ -4,10 +4,11 @@ import 'package:fokad_admin/src/models/comm_maketing/bon_livraison.dart';
 import 'package:fokad_admin/src/pages/comm_marketing/commercial/bon_livraison/components/detail_bon_livraison.dart';
 import 'package:fokad_admin/src/widgets/print_widget.dart';
 import 'package:intl/intl.dart';
+import 'package:fokad_admin/src/utils/class_implemented.dart';
 import 'package:pluto_grid/pluto_grid.dart';
 
 class TableBonLivraison extends StatefulWidget {
-  const TableBonLivraison({ Key? key }) : super(key: key);
+  const TableBonLivraison({Key? key}) : super(key: key);
 
   @override
   State<TableBonLivraison> createState() => _TableBonLivraisonState();
@@ -48,7 +49,7 @@ class _TableBonLivraisonState extends State<TableBonLivraison> {
         return Row(
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
-            IconButton(onPressed: (){}, icon: const Icon(Icons.download)),
+            IconButton(onPressed: () {}, icon: const Icon(Icons.download)),
             PrintWidget(onPressed: () {})
           ],
         );
@@ -58,29 +59,29 @@ class _TableBonLivraisonState extends State<TableBonLivraison> {
           filters: const [
             ...FilterHelper.defaultFilters,
             // custom filter
-            ClassYouImplemented(),
+            ClassFilterImplemented(),
           ],
           resolveDefaultColumnFilter: (column, resolver) {
             if (column.field == 'idProduct') {
-              return resolver<ClassYouImplemented>() as PlutoFilterType;
+              return resolver<ClassFilterImplemented>() as PlutoFilterType;
             } else if (column.field == 'quantityAchat') {
-              return resolver<ClassYouImplemented>() as PlutoFilterType;
+              return resolver<ClassFilterImplemented>() as PlutoFilterType;
             } else if (column.field == 'priceAchatUnit') {
-              return resolver<ClassYouImplemented>() as PlutoFilterType;
+              return resolver<ClassFilterImplemented>() as PlutoFilterType;
             } else if (column.field == 'prixVenteUnit') {
-              return resolver<ClassYouImplemented>() as PlutoFilterType;
+              return resolver<ClassFilterImplemented>() as PlutoFilterType;
             } else if (column.field == 'unite') {
-              return resolver<ClassYouImplemented>() as PlutoFilterType;
+              return resolver<ClassFilterImplemented>() as PlutoFilterType;
             } else if (column.field == 'tva') {
-              return resolver<ClassYouImplemented>() as PlutoFilterType;
+              return resolver<ClassFilterImplemented>() as PlutoFilterType;
             } else if (column.field == 'remise') {
-              return resolver<ClassYouImplemented>() as PlutoFilterType;
+              return resolver<ClassFilterImplemented>() as PlutoFilterType;
             } else if (column.field == 'qtyRemise') {
-              return resolver<ClassYouImplemented>() as PlutoFilterType;
+              return resolver<ClassFilterImplemented>() as PlutoFilterType;
             } else if (column.field == 'accuseReception') {
-              return resolver<ClassYouImplemented>() as PlutoFilterType;
+              return resolver<ClassFilterImplemented>() as PlutoFilterType;
             } else if (column.field == 'created') {
-              return resolver<ClassYouImplemented>() as PlutoFilterType;
+              return resolver<ClassFilterImplemented>() as PlutoFilterType;
             }
             return resolver<PlutoFilterTypeContains>() as PlutoFilterType;
           },
@@ -252,22 +253,4 @@ class _TableBonLivraisonState extends State<TableBonLivraison> {
       });
     }
   }
-}
-
-class ClassYouImplemented implements PlutoFilterType {
-  @override
-  String get title => 'recherche';
-
-  @override
-  get compare => ({
-        required String? base,
-        required String? search,
-        required PlutoColumn? column,
-      }) {
-        var keys = search!.split(',').map((e) => e.toUpperCase()).toList();
-
-        return keys.contains(base!.toUpperCase());
-      };
-
-  const ClassYouImplemented();
 }

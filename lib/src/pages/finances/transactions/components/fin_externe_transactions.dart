@@ -11,12 +11,10 @@ import 'package:fokad_admin/src/models/finances/fin_exterieur_model.dart';
 import 'package:fokad_admin/src/navigation/drawer/drawer_menu.dart';
 import 'package:fokad_admin/src/navigation/header/custom_appbar.dart';
 import 'package:fokad_admin/src/pages/finances/transactions/components/components/fin_exterieur/table_fin_exterieur.dart';
-import 'package:fokad_admin/src/provider/controller.dart';
 import 'package:fokad_admin/src/utils/type_operation.dart';
 import 'package:fokad_admin/src/widgets/btn_widget.dart';
 import 'package:fokad_admin/src/widgets/print_widget.dart';
 import 'package:fokad_admin/src/widgets/title_widget.dart';
-import 'package:provider/provider.dart';
 import 'package:routemaster/routemaster.dart';
 
 class FinExterneTransactions extends StatefulWidget {
@@ -50,7 +48,7 @@ class _FinExterneTransactionsState extends State<FinExterneTransactions> {
   final List<String> typeCaisse = TypeOperation().typeVereCaisse;
 
   late List<Map<String, dynamic>> _values;
-  late String _result;
+  late String result;
 
   late int count;
 
@@ -59,7 +57,7 @@ class _FinExterneTransactionsState extends State<FinExterneTransactions> {
     setState(() {
       getData();
       count = 0;
-      _result = '';
+      result = '';
       _values = [];
     });
     super.initState();
@@ -530,8 +528,7 @@ class _FinExterneTransactionsState extends State<FinExterneTransactions> {
     };
     _values.add(json);
     setState(() {
-      _result = _prettyPrint(_values);
-      print('_values $_values');
+      result = _prettyPrint(_values);
     });
   }
 

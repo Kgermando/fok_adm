@@ -18,7 +18,6 @@ class VentesPage extends StatefulWidget {
 class _VentesPageState extends State<VentesPage> {
    final GlobalKey<ScaffoldState> _key = GlobalKey();
   final ScrollController _controllerScroll = ScrollController();
-  final _formKey = GlobalKey<FormState>();
   bool isLoading = false;
 
 

@@ -5,19 +5,19 @@ import 'package:fokad_admin/src/api/finances/dette_api.dart';
 import 'package:fokad_admin/src/models/finances/dette_model.dart';
 import 'package:fokad_admin/src/pages/administration/components/finances/transactions/detail_dette_admin.dart';
 import 'package:fokad_admin/src/widgets/print_widget.dart';
+import 'package:fokad_admin/src/utils/class_implemented.dart';
 import 'package:intl/intl.dart';
 import 'package:pluto_grid/pluto_grid.dart';
 
-
 class TableDetteAdmin extends StatefulWidget {
-  const TableDetteAdmin({ Key? key }) : super(key: key);
+  const TableDetteAdmin({Key? key}) : super(key: key);
 
   @override
   State<TableDetteAdmin> createState() => _TableDetteAdminState();
 }
 
 class _TableDetteAdminState extends State<TableDetteAdmin> {
- Timer? timer;
+  Timer? timer;
   List<PlutoColumn> columns = [];
   List<PlutoRow> rows = [];
   PlutoGridStateManager? stateManager;
@@ -67,7 +67,8 @@ class _TableDetteAdminState extends State<TableDetteAdmin> {
                 final idPlutoRow = dataList.elementAt(0);
 
                 Navigator.of(context).push(MaterialPageRoute(
-                    builder: (context) => DetailDetteAdmin(id: idPlutoRow.value)));
+                    builder: (context) =>
+                        DetailDetteAdmin(id: idPlutoRow.value)));
               },
               onLoaded: (PlutoGridOnLoadedEvent event) {
                 stateManager = event.stateManager;
@@ -84,29 +85,39 @@ class _TableDetteAdminState extends State<TableDetteAdmin> {
                   filters: const [
                     ...FilterHelper.defaultFilters,
                     // custom filter
-                    ClassYouImplemented(),
+                    ClassFilterImplemented(),
                   ],
                   resolveDefaultColumnFilter: (column, resolver) {
                     if (column.field == 'nomComplet') {
-                      return resolver<ClassYouImplemented>() as PlutoFilterType;
+                      return resolver<ClassFilterImplemented>()
+                          as PlutoFilterType;
                     } else if (column.field == 'pieceJustificative') {
-                      return resolver<ClassYouImplemented>() as PlutoFilterType;
+                      return resolver<ClassFilterImplemented>()
+                          as PlutoFilterType;
                     } else if (column.field == 'libelle') {
-                      return resolver<ClassYouImplemented>() as PlutoFilterType;
+                      return resolver<ClassFilterImplemented>()
+                          as PlutoFilterType;
                     } else if (column.field == 'montant') {
-                      return resolver<ClassYouImplemented>() as PlutoFilterType;
+                      return resolver<ClassFilterImplemented>()
+                          as PlutoFilterType;
                     } else if (column.field == 'ligneBudgtaire') {
-                      return resolver<ClassYouImplemented>() as PlutoFilterType;
+                      return resolver<ClassFilterImplemented>()
+                          as PlutoFilterType;
                     } else if (column.field == 'departement') {
-                      return resolver<ClassYouImplemented>() as PlutoFilterType;
+                      return resolver<ClassFilterImplemented>()
+                          as PlutoFilterType;
                     } else if (column.field == 'typeOperation') {
-                      return resolver<ClassYouImplemented>() as PlutoFilterType;
+                      return resolver<ClassFilterImplemented>()
+                          as PlutoFilterType;
                     } else if (column.field == 'numeroOperation') {
-                      return resolver<ClassYouImplemented>() as PlutoFilterType;
+                      return resolver<ClassFilterImplemented>()
+                          as PlutoFilterType;
                     } else if (column.field == 'created') {
-                      return resolver<ClassYouImplemented>() as PlutoFilterType;
+                      return resolver<ClassFilterImplemented>()
+                          as PlutoFilterType;
                     }
-                    return resolver<PlutoFilterTypeContains>() as PlutoFilterType;
+                    return resolver<PlutoFilterTypeContains>()
+                        as PlutoFilterType;
                   },
                 ),
               ),
@@ -293,22 +304,4 @@ class _TableDetteAdminState extends State<TableDetteAdmin> {
       });
     }
   }
-}
-
-class ClassYouImplemented implements PlutoFilterType {
-  @override
-  String get title => 'recherche';
-
-  @override
-  get compare => ({
-        required String? base,
-        required String? search,
-        required PlutoColumn? column,
-      }) {
-        var keys = search!.split(',').map((e) => e.toUpperCase()).toList();
-
-        return keys.contains(base!.toUpperCase());
-      };
-
-  const ClassYouImplemented();
 }

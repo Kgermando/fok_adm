@@ -9,7 +9,7 @@ class AnguinModel {
   late String qtyMaxReservoir;
   late DateTime dateFabrication;
   late String nomeroPLaque;
-  // numero que l'entreprise donne donne a ses anguins
+  // numero que l'entreprise donne a ses anguins
   late String nomeroEntreprise;
   late String kilometrageInitiale;
   late String provenance;

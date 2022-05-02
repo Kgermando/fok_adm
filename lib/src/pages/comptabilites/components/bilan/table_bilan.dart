@@ -5,11 +5,12 @@ import 'package:fokad_admin/src/api/comptabilite/bilan_api.dart';
 import 'package:fokad_admin/src/models/comptabilites/bilan_model.dart';
 import 'package:fokad_admin/src/pages/comptabilites/components/bilan/detail_bilan.dart';
 import 'package:fokad_admin/src/widgets/print_widget.dart';
+import 'package:fokad_admin/src/utils/class_implemented.dart';
 import 'package:intl/intl.dart';
 import 'package:pluto_grid/pluto_grid.dart';
 
 class TableBilan extends StatefulWidget {
-  const TableBilan({ Key? key }) : super(key: key);
+  const TableBilan({Key? key}) : super(key: key);
 
   @override
   State<TableBilan> createState() => _TableBilanState();
@@ -69,19 +70,19 @@ class _TableBilanState extends State<TableBilan> {
             filters: const [
               ...FilterHelper.defaultFilters,
               // custom filter
-              ClassYouImplemented(),
+              ClassFilterImplemented(),
             ],
             resolveDefaultColumnFilter: (column, resolver) {
               if (column.field == 'titleBilan') {
-                return resolver<ClassYouImplemented>() as PlutoFilterType;
+                return resolver<ClassFilterImplemented>() as PlutoFilterType;
               } else if (column.field == 'comptes') {
-                return resolver<ClassYouImplemented>() as PlutoFilterType;
+                return resolver<ClassFilterImplemented>() as PlutoFilterType;
               } else if (column.field == 'intitule') {
-                return resolver<ClassYouImplemented>() as PlutoFilterType;
+                return resolver<ClassFilterImplemented>() as PlutoFilterType;
               } else if (column.field == 'montant') {
-                return resolver<ClassYouImplemented>() as PlutoFilterType;
+                return resolver<ClassFilterImplemented>() as PlutoFilterType;
               } else if (column.field == 'typeBilan') {
-                return resolver<ClassYouImplemented>() as PlutoFilterType;
+                return resolver<ClassFilterImplemented>() as PlutoFilterType;
               }
               return resolver<PlutoFilterTypeContains>() as PlutoFilterType;
             },
@@ -203,22 +204,4 @@ class _TableBilanState extends State<TableBilan> {
       });
     }
   }
-}
-
-class ClassYouImplemented implements PlutoFilterType {
-  @override
-  String get title => 'recherche';
-
-  @override
-  get compare => ({
-        required String? base,
-        required String? search,
-        required PlutoColumn? column,
-      }) {
-        var keys = search!.split(',').map((e) => e.toUpperCase()).toList();
-
-        return keys.contains(base!.toUpperCase());
-      };
-
-  const ClassYouImplemented();
 }

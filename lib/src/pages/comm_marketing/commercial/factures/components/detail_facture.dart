@@ -7,6 +7,7 @@ import 'package:fokad_admin/src/models/comm_maketing/facture_cart_model.dart';
 import 'package:fokad_admin/src/models/users/user_model.dart';
 import 'package:fokad_admin/src/navigation/drawer/drawer_menu.dart';
 import 'package:fokad_admin/src/navigation/header/custom_appbar.dart';
+import 'package:fokad_admin/src/utils/class_implemented.dart';
 import 'package:fokad_admin/src/widgets/print_widget.dart';
 import 'package:fokad_admin/src/widgets/title_widget.dart';
 import 'package:intl/intl.dart';
@@ -217,7 +218,6 @@ class _DetailFactureState extends State<DetailFacture> {
     );
   }
 
-
   listCart() {
     return SizedBox(
         height: MediaQuery.of(context).size.height,
@@ -242,21 +242,21 @@ class _DetailFactureState extends State<DetailFacture> {
               filters: const [
                 ...FilterHelper.defaultFilters,
                 // custom filter
-                ClassYouImplemented(),
+                ClassFilterImplemented(),
               ],
               resolveDefaultColumnFilter: (column, resolver) {
                 if (column.field == 'quantityCart') {
-                  return resolver<ClassYouImplemented>() as PlutoFilterType;
+                  return resolver<ClassFilterImplemented>() as PlutoFilterType;
                 } else if (column.field == 'idProductCart') {
-                  return resolver<ClassYouImplemented>() as PlutoFilterType;
+                  return resolver<ClassFilterImplemented>() as PlutoFilterType;
                 } else if (column.field == 'priceAchatUnit') {
-                  return resolver<ClassYouImplemented>() as PlutoFilterType;
+                  return resolver<ClassFilterImplemented>() as PlutoFilterType;
                 } else if (column.field == 'priceCart') {
-                  return resolver<ClassYouImplemented>() as PlutoFilterType;
+                  return resolver<ClassFilterImplemented>() as PlutoFilterType;
                 } else if (column.field == 'tva') {
-                  return resolver<ClassYouImplemented>() as PlutoFilterType;
-                }  else if (column.field == 'total') {
-                  return resolver<ClassYouImplemented>() as PlutoFilterType;
+                  return resolver<ClassFilterImplemented>() as PlutoFilterType;
+                } else if (column.field == 'total') {
+                  return resolver<ClassFilterImplemented>() as PlutoFilterType;
                 }
                 return resolver<PlutoFilterTypeContains>() as PlutoFilterType;
               },
@@ -265,8 +265,7 @@ class _DetailFactureState extends State<DetailFacture> {
         ));
   }
 
-
-   void agentsColumn() {
+  void agentsColumn() {
     columns = [
       PlutoColumn(
         readOnly: true,
@@ -344,7 +343,6 @@ class _DetailFactureState extends State<DetailFacture> {
   }
 
   Future agentsRow() async {
-
     List<dynamic> cartItem = facture!.cart.toList();
 
     if (mounted) {
@@ -364,38 +362,23 @@ class _DetailFactureState extends State<DetailFacture> {
           }
 
           rows.add(PlutoRow(cells: {
-            'quantityCart': PlutoCell(value: '${NumberFormat.decimalPattern('fr').format(double.parse(item['quantityCart']))} ${cartItem[5]['unite']}'),
+            'quantityCart': PlutoCell(
+                value:
+                    '${NumberFormat.decimalPattern('fr').format(double.parse(item['quantityCart']))} ${cartItem[5]['unite']}'),
             'idProductCart': PlutoCell(value: item['idProductCart']),
             'priceAchatUnit': PlutoCell(value: item['idProductCart']),
-            'priceCart': PlutoCell(value: 
-                (double.parse(item['quantityCart']) >= double.parse(item['qtyRemise']))
-                  ? "${NumberFormat.decimalPattern('fr').format(double.parse(item['remise']))} \$"
-                  : "${NumberFormat.decimalPattern('fr').format(double.parse(item['priceCart']))} \$"
-            ),
+            'priceCart': PlutoCell(
+                value: (double.parse(item['quantityCart']) >=
+                        double.parse(item['qtyRemise']))
+                    ? "${NumberFormat.decimalPattern('fr').format(double.parse(item['remise']))} \$"
+                    : "${NumberFormat.decimalPattern('fr').format(double.parse(item['priceCart']))} \$"),
             'tva': PlutoCell(value: "${item['tva']} %"),
-            'total': PlutoCell(value: "${NumberFormat.decimalPattern('fr').format(total)} \$")
+            'total': PlutoCell(
+                value: "${NumberFormat.decimalPattern('fr').format(total)} \$")
           }));
         }
         stateManager!.resetCurrentState();
       });
     }
   }
-}
-
-class ClassYouImplemented implements PlutoFilterType {
-  @override
-  String get title => 'recherche';
-
-  @override
-  get compare => ({
-        required String? base,
-        required String? search,
-        required PlutoColumn? column,
-      }) {
-        var keys = search!.split(',').map((e) => e.toUpperCase()).toList();
-
-        return keys.contains(base!.toUpperCase());
-      };
-
-  const ClassYouImplemented();
 }

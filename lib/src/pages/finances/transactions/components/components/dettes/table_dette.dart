@@ -5,11 +5,12 @@ import 'package:fokad_admin/src/api/finances/dette_api.dart';
 import 'package:fokad_admin/src/models/finances/dette_model.dart';
 import 'package:fokad_admin/src/pages/finances/transactions/components/components/dettes/detail_dette.dart';
 import 'package:fokad_admin/src/widgets/print_widget.dart';
+import 'package:fokad_admin/src/utils/class_implemented.dart';
 import 'package:intl/intl.dart';
 import 'package:pluto_grid/pluto_grid.dart';
 
 class TableDette extends StatefulWidget {
-  const TableDette({ Key? key }) : super(key: key);
+  const TableDette({Key? key}) : super(key: key);
 
   @override
   State<TableDette> createState() => _TableDetteState();
@@ -51,7 +52,6 @@ class _TableDetteState extends State<TableDette> {
     });
   }
 
-
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -63,7 +63,7 @@ class _TableDetteState extends State<TableDette> {
             onRowDoubleTap: (PlutoGridOnRowDoubleTapEvent tapEvent) {
               final dataList = tapEvent.row!.cells.values;
               final idPlutoRow = dataList.elementAt(0);
-        
+
               Navigator.of(context).push(MaterialPageRoute(
                   builder: (context) => DetailDette(id: idPlutoRow.value)));
             },
@@ -82,27 +82,36 @@ class _TableDetteState extends State<TableDette> {
                 filters: const [
                   ...FilterHelper.defaultFilters,
                   // custom filter
-                  ClassYouImplemented(),
+                  ClassFilterImplemented(),
                 ],
                 resolveDefaultColumnFilter: (column, resolver) {
                   if (column.field == 'nomComplet') {
-                    return resolver<ClassYouImplemented>() as PlutoFilterType;
+                    return resolver<ClassFilterImplemented>()
+                        as PlutoFilterType;
                   } else if (column.field == 'pieceJustificative') {
-                    return resolver<ClassYouImplemented>() as PlutoFilterType;
+                    return resolver<ClassFilterImplemented>()
+                        as PlutoFilterType;
                   } else if (column.field == 'libelle') {
-                    return resolver<ClassYouImplemented>() as PlutoFilterType;
+                    return resolver<ClassFilterImplemented>()
+                        as PlutoFilterType;
                   } else if (column.field == 'montant') {
-                    return resolver<ClassYouImplemented>() as PlutoFilterType;
+                    return resolver<ClassFilterImplemented>()
+                        as PlutoFilterType;
                   } else if (column.field == 'ligneBudgtaire') {
-                    return resolver<ClassYouImplemented>() as PlutoFilterType;
+                    return resolver<ClassFilterImplemented>()
+                        as PlutoFilterType;
                   } else if (column.field == 'departement') {
-                    return resolver<ClassYouImplemented>() as PlutoFilterType;
+                    return resolver<ClassFilterImplemented>()
+                        as PlutoFilterType;
                   } else if (column.field == 'typeOperation') {
-                    return resolver<ClassYouImplemented>() as PlutoFilterType;
+                    return resolver<ClassFilterImplemented>()
+                        as PlutoFilterType;
                   } else if (column.field == 'numeroOperation') {
-                    return resolver<ClassYouImplemented>() as PlutoFilterType;
+                    return resolver<ClassFilterImplemented>()
+                        as PlutoFilterType;
                   } else if (column.field == 'created') {
-                    return resolver<ClassYouImplemented>() as PlutoFilterType;
+                    return resolver<ClassFilterImplemented>()
+                        as PlutoFilterType;
                   }
                   return resolver<PlutoFilterTypeContains>() as PlutoFilterType;
                 },
@@ -114,7 +123,6 @@ class _TableDetteState extends State<TableDette> {
       ],
     );
   }
-
 
   Widget totalSolde() {
     final bodyMedium = Theme.of(context).textTheme.bodyMedium;
@@ -291,22 +299,4 @@ class _TableDetteState extends State<TableDette> {
       });
     }
   }
-}
-
-class ClassYouImplemented implements PlutoFilterType {
-  @override
-  String get title => 'recherche';
-
-  @override
-  get compare => ({
-        required String? base,
-        required String? search,
-        required PlutoColumn? column,
-      }) {
-        var keys = search!.split(',').map((e) => e.toUpperCase()).toList();
-
-        return keys.contains(base!.toUpperCase());
-      };
-
-  const ClassYouImplemented();
 }

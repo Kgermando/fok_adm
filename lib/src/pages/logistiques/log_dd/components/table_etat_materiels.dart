@@ -1,20 +1,20 @@
 import 'package:flutter/material.dart';
-import 'package:fokad_admin/src/api/comptabilite/amortissement_api.dart';
-import 'package:fokad_admin/src/models/comptabilites/amortissement_model.dart';
-import 'package:fokad_admin/src/pages/comptabilites/components/amortissements/detail_amortisselment.dart';
+import 'package:fokad_admin/src/api/logistiques/etat_materiel_api.dart';
+import 'package:fokad_admin/src/models/logistiques/etat_materiel_model.dart';
+import 'package:fokad_admin/src/pages/logistiques/materiels/components/detail_etat_materiel.dart';
 import 'package:fokad_admin/src/widgets/print_widget.dart';
 import 'package:fokad_admin/src/utils/class_implemented.dart';
 import 'package:intl/intl.dart';
 import 'package:pluto_grid/pluto_grid.dart';
 
-class AmortissementDD extends StatefulWidget {
-  const AmortissementDD({Key? key}) : super(key: key);
+class TableEtatMaterielDD extends StatefulWidget {
+  const TableEtatMaterielDD({Key? key}) : super(key: key);
 
   @override
-  State<AmortissementDD> createState() => _AmortissementDDState();
+  State<TableEtatMaterielDD> createState() => _TableEtatMaterielDDState();
 }
 
-class _AmortissementDDState extends State<AmortissementDD> {
+class _TableEtatMaterielDDState extends State<TableEtatMaterielDD> {
   List<PlutoColumn> columns = [];
   List<PlutoRow> rows = [];
   PlutoGridStateManager? stateManager;
@@ -23,7 +23,7 @@ class _AmortissementDDState extends State<AmortissementDD> {
   int? id;
 
   @override
-  initState() {
+  void initState() {
     agentsColumn();
     agentsRow();
     super.initState();
@@ -39,8 +39,9 @@ class _AmortissementDDState extends State<AmortissementDD> {
         onRowDoubleTap: (PlutoGridOnRowDoubleTapEvent tapEvent) {
           final dataList = tapEvent.row!.cells.values;
           final idPlutoRow = dataList.elementAt(0);
+
           Navigator.of(context).push(MaterialPageRoute(
-              builder: (context) => DetailAmortissement(id: idPlutoRow.value)));
+              builder: (context) => DetailEtatMateriel(id: idPlutoRow.value)));
         },
         onLoaded: (PlutoGridOnLoadedEvent event) {
           stateManager = event.stateManager;
@@ -60,15 +61,17 @@ class _AmortissementDDState extends State<AmortissementDD> {
               ClassFilterImplemented(),
             ],
             resolveDefaultColumnFilter: (column, resolver) {
-              if (column.field == 'titleArmotissement') {
+              if (column.field == 'nom') {
                 return resolver<ClassFilterImplemented>() as PlutoFilterType;
-              } else if (column.field == 'comptes') {
+              } else if (column.field == 'modele') {
                 return resolver<ClassFilterImplemented>() as PlutoFilterType;
-              } else if (column.field == 'intitule') {
+              } else if (column.field == 'marque') {
                 return resolver<ClassFilterImplemented>() as PlutoFilterType;
-              } else if (column.field == 'montant') {
+              } else if (column.field == 'typeObjet') {
                 return resolver<ClassFilterImplemented>() as PlutoFilterType;
-              } else if (column.field == 'typeJournal') {
+              } else if (column.field == 'statut') {
+                return resolver<ClassFilterImplemented>() as PlutoFilterType;
+              } else if (column.field == 'created') {
                 return resolver<ClassFilterImplemented>() as PlutoFilterType;
               }
               return resolver<PlutoFilterTypeContains>() as PlutoFilterType;
@@ -95,8 +98,8 @@ class _AmortissementDDState extends State<AmortissementDD> {
       ),
       PlutoColumn(
         readOnly: true,
-        title: 'Titre de l\'armotissement',
-        field: 'titleArmotissement',
+        title: 'Nom complet',
+        field: 'nom',
         type: PlutoColumnType.text(),
         enableRowDrag: true,
         enableContextMenu: false,
@@ -107,8 +110,8 @@ class _AmortissementDDState extends State<AmortissementDD> {
       ),
       PlutoColumn(
         readOnly: true,
-        title: 'Comptes',
-        field: 'comptes',
+        title: 'Modèle',
+        field: 'modele',
         type: PlutoColumnType.text(),
         enableRowDrag: true,
         enableContextMenu: false,
@@ -119,8 +122,8 @@ class _AmortissementDDState extends State<AmortissementDD> {
       ),
       PlutoColumn(
         readOnly: true,
-        title: 'Intitule',
-        field: 'intitule',
+        title: 'Marque',
+        field: 'marque',
         type: PlutoColumnType.text(),
         enableRowDrag: true,
         enableContextMenu: false,
@@ -131,8 +134,8 @@ class _AmortissementDDState extends State<AmortissementDD> {
       ),
       PlutoColumn(
         readOnly: true,
-        title: 'Montant',
-        field: 'montant',
+        title: 'type d\'Objet',
+        field: 'typeObjet',
         type: PlutoColumnType.text(),
         enableRowDrag: true,
         enableContextMenu: false,
@@ -143,8 +146,8 @@ class _AmortissementDDState extends State<AmortissementDD> {
       ),
       PlutoColumn(
         readOnly: true,
-        title: 'Type de journal',
-        field: 'typeJournal',
+        title: 'Statut',
+        field: 'statut',
         type: PlutoColumnType.text(),
         enableRowDrag: true,
         enableContextMenu: false,
@@ -169,8 +172,9 @@ class _AmortissementDDState extends State<AmortissementDD> {
   }
 
   Future agentsRow() async {
-    List<AmortissementModel?> dataList = await AmortissementApi().getAllData();
-    var data = dataList.where((element) => element!.approbationDD == "-");
+    List<EtatMaterielModel?> dataList = await EtatMaterielApi().getAllData();
+    var data =
+        dataList.where((element) => element!.approbationDD == "-").toList();
 
     if (mounted) {
       setState(() {
@@ -178,13 +182,13 @@ class _AmortissementDDState extends State<AmortissementDD> {
           id = item!.id;
           rows.add(PlutoRow(cells: {
             'id': PlutoCell(value: item.id),
-            'titleArmotissement': PlutoCell(value: item.titleArmotissement),
-            'comptes': PlutoCell(value: item.comptes),
-            'intitule': PlutoCell(value: item.intitule),
-            'montant': PlutoCell(value: item.montant),
-            'typeJournal': PlutoCell(value: item.typeJournal),
+            'nom': PlutoCell(value: item.nom),
+            'modele': PlutoCell(value: item.modele),
+            'marque': PlutoCell(value: item.marque),
+            'typeObjet': PlutoCell(value: item.typeObjet),
+            'statut': PlutoCell(value: item.statut),
             'created': PlutoCell(
-                value: DateFormat("DD-MM-yy H:mm").format(item.created))
+                value: DateFormat("dd-MM-yy H:mm").format(item.created))
           }));
         }
         stateManager!.resetCurrentState();

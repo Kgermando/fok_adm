@@ -5,6 +5,7 @@ import 'package:fokad_admin/src/api/finances/banque_api.dart';
 import 'package:fokad_admin/src/models/finances/banque_model.dart';
 import 'package:fokad_admin/src/pages/finances/transactions/components/components/banques/detail_banque.dart';
 import 'package:fokad_admin/src/widgets/print_widget.dart';
+import 'package:fokad_admin/src/utils/class_implemented.dart';
 import 'package:intl/intl.dart';
 import 'package:pluto_grid/pluto_grid.dart';
 
@@ -83,29 +84,39 @@ class _TableBanqueState extends State<TableBanque> {
                 filters: const [
                   ...FilterHelper.defaultFilters,
                   // custom filter
-                  ClassYouImplemented(),
+                  ClassFilterImplemented(),
                 ],
                 resolveDefaultColumnFilter: (column, resolver) {
                   if (column.field == 'nomComplet') {
-                    return resolver<ClassYouImplemented>() as PlutoFilterType;
+                    return resolver<ClassFilterImplemented>()
+                        as PlutoFilterType;
                   } else if (column.field == 'pieceJustificative') {
-                    return resolver<ClassYouImplemented>() as PlutoFilterType;
+                    return resolver<ClassFilterImplemented>()
+                        as PlutoFilterType;
                   } else if (column.field == 'libelle') {
-                    return resolver<ClassYouImplemented>() as PlutoFilterType;
+                    return resolver<ClassFilterImplemented>()
+                        as PlutoFilterType;
                   } else if (column.field == 'montant') {
-                    return resolver<ClassYouImplemented>() as PlutoFilterType;
+                    return resolver<ClassFilterImplemented>()
+                        as PlutoFilterType;
                   } else if (column.field == 'ligneBudgtaire') {
-                    return resolver<ClassYouImplemented>() as PlutoFilterType;
+                    return resolver<ClassFilterImplemented>()
+                        as PlutoFilterType;
                   } else if (column.field == 'resources') {
-                    return resolver<ClassYouImplemented>() as PlutoFilterType;
+                    return resolver<ClassFilterImplemented>()
+                        as PlutoFilterType;
                   } else if (column.field == 'departement') {
-                    return resolver<ClassYouImplemented>() as PlutoFilterType;
+                    return resolver<ClassFilterImplemented>()
+                        as PlutoFilterType;
                   } else if (column.field == 'typeOperation') {
-                    return resolver<ClassYouImplemented>() as PlutoFilterType;
+                    return resolver<ClassFilterImplemented>()
+                        as PlutoFilterType;
                   } else if (column.field == 'numeroOperation') {
-                    return resolver<ClassYouImplemented>() as PlutoFilterType;
+                    return resolver<ClassFilterImplemented>()
+                        as PlutoFilterType;
                   } else if (column.field == 'created') {
-                    return resolver<ClassYouImplemented>() as PlutoFilterType;
+                    return resolver<ClassFilterImplemented>()
+                        as PlutoFilterType;
                   }
                   return resolver<PlutoFilterTypeContains>() as PlutoFilterType;
                 },
@@ -132,7 +143,8 @@ class _TableBanqueState extends State<TableBanque> {
                 SelectableText('Total recette: ',
                     style: bodyMedium!.copyWith(
                         fontWeight: FontWeight.bold, color: Colors.white)),
-                SelectableText('${NumberFormat.decimalPattern('fr').format(recette)} \$',
+                SelectableText(
+                    '${NumberFormat.decimalPattern('fr').format(recette)} \$',
                     style: bodyMedium.copyWith(
                         fontWeight: FontWeight.bold, color: Colors.white))
               ],
@@ -142,7 +154,8 @@ class _TableBanqueState extends State<TableBanque> {
                 SelectableText('Total dépenses: ',
                     style: bodyMedium.copyWith(
                         fontWeight: FontWeight.bold, color: Colors.white)),
-                SelectableText('${NumberFormat.decimalPattern('fr').format(depenses)} \$',
+                SelectableText(
+                    '${NumberFormat.decimalPattern('fr').format(depenses)} \$',
                     style: bodyMedium.copyWith(
                         fontWeight: FontWeight.bold, color: Colors.white))
               ],
@@ -152,7 +165,8 @@ class _TableBanqueState extends State<TableBanque> {
                 SelectableText('Solde: ',
                     style: bodyMedium.copyWith(
                         fontWeight: FontWeight.bold, color: Colors.white)),
-                SelectableText('${NumberFormat.decimalPattern('fr').format(recette - depenses)} \$',
+                SelectableText(
+                    '${NumberFormat.decimalPattern('fr').format(recette - depenses)} \$',
                     style: bodyMedium.copyWith(
                         fontWeight: FontWeight.bold, color: Colors.white))
               ],
@@ -316,7 +330,8 @@ class _TableBanqueState extends State<TableBanque> {
             'nomComplet': PlutoCell(value: item.nomComplet),
             'pieceJustificative': PlutoCell(value: item.pieceJustificative),
             'libelle': PlutoCell(value: item.libelle),
-            'montant': PlutoCell(value: NumberFormat.decimalPattern('fr')
+            'montant': PlutoCell(
+                value: NumberFormat.decimalPattern('fr')
                     .format(double.parse(item.montant))),
             'ligneBudgtaire': PlutoCell(value: item.ligneBudgtaire),
             'resources': PlutoCell(value: item.resources),
@@ -331,22 +346,4 @@ class _TableBanqueState extends State<TableBanque> {
       });
     }
   }
-}
-
-class ClassYouImplemented implements PlutoFilterType {
-  @override
-  String get title => 'recherche';
-
-  @override
-  get compare => ({
-        required String? base,
-        required String? search,
-        required PlutoColumn? column,
-      }) {
-        var keys = search!.split(',').map((e) => e.toUpperCase()).toList();
-
-        return keys.contains(base!.toUpperCase());
-      };
-
-  const ClassYouImplemented();
 }

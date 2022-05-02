@@ -1,20 +1,23 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
-import 'package:fokad_admin/src/api/comptabilite/amortissement_api.dart';
-import 'package:fokad_admin/src/models/comptabilites/amortissement_model.dart';
-import 'package:fokad_admin/src/pages/comptabilites/components/amortissements/detail_amortisselment.dart';
+import 'package:fokad_admin/src/api/logistiques/trajet_api.dart';
+import 'package:fokad_admin/src/models/logistiques/trajet_model.dart';
+import 'package:fokad_admin/src/pages/logistiques/automobile/components/detail_trajet.dart';
 import 'package:fokad_admin/src/widgets/print_widget.dart';
 import 'package:fokad_admin/src/utils/class_implemented.dart';
+import 'package:fokad_admin/src/widgets/title_widget.dart';
 import 'package:intl/intl.dart';
 import 'package:pluto_grid/pluto_grid.dart';
 
-class AmortissementDD extends StatefulWidget {
-  const AmortissementDD({Key? key}) : super(key: key);
+class TableTrajetAnguinDD extends StatefulWidget {
+  const TableTrajetAnguinDD({Key? key}) : super(key: key);
 
   @override
-  State<AmortissementDD> createState() => _AmortissementDDState();
+  State<TableTrajetAnguinDD> createState() => _TableTrajetAnguinDDState();
 }
 
-class _AmortissementDDState extends State<AmortissementDD> {
+class _TableTrajetAnguinDDState extends State<TableTrajetAnguinDD> {
   List<PlutoColumn> columns = [];
   List<PlutoRow> rows = [];
   PlutoGridStateManager? stateManager;
@@ -23,9 +26,10 @@ class _AmortissementDDState extends State<AmortissementDD> {
   int? id;
 
   @override
-  initState() {
+  void initState() {
     agentsColumn();
     agentsRow();
+
     super.initState();
   }
 
@@ -39,8 +43,9 @@ class _AmortissementDDState extends State<AmortissementDD> {
         onRowDoubleTap: (PlutoGridOnRowDoubleTapEvent tapEvent) {
           final dataList = tapEvent.row!.cells.values;
           final idPlutoRow = dataList.elementAt(0);
+
           Navigator.of(context).push(MaterialPageRoute(
-              builder: (context) => DetailAmortissement(id: idPlutoRow.value)));
+              builder: (context) => DetailTrajet(id: idPlutoRow.value)));
         },
         onLoaded: (PlutoGridOnLoadedEvent event) {
           stateManager = event.stateManager;
@@ -48,8 +53,11 @@ class _AmortissementDDState extends State<AmortissementDD> {
         },
         createHeader: (PlutoGridStateManager header) {
           return Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [PrintWidget(onPressed: () {})],
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              const TitleWidget(title: "Trajets"),
+              PrintWidget(onPressed: () {})
+            ],
           );
         },
         configuration: PlutoGridConfiguration(
@@ -60,15 +68,19 @@ class _AmortissementDDState extends State<AmortissementDD> {
               ClassFilterImplemented(),
             ],
             resolveDefaultColumnFilter: (column, resolver) {
-              if (column.field == 'titleArmotissement') {
+              if (column.field == 'nomeroEntreprise') {
                 return resolver<ClassFilterImplemented>() as PlutoFilterType;
-              } else if (column.field == 'comptes') {
+              } else if (column.field == 'nomUtilisateur') {
                 return resolver<ClassFilterImplemented>() as PlutoFilterType;
-              } else if (column.field == 'intitule') {
+              } else if (column.field == 'trajetA') {
                 return resolver<ClassFilterImplemented>() as PlutoFilterType;
-              } else if (column.field == 'montant') {
+              } else if (column.field == 'mission') {
                 return resolver<ClassFilterImplemented>() as PlutoFilterType;
-              } else if (column.field == 'typeJournal') {
+              } else if (column.field == 'kilometrageSorite') {
+                return resolver<ClassFilterImplemented>() as PlutoFilterType;
+              } else if (column.field == 'kilometrageRetour') {
+                return resolver<ClassFilterImplemented>() as PlutoFilterType;
+              } else if (column.field == 'created') {
                 return resolver<ClassFilterImplemented>() as PlutoFilterType;
               }
               return resolver<PlutoFilterTypeContains>() as PlutoFilterType;
@@ -83,8 +95,8 @@ class _AmortissementDDState extends State<AmortissementDD> {
     columns = [
       PlutoColumn(
         readOnly: true,
-        title: 'Id',
-        field: 'id',
+        title: 'Numero attribué',
+        field: 'nomeroEntreprise',
         type: PlutoColumnType.number(),
         enableRowDrag: true,
         enableContextMenu: false,
@@ -95,8 +107,8 @@ class _AmortissementDDState extends State<AmortissementDD> {
       ),
       PlutoColumn(
         readOnly: true,
-        title: 'Titre de l\'armotissement',
-        field: 'titleArmotissement',
+        title: 'Nom Utilisateur',
+        field: 'nomUtilisateur',
         type: PlutoColumnType.text(),
         enableRowDrag: true,
         enableContextMenu: false,
@@ -107,8 +119,8 @@ class _AmortissementDDState extends State<AmortissementDD> {
       ),
       PlutoColumn(
         readOnly: true,
-        title: 'Comptes',
-        field: 'comptes',
+        title: 'De',
+        field: 'trajetDe',
         type: PlutoColumnType.text(),
         enableRowDrag: true,
         enableContextMenu: false,
@@ -119,8 +131,8 @@ class _AmortissementDDState extends State<AmortissementDD> {
       ),
       PlutoColumn(
         readOnly: true,
-        title: 'Intitule',
-        field: 'intitule',
+        title: 'A',
+        field: 'trajetA',
         type: PlutoColumnType.text(),
         enableRowDrag: true,
         enableContextMenu: false,
@@ -131,8 +143,8 @@ class _AmortissementDDState extends State<AmortissementDD> {
       ),
       PlutoColumn(
         readOnly: true,
-        title: 'Montant',
-        field: 'montant',
+        title: 'Mission',
+        field: 'mission',
         type: PlutoColumnType.text(),
         enableRowDrag: true,
         enableContextMenu: false,
@@ -143,8 +155,20 @@ class _AmortissementDDState extends State<AmortissementDD> {
       ),
       PlutoColumn(
         readOnly: true,
-        title: 'Type de journal',
-        field: 'typeJournal',
+        title: 'kilometrage Soritie',
+        field: 'kilometrageSorite',
+        type: PlutoColumnType.text(),
+        enableRowDrag: true,
+        enableContextMenu: false,
+        enableDropToResize: true,
+        titleTextAlign: PlutoColumnTextAlign.left,
+        width: 150,
+        minWidth: 150,
+      ),
+      PlutoColumn(
+        readOnly: true,
+        title: 'kilometrage Retour',
+        field: 'kilometrageRetour',
         type: PlutoColumnType.text(),
         enableRowDrag: true,
         enableContextMenu: false,
@@ -169,8 +193,9 @@ class _AmortissementDDState extends State<AmortissementDD> {
   }
 
   Future agentsRow() async {
-    List<AmortissementModel?> dataList = await AmortissementApi().getAllData();
-    var data = dataList.where((element) => element!.approbationDD == "-");
+    List<TrajetModel?> dataList = await TrajetApi().getAllData();
+    var data =
+        dataList.where((element) => element!.approbationDD == "-").toList();
 
     if (mounted) {
       setState(() {
@@ -178,13 +203,15 @@ class _AmortissementDDState extends State<AmortissementDD> {
           id = item!.id;
           rows.add(PlutoRow(cells: {
             'id': PlutoCell(value: item.id),
-            'titleArmotissement': PlutoCell(value: item.titleArmotissement),
-            'comptes': PlutoCell(value: item.comptes),
-            'intitule': PlutoCell(value: item.intitule),
-            'montant': PlutoCell(value: item.montant),
-            'typeJournal': PlutoCell(value: item.typeJournal),
+            'nomeroEntreprise': PlutoCell(value: item.nomeroEntreprise),
+            'nomUtilisateur': PlutoCell(value: item.nomUtilisateur),
+            'trajetDe': PlutoCell(value: item.trajetDe),
+            'trajetA': PlutoCell(value: item.trajetA),
+            'mission': PlutoCell(value: item.mission),
+            'kilometrageSorite': PlutoCell(value: item.kilometrageSorite),
+            'kilometrageRetour': PlutoCell(value: item.kilometrageRetour),
             'created': PlutoCell(
-                value: DateFormat("DD-MM-yy H:mm").format(item.created))
+                value: DateFormat("dd-MM-yy HH:mm").format(item.created))
           }));
         }
         stateManager!.resetCurrentState();

@@ -2,13 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:fokad_admin/src/api/logistiques/anguin_api.dart';
 import 'package:fokad_admin/src/models/logistiques/anguin_model.dart';
 import 'package:fokad_admin/src/pages/logistiques/automobile/components/detail_anguin.dart';
+import 'package:fokad_admin/src/utils/class_implemented.dart';
 import 'package:fokad_admin/src/widgets/print_widget.dart';
 import 'package:intl/intl.dart';
 import 'package:pluto_grid/pluto_grid.dart';
 
 class TableAnguin extends StatefulWidget {
   const TableAnguin({Key? key}) : super(key: key);
-  
 
   @override
   State<TableAnguin> createState() => _TableAnguinState();
@@ -56,27 +56,27 @@ class _TableAnguinState extends State<TableAnguin> {
           filters: const [
             ...FilterHelper.defaultFilters,
             // custom filter
-            ClassYouImplemented(),
+            ClassFilterImplemented(),
           ],
           resolveDefaultColumnFilter: (column, resolver) {
             if (column.field == 'nom') {
-              return resolver<ClassYouImplemented>() as PlutoFilterType;
+              return resolver<ClassFilterImplemented>() as PlutoFilterType;
             } else if (column.field == 'modele') {
-              return resolver<ClassYouImplemented>() as PlutoFilterType;
+              return resolver<ClassFilterImplemented>() as PlutoFilterType;
             } else if (column.field == 'marque') {
-              return resolver<ClassYouImplemented>() as PlutoFilterType;
+              return resolver<ClassFilterImplemented>() as PlutoFilterType;
             } else if (column.field == 'numeroChassie') {
-              return resolver<ClassYouImplemented>() as PlutoFilterType;
+              return resolver<ClassFilterImplemented>() as PlutoFilterType;
             } else if (column.field == 'qtyMaxReservoir') {
-              return resolver<ClassYouImplemented>() as PlutoFilterType;
+              return resolver<ClassFilterImplemented>() as PlutoFilterType;
             } else if (column.field == 'dateFabrication') {
-              return resolver<ClassYouImplemented>() as PlutoFilterType;
+              return resolver<ClassFilterImplemented>() as PlutoFilterType;
             } else if (column.field == 'nomeroPLaque') {
-              return resolver<ClassYouImplemented>() as PlutoFilterType;
+              return resolver<ClassFilterImplemented>() as PlutoFilterType;
             } else if (column.field == 'nomeroEntreprise') {
-              return resolver<ClassYouImplemented>() as PlutoFilterType;
+              return resolver<ClassFilterImplemented>() as PlutoFilterType;
             } else if (column.field == 'created') {
-              return resolver<ClassYouImplemented>() as PlutoFilterType;
+              return resolver<ClassFilterImplemented>() as PlutoFilterType;
             }
             return resolver<PlutoFilterTypeContains>() as PlutoFilterType;
           },
@@ -225,22 +225,4 @@ class _TableAnguinState extends State<TableAnguin> {
       });
     }
   }
-}
-
-class ClassYouImplemented implements PlutoFilterType {
-  @override
-  String get title => 'recherche';
-
-  @override
-  get compare => ({
-        required String? base,
-        required String? search,
-        required PlutoColumn? column,
-      }) {
-        var keys = search!.split(',').map((e) => e.toUpperCase()).toList();
-
-        return keys.contains(base!.toUpperCase());
-      };
-
-  const ClassYouImplemented();
 }

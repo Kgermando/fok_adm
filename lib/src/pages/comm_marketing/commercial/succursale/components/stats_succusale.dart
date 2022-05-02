@@ -9,13 +9,15 @@ import 'package:fokad_admin/src/models/comm_maketing/creance_cart_model.dart';
 import 'package:fokad_admin/src/models/comm_maketing/gain_model.dart';
 import 'package:fokad_admin/src/models/comm_maketing/succursale_model.dart';
 import 'package:fokad_admin/src/models/comm_maketing/vente_cart_model.dart';
+import 'package:fokad_admin/src/utils/class_implemented.dart';
 import 'package:fokad_admin/src/models/users/user_model.dart';
 import 'package:fokad_admin/src/widgets/print_widget.dart';
 import 'package:intl/intl.dart';
 import 'package:pluto_grid/pluto_grid.dart';
 
 class StatsSuccursale extends StatefulWidget {
-  const StatsSuccursale({ Key? key, required this.succursaleModel }) : super(key: key);
+  const StatsSuccursale({Key? key, required this.succursaleModel})
+      : super(key: key);
   final SuccursaleModel succursaleModel;
 
   @override
@@ -23,7 +25,6 @@ class StatsSuccursale extends StatefulWidget {
 }
 
 class _StatsSuccursaleState extends State<StatsSuccursale> {
-
   List<PlutoColumn> columns = [];
   List<PlutoRow> rows = [];
   PlutoGridStateManager? stateManager;
@@ -38,7 +39,6 @@ class _StatsSuccursaleState extends State<StatsSuccursale> {
       return '${DateFormat('dd/MM/yyyy').format(dateRange!.start)} - ${DateFormat('dd/MM/yyyy').format(dateRange!.end)}';
     }
   }
-
 
   @override
   void initState() {
@@ -83,7 +83,6 @@ class _StatsSuccursaleState extends State<StatsSuccursale> {
     });
   }
 
-
   @override
   Widget build(BuildContext context) {
     return SizedBox(
@@ -109,17 +108,17 @@ class _StatsSuccursaleState extends State<StatsSuccursale> {
               filters: const [
                 ...FilterHelper.defaultFilters,
                 // custom filter
-                ClassYouImplemented(),
+                ClassFilterImplemented(),
               ],
               resolveDefaultColumnFilter: (column, resolver) {
                 if (column.field == 'DATE') {
-                  return resolver<ClassYouImplemented>() as PlutoFilterType;
+                  return resolver<ClassFilterImplemented>() as PlutoFilterType;
                 } else if (column.field == 'GAIN') {
-                  return resolver<ClassYouImplemented>() as PlutoFilterType;
+                  return resolver<ClassFilterImplemented>() as PlutoFilterType;
                 } else if (column.field == 'VENTES') {
-                  return resolver<ClassYouImplemented>() as PlutoFilterType;
+                  return resolver<ClassFilterImplemented>() as PlutoFilterType;
                 } else if (column.field == 'CREANCES') {
-                  return resolver<ClassYouImplemented>() as PlutoFilterType;
+                  return resolver<ClassFilterImplemented>() as PlutoFilterType;
                 }
                 return resolver<PlutoFilterTypeContains>() as PlutoFilterType;
               },
@@ -182,7 +181,7 @@ class _StatsSuccursaleState extends State<StatsSuccursale> {
   }
 
   Future agentsRow() async {
-      // Gain
+    // Gain
     double sumGain = 0;
     var dataGain = gainList.map((e) => e.sum).toList();
     for (var data in dataGain) {
@@ -216,32 +215,18 @@ class _StatsSuccursaleState extends State<StatsSuccursale> {
     }
     rows = [
       PlutoRow(cells: {
-        'DATE': PlutoCell(value: dateRange != null
+        'DATE': PlutoCell(
+            value: dateRange != null
                 ? DateFormat('dd/MM/yyyy').format(dateRange!.end)
                 : ''),
-        'GAIN': PlutoCell(value: '${NumberFormat.decimalPattern('fr').format(sumGain)} \$'),
-        'VENTES': PlutoCell(value: '${NumberFormat.decimalPattern('fr').format(sumVente)} \$'),
-        'CREANCES': PlutoCell(value: '${NumberFormat.decimalPattern('fr').format(sumDCreance)} \$'),
+        'GAIN': PlutoCell(
+            value: '${NumberFormat.decimalPattern('fr').format(sumGain)} \$'),
+        'VENTES': PlutoCell(
+            value: '${NumberFormat.decimalPattern('fr').format(sumVente)} \$'),
+        'CREANCES': PlutoCell(
+            value:
+                '${NumberFormat.decimalPattern('fr').format(sumDCreance)} \$'),
       })
     ];
   }
-}
-
-class ClassYouImplemented implements PlutoFilterType {
-  @override
-  String get title => 'recherche';
-
-  @override
-  get compare => ({
-        required String? base,
-        required String? search,
-        required PlutoColumn? column,
-      }) {
-        var keys = search!.split(',').map((e) => e.toUpperCase()).toList();
-
-        return keys.contains(base!.toUpperCase());
-      };
-
-  const ClassYouImplemented();
-
 }

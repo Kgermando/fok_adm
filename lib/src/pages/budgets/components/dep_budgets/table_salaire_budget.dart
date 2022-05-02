@@ -3,11 +3,12 @@ import 'package:fokad_admin/src/api/rh/paiement_salaire_api.dart';
 import 'package:fokad_admin/src/models/rh/paiement_salaire_model.dart';
 import 'package:fokad_admin/src/pages/rh/paiements/components/paiement_bulletin.dart';
 import 'package:fokad_admin/src/widgets/print_widget.dart';
+import 'package:fokad_admin/src/utils/class_implemented.dart';
 import 'package:intl/intl.dart';
 import 'package:pluto_grid/pluto_grid.dart';
 
 class TableSalaireBudget extends StatefulWidget {
-  const TableSalaireBudget({ Key? key }) : super(key: key);
+  const TableSalaireBudget({Key? key}) : super(key: key);
 
   @override
   State<TableSalaireBudget> createState() => _TableSalaireBudgetState();
@@ -55,27 +56,27 @@ class _TableSalaireBudgetState extends State<TableSalaireBudget> {
           filters: const [
             ...FilterHelper.defaultFilters,
             // custom filter
-            ClassYouImplemented(),
+            ClassFilterImplemented(),
           ],
           resolveDefaultColumnFilter: (column, resolver) {
             if (column.field == 'prenom') {
-              return resolver<ClassYouImplemented>() as PlutoFilterType;
+              return resolver<ClassFilterImplemented>() as PlutoFilterType;
             } else if (column.field == 'nom') {
-              return resolver<ClassYouImplemented>() as PlutoFilterType;
+              return resolver<ClassFilterImplemented>() as PlutoFilterType;
             } else if (column.field == 'matricule') {
-              return resolver<ClassYouImplemented>() as PlutoFilterType;
+              return resolver<ClassFilterImplemented>() as PlutoFilterType;
             } else if (column.field == 'departement') {
-              return resolver<ClassYouImplemented>() as PlutoFilterType;
+              return resolver<ClassFilterImplemented>() as PlutoFilterType;
             } else if (column.field == 'Approbation') {
-              return resolver<ClassYouImplemented>() as PlutoFilterType;
+              return resolver<ClassFilterImplemented>() as PlutoFilterType;
             } else if (column.field == 'observation') {
-              return resolver<ClassYouImplemented>() as PlutoFilterType;
+              return resolver<ClassFilterImplemented>() as PlutoFilterType;
             } else if (column.field == 'modePaiement') {
-              return resolver<ClassYouImplemented>() as PlutoFilterType;
+              return resolver<ClassFilterImplemented>() as PlutoFilterType;
             } else if (column.field == 'salaire') {
-              return resolver<ClassYouImplemented>() as PlutoFilterType;
+              return resolver<ClassFilterImplemented>() as PlutoFilterType;
             } else if (column.field == 'created') {
-              return resolver<ClassYouImplemented>() as PlutoFilterType;
+              return resolver<ClassFilterImplemented>() as PlutoFilterType;
             }
             return resolver<PlutoFilterTypeContains>() as PlutoFilterType;
           },
@@ -229,22 +230,4 @@ class _TableSalaireBudgetState extends State<TableSalaireBudget> {
       });
     }
   }
-}
-
-class ClassYouImplemented implements PlutoFilterType {
-  @override
-  String get title => 'recherche';
-
-  @override
-  get compare => ({
-        required String? base,
-        required String? search,
-        required PlutoColumn? column,
-      }) {
-        var keys = search!.split(',').map((e) => e.toUpperCase()).toList();
-
-        return keys.contains(base!.toUpperCase());
-      };
-
-  const ClassYouImplemented();
 }

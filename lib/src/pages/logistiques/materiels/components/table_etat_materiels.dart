@@ -3,11 +3,12 @@ import 'package:fokad_admin/src/api/logistiques/etat_materiel_api.dart';
 import 'package:fokad_admin/src/models/logistiques/etat_materiel_model.dart';
 import 'package:fokad_admin/src/pages/logistiques/materiels/components/detail_etat_materiel.dart';
 import 'package:fokad_admin/src/widgets/print_widget.dart';
+import 'package:fokad_admin/src/utils/class_implemented.dart';
 import 'package:intl/intl.dart';
 import 'package:pluto_grid/pluto_grid.dart';
 
 class TableEtatMateriel extends StatefulWidget {
-  const TableEtatMateriel({ Key? key }) : super(key: key);
+  const TableEtatMateriel({Key? key}) : super(key: key);
 
   @override
   State<TableEtatMateriel> createState() => _TableEtatMaterielState();
@@ -27,7 +28,7 @@ class _TableEtatMaterielState extends State<TableEtatMateriel> {
     agentsRow();
     super.initState();
   }
-  
+
   @override
   Widget build(BuildContext context) {
     return PlutoGrid(
@@ -55,21 +56,21 @@ class _TableEtatMaterielState extends State<TableEtatMateriel> {
           filters: const [
             ...FilterHelper.defaultFilters,
             // custom filter
-            ClassYouImplemented(),
+            ClassFilterImplemented(),
           ],
           resolveDefaultColumnFilter: (column, resolver) {
             if (column.field == 'nom') {
-              return resolver<ClassYouImplemented>() as PlutoFilterType;
+              return resolver<ClassFilterImplemented>() as PlutoFilterType;
             } else if (column.field == 'modele') {
-              return resolver<ClassYouImplemented>() as PlutoFilterType;
+              return resolver<ClassFilterImplemented>() as PlutoFilterType;
             } else if (column.field == 'marque') {
-              return resolver<ClassYouImplemented>() as PlutoFilterType;
+              return resolver<ClassFilterImplemented>() as PlutoFilterType;
             } else if (column.field == 'typeObjet') {
-              return resolver<ClassYouImplemented>() as PlutoFilterType;
+              return resolver<ClassFilterImplemented>() as PlutoFilterType;
             } else if (column.field == 'statut') {
-              return resolver<ClassYouImplemented>() as PlutoFilterType;
+              return resolver<ClassFilterImplemented>() as PlutoFilterType;
             } else if (column.field == 'created') {
-              return resolver<ClassYouImplemented>() as PlutoFilterType;
+              return resolver<ClassFilterImplemented>() as PlutoFilterType;
             }
             return resolver<PlutoFilterTypeContains>() as PlutoFilterType;
           },
@@ -190,22 +191,4 @@ class _TableEtatMaterielState extends State<TableEtatMateriel> {
       });
     }
   }
-}
-
-class ClassYouImplemented implements PlutoFilterType {
-  @override
-  String get title => 'recherche';
-
-  @override
-  get compare => ({
-        required String? base,
-        required String? search,
-        required PlutoColumn? column,
-      }) {
-        var keys = search!.split(',').map((e) => e.toUpperCase()).toList();
-
-        return keys.contains(base!.toUpperCase());
-      };
-
-  const ClassYouImplemented();
 }

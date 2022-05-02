@@ -2,19 +2,20 @@ import 'package:flutter/material.dart';
 import 'package:fokad_admin/src/api/comptabilite/amortissement_api.dart';
 import 'package:fokad_admin/src/models/comptabilites/amortissement_model.dart';
 import 'package:fokad_admin/src/pages/comptabilites/components/amortissements/detail_amortisselment.dart';
+import 'package:fokad_admin/src/utils/class_implemented.dart';
 import 'package:fokad_admin/src/widgets/print_widget.dart';
 import 'package:intl/intl.dart';
 import 'package:pluto_grid/pluto_grid.dart';
 
 class AmortissementAdmin extends StatefulWidget {
-  const AmortissementAdmin({ Key? key }) : super(key: key);
+  const AmortissementAdmin({Key? key}) : super(key: key);
 
   @override
   State<AmortissementAdmin> createState() => _AmortissementAdminState();
 }
 
 class _AmortissementAdminState extends State<AmortissementAdmin> {
-   List<PlutoColumn> columns = [];
+  List<PlutoColumn> columns = [];
   List<PlutoRow> rows = [];
   PlutoGridStateManager? stateManager;
   PlutoGridSelectingMode gridSelectingMode = PlutoGridSelectingMode.row;
@@ -27,6 +28,7 @@ class _AmortissementAdminState extends State<AmortissementAdmin> {
     agentsRow();
     super.initState();
   }
+
   @override
   Widget build(BuildContext context) {
     return SizedBox(
@@ -55,19 +57,19 @@ class _AmortissementAdminState extends State<AmortissementAdmin> {
             filters: const [
               ...FilterHelper.defaultFilters,
               // custom filter
-              ClassYouImplemented(),
+              ClassFilterImplemented(),
             ],
             resolveDefaultColumnFilter: (column, resolver) {
               if (column.field == 'titleArmotissement') {
-                return resolver<ClassYouImplemented>() as PlutoFilterType;
+                return resolver<ClassFilterImplemented>() as PlutoFilterType;
               } else if (column.field == 'comptes') {
-                return resolver<ClassYouImplemented>() as PlutoFilterType;
+                return resolver<ClassFilterImplemented>() as PlutoFilterType;
               } else if (column.field == 'intitule') {
-                return resolver<ClassYouImplemented>() as PlutoFilterType;
+                return resolver<ClassFilterImplemented>() as PlutoFilterType;
               } else if (column.field == 'montant') {
-                return resolver<ClassYouImplemented>() as PlutoFilterType;
+                return resolver<ClassFilterImplemented>() as PlutoFilterType;
               } else if (column.field == 'typeJournal') {
-                return resolver<ClassYouImplemented>() as PlutoFilterType;
+                return resolver<ClassFilterImplemented>() as PlutoFilterType;
               }
               return resolver<PlutoFilterTypeContains>() as PlutoFilterType;
             },
@@ -191,20 +193,3 @@ class _AmortissementAdminState extends State<AmortissementAdmin> {
   }
 }
 
-class ClassYouImplemented implements PlutoFilterType {
-  @override
-  String get title => 'recherche';
-
-  @override
-  get compare => ({
-        required String? base,
-        required String? search,
-        required PlutoColumn? column,
-      }) {
-        var keys = search!.split(',').map((e) => e.toUpperCase()).toList();
-
-        return keys.contains(base!.toUpperCase());
-      };
-
-  const ClassYouImplemented();
-}

@@ -134,3 +134,24 @@ class EntretienModel {
     };
   }
 }
+
+class ObjetRemplace {
+  final String nomObjet;
+  final String cout;
+  final String caracteristique;
+  final String observation;
+
+  ObjetRemplace(
+      {required this.nomObjet,
+      required this.cout,
+      required this.caracteristique,
+      required this.observation});
+
+  factory ObjetRemplace.fromJson(Map<String, dynamic> json) {
+    return ObjetRemplace(
+        nomObjet: json['nomObjet'],
+        cout: json['cout'],
+        caracteristique: json['caracteristique'],
+        observation: json['observation']);
+  }
+}

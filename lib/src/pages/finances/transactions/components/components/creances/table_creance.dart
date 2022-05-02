@@ -5,6 +5,7 @@ import 'package:fokad_admin/src/api/finances/creance_api.dart';
 import 'package:fokad_admin/src/models/finances/creances_model.dart';
 import 'package:fokad_admin/src/pages/finances/transactions/components/components/creances/detail_creance.dart';
 import 'package:fokad_admin/src/widgets/print_widget.dart';
+import 'package:fokad_admin/src/utils/class_implemented.dart';
 import 'package:intl/intl.dart';
 import 'package:pluto_grid/pluto_grid.dart';
 
@@ -38,8 +39,10 @@ class _TableCreanceState extends State<TableCreance> {
   Future<void> getData() async {
     List<CreanceModel?> dataList = await CreanceApi().getAllData();
     setState(() {
-      List<CreanceModel?> payeList = dataList.where((element) => element!.statutPaie == true).toList();
-      List<CreanceModel?> nonPayeList = dataList.where((element) => element!.statutPaie == false).toList();
+      List<CreanceModel?> payeList =
+          dataList.where((element) => element!.statutPaie == true).toList();
+      List<CreanceModel?> nonPayeList =
+          dataList.where((element) => element!.statutPaie == false).toList();
       for (var item in payeList) {
         paye += double.parse(item!.montant);
       }
@@ -60,7 +63,7 @@ class _TableCreanceState extends State<TableCreance> {
             onRowDoubleTap: (PlutoGridOnRowDoubleTapEvent tapEvent) {
               final dataList = tapEvent.row!.cells.values;
               final idPlutoRow = dataList.elementAt(0);
-        
+
               Navigator.of(context).push(MaterialPageRoute(
                   builder: (context) => DetailCreance(id: idPlutoRow.value)));
             },
@@ -79,27 +82,36 @@ class _TableCreanceState extends State<TableCreance> {
                 filters: const [
                   ...FilterHelper.defaultFilters,
                   // custom filter
-                  ClassYouImplemented(),
+                  ClassFilterImplemented(),
                 ],
                 resolveDefaultColumnFilter: (column, resolver) {
                   if (column.field == 'nomComplet') {
-                    return resolver<ClassYouImplemented>() as PlutoFilterType;
+                    return resolver<ClassFilterImplemented>()
+                        as PlutoFilterType;
                   } else if (column.field == 'pieceJustificative') {
-                    return resolver<ClassYouImplemented>() as PlutoFilterType;
+                    return resolver<ClassFilterImplemented>()
+                        as PlutoFilterType;
                   } else if (column.field == 'libelle') {
-                    return resolver<ClassYouImplemented>() as PlutoFilterType;
+                    return resolver<ClassFilterImplemented>()
+                        as PlutoFilterType;
                   } else if (column.field == 'montant') {
-                    return resolver<ClassYouImplemented>() as PlutoFilterType;
+                    return resolver<ClassFilterImplemented>()
+                        as PlutoFilterType;
                   } else if (column.field == 'ligneBudgtaire') {
-                    return resolver<ClassYouImplemented>() as PlutoFilterType;
+                    return resolver<ClassFilterImplemented>()
+                        as PlutoFilterType;
                   } else if (column.field == 'departement') {
-                    return resolver<ClassYouImplemented>() as PlutoFilterType;
+                    return resolver<ClassFilterImplemented>()
+                        as PlutoFilterType;
                   } else if (column.field == 'typeOperation') {
-                    return resolver<ClassYouImplemented>() as PlutoFilterType;
+                    return resolver<ClassFilterImplemented>()
+                        as PlutoFilterType;
                   } else if (column.field == 'numeroOperation') {
-                    return resolver<ClassYouImplemented>() as PlutoFilterType;
+                    return resolver<ClassFilterImplemented>()
+                        as PlutoFilterType;
                   } else if (column.field == 'created') {
-                    return resolver<ClassYouImplemented>() as PlutoFilterType;
+                    return resolver<ClassFilterImplemented>()
+                        as PlutoFilterType;
                   }
                   return resolver<PlutoFilterTypeContains>() as PlutoFilterType;
                 },
@@ -162,7 +174,6 @@ class _TableCreanceState extends State<TableCreance> {
       ),
     );
   }
-
 
   void agentsColumn() {
     columns = [
@@ -289,22 +300,4 @@ class _TableCreanceState extends State<TableCreance> {
       });
     }
   }
-}
-
-class ClassYouImplemented implements PlutoFilterType {
-  @override
-  String get title => 'recherche';
-
-  @override
-  get compare => ({
-        required String? base,
-        required String? search,
-        required PlutoColumn? column,
-      }) {
-        var keys = search!.split(',').map((e) => e.toUpperCase()).toList();
-
-        return keys.contains(base!.toUpperCase());
-      };
-
-  const ClassYouImplemented();
 }

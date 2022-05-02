@@ -3,11 +3,12 @@ import 'package:fokad_admin/src/api/comm_marketing/commerciale/produit_model_api
 import 'package:fokad_admin/src/models/comm_maketing/prod_model.dart';
 import 'package:fokad_admin/src/pages/comm_marketing/commercial/prod_model/components/detail_prod_model.dart';
 import 'package:fokad_admin/src/widgets/print_widget.dart';
+import 'package:fokad_admin/src/utils/class_implemented.dart';
 import 'package:intl/intl.dart';
 import 'package:pluto_grid/pluto_grid.dart';
 
 class TableProduitModel extends StatefulWidget {
-  const TableProduitModel({ Key? key }) : super(key: key);
+  const TableProduitModel({Key? key}) : super(key: key);
 
   @override
   State<TableProduitModel> createState() => _TableProduitModelState();
@@ -48,7 +49,7 @@ class _TableProduitModelState extends State<TableProduitModel> {
         return Row(
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
-            IconButton(onPressed: (){}, icon: const Icon(Icons.download)),
+            IconButton(onPressed: () {}, icon: const Icon(Icons.download)),
             PrintWidget(onPressed: () {})
           ],
         );
@@ -58,23 +59,23 @@ class _TableProduitModelState extends State<TableProduitModel> {
           filters: const [
             ...FilterHelper.defaultFilters,
             // custom filter
-            ClassYouImplemented(),
+            ClassFilterImplemented(),
           ],
           resolveDefaultColumnFilter: (column, resolver) {
             if (column.field == 'idProduct') {
-              return resolver<ClassYouImplemented>() as PlutoFilterType;
+              return resolver<ClassFilterImplemented>() as PlutoFilterType;
             } else if (column.field == 'categorie') {
-              return resolver<ClassYouImplemented>() as PlutoFilterType;
+              return resolver<ClassFilterImplemented>() as PlutoFilterType;
             } else if (column.field == 'sousCategorie1') {
-              return resolver<ClassYouImplemented>() as PlutoFilterType;
+              return resolver<ClassFilterImplemented>() as PlutoFilterType;
             } else if (column.field == 'sousCategorie2') {
-              return resolver<ClassYouImplemented>() as PlutoFilterType;
+              return resolver<ClassFilterImplemented>() as PlutoFilterType;
             } else if (column.field == 'sousCategorie3') {
-              return resolver<ClassYouImplemented>() as PlutoFilterType;
+              return resolver<ClassFilterImplemented>() as PlutoFilterType;
             } else if (column.field == 'sousCategorie4') {
-              return resolver<ClassYouImplemented>() as PlutoFilterType;
+              return resolver<ClassFilterImplemented>() as PlutoFilterType;
             } else if (column.field == 'created') {
-              return resolver<ClassYouImplemented>() as PlutoFilterType;
+              return resolver<ClassFilterImplemented>() as PlutoFilterType;
             }
             return resolver<PlutoFilterTypeContains>() as PlutoFilterType;
           },
@@ -208,22 +209,4 @@ class _TableProduitModelState extends State<TableProduitModel> {
       });
     }
   }
-}
-
-class ClassYouImplemented implements PlutoFilterType {
-  @override
-  String get title => 'recherche';
-
-  @override
-  get compare => ({
-        required String? base,
-        required String? search,
-        required PlutoColumn? column,
-      }) {
-        var keys = search!.split(',').map((e) => e.toUpperCase()).toList();
-
-        return keys.contains(base!.toUpperCase());
-      };
-
-  const ClassYouImplemented();
 }

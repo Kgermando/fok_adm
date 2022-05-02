@@ -658,7 +658,6 @@ class _BanqueTransactionsState extends State<BanqueTransactions> {
     _values.add(json);
     setState(() {
       result = _prettyPrint(_values);
-      print('_values $_values');
     });
   }
 

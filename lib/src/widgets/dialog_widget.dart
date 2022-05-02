@@ -3,14 +3,15 @@ import 'package:fokad_admin/src/constants/app_theme.dart';
 import 'package:fokad_admin/src/constants/responsive.dart';
 
   dialogWidget(BuildContext context, Widget child) {
-    StateSetter _setState;
+    // ignore: unused_local_variable
+    StateSetter setState;
     return showDialog(
       context: context,
       // barrierDismissible: false,
       builder: (context) {
         return StatefulBuilder(
           builder: (context, StateSetter setState) {
-            _setState = setState;
+            setState = setState;
               return Dialog(
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(p8),

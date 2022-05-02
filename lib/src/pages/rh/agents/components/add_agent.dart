@@ -120,7 +120,6 @@ class _AddAgentState extends State<AddAgent> {
     setState(() {
       user = userModel;
       agentCount = data;
-      print('agentCount ${agentCount!.count}');
     });
   }
 
@@ -566,10 +565,6 @@ class _AddAgentState extends State<AddAgent> {
           controller: dateNaissanceController,
           firstDate: DateTime(1930),
           lastDate: DateTime(2100),
-          onChanged: (va) {
-            print(
-                'dateDebutContratController ${dateDebutContratController.text}');
-          },
           validator: (value) {
             if (value != null && value.isEmpty) {
               return 'Ce champs est obligatoire';
@@ -650,7 +645,6 @@ class _AddAgentState extends State<AddAgent> {
         onChanged: (value) {
           setState(() {
             typeContrat = value!;
-            print('typeContrat $typeContrat');
           });
         },
       ),
@@ -706,7 +700,6 @@ class _AddAgentState extends State<AddAgent> {
               fonctionList = fonctionOccupeList;
               servAffectList = serviceAffectationLog;
             }
-            print('matricule $matricule');
           });
         },
       ),

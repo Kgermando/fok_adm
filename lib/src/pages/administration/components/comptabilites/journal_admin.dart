@@ -5,12 +5,12 @@ import 'package:fokad_admin/src/api/comptabilite/journal_api.dart';
 import 'package:fokad_admin/src/models/comptabilites/journal_model.dart';
 import 'package:fokad_admin/src/pages/comptabilites/components/journals/detail_journal.dart';
 import 'package:fokad_admin/src/widgets/print_widget.dart';
+import 'package:fokad_admin/src/utils/class_implemented.dart';
 import 'package:intl/intl.dart';
 import 'package:pluto_grid/pluto_grid.dart';
 
-
 class JournalAdmin extends StatefulWidget {
-  const JournalAdmin({ Key? key }) : super(key: key);
+  const JournalAdmin({Key? key}) : super(key: key);
 
   @override
   State<JournalAdmin> createState() => _JournalAdminState();
@@ -61,19 +61,19 @@ class _JournalAdminState extends State<JournalAdmin> {
             filters: const [
               ...FilterHelper.defaultFilters,
               // custom filter
-              ClassYouImplemented(),
+              ClassFilterImplemented(),
             ],
             resolveDefaultColumnFilter: (column, resolver) {
               if (column.field == 'titleBilan') {
-                return resolver<ClassYouImplemented>() as PlutoFilterType;
+                return resolver<ClassFilterImplemented>() as PlutoFilterType;
               } else if (column.field == 'comptes') {
-                return resolver<ClassYouImplemented>() as PlutoFilterType;
+                return resolver<ClassFilterImplemented>() as PlutoFilterType;
               } else if (column.field == 'intitule') {
-                return resolver<ClassYouImplemented>() as PlutoFilterType;
+                return resolver<ClassFilterImplemented>() as PlutoFilterType;
               } else if (column.field == 'montant') {
-                return resolver<ClassYouImplemented>() as PlutoFilterType;
+                return resolver<ClassFilterImplemented>() as PlutoFilterType;
               } else if (column.field == 'typeJournal') {
-                return resolver<ClassYouImplemented>() as PlutoFilterType;
+                return resolver<ClassFilterImplemented>() as PlutoFilterType;
               }
               return resolver<PlutoFilterTypeContains>() as PlutoFilterType;
             },
@@ -195,22 +195,4 @@ class _JournalAdminState extends State<JournalAdmin> {
       });
     }
   }
-}
-
-class ClassYouImplemented implements PlutoFilterType {
-  @override
-  String get title => 'recherche';
-
-  @override
-  get compare => ({
-        required String? base,
-        required String? search,
-        required PlutoColumn? column,
-      }) {
-        var keys = search!.split(',').map((e) => e.toUpperCase()).toList();
-
-        return keys.contains(base!.toUpperCase());
-      };
-
-  const ClassYouImplemented();
 }

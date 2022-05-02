@@ -5,6 +5,7 @@ import 'package:fokad_admin/src/api/finances/caisse_api.dart';
 import 'package:fokad_admin/src/models/finances/caisse_model.dart';
 import 'package:fokad_admin/src/pages/finances/transactions/components/components/caisses/detail_caisse.dart';
 import 'package:fokad_admin/src/widgets/print_widget.dart';
+import 'package:fokad_admin/src/utils/class_implemented.dart';
 import 'package:intl/intl.dart';
 import 'package:pluto_grid/pluto_grid.dart';
 
@@ -68,7 +69,7 @@ class _TableCaisseState extends State<TableCaisse> {
             onRowDoubleTap: (PlutoGridOnRowDoubleTapEvent tapEvent) {
               final dataList = tapEvent.row!.cells.values;
               final idPlutoRow = dataList.elementAt(0);
-        
+
               Navigator.of(context).push(MaterialPageRoute(
                   builder: (context) => DetailCaisse(id: idPlutoRow.value)));
             },
@@ -87,27 +88,36 @@ class _TableCaisseState extends State<TableCaisse> {
                 filters: const [
                   ...FilterHelper.defaultFilters,
                   // custom filter
-                  ClassYouImplemented(),
+                  ClassFilterImplemented(),
                 ],
                 resolveDefaultColumnFilter: (column, resolver) {
                   if (column.field == 'nomComplet') {
-                    return resolver<ClassYouImplemented>() as PlutoFilterType;
+                    return resolver<ClassFilterImplemented>()
+                        as PlutoFilterType;
                   } else if (column.field == 'pieceJustificative') {
-                    return resolver<ClassYouImplemented>() as PlutoFilterType;
+                    return resolver<ClassFilterImplemented>()
+                        as PlutoFilterType;
                   } else if (column.field == 'libelle') {
-                    return resolver<ClassYouImplemented>() as PlutoFilterType;
+                    return resolver<ClassFilterImplemented>()
+                        as PlutoFilterType;
                   } else if (column.field == 'montant') {
-                    return resolver<ClassYouImplemented>() as PlutoFilterType;
+                    return resolver<ClassFilterImplemented>()
+                        as PlutoFilterType;
                   } else if (column.field == 'ligneBudgtaire') {
-                    return resolver<ClassYouImplemented>() as PlutoFilterType;
+                    return resolver<ClassFilterImplemented>()
+                        as PlutoFilterType;
                   } else if (column.field == 'departement') {
-                    return resolver<ClassYouImplemented>() as PlutoFilterType;
+                    return resolver<ClassFilterImplemented>()
+                        as PlutoFilterType;
                   } else if (column.field == 'typeOperation') {
-                    return resolver<ClassYouImplemented>() as PlutoFilterType;
+                    return resolver<ClassFilterImplemented>()
+                        as PlutoFilterType;
                   } else if (column.field == 'numeroOperation') {
-                    return resolver<ClassYouImplemented>() as PlutoFilterType;
+                    return resolver<ClassFilterImplemented>()
+                        as PlutoFilterType;
                   } else if (column.field == 'created') {
-                    return resolver<ClassYouImplemented>() as PlutoFilterType;
+                    return resolver<ClassFilterImplemented>()
+                        as PlutoFilterType;
                   }
                   return resolver<PlutoFilterTypeContains>() as PlutoFilterType;
                 },
@@ -309,7 +319,9 @@ class _TableCaisseState extends State<TableCaisse> {
             'nomComplet': PlutoCell(value: item.nomComplet),
             'pieceJustificative': PlutoCell(value: item.pieceJustificative),
             'libelle': PlutoCell(value: item.libelle),
-            'montant': PlutoCell(value: NumberFormat.decimalPattern('fr').format(double.parse(item.montant))),
+            'montant': PlutoCell(
+                value: NumberFormat.decimalPattern('fr')
+                    .format(double.parse(item.montant))),
             'ligneBudgtaire': PlutoCell(value: item.ligneBudgtaire),
             'departement': PlutoCell(value: item.departement),
             'typeOperation': PlutoCell(value: item.typeOperation),
@@ -322,22 +334,4 @@ class _TableCaisseState extends State<TableCaisse> {
       });
     }
   }
-}
-
-class ClassYouImplemented implements PlutoFilterType {
-  @override
-  String get title => 'recherche';
-
-  @override
-  get compare => ({
-        required String? base,
-        required String? search,
-        required PlutoColumn? column,
-      }) {
-        var keys = search!.split(',').map((e) => e.toUpperCase()).toList();
-
-        return keys.contains(base!.toUpperCase());
-      };
-
-  const ClassYouImplemented();
 }

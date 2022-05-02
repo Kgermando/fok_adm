@@ -3,11 +3,12 @@ import 'package:fokad_admin/src/api/comm_marketing/commerciale/restitution_api.d
 import 'package:fokad_admin/src/models/comm_maketing/restitution_model.dart';
 import 'package:fokad_admin/src/pages/comm_marketing/commercial/restitutions/components/detail_restitution.dart';
 import 'package:fokad_admin/src/widgets/print_widget.dart';
+import 'package:fokad_admin/src/utils/class_implemented.dart';
 import 'package:intl/intl.dart';
 import 'package:pluto_grid/pluto_grid.dart';
 
 class TableRestitution extends StatefulWidget {
-  const TableRestitution({ Key? key }) : super(key: key);
+  const TableRestitution({Key? key}) : super(key: key);
 
   @override
   State<TableRestitution> createState() => _TableRestitutionState();
@@ -58,27 +59,27 @@ class _TableRestitutionState extends State<TableRestitution> {
           filters: const [
             ...FilterHelper.defaultFilters,
             // custom filter
-            ClassYouImplemented(),
+            ClassFilterImplemented(),
           ],
           resolveDefaultColumnFilter: (column, resolver) {
             if (column.field == 'idProduct') {
-              return resolver<ClassYouImplemented>() as PlutoFilterType;
+              return resolver<ClassFilterImplemented>() as PlutoFilterType;
             } else if (column.field == 'quantity') {
-              return resolver<ClassYouImplemented>() as PlutoFilterType;
+              return resolver<ClassFilterImplemented>() as PlutoFilterType;
             } else if (column.field == 'firstName') {
-              return resolver<ClassYouImplemented>() as PlutoFilterType;
+              return resolver<ClassFilterImplemented>() as PlutoFilterType;
             } else if (column.field == 'lastName') {
-              return resolver<ClassYouImplemented>() as PlutoFilterType;
+              return resolver<ClassFilterImplemented>() as PlutoFilterType;
             } else if (column.field == 'accuseReception') {
-              return resolver<ClassYouImplemented>() as PlutoFilterType;
+              return resolver<ClassFilterImplemented>() as PlutoFilterType;
             } else if (column.field == 'accuseReceptionFirstName') {
-              return resolver<ClassYouImplemented>() as PlutoFilterType;
+              return resolver<ClassFilterImplemented>() as PlutoFilterType;
             } else if (column.field == 'accuseReceptionLastName') {
-              return resolver<ClassYouImplemented>() as PlutoFilterType;
+              return resolver<ClassFilterImplemented>() as PlutoFilterType;
             } else if (column.field == 'succursale') {
-              return resolver<ClassYouImplemented>() as PlutoFilterType;
+              return resolver<ClassFilterImplemented>() as PlutoFilterType;
             } else if (column.field == 'created') {
-              return resolver<ClassYouImplemented>() as PlutoFilterType;
+              return resolver<ClassFilterImplemented>() as PlutoFilterType;
             }
             return resolver<PlutoFilterTypeContains>() as PlutoFilterType;
           },
@@ -226,8 +227,10 @@ class _TableRestitutionState extends State<TableRestitution> {
             'firstName': PlutoCell(value: item.firstName),
             'lastName': PlutoCell(value: item.lastName),
             'accuseReception': PlutoCell(value: item.accuseReception),
-            'accuseReceptionFirstName': PlutoCell(value: item.accuseReceptionFirstName),
-            'accuseReceptionLastName': PlutoCell(value: item.accuseReceptionLastName),
+            'accuseReceptionFirstName':
+                PlutoCell(value: item.accuseReceptionFirstName),
+            'accuseReceptionLastName':
+                PlutoCell(value: item.accuseReceptionLastName),
             'succursale': PlutoCell(value: item.succursale),
             'created': PlutoCell(
                 value: DateFormat("dd-MM-yy H:mm").format(item.created))
@@ -237,22 +240,4 @@ class _TableRestitutionState extends State<TableRestitution> {
       });
     }
   }
-}
-
-class ClassYouImplemented implements PlutoFilterType {
-  @override
-  String get title => 'recherche';
-
-  @override
-  get compare => ({
-        required String? base,
-        required String? search,
-        required PlutoColumn? column,
-      }) {
-        var keys = search!.split(',').map((e) => e.toUpperCase()).toList();
-
-        return keys.contains(base!.toUpperCase());
-      };
-
-  const ClassYouImplemented();
 }

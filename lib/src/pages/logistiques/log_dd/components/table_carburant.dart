@@ -1,22 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:fokad_admin/src/api/logistiques/carburant_api.dart';
-import 'package:fokad_admin/src/constants/app_theme.dart';
 import 'package:fokad_admin/src/models/logistiques/carburant_model.dart';
 import 'package:fokad_admin/src/pages/logistiques/automobile/components/detail_carburant.dart';
-import 'package:fokad_admin/src/utils/class_implemented.dart';
 import 'package:fokad_admin/src/widgets/card_widget_carburant.dart';
 import 'package:fokad_admin/src/widgets/print_widget.dart';
+import 'package:fokad_admin/src/utils/class_implemented.dart';
 import 'package:intl/intl.dart';
 import 'package:pluto_grid/pluto_grid.dart';
 
-class TableCarburant extends StatefulWidget {
-  const TableCarburant({Key? key}) : super(key: key);
+class TableCarburantDD extends StatefulWidget {
+  const TableCarburantDD({Key? key}) : super(key: key);
 
   @override
-  State<TableCarburant> createState() => _TableCarburantState();
+  State<TableCarburantDD> createState() => _TableCarburantDDState();
 }
 
-class _TableCarburantState extends State<TableCarburant> {
+class _TableCarburantDDState extends State<TableCarburantDD> {
   List<PlutoColumn> columns = [];
   List<PlutoRow> rows = [];
   PlutoGridStateManager? stateManager;
@@ -119,80 +118,62 @@ class _TableCarburantState extends State<TableCarburant> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        totalEssence(),
-        // const SizedBox(height: p20),
-        // totalMazoute(),
-        // const SizedBox(height: p20),
-        // totalPetrole(),
-        // const SizedBox(height: p20),
-        // totalHuileMoteur(),
-        const SizedBox(height: p20),
-        Expanded(
-          child: PlutoGrid(
-            columns: columns,
-            rows: rows,
-            onRowDoubleTap: (PlutoGridOnRowDoubleTapEvent tapEvent) {
-              final dataList = tapEvent.row!.cells.values;
-              final idPlutoRow = dataList.elementAt(0);
+    return SizedBox(
+      height: MediaQuery.of(context).size.height,
+      child: Expanded(
+        child: PlutoGrid(
+          columns: columns,
+          rows: rows,
+          onRowDoubleTap: (PlutoGridOnRowDoubleTapEvent tapEvent) {
+            final dataList = tapEvent.row!.cells.values;
+            final idPlutoRow = dataList.elementAt(0);
 
-              Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) => DetailCaburant(id: idPlutoRow.value)));
-            },
-            onLoaded: (PlutoGridOnLoadedEvent event) {
-              stateManager = event.stateManager;
-              stateManager!.setShowColumnFilter(true);
-            },
-            createHeader: (PlutoGridStateManager header) {
-              return Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [PrintWidget(onPressed: () {})],
-              );
-            },
-            configuration: PlutoGridConfiguration(
-              columnFilterConfig: PlutoGridColumnFilterConfig(
-                filters: const [
-                  ...FilterHelper.defaultFilters,
-                  // custom filter
-                  ClassFilterImplemented(),
-                ],
-                resolveDefaultColumnFilter: (column, resolver) {
-                  if (column.field == 'qtyEntreSortie') {
-                    return resolver<ClassFilterImplemented>()
-                        as PlutoFilterType;
-                  } else if (column.field == 'typeCaburant') {
-                    return resolver<ClassFilterImplemented>()
-                        as PlutoFilterType;
-                  } else if (column.field == 'fournisseur') {
-                    return resolver<ClassFilterImplemented>()
-                        as PlutoFilterType;
-                  } else if (column.field == 'nomeroFactureAchat') {
-                    return resolver<ClassFilterImplemented>()
-                        as PlutoFilterType;
-                  } else if (column.field == 'prixAchatParLitre') {
-                    return resolver<ClassFilterImplemented>()
-                        as PlutoFilterType;
-                  } else if (column.field == 'nomReceptioniste') {
-                    return resolver<ClassFilterImplemented>()
-                        as PlutoFilterType;
-                  } else if (column.field == 'numeroPlaque') {
-                    return resolver<ClassFilterImplemented>()
-                        as PlutoFilterType;
-                  } else if (column.field == 'dateHeureSortieAnguin') {
-                    return resolver<ClassFilterImplemented>()
-                        as PlutoFilterType;
-                  } else if (column.field == 'created') {
-                    return resolver<ClassFilterImplemented>()
-                        as PlutoFilterType;
-                  }
-                  return resolver<PlutoFilterTypeContains>() as PlutoFilterType;
-                },
-              ),
+            Navigator.of(context).push(MaterialPageRoute(
+                builder: (context) => DetailCaburant(id: idPlutoRow.value)));
+          },
+          onLoaded: (PlutoGridOnLoadedEvent event) {
+            stateManager = event.stateManager;
+            stateManager!.setShowColumnFilter(true);
+          },
+          createHeader: (PlutoGridStateManager header) {
+            return Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [PrintWidget(onPressed: () {})],
+            );
+          },
+          configuration: PlutoGridConfiguration(
+            columnFilterConfig: PlutoGridColumnFilterConfig(
+              filters: const [
+                ...FilterHelper.defaultFilters,
+                // custom filter
+                ClassFilterImplemented(),
+              ],
+              resolveDefaultColumnFilter: (column, resolver) {
+                if (column.field == 'qtyEntreSortie') {
+                  return resolver<ClassFilterImplemented>() as PlutoFilterType;
+                } else if (column.field == 'typeCaburant') {
+                  return resolver<ClassFilterImplemented>() as PlutoFilterType;
+                } else if (column.field == 'fournisseur') {
+                  return resolver<ClassFilterImplemented>() as PlutoFilterType;
+                } else if (column.field == 'nomeroFactureAchat') {
+                  return resolver<ClassFilterImplemented>() as PlutoFilterType;
+                } else if (column.field == 'prixAchatParLitre') {
+                  return resolver<ClassFilterImplemented>() as PlutoFilterType;
+                } else if (column.field == 'nomReceptioniste') {
+                  return resolver<ClassFilterImplemented>() as PlutoFilterType;
+                } else if (column.field == 'numeroPlaque') {
+                  return resolver<ClassFilterImplemented>() as PlutoFilterType;
+                } else if (column.field == 'dateHeureSortieAnguin') {
+                  return resolver<ClassFilterImplemented>() as PlutoFilterType;
+                } else if (column.field == 'created') {
+                  return resolver<ClassFilterImplemented>() as PlutoFilterType;
+                }
+                return resolver<PlutoFilterTypeContains>() as PlutoFilterType;
+              },
             ),
           ),
         ),
-      ],
+      ),
     );
   }
 
@@ -514,7 +495,8 @@ class _TableCarburantState extends State<TableCarburant> {
 
   Future agentsRow() async {
     List<CarburantModel?> dataList = await CarburantApi().getAllData();
-    var data = dataList;
+    var data =
+        dataList.where((element) => element!.approbationDD == "-").toList();
 
     if (mounted) {
       setState(() {

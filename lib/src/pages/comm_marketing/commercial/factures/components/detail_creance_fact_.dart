@@ -5,6 +5,7 @@ import 'package:fokad_admin/src/constants/app_theme.dart';
 import 'package:fokad_admin/src/constants/responsive.dart';
 import 'package:fokad_admin/src/models/comm_maketing/creance_cart_model.dart';
 import 'package:fokad_admin/src/models/users/user_model.dart';
+import 'package:fokad_admin/src/utils/class_implemented.dart';
 import 'package:fokad_admin/src/navigation/drawer/drawer_menu.dart';
 import 'package:fokad_admin/src/navigation/header/custom_appbar.dart';
 import 'package:fokad_admin/src/widgets/print_widget.dart';
@@ -219,7 +220,6 @@ class _DetailCreanceFactState extends State<DetailCreanceFact> {
     );
   }
 
- 
   listCart() {
     return SizedBox(
         height: MediaQuery.of(context).size.height,
@@ -244,21 +244,21 @@ class _DetailCreanceFactState extends State<DetailCreanceFact> {
               filters: const [
                 ...FilterHelper.defaultFilters,
                 // custom filter
-                ClassYouImplemented(),
+                ClassFilterImplemented(),
               ],
               resolveDefaultColumnFilter: (column, resolver) {
-                 if (column.field == 'quantityCart') {
-                  return resolver<ClassYouImplemented>() as PlutoFilterType;
+                if (column.field == 'quantityCart') {
+                  return resolver<ClassFilterImplemented>() as PlutoFilterType;
                 } else if (column.field == 'idProductCart') {
-                  return resolver<ClassYouImplemented>() as PlutoFilterType;
+                  return resolver<ClassFilterImplemented>() as PlutoFilterType;
                 } else if (column.field == 'priceAchatUnit') {
-                  return resolver<ClassYouImplemented>() as PlutoFilterType;
+                  return resolver<ClassFilterImplemented>() as PlutoFilterType;
                 } else if (column.field == 'priceCart') {
-                  return resolver<ClassYouImplemented>() as PlutoFilterType;
+                  return resolver<ClassFilterImplemented>() as PlutoFilterType;
                 } else if (column.field == 'tva') {
-                  return resolver<ClassYouImplemented>() as PlutoFilterType;
+                  return resolver<ClassFilterImplemented>() as PlutoFilterType;
                 } else if (column.field == 'total') {
-                  return resolver<ClassYouImplemented>() as PlutoFilterType;
+                  return resolver<ClassFilterImplemented>() as PlutoFilterType;
                 }
                 return resolver<PlutoFilterTypeContains>() as PlutoFilterType;
               },
@@ -383,23 +383,4 @@ class _DetailCreanceFactState extends State<DetailCreanceFact> {
       });
     }
   }
-}
-
-
-class ClassYouImplemented implements PlutoFilterType {
-  @override
-  String get title => 'recherche';
-
-  @override
-  get compare => ({
-        required String? base,
-        required String? search,
-        required PlutoColumn? column,
-      }) {
-        var keys = search!.split(',').map((e) => e.toUpperCase()).toList();
-
-        return keys.contains(base!.toUpperCase());
-      };
-
-  const ClassYouImplemented();
 }
