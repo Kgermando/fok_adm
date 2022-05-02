@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:fokad_admin/src/api/auth/auth_api.dart';
-import 'package:fokad_admin/src/api/exploitations/rapport_api.dart';
-import 'package:fokad_admin/src/api/exploitations/taches_api.dart';
+import 'package:fokad_admin/src/api/rh/performence_api.dart';
+import 'package:fokad_admin/src/api/rh/performence_note_api.dart';
 import 'package:fokad_admin/src/constants/app_theme.dart';
 import 'package:fokad_admin/src/constants/responsive.dart';
-import 'package:fokad_admin/src/models/exploitations/rapport_model.dart';
-import 'package:fokad_admin/src/models/exploitations/tache_model.dart';
+import 'package:fokad_admin/src/models/rh/perfomence_model.dart';
 import 'package:fokad_admin/src/models/users/user_model.dart';
 import 'package:fokad_admin/src/navigation/drawer/drawer_menu.dart';
 import 'package:fokad_admin/src/navigation/header/custom_appbar.dart';
@@ -25,22 +24,23 @@ final _lightColors = [
   Colors.orange.shade700,
 ];
 
-class DetailTache extends StatefulWidget {
-  const DetailTache({Key? key, required this.id}) : super(key: key);
+class DetailPerformence extends StatefulWidget {
+  const DetailPerformence({Key? key, required this.id}) : super(key: key);
   final int id;
 
   @override
-  State<DetailTache> createState() => _DetailTacheState();
+  State<DetailPerformence> createState() => _DetailPerformenceState();
 }
 
-class _DetailTacheState extends State<DetailTache> {
+class _DetailPerformenceState extends State<DetailPerformence> {
   final GlobalKey<ScaffoldState> _key = GlobalKey();
   // final ScrollController _controllerScroll = ScrollController();
   final _formKey = GlobalKey<FormState>();
   bool isLoading = false;
 
-  TextEditingController rapportController = TextEditingController();
-  bool read = false;
+  double hospitaliteTotal = 0.0;
+  double ponctualiteTotal = 0.0;
+  double travailleTotal = 0.0;
 
   @override
   initState() {
@@ -48,21 +48,22 @@ class _DetailTacheState extends State<DetailTache> {
     super.initState();
   }
 
-  @override
-  void dispose() {
-    rapportController.dispose();
-    super.dispose();
-  }
-
-  TacheModel? tacheModel;
+  PerformenceModel? performenceModel;
   String? signature;
   Future<void> getData() async {
     UserModel userModel = await AuthApi().getUserId();
-    TacheModel data = await TachesApi().getOneData(widget.id);
+    PerformenceModel data = await PerformenceApi().getOneData(widget.id);
+    List<PerformenceNoteModel> dataList =
+        await PerformenceNoteApi().getAllData();
     setState(() {
       signature = userModel.matricule;
-      tacheModel = data;
-      read = data.read;
+      performenceModel = data;
+
+      for (var item in dataList) {
+        hospitaliteTotal += double.parse(item.hospitalite);
+        ponctualiteTotal += double.parse(item.ponctualite);
+        travailleTotal += double.parse(item.travaille);
+      }
     });
   }
 
@@ -83,12 +84,12 @@ class _DetailTacheState extends State<DetailTache> {
                 flex: 5,
                 child: Padding(
                     padding: const EdgeInsets.all(p10),
-                    child: FutureBuilder<TacheModel>(
-                        future: TachesApi().getOneData(widget.id),
+                    child: FutureBuilder<PerformenceModel>(
+                        future: PerformenceApi().getOneData(widget.id),
                         builder: (BuildContext context,
-                            AsyncSnapshot<TacheModel> snapshot) {
+                            AsyncSnapshot<PerformenceModel> snapshot) {
                           if (snapshot.hasData) {
-                            TacheModel? data = snapshot.data;
+                            PerformenceModel? data = snapshot.data;
                             return Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
@@ -104,7 +105,7 @@ class _DetailTacheState extends State<DetailTache> {
                                     const SizedBox(width: p10),
                                     Expanded(
                                       child: CustomAppbar(
-                                          title: data!.nomProjet,
+                                          title: data!.agent,
                                           controllerMenu: () =>
                                               _key.currentState!.openDrawer()),
                                     ),
@@ -126,7 +127,7 @@ class _DetailTacheState extends State<DetailTache> {
         ));
   }
 
-  Widget pageDetail(TacheModel data) {
+  Widget pageDetail(PerformenceModel data) {
     return Row(mainAxisAlignment: MainAxisAlignment.center, children: [
       Card(
         elevation: 10,
@@ -163,13 +164,6 @@ class _DetailTacheState extends State<DetailTache> {
               Divider(
                 color: Colors.amber.shade700,
               ),
-              if(data.signatureResp == signature)
-              checkboxRead(data),
-              if(data.agent == signature)
-              rapportWidget(data),
-              Divider(
-                color: Colors.amber.shade700,
-              ),
               listRapport(data),
             ],
           ),
@@ -178,36 +172,7 @@ class _DetailTacheState extends State<DetailTache> {
     ]);
   }
 
-  Color getColor(Set<MaterialState> states) {
-    const Set<MaterialState> interactiveStates = <MaterialState>{
-      MaterialState.pressed,
-      MaterialState.hovered,
-      MaterialState.focused,
-    };
-    if (states.any(interactiveStates.contains)) {
-      return Colors.red;
-    }
-    return Colors.green;
-  }
-
-  checkboxRead(TacheModel data) {
-    return ListTile(
-      leading: Checkbox(
-        checkColor: Colors.white,
-        fillColor: MaterialStateProperty.resolveWith(getColor),
-        value: read,
-        onChanged: (bool? value) {
-          setState(() {
-            read = value!;
-            confirmeLecture(data);
-          });
-        },
-      ),
-      title: const Text("Confirmation de lecture"),
-    );
-  }
-
-  Widget dataWidget(TacheModel data) {
+  Widget dataWidget(PerformenceModel data) {
     final bodyMedium = Theme.of(context).textTheme.bodyMedium;
     return Padding(
       padding: const EdgeInsets.all(p10),
@@ -217,45 +182,49 @@ class _DetailTacheState extends State<DetailTache> {
             children: [
               Expanded(
                 flex: 1,
-                child: Text('Nom Projet :',
+                child: Text('Nom :',
                     textAlign: TextAlign.start,
                     style: bodyMedium!.copyWith(fontWeight: FontWeight.bold)),
               ),
               Expanded(
                 flex: 3,
-                child: SelectableText(data.nomProjet,
+                child: SelectableText(data.hospitalite,
                     textAlign: TextAlign.start, style: bodyMedium),
               )
             ],
           ),
-          Divider(color: Colors.amber.shade700,),
+          Divider(
+            color: Colors.amber.shade700,
+          ),
           Row(
             children: [
               Expanded(
                 flex: 1,
-                child: Text('Numero Tache :',
+                child: Text('Post-Nom :',
                     textAlign: TextAlign.start,
                     style: bodyMedium.copyWith(fontWeight: FontWeight.bold)),
               ),
               Expanded(
                 flex: 3,
-                child: SelectableText(data.numeroTache,
+                child: SelectableText(data.ponctualite,
                     textAlign: TextAlign.start, style: bodyMedium),
               )
             ],
           ),
-          Divider(color: Colors.amber.shade700,),
-           Row(
+          Divider(
+            color: Colors.amber.shade700,
+          ),
+          Row(
             children: [
               Expanded(
                 flex: 1,
-                child: Text('Jalon du projet:',
+                child: Text('Prénom:',
                     textAlign: TextAlign.start,
                     style: bodyMedium.copyWith(fontWeight: FontWeight.bold)),
               ),
               Expanded(
                 flex: 3,
-                child: SelectableText(data.jalon,
+                child: SelectableText(data.travaille,
                     textAlign: TextAlign.start, style: bodyMedium),
               )
             ],
@@ -278,37 +247,52 @@ class _DetailTacheState extends State<DetailTache> {
               )
             ],
           ),
-          Divider(color: Colors.amber.shade700,),
-          Row(
-            children: [
-              Expanded(
-                flex: 1,
-                child: Text('Responsable :',
-                    textAlign: TextAlign.start,
-                    style: bodyMedium.copyWith(fontWeight: FontWeight.bold)),
-              ),
-              Expanded(
-                flex: 3,
-                child: SelectableText(data.signatureResp,
-                    textAlign: TextAlign.start, style: bodyMedium),
-              )
-            ],
-          ),
           Divider(
             color: Colors.amber.shade700,
           ),
           Row(
             children: [
               Expanded(
-                flex: 1,
-                child: Text('Tâche :',
-                    textAlign: TextAlign.start,
-                    style: bodyMedium.copyWith(fontWeight: FontWeight.bold)),
+                flex: 3,
+                child: Column(
+                  children: [
+                    Text('Hospitalité :',
+                        textAlign: TextAlign.start,
+                        style: bodyMedium.copyWith(
+                            fontWeight: FontWeight.bold,
+                            color: Colors.blue.shade700)),
+                    SelectableText("$hospitaliteTotal",
+                        textAlign: TextAlign.start, style: bodyMedium),
+                  ],
+                ),
               ),
               Expanded(
                 flex: 3,
-                child: SelectableText(data.tache,
-                    textAlign: TextAlign.start, style: bodyMedium),
+                child: Column(
+                  children: [
+                    Text('Ponctualité :',
+                        textAlign: TextAlign.start,
+                        style: bodyMedium.copyWith(
+                            fontWeight: FontWeight.bold,
+                            color: Colors.green.shade700)),
+                    SelectableText("$ponctualiteTotal",
+                        textAlign: TextAlign.start, style: bodyMedium),
+                  ],
+                ),
+              ),
+              Expanded(
+                flex: 3,
+                child: Column(
+                  children: [
+                    Text('Travaille :',
+                        textAlign: TextAlign.start,
+                        style: bodyMedium.copyWith(
+                            fontWeight: FontWeight.bold,
+                            color: Colors.purple.shade700)),
+                    SelectableText("$travailleTotal",
+                        textAlign: TextAlign.start, style: bodyMedium),
+                  ],
+                ),
               )
             ],
           ),
@@ -317,19 +301,18 @@ class _DetailTacheState extends State<DetailTache> {
     );
   }
 
-  Widget listRapport(TacheModel data) {
+  Widget listRapport(PerformenceModel data) {
     final bodyLarge = Theme.of(context).textTheme.bodyLarge;
     return SizedBox(
         height: 500,
-        child: FutureBuilder<List<RapportModel>>(
-            future: RapportApi().getAllData(),
+        child: FutureBuilder<List<PerformenceNoteModel>>(
+            future: PerformenceNoteApi().getAllData(),
             builder: (BuildContext context,
-                AsyncSnapshot<List<RapportModel>> snapshot) {
+                AsyncSnapshot<List<PerformenceNoteModel>> snapshot) {
               if (snapshot.hasData) {
-                List<RapportModel>? rapports = snapshot.data!
+                List<PerformenceNoteModel>? rapports = snapshot.data!
                     .where((element) =>
-                        element.nomProjet == data.nomProjet &&
-                        element.signature == data.agent)
+                        element.agent == data.agent)
                     .toList();
                 return rapports.isEmpty
                     ? Column(
@@ -354,7 +337,7 @@ class _DetailTacheState extends State<DetailTache> {
             }));
   }
 
-  Widget buildRapport(RapportModel rapportModel, int index) {
+  Widget buildRapport(PerformenceNoteModel rapport, int index) {
     final bodySmall = Theme.of(context).textTheme.bodySmall;
     final bodyMedium = Theme.of(context).textTheme.bodyMedium;
     final color = _lightColors[index % _lightColors.length];
@@ -370,107 +353,69 @@ class _DetailTacheState extends State<DetailTache> {
               dense: true,
               leading: Icon(Icons.person, color: color, size: 50),
               title: SelectableText(
-                rapportModel.signature,
+                rapport.signature,
                 style: bodySmall,
               ),
               subtitle: SelectableText(
-                rapportModel.numeroTache,
+                rapport.departement,
                 style: bodySmall,
               ),
               trailing: SelectableText(
-                  timeago.format(rapportModel.created, locale: 'fr_short'),
+                  timeago.format(rapport.created, locale: 'fr_short'),
                   textAlign: TextAlign.start,
                   style: bodySmall!.copyWith(color: color)),
             ),
-            SelectableText(rapportModel.rapport,
+            Row(
+              children: [
+                Expanded(
+                  flex: 3,
+                  child: Column(
+                    children: [
+                      Text('Hospitalité :',
+                          textAlign: TextAlign.start,
+                          style: bodyMedium!.copyWith(
+                              fontWeight: FontWeight.bold,
+                              color: Colors.blue.shade700)),
+                      SelectableText(rapport.hospitalite,
+                          textAlign: TextAlign.start, style: bodyMedium),
+                    ],
+                  ),
+                ),
+                Expanded(
+                  flex: 3,
+                  child: Column(
+                    children: [
+                      Text('Ponctualité :',
+                          textAlign: TextAlign.start,
+                          style: bodyMedium.copyWith(
+                              fontWeight: FontWeight.bold,
+                              color: Colors.green.shade700)),
+                      SelectableText(rapport.ponctualite,
+                          textAlign: TextAlign.start, style: bodyMedium),
+                    ],
+                  ),
+                ),
+                Expanded(
+                  flex: 3,
+                  child: Column(
+                    children: [
+                      Text('Travaille :',
+                          textAlign: TextAlign.start,
+                          style: bodyMedium.copyWith(
+                              fontWeight: FontWeight.bold,
+                              color: Colors.purple.shade700)),
+                      SelectableText(rapport.travaille,
+                          textAlign: TextAlign.start, style: bodyMedium),
+                    ],
+                  ),
+                )
+              ],
+            ),
+            SelectableText(rapport.note,
                 style: bodyMedium, textAlign: TextAlign.justify),
           ],
         ),
       ),
     );
-  }
-
-  Widget rapportWidget(TacheModel data) {
-    return Padding(
-      padding: const EdgeInsets.all(p10),
-      child: Form(
-        key: _formKey,
-        child: Column(
-          children: [
-            rapportControllerWidget(),
-            const SizedBox(
-              height: p20,
-            ),
-            BtnWidget(
-                title: 'Soumettre',
-                isLoading: isLoading,
-                press: () {
-                  final form = _formKey.currentState!;
-                  if (form.validate()) {
-                    submit(data);
-                    form.reset();
-                  }
-                })
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget rapportControllerWidget() {
-    return Container(
-        margin: const EdgeInsets.only(bottom: p20),
-        child: TextFormField(
-          controller: rapportController,
-          keyboardType: TextInputType.multiline,
-          minLines: 5,
-          maxLines: 10,
-          decoration: InputDecoration(
-            border:
-                OutlineInputBorder(borderRadius: BorderRadius.circular(10.0)),
-            labelText: 'Ecrivez votre rapport ici...',
-          ),
-          style: const TextStyle(),
-          validator: (value) {
-            if (value != null && value.isEmpty) {
-              return 'Ce champs est obligatoire';
-            } else {
-              return null;
-            }
-          },
-        ));
-  }
-
-  Future<void> submit(TacheModel data) async {
-    final rapportModel = RapportModel(
-        nomProjet: data.nomProjet,
-        numeroTache: data.numeroTache,
-        rapport: rapportController.text,
-        signature: signature.toString(),
-        created: DateTime.now());
-    await RapportApi().insertData(rapportModel);
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-      content: const Text("soumis avec succès!"),
-      backgroundColor: Colors.green[700],
-    ));
-  }
-
-  Future<void> confirmeLecture(TacheModel data) async {
-    final tacheModel = TacheModel(
-        nomProjet: data.nomProjet,
-        numeroTache: data.numeroTache,
-        agent: data.agent,
-        jalon: data.jalon,
-        tache: data.tache,
-        signatureResp: signature.toString(),
-        created: DateTime.now(),
-        read: read);
-
-    await TachesApi().insertData(tacheModel);
-    Routemaster.of(context).pop();
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-      content: const Text("Enregistrer avec succès!"),
-      backgroundColor: Colors.green[700],
-    ));
   }
 }

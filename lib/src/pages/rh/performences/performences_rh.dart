@@ -3,6 +3,7 @@ import 'package:fokad_admin/src/constants/app_theme.dart';
 import 'package:fokad_admin/src/constants/responsive.dart';
 import 'package:fokad_admin/src/navigation/drawer/drawer_menu.dart';
 import 'package:fokad_admin/src/navigation/header/custom_appbar.dart';
+import 'package:fokad_admin/src/pages/rh/performences/components/table_performence.dart';
 
 class PerformenceRH extends StatefulWidget {
   const PerformenceRH({Key? key}) : super(key: key);
@@ -13,7 +14,6 @@ class PerformenceRH extends StatefulWidget {
 
 class _PerformenceRHState extends State<PerformenceRH> {
   final GlobalKey<ScaffoldState> _key = GlobalKey();
-  final ScrollController _controllerScroll = ScrollController();
 
   @override
   Widget build(BuildContext context) {
@@ -35,19 +35,11 @@ class _PerformenceRHState extends State<PerformenceRH> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      CustomAppbar(title: 'Perfomences',
+                      CustomAppbar(
+                          title: 'Liste des performences',
                           controllerMenu: () =>
                               _key.currentState!.openDrawer()),
-                      Expanded(
-                          child: Scrollbar(
-                        controller: _controllerScroll,
-                        child: ListView(
-                          controller: _controllerScroll,
-                          children: const [
-                            Text("Perfomences List"),
-                          ],
-                        ),
-                      ))
+                      const Expanded(child: TablePerformence())
                     ],
                   ),
                 ),

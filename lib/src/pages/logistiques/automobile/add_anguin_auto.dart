@@ -62,8 +62,6 @@ class _AddAnguinAutoState extends State<AddAnguinAuto> {
 
   @override
   void dispose() {
-    _controllerScroll.dispose();
-
     nomController.dispose();
     modeleController.dispose();
     marqueController.dispose();

@@ -29,7 +29,9 @@ var addPresenceUrl =
 var listPerformenceUrl = Uri.parse("$mainUrl/rh/performences/");
 var addPerformenceUrl =
     Uri.parse("$mainUrl/rh/performences/insert-new-performence");
-
+var listPerformenceNoteUrl = Uri.parse("$mainUrl/rh/performences-note/");
+var addPerformenceNoteUrl =
+    Uri.parse("$mainUrl/rh/performences-note/insert-new-performence-note");
 
 
 // Finances

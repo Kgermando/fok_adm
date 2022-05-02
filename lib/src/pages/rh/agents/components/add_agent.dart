@@ -2,10 +2,12 @@ import 'package:date_time_picker/date_time_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:fokad_admin/src/api/auth/auth_api.dart';
 import 'package:fokad_admin/src/api/rh/agents_api.dart';
+import 'package:fokad_admin/src/api/rh/performence_api.dart';
 import 'package:fokad_admin/src/constants/app_theme.dart';
 import 'package:fokad_admin/src/constants/responsive.dart';
 import 'package:fokad_admin/src/models/rh/agent_count_model.dart';
 import 'package:fokad_admin/src/models/rh/agent_model.dart';
+import 'package:fokad_admin/src/models/rh/perfomence_model.dart';
 import 'package:fokad_admin/src/models/users/user_model.dart';
 import 'package:fokad_admin/src/navigation/drawer/drawer_menu.dart';
 import 'package:fokad_admin/src/navigation/header/custom_appbar.dart';
@@ -164,7 +166,7 @@ class _AddAgentState extends State<AddAgent> {
                                       _key.currentState!.openDrawer())),
                         ],
                       ),
-                      Expanded( 
+                      Expanded(
                           child: Scrollbar(
                         controller: _controllerScroll,
                         child: addAgentWidget(),
@@ -314,6 +316,7 @@ class _AddAgentState extends State<AddAgent> {
                           final form = _formKey.currentState!;
                           if (form.validate()) {
                             submit();
+                            submitPerformence();
                             form.reset();
                           }
                         })
@@ -827,9 +830,7 @@ class _AddAgentState extends State<AddAgent> {
               return null;
             }
           },
-        )
-
-    );
+        ));
   }
 
   Widget experienceWidget() {
@@ -917,9 +918,8 @@ class _AddAgentState extends State<AddAgent> {
             : dateFinContratController.text),
         fonctionOccupe:
             (fonctionOccupe.toString() == '') ? '-' : fonctionOccupe.toString(),
-        competance: (competanceController.text == '')
-            ? '-'
-            : competanceController.text,
+        competance:
+            (competanceController.text == '') ? '-' : competanceController.text,
         experience:
             (experienceController.text == '') ? '-' : experienceController.text,
         statutAgent: false,
@@ -935,5 +935,29 @@ class _AddAgentState extends State<AddAgent> {
       content: const Text("Enregistrer agent avec succès!"),
       backgroundColor: Colors.green[700],
     ));
+  }
+
+  Future submitPerformence() async {
+    final performenceModel = PerformenceModel(
+        agent: matricule,
+        departement: departement.toString(),
+        hospitalite: nomController.text,
+        ponctualite: postNomController.text,
+        travaille: prenomController.text,
+        approbationDG: '-',
+        signatureDG: '-',
+        signatureJustificationDG: '-',
+        approbationFin: '-',
+        signatureFin: '-',
+        signatureJustificationFin: '-',
+        approbationBudget: '-',
+        signatureBudget: '-',
+        signatureJustificationBudget: '-',
+        approbationDD: '-',
+        signatureDD: '-',
+        signatureJustificationDD: '-',
+        signature: user!.matricule.toString(),
+        created: DateTime.now());
+    await PerformenceApi().insertData(performenceModel);
   }
 }

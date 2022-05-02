@@ -59,7 +59,6 @@ class _AddCarburantAutoState extends State<AddCarburantAuto> {
 
   @override
   void dispose() {
-    _controllerScroll.dispose();
 
     fournisseurController.dispose();
     nomeroFactureAchatController.dispose();

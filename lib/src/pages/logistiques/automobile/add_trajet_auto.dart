@@ -47,8 +47,6 @@ class _AddTrajetAutoState extends State<AddTrajetAuto> {
 
   @override
   void dispose() {
-    _controllerScroll.dispose();
-
     nomeroEntrepriseController.dispose();
     nomUtilisateurController.dispose();
     trajetDeController.dispose();

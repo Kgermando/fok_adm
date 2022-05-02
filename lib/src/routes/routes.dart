@@ -111,6 +111,7 @@ class RhRoutes {
   static const rhPresence = "/rh-presences";
   static const rhPresenceAdd = "/rh-presences-add";
   static const rhPerformence = "/rh-performence";
+  static const rhPerformenceAdd = "/rh-performence-add";
   static const rhDD = "/rh-dd";
 }
 

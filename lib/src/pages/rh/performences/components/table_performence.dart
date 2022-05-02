@@ -1,20 +1,20 @@
 import 'package:flutter/material.dart';
-import 'package:fokad_admin/src/api/logistiques/trajet_api.dart';
-import 'package:fokad_admin/src/models/logistiques/trajet_model.dart';
-import 'package:fokad_admin/src/pages/logistiques/automobile/components/detail_trajet.dart';
-import 'package:fokad_admin/src/widgets/print_widget.dart';
+import 'package:fokad_admin/src/api/rh/performence_api.dart';
+import 'package:fokad_admin/src/models/rh/perfomence_model.dart';
+import 'package:fokad_admin/src/pages/rh/performences/components/detail_perfomence.dart';
 import 'package:fokad_admin/src/utils/class_implemented.dart';
+import 'package:fokad_admin/src/widgets/print_widget.dart';
 import 'package:intl/intl.dart';
 import 'package:pluto_grid/pluto_grid.dart';
 
-class TableTrajet extends StatefulWidget {
-  const TableTrajet({Key? key}) : super(key: key);
+class TablePerformence extends StatefulWidget {
+  const TablePerformence({ Key? key }) : super(key: key);
 
   @override
-  State<TableTrajet> createState() => _TableTrajetState();
+  State<TablePerformence> createState() => _TablePerformenceState();
 }
 
-class _TableTrajetState extends State<TableTrajet> {
+class _TablePerformenceState extends State<TablePerformence> {
   List<PlutoColumn> columns = [];
   List<PlutoRow> rows = [];
   PlutoGridStateManager? stateManager;
@@ -39,7 +39,7 @@ class _TableTrajetState extends State<TableTrajet> {
         final idPlutoRow = dataList.elementAt(0);
 
         Navigator.of(context).push(MaterialPageRoute(
-            builder: (context) => DetailTrajet(id: idPlutoRow.value)));
+            builder: (context) => DetailPerformence(id: idPlutoRow.value)));
       },
       onLoaded: (PlutoGridOnLoadedEvent event) {
         stateManager = event.stateManager;
@@ -59,17 +59,17 @@ class _TableTrajetState extends State<TableTrajet> {
             ClassFilterImplemented(),
           ],
           resolveDefaultColumnFilter: (column, resolver) {
-            if (column.field == 'nomeroEntreprise') {
+            if (column.field == 'agent') {
               return resolver<ClassFilterImplemented>() as PlutoFilterType;
-            } else if (column.field == 'nomUtilisateur') {
+            } else if (column.field == 'departement') {
               return resolver<ClassFilterImplemented>() as PlutoFilterType;
-            } else if (column.field == 'trajetA') {
+            } else if (column.field == 'hospitalite') {
               return resolver<ClassFilterImplemented>() as PlutoFilterType;
-            } else if (column.field == 'mission') {
+            } else if (column.field == 'ponctualite') {
               return resolver<ClassFilterImplemented>() as PlutoFilterType;
-            } else if (column.field == 'kilometrageSorite') {
+            } else if (column.field == 'travaille') {
               return resolver<ClassFilterImplemented>() as PlutoFilterType;
-            } else if (column.field == 'kilometrageRetour') {
+            } else if (column.field == 'signature') {
               return resolver<ClassFilterImplemented>() as PlutoFilterType;
             } else if (column.field == 'created') {
               return resolver<ClassFilterImplemented>() as PlutoFilterType;
@@ -85,8 +85,8 @@ class _TableTrajetState extends State<TableTrajet> {
     columns = [
       PlutoColumn(
         readOnly: true,
-        title: 'Numero attribué',
-        field: 'nomeroEntreprise',
+        title: 'Id',
+        field: 'id',
         type: PlutoColumnType.number(),
         enableRowDrag: true,
         enableContextMenu: false,
@@ -97,8 +97,20 @@ class _TableTrajetState extends State<TableTrajet> {
       ),
       PlutoColumn(
         readOnly: true,
-        title: 'Nom Utilisateur',
-        field: 'nomUtilisateur',
+        title: 'Matricule',
+        field: 'agent',
+        type: PlutoColumnType.number(),
+        enableRowDrag: true,
+        enableContextMenu: false,
+        enableDropToResize: true,
+        titleTextAlign: PlutoColumnTextAlign.left,
+        width: 100,
+        minWidth: 80,
+      ),
+      PlutoColumn(
+        readOnly: true,
+        title: 'Département',
+        field: 'departement',
         type: PlutoColumnType.text(),
         enableRowDrag: true,
         enableContextMenu: false,
@@ -109,8 +121,8 @@ class _TableTrajetState extends State<TableTrajet> {
       ),
       PlutoColumn(
         readOnly: true,
-        title: 'De',
-        field: 'trajetDe',
+        title: 'Nom',
+        field: 'hospitalite',
         type: PlutoColumnType.text(),
         enableRowDrag: true,
         enableContextMenu: false,
@@ -121,8 +133,8 @@ class _TableTrajetState extends State<TableTrajet> {
       ),
       PlutoColumn(
         readOnly: true,
-        title: 'A',
-        field: 'trajetA',
+        title: 'Post-Nom',
+        field: 'ponctualite',
         type: PlutoColumnType.text(),
         enableRowDrag: true,
         enableContextMenu: false,
@@ -133,8 +145,8 @@ class _TableTrajetState extends State<TableTrajet> {
       ),
       PlutoColumn(
         readOnly: true,
-        title: 'Mission',
-        field: 'mission',
+        title: 'Prénom',
+        field: 'travaille',
         type: PlutoColumnType.text(),
         enableRowDrag: true,
         enableContextMenu: false,
@@ -145,20 +157,8 @@ class _TableTrajetState extends State<TableTrajet> {
       ),
       PlutoColumn(
         readOnly: true,
-        title: 'kilometrage Soritie',
-        field: 'kilometrageSorite',
-        type: PlutoColumnType.text(),
-        enableRowDrag: true,
-        enableContextMenu: false,
-        enableDropToResize: true,
-        titleTextAlign: PlutoColumnTextAlign.left,
-        width: 150,
-        minWidth: 150,
-      ),
-      PlutoColumn(
-        readOnly: true,
-        title: 'kilometrage Retour',
-        field: 'kilometrageRetour',
+        title: 'signature',
+        field: 'signature',
         type: PlutoColumnType.text(),
         enableRowDrag: true,
         enableContextMenu: false,
@@ -183,7 +183,7 @@ class _TableTrajetState extends State<TableTrajet> {
   }
 
   Future agentsRow() async {
-    List<TrajetModel?> dataList = await TrajetApi().getAllData();
+    List<PerformenceModel?> dataList = await PerformenceApi().getAllData();
     var data = dataList;
 
     if (mounted) {
@@ -192,13 +192,12 @@ class _TableTrajetState extends State<TableTrajet> {
           id = item!.id;
           rows.add(PlutoRow(cells: {
             'id': PlutoCell(value: item.id),
-            'nomeroEntreprise': PlutoCell(value: item.nomeroEntreprise),
-            'nomUtilisateur': PlutoCell(value: item.nomUtilisateur),
-            'trajetDe': PlutoCell(value: item.trajetDe),
-            'trajetA': PlutoCell(value: item.trajetA),
-            'mission': PlutoCell(value: item.mission),
-            'kilometrageSorite': PlutoCell(value: item.kilometrageSorite),
-            'kilometrageRetour': PlutoCell(value: item.kilometrageRetour),
+            'agent': PlutoCell(value: item.agent),
+            'departement': PlutoCell(value: item.departement),
+            'hospitalite': PlutoCell(value: item.hospitalite),
+            'ponctualite': PlutoCell(value: item.ponctualite),
+            'travaille': PlutoCell(value: item.travaille),
+            'signature': PlutoCell(value: item.signature),
             'created': PlutoCell(
                 value: DateFormat("dd-MM-yy HH:mm").format(item.created))
           }));
