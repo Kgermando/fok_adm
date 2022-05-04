@@ -129,7 +129,6 @@ class _AnnuaireMarketingState extends State<AnnuaireMarketing> {
                                           itemBuilder: (context, index) {
                                             final annuaireModel =
                                                 annuaireModels[index];
-                                            print(annuaireModels);
                                             
                                             return buildAnnuaire(
                                                 annuaireModel, index);

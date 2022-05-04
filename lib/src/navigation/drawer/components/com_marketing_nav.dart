@@ -119,146 +119,146 @@ class _ComMarketingState extends State<ComMarketing> {
           children: [
             DrawerWidget(
                 selected: widget.pageCurrente ==
-                    ComMarketingRoutes.comMarketingAnnuaire,
+                    ComMarketingRoutes.comMarketingProduitModel,
                 icon: Icons.arrow_right,
                 sizeIcon: 15.0,
                 title: 'Produit modèle',
                 style: bodyText2,
                 onTap: () {
                   Routemaster.of(context)
-                      .replace(ComMarketingRoutes.comMarketingAnnuaire);
+                      .replace(ComMarketingRoutes.comMarketingProduitModel);
                   // Routemaster.of(context).pop();
                 }),
             DrawerWidget(
                 selected: widget.pageCurrente ==
-                    ComMarketingRoutes.comMarketingAgenda,
+                    ComMarketingRoutes.comMarketingStockGlobal,
                 icon: Icons.arrow_right,
                 sizeIcon: 15.0,
                 title: 'Stocks global',
                 style: bodyText2,
                 onTap: () {
                   Routemaster.of(context)
-                      .replace(ComMarketingRoutes.comMarketingAgenda);
+                      .replace(ComMarketingRoutes.comMarketingStockGlobal);
                   // Routemaster.of(context).pop();
                 }),
             DrawerWidget(
                 selected: widget.pageCurrente ==
-                    ComMarketingRoutes.comMarketingCampaign,
+                    ComMarketingRoutes.comMarketingSuccursale,
                 icon: Icons.arrow_right,
                 sizeIcon: 15.0,
                 title: 'Succursale',
                 style: bodyText2,
                 onTap: () {
                   Routemaster.of(context)
-                      .replace(ComMarketingRoutes.comMarketingCampaign);
+                      .replace(ComMarketingRoutes.comMarketingSuccursale);
                   // Routemaster.of(context).pop();
                 }),
             DrawerWidget(
                 selected: widget.pageCurrente ==
-                    ComMarketingRoutes.comMarketingCampaign,
-                icon: Icons.arrow_right,
-                sizeIcon: 15.0,
-                title: 'Ventes',
-                style: bodyText2,
-                onTap: () {
-                  Routemaster.of(context)
-                      .replace(ComMarketingRoutes.comMarketingCampaign);
-                  // Routemaster.of(context).pop();
-                }),
-            DrawerWidget(
-                selected: widget.pageCurrente ==
-                    ComMarketingRoutes.comMarketingCampaign,
+                    ComMarketingRoutes.comMarketingAchat,
                 icon: Icons.arrow_right,
                 sizeIcon: 15.0,
                 title: 'Achats',
                 style: bodyText2,
                 onTap: () {
                   Routemaster.of(context)
-                      .replace(ComMarketingRoutes.comMarketingCampaign);
+                      .replace(ComMarketingRoutes.comMarketingAchat);
                   // Routemaster.of(context).pop();
                 }),
             DrawerWidget(
                 selected: widget.pageCurrente ==
-                    ComMarketingRoutes.comMarketingCampaign,
+                    ComMarketingRoutes.comMarketingBonLivraison,
                 icon: Icons.arrow_right,
                 sizeIcon: 15.0,
                 title: 'Bon de livraison',
                 style: bodyText2,
                 onTap: () {
                   Routemaster.of(context)
-                      .replace(ComMarketingRoutes.comMarketingCampaign);
+                      .replace(ComMarketingRoutes.comMarketingBonLivraison);
                   // Routemaster.of(context).pop();
                 }),
             DrawerWidget(
                 selected: widget.pageCurrente ==
-                    ComMarketingRoutes.comMarketingCampaign,
+                    ComMarketingRoutes.comMarketingRestitution,
                 icon: Icons.arrow_right,
                 sizeIcon: 15.0,
                 title: 'Restitution du produit',
                 style: bodyText2,
                 onTap: () {
                   Routemaster.of(context)
-                      .replace(ComMarketingRoutes.comMarketingCampaign);
+                      .replace(ComMarketingRoutes.comMarketingRestitution);
                   // Routemaster.of(context).pop();
                 }),
             DrawerWidget(
                 selected: widget.pageCurrente ==
-                    ComMarketingRoutes.comMarketingCampaign,
+                    ComMarketingRoutes.comMarketingFacture,
                 icon: Icons.arrow_right,
                 sizeIcon: 15.0,
                 title: 'Factures',
                 style: bodyText2,
                 onTap: () {
                   Routemaster.of(context)
-                      .replace(ComMarketingRoutes.comMarketingCampaign);
+                      .replace(ComMarketingRoutes.comMarketingFacture);
                   // Routemaster.of(context).pop();
                 }),
             DrawerWidget(
                 selected: widget.pageCurrente ==
-                    ComMarketingRoutes.comMarketingCampaign,
+                    ComMarketingRoutes.comMarketingCreance,
                 icon: Icons.arrow_right,
                 sizeIcon: 15.0,
                 title: 'Factures créance',
                 style: bodyText2,
                 onTap: () {
                   Routemaster.of(context)
-                      .replace(ComMarketingRoutes.comMarketingCampaign);
+                      .replace(ComMarketingRoutes.comMarketingCreance);
                   // Routemaster.of(context).pop();
                 }),
             DrawerWidget(
-                selected: widget.pageCurrente ==
-                    ComMarketingRoutes.comMarketingCampaign,
+                selected:
+                    widget.pageCurrente == ComMarketingRoutes.comMarketingVente,
                 icon: Icons.arrow_right,
                 sizeIcon: 15.0,
-                title: 'Historique de ravitaillement',
+                title: 'Ventes',
                 style: bodyText2,
                 onTap: () {
                   Routemaster.of(context)
-                      .replace(ComMarketingRoutes.comMarketingCampaign);
+                      .replace(ComMarketingRoutes.comMarketingVente);
                   // Routemaster.of(context).pop();
                 }),
             DrawerWidget(
                 selected: widget.pageCurrente ==
-                    ComMarketingRoutes.comMarketingCampaign,
-                icon: Icons.arrow_right,
-                sizeIcon: 15.0,
-                title: 'Historique de livraison',
-                style: bodyText2,
-                onTap: () {
-                  Routemaster.of(context)
-                      .replace(ComMarketingRoutes.comMarketingCampaign);
-                  // Routemaster.of(context).pop();
-                }),
-            DrawerWidget(
-                selected: widget.pageCurrente ==
-                    ComMarketingRoutes.comMarketingCampaign,
+                    ComMarketingRoutes.comMarketingcart,
                 icon: Icons.arrow_right,
                 sizeIcon: 15.0,
                 title: 'Panier',
                 style: bodyText2,
                 onTap: () {
                   Routemaster.of(context)
-                      .replace(ComMarketingRoutes.comMarketingCampaign);
+                      .replace(ComMarketingRoutes.comMarketingcart);
+                  // Routemaster.of(context).pop();
+                }),
+            DrawerWidget(
+                selected: widget.pageCurrente ==
+                    ComMarketingRoutes.comMarketingHistoryRavitaillement,
+                icon: Icons.arrow_right,
+                sizeIcon: 15.0,
+                title: 'Historique de ravitaillement',
+                style: bodyText2,
+                onTap: () {
+                  Routemaster.of(context).replace(
+                      ComMarketingRoutes.comMarketingHistoryRavitaillement);
+                  // Routemaster.of(context).pop();
+                }),
+            DrawerWidget(
+                selected: widget.pageCurrente ==
+                    ComMarketingRoutes.comMarketingHistoryLivraison,
+                icon: Icons.arrow_right,
+                sizeIcon: 15.0,
+                title: 'Historique de livraison',
+                style: bodyText2,
+                onTap: () {
+                  Routemaster.of(context)
+                      .replace(ComMarketingRoutes.comMarketingHistoryLivraison);
                   // Routemaster.of(context).pop();
                 }),
           ],

@@ -111,7 +111,6 @@ class _AgendaMarketingState extends State<AgendaMarketing> {
       mainAxisSpacing: 16.0,
       crossAxisSpacing: 16.0,
       children: List.generate(agendaList.length, (index) {
-        print(agendaList);
         final agenda = agendaList[index];
         final color = _lightColors[index % _lightColors.length];
         return GestureDetector(

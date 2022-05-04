@@ -11,7 +11,7 @@ import 'package:fokad_admin/src/pages/auth/login_auth.dart';
 import 'package:fokad_admin/src/pages/auth/profil_page.dart';
 import 'package:fokad_admin/src/pages/budgets/budget_finance.dart';
 import 'package:fokad_admin/src/pages/comm_marketing/c_m_dd/c_m_dd.dart';
-import 'package:fokad_admin/src/pages/comm_marketing/commercial/prod_model/components/add_update_prod_model.dart';
+import 'package:fokad_admin/src/pages/comm_marketing/commercial/prod_model/components/add_prod_model.dart';
 import 'package:fokad_admin/src/pages/comm_marketing/commercial/prod_model/prod_model_page.dart';
 import 'package:fokad_admin/src/pages/comm_marketing/commercial/stocks_global/components/add_stock_global.dart';
 import 'package:fokad_admin/src/pages/comm_marketing/commercial/stocks_global/stocks_global_page.dart';
@@ -179,10 +179,12 @@ class ExploitationRoutes {
 class ComMarketingRoutes {
   static const comMarketingDD = "/com-marketing-dd";
   static const comMarketingDashboard = "/com-marketing-dashboard";
+  // Marketing
   static const comMarketingAnnuaire = "/com-marketing-annuaire";
   static const comMarketingAgenda = "/com-marketing-agenda";
   static const comMarketingCampaign = "/com-marketing-campaign";
   static const comMarketingCampaignAdd = "/com-marketing-campaign-add";
+  // Commercial
   static const comMarketingProduitModel = "/com-marketing-produit-model";
   static const comMarketingProduitModelAdd = "/com-marketing-produit-model-add";
   static const comMarketingStockGlobal = "/com-marketing-stock-global";
@@ -313,7 +315,7 @@ class Routing {
             const MaterialPage(child: AddCampaign()),
 
         ComMarketingRoutes.comMarketingProduitModel: (_) => const MaterialPage(child: ProduitModelPage()),
-        ComMarketingRoutes.comMarketingProduitModelAdd: (_) => const MaterialPage(child: AddUpdateProModel()),
+        ComMarketingRoutes.comMarketingProduitModelAdd: (_) => const MaterialPage(child: AddProModel()),
         ComMarketingRoutes.comMarketingStockGlobal: (_) =>
             const MaterialPage(child: StockGlobalPage()),
         ComMarketingRoutes.comMarketingStockGlobalAdd: (_) =>

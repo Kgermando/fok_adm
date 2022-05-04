@@ -10,15 +10,15 @@ import 'package:fokad_admin/src/navigation/header/custom_appbar.dart';
 import 'package:fokad_admin/src/widgets/btn_widget.dart';
 import 'package:routemaster/routemaster.dart';
 
-class AddUpdateProModel extends StatefulWidget {
-  const AddUpdateProModel({Key? key, this.productModel}) : super(key: key);
+class UpdateProModel extends StatefulWidget {
+  const UpdateProModel({Key? key, this.productModel}) : super(key: key);
   final ProductModel? productModel;
 
   @override
-  State<AddUpdateProModel> createState() => _AddUpdateProModelState();
+  State<UpdateProModel> createState() => _UpdateProModelState();
 }
 
-class _AddUpdateProModelState extends State<AddUpdateProModel> {
+class _UpdateProModelState extends State<UpdateProModel> {
   final GlobalKey<ScaffoldState> _key = GlobalKey();
   final ScrollController _controllerScroll = ScrollController();
   final _formKey = GlobalKey<FormState>();
@@ -324,20 +324,12 @@ class _AddUpdateProModelState extends State<AddUpdateProModel> {
         succursale: '-',
         signature: signature.toString(),
         created: DateTime.now());
-    if (id != null) {
       await ProduitModelApi().updateData(id!, productModel);
       Routemaster.of(context).pop();
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: const Text("soumis avec succès!"),
+        content: const Text("Mis à jour avec succès!"),
         backgroundColor: Colors.green[700],
-      ));
-    } else {
-      await ProduitModelApi().insertData(productModel);
-      Routemaster.of(context).pop();
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: const Text("soumis avec succès!"),
-        backgroundColor: Colors.green[700],
-      ));
-    }
+      ));  
+    
   }
 }

@@ -5,7 +5,7 @@ import 'package:fokad_admin/src/constants/responsive.dart';
 import 'package:fokad_admin/src/models/comm_maketing/prod_model.dart';
 import 'package:fokad_admin/src/navigation/drawer/drawer_menu.dart';
 import 'package:fokad_admin/src/navigation/header/custom_appbar.dart';
-import 'package:fokad_admin/src/pages/comm_marketing/commercial/prod_model/components/add_update_prod_model.dart';
+import 'package:fokad_admin/src/pages/comm_marketing/commercial/prod_model/components/update_prod_model.dart';
 import 'package:fokad_admin/src/widgets/print_widget.dart';
 import 'package:intl/intl.dart';
 import 'package:routemaster/routemaster.dart';
@@ -46,7 +46,7 @@ ProductModel? productModel;
           child: const Icon(Icons.add),
           onPressed: () {
             Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) => AddUpdateProModel(productModel: productModel!)));
+                  builder: (context) => UpdateProModel(productModel: productModel!)));
           }),
         body: SafeArea(
           child: Row(

@@ -25,7 +25,6 @@ class PaiementBulletin extends StatefulWidget {
 
 class _PaiementBulletinState extends State<PaiementBulletin> {
   final GlobalKey<ScaffoldState> _key = GlobalKey();
-  final ScrollController _controllerScroll = ScrollController();
   final _formKey = GlobalKey<FormState>();
   bool isLoading = false;
 
@@ -66,8 +65,8 @@ class _PaiementBulletinState extends State<PaiementBulletin> {
       succursale: '-');
   Future<void> getData() async {
     UserModel userModel = await AuthApi().getUserId();
-    PaiementSalaireModel data =
-        await PaiementSalaireApi().getOneData(widget.id!);
+    // PaiementSalaireModel data =
+    //     await PaiementSalaireApi().getOneData(widget.id!);
     if (!mounted) return;
     setState(() {
       user = userModel;

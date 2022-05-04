@@ -40,6 +40,7 @@ class _DetailAnnuaireState extends State<DetailAnnuaire> {
       scheme: 'tel',
       path: phoneNumber,
     );
+    // ignore: deprecated_member_use
     await launch(launchUri.toString());
   }
 

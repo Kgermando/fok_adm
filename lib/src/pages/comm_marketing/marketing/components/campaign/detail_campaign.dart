@@ -25,7 +25,6 @@ class DetailCampaign extends StatefulWidget {
 
 class _DetailCampaignState extends State<DetailCampaign> {
   final GlobalKey<ScaffoldState> _key = GlobalKey();
-  final ScrollController _controllerScroll = ScrollController();
   bool isLoading = false;
 
   String approbationDGController = '-';
