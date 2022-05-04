@@ -40,37 +40,38 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
-        providers: [
-          ChangeNotifierProvider(create: (context) => Controller()),
-          ChangeNotifierProvider(create: (context) => ThemeProvider()),
-          ChangeNotifierProvider(create: (context) => AuthApi()),
-          ChangeNotifierProvider(create: (_) => AppState()),
-        ],
-        builder: (context, _) {
-          final themeProvider = Provider.of<ThemeProvider>(context);
-          return MaterialApp.router(
-            title: 'FOKAD ADMINISTRATION',
-            themeMode: themeProvider.themeMode,
-            routerDelegate: RoutemasterDelegate(
-              observers: [TitleObserver()],
-              routesBuilder: (context) {
-                final appState = Provider.of<AppState>(context);
-                final isLoggedIn = appState.isLoggedIn;
-                print('isLoggedIn $isLoggedIn');
-                return isLoggedIn
-                    ? Routing().buildRouteMap(appState)
-                    : Routing().loggedOutRouteMap;
-              },
-            ),
-            routeInformationParser: const RoutemasterParser(),
-            theme: MyThemes.lightTheme,
-            darkTheme: MyThemes.darkTheme,
-            localizationsDelegates: GlobalMaterialLocalizations.delegates,
-            supportedLocales: const [
-              Locale('fr', 'FR'),
-              Locale('en', 'EN')
-            ],
-          );
-        });
+      providers: [
+        ChangeNotifierProvider(create: (context) => Controller()),
+        ChangeNotifierProvider(create: (context) => ThemeProvider()),
+        ChangeNotifierProvider(create: (context) => AuthApi()),
+        ChangeNotifierProvider(create: (_) => AppState()),
+      ],
+      builder: (context, _) {
+        final themeProvider = Provider.of<ThemeProvider>(context);
+        return MaterialApp.router(
+          title: 'FOKAD ADMINISTRATION',
+          themeMode: themeProvider.themeMode,
+          routerDelegate: RoutemasterDelegate(
+            observers: [TitleObserver()],
+            routesBuilder: (context) {
+              final appState = Provider.of<AppState>(context);
+              final isLoggedIn = appState.isLoggedIn;
+              print('isLoggedIn $isLoggedIn');
+              return isLoggedIn
+                  ? Routing().buildRouteMap(appState)
+                  : Routing().loggedOutRouteMap;
+            },
+          ),
+          routeInformationParser: const RoutemasterParser(),
+          theme: MyThemes.lightTheme,
+          darkTheme: MyThemes.darkTheme,
+          localizationsDelegates: GlobalMaterialLocalizations.delegates,
+          supportedLocales: const [
+            Locale('fr', 'FR'),
+            Locale('en', 'EN')
+          ],
+        );
+      }
+    );
   }
 }

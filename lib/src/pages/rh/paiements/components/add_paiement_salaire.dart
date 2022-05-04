@@ -200,7 +200,7 @@ class _AddPaiementSalaireState extends State<AddPaiementSalaire> {
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(p10),
                 border: Border.all(
-                  color: Colors.blueGrey.shade700,
+                  color: Colors.amber.shade700,
                   width: 2.0,
                 ),
               ),
@@ -314,6 +314,7 @@ class _AddPaiementSalaireState extends State<AddPaiementSalaire> {
             ))
           ],
         ),
+        Divider(color: Colors.amber.shade700),
         Row(
           children: [
             Expanded(
@@ -332,6 +333,7 @@ class _AddPaiementSalaireState extends State<AddPaiementSalaire> {
             ))
           ],
         ),
+        Divider(color: Colors.amber.shade700),
         Row(
           children: [
             Expanded(
@@ -350,6 +352,7 @@ class _AddPaiementSalaireState extends State<AddPaiementSalaire> {
             ))
           ],
         ),
+        Divider(color: Colors.amber.shade700),
         Row(
           children: [
             Expanded(
@@ -368,6 +371,7 @@ class _AddPaiementSalaireState extends State<AddPaiementSalaire> {
             ))
           ],
         ),
+        Divider(color: Colors.amber.shade700),
         Row(
           children: [
             Expanded(
@@ -386,6 +390,7 @@ class _AddPaiementSalaireState extends State<AddPaiementSalaire> {
             ))
           ],
         ),
+        Divider(color: Colors.amber.shade700),
         Row(
           children: [
             Expanded(
@@ -404,6 +409,7 @@ class _AddPaiementSalaireState extends State<AddPaiementSalaire> {
             ))
           ],
         ),
+        Divider(color: Colors.amber.shade700),
         Row(
           children: [
             Expanded(
@@ -422,6 +428,7 @@ class _AddPaiementSalaireState extends State<AddPaiementSalaire> {
             ))
           ],
         ),
+        Divider(color: Colors.amber.shade700),
         Row(
           children: [
             Expanded(
@@ -440,6 +447,7 @@ class _AddPaiementSalaireState extends State<AddPaiementSalaire> {
             ))
           ],
         ),
+        Divider(color: Colors.amber.shade700),
         Row(
           children: [
             Expanded(
@@ -466,10 +474,10 @@ class _AddPaiementSalaireState extends State<AddPaiementSalaire> {
     final bodyLarge = Theme.of(context).textTheme.bodyLarge;
     return Container(
       padding: const EdgeInsets.only(top: p16, bottom: p16),
-      decoration: const BoxDecoration(
+      decoration: BoxDecoration(
         border: Border(
-          top: BorderSide(width: 1.0),
-          bottom: BorderSide(width: 1.0),
+          top: const BorderSide(width: 1.0),
+          bottom: BorderSide(width: 1.0, color: Colors.amber.shade700),
         ),
       ),
       child: Row(
@@ -561,10 +569,10 @@ class _AddPaiementSalaireState extends State<AddPaiementSalaire> {
     final bodyLarge = Theme.of(context).textTheme.bodyLarge;
     return Container(
       padding: const EdgeInsets.only(top: p16, bottom: p16),
-      decoration: const BoxDecoration(
+      decoration: BoxDecoration(
         border: Border(
           // top: BorderSide(width: 1.0),
-          bottom: BorderSide(width: 1.0),
+          bottom: BorderSide(width: 1.0, color: Colors.amber.shade700),
         ),
       ),
       child: Row(
@@ -642,10 +650,10 @@ class _AddPaiementSalaireState extends State<AddPaiementSalaire> {
     final bodyLarge = Theme.of(context).textTheme.bodyLarge;
     return Container(
       padding: const EdgeInsets.only(top: p16, bottom: p16),
-      decoration: const BoxDecoration(
+      decoration: BoxDecoration(
         border: Border(
           // top: BorderSide(width: 1.0),
-          bottom: BorderSide(width: 1.0),
+          bottom: BorderSide(width: 1.0, color: Colors.amber.shade700),
         ),
       ),
       child: Row(
@@ -685,10 +693,10 @@ class _AddPaiementSalaireState extends State<AddPaiementSalaire> {
     final bodyLarge = Theme.of(context).textTheme.bodyLarge;
     return Container(
       padding: const EdgeInsets.only(top: p16, bottom: p16),
-      decoration: const BoxDecoration(
+      decoration: BoxDecoration(
         border: Border(
           // top: BorderSide(width: 1.0),
-          bottom: BorderSide(width: 1.0),
+          bottom: BorderSide(width: 1.0, color: Colors.amber.shade700),
         ),
       ),
       child: Row(
@@ -724,10 +732,10 @@ class _AddPaiementSalaireState extends State<AddPaiementSalaire> {
     final bodyLarge = Theme.of(context).textTheme.bodyLarge;
     return Container(
       padding: const EdgeInsets.only(top: p16, bottom: p16),
-      decoration: const BoxDecoration(
+      decoration: BoxDecoration(
         border: Border(
           // top: BorderSide(width: 1.0),
-          bottom: BorderSide(width: 1.0),
+          bottom: BorderSide(width: 1.0, color: Colors.amber.shade700),
         ),
       ),
       child: Row(
@@ -769,10 +777,10 @@ class _AddPaiementSalaireState extends State<AddPaiementSalaire> {
     final bodyLarge = Theme.of(context).textTheme.bodyLarge;
     return Container(
       padding: const EdgeInsets.only(top: p16, bottom: p16),
-      decoration: const BoxDecoration(
+      decoration: BoxDecoration(
         border: Border(
           // top: BorderSide(width: 1.0),
-          bottom: BorderSide(width: 1.0),
+          bottom: BorderSide(width: 1.0, color: Colors.amber.shade700),
         ),
       ),
       child: Row(
@@ -866,10 +874,10 @@ class _AddPaiementSalaireState extends State<AddPaiementSalaire> {
     final bodyLarge = Theme.of(context).textTheme.bodyLarge;
     return Container(
       padding: const EdgeInsets.only(top: p16, bottom: p16),
-      decoration: const BoxDecoration(
+      decoration: BoxDecoration(
         border: Border(
           // top: BorderSide(width: 1.0),
-          bottom: BorderSide(width: 1.0),
+          bottom: BorderSide(width: 1.0, color: Colors.amber.shade700),
         ),
       ),
       child: Row(
@@ -947,10 +955,10 @@ class _AddPaiementSalaireState extends State<AddPaiementSalaire> {
     final bodyLarge = Theme.of(context).textTheme.bodyLarge;
     return Container(
       padding: const EdgeInsets.only(top: p16, bottom: p16),
-      decoration: const BoxDecoration(
+      decoration: BoxDecoration(
         border: Border(
           // top: BorderSide(width: 1.0),
-          bottom: BorderSide(width: 1.0),
+          bottom: BorderSide(width: 1.0, color: Colors.amber.shade700),
         ),
       ),
       child: Row(
@@ -986,10 +994,10 @@ class _AddPaiementSalaireState extends State<AddPaiementSalaire> {
     final bodyLarge = Theme.of(context).textTheme.bodyLarge;
     return Container(
       padding: const EdgeInsets.only(top: p16, bottom: p16),
-      decoration: const BoxDecoration(
+      decoration: BoxDecoration(
         border: Border(
           // top: BorderSide(width: 1.0),
-          bottom: BorderSide(width: 1.0),
+          bottom: BorderSide(width: 1.0, color: Colors.amber.shade700),
         ),
       ),
       child: Row(
@@ -1110,10 +1118,10 @@ class _AddPaiementSalaireState extends State<AddPaiementSalaire> {
     final bodyLarge = Theme.of(context).textTheme.bodyLarge;
     return Container(
       padding: const EdgeInsets.only(top: p16, bottom: p16),
-      decoration: const BoxDecoration(
+      decoration: BoxDecoration(
         border: Border(
           // top: BorderSide(width: 1.0),
-          bottom: BorderSide(width: 1.0),
+          bottom: BorderSide(width: 1.0, color: Colors.amber.shade700),
         ),
       ),
       child: Row(
@@ -1212,9 +1220,9 @@ class _AddPaiementSalaireState extends State<AddPaiementSalaire> {
     final bodyLarge = Theme.of(context).textTheme.bodyLarge;
     return Container(
       padding: const EdgeInsets.only(top: p16, bottom: p16),
-      decoration: const BoxDecoration(
+      decoration: BoxDecoration(
         border: Border(
-          bottom: BorderSide(width: 1.0),
+          bottom: BorderSide(width: 1.0, color: Colors.amber.shade700),
         ),
       ),
       child: Row(
@@ -1250,10 +1258,10 @@ class _AddPaiementSalaireState extends State<AddPaiementSalaire> {
     final bodyLarge = Theme.of(context).textTheme.bodyLarge;
     return Container(
       padding: const EdgeInsets.only(top: p16, bottom: p16),
-      decoration: const BoxDecoration(
+      decoration: BoxDecoration(
         border: Border(
           // top: BorderSide(width: 1.0),
-          bottom: BorderSide(width: 1.0),
+          bottom: BorderSide(width: 1.0, color: Colors.amber.shade700),
         ),
       ),
       child: Row(
@@ -1302,11 +1310,11 @@ class _AddPaiementSalaireState extends State<AddPaiementSalaire> {
       servicesAffectation: widget.agentModel!.servicesAffectation,
       salaire: widget.agentModel!.salaire,
       observation: false, // Finance
-      modePaiement: '',
+      modePaiement: '-',
       createdAt: DateTime.now(),
       ligneBudgtaire: '-',
       resources: '-',
-      tauxJourHeureMoisSalaire: (tauxJourHeureMoisSalaire.toString() == '')
+      tauxJourHeureMoisSalaire: (tauxJourHeureMoisSalaire == '' || tauxJourHeureMoisSalaire==null)
           ? '-'
           : tauxJourHeureMoisSalaire.toString(),
       joursHeuresPayeA100PourecentSalaire:

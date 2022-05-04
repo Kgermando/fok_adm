@@ -9,7 +9,9 @@ import 'package:fokad_admin/src/models/comm_maketing/campaign_model.dart';
 import 'package:fokad_admin/src/models/users/user_model.dart';
 import 'package:fokad_admin/src/navigation/drawer/drawer_menu.dart';
 import 'package:fokad_admin/src/navigation/header/custom_appbar.dart';
+import 'package:fokad_admin/src/pages/comm_marketing/marketing/components/campaign/update_campaign.dart';
 import 'package:fokad_admin/src/widgets/print_widget.dart';
+import 'package:fokad_admin/src/widgets/title_widget.dart';
 import 'package:intl/intl.dart';
 import 'package:routemaster/routemaster.dart';
 
@@ -49,7 +51,18 @@ class _DetailCampaignState extends State<DetailCampaign> {
   String? ligneBudgtaire;
   String? resource;
   List<LigneBudgetaireModel> ligneBudgetaireList = [];
-  UserModel? user;
+    UserModel? user = UserModel(
+      nom: '-',
+      prenom: '-',
+      matricule: '-',
+      departement: '-',
+      servicesAffectation: '-',
+      fonctionOccupe: '-',
+      role: '-',
+      isOnline: false,
+      createdAt: DateTime.now(),
+      passwordHash: '-',
+      succursale: '-');
   Future<void> getData() async {
     UserModel userModel = await AuthApi().getUserId();
     CampaignModel data = await CampaignApi().getOneData(widget.id!);
@@ -106,9 +119,7 @@ class _DetailCampaignState extends State<DetailCampaign> {
                                   ],
                                 ),
                                 Expanded(
-                                    child: Scrollbar(
-                                        controller: _controllerScroll,
-                                        isAlwaysShown: true,
+                                    child: SingleChildScrollView(
                                         child: pageDetail(data)))
                               ],
                             );
@@ -135,31 +146,33 @@ class _DetailCampaignState extends State<DetailCampaign> {
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(p10),
             border: Border.all(
-              color: Colors.blueGrey.shade700,
+              color: Colors.amber.shade700,
               width: 2.0,
             ),
           ),
-          child: ListView(
-            controller: _controllerScroll,
+          child: Column(
             children: [
               Row(
-                mainAxisAlignment: MainAxisAlignment.end,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
+                  TitleWidget(title: data.typeProduit),
                   Column(
                     children: [
-                      Row(
+                      Column(
                         children: [
-                          IconButton(
-                              tooltip: 'Modifier',
-                              onPressed: () {},
-                              icon: const Icon(Icons.edit)),
-                          PrintWidget(
-                              tooltip: 'Imprimer le document', onPressed: () {})
+                          Row(
+                            children: [
+                              editButton(data), 
+                              PrintWidget(
+                                  tooltip: 'Imprimer le document', onPressed: () {})
+                            ],
+                          ),
+                          SelectableText(
+                          DateFormat("dd-MM-yyyy HH:mm").format(data.created),
+                          textAlign: TextAlign.start),
                         ],
                       ),
-                      SelectableText(
-                          DateFormat("dd-MM-yy").format(data.created),
-                          textAlign: TextAlign.start),
+                      
                     ],
                   )
                 ],
@@ -173,12 +186,44 @@ class _DetailCampaignState extends State<DetailCampaign> {
     ]);
   }
 
+  Widget editButton(CampaignModel data) {
+    return IconButton(
+      icon: Icon(Icons.edit, color: Colors.red.shade700),
+      tooltip: "Modification",
+      onPressed: () => showDialog<String>(
+        context: context,
+        builder: (BuildContext context) => AlertDialog(
+          title: const Text('Etes-vous sûr de modifier ceci?'),
+          content:
+              const Text('Cette action permet de supprimer définitivement.'),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () => Navigator.pop(context, 'Cancel'),
+              child: const Text('Annuler'),
+            ),
+            TextButton(
+              onPressed: () async {
+                Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context) => UpdateCampaign(campaignModel: data)));
+              },
+              child: const Text('OK'),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
   Widget dataWidget(CampaignModel data) {
     final bodyMedium = Theme.of(context).textTheme.bodyMedium;
     return Padding(
       padding: const EdgeInsets.all(p10),
       child: Column(
         children: [
+          
+          const SizedBox(
+            height: p20,
+          ),
           Row(
             children: [
               Expanded(
@@ -192,6 +237,7 @@ class _DetailCampaignState extends State<DetailCampaign> {
               )
             ],
           ),
+          Divider(color: Colors.amber.shade700),
           Row(
             children: [
               Expanded(
@@ -205,6 +251,7 @@ class _DetailCampaignState extends State<DetailCampaign> {
               )
             ],
           ),
+          Divider(color: Colors.amber.shade700),
           Row(
             children: [
               Expanded(
@@ -232,6 +279,7 @@ class _DetailCampaignState extends State<DetailCampaign> {
               )
             ],
           ),
+          Divider(color: Colors.amber.shade700),
           Row(
             children: [
               Expanded(
@@ -240,11 +288,12 @@ class _DetailCampaignState extends State<DetailCampaign> {
                     style: bodyMedium.copyWith(fontWeight: FontWeight.bold)),
               ),
               Expanded(
-                child: SelectableText(data.coutCampaign,
+                child: SelectableText("${data.coutCampaign} \$",
                     textAlign: TextAlign.start, style: bodyMedium),
               )
             ],
           ),
+          Divider(color: Colors.amber.shade700),
           Row(
             children: [
               Expanded(
@@ -258,6 +307,7 @@ class _DetailCampaignState extends State<DetailCampaign> {
               )
             ],
           ),
+          Divider(color: Colors.amber.shade700),
           Row(
             children: [
               Expanded(
@@ -271,6 +321,7 @@ class _DetailCampaignState extends State<DetailCampaign> {
               )
             ],
           ),
+          Divider(color: Colors.amber.shade700),
           Row(
             children: [
               Expanded(
@@ -283,7 +334,8 @@ class _DetailCampaignState extends State<DetailCampaign> {
                     textAlign: TextAlign.start, style: bodyMedium),
               )
             ],
-          )
+          ),
+          Divider(color: Colors.amber.shade700),
         ],
       ),
     );
@@ -292,9 +344,9 @@ class _DetailCampaignState extends State<DetailCampaign> {
   Widget infosEditeurWidget(CampaignModel data) {
     final bodyMedium = Theme.of(context).textTheme.bodyMedium;
     final bodySmall = Theme.of(context).textTheme.bodySmall;
-    List<String> dataList = ['Approved', 'Unapproved'];
+    List<String> dataList = ['Approved', 'Unapproved', '-'];
     return Container(
-      padding: const EdgeInsets.only(top: p16, bottom: p16),
+      padding: const EdgeInsets.all(p20),
       decoration: const BoxDecoration(
         border: Border(
           // top: BorderSide(width: 1.0),

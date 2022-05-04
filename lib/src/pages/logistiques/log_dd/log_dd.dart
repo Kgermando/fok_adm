@@ -2,9 +2,21 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:fokad_admin/src/api/logistiques/anguin_api.dart';
+import 'package:fokad_admin/src/api/logistiques/carburant_api.dart';
+import 'package:fokad_admin/src/api/logistiques/entretien_api.dart';
+import 'package:fokad_admin/src/api/logistiques/etat_materiel_api.dart';
+import 'package:fokad_admin/src/api/logistiques/immobiler_api.dart';
+import 'package:fokad_admin/src/api/logistiques/mobilier_api.dart';
+import 'package:fokad_admin/src/api/logistiques/trajet_api.dart';
 import 'package:fokad_admin/src/constants/app_theme.dart';
 import 'package:fokad_admin/src/constants/responsive.dart';
 import 'package:fokad_admin/src/models/logistiques/anguin_model.dart';
+import 'package:fokad_admin/src/models/logistiques/carburant_model.dart';
+import 'package:fokad_admin/src/models/logistiques/entretien_model.dart';
+import 'package:fokad_admin/src/models/logistiques/etat_materiel_model.dart';
+import 'package:fokad_admin/src/models/logistiques/immobilier_model.dart';
+import 'package:fokad_admin/src/models/logistiques/mobilier_model.dart';
+import 'package:fokad_admin/src/models/logistiques/trajet_model.dart';
 import 'package:fokad_admin/src/navigation/drawer/drawer_menu.dart';
 import 'package:fokad_admin/src/navigation/header/custom_appbar.dart';
 import 'package:fokad_admin/src/pages/logistiques/log_dd/components/table_carburant.dart';
@@ -34,6 +46,12 @@ class _LogDDState extends State<LogDD> {
 
   int anguinsapprobationDD = 0;
   int carburantCount = 0;
+  int trajetsCount = 0;
+  int immobiliersCount = 0;
+  int mobiliersCount = 0;
+  int entretiensCount = 0;
+  int etatmaterielsCount = 0;
+  
 
   @override
   void initState() {
@@ -47,10 +65,28 @@ class _LogDDState extends State<LogDD> {
 
   Future<void> getData() async {
     List<AnguinModel> anguins = await AnguinApi().getAllData();
+    List<CarburantModel> carburants = await CarburantApi().getAllData();
+    List<TrajetModel> trajets = await TrajetApi().getAllData();
+    List<ImmobilierModel> immobiliers = await ImmobilierApi().getAllData();
+    List<MobilierModel> mobiliers = await MobilierApi().getAllData();
+    List<EntretienModel> entretiens = await EntretienApi().getAllData();
+    List<EtatMaterielModel> etatmateriels = await EtatMaterielApi().getAllData();
 
     setState(() {
       anguinsapprobationDD =
           anguins.where((element) => element.approbationDD == "-").length;
+      carburantCount =
+          carburants.where((element) => element.approbationDD == "-").length;
+      trajetsCount =
+          trajets.where((element) => element.approbationDD == "-").length;
+      immobiliersCount =
+          immobiliers.where((element) => element.approbationDD == "-").length;
+      mobiliersCount =
+          mobiliers.where((element) => element.approbationDD == "-").length;
+      entretiensCount =
+          entretiens.where((element) => element.approbationDD == "-").length;
+      etatmaterielsCount =
+          etatmateriels.where((element) => element.approbationDD == "-").length;
     });
   }
 
@@ -110,7 +146,7 @@ class _LogDDState extends State<LogDD> {
                                 title:
                                     Text('Dossier Carburant', style: headline6),
                                 subtitle: Text(
-                                    "Vous $anguinsapprobationDD dossiers necessitent votre approbation",
+                                    "Vous $carburantCount dossiers necessitent votre approbation",
                                     style: bodyMedium),
                                 initiallyExpanded: false,
                                 onExpansionChanged: (val) {
@@ -123,13 +159,13 @@ class _LogDDState extends State<LogDD> {
                               ),
                             ),
                             Card(
-                              color: const Color.fromARGB(255, 61, 73, 235),
+                              color: const Color.fromARGB(255, 61, 180, 235),
                               child: ExpansionTile(
                                 leading: const Icon(Icons.folder),
                                 title:
                                     Text('Dossier Trajet', style: headline6),
                                 subtitle: Text(
-                                    "Vous $anguinsapprobationDD dossiers necessitent votre approbation",
+                                    "Vous $trajetsCount dossiers necessitent votre approbation",
                                     style: bodyMedium),
                                 initiallyExpanded: false,
                                 onExpansionChanged: (val) {
@@ -147,7 +183,7 @@ class _LogDDState extends State<LogDD> {
                                 leading: const Icon(Icons.folder),
                                 title: Text('Dossier Immobilier', style: headline6),
                                 subtitle: Text(
-                                    "Vous $anguinsapprobationDD dossiers necessitent votre approbation",
+                                    "Vous $immobiliersCount dossiers necessitent votre approbation",
                                     style: bodyMedium),
                                 initiallyExpanded: false,
                                 onExpansionChanged: (val) {
@@ -165,7 +201,7 @@ class _LogDDState extends State<LogDD> {
                                 leading: const Icon(Icons.folder),
                                 title: Text('Dossier Mobilier', style: headline6),
                                 subtitle: Text(
-                                    "Vous $anguinsapprobationDD dossiers necessitent votre approbation",
+                                    "Vous $mobiliersCount dossiers necessitent votre approbation",
                                     style: bodyMedium),
                                 initiallyExpanded: false,
                                 onExpansionChanged: (val) {
@@ -184,7 +220,7 @@ class _LogDDState extends State<LogDD> {
                                 title:
                                     Text('Dossier Entretien', style: headline6),
                                 subtitle: Text(
-                                    "Vous $anguinsapprobationDD dossiers necessitent votre approbation",
+                                    "Vous $entretiensCount dossiers necessitent votre approbation",
                                     style: bodyMedium),
                                 initiallyExpanded: false,
                                 onExpansionChanged: (val) {
@@ -197,13 +233,13 @@ class _LogDDState extends State<LogDD> {
                               ),
                             ),
                             Card(
-                              color: const Color.fromARGB(255, 233, 156, 40),
+                              color: Colors.grey.shade700,
                               child: ExpansionTile(
                                 leading: const Icon(Icons.folder),
                                 title:
                                     Text('Dossier Etat de materiels', style: headline6),
                                 subtitle: Text(
-                                    "Vous $anguinsapprobationDD dossiers necessitent votre approbation",
+                                    "Vous $etatmaterielsCount dossiers necessitent votre approbation",
                                     style: bodyMedium),
                                 initiallyExpanded: false,
                                 onExpansionChanged: (val) {

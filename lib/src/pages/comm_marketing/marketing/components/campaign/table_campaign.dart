@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:fokad_admin/src/api/comm_marketing/marketing/campaign_api.dart';
 import 'package:fokad_admin/src/models/comm_maketing/campaign_model.dart';
-import 'package:fokad_admin/src/pages/comm_marketing/marketing/components/detail_campaign.dart';
+import 'package:fokad_admin/src/pages/comm_marketing/marketing/components/campaign/detail_campaign.dart';
 import 'package:fokad_admin/src/widgets/print_widget.dart';
 import 'package:fokad_admin/src/utils/class_implemented.dart';
 import 'package:intl/intl.dart';
@@ -59,7 +59,9 @@ class _TableCampaignState extends State<TableCampaign> {
             ClassFilterImplemented(),
           ],
           resolveDefaultColumnFilter: (column, resolver) {
-            if (column.field == 'typeProduit') {
+            if (column.field == 'id') {
+              return resolver<ClassFilterImplemented>() as PlutoFilterType;
+            } else if (column.field == 'typeProduit') {
               return resolver<ClassFilterImplemented>() as PlutoFilterType;
             } else if (column.field == 'dateDebutEtFin') {
               return resolver<ClassFilterImplemented>() as PlutoFilterType;
@@ -196,7 +198,7 @@ class _TableCampaignState extends State<TableCampaign> {
             'id': PlutoCell(value: item.id),
             'typeProduit': PlutoCell(value: item.typeProduit),
             'dateDebutEtFin': PlutoCell(value: item.dateDebutEtFin),
-            'coutCampaign': PlutoCell(value: item.coutCampaign),
+            'coutCampaign': PlutoCell(value: "${item.coutCampaign} \$"),
             'lieuCible': PlutoCell(value: item.lieuCible),
             'promotion': PlutoCell(value: item.promotion),
             'objetctifs': PlutoCell(value: item.objetctifs),

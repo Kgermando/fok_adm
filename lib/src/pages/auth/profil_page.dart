@@ -5,8 +5,10 @@ import 'package:fokad_admin/src/constants/app_theme.dart';
 import 'package:fokad_admin/src/constants/responsive.dart';
 import 'package:fokad_admin/src/models/users/user_model.dart';
 import 'package:fokad_admin/src/navigation/drawer/drawer_menu.dart';
+import 'package:fokad_admin/src/navigation/header/custom_appbar.dart';
 import 'package:fokad_admin/src/pages/auth/change_password.dart';
 import 'package:intl/intl.dart';
+import 'package:routemaster/routemaster.dart';
 
 class ProfilPage extends StatefulWidget {
   const ProfilPage({Key? key}) : super(key: key);
@@ -42,7 +44,32 @@ class _ProfilPageState extends State<ProfilPage> {
                         UserModel? userInfo = snapshot.data;
                         if (userInfo != null) {
                           var userData = userInfo;
-                          return Expanded(child: profileBody(userData));
+                          return Column(
+                            children: [
+                              Row(
+                                children: [
+                                  SizedBox(
+                                    width: 20.0,
+                                    child: IconButton(
+                                        onPressed: () {
+                                          Routemaster.of(context).pop();
+                                        },
+                                        icon: const Icon(Icons.arrow_back)),
+                                  ),
+                                  const SizedBox(
+                                    width: p10,
+                                  ),
+                                  Expanded(
+                                      flex: 5,
+                                      child: CustomAppbar(
+                                          title: 'Votre profil',
+                                          controllerMenu: () =>
+                                              _key.currentState!.openDrawer())),
+                                ],
+                              ),
+                              Expanded(child: SingleChildScrollView(child: profileBody(userData))),
+                            ],
+                          );
                         }
                       }
                       return Container();
@@ -62,7 +89,7 @@ class _ProfilPageState extends State<ProfilPage> {
     final String firstLettter2 = userModel.prenom[0];
     final String firstLettter = userModel.nom[0];
 
-    return ListView(
+    return Column(
       children: [
         Stack(
           clipBehavior: Clip.none,
@@ -72,14 +99,6 @@ class _ProfilPageState extends State<ProfilPage> {
               height: 200,
               width: double.infinity,
             ),
-            Positioned(
-                top: 20,
-                left: 20,
-                child: AutoSizeText(
-                  "MON PROFIL",
-                  maxLines: 1,
-                  style: headline5!.copyWith(color: Colors.white),
-                )),
             Positioned(
               top: 130,
               left: 50,
@@ -96,7 +115,7 @@ class _ProfilPageState extends State<ProfilPage> {
                   child: AutoSizeText(
                     '$firstLettter2$firstLettter'.toUpperCase(),
                     maxLines: 1,
-                    style: headline5.copyWith(color: Colors.amber.shade700),
+                    style: headline5!.copyWith(color: Colors.amber.shade700),
                   ),
                 ),
               ),

@@ -50,65 +50,74 @@ class _DetailUserState extends State<DetailUser> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        key: _key,
-        drawer: const DrawerMenu(),
-        floatingActionButton: speedialWidget(),
-        body: SafeArea(
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              if (Responsive.isDesktop(context))
-                const Expanded(
-                  child: DrawerMenu(),
+    return Container(
+      decoration: const BoxDecoration(
+        image: DecorationImage(
+          image: AssetImage('assets/images/logo.png'),
+          fit: BoxFit.cover,
+          // opacity: .4
+        ),
+      ),
+      child: Scaffold(
+          key: _key,
+          drawer: const DrawerMenu(),
+          floatingActionButton: speedialWidget(),
+          body: SafeArea(
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                if (Responsive.isDesktop(context))
+                  const Expanded(
+                    child: DrawerMenu(),
+                  ),
+                Expanded(
+                  flex: 5,
+                  child: Padding(
+                      padding: const EdgeInsets.all(p10),
+                      child: FutureBuilder<UserModel>(
+                          future: UserApi().getOneData(widget.id),
+                          builder: (BuildContext context,
+                              AsyncSnapshot<UserModel> snapshot) {
+                            if (snapshot.hasData) {
+                              UserModel? data = snapshot.data;
+                              return Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Row(
+                                    children: [
+                                      SizedBox(
+                                        width: p20,
+                                        child: IconButton(
+                                            onPressed: () =>
+                                                Routemaster.of(context).pop(),
+                                            icon: const Icon(Icons.arrow_back)),
+                                      ),
+                                      const SizedBox(width: p10),
+                                      Expanded(
+                                        child: CustomAppbar(
+                                            title: "Matricule ${data!.matricule}",
+                                            controllerMenu: () =>
+                                                _key.currentState!.openDrawer()),
+                                      ),
+                                    ],
+                                  ),
+                                  Expanded(
+                                      child: Scrollbar(
+                                          controller: _controllerScroll,
+                                          isAlwaysShown: true,
+                                          child: pageDetail(data)))
+                                ],
+                              );
+                            } else {
+                              return const Center(
+                                  child: CircularProgressIndicator());
+                            }
+                          })),
                 ),
-              Expanded(
-                flex: 5,
-                child: Padding(
-                    padding: const EdgeInsets.all(p10),
-                    child: FutureBuilder<UserModel>(
-                        future: UserApi().getOneData(widget.id),
-                        builder: (BuildContext context,
-                            AsyncSnapshot<UserModel> snapshot) {
-                          if (snapshot.hasData) {
-                            UserModel? data = snapshot.data;
-                            return Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Row(
-                                  children: [
-                                    SizedBox(
-                                      width: p20,
-                                      child: IconButton(
-                                          onPressed: () =>
-                                              Routemaster.of(context).pop(),
-                                          icon: const Icon(Icons.arrow_back)),
-                                    ),
-                                    const SizedBox(width: p10),
-                                    Expanded(
-                                      child: CustomAppbar(
-                                          title: data!.matricule,
-                                          controllerMenu: () =>
-                                              _key.currentState!.openDrawer()),
-                                    ),
-                                  ],
-                                ),
-                                Expanded(
-                                    child: Scrollbar(
-                                        controller: _controllerScroll,
-                                        isAlwaysShown: true,
-                                        child: pageDetail(data)))
-                              ],
-                            );
-                          } else {
-                            return const Center(
-                                child: CircularProgressIndicator());
-                          }
-                        })),
-              ),
-            ],
-          ),
-        ));
+              ],
+            ),
+          )),
+    );
   }
 
   Widget pageDetail(UserModel data) {
@@ -135,16 +144,7 @@ class _DetailUserState extends State<DetailUser> {
                 children: [
                   Row(
                     children: [
-                      TitleWidget(title: data.matricule),
-                      if (data.isOnline)
-                        Container(
-                          width: 5,
-                          height: 5,
-                          decoration: const BoxDecoration(
-                            color: Colors.green,
-                            shape: BoxShape.circle,
-                          ),
-                        ),
+                      TitleWidget(title: "Matricule ${data.matricule}"),
                     ],
                   ),
                   Column(
@@ -194,6 +194,7 @@ class _DetailUserState extends State<DetailUser> {
               )
             ],
           ),
+          Divider(color: Colors.amber.shade700),
           Row(
             children: [
               Expanded(
@@ -207,6 +208,7 @@ class _DetailUserState extends State<DetailUser> {
               )
             ],
           ),
+          Divider(color: Colors.amber.shade700),
           Row(
             children: [
               Expanded(
@@ -220,6 +222,7 @@ class _DetailUserState extends State<DetailUser> {
               )
             ],
           ),
+          Divider(color: Colors.amber.shade700),
           Row(
             children: [
               Expanded(
@@ -233,6 +236,7 @@ class _DetailUserState extends State<DetailUser> {
               )
             ],
           ),
+          Divider(color: Colors.amber.shade700),
           Row(
             children: [
               Expanded(
@@ -246,6 +250,7 @@ class _DetailUserState extends State<DetailUser> {
               )
             ],
           ),
+          Divider(color: Colors.amber.shade700),
           Row(
             children: [
               Expanded(
@@ -259,6 +264,7 @@ class _DetailUserState extends State<DetailUser> {
               )
             ],
           ),
+          Divider(color: Colors.amber.shade700),
           Row(
             children: [
               Expanded(
@@ -272,6 +278,7 @@ class _DetailUserState extends State<DetailUser> {
               )
             ],
           ),
+          Divider(color: Colors.amber.shade700),
           // if (data.succursale != '-')
           Row(
             children: [

@@ -1,6 +1,7 @@
 
 class Country {
   List<String> world = [
+    'République démocratique du Congo',
     'Afrique du Sud',
     'Afghanistan',
     'Albanie',
@@ -146,7 +147,6 @@ class Country {
     'Portugal',
     'Qatar',
     'République centrafricaine',
-    'République démocratique du Congo',
     'République Dominicaine',
     'République du Congo',
     'République tchèque',

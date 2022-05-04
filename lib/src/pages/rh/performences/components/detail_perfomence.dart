@@ -8,7 +8,6 @@ import 'package:fokad_admin/src/models/rh/perfomence_model.dart';
 import 'package:fokad_admin/src/models/users/user_model.dart';
 import 'package:fokad_admin/src/navigation/drawer/drawer_menu.dart';
 import 'package:fokad_admin/src/navigation/header/custom_appbar.dart';
-import 'package:fokad_admin/src/widgets/btn_widget.dart';
 import 'package:fokad_admin/src/widgets/print_widget.dart';
 import 'package:fokad_admin/src/widgets/title_widget.dart';
 import 'package:intl/intl.dart';
@@ -34,8 +33,6 @@ class DetailPerformence extends StatefulWidget {
 
 class _DetailPerformenceState extends State<DetailPerformence> {
   final GlobalKey<ScaffoldState> _key = GlobalKey();
-  // final ScrollController _controllerScroll = ScrollController();
-  final _formKey = GlobalKey<FormState>();
   bool isLoading = false;
 
   double hospitaliteTotal = 0.0;

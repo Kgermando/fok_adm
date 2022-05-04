@@ -1,0 +1,224 @@
+import 'package:date_time_picker/date_time_picker.dart';
+import 'package:flutter/material.dart';
+import 'package:fokad_admin/src/api/auth/auth_api.dart';
+import 'package:fokad_admin/src/api/comm_marketing/marketing/agenda_api.dart';
+import 'package:fokad_admin/src/constants/app_theme.dart';
+import 'package:fokad_admin/src/constants/responsive.dart';
+import 'package:fokad_admin/src/models/comm_maketing/agenda_model.dart';
+import 'package:fokad_admin/src/models/users/user_model.dart';
+import 'package:fokad_admin/src/navigation/drawer/drawer_menu.dart';
+import 'package:fokad_admin/src/navigation/header/custom_appbar.dart';
+import 'package:fokad_admin/src/widgets/btn_widget.dart';
+
+class UpdateAgenda extends StatefulWidget {
+  const UpdateAgenda({Key? key, this.agendaModel}) : super(key: key);
+  final AgendaModel? agendaModel;
+
+  @override
+  State<UpdateAgenda> createState() => _UpdateAgendaState();
+}
+
+class _UpdateAgendaState extends State<UpdateAgenda> {
+  final GlobalKey<ScaffoldState> _key = GlobalKey();
+  final ScrollController _controllerScroll = ScrollController();
+  final _formKey = GlobalKey<FormState>();
+  bool isLoading = false;
+
+  TextEditingController titleController = TextEditingController();
+  TextEditingController descriptionController = TextEditingController();
+  TextEditingController dateRappelController = TextEditingController();
+  int? id;
+
+  @override
+  void initState() {
+    getData();
+    setState(() {
+      id = widget.agendaModel!.id;
+      titleController = TextEditingController(text: widget.agendaModel!.title);
+      descriptionController =
+          TextEditingController(text: widget.agendaModel!.description);
+      dateRappelController =
+          TextEditingController(text: widget.agendaModel!.dateRappel.toIso8601String());
+    });
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    titleController.dispose();
+    descriptionController.dispose();
+    dateRappelController.dispose();
+    super.dispose();
+  }
+
+  UserModel? user;
+  Future<void> getData() async {
+    UserModel userModel = await AuthApi().getUserId();
+    setState(() {
+      user = userModel;
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+        key: _key,
+        drawer: const DrawerMenu(),
+        body: SafeArea(
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              if (Responsive.isDesktop(context))
+                const Expanded(
+                  child: DrawerMenu(),
+                ),
+              Expanded(
+                flex: 5,
+                child: Padding(
+                  padding: const EdgeInsets.all(p10),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      CustomAppbar(
+                          title: widget.agendaModel!.title,
+                          controllerMenu: () =>
+                              _key.currentState!.openDrawer()),
+                      Expanded(
+                          child: Scrollbar(
+                        controller: _controllerScroll,
+                        child: addPageWidget(),
+                      ))
+                    ],
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ));
+  }
+
+  Widget addPageWidget() {
+    return Form(
+      key: _formKey,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Card(
+            elevation: 10,
+            child: Padding(
+              padding: const EdgeInsets.all(p16),
+              child: SizedBox(
+                width: Responsive.isDesktop(context)
+                    ? MediaQuery.of(context).size.width / 2
+                    : MediaQuery.of(context).size.width,
+                child: ListView(
+                  controller: _controllerScroll,
+                  children: [
+                    dateRappelWidget(),
+                    const SizedBox(height: p8),
+                    buildTitle(),
+                    const SizedBox(height: p8),
+                    buildDescription(),
+                    const SizedBox(
+                      height: p20,
+                    ),
+                    BtnWidget(
+                        title: 'Soumettre',
+                        isLoading: isLoading,
+                        press: () {
+                          final form = _formKey.currentState!;
+                          if (form.validate()) {
+                            submit();
+                            form.reset();
+                          }
+                        })
+                  ],
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+
+  Widget dateRappelWidget() {
+    return Container(
+      margin: const EdgeInsets.only(bottom: p20),
+      child: DateTimePicker(
+        type: DateTimePickerType.dateTime,
+        decoration: InputDecoration(
+          prefixIcon: const Icon(Icons.date_range),
+          border:
+              OutlineInputBorder(borderRadius: BorderRadius.circular(10.0)),
+          labelText: 'Rappel',
+        ),
+        controller: dateRappelController,
+        firstDate: DateTime(1930),
+        lastDate: DateTime(2100),
+        validator: (value) {
+          if (value != null && value.isEmpty) {
+            return 'Ce champs est obligatoire';
+          } else {
+            return null;
+          }
+        },
+      ));
+  }
+
+  Widget buildTitle() {
+    final bodyText1 = Theme.of(context).textTheme.bodyText1;
+    return TextFormField(
+      maxLines: 1,
+      style: bodyText1,
+      controller: titleController,
+      decoration: const InputDecoration(
+        border: InputBorder.none,
+        hintText: 'Objet...',
+      ),
+      validator: (value) {
+        if (value != null && value.isEmpty) {
+          return 'Ce champs est obligatoire';
+        } else {
+          return null;
+        }
+      },
+    );
+  }
+
+  Widget buildDescription() {
+    final bodyText2 = Theme.of(context).textTheme.bodyText2;
+    return TextFormField(
+      maxLines: 10,
+      style: bodyText2,
+      controller: descriptionController,
+      decoration: const InputDecoration(
+        border: InputBorder.none,
+        hintText: 'Ecrivez quelque chose...',
+        // hintStyle: TextStyle(color: Colors.black54),
+      ),
+      validator: (value) {
+        if (value != null && value.isEmpty) {
+          return 'Ce champs est obligatoire';
+        } else {
+          return null;
+        }
+      },
+    );
+  }
+
+  Future<void> submit() async {
+    final agendaModel = AgendaModel(
+        title: titleController.text,
+        description: descriptionController.text,
+        dateRappel: DateTime.parse(dateRappelController.text),
+        signature: user!.matricule.toString(),
+        created: DateTime.now());
+    if (id != null) {
+      await AgendaApi().updateData(id!, agendaModel);
+    } else {
+      await AgendaApi().insertData(agendaModel);
+    }
+  }
+}

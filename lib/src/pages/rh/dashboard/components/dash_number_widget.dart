@@ -40,7 +40,7 @@ class DashNumberWidget extends StatelessWidget {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Flexible(child: Icon(icon, size: 50.0, color: Colors.white))
+                    Flexible(child: Icon(icon, size: 40.0, color: Colors.white))
                   ],
                 ),
               ),
@@ -50,7 +50,7 @@ class DashNumberWidget extends StatelessWidget {
                   children: [ 
                     Expanded(
                       flex: 1,
-                      child: AutoSizeText(title, maxLines: 1, style: bodyMedium!.copyWith(color: Colors.white))
+                      child: AutoSizeText(title, maxLines: 2, style: bodyMedium!.copyWith(color: Colors.white))
                     ),
                     const SizedBox(height: p10),
                     Expanded(

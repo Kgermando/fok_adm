@@ -7,7 +7,7 @@ import 'package:fokad_admin/src/constants/responsive.dart';
 import 'package:fokad_admin/src/models/comm_maketing/annuaire_model.dart';
 import 'package:fokad_admin/src/navigation/drawer/drawer_menu.dart';
 import 'package:fokad_admin/src/navigation/header/custom_appbar.dart';
-import 'package:fokad_admin/src/pages/comm_marketing/marketing/components/add_update_annuaire.dart';
+import 'package:fokad_admin/src/pages/comm_marketing/marketing/components/annuaire/update_annuaire.dart';
 import 'package:routemaster/routemaster.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -391,18 +391,19 @@ class _DetailAnnuaireState extends State<DetailAnnuaire> {
 
   Widget editButton() => IconButton(
       icon: const Icon(Icons.edit_outlined),
+      tooltip: "Modifiaction",
       onPressed: () async {
         if (isLoading) return;
-
         Navigator.of(context).push(MaterialPageRoute(
           builder: (context) =>
-              AddUpdateAnnuaire(annuaireModel: widget.annuaireModel),
+              UpdateAnnuaire(annuaireModel: widget.annuaireModel),
         ));
       });
 
   Widget deleteButton() {
     return IconButton(
       icon: const Icon(Icons.delete),
+      tooltip: "Suppression",
       onPressed: () => showDialog<String>(
         context: context,
         builder: (BuildContext context) => AlertDialog(
@@ -417,7 +418,7 @@ class _DetailAnnuaireState extends State<DetailAnnuaire> {
             TextButton(
               onPressed: () async {
                 await AnnuaireApi().deleteData(widget.annuaireModel.id!);
-                Navigator.of(context).pop();
+                Routemaster.of(context).pop();
                 ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                   content: Text(
                       "${widget.annuaireModel.nomPostnomPrenom} vient d'être supprimé!"),

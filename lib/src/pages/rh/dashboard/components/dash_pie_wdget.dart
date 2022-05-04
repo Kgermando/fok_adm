@@ -33,19 +33,23 @@ class _DashRHPieWidgetState extends State<DashRHPieWidget> {
   @override
   Widget build(BuildContext context) {
     final bodyLarge = Theme.of(context).textTheme.bodyLarge;
-    return Card(
-      elevation: 10.0,
-      child: SfCircularChart(
-          title: ChartTitle(text: 'Genre', textStyle: bodyLarge),
-          legend: Legend(isVisible: true, isResponsive: true),
-          series: <CircularSeries>[
-            // Render pie chart
-            PieSeries<AgentPieChartModel, String>(
-                dataSource: agentList,
-                // pointColorMapper: (ChartData data, _) => data.color,
-                xValueMapper: (AgentPieChartModel data, _) => data.sexe,
-                yValueMapper: (AgentPieChartModel data, _) => data.count)
-          ]),
+    return SizedBox(
+      width: 400,
+      height: 200,
+      child: Card(
+        elevation: 10.0,
+        child: SfCircularChart(
+            title: ChartTitle(text: 'Genre', textStyle: bodyLarge),
+            legend: Legend(isVisible: true, isResponsive: true),
+            series: <CircularSeries>[
+              // Render pie chart
+              PieSeries<AgentPieChartModel, String>(
+                  dataSource: agentList,
+                  // pointColorMapper: (ChartData data, _) => data.color,
+                  xValueMapper: (AgentPieChartModel data, _) => data.sexe,
+                  yValueMapper: (AgentPieChartModel data, _) => data.count)
+            ]),
+      ),
     );
   }
 }

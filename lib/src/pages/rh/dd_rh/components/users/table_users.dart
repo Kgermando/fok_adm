@@ -252,22 +252,8 @@ class _TableUsersState extends State<TableUsers> {
             'succursale': PlutoCell(value: item.succursale),
             'isOnline': PlutoCell(
                 value: (item.isOnline)
-                    ? Container(
-                        width: 5,
-                        height: 5,
-                        decoration: BoxDecoration(
-                          color: Colors.green.shade700,
-                          shape: BoxShape.circle,
-                        ),
-                      )
-                    : Container(
-                        width: 5,
-                        height: 5,
-                        decoration: BoxDecoration(
-                          color: Colors.red.shade700,
-                          shape: BoxShape.circle,
-                        ),
-                      )),
+                    ? "En ligne"
+                    : "Offline"),
             'createdAt': PlutoCell(
                 value: DateFormat("dd-MM-yy H:mm").format(item.createdAt))
           }));

@@ -7,8 +7,8 @@ import 'package:fokad_admin/src/constants/responsive.dart';
 import 'package:fokad_admin/src/models/comm_maketing/annuaire_model.dart';
 import 'package:fokad_admin/src/navigation/drawer/drawer_menu.dart';
 import 'package:fokad_admin/src/navigation/header/custom_appbar.dart';
-import 'package:fokad_admin/src/pages/comm_marketing/marketing/components/add_update_annuaire.dart';
-import 'package:fokad_admin/src/pages/comm_marketing/marketing/components/detail_annuaire.dart';
+import 'package:fokad_admin/src/pages/comm_marketing/marketing/components/annuaire/add_annuaire.dart';
+import 'package:fokad_admin/src/pages/comm_marketing/marketing/components/annuaire/detail_annuaire.dart';
 import 'package:fokad_admin/src/widgets/search_widget.dart';
 
 final _lightColors = [
@@ -71,7 +71,7 @@ class _AnnuaireMarketingState extends State<AnnuaireMarketing> {
             child: const Icon(Icons.add),
             onPressed: () {
               Navigator.of(context).push(MaterialPageRoute(
-                builder: (context) => const AddUpdateAnnuaire(),
+                builder: (context) => const AddAnnuaire(),
               ));
             }),
         body: SafeArea(
@@ -96,15 +96,15 @@ class _AnnuaireMarketingState extends State<AnnuaireMarketing> {
                       buildSearch(),
                       Expanded(
                           child: FutureBuilder<List<AnnuaireModel>>(
-                              future: AnnuaireApi().getAllDataSearch(query),
+                              future: AnnuaireApi().getAllData(),
                               builder: (BuildContext context,
                                   AsyncSnapshot<List<AnnuaireModel>> snapshot) {
                                 if (snapshot.hasData) {
                                   List<AnnuaireModel>? annuaireModels =
                                       snapshot.data;
+                                  
                                   return annuaireModels!.isEmpty
                                       ? Column(
-                                          mainAxisSize: MainAxisSize.min,
                                           children: [
                                             SizedBox(
                                                 height: MediaQuery.of(context)
@@ -124,17 +124,16 @@ class _AnnuaireMarketingState extends State<AnnuaireMarketing> {
                                             ),
                                           ],
                                         )
-                                      : Scrollbar(
-                                          showTrackOnHover: true,
-                                          child: ListView.builder(
-                                              itemCount: annuaireModels.length,
-                                              itemBuilder: (context, index) {
-                                                final annuaireModel =
-                                                    annuaireModels[index];
-                                                return buildAnnuaire(
-                                                    annuaireModel, index);
-                                              }),
-                                        );
+                                      : ListView.builder(
+                                          itemCount: annuaireModels.length,
+                                          itemBuilder: (context, index) {
+                                            final annuaireModel =
+                                                annuaireModels[index];
+                                            print(annuaireModels);
+                                            
+                                            return buildAnnuaire(
+                                                annuaireModel, index);
+                                          });
                                 } else {
                                   return const Center(
                                       child: CircularProgressIndicator());
@@ -168,7 +167,6 @@ class _AnnuaireMarketingState extends State<AnnuaireMarketing> {
     final bodyText1 = Theme.of(context).textTheme.bodyText1;
     final bodyText2 = Theme.of(context).textTheme.bodyText2;
     final color = _lightColors[index % _lightColors.length];
-
     return GestureDetector(
         onTap: () async {
           await Navigator.of(context).push(MaterialPageRoute(

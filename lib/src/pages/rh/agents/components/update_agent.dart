@@ -97,7 +97,7 @@ class _UpdateAgentState extends State<UpdateAgent> {
     fonctionOccupe = widget.agentModel.fonctionOccupe;
     createdAt = widget.agentModel.createdAt;
     statutAgent = widget.agentModel.statutAgent;
-    photo = widget.agentModel.photo!; 
+    // photo = widget.agentModel.photo!; 
     nomController = TextEditingController(text: widget.agentModel.nom);
     postNomController = TextEditingController(text: widget.agentModel.postNom);
     prenomController = TextEditingController(text: widget.agentModel.prenom);

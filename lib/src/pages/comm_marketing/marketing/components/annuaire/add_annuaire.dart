@@ -8,17 +8,17 @@ import 'package:fokad_admin/src/models/users/user_model.dart';
 import 'package:fokad_admin/src/navigation/drawer/drawer_menu.dart';
 import 'package:fokad_admin/src/navigation/header/custom_appbar.dart';
 import 'package:fokad_admin/src/widgets/btn_widget.dart';
+import 'package:fokad_admin/src/widgets/title_widget.dart';
 import 'package:routemaster/routemaster.dart';
 
-class AddUpdateAnnuaire extends StatefulWidget {
-  const AddUpdateAnnuaire({Key? key, this.annuaireModel}) : super(key: key);
-  final AnnuaireModel? annuaireModel;
+class AddAnnuaire extends StatefulWidget {
+  const AddAnnuaire({Key? key}) : super(key: key);
 
   @override
-  State<AddUpdateAnnuaire> createState() => _AddUpdateAnnuaireState();
+  State<AddAnnuaire> createState() => _AddAnnuaireState();
 }
 
-class _AddUpdateAnnuaireState extends State<AddUpdateAnnuaire> {
+class _AddAnnuaireState extends State<AddAnnuaire> {
   final GlobalKey<ScaffoldState> _key = GlobalKey();
   final ScrollController _controllerScroll = ScrollController();
   final _formKey = GlobalKey<FormState>();
@@ -40,26 +40,6 @@ class _AddUpdateAnnuaireState extends State<AddUpdateAnnuaire> {
   @override
   void initState() {
     getData();
-    setState(() {
-      id = widget.annuaireModel!.id;
-      categorie = widget.annuaireModel!.categorie;
-      nomPostnomPrenomController =
-          TextEditingController(text: widget.annuaireModel!.nomPostnomPrenom);
-      emailController =
-          TextEditingController(text: widget.annuaireModel!.email);
-      mobile1Controller =
-          TextEditingController(text: widget.annuaireModel!.mobile1);
-      mobile2Controller =
-          TextEditingController(text: widget.annuaireModel!.mobile2);
-      secteurActiviteController =
-          TextEditingController(text: widget.annuaireModel!.secteurActivite);
-      nomEntrepriseController =
-          TextEditingController(text: widget.annuaireModel!.nomEntreprise);
-      gradeController =
-          TextEditingController(text: widget.annuaireModel!.grade);
-      adresseEntrepriseController =
-          TextEditingController(text: widget.annuaireModel!.adresseEntreprise);
-    });
     super.initState();
   }
 
@@ -75,7 +55,6 @@ class _AddUpdateAnnuaireState extends State<AddUpdateAnnuaire> {
   void dispose() {
     nomPostnomPrenomController.dispose();
     emailController.dispose();
-    mobile1Controller.dispose();
     mobile1Controller.dispose();
     mobile2Controller.dispose();
     secteurActiviteController.dispose();
@@ -115,6 +94,7 @@ class _AddUpdateAnnuaireState extends State<AddUpdateAnnuaire> {
                                 },
                                 icon: const Icon(Icons.arrow_back)),
                           ),
+                          const SizedBox(width: p10),
                           Expanded(
                               flex: 5,
                               child: CustomAppbar(
@@ -154,6 +134,16 @@ class _AddUpdateAnnuaireState extends State<AddUpdateAnnuaire> {
                 child: ListView(
                   controller: _controllerScroll,
                   children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: const [
+                        TitleWidget(title: "Ajout contact"),
+                      ],
+                    ),
+                    const SizedBox(
+                      height: p20,
+                    ),
+                    categorieField(),
                     if (Responsive.isDesktop(context))
                       Row(
                         children: [
@@ -188,7 +178,7 @@ class _AddUpdateAnnuaireState extends State<AddUpdateAnnuaire> {
                           Expanded(child: nomEntrepriseField()),
                         ],
                       ),
-                    if (!Responsive.isDesktop(context)) categorieField(),
+                     
                     if (!Responsive.isDesktop(context)) nomPostnomPrenomField(),
                     if (!Responsive.isDesktop(context)) emailField(),
                     if (!Responsive.isDesktop(context)) mobile1Field(),
@@ -253,6 +243,7 @@ class _AddUpdateAnnuaireState extends State<AddUpdateAnnuaire> {
     return Container(
       margin: const EdgeInsets.only(bottom: 20.0),
       child: TextFormField(
+        controller: nomPostnomPrenomController,
         keyboardType: TextInputType.text,
         decoration: InputDecoration(
           labelText: 'Nom complet',
@@ -275,6 +266,7 @@ class _AddUpdateAnnuaireState extends State<AddUpdateAnnuaire> {
     return Container(
       margin: const EdgeInsets.only(bottom: 20.0),
       child: TextFormField(
+        controller: emailController,
         keyboardType: TextInputType.emailAddress,
         decoration: InputDecoration(
           labelText: 'Email',
@@ -297,6 +289,7 @@ class _AddUpdateAnnuaireState extends State<AddUpdateAnnuaire> {
     return Container(
       margin: const EdgeInsets.only(bottom: 20.0),
       child: TextFormField(
+        controller: mobile1Controller,
         keyboardType: TextInputType.phone,
         decoration: InputDecoration(
           labelText: 'Téléphone 1',
@@ -319,6 +312,7 @@ class _AddUpdateAnnuaireState extends State<AddUpdateAnnuaire> {
     return Container(
       margin: const EdgeInsets.only(bottom: 20.0),
       child: TextFormField(
+        controller: mobile2Controller,
         keyboardType: TextInputType.phone,
         decoration: InputDecoration(
           labelText: 'Téléphone 2',
@@ -341,6 +335,7 @@ class _AddUpdateAnnuaireState extends State<AddUpdateAnnuaire> {
     return Container(
       margin: const EdgeInsets.only(bottom: 20.0),
       child: TextFormField(
+        controller: secteurActiviteController,
         keyboardType: TextInputType.text,
         decoration: InputDecoration(
           labelText: 'Secteur d\'activité',
@@ -364,6 +359,7 @@ class _AddUpdateAnnuaireState extends State<AddUpdateAnnuaire> {
     return Container(
       margin: const EdgeInsets.only(bottom: 20.0),
       child: TextFormField(
+        controller: nomEntrepriseController,
         keyboardType: TextInputType.text,
         decoration: InputDecoration(
           labelText: 'Entreprise ou business',
@@ -387,6 +383,7 @@ class _AddUpdateAnnuaireState extends State<AddUpdateAnnuaire> {
     return Container(
       margin: const EdgeInsets.only(bottom: 20.0),
       child: TextFormField(
+        controller: gradeController,
         keyboardType: TextInputType.text,
         decoration: InputDecoration(
           labelText: 'Grade ou fonction',
@@ -410,6 +407,7 @@ class _AddUpdateAnnuaireState extends State<AddUpdateAnnuaire> {
     return Container(
       margin: const EdgeInsets.only(bottom: 20.0),
       child: TextFormField(
+        controller: adresseEntrepriseController,
         keyboardType: TextInputType.text,
         maxLines: 3,
         decoration: InputDecoration(
@@ -434,27 +432,10 @@ class _AddUpdateAnnuaireState extends State<AddUpdateAnnuaire> {
         nomEntreprise: nomEntrepriseController.text,
         grade: gradeController.text,
         adresseEntreprise: adresseEntrepriseController.text,
-        approbationDG: '-',
-        signatureDG: '-',
-        signatureJustificationDG: '-',
-        approbationFin: '-',
-        signatureFin: '-',
-        signatureJustificationFin: '-',
-        approbationBudget: '-',
-        signatureBudget: '-',
-        signatureJustificationBudget: '-',
-        approbationDD: '-',
-        signatureDD: '-',
-        signatureJustificationDD: '-',
+        succursale: user!.succursale,
         signature: user!.matricule,
         created: DateTime.now());
-
-    if (id != null) {
-      await AnnuaireApi().updateData(id!, annuaireModel);
-    } else {
-      await AnnuaireApi().insertData(annuaireModel);
-    }
-
+    await AnnuaireApi().insertData(annuaireModel);
     Routemaster.of(context).pop();
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
       content: const Text("soumis avec succès!"),

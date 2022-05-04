@@ -18,7 +18,10 @@ import 'package:fokad_admin/src/pages/comm_marketing/commercial/stocks_global/st
 import 'package:fokad_admin/src/pages/comm_marketing/commercial/succursale/components/add_succursale.dart';
 import 'package:fokad_admin/src/pages/comm_marketing/commercial/succursale/succursale_page.dart';
 import 'package:fokad_admin/src/pages/comm_marketing/dashboard/dashboard_com_marketing.dart';
+import 'package:fokad_admin/src/pages/comm_marketing/marketing/agenda_marketing.dart';
 import 'package:fokad_admin/src/pages/comm_marketing/marketing/annuaire_marketing.dart';
+import 'package:fokad_admin/src/pages/comm_marketing/marketing/campaign_marketing.dart';
+import 'package:fokad_admin/src/pages/comm_marketing/marketing/components/campaign/add_campaign.dart';
 import 'package:fokad_admin/src/pages/comptabilites/armotissement_comptabilite.dart';
 import 'package:fokad_admin/src/pages/comptabilites/bilan_comptabilite.dart';
 import 'package:fokad_admin/src/pages/comptabilites/compte_dd/compte_dd.dart';
@@ -179,6 +182,7 @@ class ComMarketingRoutes {
   static const comMarketingAnnuaire = "/com-marketing-annuaire";
   static const comMarketingAgenda = "/com-marketing-agenda";
   static const comMarketingCampaign = "/com-marketing-campaign";
+  static const comMarketingCampaignAdd = "/com-marketing-campaign-add";
   static const comMarketingProduitModel = "/com-marketing-produit-model";
   static const comMarketingProduitModelAdd = "/com-marketing-produit-model-add";
   static const comMarketingStockGlobal = "/com-marketing-stock-global";
@@ -299,12 +303,14 @@ class Routing {
         ExploitationRoutes.expTache: (_) => const MaterialPage(child: TacheExp()),
 
 
-
+        // Comm & marketing
         ComMarketingRoutes.comMarketingDD: (_) => const MaterialPage(child: CMDD()),
         ComMarketingRoutes.comMarketingDashboard: (_) => const MaterialPage(child: ComMarketing()),
-        ComMarketingRoutes.comMarketingAnnuaire : (_) =>
-            const MaterialPage(child: AnnuaireMarketing()),
-        ComMarketingRoutes.comMarketingAgenda : (_) => const MaterialPage(child: AgentPage()),
+        ComMarketingRoutes.comMarketingAnnuaire : (_) => const MaterialPage(child: AnnuaireMarketing()),
+        ComMarketingRoutes.comMarketingAgenda : (_) => const MaterialPage(child: AgendaMarketing()),
+        ComMarketingRoutes.comMarketingCampaign: (_) => const MaterialPage(child: CampaignMarketing()),
+        ComMarketingRoutes.comMarketingCampaignAdd: (_) =>
+            const MaterialPage(child: AddCampaign()),
 
         ComMarketingRoutes.comMarketingProduitModel: (_) => const MaterialPage(child: ProduitModelPage()),
         ComMarketingRoutes.comMarketingProduitModelAdd: (_) => const MaterialPage(child: AddUpdateProModel()),
@@ -316,14 +322,8 @@ class Routing {
             const MaterialPage(child: SuccursalePage()),
       ComMarketingRoutes.comMarketingSuccursaleAdd: (_) =>
             const MaterialPage(child: AddSurrsale()),
-        
-         
-
       },
     );
   }
 
 }
-
-
-

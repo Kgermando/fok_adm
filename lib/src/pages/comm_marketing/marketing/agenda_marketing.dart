@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:fokad_admin/src/api/auth/auth_api.dart';
@@ -8,9 +10,9 @@ import 'package:fokad_admin/src/models/comm_maketing/agenda_model.dart';
 import 'package:fokad_admin/src/models/users/user_model.dart';
 import 'package:fokad_admin/src/navigation/drawer/drawer_menu.dart';
 import 'package:fokad_admin/src/navigation/header/custom_appbar.dart';
-import 'package:fokad_admin/src/pages/comm_marketing/marketing/components/add_update_agenda.dart';
-import 'package:fokad_admin/src/pages/comm_marketing/marketing/components/agenda_card_widget.dart';
-import 'package:fokad_admin/src/pages/comm_marketing/marketing/components/detail_agenda.dart';
+import 'package:fokad_admin/src/pages/comm_marketing/marketing/components/agenda/add_agenda.dart';
+import 'package:fokad_admin/src/pages/comm_marketing/marketing/components/agenda/agenda_card_widget.dart';
+import 'package:fokad_admin/src/pages/comm_marketing/marketing/components/agenda/detail_agenda.dart';
 
 final _lightColors = [
   Colors.amber.shade300,
@@ -29,13 +31,22 @@ class AgendaMarketing extends StatefulWidget {
 }
 
 class _AgendaMarketingState extends State<AgendaMarketing> {
+  Timer? timer;
   final GlobalKey<ScaffoldState> _key = GlobalKey();
   bool isLoading = false;
 
   @override
   initState() {
-    getData();
+    timer = Timer.periodic(const Duration(milliseconds: 500), ((timer) {
+      getData();
+    }));
     super.initState();
+  }
+
+  @override
+  dispose() {
+    timer!.cancel();
+    super.dispose();
   }
 
   List<AgendaModel> agendaList = [];
@@ -45,7 +56,9 @@ class _AgendaMarketingState extends State<AgendaMarketing> {
     var agenda = await AgendaApi().getAllData();
     setState(() {
       user = userModel;
-      agendaList = agenda.where((element) => element.signature == user!.matricule).toList();
+      agendaList = agenda
+          .where((element) => element.signature == user!.matricule)
+          .toList();
     });
   }
 
@@ -58,11 +71,10 @@ class _AgendaMarketingState extends State<AgendaMarketing> {
             tooltip: 'Nouvel agenda',
             child: const Icon(Icons.add),
             onPressed: () => {
-              Navigator.of(context).push(MaterialPageRoute(
-                builder: (context) =>
-                    const AddUpdateAgenda(),
-              ))
-            }),
+                  Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context) => const AddAgenda(),
+                  ))
+                }),
         body: SafeArea(
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -82,6 +94,8 @@ class _AgendaMarketingState extends State<AgendaMarketing> {
                           title: 'Agenda',
                           controllerMenu: () =>
                               _key.currentState!.openDrawer()),
+                      Expanded(
+                          child: buildAgenda())
                     ],
                   ),
                 ),
@@ -97,6 +111,7 @@ class _AgendaMarketingState extends State<AgendaMarketing> {
       mainAxisSpacing: 16.0,
       crossAxisSpacing: 16.0,
       children: List.generate(agendaList.length, (index) {
+        print(agendaList);
         final agenda = agendaList[index];
         final color = _lightColors[index % _lightColors.length];
         return GestureDetector(

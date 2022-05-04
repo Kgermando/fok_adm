@@ -179,7 +179,8 @@ class _AgentPageState extends State<AgentPage> {
           backgroundColor: Colors.orange.shade700,
           label: 'Modifier CV agent',
           onPressed: () {
-            modifierWidget(agentModel);
+            Navigator.of(context).push(MaterialPageRoute(
+                builder: (context) => UpdateAgent(agentModel: agentModel)));
           },
         ),
         SpeedDialChild(
@@ -196,30 +197,13 @@ class _AgentPageState extends State<AgentPage> {
             foregroundColor: Colors.white,
             backgroundColor: Colors.blue.shade700,
             label: 'Paiement',
-            onPressed: () => compteSalaireWidget(agentModel)),
+            onPressed: () {
+               Navigator.of(context).push(MaterialPageRoute(
+                  builder: (context) =>
+                      AddPaiementSalaire(agentModel: agentModel)));
+            }),
       ],
     );
-  }
-
-  Widget modifierWidget(AgentModel agentModel) {
-    return IconButton(
-        tooltip: 'Modifier',
-        onPressed: () {
-          Navigator.of(context).push(MaterialPageRoute(
-              builder: (context) => UpdateAgent(agentModel: agentModel)));
-        },
-        icon: const Icon(Icons.edit));
-  }
-
-  Widget compteSalaireWidget(AgentModel agentModel) {
-    return IconButton(
-        tooltip: 'Paiement',
-        onPressed: () {
-          Navigator.of(context).push(MaterialPageRoute(
-              builder: (context) =>
-                  AddPaiementSalaire(agentModel: agentModel)));
-        },
-        icon: const Icon(Icons.payment));
   }
 
   Widget statutAgentWidget(AgentModel agentModel) {

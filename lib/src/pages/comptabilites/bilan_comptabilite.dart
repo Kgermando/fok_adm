@@ -48,7 +48,6 @@ class _BilanComptabiliteState extends State<BilanComptabilite> {
     comptesController.dispose();
     intituleController.dispose();
     montantController.dispose();
-    montantController.dispose();
     typeBilanController.dispose();
     super.dispose();
   }

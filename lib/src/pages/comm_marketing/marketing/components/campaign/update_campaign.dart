@@ -2,43 +2,42 @@ import 'package:flutter/material.dart';
 import 'package:fokad_admin/src/api/auth/auth_api.dart';
 import 'package:fokad_admin/src/api/comm_marketing/commerciale/produit_model_api.dart';
 import 'package:fokad_admin/src/api/comm_marketing/marketing/campaign_api.dart';
-import 'package:fokad_admin/src/api/rh/agents_api.dart';
+import 'package:fokad_admin/src/api/user/user_api.dart';
 import 'package:fokad_admin/src/constants/app_theme.dart';
 import 'package:fokad_admin/src/constants/responsive.dart';
 import 'package:fokad_admin/src/models/comm_maketing/campaign_model.dart';
 import 'package:fokad_admin/src/models/comm_maketing/prod_model.dart';
-import 'package:fokad_admin/src/models/rh/agent_model.dart';
 import 'package:fokad_admin/src/models/users/user_model.dart';
 import 'package:fokad_admin/src/navigation/drawer/drawer_menu.dart';
 import 'package:fokad_admin/src/navigation/header/custom_appbar.dart';
 import 'package:fokad_admin/src/widgets/btn_widget.dart';
 import 'package:fokad_admin/src/widgets/button_widget.dart';
 import 'package:fokad_admin/src/widgets/print_widget.dart';
+import 'package:fokad_admin/src/widgets/title_widget.dart';
 import 'package:intl/intl.dart';
 import 'package:routemaster/routemaster.dart';
 
-class AddCampaign extends StatefulWidget {
-  const AddCampaign({Key? key, this.campaignModel}) : super(key: key);
-  final CampaignModel? campaignModel;
+
+class UpdateCampaign extends StatefulWidget {
+  const UpdateCampaign({Key? key, required this.campaignModel}) : super(key: key);
+  final CampaignModel campaignModel;
 
   @override
-  State<AddCampaign> createState() => _AddCampaignState();
+  State<UpdateCampaign> createState() => _UpdateCampaignState();
 }
 
-class _AddCampaignState extends State<AddCampaign> {
+class _UpdateCampaignState extends State<UpdateCampaign> {
   final GlobalKey<ScaffoldState> _key = GlobalKey();
   final ScrollController _controllerScroll = ScrollController();
   final _formKey = GlobalKey<FormState>();
   bool isLoading = false;
   DateTimeRange? dateRange;
 
-  int? id;
   List<ProductModel> produitModelList = [];
-  List<AgentModel> agentAffectesList = [];
+  List<UserModel> agentAffectesList = [];
   List<String> multiChecked = []; // Multi checkbox
 
   TextEditingController typeProduitController = TextEditingController();
-  TextEditingController dateDebutEtFinController = TextEditingController();
   TextEditingController coutCampaignController = TextEditingController();
   TextEditingController lieuCibleController = TextEditingController();
   TextEditingController promotionController = TextEditingController();
@@ -55,29 +54,19 @@ class _AddCampaignState extends State<AddCampaign> {
   @override
   initState() {
     getData();
-    id = widget.campaignModel!.id;
-    typeProduitController =
-        TextEditingController(text: widget.campaignModel!.typeProduit);
-    dateDebutEtFinController = TextEditingController(text: getPlageDate());
-    multiChecked = widget.campaignModel!.agentAffectes;
-    coutCampaignController =
-        TextEditingController(text: widget.campaignModel!.coutCampaign);
-    lieuCibleController =
-        TextEditingController(text: widget.campaignModel!.lieuCible);
-    promotionController =
-        TextEditingController(text: widget.campaignModel!.promotion);
-    objetctifsController =
-        TextEditingController(text: widget.campaignModel!.objetctifs);
-
+    setState(() {
+      typeProduitController = TextEditingController(text: widget.campaignModel.typeProduit);
+      coutCampaignController = TextEditingController(text: widget.campaignModel.coutCampaign);
+      lieuCibleController = TextEditingController(text: widget.campaignModel.lieuCible);
+      promotionController = TextEditingController(text: widget.campaignModel.promotion);
+      objetctifsController = TextEditingController(text: widget.campaignModel.objetctifs);
+    });
     super.initState();
   }
 
   @override
   void dispose() {
-    _controllerScroll.dispose();
-
     typeProduitController.dispose();
-    dateDebutEtFinController.dispose();
     coutCampaignController.dispose();
     lieuCibleController.dispose();
     promotionController.dispose();
@@ -89,11 +78,13 @@ class _AddCampaignState extends State<AddCampaign> {
   UserModel? user;
   Future<void> getData() async {
     UserModel userModel = await AuthApi().getUserId();
-    var agents = await AgentsApi().getAllData();
+    var users = await UserApi().getAllData();
     var produitModel = await ProduitModelApi().getAllData();
     setState(() {
       user = userModel;
-      agentAffectesList = agents;
+      agentAffectesList = users
+          .where((element) => element.departement == "Commercial et Marketing")
+          .toList();
       produitModelList = produitModel;
     });
   }
@@ -128,10 +119,11 @@ class _AddCampaignState extends State<AddCampaign> {
                                 },
                                 icon: const Icon(Icons.arrow_back)),
                           ),
+                          const SizedBox(width: p10),
                           Expanded(
                               flex: 5,
                               child: CustomAppbar(
-                                  title: 'Nouvelle campaign',
+                                  title: widget.campaignModel.typeProduit,
                                   controllerMenu: () =>
                                       _key.currentState!.openDrawer())),
                         ],
@@ -167,10 +159,7 @@ class _AddCampaignState extends State<AddCampaign> {
                 child: ListView(
                   controller: _controllerScroll,
                   children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [PrintWidget(onPressed: () {})],
-                    ),
+                    TitleWidget(title: widget.campaignModel.typeProduit),
                     const SizedBox(
                       height: p20,
                     ),
@@ -201,6 +190,8 @@ class _AddCampaignState extends State<AddCampaign> {
                         Expanded(child: objetctifsWidget())
                       ],
                     ),
+                    Text("Select Liste des agents",
+                        style: Theme.of(context).textTheme.bodyLarge),
                     agentAffectesWidget(),
                     const SizedBox(
                       height: p20,
@@ -308,22 +299,34 @@ class _AddCampaignState extends State<AddCampaign> {
   Widget coutCampaignWidget() {
     return Container(
         margin: const EdgeInsets.only(bottom: p20),
-        child: TextFormField(
-          controller: coutCampaignController,
-          decoration: InputDecoration(
-            border:
-                OutlineInputBorder(borderRadius: BorderRadius.circular(10.0)),
-            labelText: 'Coût Campaign',
-          ),
-          keyboardType: TextInputType.text,
-          style: const TextStyle(),
-          validator: (value) {
-            if (value != null && value.isEmpty) {
-              return 'Ce champs est obligatoire';
-            } else {
-              return null;
-            }
-          },
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Expanded(
+              flex: 3,
+              child: TextFormField(
+                controller: coutCampaignController,
+                decoration: InputDecoration(
+                  border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10.0)),
+                  labelText: 'Coût Campaign',
+                ),
+                keyboardType: TextInputType.text,
+                style: const TextStyle(),
+                validator: (value) {
+                  if (value != null && value.isEmpty) {
+                    return 'Ce champs est obligatoire';
+                  } else {
+                    return null;
+                  }
+                },
+              ),
+            ),
+            const SizedBox(width: p20),
+            Expanded(
+                flex: 1,
+                child: Text("\$", style: Theme.of(context).textTheme.headline6))
+          ],
         ));
   }
 
@@ -396,7 +399,8 @@ class _AddCampaignState extends State<AddCampaign> {
   Future<void> submit() async {
     final campaignModel = CampaignModel(
         typeProduit: typeProduitController.text,
-        dateDebutEtFin: dateDebutEtFinController.text,
+        dateDebutEtFin:
+            "Du ${DateFormat('dd/MM/yyyy').format(dateRange!.start)} - Au ${DateFormat('dd/MM/yyyy').format(dateRange!.end)}",
         agentAffectes: multiChecked,
         coutCampaign: coutCampaignController.text,
         lieuCible: lieuCibleController.text,
@@ -419,12 +423,7 @@ class _AddCampaignState extends State<AddCampaign> {
         signature: user!.matricule.toString(),
         created: DateTime.now());
 
-    if (id != null) {
-      await CampaignApi().updateData(id!, campaignModel);
-    } else {
-      await CampaignApi().insertData(campaignModel);
-    }
-    
+    await CampaignApi().updateData(widget.campaignModel.id!, campaignModel);
     Routemaster.of(context).pop();
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
       content: const Text("soumis avec succès!"),

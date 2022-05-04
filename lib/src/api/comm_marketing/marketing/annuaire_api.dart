@@ -53,9 +53,8 @@ class AnnuaireApi {
       var payload = json.decode(
           ascii.decode(base64.decode(base64.normalize(splittedJwt[1]))));
     }
-    var getSearchUrl = Uri.parse("$mainUrl/annuaires/search/$query");
     var resp = await client.get(
-      getSearchUrl,
+      annuairesUrl,
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
         'Authorization': 'Bearer $token'
@@ -68,7 +67,19 @@ class AnnuaireApi {
       for (var u in bodyList) {
         data.add(AnnuaireModel.fromJson(u));
       }
-      return data;
+      return data.toList().where((value) {
+        final categorieLower = value.categorie.toLowerCase();
+        final nomPostnomPrenomLower = value.nomPostnomPrenom.toLowerCase();
+        final mobile1Lower = value.mobile1.toLowerCase();
+        final mobile2Lower = value.mobile2.toLowerCase();
+        final secteurActiviteLower = value.secteurActivite.toLowerCase();
+        final searchLower = query.toLowerCase();
+        return categorieLower.contains(searchLower) ||
+            nomPostnomPrenomLower.contains(searchLower) ||
+            mobile1Lower.contains(searchLower) ||
+            mobile2Lower.contains(searchLower) ||
+            secteurActiviteLower.contains(searchLower);
+      }).toList();
     } else {
       throw Exception(jsonDecode(resp.body)['message']);
     }

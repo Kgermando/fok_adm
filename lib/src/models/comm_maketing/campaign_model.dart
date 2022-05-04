@@ -2,7 +2,7 @@ class CampaignModel {
   late int? id;
   late String typeProduit;
   late String dateDebutEtFin;
-  late List<String> agentAffectes;
+  late List agentAffectes;
   late String coutCampaign;
   late String lieuCible;
   late String promotion;

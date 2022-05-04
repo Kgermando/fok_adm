@@ -6,6 +6,7 @@ import 'package:fokad_admin/src/constants/app_theme.dart';
 import 'package:fokad_admin/src/constants/responsive.dart';
 import 'package:fokad_admin/src/navigation/drawer/drawer_menu.dart';
 import 'package:fokad_admin/src/navigation/header/custom_appbar.dart';
+import 'package:fokad_admin/src/pages/rh/dashboard/components/calendar_widget.dart';
 import 'package:fokad_admin/src/pages/rh/dashboard/components/dash_number_widget.dart';
 import 'package:fokad_admin/src/pages/rh/dashboard/components/dash_pie_wdget.dart';
 
@@ -103,18 +104,20 @@ class _DashboardRhState extends State<DashboardRh> {
                                 DashNumberWidget(
                                     number: '$agentFemmeCount',
                                     title: 'Femmes',
-                                    icon: Icons.woman_sharp,
+                                    icon: Icons.female,
                                     color: Colors.pink.shade700),
                                 DashNumberWidget(
                                     number: '$agentHommeCount',
                                     title: 'Hommes',
-                                    icon: Icons.man_sharp,
+                                    icon: Icons.male,
                                     color: Colors.grey.shade700),
                               ],
                             ),
                             Wrap(
+                              alignment: WrapAlignment.spaceEvenly,
                               children: const [
                                 DashRHPieWidget(),
+                                CalendarWidget()
                               ],
                             )
                           ],

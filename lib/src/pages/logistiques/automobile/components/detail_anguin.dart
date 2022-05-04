@@ -343,7 +343,7 @@ class _DetailAnguinState extends State<DetailAnguin> {
               ),
               Expanded(
                 flex: 3,
-                child: SelectableText(data.qtyMaxReservoir,
+                child: SelectableText("${data.qtyMaxReservoir} \$",
                     textAlign: TextAlign.start, style: bodyMedium),
               )
             ],
