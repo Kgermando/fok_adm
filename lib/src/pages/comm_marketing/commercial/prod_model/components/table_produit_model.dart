@@ -187,14 +187,13 @@ class _TableProduitModelState extends State<TableProduitModel> {
 
   Future agentsRow() async {
     List<ProductModel?> dataList = await ProduitModelApi().getAllData();
-    var data = dataList;
+    var data = dataList.where((element) => element!.approbationDD == "Approved").toList();
 
     if (mounted) {
       setState(() {
         for (var item in data) {
-          id = item!.id;
           rows.add(PlutoRow(cells: {
-            'id': PlutoCell(value: item.id),
+            'id': PlutoCell(value: item!.id),
             'idProduct': PlutoCell(value: item.idProduct),
             'categorie': PlutoCell(value: item.categorie),
             'sousCategorie1': PlutoCell(value: item.sousCategorie1),
@@ -202,7 +201,7 @@ class _TableProduitModelState extends State<TableProduitModel> {
             'sousCategorie3': PlutoCell(value: item.sousCategorie3),
             'sousCategorie4': PlutoCell(value: item.sousCategorie4),
             'created': PlutoCell(
-                value: DateFormat("dd-MM-yy H:mm").format(item.created))
+                value: DateFormat("dd-MM-yy HH:mm").format(item.created))
           }));
         }
         stateManager!.resetCurrentState();

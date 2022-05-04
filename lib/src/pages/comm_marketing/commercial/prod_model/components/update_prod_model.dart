@@ -8,11 +8,12 @@ import 'package:fokad_admin/src/models/users/user_model.dart';
 import 'package:fokad_admin/src/navigation/drawer/drawer_menu.dart';
 import 'package:fokad_admin/src/navigation/header/custom_appbar.dart';
 import 'package:fokad_admin/src/widgets/btn_widget.dart';
+import 'package:fokad_admin/src/widgets/title_widget.dart';
 import 'package:routemaster/routemaster.dart';
 
 class UpdateProModel extends StatefulWidget {
-  const UpdateProModel({Key? key, this.productModel}) : super(key: key);
-  final ProductModel? productModel;
+  const UpdateProModel({Key? key, required this.productModel}) : super(key: key);
+  final ProductModel productModel;
 
   @override
   State<UpdateProModel> createState() => _UpdateProModelState();
@@ -35,17 +36,17 @@ class _UpdateProModelState extends State<UpdateProModel> {
   initState() {
     getData();
     setState(() {
-      id = widget.productModel!.id;
+      id = widget.productModel.id;
       categorieController =
-          TextEditingController(text: widget.productModel!.categorie);
+          TextEditingController(text: widget.productModel.categorie);
       sousCategorie1Controller =
-          TextEditingController(text: widget.productModel!.sousCategorie1);
+          TextEditingController(text: widget.productModel.sousCategorie1);
       sousCategorie2Controller =
-          TextEditingController(text: widget.productModel!.sousCategorie2);
+          TextEditingController(text: widget.productModel.sousCategorie2);
       sousCategorie3Controller =
-          TextEditingController(text: widget.productModel!.sousCategorie3);
+          TextEditingController(text: widget.productModel.sousCategorie3);
       sousCategorie4Controller =
-          TextEditingController(text: widget.productModel!.sousCategorie4);
+          TextEditingController(text: widget.productModel.sousCategorie4);
     });
 
     super.initState();
@@ -101,6 +102,7 @@ class _UpdateProModelState extends State<UpdateProModel> {
                                 },
                                 icon: const Icon(Icons.arrow_back)),
                           ),
+                          const SizedBox(width: p10),
                           Expanded(
                               flex: 5,
                               child: CustomAppbar(
@@ -140,13 +142,10 @@ class _UpdateProModelState extends State<UpdateProModel> {
                 child: ListView(
                   controller: _controllerScroll,
                   children: [
-                    // Row(
-                    //   mainAxisAlignment: MainAxisAlignment.end,
-                    //   children: [PrintWidget(onPressed: () {})],
-                    // ),
-                    // const SizedBox(
-                    //   height: p20,
-                    // ),
+                    TitleWidget(title: widget.productModel.categorie),
+                    const SizedBox(
+                      height: p20,
+                    ),
                     categorieWidget(),
                     Row(
                       children: [
@@ -321,7 +320,6 @@ class _UpdateProModelState extends State<UpdateProModel> {
         approbationDD: '-',
         signatureDD: '-',
         signatureJustificationDD: '-',
-        succursale: '-',
         signature: signature.toString(),
         created: DateTime.now());
       await ProduitModelApi().updateData(id!, productModel);

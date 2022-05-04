@@ -41,6 +41,8 @@ class _SuccursalePageState extends State<SuccursalePage> {
         key: _key,
         drawer: const DrawerMenu(),
         floatingActionButton: FloatingActionButton(
+          backgroundColor: Colors.amber.shade700,
+          foregroundColor: Colors.white,
           child: Row(
             children: const [
               Icon(Icons.add),

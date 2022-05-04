@@ -1,24 +1,27 @@
 import 'package:flutter/material.dart';
+import 'package:fokad_admin/src/api/comm_marketing/commerciale/produit_model_api.dart';
 import 'package:fokad_admin/src/api/comm_marketing/commerciale/succursale_api.dart';
 import 'package:fokad_admin/src/api/comm_marketing/marketing/campaign_api.dart';
 import 'package:fokad_admin/src/constants/app_theme.dart';
 import 'package:fokad_admin/src/constants/responsive.dart';
 import 'package:fokad_admin/src/models/comm_maketing/campaign_model.dart';
+import 'package:fokad_admin/src/models/comm_maketing/prod_model.dart';
 import 'package:fokad_admin/src/models/comm_maketing/succursale_model.dart';
 import 'package:fokad_admin/src/navigation/drawer/drawer_menu.dart';
 import 'package:fokad_admin/src/navigation/header/custom_appbar.dart';
-import 'package:fokad_admin/src/pages/comm_marketing/c_m_dd/components/table_campaign_dd.dart';
-import 'package:fokad_admin/src/pages/comm_marketing/c_m_dd/components/table_succursale_dd.dart';
+import 'package:fokad_admin/src/pages/comm_marketing/c_m_dd/components/campaigns/table_campaign_dd.dart';
+import 'package:fokad_admin/src/pages/comm_marketing/c_m_dd/components/produi_model/table_prod_model_dd.dart';
+import 'package:fokad_admin/src/pages/comm_marketing/c_m_dd/components/succursales/table_succursale_dd.dart';
 
 class CMDD extends StatefulWidget {
-  const CMDD({ Key? key }) : super(key: key);
+  const CMDD({Key? key}) : super(key: key);
 
   @override
   State<CMDD> createState() => _CMDDState();
 }
 
 class _CMDDState extends State<CMDD> {
-   final GlobalKey<ScaffoldState> _key = GlobalKey();
+  final GlobalKey<ScaffoldState> _key = GlobalKey();
   final ScrollController _controllerScroll = ScrollController();
 
   bool isOpenRh1 = false;
@@ -26,6 +29,7 @@ class _CMDDState extends State<CMDD> {
 
   int campaignCount = 0;
   int succursaleCount = 0;
+  int prodModelCount = 0;
 
   @override
   void initState() {
@@ -37,11 +41,14 @@ class _CMDDState extends State<CMDD> {
     // RH
     List<CampaignModel> campaign = await CampaignApi().getAllData();
     List<SuccursaleModel> succursale = await SuccursaleApi().getAllData();
+    List<ProductModel> prodModel = await ProduitModelApi().getAllData();
     setState(() {
       campaignCount =
           campaign.where((element) => element.approbationDD == '-').length;
       succursaleCount =
           succursale.where((element) => element.approbationDD == '-').length;
+      prodModelCount =
+          prodModel.where((element) => element.approbationDD == '-').length;
     });
   }
 
@@ -78,7 +85,7 @@ class _CMDDState extends State<CMDD> {
                           controller: _controllerScroll,
                           children: [
                             Card(
-                              color: const Color.fromARGB(255, 126, 170, 214),
+                              color: Colors.pink.shade700,
                               child: ExpansionTile(
                                 leading: const Icon(Icons.folder),
                                 title:
@@ -97,11 +104,11 @@ class _CMDDState extends State<CMDD> {
                               ),
                             ),
                             Card(
-                              color: const Color.fromARGB(255, 51, 231, 222),
+                              color: Colors.blue.shade700,
                               child: ExpansionTile(
                                 leading: const Icon(Icons.folder),
-                                title:
-                                    Text('Dossier Succursale', style: headline6),
+                                title: Text('Dossier Succursale',
+                                    style: headline6),
                                 subtitle: Text(
                                     "Vous avez $succursaleCount dossiers necessitent votre approbation",
                                     style: bodyMedium),
@@ -113,6 +120,25 @@ class _CMDDState extends State<CMDD> {
                                 },
                                 trailing: const Icon(Icons.arrow_drop_down),
                                 children: const [TableSuccursaleDD()],
+                              ),
+                            ),
+                            Card(
+                              color: Colors.grey.shade700,
+                              child: ExpansionTile(
+                                leading: const Icon(Icons.folder),
+                                title: Text('Dossier modèle produits',
+                                    style: headline6),
+                                subtitle: Text(
+                                    "Vous avez $prodModelCount dossiers necessitent votre approbation",
+                                    style: bodyMedium),
+                                initiallyExpanded: false,
+                                onExpansionChanged: (val) {
+                                  setState(() {
+                                    isOpenRh1 = !val;
+                                  });
+                                },
+                                trailing: const Icon(Icons.arrow_drop_down),
+                                children: const [TableProduitModelDD()],
                               ),
                             ),
                           ],

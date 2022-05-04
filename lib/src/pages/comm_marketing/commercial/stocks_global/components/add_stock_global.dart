@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_switch/flutter_switch.dart';
 import 'package:fokad_admin/src/api/auth/auth_api.dart';
+import 'package:fokad_admin/src/api/comm_marketing/commerciale/produit_model_api.dart';
 import 'package:fokad_admin/src/constants/app_theme.dart';
 import 'package:fokad_admin/src/constants/responsive.dart';
 import 'package:fokad_admin/src/models/comm_maketing/prod_model.dart';
@@ -53,8 +54,12 @@ class _AddStockGlobalState extends State<AddStockGlobal> {
   String? signature;
   Future<void> getData() async {
     UserModel userModel = await AuthApi().getUserId();
+    var produitModel = await ProduitModelApi().getAllData();
     setState(() {
       signature = userModel.matricule;
+      idProductDropdown = produitModel
+          .where((element) => element.approbationDD == "Approved")
+          .toList();
     });
   }
 

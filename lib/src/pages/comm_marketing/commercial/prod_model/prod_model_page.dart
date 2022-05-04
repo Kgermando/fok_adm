@@ -23,12 +23,8 @@ class _ProduitModelPageState extends State<ProduitModelPage> {
         key: _key,
         drawer: const DrawerMenu(),
         floatingActionButton: FloatingActionButton(
-            child: Row(
-              children: const [
-                Icon(Icons.add),
-                Icon(Icons.car_rental),
-              ],
-            ),
+          backgroundColor: Colors.amber.shade700,
+            child: const Icon(Icons.add, color: Colors.white),
             onPressed: () {
               Routemaster.of(context).push(ComMarketingRoutes.comMarketingProduitModelAdd);
             }),

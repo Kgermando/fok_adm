@@ -128,7 +128,7 @@ var addRapportsUrl = Uri.parse("$mainUrl/rapports/insert-new-rapport");
 
 // COMMERCIAL
 var prodModelsUrl = Uri.parse("$mainUrl/produit-models/");
-var addProdModelsUrl = Uri.parse("$mainUrl/prod-models/insert-new-produit-model");
+var addProdModelsUrl = Uri.parse("$mainUrl/produit-models/insert-new-produit-model");
 
 var stockGlobalUrl = Uri.parse("$mainUrl/stocks-global/");
 var addStockGlobalUrl = Uri.parse("$mainUrl/stocks-global/insert-new-stocks-global");

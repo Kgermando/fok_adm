@@ -8,6 +8,7 @@ import 'package:fokad_admin/src/models/users/user_model.dart';
 import 'package:fokad_admin/src/navigation/drawer/drawer_menu.dart';
 import 'package:fokad_admin/src/navigation/header/custom_appbar.dart';
 import 'package:fokad_admin/src/widgets/btn_widget.dart';
+import 'package:fokad_admin/src/widgets/title_widget.dart';
 import 'package:routemaster/routemaster.dart';
 
 class AddProModel extends StatefulWidget {
@@ -86,6 +87,7 @@ class _AddProModelState extends State<AddProModel> {
                                 },
                                 icon: const Icon(Icons.arrow_back)),
                           ),
+                          const SizedBox(width: p10),
                           Expanded(
                               flex: 5,
                               child: CustomAppbar(
@@ -125,13 +127,14 @@ class _AddProModelState extends State<AddProModel> {
                 child: ListView(
                   controller: _controllerScroll,
                   children: [
+                    const TitleWidget(title: "Ajout un modèle produit"),
                     // Row(
                     //   mainAxisAlignment: MainAxisAlignment.end,
                     //   children: [PrintWidget(onPressed: () {})],
                     // ),
-                    // const SizedBox(
-                    //   height: p20,
-                    // ),
+                    const SizedBox(
+                      height: p20,
+                    ),
                     categorieWidget(),
                     Row(
                       children: [
@@ -284,6 +287,10 @@ class _AddProModelState extends State<AddProModel> {
         ));
   }
 
+
+
+  
+
   Future<void> submit() async {
     final idProductform =
         "${categorieController.text}-${sousCategorie1Controller.text}-${sousCategorie2Controller.text}-${sousCategorie3Controller.text}-${sousCategorie4Controller.text}";
@@ -306,7 +313,6 @@ class _AddProModelState extends State<AddProModel> {
         approbationDD: '-',
         signatureDD: '-',
         signatureJustificationDD: '-',
-        succursale: '-',
         signature: signature.toString(),
         created: DateTime.now());
     await ProduitModelApi().insertData(productModel);

@@ -1,20 +1,20 @@
 import 'package:flutter/material.dart';
-import 'package:fokad_admin/src/api/comm_marketing/commerciale/succursale_api.dart';
-import 'package:fokad_admin/src/models/comm_maketing/succursale_model.dart';
-import 'package:fokad_admin/src/pages/comm_marketing/c_m_dd/components/detail_succurssale.dart';
+import 'package:fokad_admin/src/api/comm_marketing/commerciale/produit_model_api.dart';
+import 'package:fokad_admin/src/models/comm_maketing/prod_model.dart';
+import 'package:fokad_admin/src/pages/comm_marketing/commercial/prod_model/components/detail_prod_model.dart';
 import 'package:fokad_admin/src/widgets/print_widget.dart';
 import 'package:fokad_admin/src/utils/class_implemented.dart';
 import 'package:intl/intl.dart';
 import 'package:pluto_grid/pluto_grid.dart';
 
-class TableSuccursaleDD extends StatefulWidget {
-  const TableSuccursaleDD({Key? key}) : super(key: key);
+class TableProduitModelDD extends StatefulWidget {
+  const TableProduitModelDD({Key? key}) : super(key: key);
 
   @override
-  State<TableSuccursaleDD> createState() => _TableSuccursaleDDState();
+  State<TableProduitModelDD> createState() => _TableProduitModelDDState();
 }
 
-class _TableSuccursaleDDState extends State<TableSuccursaleDD> {
+class _TableProduitModelDDState extends State<TableProduitModelDD> {
   List<PlutoColumn> columns = [];
   List<PlutoRow> rows = [];
   PlutoGridStateManager? stateManager;
@@ -41,7 +41,7 @@ class _TableSuccursaleDDState extends State<TableSuccursaleDD> {
           final idPlutoRow = dataList.elementAt(0);
 
           Navigator.of(context).push(MaterialPageRoute(
-              builder: (context) => DetailSuccursaleDD(id: idPlutoRow.value)));
+              builder: (context) => DetailProdModel(id: idPlutoRow.value)));
         },
         onLoaded: (PlutoGridOnLoadedEvent event) {
           stateManager = event.stateManager;
@@ -50,7 +50,10 @@ class _TableSuccursaleDDState extends State<TableSuccursaleDD> {
         createHeader: (PlutoGridStateManager header) {
           return Row(
             mainAxisAlignment: MainAxisAlignment.end,
-            children: [PrintWidget(onPressed: () {})],
+            children: [
+              IconButton(onPressed: () {}, icon: const Icon(Icons.download)),
+              PrintWidget(onPressed: () {})
+            ],
           );
         },
         configuration: PlutoGridConfiguration(
@@ -61,13 +64,17 @@ class _TableSuccursaleDDState extends State<TableSuccursaleDD> {
               ClassFilterImplemented(),
             ],
             resolveDefaultColumnFilter: (column, resolver) {
-              if (column.field == 'name') {
+              if (column.field == 'idProduct') {
                 return resolver<ClassFilterImplemented>() as PlutoFilterType;
-              } else if (column.field == 'province') {
+              } else if (column.field == 'categorie') {
                 return resolver<ClassFilterImplemented>() as PlutoFilterType;
-              } else if (column.field == 'approbationDG') {
+              } else if (column.field == 'sousCategorie1') {
                 return resolver<ClassFilterImplemented>() as PlutoFilterType;
-              } else if (column.field == 'approbationDD') {
+              } else if (column.field == 'sousCategorie2') {
+                return resolver<ClassFilterImplemented>() as PlutoFilterType;
+              } else if (column.field == 'sousCategorie3') {
+                return resolver<ClassFilterImplemented>() as PlutoFilterType;
+              } else if (column.field == 'sousCategorie4') {
                 return resolver<ClassFilterImplemented>() as PlutoFilterType;
               } else if (column.field == 'created') {
                 return resolver<ClassFilterImplemented>() as PlutoFilterType;
@@ -96,8 +103,8 @@ class _TableSuccursaleDDState extends State<TableSuccursaleDD> {
       ),
       PlutoColumn(
         readOnly: true,
-        title: 'Nom succursale',
-        field: 'name',
+        title: 'Id Produit',
+        field: 'idProduct',
         type: PlutoColumnType.text(),
         enableRowDrag: true,
         enableContextMenu: false,
@@ -108,8 +115,8 @@ class _TableSuccursaleDDState extends State<TableSuccursaleDD> {
       ),
       PlutoColumn(
         readOnly: true,
-        title: 'Province',
-        field: 'province',
+        title: 'Categorie',
+        field: 'categorie',
         type: PlutoColumnType.text(),
         enableRowDrag: true,
         enableContextMenu: false,
@@ -120,8 +127,8 @@ class _TableSuccursaleDDState extends State<TableSuccursaleDD> {
       ),
       PlutoColumn(
         readOnly: true,
-        title: 'Approbation DG',
-        field: 'approbationDG',
+        title: 'Sous Categorie 1',
+        field: 'sousCategorie1',
         type: PlutoColumnType.text(),
         enableRowDrag: true,
         enableContextMenu: false,
@@ -132,8 +139,32 @@ class _TableSuccursaleDDState extends State<TableSuccursaleDD> {
       ),
       PlutoColumn(
         readOnly: true,
-        title: 'Approbation DD',
-        field: 'approbationDD',
+        title: 'Sous Categorie 2',
+        field: 'sousCategorie2',
+        type: PlutoColumnType.text(),
+        enableRowDrag: true,
+        enableContextMenu: false,
+        enableDropToResize: true,
+        titleTextAlign: PlutoColumnTextAlign.left,
+        width: 150,
+        minWidth: 150,
+      ),
+      PlutoColumn(
+        readOnly: true,
+        title: 'Sous Categorie 3',
+        field: 'sousCategorie3',
+        type: PlutoColumnType.text(),
+        enableRowDrag: true,
+        enableContextMenu: false,
+        enableDropToResize: true,
+        titleTextAlign: PlutoColumnTextAlign.left,
+        width: 150,
+        minWidth: 150,
+      ),
+      PlutoColumn(
+        readOnly: true,
+        title: 'Sous Categorie 4',
+        field: 'sousCategorie4',
         type: PlutoColumnType.text(),
         enableRowDrag: true,
         enableContextMenu: false,
@@ -158,21 +189,24 @@ class _TableSuccursaleDDState extends State<TableSuccursaleDD> {
   }
 
   Future agentsRow() async {
-    List<SuccursaleModel?> dataList = await SuccursaleApi().getAllData();
-    var data = dataList.where((element) => element!.approbationDD == '-');
+    List<ProductModel?> dataList = await ProduitModelApi().getAllData();
+    var data = dataList
+        .where((element) => element!.approbationDD == "-")
+        .toList();
 
     if (mounted) {
       setState(() {
         for (var item in data) {
-          id = item!.id;
           rows.add(PlutoRow(cells: {
-            'id': PlutoCell(value: item.id),
-            'name': PlutoCell(value: item.name),
-            'province': PlutoCell(value: item.province),
-            'approbationDG': PlutoCell(value: item.approbationDG),
-            'approbationDD': PlutoCell(value: item.approbationDD),
+            'id': PlutoCell(value: item!.id),
+            'idProduct': PlutoCell(value: item.idProduct),
+            'categorie': PlutoCell(value: item.categorie),
+            'sousCategorie1': PlutoCell(value: item.sousCategorie1),
+            'sousCategorie2': PlutoCell(value: item.sousCategorie2),
+            'sousCategorie3': PlutoCell(value: item.sousCategorie3),
+            'sousCategorie4': PlutoCell(value: item.sousCategorie4),
             'created': PlutoCell(
-                value: DateFormat("dd-MM-yy H:mm").format(item.created))
+                value: DateFormat("dd-MM-yy HH:mm").format(item.created))
           }));
         }
         stateManager!.resetCurrentState();

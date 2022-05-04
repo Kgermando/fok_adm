@@ -2,19 +2,19 @@ import 'package:flutter/material.dart';
 import 'package:fokad_admin/src/api/comm_marketing/commerciale/succursale_api.dart';
 import 'package:fokad_admin/src/models/comm_maketing/succursale_model.dart';
 import 'package:fokad_admin/src/pages/comm_marketing/c_m_dd/components/succursales/detail_succurssale.dart';
-import 'package:fokad_admin/src/utils/class_implemented.dart';
 import 'package:fokad_admin/src/widgets/print_widget.dart';
+import 'package:fokad_admin/src/utils/class_implemented.dart';
 import 'package:intl/intl.dart';
 import 'package:pluto_grid/pluto_grid.dart';
 
-class TableSuccursaleDG extends StatefulWidget {
-  const TableSuccursaleDG({Key? key}) : super(key: key);
+class TableSuccursaleDD extends StatefulWidget {
+  const TableSuccursaleDD({Key? key}) : super(key: key);
 
   @override
-  State<TableSuccursaleDG> createState() => _TableSuccursaleDGState();
+  State<TableSuccursaleDD> createState() => _TableSuccursaleDDState();
 }
 
-class _TableSuccursaleDGState extends State<TableSuccursaleDG> {
+class _TableSuccursaleDDState extends State<TableSuccursaleDD> {
   List<PlutoColumn> columns = [];
   List<PlutoRow> rows = [];
   PlutoGridStateManager? stateManager;
@@ -159,7 +159,7 @@ class _TableSuccursaleDGState extends State<TableSuccursaleDG> {
 
   Future agentsRow() async {
     List<SuccursaleModel?> dataList = await SuccursaleApi().getAllData();
-    var data = dataList.where((element) => element!.approbationDG == '-');
+    var data = dataList.where((element) => element!.approbationDD == '-');
 
     if (mounted) {
       setState(() {
