@@ -12,7 +12,7 @@ class BilanApi {
   var client = http.Client();
   final storage = const FlutterSecureStorage();
 
- Future<String?> getToken() async {
+  Future<String?> getToken() async {
     final data = await storage.read(key: "accessToken");
     return data;
   }
@@ -52,7 +52,7 @@ class BilanApi {
       var payload = json.decode(
           ascii.decode(base64.decode(base64.normalize(splittedJwt[1]))));
     }
-    var getUrl = Uri.parse("$mainUrl/finances/comptabilite/bilans/$id");
+    var getUrl = Uri.parse("$mainUrl/comptabilite/bilans/$id");
     var resp = await client.get(
       getUrl,
       headers: <String, String>{
@@ -97,7 +97,7 @@ class BilanApi {
     var data = banqueModel.toJson();
     var body = jsonEncode(data);
     var updateUrl = Uri.parse(
-        "$mainUrl/finances/comptabilite/bilans/update-comptabilite-bilan/$id");
+        "$mainUrl/comptabilite/bilans/update-bilan/$id");
 
     var res = await client.put(updateUrl,
         headers: <String, String>{
@@ -116,14 +116,14 @@ class BilanApi {
     final accessToken = await storage.read(key: 'accessToken');
 
     var deleteUrl = Uri.parse(
-        "$mainUrl/finances/comptabilite/bilans/delete-comptabilite-bilan/$id");
+        "$mainUrl/comptabilite/bilans/delete-bilan/$id");
 
     var res = await client.delete(deleteUrl, headers: <String, String>{
       'Content-Type': 'application/json; charset=UTF-8',
       'Authorization': 'Bearer $accessToken'
     });
     if (res.statusCode == 200) {
-      return BilanModel.fromJson(json.decode(res.body)['agents']);
+      return BilanModel.fromJson(json.decode(res.body)['data']);
     } else {
       throw Exception(json.decode(res.body)['message']);
     }

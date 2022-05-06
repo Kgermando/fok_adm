@@ -480,6 +480,7 @@ class _AddAgentState extends State<AddAgent> {
             child: Text(value),
           );
         }).toList(),
+        validator: (value) => value == null ? "Select genre" : null,
         onChanged: (value) {
           setState(() {
             sexe = value!;
@@ -507,6 +508,7 @@ class _AddAgentState extends State<AddAgent> {
             child: Text(value),
           );
         }).toList(),
+        validator: (value) => value == null ? "Select accréditation" : null,
         onChanged: (value) {
           setState(() {
             role = value!;
@@ -618,6 +620,7 @@ class _AddAgentState extends State<AddAgent> {
             child: Text(value),
           );
         }).toList(),
+        validator: (value) => value == null ? "Select Nationalite" : null,
         onChanged: (value) {
           setState(() {
             nationalite = value!;
@@ -645,6 +648,7 @@ class _AddAgentState extends State<AddAgent> {
             child: Text(value),
           );
         }).toList(),
+        validator: (value) => value == null ? "Select contrat" : null,
         onChanged: (value) {
           setState(() {
             typeContrat = value!;
@@ -672,6 +676,7 @@ class _AddAgentState extends State<AddAgent> {
             child: Text(value),
           );
         }).toList(),
+        validator: (value) => value == null ? "Select Département" : null,
         onChanged: (value) {
           setState(() {
             departement = value!;
@@ -728,6 +733,7 @@ class _AddAgentState extends State<AddAgent> {
               child: Text(value),
             );
           }).toList(),
+          validator: (value) => value == null ? "Select Service" : null,
           onChanged: (value) {
             setState(() {
               servicesAffectation = value;
@@ -801,6 +807,7 @@ class _AddAgentState extends State<AddAgent> {
               child: Text(value),
             );
           }).toList(),
+          validator: (value) => value == null ? "Select Fonction" : null,
           onChanged: (value) {
             setState(() {
               fonctionOccupe = value;

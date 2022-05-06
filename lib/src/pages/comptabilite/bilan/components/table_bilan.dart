@@ -1,23 +1,24 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:fokad_admin/src/api/comptabilite/valorisation_api.dart';
-import 'package:fokad_admin/src/models/comptabilites/valorisation_model.dart';
-import 'package:fokad_admin/src/pages/comptabilites/components/valorisations/detail_valorisation.dart';
-import 'package:fokad_admin/src/widgets/print_widget.dart';
+import 'package:fokad_admin/src/api/auth/auth_api.dart';
+import 'package:fokad_admin/src/api/comptabilite/bilan_api.dart';
+import 'package:fokad_admin/src/models/comptabilites/bilan_model.dart';
+import 'package:fokad_admin/src/models/users/user_model.dart';
+import 'package:fokad_admin/src/pages/comptabilite/bilan/components/detail_bilan.dart';
 import 'package:fokad_admin/src/utils/class_implemented.dart';
+import 'package:fokad_admin/src/widgets/print_widget.dart';
 import 'package:intl/intl.dart';
 import 'package:pluto_grid/pluto_grid.dart';
 
-class TableValorisation extends StatefulWidget {
-  const TableValorisation({Key? key}) : super(key: key);
+class TableBilan extends StatefulWidget {
+  const TableBilan({ Key? key }) : super(key: key);
 
   @override
-  State<TableValorisation> createState() => _TableValorisationState();
+  State<TableBilan> createState() => _TableBilanState();
 }
 
-class _TableValorisationState extends State<TableValorisation> {
-  Timer? timer;
+class _TableBilanState extends State<TableBilan> {
   List<PlutoColumn> columns = [];
   List<PlutoRow> rows = [];
   PlutoGridStateManager? stateManager;
@@ -26,19 +27,14 @@ class _TableValorisationState extends State<TableValorisation> {
   int? id;
 
   @override
-  initState() {
+  void initState() {
     agentsColumn();
-    timer = Timer.periodic(const Duration(milliseconds: 500), (t) {
+    Timer.periodic(const Duration(milliseconds: 500), ((timer) {
       agentsRow();
-    });
+      timer.cancel();
+    }));
 
     super.initState();
-  }
-
-  @override
-  void dispose() {
-    timer!.cancel();
-    super.dispose();
   }
 
   @override
@@ -51,7 +47,7 @@ class _TableValorisationState extends State<TableValorisation> {
         final idPlutoRow = dataList.elementAt(0);
 
         Navigator.of(context).push(MaterialPageRoute(
-            builder: (context) => DetailValorisation(id: idPlutoRow.value)));
+            builder: (context) => DetailBilan(id: idPlutoRow.value)));
       },
       onLoaded: (PlutoGridOnLoadedEvent event) {
         stateManager = event.stateManager;
@@ -60,7 +56,9 @@ class _TableValorisationState extends State<TableValorisation> {
       createHeader: (PlutoGridStateManager header) {
         return Row(
           mainAxisAlignment: MainAxisAlignment.end,
-          children: [PrintWidget(onPressed: () {})],
+          children: [
+            PrintWidget(onPressed: () {})
+          ],
         );
       },
       configuration: PlutoGridConfiguration(
@@ -71,17 +69,13 @@ class _TableValorisationState extends State<TableValorisation> {
             ClassFilterImplemented(),
           ],
           resolveDefaultColumnFilter: (column, resolver) {
-            if (column.field == 'numeroOrdre') {
+            if (column.field == 'id') {
               return resolver<ClassFilterImplemented>() as PlutoFilterType;
-            } else if (column.field == 'intitule') {
+            } else if (column.field == 'titleBilan') {
               return resolver<ClassFilterImplemented>() as PlutoFilterType;
-            } else if (column.field == 'quantite') {
+            } else if (column.field == 'signature') {
               return resolver<ClassFilterImplemented>() as PlutoFilterType;
-            } else if (column.field == 'prixUnitaire') {
-              return resolver<ClassFilterImplemented>() as PlutoFilterType;
-            } else if (column.field == 'prixTotal') {
-              return resolver<ClassFilterImplemented>() as PlutoFilterType;
-            } else if (column.field == 'source') {
+            } else if (column.field == 'created') {
               return resolver<ClassFilterImplemented>() as PlutoFilterType;
             }
             return resolver<PlutoFilterTypeContains>() as PlutoFilterType;
@@ -107,74 +101,26 @@ class _TableValorisationState extends State<TableValorisation> {
       ),
       PlutoColumn(
         readOnly: true,
-        title: 'Numéro d\'ordre',
-        field: 'numeroOrdre',
+        title: 'Titre du Bilan',
+        field: 'titleBilan',
         type: PlutoColumnType.text(),
         enableRowDrag: true,
         enableContextMenu: false,
         enableDropToResize: true,
         titleTextAlign: PlutoColumnTextAlign.left,
-        width: 150,
+        width: 250,
         minWidth: 150,
       ),
       PlutoColumn(
         readOnly: true,
-        title: 'Intitule',
-        field: 'intitule',
+        title: 'Signature',
+        field: 'signature',
         type: PlutoColumnType.text(),
         enableRowDrag: true,
         enableContextMenu: false,
         enableDropToResize: true,
         titleTextAlign: PlutoColumnTextAlign.left,
-        width: 150,
-        minWidth: 150,
-      ),
-      PlutoColumn(
-        readOnly: true,
-        title: 'Quantité',
-        field: 'quantite',
-        type: PlutoColumnType.text(),
-        enableRowDrag: true,
-        enableContextMenu: false,
-        enableDropToResize: true,
-        titleTextAlign: PlutoColumnTextAlign.left,
-        width: 150,
-        minWidth: 150,
-      ),
-      PlutoColumn(
-        readOnly: true,
-        title: 'Prix unitaire',
-        field: 'prixUnitaire',
-        type: PlutoColumnType.text(),
-        enableRowDrag: true,
-        enableContextMenu: false,
-        enableDropToResize: true,
-        titleTextAlign: PlutoColumnTextAlign.left,
-        width: 150,
-        minWidth: 150,
-      ),
-      PlutoColumn(
-        readOnly: true,
-        title: 'Prix total',
-        field: 'prixTotal',
-        type: PlutoColumnType.text(),
-        enableRowDrag: true,
-        enableContextMenu: false,
-        enableDropToResize: true,
-        titleTextAlign: PlutoColumnTextAlign.left,
-        width: 150,
-        minWidth: 150,
-      ),
-      PlutoColumn(
-        readOnly: true,
-        title: 'Source',
-        field: 'source',
-        type: PlutoColumnType.text(),
-        enableRowDrag: true,
-        enableContextMenu: false,
-        enableDropToResize: true,
-        titleTextAlign: PlutoColumnTextAlign.left,
-        width: 150,
+        width: 200,
         minWidth: 150,
       ),
       PlutoColumn(
@@ -186,15 +132,17 @@ class _TableValorisationState extends State<TableValorisation> {
         enableContextMenu: false,
         enableDropToResize: true,
         titleTextAlign: PlutoColumnTextAlign.left,
-        width: 150,
+        width: 200,
         minWidth: 150,
       ),
     ];
   }
 
   Future agentsRow() async {
-    List<ValorisationModel?> dataList = await ValorisationApi().getAllData();
-    var data = dataList;
+    UserModel userModel = await AuthApi().getUserId();
+    List<BilanModel?> dataList = await BilanApi().getAllData();
+    var data = dataList
+        .where((element) => element!.approbationDG == "Approved" &&  element.approbationDD == "Approved" || element.signature == userModel.matricule);
 
     if (mounted) {
       setState(() {
@@ -202,14 +150,10 @@ class _TableValorisationState extends State<TableValorisation> {
           id = item!.id;
           rows.add(PlutoRow(cells: {
             'id': PlutoCell(value: item.id),
-            'numeroOrdre': PlutoCell(value: item.numeroOrdre),
-            'intitule': PlutoCell(value: item.intitule),
-            'quantite': PlutoCell(value: item.quantite),
-            'prixUnitaire': PlutoCell(value: item.prixUnitaire),
-            'prixTotal': PlutoCell(value: item.prixTotal),
-            'source': PlutoCell(value: item.source),
+            'titleBilan': PlutoCell(value: item.titleBilan),
+            'signature': PlutoCell(value: item.signature),
             'created': PlutoCell(
-                value: DateFormat("DD-MM-yy H:mm").format(item.created))
+                value: DateFormat("dd-MM-yy HH:mm").format(item.created))
           }));
         }
         stateManager!.resetCurrentState();

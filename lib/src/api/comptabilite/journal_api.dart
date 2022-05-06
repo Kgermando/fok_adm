@@ -27,7 +27,7 @@ class JournalApi {
           ascii.decode(base64.decode(base64.normalize(splittedJwt[1]))));
     }
     var resp = await client.get(
-      amortissementsUrl,
+      journalsUrl,
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
         'Authorization': 'Bearer $token'
@@ -54,7 +54,7 @@ class JournalApi {
       var payload = json.decode(
           ascii.decode(base64.decode(base64.normalize(splittedJwt[1]))));
     }
-    var getUrl = Uri.parse("$mainUrl/finances/comptabilite/journals/$id");
+    var getUrl = Uri.parse("$mainUrl/comptabilite/journals/$id");
     var resp = await client.get(
       getUrl,
       headers: <String, String>{
@@ -99,7 +99,7 @@ class JournalApi {
     var data = journalModel.toJson();
     var body = jsonEncode(data);
     var updateUrl = Uri.parse(
-        "$mainUrl/finances/comptabilite/journals/update-comptabilite-journal/$id");
+        "$mainUrl/finances/comptabilite/journals/update-journal/$id");
 
     var res = await client.put(updateUrl,
         headers: <String, String>{
@@ -118,14 +118,14 @@ class JournalApi {
     final accessToken = await storage.read(key: 'accessToken');
 
     var deleteUrl = Uri.parse(
-        "$mainUrl/finances/comptabilite/journals/delete-comptabilite-journal/$id");
+        "$mainUrl/finances/comptabilite/journals/delete-journal/$id");
 
     var res = await client.delete(deleteUrl, headers: <String, String>{
       'Content-Type': 'application/json; charset=UTF-8',
       'Authorization': 'Bearer $accessToken'
     });
     if (res.statusCode == 200) {
-      return JournalModel.fromJson(json.decode(res.body)['agents']);
+      return JournalModel.fromJson(json.decode(res.body)['data']);
     } else {
       throw Exception(json.decode(res.body)['message']);
     }

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fokad_admin/src/api/comptabilite/bilan_api.dart';
 import 'package:fokad_admin/src/models/comptabilites/bilan_model.dart';
-import 'package:fokad_admin/src/pages/comptabilites/components/bilan/detail_bilan.dart';
 import 'package:fokad_admin/src/widgets/print_widget.dart';
 import 'package:fokad_admin/src/utils/class_implemented.dart';
 import 'package:intl/intl.dart';
@@ -41,8 +40,8 @@ class _BilanAdminState extends State<BilanAdmin> {
           final dataList = tapEvent.row!.cells.values;
           final idPlutoRow = dataList.elementAt(0);
 
-          Navigator.of(context).push(MaterialPageRoute(
-              builder: (context) => DetailBilan(id: idPlutoRow.value)));
+          // Navigator.of(context).push(MaterialPageRoute(
+          //     builder: (context) => DetailBilan(id: idPlutoRow.value)));
         },
         onLoaded: (PlutoGridOnLoadedEvent event) {
           stateManager = event.stateManager;
@@ -181,10 +180,10 @@ class _BilanAdminState extends State<BilanAdmin> {
           rows.add(PlutoRow(cells: {
             'id': PlutoCell(value: item.id),
             'titleBilan': PlutoCell(value: item.titleBilan),
-            'comptes': PlutoCell(value: item.comptes),
-            'intitule': PlutoCell(value: item.intitule),
-            'montant': PlutoCell(value: item.montant),
-            'typeBilan': PlutoCell(value: item.typeBilan),
+            // 'comptes': PlutoCell(value: item.comptes),
+            // 'intitule': PlutoCell(value: item.intitule),
+            // 'montant': PlutoCell(value: item.montant),
+            // 'typeBilan': PlutoCell(value: item.typeBilan),
             'created': PlutoCell(
                 value: DateFormat("DD-MM-yy H:mm").format(item.created))
           }));

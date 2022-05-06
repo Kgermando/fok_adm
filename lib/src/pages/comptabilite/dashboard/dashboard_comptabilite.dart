@@ -10,8 +10,8 @@ class DashboardComptabilite extends StatefulWidget {
 class _DashboardComptabiliteState extends State<DashboardComptabilite> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Container(),
+    return Container(
+      
     );
   }
 }

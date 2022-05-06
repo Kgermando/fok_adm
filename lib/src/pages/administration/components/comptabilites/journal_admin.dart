@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:fokad_admin/src/api/comptabilite/journal_api.dart';
 import 'package:fokad_admin/src/models/comptabilites/journal_model.dart';
-import 'package:fokad_admin/src/pages/comptabilites/components/journals/detail_journal.dart';
 import 'package:fokad_admin/src/widgets/print_widget.dart';
 import 'package:fokad_admin/src/utils/class_implemented.dart';
 import 'package:intl/intl.dart';
@@ -43,8 +42,8 @@ class _JournalAdminState extends State<JournalAdmin> {
           final dataList = tapEvent.row!.cells.values;
           final idPlutoRow = dataList.elementAt(0);
 
-          Navigator.of(context).push(MaterialPageRoute(
-              builder: (context) => DetailJournal(id: idPlutoRow.value)));
+          // Navigator.of(context).push(MaterialPageRoute(
+          //     builder: (context) => DetailJournal(id: idPlutoRow.value)));
         },
         onLoaded: (PlutoGridOnLoadedEvent event) {
           stateManager = event.stateManager;
@@ -182,11 +181,11 @@ class _JournalAdminState extends State<JournalAdmin> {
           id = item!.id;
           rows.add(PlutoRow(cells: {
             'id': PlutoCell(value: item.id),
-            'titleBilan': PlutoCell(value: item.titleBilan),
-            'comptes': PlutoCell(value: item.comptes),
-            'intitule': PlutoCell(value: item.intitule),
-            'montant': PlutoCell(value: item.montant),
-            'typeJournal': PlutoCell(value: item.typeJournal),
+            // 'titleBilan': PlutoCell(value: item.titleBilan),
+            // 'comptes': PlutoCell(value: item.comptes),
+            // 'intitule': PlutoCell(value: item.intitule),
+            // 'montant': PlutoCell(value: item.montant),
+            // 'typeJournal': PlutoCell(value: item.typeJournal),
             'created': PlutoCell(
                 value: DateFormat("DD-MM-yy H:mm").format(item.created))
           }));

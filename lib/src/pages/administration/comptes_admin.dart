@@ -1,20 +1,14 @@
-import 'package:flutter/material.dart';
-import 'package:fokad_admin/src/api/comptabilite/amortissement_api.dart';
+import 'package:flutter/material.dart'; 
 import 'package:fokad_admin/src/api/comptabilite/bilan_api.dart';
-import 'package:fokad_admin/src/api/comptabilite/journal_api.dart';
-import 'package:fokad_admin/src/api/comptabilite/valorisation_api.dart';
+import 'package:fokad_admin/src/api/comptabilite/journal_api.dart'; 
 import 'package:fokad_admin/src/constants/app_theme.dart';
 import 'package:fokad_admin/src/constants/responsive.dart';
-import 'package:fokad_admin/src/models/comptabilites/amortissement_model.dart';
 import 'package:fokad_admin/src/models/comptabilites/bilan_model.dart';
 import 'package:fokad_admin/src/models/comptabilites/journal_model.dart';
-import 'package:fokad_admin/src/models/comptabilites/valorisation_model.dart';
 import 'package:fokad_admin/src/navigation/drawer/drawer_menu.dart';
-import 'package:fokad_admin/src/navigation/header/custom_appbar.dart';
-import 'package:fokad_admin/src/pages/administration/components/comptabilites/amortissement_admin.dart';
+import 'package:fokad_admin/src/navigation/header/custom_appbar.dart'; 
 import 'package:fokad_admin/src/pages/administration/components/comptabilites/bilan_admin.dart';
-import 'package:fokad_admin/src/pages/administration/components/comptabilites/journal_admin.dart';
-import 'package:fokad_admin/src/pages/administration/components/comptabilites/valorisation_admin.dart';
+import 'package:fokad_admin/src/pages/administration/components/comptabilites/journal_admin.dart'; 
 
 class CompteAdmin extends StatefulWidget {
   const CompteAdmin({ Key? key }) : super(key: key);
@@ -41,21 +35,14 @@ class _CompteAdminState extends State<CompteAdmin> {
   }
 
   Future<void> getData() async {
-    List<AmortissementModel?> dataListAmortissemnt = await AmortissementApi().getAllData();
     List<BilanModel?> dataListBilan = await BilanApi().getAllData();
     List<JournalModel?> dataListJournal = await JournalApi().getAllData();
-    List<ValorisationModel?> dataListValorisation = await ValorisationApi().getAllData();
     setState(() {
-      amortissementCount = dataListAmortissemnt
-          .where((element) => element!.approbationDG == "-")
-          .length;
+
       bilanCount = dataListBilan
           .where((element) => element!.approbationDG == "-")
           .length;
       journalCount = dataListJournal
-          .where((element) => element!.approbationDG == "-")
-          .length;
-      valorisationCount = dataListValorisation
           .where((element) => element!.approbationDG == "-")
           .length;
     });
@@ -92,25 +79,7 @@ class _CompteAdminState extends State<CompteAdmin> {
                         controller: _controllerScroll,
                         child: ListView(
                           controller: _controllerScroll,
-                          children: [
-                            Card(
-                                color: const Color.fromARGB(255, 168, 206, 107),
-                                child: ExpansionTile(
-                                  leading: const Icon(Icons.folder),
-                                  title:
-                                      Text('Dossier amortissement', style: headline6),
-                                  subtitle: Text(
-                                      "Vous avez $amortissementCount dossiers necessitent votre approbation",
-                                      style: bodyMedium),
-                                  initiallyExpanded: false,
-                                  onExpansionChanged: (val) {
-                                    setState(() {
-                                      isOpenBudget = !val;
-                                    });
-                                  },
-                                  trailing: const Icon(Icons.arrow_drop_down),
-                                  children: const [AmortissementAdmin()],
-                                )),
+                          children: [ 
                             Card(
                               color: const Color.fromARGB(255, 105, 146, 236),
                               child: ExpansionTile(
@@ -146,24 +115,6 @@ class _CompteAdminState extends State<CompteAdmin> {
                                   },
                                   trailing: const Icon(Icons.arrow_drop_down),
                                   children: const [JournalAdmin()],
-                                )),
-                            Card(
-                                color: const Color.fromARGB(255, 117, 175, 190),
-                                child: ExpansionTile(
-                                  leading: const Icon(Icons.folder),
-                                  title:
-                                      Text('Dossier valorisation', style: headline6),
-                                  subtitle: Text(
-                                      "Vous avez $valorisationCount dossiers necessitent votre approbation",
-                                      style: bodyMedium),
-                                  initiallyExpanded: false,
-                                  onExpansionChanged: (val) {
-                                    setState(() {
-                                      isOpenBudget = !val;
-                                    });
-                                  },
-                                  trailing: const Icon(Icons.arrow_drop_down),
-                                  children: const [ValorisationAdmin()],
                                 )),
                           ],
                         ),
