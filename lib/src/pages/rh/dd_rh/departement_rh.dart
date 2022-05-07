@@ -34,7 +34,7 @@ class _DepartementRHState extends State<DepartementRH> {
       getData();
       timer.cancel();
     }));
-    
+
     super.initState();
   }
 
@@ -72,7 +72,8 @@ class _DepartementRHState extends State<DepartementRH> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      CustomAppbar(title: 'Directeur de Département RH',
+                      CustomAppbar(
+                          title: 'Directeur de departement RH',
                           controllerMenu: () =>
                               _key.currentState!.openDrawer()),
                       Expanded(
@@ -102,8 +103,8 @@ class _DepartementRHState extends State<DepartementRH> {
                               color: const Color.fromARGB(255, 238, 56, 32),
                               child: ExpansionTile(
                                 leading: const Icon(Icons.folder),
-                                title:
-                                    Text('Dossier utilisateurs actifs', style: headline6),
+                                title: Text('Dossier utilisateurs actifs',
+                                    style: headline6),
                                 subtitle: Text(
                                     "Vous $userAcount dossiers necessitent votre approbation",
                                     style: bodyMedium),

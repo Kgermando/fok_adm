@@ -116,7 +116,8 @@ class _CaisseTransactionsState extends State<CaisseTransactions> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      CustomAppbar(title: 'Livre de Caisse',
+                      CustomAppbar(
+                          title: 'Livre de Caisse',
                           controllerMenu: () =>
                               _key.currentState!.openDrawer()),
                       const Expanded(child: TableCaisse())
@@ -579,7 +580,7 @@ class _CaisseTransactionsState extends State<CaisseTransactions> {
       margin: const EdgeInsets.only(bottom: p20),
       child: DropdownButtonFormField<String>(
         decoration: InputDecoration(
-          labelText: 'Département',
+          labelText: 'departement',
           labelStyle: const TextStyle(),
           border: OutlineInputBorder(borderRadius: BorderRadius.circular(5.0)),
           contentPadding: const EdgeInsets.only(left: 5.0),

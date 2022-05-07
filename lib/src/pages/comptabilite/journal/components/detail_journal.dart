@@ -206,7 +206,6 @@ class _DetailJournalState extends State<DetailJournal> {
     );
   }
 
-
   Widget dataWidget(JournalModel data) {
     final bodyMedium = Theme.of(context).textTheme.bodyMedium;
     return Padding(
@@ -297,7 +296,8 @@ class _DetailJournalState extends State<DetailJournal> {
                 flex: 3,
                 child: SelectableText(
                     "${NumberFormat.decimalPattern('fr').format(double.parse(data.montantDebit))} \$",
-                    textAlign: TextAlign.start, style: bodyMedium),
+                    textAlign: TextAlign.start,
+                    style: bodyMedium),
               )
             ],
           ),
@@ -410,7 +410,8 @@ class _DetailJournalState extends State<DetailJournal> {
                                     onChanged: (value) {
                                       setState(() {
                                         approbationDGController = value!;
-                                        if (approbationDGController == "Approved") {
+                                        if (approbationDGController ==
+                                            "Approved") {
                                           submitUpdateDG(data);
                                         }
                                       });
@@ -488,7 +489,7 @@ class _DetailJournalState extends State<DetailJournal> {
               children: [
                 Expanded(
                     flex: 1,
-                    child: Text('Directeur de département',
+                    child: Text('Directeur de departement',
                         style: bodyMedium.copyWith(
                             fontWeight: FontWeight.bold,
                             color: Colors.blue.shade700))),
@@ -508,7 +509,7 @@ class _DetailJournalState extends State<DetailJournal> {
                               ),
                               if (data.approbationDD != '-' &&
                                   user!.fonctionOccupe ==
-                                      'Directeur de département')
+                                      'Directeur de departement')
                                 SelectableText(
                                   data.approbationDD.toString(),
                                   style: bodyMedium.copyWith(
@@ -574,7 +575,7 @@ class _DetailJournalState extends State<DetailJournal> {
                                 ),
                               if (approbationDDController == 'Unapproved' &&
                                   user!.fonctionOccupe ==
-                                      'Directeur de département')
+                                      'Directeur de departement')
                                 Container(
                                     margin: const EdgeInsets.only(
                                         bottom: p10, left: p5),

@@ -5,7 +5,8 @@ import 'package:fokad_admin/src/routes/routes.dart';
 import 'package:routemaster/routemaster.dart';
 
 class ComptabiliteNav extends StatefulWidget {
-  const ComptabiliteNav({ Key? key, required this.pageCurrente }) : super(key: key);
+  const ComptabiliteNav({Key? key, required this.pageCurrente})
+      : super(key: key);
   final String pageCurrente;
 
   @override
@@ -33,23 +34,26 @@ class _ComptabiliteNavState extends State<ComptabiliteNav> {
       trailing: const Icon(Icons.arrow_drop_down),
       children: [
         DrawerWidget(
-            selected: widget.pageCurrente == ComptabiliteRoutes.comptabiliteDashboard,
+            selected:
+                widget.pageCurrente == ComptabiliteRoutes.comptabiliteDashboard,
             icon: Icons.dashboard,
             sizeIcon: 20.0,
             title: 'Dashboard',
             style: bodyText1!,
             onTap: () {
-              Routemaster.of(context).replace(ComptabiliteRoutes.comptabiliteDashboard);
+              Routemaster.of(context)
+                  .replace(ComptabiliteRoutes.comptabiliteDashboard);
               // Routemaster.of(context).pop();
             }),
         DrawerWidget(
             selected: widget.pageCurrente == ComptabiliteRoutes.comptabiliteDD,
             icon: Icons.manage_accounts,
             sizeIcon: 15.0,
-            title: 'Directeur département',
+            title: 'Directeur departement',
             style: bodyText2!,
             onTap: () {
-              Routemaster.of(context).replace(ComptabiliteRoutes.comptabiliteDD);
+              Routemaster.of(context)
+                  .replace(ComptabiliteRoutes.comptabiliteDD);
               // Routemaster.of(context).pop();
             }),
         DrawerWidget(
@@ -65,7 +69,8 @@ class _ComptabiliteNavState extends State<ComptabiliteNav> {
               // Routemaster.of(context).pop();
             }),
         DrawerWidget(
-            selected: widget.pageCurrente == ComptabiliteRoutes.comptabiliteJournal,
+            selected:
+                widget.pageCurrente == ComptabiliteRoutes.comptabiliteJournal,
             icon: Icons.arrow_right,
             sizeIcon: 15.0,
             title: 'Journal',
@@ -76,8 +81,8 @@ class _ComptabiliteNavState extends State<ComptabiliteNav> {
               // Routemaster.of(context).pop();
             }),
         DrawerWidget(
-            selected:
-                widget.pageCurrente == ComptabiliteRoutes.comptabiliteCompteResultat,
+            selected: widget.pageCurrente ==
+                ComptabiliteRoutes.comptabiliteCompteResultat,
             icon: Icons.arrow_right,
             sizeIcon: 15.0,
             title: 'Compte résultat',

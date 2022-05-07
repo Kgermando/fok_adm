@@ -686,7 +686,7 @@ class _DetailMobilierState extends State<DetailMobilier> {
               children: [
                 Expanded(
                     flex: 1,
-                    child: Text('Directeur de département',
+                    child: Text('Directeur de departement',
                         style: bodyMedium.copyWith(
                             fontWeight: FontWeight.bold,
                             color: Colors.blue.shade700))),
@@ -706,7 +706,7 @@ class _DetailMobilierState extends State<DetailMobilier> {
                               ),
                               if (data.approbationDD != '-' &&
                                   user!.fonctionOccupe ==
-                                      'Directeur de département')
+                                      'Directeur de departement')
                                 SelectableText(
                                   data.approbationDD.toString(),
                                   style: bodyMedium.copyWith(
@@ -772,7 +772,7 @@ class _DetailMobilierState extends State<DetailMobilier> {
                                 ),
                               if (approbationDDController == 'Unapproved' &&
                                   user!.fonctionOccupe ==
-                                      'Directeur de département')
+                                      'Directeur de departement')
                                 Container(
                                     margin: const EdgeInsets.only(
                                         bottom: p10, left: p5),
@@ -830,8 +830,8 @@ class _DetailMobilierState extends State<DetailMobilier> {
         signatureJustificationDD: data.signatureJustificationDD.toString(),
         signature: data.signature,
         created: data.created);
-  
-     await MobilierApi().updateData(data.id!, mobilierModel);
+
+    await MobilierApi().updateData(data.id!, mobilierModel);
     Routemaster.of(context).pop();
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
       content: const Text("Soumis avec succès!"),
@@ -862,7 +862,7 @@ class _DetailMobilierState extends State<DetailMobilier> {
         signature: data.signature,
         created: data.created);
 
-     await MobilierApi().updateData(data.id!, mobilierModel);
+    await MobilierApi().updateData(data.id!, mobilierModel);
     Routemaster.of(context).pop();
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
       content: const Text("Soumis avec succès!"),
@@ -892,7 +892,7 @@ class _DetailMobilierState extends State<DetailMobilier> {
         signatureJustificationDD: data.signatureJustificationDD.toString(),
         signature: data.signature,
         created: data.created);
-     await MobilierApi().updateData(data.id!, mobilierModel);
+    await MobilierApi().updateData(data.id!, mobilierModel);
     Routemaster.of(context).pop();
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
       content: const Text("Soumis avec succès!"),

@@ -58,7 +58,8 @@ class _AgentPageState extends State<AgentPage> {
     return Scaffold(
         key: _key,
         drawer: const DrawerMenu(),
-        floatingActionButton: (agentModel != null) ? speedialWidget(agentModel!) : Container(),
+        floatingActionButton:
+            (agentModel != null) ? speedialWidget(agentModel!) : Container(),
         body: SafeArea(
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -174,7 +175,10 @@ class _AgentPageState extends State<AgentPage> {
       openBackgroundColor: themeColor,
       speedDialChildren: <SpeedDialChild>[
         SpeedDialChild(
-          child: const Icon(Icons.content_paste_sharp, size: 15.0,),
+          child: const Icon(
+            Icons.content_paste_sharp,
+            size: 15.0,
+          ),
           foregroundColor: Colors.white,
           backgroundColor: Colors.orange.shade700,
           label: 'Modifier CV agent',
@@ -198,7 +202,7 @@ class _AgentPageState extends State<AgentPage> {
             backgroundColor: Colors.blue.shade700,
             label: 'Paiement',
             onPressed: () {
-               Navigator.of(context).push(MaterialPageRoute(
+              Navigator.of(context).push(MaterialPageRoute(
                   builder: (context) =>
                       AddPaiementSalaire(agentModel: agentModel)));
             }),
@@ -480,7 +484,7 @@ class _AgentPageState extends State<AgentPage> {
           Row(
             children: [
               Expanded(
-                child: Text('Département :',
+                child: Text('departement :',
                     textAlign: TextAlign.start,
                     style: bodyMedium.copyWith(fontWeight: FontWeight.bold)),
               ),
@@ -564,8 +568,8 @@ class _AgentPageState extends State<AgentPage> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text('Formation :',
-                textAlign: TextAlign.start,
-                style: bodyMedium!.copyWith(fontWeight: FontWeight.bold)),
+                  textAlign: TextAlign.start,
+                  style: bodyMedium!.copyWith(fontWeight: FontWeight.bold)),
               SelectableText(agentModel.competance!,
                   textAlign: TextAlign.justify, style: bodyMedium)
             ],
@@ -575,8 +579,8 @@ class _AgentPageState extends State<AgentPage> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text('Experience :',
-                textAlign: TextAlign.start,
-                style: bodyMedium.copyWith(fontWeight: FontWeight.bold)),
+                  textAlign: TextAlign.start,
+                  style: bodyMedium.copyWith(fontWeight: FontWeight.bold)),
               SelectableText(agentModel.experience!,
                   textAlign: TextAlign.justify, style: bodyMedium)
             ],

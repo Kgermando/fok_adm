@@ -219,7 +219,7 @@ class _TableAgentsState extends State<TableAgents> {
       ),
       PlutoColumn(
         readOnly: true,
-        title: 'Département',
+        title: 'departement',
         field: 'departement',
         type: PlutoColumnType.text(),
         enableRowDrag: true,

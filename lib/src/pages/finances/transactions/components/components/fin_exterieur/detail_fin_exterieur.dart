@@ -762,7 +762,7 @@ class _DetailFinExterieurState extends State<DetailFinExterieur> {
             children: [
               Expanded(
                   flex: 3,
-                  child: Text('Directeur de département',
+                  child: Text('Directeur de departement',
                       style: bodyMedium.copyWith(fontWeight: FontWeight.bold))),
               Expanded(
                 flex: 3,
@@ -779,7 +779,7 @@ class _DetailFinExterieurState extends State<DetailFinExterieur> {
                             ),
                             if (data.approbationDD != '-' &&
                                 user!.fonctionOccupe ==
-                                    'Directeur de département')
+                                    'Directeur de departement')
                               SelectableText(
                                 data.approbationDD.toString(),
                                 style: bodyMedium.copyWith(
@@ -843,7 +843,7 @@ class _DetailFinExterieurState extends State<DetailFinExterieur> {
                               ),
                             if (data.approbationDD == 'Unapproved' &&
                                 user!.fonctionOccupe ==
-                                    'Directeur de département')
+                                    'Directeur de departement')
                               Container(
                                   margin: const EdgeInsets.only(
                                       bottom: p10, left: p5),

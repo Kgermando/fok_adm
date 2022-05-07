@@ -268,7 +268,7 @@ class _TableBanqueState extends State<TableBanque> {
       ),
       PlutoColumn(
         readOnly: true,
-        title: 'Département',
+        title: 'departement',
         field: 'departement',
         type: PlutoColumnType.text(),
         enableRowDrag: true,

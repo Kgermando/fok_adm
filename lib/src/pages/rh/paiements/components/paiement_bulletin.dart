@@ -50,7 +50,7 @@ class _PaiementBulletinState extends State<PaiementBulletin> {
 
     super.initState();
   }
-  
+
   UserModel? user = UserModel(
       nom: '-',
       prenom: '-',
@@ -117,7 +117,8 @@ class _PaiementBulletinState extends State<PaiementBulletin> {
                             ],
                           ),
                           Expanded(
-                              child: SingleChildScrollView(child: bulletinPaieWidget(data!)))
+                              child: SingleChildScrollView(
+                                  child: bulletinPaieWidget(data!)))
                         ],
                       );
                     } else {
@@ -158,8 +159,8 @@ class _PaiementBulletinState extends State<PaiementBulletin> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         TitleWidget(
-                          title:
-                              'Bulletin de paie du ${DateFormat("dd-mm-yyyy HH:mm").format(data.createdAt)}'),
+                            title:
+                                'Bulletin de paie du ${DateFormat("dd-mm-yyyy HH:mm").format(data.createdAt)}'),
                         Row(
                           children: [PrintWidget(onPressed: () {})],
                         ),
@@ -291,7 +292,8 @@ class _PaiementBulletinState extends State<PaiementBulletin> {
               style: bodyMedium,
             ))
           ],
-        ),Divider(color: Colors.amber.shade700),
+        ),
+        Divider(color: Colors.amber.shade700),
         Row(
           children: [
             Expanded(
@@ -309,7 +311,8 @@ class _PaiementBulletinState extends State<PaiementBulletin> {
               style: bodyMedium,
             ))
           ],
-        ),Divider(color: Colors.amber.shade700),
+        ),
+        Divider(color: Colors.amber.shade700),
         Row(
           children: [
             Expanded(
@@ -346,12 +349,13 @@ class _PaiementBulletinState extends State<PaiementBulletin> {
               style: bodyMedium,
             ))
           ],
-        ),Divider(color: Colors.amber.shade700),
+        ),
+        Divider(color: Colors.amber.shade700),
         Row(
           children: [
             Expanded(
               child: Text(
-                'Département',
+                'departement',
                 style: bodyMedium.copyWith(fontWeight: FontWeight.bold),
               ),
             ),
@@ -1554,7 +1558,7 @@ class _PaiementBulletinState extends State<PaiementBulletin> {
             children: [
               Expanded(
                   flex: 3,
-                  child: Text('Directeur de département',
+                  child: Text('Directeur de departement',
                       style: bodyMedium.copyWith(fontWeight: FontWeight.bold))),
               Expanded(
                 flex: 3,
@@ -1571,7 +1575,7 @@ class _PaiementBulletinState extends State<PaiementBulletin> {
                             ),
                             if (data.approbationDD != '-' &&
                                 user!.fonctionOccupe ==
-                                    'Directeur de département')
+                                    'Directeur de departement')
                               SelectableText(
                                 data.approbationDD.toString(),
                                 style: bodyMedium.copyWith(
@@ -1635,7 +1639,7 @@ class _PaiementBulletinState extends State<PaiementBulletin> {
                               ),
                             if (data.approbationDD == 'Unapproved' &&
                                 user!.fonctionOccupe ==
-                                    'Directeur de département')
+                                    'Directeur de departement')
                               Container(
                                   margin: const EdgeInsets.only(
                                       bottom: p10, left: p5),
@@ -1694,7 +1698,8 @@ class _PaiementBulletinState extends State<PaiementBulletin> {
         totalDuSalaire: data.totalDuSalaire.toString(),
         nombreHeureSupplementaires: data.nombreHeureSupplementaires.toString(),
         tauxHeureSupplementaires: data.tauxHeureSupplementaires.toString(),
-        totalDuHeureSupplementaires: data.totalDuHeureSupplementaires.toString(),
+        totalDuHeureSupplementaires:
+            data.totalDuHeureSupplementaires.toString(),
         supplementTravailSamediDimancheJoursFerie:
             data.supplementTravailSamediDimancheJoursFerie.toString(),
         prime: data.prime.toString(),
@@ -1703,7 +1708,8 @@ class _PaiementBulletinState extends State<PaiementBulletin> {
         tauxCongesPaye: data.tauxCongesPaye.toString(),
         totalDuCongePaye: data.totalDuCongePaye.toString(),
         jourPayeMaladieAccident: data.jourPayeMaladieAccident.toString(),
-        tauxJournalierMaladieAccident: data.tauxJournalierMaladieAccident.toString(),
+        tauxJournalierMaladieAccident:
+            data.tauxJournalierMaladieAccident.toString(),
         totalDuMaladieAccident: data.totalDuMaladieAccident.toString(),
         pensionDeduction: data.pensionDeduction.toString(),
         indemniteCompensatricesDeduction:
@@ -1731,7 +1737,8 @@ class _PaiementBulletinState extends State<PaiementBulletin> {
         signatureJustificationFin: data.signatureJustificationFin.toString(),
         approbationBudget: data.approbationBudget.toString(),
         signatureBudget: data.signatureBudget.toString(),
-        signatureJustificationBudget: data.signatureJustificationBudget.toString(),
+        signatureJustificationBudget:
+            data.signatureJustificationBudget.toString(),
         approbationDD: data.approbationDD.toString(),
         signatureDD: data.signatureDD.toString(),
         signatureJustificationDD: data.signatureJustificationDD.toString(),
@@ -1807,7 +1814,8 @@ class _PaiementBulletinState extends State<PaiementBulletin> {
         signatureJustificationFin: signatureJustificationFinController.text,
         approbationBudget: data.approbationBudget.toString(),
         signatureBudget: data.signatureBudget.toString(),
-        signatureJustificationBudget: data.signatureJustificationBudget.toString(),
+        signatureJustificationBudget:
+            data.signatureJustificationBudget.toString(),
         approbationDD: data.approbationDD.toString(),
         signatureDD: data.signatureDD.toString(),
         signatureJustificationDD: data.signatureJustificationDD.toString(),
@@ -1960,7 +1968,8 @@ class _PaiementBulletinState extends State<PaiementBulletin> {
         signatureJustificationFin: data.signatureJustificationFin.toString(),
         approbationBudget: data.approbationBudget.toString(),
         signatureBudget: data.signatureBudget.toString(),
-        signatureJustificationBudget: data.signatureJustificationBudget.toString(),
+        signatureJustificationBudget:
+            data.signatureJustificationBudget.toString(),
         approbationDD: approbationDDController.toString(),
         signatureDD: user!.matricule.toString(),
         signatureJustificationDD: signatureJustificationDDController.text,

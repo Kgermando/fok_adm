@@ -69,64 +69,63 @@ class _DetailCreanceState extends State<DetailCreance> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      key: _key,
-      drawer: const DrawerMenu(),
-      body: SafeArea(
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            if (Responsive.isDesktop(context))
-              const Expanded(
-                child: DrawerMenu(),
-              ),
-            Expanded(
-              flex: 5,
-              child: Padding(
-                  padding: const EdgeInsets.all(p10),
-                  child: FutureBuilder<CreanceModel>(
-                      future: CreanceApi().getOneData(widget.id!),
-                      builder: (BuildContext context,
-                          AsyncSnapshot<CreanceModel> snapshot) {
-                        if (snapshot.hasData) {
-                          CreanceModel? creanceModel = snapshot.data;
-                          return Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Row(
-                                children: [
-                                  SizedBox(
-                                    width: p20,
-                                    child: IconButton(
-                                        onPressed: () =>
-                                            Routemaster.of(context).pop(),
-                                        icon: const Icon(Icons.arrow_back)),
-                                  ),
-                                  const SizedBox(width: p10),
-                                  Expanded(
-                                    child: CustomAppbar(
-                                        title:
-                                            creanceModel!.nomComplet,
+        key: _key,
+        drawer: const DrawerMenu(),
+        body: SafeArea(
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              if (Responsive.isDesktop(context))
+                const Expanded(
+                  child: DrawerMenu(),
+                ),
+              Expanded(
+                flex: 5,
+                child: Padding(
+                    padding: const EdgeInsets.all(p10),
+                    child: FutureBuilder<CreanceModel>(
+                        future: CreanceApi().getOneData(widget.id!),
+                        builder: (BuildContext context,
+                            AsyncSnapshot<CreanceModel> snapshot) {
+                          if (snapshot.hasData) {
+                            CreanceModel? creanceModel = snapshot.data;
+                            return Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Row(
+                                  children: [
+                                    SizedBox(
+                                      width: p20,
+                                      child: IconButton(
+                                          onPressed: () =>
+                                              Routemaster.of(context).pop(),
+                                          icon: const Icon(Icons.arrow_back)),
+                                    ),
+                                    const SizedBox(width: p10),
+                                    Expanded(
+                                      child: CustomAppbar(
+                                          title: creanceModel!.nomComplet,
                                           controllerMenu: () =>
                                               _key.currentState!.openDrawer()),
-                                  ),
-                                ],
-                              ),
-                              Expanded(
-                                  child: Scrollbar(
-                                      controller: _controllerScroll,
-                                      isAlwaysShown: true,
-                                      child: pageDetail(creanceModel)))
-                            ],
-                          );
-                        } else {
-                          return const Center(
-                              child: CircularProgressIndicator());
-                        }
-                      })),
-            ),
-          ],
-        ),
-      ));
+                                    ),
+                                  ],
+                                ),
+                                Expanded(
+                                    child: Scrollbar(
+                                        controller: _controllerScroll,
+                                        isAlwaysShown: true,
+                                        child: pageDetail(creanceModel)))
+                              ],
+                            );
+                          } else {
+                            return const Center(
+                                child: CircularProgressIndicator());
+                          }
+                        })),
+              ),
+            ],
+          ),
+        ));
   }
 
   Widget pageDetail(CreanceModel creanceModel) {
@@ -160,8 +159,8 @@ class _DetailCreanceState extends State<DetailCreance> {
                               tooltip: 'Créance payé ?',
                               onPressed: () {
                                 Navigator.of(context).push(MaterialPageRoute(
-                                    builder: (context) =>
-                                        UpdateCreance(creanceModel: creanceModel)));
+                                    builder: (context) => UpdateCreance(
+                                        creanceModel: creanceModel)));
                               },
                               icon: const Icon(Icons.edit)),
                           PrintWidget(
@@ -659,7 +658,7 @@ class _DetailCreanceState extends State<DetailCreance> {
             children: [
               Expanded(
                   flex: 3,
-                  child: Text('Directeur de département',
+                  child: Text('Directeur de departement',
                       style: bodyMedium.copyWith(fontWeight: FontWeight.bold))),
               Expanded(
                 flex: 3,
@@ -676,7 +675,7 @@ class _DetailCreanceState extends State<DetailCreance> {
                             ),
                             if (data.approbationDD != '-' &&
                                 user!.fonctionOccupe ==
-                                    'Directeur de département')
+                                    'Directeur de departement')
                               SelectableText(
                                 data.approbationDD.toString(),
                                 style: bodyMedium.copyWith(
@@ -740,7 +739,7 @@ class _DetailCreanceState extends State<DetailCreance> {
                               ),
                             if (data.approbationDD == 'Unapproved' &&
                                 user!.fonctionOccupe ==
-                                    'Directeur de département')
+                                    'Directeur de departement')
                               Container(
                                   margin: const EdgeInsets.only(
                                       bottom: p10, left: p5),
@@ -870,28 +869,27 @@ class _DetailCreanceState extends State<DetailCreance> {
 
   Future<void> submitUpdateDD(CreanceModel data) async {
     final creanceModel = CreanceModel(
-      nomComplet: data.nomComplet,
-      pieceJustificative: data.pieceJustificative,
-      libelle: data.libelle,
-      montant: data.montant,
-      numeroOperation: data.numeroOperation,
-      statutPaie: data.statutPaie,
-      approbationDG: data.approbationDG.toString(),
-      signatureDG: data.signatureDG.toString(),
-      signatureJustificationDG: data.signatureJustificationDG.toString(),
-      approbationFin: data.approbationFin.toString(),
-      signatureFin: data.signatureFin.toString(),
-      signatureJustificationFin: data.signatureJustificationFin.toString(),
-      approbationBudget: data.approbationBudget.toString(),
-      signatureBudget: data.signatureBudget.toString(),
-      signatureJustificationBudget:
-          data.signatureJustificationBudget.toString(),
-      approbationDD: approbationDDController.toString(),
-      signatureDD: user!.matricule.toString(),
-      signatureJustificationDD: signatureJustificationDDController.text,
-      signature: data.signature.toString(),
-      created: data.created
-    );
+        nomComplet: data.nomComplet,
+        pieceJustificative: data.pieceJustificative,
+        libelle: data.libelle,
+        montant: data.montant,
+        numeroOperation: data.numeroOperation,
+        statutPaie: data.statutPaie,
+        approbationDG: data.approbationDG.toString(),
+        signatureDG: data.signatureDG.toString(),
+        signatureJustificationDG: data.signatureJustificationDG.toString(),
+        approbationFin: data.approbationFin.toString(),
+        signatureFin: data.signatureFin.toString(),
+        signatureJustificationFin: data.signatureJustificationFin.toString(),
+        approbationBudget: data.approbationBudget.toString(),
+        signatureBudget: data.signatureBudget.toString(),
+        signatureJustificationBudget:
+            data.signatureJustificationBudget.toString(),
+        approbationDD: approbationDDController.toString(),
+        signatureDD: user!.matricule.toString(),
+        signatureJustificationDD: signatureJustificationDDController.text,
+        signature: data.signature.toString(),
+        created: data.created);
     await CreanceApi().updateData(data.id!, creanceModel);
     Routemaster.of(context).pop();
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(

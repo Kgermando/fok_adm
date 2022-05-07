@@ -100,7 +100,7 @@ class _TableDepartementBudgetDDState extends State<TableDepartementBudgetDD> {
       ),
       PlutoColumn(
         readOnly: true,
-        title: 'Département',
+        title: 'departement',
         field: 'departement',
         type: PlutoColumnType.text(),
         enableRowDrag: true,

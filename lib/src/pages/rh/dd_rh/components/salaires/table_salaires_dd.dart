@@ -145,7 +145,7 @@ class _TableSalairesDDState extends State<TableSalairesDD> {
       ),
       PlutoColumn(
         readOnly: true,
-        title: 'Département',
+        title: 'departement',
         field: 'departement',
         type: PlutoColumnType.text(),
         enableRowDrag: true,

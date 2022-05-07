@@ -147,7 +147,7 @@ class _TableUsersState extends State<TableUsers> {
       ),
       PlutoColumn(
         readOnly: true,
-        title: 'Département',
+        title: 'departement',
         field: 'departement',
         type: PlutoColumnType.text(),
         enableRowDrag: true,
@@ -250,10 +250,8 @@ class _TableUsersState extends State<TableUsers> {
             'fonctionOccupe': PlutoCell(value: item.fonctionOccupe),
             'role': PlutoCell(value: item.role),
             'succursale': PlutoCell(value: item.succursale),
-            'isOnline': PlutoCell(
-                value: (item.isOnline)
-                    ? "En ligne"
-                    : "Offline"),
+            'isOnline':
+                PlutoCell(value: (item.isOnline) ? "En ligne" : "Offline"),
             'createdAt': PlutoCell(
                 value: DateFormat("dd-MM-yy H:mm").format(item.createdAt))
           }));
@@ -263,4 +261,3 @@ class _TableUsersState extends State<TableUsers> {
     }
   }
 }
-

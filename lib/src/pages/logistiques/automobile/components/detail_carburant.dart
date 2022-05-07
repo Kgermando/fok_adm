@@ -779,7 +779,7 @@ class _DetailCaburantState extends State<DetailCaburant> {
               children: [
                 Expanded(
                     flex: 1,
-                    child: Text('Directeur de département',
+                    child: Text('Directeur de departement',
                         style: bodyMedium.copyWith(
                             fontWeight: FontWeight.bold,
                             color: Colors.blue.shade700))),
@@ -799,7 +799,7 @@ class _DetailCaburantState extends State<DetailCaburant> {
                               ),
                               if (data.approbationDD != '-' &&
                                   user!.fonctionOccupe ==
-                                      'Directeur de département')
+                                      'Directeur de departement')
                                 SelectableText(
                                   data.approbationDD.toString(),
                                   style: bodyMedium.copyWith(
@@ -865,7 +865,7 @@ class _DetailCaburantState extends State<DetailCaburant> {
                                 ),
                               if (approbationDDController == 'Unapproved' &&
                                   user!.fonctionOccupe ==
-                                      'Directeur de département')
+                                      'Directeur de departement')
                                 Container(
                                     margin: const EdgeInsets.only(
                                         bottom: p10, left: p5),
@@ -961,7 +961,7 @@ class _DetailCaburantState extends State<DetailCaburant> {
         signatureJustificationDD: data.signatureJustificationDD.toString(),
         signature: data.signature,
         created: data.created);
-    
+
     await CarburantApi().updateData(data.id!, carburantModel);
     Routemaster.of(context).pop();
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
@@ -1007,16 +1007,16 @@ class _DetailCaburantState extends State<DetailCaburant> {
 
   Future<void> submitUpdateDD(CarburantModel data) async {
     final carburantModel = CarburantModel(
-      operationEntreSortie: data.operationEntreSortie,
-      typeCaburant: data.typeCaburant,
-      fournisseur: data.fournisseur,
-      nomeroFactureAchat: data.nomeroFactureAchat,
-      prixAchatParLitre: data.prixAchatParLitre,
-      nomReceptioniste: data.nomReceptioniste,
-      numeroPlaque: data.numeroPlaque,
-      dateHeureSortieAnguin: data.dateHeureSortieAnguin,
-      qtyAchat: data.qtyAchat,
-       approbationDG: data.approbationDG.toString(),
+        operationEntreSortie: data.operationEntreSortie,
+        typeCaburant: data.typeCaburant,
+        fournisseur: data.fournisseur,
+        nomeroFactureAchat: data.nomeroFactureAchat,
+        prixAchatParLitre: data.prixAchatParLitre,
+        nomReceptioniste: data.nomReceptioniste,
+        numeroPlaque: data.numeroPlaque,
+        dateHeureSortieAnguin: data.dateHeureSortieAnguin,
+        qtyAchat: data.qtyAchat,
+        approbationDG: data.approbationDG.toString(),
         signatureDG: data.signatureDG.toString(),
         signatureJustificationDG: data.signatureJustificationDG.toString(),
         approbationFin: data.approbationFin.toString(),
@@ -1031,7 +1031,7 @@ class _DetailCaburantState extends State<DetailCaburant> {
         signatureJustificationDD: signatureJustificationDDController.text,
         signature: data.signature.toString(),
         created: data.created);
-  
+
     await CarburantApi().updateData(data.id!, carburantModel);
     Routemaster.of(context).pop();
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(

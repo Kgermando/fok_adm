@@ -80,7 +80,7 @@ class _DetailSuccursaleState extends State<DetailSuccursale> {
   // Gain par succursale
   List<GainModel> gainList = [];
 
-   UserModel user = UserModel(
+  UserModel user = UserModel(
       nom: "-",
       prenom: "-",
       matricule: "-",
@@ -92,7 +92,6 @@ class _DetailSuccursaleState extends State<DetailSuccursale> {
       createdAt: DateTime.now(),
       passwordHash: "-",
       succursale: "-");
-    
 
   Future<void> getData() async {
     UserModel data = await AuthApi().getUserId();
@@ -246,7 +245,8 @@ class _DetailSuccursaleState extends State<DetailSuccursale> {
   Widget headerTitle(SuccursaleModel data) {
     final bodyText1 = Theme.of(context).textTheme.bodyText1;
 
-    var dataAchatList = achatList.where((element) => element.succursale == data.name).toList();
+    var dataAchatList =
+        achatList.where((element) => element.succursale == data.name).toList();
     // var dataCreanceList = creanceList.where((element) => element.succursale == data.name).toList();
     // var dataVenteList = venteList.where((element) => element.succursale == data.name).toList();
     // var dataGainList = gainList.where((element) => element.succursale == data.name).toList();
@@ -390,7 +390,6 @@ class _DetailSuccursaleState extends State<DetailSuccursale> {
     );
   }
 
-
   Widget statsSuccursaleWidgetTitle() {
     return SizedBox(
       width: double.infinity,
@@ -409,7 +408,7 @@ class _DetailSuccursaleState extends State<DetailSuccursale> {
     );
   }
 
-   Widget infosEditeurWidget(SuccursaleModel data) {
+  Widget infosEditeurWidget(SuccursaleModel data) {
     final bodyMedium = Theme.of(context).textTheme.bodyLarge;
     final bodySmall = Theme.of(context).textTheme.bodyMedium;
     List<String> dataList = ['Approved', 'Unapproved', '-'];
@@ -511,9 +510,7 @@ class _DetailSuccursaleState extends State<DetailSuccursale> {
                                 style: bodySmall.copyWith(
                                     color: Colors.red.shade700),
                               ),
-                              if (data.approbationDG == 'Unapproved' &&
-                                  data.signatureDG != '-')
-                                SelectableText(
+                              SelectableText(
                                   data.signatureJustificationDG.toString(),
                                   style: bodyMedium,
                                 ),
@@ -556,7 +553,7 @@ class _DetailSuccursaleState extends State<DetailSuccursale> {
               children: [
                 Expanded(
                     flex: 1,
-                    child: Text('Directeur de département',
+                    child: Text('Directeur de departement',
                         style: bodyMedium.copyWith(
                             fontWeight: FontWeight.bold,
                             color: Colors.blue.shade700))),
@@ -574,14 +571,12 @@ class _DetailSuccursaleState extends State<DetailSuccursale> {
                                 style: bodySmall.copyWith(
                                     color: Colors.blue.shade700),
                               ),
-                              if (data.approbationDD != '-' &&
-                                  user.fonctionOccupe ==
-                                      'Directeur de département')
-                                SelectableText(
-                                  data.approbationDD.toString(),
-                                  style: bodyMedium.copyWith(
-                                      color: Colors.blue.shade700),
-                                ),
+                              
+                              SelectableText(
+                                data.approbationDD.toString(),
+                                style: bodyMedium.copyWith(
+                                    color: Colors.blue.shade700),
+                              ),
                               if (data.approbationDD == '-')
                                 Container(
                                   margin: const EdgeInsets.only(
@@ -604,6 +599,10 @@ class _DetailSuccursaleState extends State<DetailSuccursale> {
                                     onChanged: (value) {
                                       setState(() {
                                         approbationDDController = value!;
+                                        if (approbationDDController ==
+                                            "Approved") {
+                                          submitUpdateDD(data);
+                                        }
                                       });
                                     },
                                   ),
@@ -634,15 +633,13 @@ class _DetailSuccursaleState extends State<DetailSuccursale> {
                                 style: bodySmall.copyWith(
                                     color: Colors.blue.shade700),
                               ),
-                              if (data.approbationDD == 'Unapproved' &&
-                                  data.signatureDD != '-')
-                                SelectableText(
-                                  data.signatureJustificationDD.toString(),
-                                  style: bodyMedium,
-                                ),
+                              SelectableText(
+                                data.signatureJustificationDD.toString(),
+                                style: bodyMedium,
+                              ),
                               if (approbationDDController == 'Unapproved' &&
                                   user.fonctionOccupe ==
-                                      'Directeur de département')
+                                      'Directeur de departement')
                                 Container(
                                     margin: const EdgeInsets.only(
                                         bottom: p10, left: p5),
@@ -659,7 +656,9 @@ class _DetailSuccursaleState extends State<DetailSuccursale> {
                                       keyboardType: TextInputType.text,
                                       style: const TextStyle(),
                                     )),
-                              if (approbationDDController == 'Unapproved')
+                              if (approbationDDController == 'Unapproved' &&
+                                  user.fonctionOccupe ==
+                                      'Directeur de departement')
                                 IconButton(
                                     onPressed: () {
                                       submitUpdateDD(data);
@@ -705,8 +704,6 @@ class _DetailSuccursaleState extends State<DetailSuccursale> {
       backgroundColor: Colors.green[700],
     ));
   }
-
-
 
   Future<void> submitUpdateDD(SuccursaleModel data) async {
     final succursale = SuccursaleModel(

@@ -513,11 +513,11 @@ class _DetailBilanState extends State<DetailBilan> {
                                     .copyWith(color: Colors.red.shade700),
                               ),
                               // if (data.approbationDG != '-')
-                                SelectableText(
-                                  data.approbationDG.toString(),
-                                  style: bodyMedium.copyWith(
-                                      color: Colors.red.shade700),
-                                ),
+                              SelectableText(
+                                data.approbationDG.toString(),
+                                style: bodyMedium.copyWith(
+                                    color: Colors.red.shade700),
+                              ),
                               if (data.approbationDG == '-' &&
                                   user!.fonctionOccupe == 'Directeur générale')
                                 Container(
@@ -603,7 +603,6 @@ class _DetailBilanState extends State<DetailBilan> {
                                 IconButton(
                                     onPressed: () {
                                       submitUpdateDG(data);
-                                      
                                     },
                                     icon: const Icon(Icons.send))
                             ],
@@ -621,7 +620,7 @@ class _DetailBilanState extends State<DetailBilan> {
               children: [
                 Expanded(
                     flex: 1,
-                    child: Text('Directeur de département',
+                    child: Text('Directeur de departement',
                         style: bodyMedium.copyWith(
                             fontWeight: FontWeight.bold,
                             color: Colors.blue.shade700))),
@@ -641,7 +640,7 @@ class _DetailBilanState extends State<DetailBilan> {
                               ),
                               if (data.approbationDD != '-' &&
                                   user!.fonctionOccupe ==
-                                      'Directeur de département')
+                                      'Directeur de departement')
                                 SelectableText(
                                   data.approbationDD.toString(),
                                   style: bodyMedium.copyWith(
@@ -707,7 +706,7 @@ class _DetailBilanState extends State<DetailBilan> {
                                 ),
                               if (approbationDDController == 'Unapproved' &&
                                   user!.fonctionOccupe ==
-                                      'Directeur de département')
+                                      'Directeur de departement')
                                 Container(
                                     margin: const EdgeInsets.only(
                                         bottom: p10, left: p5),
@@ -803,7 +802,7 @@ class _DetailBilanState extends State<DetailBilan> {
         created: data.created);
     await BilanApi().updateData(data.id!, bilanModel);
     Routemaster.of(context).pop();
-     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
       content: const Text("Mis en corbeille avec succès!"),
       backgroundColor: Colors.red[700],
     ));

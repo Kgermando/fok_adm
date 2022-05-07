@@ -123,7 +123,8 @@ class _BanqueTransactionsState extends State<BanqueTransactions> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      CustomAppbar(title: 'Transactions Banque',
+                      CustomAppbar(
+                          title: 'Transactions Banque',
                           controllerMenu: () =>
                               _key.currentState!.openDrawer()),
                       const Expanded(child: TableBanque())
@@ -558,7 +559,7 @@ class _BanqueTransactionsState extends State<BanqueTransactions> {
       margin: const EdgeInsets.only(bottom: p20),
       child: DropdownButtonFormField<String>(
         decoration: InputDecoration(
-          labelText: 'Département',
+          labelText: 'departement',
           labelStyle: const TextStyle(),
           border: OutlineInputBorder(borderRadius: BorderRadius.circular(5.0)),
           contentPadding: const EdgeInsets.only(left: 5.0),

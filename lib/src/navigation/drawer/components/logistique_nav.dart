@@ -35,21 +35,20 @@ class _LogistiqueNavState extends State<LogistiqueNav> {
       trailing: const Icon(Icons.arrow_drop_down),
       children: [
         DrawerWidget(
-          selected: widget.pageCurrente == LogistiqueRoutes.logDashboard,
-          icon: Icons.dashboard,
-          sizeIcon: 20.0,
-          title: 'Dashboard',
-          style: bodyText1!,
-          onTap: () {
-            Routemaster.of(context).replace(LogistiqueRoutes.logDashboard);
-            // Routemaster.of(context).pop();
-          }
-        ),
+            selected: widget.pageCurrente == LogistiqueRoutes.logDashboard,
+            icon: Icons.dashboard,
+            sizeIcon: 20.0,
+            title: 'Dashboard',
+            style: bodyText1!,
+            onTap: () {
+              Routemaster.of(context).replace(LogistiqueRoutes.logDashboard);
+              // Routemaster.of(context).pop();
+            }),
         DrawerWidget(
             selected: widget.pageCurrente == LogistiqueRoutes.logDD,
             icon: Icons.manage_accounts,
             sizeIcon: 20.0,
-            title: 'Directeur de département',
+            title: 'Directeur de departement',
             style: bodyText1,
             onTap: () {
               Routemaster.of(context).replace(LogistiqueRoutes.logDD);
@@ -89,8 +88,7 @@ class _LogistiqueNavState extends State<LogistiqueNav> {
                   // Routemaster.of(context).pop();
                 }),
             DrawerWidget(
-                selected:
-                    widget.pageCurrente == LogistiqueRoutes.logTrajetAuto,
+                selected: widget.pageCurrente == LogistiqueRoutes.logTrajetAuto,
                 icon: Icons.arrow_right,
                 sizeIcon: 15.0,
                 title: 'Trajets',
@@ -113,17 +111,17 @@ class _LogistiqueNavState extends State<LogistiqueNav> {
           },
           children: [
             DrawerWidget(
-              selected:
-                  widget.pageCurrente == LogistiqueRoutes.logEtatMateriel,
-              icon: Icons.arrow_right,
-              sizeIcon: 15.0,
-              title: 'Etat materiels',
-              style: bodyText2,
-              onTap: () {
-                Routemaster.of(context)
-                    .replace(LogistiqueRoutes.logEtatMateriel);
-                // Routemaster.of(context).pop();
-              }),
+                selected:
+                    widget.pageCurrente == LogistiqueRoutes.logEtatMateriel,
+                icon: Icons.arrow_right,
+                sizeIcon: 15.0,
+                title: 'Etat materiels',
+                style: bodyText2,
+                onTap: () {
+                  Routemaster.of(context)
+                      .replace(LogistiqueRoutes.logEtatMateriel);
+                  // Routemaster.of(context).pop();
+                }),
             DrawerWidget(
                 selected:
                     widget.pageCurrente == LogistiqueRoutes.logMobilierMateriel,
@@ -137,8 +135,8 @@ class _LogistiqueNavState extends State<LogistiqueNav> {
                   // Routemaster.of(context).pop();
                 }),
             DrawerWidget(
-                selected:
-                    widget.pageCurrente == LogistiqueRoutes.logImmobilierMateriel,
+                selected: widget.pageCurrente ==
+                    LogistiqueRoutes.logImmobilierMateriel,
                 icon: Icons.arrow_right,
                 sizeIcon: 15.0,
                 title: 'Immobiliers',
@@ -161,16 +159,16 @@ class _LogistiqueNavState extends State<LogistiqueNav> {
           },
           children: [
             DrawerWidget(
-              selected: widget.pageCurrente == LogistiqueRoutes.logEntretien,
-              icon: Icons.arrow_right,
-              sizeIcon: 15.0,
-              title: 'Entretiens',
-              style: bodyText2,
-              onTap: () {
-                Routemaster.of(context)
-                    .replace(LogistiqueRoutes.logEntretien);
-                // Routemaster.of(context).pop();
-              }),
+                selected: widget.pageCurrente == LogistiqueRoutes.logEntretien,
+                icon: Icons.arrow_right,
+                sizeIcon: 15.0,
+                title: 'Entretiens',
+                style: bodyText2,
+                onTap: () {
+                  Routemaster.of(context)
+                      .replace(LogistiqueRoutes.logEntretien);
+                  // Routemaster.of(context).pop();
+                }),
           ],
         ),
         DrawerWidget(

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:fokad_admin/src/navigation/drawer/drawer_widget.dart';
 import 'package:fokad_admin/src/routes/routes.dart';
 import 'package:routemaster/routemaster.dart';
+
 class FinancesNav extends StatefulWidget {
   const FinancesNav({Key? key, required this.pageCurrente}) : super(key: key);
   final String pageCurrente;
@@ -14,25 +15,25 @@ class FinancesNav extends StatefulWidget {
 class _FinancesNavState extends State<FinancesNav> {
   bool isOpen = false;
   bool isOpenTransaction = false;
-  
+
   @override
   Widget build(BuildContext context) {
     final bodyLarge = Theme.of(context).textTheme.bodyLarge;
     final bodyText1 = Theme.of(context).textTheme.bodyText1;
     final bodyText2 = Theme.of(context).textTheme.bodyText2;
-    
+
     return ExpansionTile(
-        leading: const Icon(Icons.account_balance, size: 30.0),
-        title: AutoSizeText('Finances', maxLines: 1, style: bodyLarge),
-        initiallyExpanded: false,
-        onExpansionChanged: (val) {
-          setState(() {
-            isOpen = !val;
-          });
-        },
-        trailing: const Icon(Icons.arrow_drop_down),
-        children: [
-          DrawerWidget(
+      leading: const Icon(Icons.account_balance, size: 30.0),
+      title: AutoSizeText('Finances', maxLines: 1, style: bodyLarge),
+      initiallyExpanded: false,
+      onExpansionChanged: (val) {
+        setState(() {
+          isOpen = !val;
+        });
+      },
+      trailing: const Icon(Icons.arrow_drop_down),
+      children: [
+        DrawerWidget(
             selected: widget.pageCurrente == FinanceRoutes.financeDashboard,
             icon: Icons.dashboard,
             sizeIcon: 20.0,
@@ -41,29 +42,28 @@ class _FinancesNavState extends State<FinancesNav> {
             onTap: () {
               Routemaster.of(context).replace(FinanceRoutes.financeDashboard);
               // Routemaster.of(context).pop();
-            }
-          ),
+            }),
         DrawerWidget(
             selected: widget.pageCurrente == FinanceRoutes.financeDashboard,
             icon: Icons.manage_accounts,
             sizeIcon: 20.0,
-            title: 'Directeur de département',
+            title: 'Directeur de departement',
             style: bodyText1,
             onTap: () {
               Routemaster.of(context).replace(FinanceRoutes.financeDashboard);
               // Routemaster.of(context).pop();
             }),
-          ExpansionTile(
-            leading: const Icon(Icons.compare_arrows, size: 20.0),
-            title: Text('Transactions', style: bodyText1),
-            initiallyExpanded: false,
-            onExpansionChanged: (val) {
-              setState(() {
-                isOpenTransaction = !val;
-              });
-            },
-            children: [
-              DrawerWidget(
+        ExpansionTile(
+          leading: const Icon(Icons.compare_arrows, size: 20.0),
+          title: Text('Transactions', style: bodyText1),
+          initiallyExpanded: false,
+          onExpansionChanged: (val) {
+            setState(() {
+              isOpenTransaction = !val;
+            });
+          },
+          children: [
+            DrawerWidget(
                 selected:
                     widget.pageCurrente == FinanceRoutes.transactionsBanque,
                 icon: Icons.arrow_right,
@@ -75,8 +75,9 @@ class _FinancesNavState extends State<FinancesNav> {
                       .replace(FinanceRoutes.transactionsBanque);
                   // Routemaster.of(context).pop();
                 }),
-              DrawerWidget(
-                selected: widget.pageCurrente == FinanceRoutes.transactionsCaisse,
+            DrawerWidget(
+                selected:
+                    widget.pageCurrente == FinanceRoutes.transactionsCaisse,
                 icon: Icons.arrow_right,
                 sizeIcon: 15.0,
                 title: 'Caisse',
@@ -85,9 +86,8 @@ class _FinancesNavState extends State<FinancesNav> {
                   Routemaster.of(context)
                       .replace(FinanceRoutes.transactionsCaisse);
                   // Routemaster.of(context).pop();
-                }
-              ),
-              DrawerWidget(
+                }),
+            DrawerWidget(
                 selected:
                     widget.pageCurrente == FinanceRoutes.transactionsCreances,
                 icon: Icons.arrow_right,
@@ -99,20 +99,21 @@ class _FinancesNavState extends State<FinancesNav> {
                       .replace(FinanceRoutes.transactionsCreances);
                   // Routemaster.of(context).pop();
                 }),
-              DrawerWidget(
-                  selected: widget.pageCurrente == FinanceRoutes.transactionsDettes,
-                  icon: Icons.arrow_right,
-                  sizeIcon: 15.0,
-                  title: 'Dettes',
-                  style: bodyText2,
-                  onTap: () {
-                    Routemaster.of(context)
+            DrawerWidget(
+                selected:
+                    widget.pageCurrente == FinanceRoutes.transactionsDettes,
+                icon: Icons.arrow_right,
+                sizeIcon: 15.0,
+                title: 'Dettes',
+                style: bodyText2,
+                onTap: () {
+                  Routemaster.of(context)
                       .replace(FinanceRoutes.transactionsDettes);
                   // Routemaster.of(context).pop();
                 }),
-              
-              DrawerWidget(
-                selected: widget.pageCurrente == FinanceRoutes.transactionsFinancementExterne,
+            DrawerWidget(
+                selected: widget.pageCurrente ==
+                    FinanceRoutes.transactionsFinancementExterne,
                 icon: Icons.arrow_right,
                 sizeIcon: 15.0,
                 title: 'Autres Fin.',
@@ -121,9 +122,8 @@ class _FinancesNavState extends State<FinancesNav> {
                   Routemaster.of(context)
                       .replace(FinanceRoutes.transactionsFinancementExterne);
                   // Routemaster.of(context).pop();
-                  }),
-              
-              DrawerWidget(
+                }),
+            DrawerWidget(
                 selected:
                     widget.pageCurrente == FinanceRoutes.transactionsPaiement,
                 icon: Icons.arrow_right,
@@ -134,13 +134,11 @@ class _FinancesNavState extends State<FinancesNav> {
                   Routemaster.of(context)
                       .replace(FinanceRoutes.transactionsPaiement);
                   // Routemaster.of(context).pop();
-                }
-              ),
-            ],
-          ),
-         
-          DrawerWidget(
-            selected: widget.pageCurrente ==  DevisRoutes.devis,
+                }),
+          ],
+        ),
+        DrawerWidget(
+            selected: widget.pageCurrente == DevisRoutes.devis,
             icon: Icons.note_alt,
             sizeIcon: 20.0,
             title: 'Etat de besoin',
@@ -149,7 +147,7 @@ class _FinancesNavState extends State<FinancesNav> {
               Routemaster.of(context).replace(DevisRoutes.devis);
               // Routemaster.of(context).pop();
             }),
-          DrawerWidget(
+        DrawerWidget(
             selected: widget.pageCurrente == RhRoutes.rhPerformence,
             icon: Icons.multiline_chart_sharp,
             sizeIcon: 20.0,
@@ -159,7 +157,7 @@ class _FinancesNavState extends State<FinancesNav> {
               Routemaster.of(context).replace(RhRoutes.rhPerformence);
               // Routemaster.of(context).pop();
             }),
-        ],
-      );
+      ],
+    );
   }
 }

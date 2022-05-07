@@ -148,7 +148,7 @@ class _TableSalaireFinState extends State<TableSalaireFin> {
       ),
       PlutoColumn(
         readOnly: true,
-        title: 'Département',
+        title: 'departement',
         field: 'departement',
         type: PlutoColumnType.text(),
         enableRowDrag: true,

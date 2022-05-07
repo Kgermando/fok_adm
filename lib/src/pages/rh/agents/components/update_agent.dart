@@ -97,7 +97,7 @@ class _UpdateAgentState extends State<UpdateAgent> {
     fonctionOccupe = widget.agentModel.fonctionOccupe;
     createdAt = widget.agentModel.createdAt;
     statutAgent = widget.agentModel.statutAgent;
-    // photo = widget.agentModel.photo!; 
+    // photo = widget.agentModel.photo!;
     nomController = TextEditingController(text: widget.agentModel.nom);
     postNomController = TextEditingController(text: widget.agentModel.postNom);
     prenomController = TextEditingController(text: widget.agentModel.prenom);
@@ -161,7 +161,7 @@ class _UpdateAgentState extends State<UpdateAgent> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      key: _key,
+        key: _key,
         drawer: const DrawerMenu(),
         body: SafeArea(
           child: Row(
@@ -188,7 +188,8 @@ class _UpdateAgentState extends State<UpdateAgent> {
                           ),
                           const SizedBox(width: p10),
                           Expanded(
-                            child: CustomAppbar(title: 'Agent $matricule',
+                            child: CustomAppbar(
+                                title: 'Agent $matricule',
                                 controllerMenu: () =>
                                     _key.currentState!.openDrawer()),
                           ),
@@ -291,7 +292,7 @@ class _UpdateAgentState extends State<UpdateAgent> {
                         ),
                         Expanded(child: servicesAffectationWidget())
                       ],
-                    ), 
+                    ),
                     Row(
                       children: [
                         Expanded(child: roleWidget()),
@@ -686,7 +687,7 @@ class _UpdateAgentState extends State<UpdateAgent> {
       margin: const EdgeInsets.only(bottom: p20),
       child: DropdownButtonFormField<String>(
         decoration: InputDecoration(
-          labelText: 'Département',
+          labelText: 'departement',
           labelStyle: const TextStyle(),
           border: OutlineInputBorder(borderRadius: BorderRadius.circular(5.0)),
           contentPadding: const EdgeInsets.only(left: 5.0),
@@ -923,7 +924,7 @@ class _UpdateAgentState extends State<UpdateAgent> {
 
   Future submit() async {
     final agentModel = AgentModel(
-      id: widget.agentModel.id,
+        id: widget.agentModel.id,
         nom: nomController.text,
         postNom: postNomController.text,
         prenom: prenomController.text,
@@ -952,7 +953,7 @@ class _UpdateAgentState extends State<UpdateAgent> {
         signature: user!.matricule.toString(),
         created: DateTime.now());
 
-    await AgentsApi().updateData(widget.agentModel.id!,agentModel);
+    await AgentsApi().updateData(widget.agentModel.id!, agentModel);
     Routemaster.of(context).replace(RhRoutes.rhAgent);
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
       content: const Text("Mis a jour agent avec succès!"),

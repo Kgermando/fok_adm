@@ -45,7 +45,7 @@ class _RhNavState extends State<RhNav> {
             selected: widget.pageCurrente == RhRoutes.rhDD,
             icon: Icons.manage_accounts,
             sizeIcon: 20.0,
-            title: 'Directeur de Département',
+            title: 'Directeur de departement',
             style: bodyText1,
             onTap: () {
               Routemaster.of(context).replace(RhRoutes.rhDD);

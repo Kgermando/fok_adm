@@ -67,7 +67,9 @@ class _ProfilPageState extends State<ProfilPage> {
                                               _key.currentState!.openDrawer())),
                                 ],
                               ),
-                              Expanded(child: SingleChildScrollView(child: profileBody(userData))),
+                              Expanded(
+                                  child: SingleChildScrollView(
+                                      child: profileBody(userData))),
                             ],
                           );
                         }
@@ -204,7 +206,7 @@ class _ProfilPageState extends State<ProfilPage> {
             child: Row(
               children: [
                 Expanded(
-                    child: AutoSizeText('Département',
+                    child: AutoSizeText('departement',
                         maxLines: 1,
                         style:
                             bodyLarge.copyWith(fontWeight: FontWeight.bold))),
@@ -318,8 +320,7 @@ class _ProfilPageState extends State<ProfilPage> {
         ElevatedButton.icon(
             onPressed: () {
               Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) =>
-                      ChangePassword(userModel: userModel)));
+                  builder: (context) => ChangePassword(userModel: userModel)));
             },
             icon: const Icon(Icons.password),
             label: const AutoSizeText("Modifiez votre mot de passe")),

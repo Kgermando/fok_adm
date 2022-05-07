@@ -50,7 +50,7 @@ class _DetailCampaignState extends State<DetailCampaign> {
   String? ligneBudgtaire;
   String? resource;
   List<LigneBudgetaireModel> ligneBudgetaireList = [];
-    UserModel? user = UserModel(
+  UserModel? user = UserModel(
       nom: '-',
       prenom: '-',
       matricule: '-',
@@ -161,17 +161,18 @@ class _DetailCampaignState extends State<DetailCampaign> {
                         children: [
                           Row(
                             children: [
-                              editButton(data), 
+                              editButton(data),
                               PrintWidget(
-                                  tooltip: 'Imprimer le document', onPressed: () {})
+                                  tooltip: 'Imprimer le document',
+                                  onPressed: () {})
                             ],
                           ),
                           SelectableText(
-                          DateFormat("dd-MM-yyyy HH:mm").format(data.created),
-                          textAlign: TextAlign.start),
+                              DateFormat("dd-MM-yyyy HH:mm")
+                                  .format(data.created),
+                              textAlign: TextAlign.start),
                         ],
                       ),
-                      
                     ],
                   )
                 ],
@@ -219,7 +220,6 @@ class _DetailCampaignState extends State<DetailCampaign> {
       padding: const EdgeInsets.all(p10),
       child: Column(
         children: [
-          
           const SizedBox(
             height: p20,
           ),
@@ -712,7 +712,7 @@ class _DetailCampaignState extends State<DetailCampaign> {
             children: [
               Expanded(
                   flex: 3,
-                  child: Text('Directeur de département',
+                  child: Text('Directeur de departement',
                       style: bodyMedium.copyWith(fontWeight: FontWeight.bold))),
               Expanded(
                 flex: 3,
@@ -729,7 +729,7 @@ class _DetailCampaignState extends State<DetailCampaign> {
                             ),
                             if (data.approbationDD != '-' &&
                                 user!.fonctionOccupe ==
-                                    'Directeur de département')
+                                    'Directeur de departement')
                               SelectableText(
                                 data.approbationDD.toString(),
                                 style: bodyMedium.copyWith(
@@ -793,7 +793,7 @@ class _DetailCampaignState extends State<DetailCampaign> {
                               ),
                             if (data.approbationDD == 'Unapproved' &&
                                 user!.fonctionOccupe ==
-                                    'Directeur de département')
+                                    'Directeur de departement')
                               Container(
                                   margin: const EdgeInsets.only(
                                       bottom: p10, left: p5),
@@ -921,30 +921,30 @@ class _DetailCampaignState extends State<DetailCampaign> {
 
   Future<void> submitUpdateFIN(CampaignModel data) async {
     final campaignModel = CampaignModel(
-       typeProduit: data.typeProduit,
-      dateDebutEtFin: data.dateDebutEtFin,
-      agentAffectes: data.agentAffectes,
-      coutCampaign: data.coutCampaign,
-      lieuCible: data.lieuCible,
-      promotion: data.promotion,
-      objetctifs: data.objetctifs,
-      ligneBudgtaire: data.ligneBudgtaire,
-      resources: data.resources,
-     approbationDG: data.approbationDG.toString(),
-      signatureDG: data.signatureDG.toString(),
-      signatureJustificationDG: data.signatureJustificationDG.toString(),
-      approbationFin: approbationFinController.toString(),
-      signatureFin: user!.matricule.toString(),
-      signatureJustificationFin: signatureJustificationFinController.text,
-      approbationBudget: data.approbationBudget.toString(),
-      signatureBudget: data.signatureBudget.toString(),
-      signatureJustificationBudget:
-          data.signatureJustificationBudget.toString(),
-      approbationDD: data.approbationDD.toString(),
-      signatureDD: data.signatureDD.toString(),
-      signatureJustificationDD: data.signatureJustificationDD.toString(),
-      signature: data.signature,
-      created: data.created);
+        typeProduit: data.typeProduit,
+        dateDebutEtFin: data.dateDebutEtFin,
+        agentAffectes: data.agentAffectes,
+        coutCampaign: data.coutCampaign,
+        lieuCible: data.lieuCible,
+        promotion: data.promotion,
+        objetctifs: data.objetctifs,
+        ligneBudgtaire: data.ligneBudgtaire,
+        resources: data.resources,
+        approbationDG: data.approbationDG.toString(),
+        signatureDG: data.signatureDG.toString(),
+        signatureJustificationDG: data.signatureJustificationDG.toString(),
+        approbationFin: approbationFinController.toString(),
+        signatureFin: user!.matricule.toString(),
+        signatureJustificationFin: signatureJustificationFinController.text,
+        approbationBudget: data.approbationBudget.toString(),
+        signatureBudget: data.signatureBudget.toString(),
+        signatureJustificationBudget:
+            data.signatureJustificationBudget.toString(),
+        approbationDD: data.approbationDD.toString(),
+        signatureDD: data.signatureDD.toString(),
+        signatureJustificationDD: data.signatureJustificationDD.toString(),
+        signature: data.signature,
+        created: data.created);
     await CampaignApi().updateData(data.id!, campaignModel);
     Routemaster.of(context).pop();
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
@@ -1013,7 +1013,7 @@ class _DetailCampaignState extends State<DetailCampaign> {
         signatureJustificationDD: signatureJustificationDDController.text,
         signature: data.signature.toString(),
         created: data.created);
-    
+
     await CampaignApi().updateData(data.id!, campaignModel);
     Routemaster.of(context).pop();
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(

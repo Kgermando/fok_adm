@@ -687,7 +687,7 @@ class _DetailImmobilierState extends State<DetailImmobilier> {
               children: [
                 Expanded(
                     flex: 1,
-                    child: Text('Directeur de département',
+                    child: Text('Directeur de departement',
                         style: bodyMedium.copyWith(
                             fontWeight: FontWeight.bold,
                             color: Colors.blue.shade700))),
@@ -707,7 +707,7 @@ class _DetailImmobilierState extends State<DetailImmobilier> {
                               ),
                               if (data.approbationDD != '-' &&
                                   user!.fonctionOccupe ==
-                                      'Directeur de département')
+                                      'Directeur de departement')
                                 SelectableText(
                                   data.approbationDD.toString(),
                                   style: bodyMedium.copyWith(
@@ -773,7 +773,7 @@ class _DetailImmobilierState extends State<DetailImmobilier> {
                                 ),
                               if (approbationDDController == 'Unapproved' &&
                                   user!.fonctionOccupe ==
-                                      'Directeur de département')
+                                      'Directeur de departement')
                                 Container(
                                     margin: const EdgeInsets.only(
                                         bottom: p10, left: p5),
@@ -831,7 +831,7 @@ class _DetailImmobilierState extends State<DetailImmobilier> {
         signatureJustificationDD: data.signatureJustificationDD.toString(),
         signature: data.signature,
         created: data.created);
-    
+
     await ImmobilierApi().updateData(data.id!, immobilierModel);
     Routemaster.of(context).pop();
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
@@ -862,7 +862,6 @@ class _DetailImmobilierState extends State<DetailImmobilier> {
         signatureJustificationDD: data.signatureJustificationDD.toString(),
         signature: data.signature,
         created: data.created);
-    
 
     await ImmobilierApi().updateData(data.id!, immobilierModel);
     Routemaster.of(context).pop();
@@ -925,7 +924,7 @@ class _DetailImmobilierState extends State<DetailImmobilier> {
         signatureJustificationDD: signatureJustificationDDController.text,
         signature: data.signature.toString(),
         created: data.created);
-    
+
     await ImmobilierApi().updateData(data.id!, immobilierModel);
     Routemaster.of(context).pop();
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(

@@ -8,7 +8,7 @@ import 'package:intl/intl.dart';
 import 'package:pluto_grid/pluto_grid.dart';
 
 class TablePerformence extends StatefulWidget {
-  const TablePerformence({ Key? key }) : super(key: key);
+  const TablePerformence({Key? key}) : super(key: key);
 
   @override
   State<TablePerformence> createState() => _TablePerformenceState();
@@ -109,7 +109,7 @@ class _TablePerformenceState extends State<TablePerformence> {
       ),
       PlutoColumn(
         readOnly: true,
-        title: 'Département',
+        title: 'departement',
         field: 'departement',
         type: PlutoColumnType.text(),
         enableRowDrag: true,

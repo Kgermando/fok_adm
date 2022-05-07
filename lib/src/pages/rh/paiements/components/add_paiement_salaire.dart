@@ -164,7 +164,8 @@ class _AddPaiementSalaireState extends State<AddPaiementSalaire> {
                           ),
                           const SizedBox(width: p10),
                           Expanded(
-                              child: CustomAppbar(title: 'Nouvelle feuille',
+                              child: CustomAppbar(
+                                  title: 'Nouvelle feuille',
                                   controllerMenu: () =>
                                       _key.currentState!.openDrawer())),
                         ],
@@ -414,7 +415,7 @@ class _AddPaiementSalaireState extends State<AddPaiementSalaire> {
           children: [
             Expanded(
               child: Text(
-                'Département',
+                'departement',
                 style: bodyMedium.copyWith(fontWeight: FontWeight.bold),
               ),
             ),
@@ -1314,9 +1315,10 @@ class _AddPaiementSalaireState extends State<AddPaiementSalaire> {
       createdAt: DateTime.now(),
       ligneBudgtaire: '-',
       resources: '-',
-      tauxJourHeureMoisSalaire: (tauxJourHeureMoisSalaire == '' || tauxJourHeureMoisSalaire==null)
-          ? '-'
-          : tauxJourHeureMoisSalaire.toString(),
+      tauxJourHeureMoisSalaire:
+          (tauxJourHeureMoisSalaire == '' || tauxJourHeureMoisSalaire == null)
+              ? '-'
+              : tauxJourHeureMoisSalaire.toString(),
       joursHeuresPayeA100PourecentSalaire:
           (joursHeuresPayeA100PourecentSalaireController.text == '')
               ? '-'

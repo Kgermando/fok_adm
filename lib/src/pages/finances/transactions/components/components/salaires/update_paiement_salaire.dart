@@ -92,7 +92,6 @@ class _UpdatePaiementSalaireState extends State<UpdatePaiementSalaire> {
   String? signatureDD;
   String? signatureJustificationDD;
   String? signature;
-  
 
   Future<void> getData() async {
     UserModel user = await AuthApi().getUserId();
@@ -194,7 +193,8 @@ class _UpdatePaiementSalaireState extends State<UpdatePaiementSalaire> {
                       ),
                       const SizedBox(width: p10),
                       Expanded(
-                          child: CustomAppbar(title: 'Feuille de paie',
+                          child: CustomAppbar(
+                              title: 'Feuille de paie',
                               controllerMenu: () =>
                                   _key.currentState!.openDrawer())),
                     ],
@@ -330,7 +330,6 @@ class _UpdatePaiementSalaireState extends State<UpdatePaiementSalaire> {
     }
     return Colors.green;
   }
-
 
   Widget observationWidget() {
     final bodyMedium = Theme.of(context).textTheme.bodyMedium;
@@ -489,7 +488,7 @@ class _UpdatePaiementSalaireState extends State<UpdatePaiementSalaire> {
           children: [
             Expanded(
               child: Text(
-                'Département',
+                'departement',
                 style: bodyMedium.copyWith(fontWeight: FontWeight.bold),
               ),
             ),
@@ -551,23 +550,23 @@ class _UpdatePaiementSalaireState extends State<UpdatePaiementSalaire> {
               width: p10,
             ),
             Expanded(
-              child: (approbation) 
-                ? SelectableText(
-                'Approuvé',
-                style: bodyMedium.copyWith(color: Colors.green.shade700),
-              ) : SelectableText(
-                    'Non approuvé',
-                    style:
-                        bodyMedium.copyWith(color: Colors.red.shade700),
-                  )
-            )
+                child: (approbation)
+                    ? SelectableText(
+                        'Approuvé',
+                        style:
+                            bodyMedium.copyWith(color: Colors.green.shade700),
+                      )
+                    : SelectableText(
+                        'Non approuvé',
+                        style: bodyMedium.copyWith(color: Colors.red.shade700),
+                      ))
           ],
         ),
       ],
     );
   }
 
-   Widget modePaiementWidget() {
+  Widget modePaiementWidget() {
     final bodyMedium = Theme.of(context).textTheme.bodyMedium;
     return Container(
       padding: const EdgeInsets.only(top: p16, bottom: p16),
@@ -1316,70 +1315,69 @@ class _UpdatePaiementSalaireState extends State<UpdatePaiementSalaire> {
 
   Future<void> submit() async {
     final paiementSalaireModel = PaiementSalaireModel(
-        id: widget.id,
-        nom: nom.toString(),
-        postNom: postNom.toString(),
-        prenom: prenom.toString(),
-        telephone: telephone.toString(),
-        adresse: adresse.toString(),
-        ligneBudgtaire: ligneBudgtaire.toString(),
-        resources: resources.toString(),
-        departement: departement.toString(),
-        numeroSecuriteSociale: numeroSecuriteSociale.toString(),
-        matricule: matricule.toString(),
-        servicesAffectation: servicesAffectation.toString(),
-        salaire: salaireField.toString(),
-        observation: observation, // Finance
-        modePaiement: modePaiement.toString(),
-        createdAt: DateTime.now(),
-        tauxJourHeureMoisSalaire: tauxJourHeureMoisSalaire.toString(),
-        joursHeuresPayeA100PourecentSalaire:
-            joursHeuresPayeA100PourecentSalaire.toString(),
-        totalDuSalaire: totalDuSalaire.toString(),
-        nombreHeureSupplementaires: nombreHeureSupplementaires.toString(),
-        tauxHeureSupplementaires: tauxHeureSupplementaires.toString(),
-        totalDuHeureSupplementaires: totalDuHeureSupplementaires.toString(),
-        supplementTravailSamediDimancheJoursFerie:
-            supplementTravailSamediDimancheJoursFerie.toString(),
-        prime: prime.toString(),
-        divers: divers.toString(),
-        joursCongesPaye: joursCongesPaye.toString(),
-        tauxCongesPaye: tauxCongesPaye.toString(),
-        totalDuCongePaye: totalDuCongePaye.toString(),
-        jourPayeMaladieAccident: jourPayeMaladieAccident.toString(),
-        tauxJournalierMaladieAccident: tauxJournalierMaladieAccident.toString(),
-        totalDuMaladieAccident: totalDuMaladieAccident.toString(),
-        pensionDeduction: pensionDeduction.toString(),
-        indemniteCompensatricesDeduction:
-            indemniteCompensatricesDeduction.toString(),
-        avancesDeduction: avancesDeduction.toString(),
-        diversDeduction: diversDeduction.toString(),
-        retenuesFiscalesDeduction: retenuesFiscalesDeduction.toString(),
-        nombreEnfantBeneficaireAllocationsFamiliales:
-            nombreEnfantBeneficaireAllocationsFamiliales.toString(),
-        nombreDeJoursAllocationsFamiliales:
-            nombreDeJoursAllocationsFamiliales.toString(),
-        tauxJoursAllocationsFamiliales:
-            tauxJoursAllocationsFamiliales.toString(),
-        totalAPayerAllocationsFamiliales:
-            totalAPayerAllocationsFamiliales.toString(),
-        netAPayer: netAPayer.toString(),
-        montantPrisConsiderationCalculCotisationsINSS:
-            montantPrisConsiderationCalculCotisationsINSS.toString(),
-        totalDuBrut: totalDuBrut.toString(),
-        approbationDG: approbationDG.toString(),
-        signatureDG: signatureDG.toString(),
-        signatureJustificationDG: signatureJustificationDG.toString(),
-        approbationFin: approbationFin.toString(),
-        signatureFin: signatureFin.toString(),
-        signatureJustificationFin: signatureJustificationFin.toString(),
-        approbationBudget: approbationBudget.toString(),
-        signatureBudget: signatureBudget.toString(),
-        signatureJustificationBudget: signatureJustificationBudget.toString(),
-        approbationDD: approbationDD.toString(),
-        signatureDD: signatureDD.toString(),
-        signatureJustificationDD: signatureJustificationDD.toString(),
-        signature: signature.toString(),
+      id: widget.id,
+      nom: nom.toString(),
+      postNom: postNom.toString(),
+      prenom: prenom.toString(),
+      telephone: telephone.toString(),
+      adresse: adresse.toString(),
+      ligneBudgtaire: ligneBudgtaire.toString(),
+      resources: resources.toString(),
+      departement: departement.toString(),
+      numeroSecuriteSociale: numeroSecuriteSociale.toString(),
+      matricule: matricule.toString(),
+      servicesAffectation: servicesAffectation.toString(),
+      salaire: salaireField.toString(),
+      observation: observation, // Finance
+      modePaiement: modePaiement.toString(),
+      createdAt: DateTime.now(),
+      tauxJourHeureMoisSalaire: tauxJourHeureMoisSalaire.toString(),
+      joursHeuresPayeA100PourecentSalaire:
+          joursHeuresPayeA100PourecentSalaire.toString(),
+      totalDuSalaire: totalDuSalaire.toString(),
+      nombreHeureSupplementaires: nombreHeureSupplementaires.toString(),
+      tauxHeureSupplementaires: tauxHeureSupplementaires.toString(),
+      totalDuHeureSupplementaires: totalDuHeureSupplementaires.toString(),
+      supplementTravailSamediDimancheJoursFerie:
+          supplementTravailSamediDimancheJoursFerie.toString(),
+      prime: prime.toString(),
+      divers: divers.toString(),
+      joursCongesPaye: joursCongesPaye.toString(),
+      tauxCongesPaye: tauxCongesPaye.toString(),
+      totalDuCongePaye: totalDuCongePaye.toString(),
+      jourPayeMaladieAccident: jourPayeMaladieAccident.toString(),
+      tauxJournalierMaladieAccident: tauxJournalierMaladieAccident.toString(),
+      totalDuMaladieAccident: totalDuMaladieAccident.toString(),
+      pensionDeduction: pensionDeduction.toString(),
+      indemniteCompensatricesDeduction:
+          indemniteCompensatricesDeduction.toString(),
+      avancesDeduction: avancesDeduction.toString(),
+      diversDeduction: diversDeduction.toString(),
+      retenuesFiscalesDeduction: retenuesFiscalesDeduction.toString(),
+      nombreEnfantBeneficaireAllocationsFamiliales:
+          nombreEnfantBeneficaireAllocationsFamiliales.toString(),
+      nombreDeJoursAllocationsFamiliales:
+          nombreDeJoursAllocationsFamiliales.toString(),
+      tauxJoursAllocationsFamiliales: tauxJoursAllocationsFamiliales.toString(),
+      totalAPayerAllocationsFamiliales:
+          totalAPayerAllocationsFamiliales.toString(),
+      netAPayer: netAPayer.toString(),
+      montantPrisConsiderationCalculCotisationsINSS:
+          montantPrisConsiderationCalculCotisationsINSS.toString(),
+      totalDuBrut: totalDuBrut.toString(),
+      approbationDG: approbationDG.toString(),
+      signatureDG: signatureDG.toString(),
+      signatureJustificationDG: signatureJustificationDG.toString(),
+      approbationFin: approbationFin.toString(),
+      signatureFin: signatureFin.toString(),
+      signatureJustificationFin: signatureJustificationFin.toString(),
+      approbationBudget: approbationBudget.toString(),
+      signatureBudget: signatureBudget.toString(),
+      signatureJustificationBudget: signatureJustificationBudget.toString(),
+      approbationDD: approbationDD.toString(),
+      signatureDD: signatureDD.toString(),
+      signatureJustificationDD: signatureJustificationDD.toString(),
+      signature: signature.toString(),
     );
     await PaiementSalaireApi().updateData(widget.id, paiementSalaireModel);
     Routemaster.of(context).pop();

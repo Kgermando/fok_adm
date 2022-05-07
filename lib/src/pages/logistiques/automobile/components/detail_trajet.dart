@@ -747,7 +747,7 @@ class _DetailTrajetState extends State<DetailTrajet> {
               children: [
                 Expanded(
                     flex: 1,
-                    child: Text('Directeur de département',
+                    child: Text('Directeur de departement',
                         style: bodyMedium.copyWith(
                             fontWeight: FontWeight.bold,
                             color: Colors.blue.shade700))),
@@ -767,7 +767,7 @@ class _DetailTrajetState extends State<DetailTrajet> {
                               ),
                               if (data.approbationDD != '-' &&
                                   user!.fonctionOccupe ==
-                                      'Directeur de département')
+                                      'Directeur de departement')
                                 SelectableText(
                                   data.approbationDD.toString(),
                                   style: bodyMedium.copyWith(
@@ -833,7 +833,7 @@ class _DetailTrajetState extends State<DetailTrajet> {
                                 ),
                               if (approbationDDController == 'Unapproved' &&
                                   user!.fonctionOccupe ==
-                                      'Directeur de département')
+                                      'Directeur de departement')
                                 Container(
                                     margin: const EdgeInsets.only(
                                         bottom: p10, left: p5),
@@ -925,7 +925,7 @@ class _DetailTrajetState extends State<DetailTrajet> {
         signatureJustificationDD: data.signatureJustificationDD.toString(),
         signature: data.signature,
         created: data.created);
-    
+
     await TrajetApi().updateData(data.id!, trajetModel);
     Routemaster.of(context).pop();
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
@@ -958,7 +958,7 @@ class _DetailTrajetState extends State<DetailTrajet> {
         signatureJustificationDD: data.signatureJustificationDD.toString(),
         signature: data.signature,
         created: data.created);
- 
+
     await TrajetApi().updateData(data.id!, trajetModel);
     Routemaster.of(context).pop();
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(

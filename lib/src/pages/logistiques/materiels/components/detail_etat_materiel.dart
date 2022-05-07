@@ -698,7 +698,7 @@ class _DetailEtatMaterielState extends State<DetailEtatMateriel> {
               children: [
                 Expanded(
                     flex: 1,
-                    child: Text('Directeur de département',
+                    child: Text('Directeur de departement',
                         style: bodyMedium.copyWith(
                             fontWeight: FontWeight.bold,
                             color: Colors.blue.shade700))),
@@ -718,7 +718,7 @@ class _DetailEtatMaterielState extends State<DetailEtatMateriel> {
                               ),
                               if (data.approbationDD != '-' &&
                                   user!.fonctionOccupe ==
-                                      'Directeur de département')
+                                      'Directeur de departement')
                                 SelectableText(
                                   data.approbationDD.toString(),
                                   style: bodyMedium.copyWith(
@@ -784,7 +784,7 @@ class _DetailEtatMaterielState extends State<DetailEtatMateriel> {
                                 ),
                               if (approbationDDController == 'Unapproved' &&
                                   user!.fonctionOccupe ==
-                                      'Directeur de département')
+                                      'Directeur de departement')
                                 Container(
                                     margin: const EdgeInsets.only(
                                         bottom: p10, left: p5),
@@ -873,7 +873,7 @@ class _DetailEtatMaterielState extends State<DetailEtatMateriel> {
         signature: data.signature,
         created: data.created);
 
-   await EtatMaterielApi().updateData(data.id!, etatMaterielModel);
+    await EtatMaterielApi().updateData(data.id!, etatMaterielModel);
     Routemaster.of(context).pop();
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
       content: const Text("Soumis avec succès!"),
@@ -934,7 +934,7 @@ class _DetailEtatMaterielState extends State<DetailEtatMateriel> {
         signatureJustificationDD: signatureJustificationDDController.text,
         signature: data.signature.toString(),
         created: data.created);
-    
+
     await EtatMaterielApi().updateData(data.id!, etatMaterielModel);
     Routemaster.of(context).pop();
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(

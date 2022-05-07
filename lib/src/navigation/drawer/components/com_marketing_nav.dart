@@ -5,7 +5,7 @@ import 'package:fokad_admin/src/routes/routes.dart';
 import 'package:routemaster/routemaster.dart';
 
 class ComMarketing extends StatefulWidget {
-  const ComMarketing({ Key? key, required this.pageCurrente }) : super(key: key);
+  const ComMarketing({Key? key, required this.pageCurrente}) : super(key: key);
   final String pageCurrente;
 
   @override
@@ -34,23 +34,23 @@ class _ComMarketingState extends State<ComMarketing> {
       trailing: const Icon(Icons.arrow_drop_down),
       children: [
         DrawerWidget(
-          selected: widget.pageCurrente == ComMarketingRoutes.comMarketingDashboard,
-          icon: Icons.dashboard,
-          sizeIcon: 20.0,
-          title: 'Dashboard',
-          style: bodyText1!,
-          onTap: () {
-            Routemaster.of(context).replace(
-              ComMarketingRoutes.comMarketingDashboard,
-            );
-            // Routemaster.of(context).pop();
-          }),
-          DrawerWidget(
             selected:
-                widget.pageCurrente == ComMarketingRoutes.comMarketingDD,
+                widget.pageCurrente == ComMarketingRoutes.comMarketingDashboard,
+            icon: Icons.dashboard,
+            sizeIcon: 20.0,
+            title: 'Dashboard',
+            style: bodyText1!,
+            onTap: () {
+              Routemaster.of(context).replace(
+                ComMarketingRoutes.comMarketingDashboard,
+              );
+              // Routemaster.of(context).pop();
+            }),
+        DrawerWidget(
+            selected: widget.pageCurrente == ComMarketingRoutes.comMarketingDD,
             icon: Icons.manage_accounts,
             sizeIcon: 20.0,
-            title: 'Directeur de Département',
+            title: 'Directeur de departement',
             style: bodyText1,
             onTap: () {
               Routemaster.of(context).replace(
@@ -58,20 +58,19 @@ class _ComMarketingState extends State<ComMarketing> {
               );
               // Routemaster.of(context).pop();
             }),
-         ExpansionTile(
-            leading: const Icon(Icons.visibility, size: 20.0),
-            title: Text('Marketing', style: bodyText1),
-            initiallyExpanded: false,
-            onExpansionChanged: (val) {
-              setState(() {
-                isOpenComMarketing2 = !val;
-              });
-            },
-            children: [
-        
-              DrawerWidget(
-                selected:
-                    widget.pageCurrente == ComMarketingRoutes.comMarketingAnnuaire,
+        ExpansionTile(
+          leading: const Icon(Icons.visibility, size: 20.0),
+          title: Text('Marketing', style: bodyText1),
+          initiallyExpanded: false,
+          onExpansionChanged: (val) {
+            setState(() {
+              isOpenComMarketing2 = !val;
+            });
+          },
+          children: [
+            DrawerWidget(
+                selected: widget.pageCurrente ==
+                    ComMarketingRoutes.comMarketingAnnuaire,
                 icon: Icons.arrow_right,
                 sizeIcon: 15.0,
                 title: 'Annuaire',
@@ -81,8 +80,9 @@ class _ComMarketingState extends State<ComMarketing> {
                       .replace(ComMarketingRoutes.comMarketingAnnuaire);
                   // Routemaster.of(context).pop();
                 }),
-              DrawerWidget(
-                selected: widget.pageCurrente == ComMarketingRoutes.comMarketingAgenda,
+            DrawerWidget(
+                selected: widget.pageCurrente ==
+                    ComMarketingRoutes.comMarketingAgenda,
                 icon: Icons.arrow_right,
                 sizeIcon: 15.0,
                 title: 'Agenda',
@@ -91,9 +91,8 @@ class _ComMarketingState extends State<ComMarketing> {
                   Routemaster.of(context)
                       .replace(ComMarketingRoutes.comMarketingAgenda);
                   // Routemaster.of(context).pop();
-                }
-              ),
-              DrawerWidget(
+                }),
+            DrawerWidget(
                 selected: widget.pageCurrente ==
                     ComMarketingRoutes.comMarketingCampaign,
                 icon: Icons.arrow_right,
@@ -105,8 +104,8 @@ class _ComMarketingState extends State<ComMarketing> {
                       .replace(ComMarketingRoutes.comMarketingCampaign);
                   // Routemaster.of(context).pop();
                 }),
-            ],
-          ),
+          ],
+        ),
         ExpansionTile(
           leading: const Icon(Icons.store, size: 20.0),
           title: Text('Commercial', style: bodyText1),
@@ -154,8 +153,8 @@ class _ComMarketingState extends State<ComMarketing> {
                   // Routemaster.of(context).pop();
                 }),
             DrawerWidget(
-                selected: widget.pageCurrente ==
-                    ComMarketingRoutes.comMarketingAchat,
+                selected:
+                    widget.pageCurrente == ComMarketingRoutes.comMarketingAchat,
                 icon: Icons.arrow_right,
                 sizeIcon: 15.0,
                 title: 'Achats',
@@ -226,8 +225,8 @@ class _ComMarketingState extends State<ComMarketing> {
                   // Routemaster.of(context).pop();
                 }),
             DrawerWidget(
-                selected: widget.pageCurrente ==
-                    ComMarketingRoutes.comMarketingcart,
+                selected:
+                    widget.pageCurrente == ComMarketingRoutes.comMarketingcart,
                 icon: Icons.arrow_right,
                 sizeIcon: 15.0,
                 title: 'Panier',

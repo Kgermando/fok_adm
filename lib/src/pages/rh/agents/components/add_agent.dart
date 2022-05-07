@@ -663,7 +663,7 @@ class _AddAgentState extends State<AddAgent> {
       margin: const EdgeInsets.only(bottom: p20),
       child: DropdownButtonFormField<String>(
         decoration: InputDecoration(
-          labelText: 'Département',
+          labelText: 'departement',
           labelStyle: const TextStyle(),
           border: OutlineInputBorder(borderRadius: BorderRadius.circular(5.0)),
           contentPadding: const EdgeInsets.only(left: 5.0),
@@ -676,7 +676,7 @@ class _AddAgentState extends State<AddAgent> {
             child: Text(value),
           );
         }).toList(),
-        validator: (value) => value == null ? "Select Département" : null,
+        validator: (value) => value == null ? "Select departement" : null,
         onChanged: (value) {
           setState(() {
             departement = value!;

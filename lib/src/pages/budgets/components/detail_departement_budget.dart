@@ -168,7 +168,7 @@ class _DetailDepartmentBudgetState extends State<DetailDepartmentBudget> {
           Row(
             children: [
               Expanded(
-                child: Text('Département :',
+                child: Text('departement :',
                     textAlign: TextAlign.start,
                     style: bodyMedium!.copyWith(fontWeight: FontWeight.bold)),
               ),

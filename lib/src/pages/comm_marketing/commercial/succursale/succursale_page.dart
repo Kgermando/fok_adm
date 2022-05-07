@@ -27,7 +27,19 @@ class _SuccursalePageState extends State<SuccursalePage> {
     super.initState();
   }
 
-  UserModel? user;
+    UserModel user = UserModel(
+      nom: "-",
+      prenom: "-",
+      matricule: "-",
+      departement: "-",
+      servicesAffectation: "-",
+      fonctionOccupe: "-",
+      role: "5",
+      isOnline: false,
+      createdAt: DateTime.now(),
+      passwordHash: "-",
+      succursale: "-");
+
   Future<void> getData() async {
     UserModel data = await AuthApi().getUserId();
     setState(() {
@@ -110,7 +122,7 @@ class _SuccursalePageState extends State<SuccursalePage> {
   }
 
   Widget succursaleWidget(SuccursaleModel succursaleModel) {
-    int roleAgent = int.parse(user!.role);
+    int roleAgent = int.parse(user.role);
     return GestureDetector(
       onTap: () {
         if (roleAgent < 3) {

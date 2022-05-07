@@ -293,7 +293,7 @@ class _UpdateUserState extends State<UpdateUser> {
           decoration: InputDecoration(
             border:
                 OutlineInputBorder(borderRadius: BorderRadius.circular(10.0)),
-            labelText: 'Département',
+            labelText: 'departement',
           ),
           keyboardType: TextInputType.text,
           style: const TextStyle(),

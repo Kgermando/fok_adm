@@ -75,7 +75,7 @@ class _DepartementFinState extends State<DepartementFin> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       CustomAppbar(
-                          title: 'Département de finance',
+                          title: 'departement de finance',
                           controllerMenu: () =>
                               _key.currentState!.openDrawer()),
                       Expanded(
@@ -131,7 +131,8 @@ class _DepartementFinState extends State<DepartementFin> {
                                   children: [
                                     Badge(
                                       elevation: 10,
-                                      badgeContent: Text(campaignCount.toString()),
+                                      badgeContent:
+                                          Text(campaignCount.toString()),
                                       position: const BadgePosition(top: 20.0),
                                     ),
                                     const Icon(Icons.arrow_drop_down),

@@ -72,7 +72,8 @@ class _DepBudgetState extends State<DepBudget> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                       CustomAppbar(title: 'Département de finance',
+                      CustomAppbar(
+                          title: 'departement de finance',
                           controllerMenu: () =>
                               _key.currentState!.openDrawer()),
                       Expanded(

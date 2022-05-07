@@ -232,7 +232,7 @@ class _DetailDevisState extends State<DetailDevis> {
           Row(
             children: [
               Expanded(
-                child: Text('Département :',
+                child: Text('departement :',
                     textAlign: TextAlign.start,
                     style: bodyMedium.copyWith(fontWeight: FontWeight.bold)),
               ),
@@ -691,7 +691,7 @@ class _DetailDevisState extends State<DetailDevis> {
             children: [
               Expanded(
                   flex: 3,
-                  child: Text('Directeur de département',
+                  child: Text('Directeur de departement',
                       style: bodyMedium.copyWith(fontWeight: FontWeight.bold))),
               Expanded(
                 flex: 3,
@@ -708,7 +708,7 @@ class _DetailDevisState extends State<DetailDevis> {
                             ),
                             if (data.approbationDD != '-' &&
                                 user!.fonctionOccupe ==
-                                    'Directeur de département')
+                                    'Directeur de departement')
                               SelectableText(
                                 data.approbationDD.toString(),
                                 style: bodyMedium.copyWith(
@@ -772,7 +772,7 @@ class _DetailDevisState extends State<DetailDevis> {
                               ),
                             if (data.approbationDD == 'Unapproved' &&
                                 user!.fonctionOccupe ==
-                                    'Directeur de département')
+                                    'Directeur de departement')
                               Container(
                                   margin: const EdgeInsets.only(
                                       bottom: p10, left: p5),

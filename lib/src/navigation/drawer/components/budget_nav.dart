@@ -5,7 +5,7 @@ import 'package:fokad_admin/src/routes/routes.dart';
 import 'package:routemaster/routemaster.dart';
 
 class BudgetNav extends StatefulWidget {
-  const BudgetNav({ Key? key, required this.pageCurrente }) : super(key: key);
+  const BudgetNav({Key? key, required this.pageCurrente}) : super(key: key);
   final String pageCurrente;
 
   @override
@@ -40,14 +40,14 @@ class _BudgetNavState extends State<BudgetNav> {
             onTap: () {
               Routemaster.of(context).replace(
                 BudgetRoutes.budgetDashboard,
-            );
+              );
               // Routemaster.of(context).pop();
             }),
         DrawerWidget(
             selected: widget.pageCurrente == BudgetRoutes.budgetDashboard,
             icon: Icons.manage_accounts,
             sizeIcon: 20.0,
-            title: 'Directeur de département',
+            title: 'Directeur de departement',
             style: bodyText1,
             onTap: () {
               Routemaster.of(context).replace(

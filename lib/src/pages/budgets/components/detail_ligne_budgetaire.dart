@@ -95,8 +95,8 @@ class _DetailLigneBudgetaireState extends State<DetailLigneBudgetaire> {
                                     Expanded(
                                       child: CustomAppbar(
                                           title: data!.nomLigneBudgetaire,
-                                        controllerMenu: () =>
-                                            _key.currentState!.openDrawer()),
+                                          controllerMenu: () =>
+                                              _key.currentState!.openDrawer()),
                                     ),
                                   ],
                                 ),
@@ -194,7 +194,7 @@ class _DetailLigneBudgetaireState extends State<DetailLigneBudgetaire> {
           Row(
             children: [
               Expanded(
-                child: Text('Département :',
+                child: Text('departement :',
                     textAlign: TextAlign.start,
                     style: bodyMedium.copyWith(fontWeight: FontWeight.bold)),
               ),
@@ -690,7 +690,7 @@ class _DetailLigneBudgetaireState extends State<DetailLigneBudgetaire> {
             children: [
               Expanded(
                   flex: 3,
-                  child: Text('Directeur de département',
+                  child: Text('Directeur de departement',
                       style: bodyMedium.copyWith(fontWeight: FontWeight.bold))),
               Expanded(
                 flex: 3,
@@ -707,7 +707,7 @@ class _DetailLigneBudgetaireState extends State<DetailLigneBudgetaire> {
                             ),
                             if (data.approbationDD != '-' &&
                                 user!.fonctionOccupe ==
-                                    'Directeur de département')
+                                    'Directeur de departement')
                               SelectableText(
                                 data.approbationDD.toString(),
                                 style: bodyMedium.copyWith(
@@ -771,7 +771,7 @@ class _DetailLigneBudgetaireState extends State<DetailLigneBudgetaire> {
                               ),
                             if (data.approbationDD == 'Unapproved' &&
                                 user!.fonctionOccupe ==
-                                    'Directeur de département')
+                                    'Directeur de departement')
                               Container(
                                   margin: const EdgeInsets.only(
                                       bottom: p10, left: p5),

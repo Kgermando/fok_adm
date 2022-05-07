@@ -95,9 +95,11 @@ class _DetailUserState extends State<DetailUser> {
                                       const SizedBox(width: p10),
                                       Expanded(
                                         child: CustomAppbar(
-                                            title: "Matricule ${data!.matricule}",
-                                            controllerMenu: () =>
-                                                _key.currentState!.openDrawer()),
+                                            title:
+                                                "Matricule ${data!.matricule}",
+                                            controllerMenu: () => _key
+                                                .currentState!
+                                                .openDrawer()),
                                       ),
                                     ],
                                   ),
@@ -150,7 +152,7 @@ class _DetailUserState extends State<DetailUser> {
                   Column(
                     children: [
                       PrintWidget(
-                              tooltip: 'Imprimer le document', onPressed: () {}),
+                          tooltip: 'Imprimer le document', onPressed: () {}),
                       SelectableText(
                           DateFormat("dd-MM-yy").format(data.createdAt),
                           textAlign: TextAlign.start),
@@ -226,7 +228,7 @@ class _DetailUserState extends State<DetailUser> {
           Row(
             children: [
               Expanded(
-                child: Text('Département :',
+                child: Text('departement :',
                     textAlign: TextAlign.start,
                     style: bodyMedium.copyWith(fontWeight: FontWeight.bold)),
               ),
@@ -330,7 +332,7 @@ class _DetailUserState extends State<DetailUser> {
     );
   }
 
-    Widget deletteAccesUser() {
+  Widget deletteAccesUser() {
     return IconButton(
       color: Colors.red,
       icon: const Icon(Icons.person_off),
@@ -348,14 +350,12 @@ class _DetailUserState extends State<DetailUser> {
             ),
             TextButton(
               onPressed: () async {
-                  await UserApi().deleteData(user!.id!);
-                    Routemaster.of(context).pop();
-                    ScaffoldMessenger.of(context)
-                        .showSnackBar(SnackBar(
-                      content: const Text(
-                          "Compte supprimé avec succès!"),
-                      backgroundColor: Colors.red.shade700,
-                    ));
+                await UserApi().deleteData(user!.id!);
+                Routemaster.of(context).pop();
+                ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                  content: const Text("Compte supprimé avec succès!"),
+                  backgroundColor: Colors.red.shade700,
+                ));
                 Routemaster.of(context).pop();
               },
               child: const Text('OK'),
@@ -365,5 +365,4 @@ class _DetailUserState extends State<DetailUser> {
       ),
     );
   }
-
 }

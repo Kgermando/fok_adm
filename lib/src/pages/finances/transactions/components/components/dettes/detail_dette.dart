@@ -49,7 +49,6 @@ class _DetailDetteState extends State<DetailDette> {
   TextEditingController signatureJustificationDDController =
       TextEditingController();
 
-
   @override
   initState() {
     getData();
@@ -66,11 +65,11 @@ class _DetailDetteState extends State<DetailDette> {
       user = userModel;
     });
   }
-  
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      key: _key,
+        key: _key,
         drawer: const DrawerMenu(),
         body: SafeArea(
           child: Row(
@@ -105,8 +104,7 @@ class _DetailDetteState extends State<DetailDette> {
                                     const SizedBox(width: p10),
                                     Expanded(
                                       child: CustomAppbar(
-                                          title:
-                                              detteModel!.nomComplet,
+                                          title: detteModel!.nomComplet,
                                           controllerMenu: () =>
                                               _key.currentState!.openDrawer()),
                                     ),
@@ -129,6 +127,7 @@ class _DetailDetteState extends State<DetailDette> {
           ),
         ));
   }
+
   Widget pageDetail(DetteModel detteModel) {
     return Row(mainAxisAlignment: MainAxisAlignment.center, children: [
       Card(
@@ -160,7 +159,8 @@ class _DetailDetteState extends State<DetailDette> {
                               tooltip: 'Dette payé ?',
                               onPressed: () {
                                 Navigator.of(context).push(MaterialPageRoute(
-                                    builder: (context) => UpdateDette(detteModel: detteModel)));
+                                    builder: (context) =>
+                                        UpdateDette(detteModel: detteModel)));
                               },
                               icon: const Icon(Icons.edit)),
                           PrintWidget(
@@ -293,7 +293,6 @@ class _DetailDetteState extends State<DetailDette> {
       ),
     );
   }
-
 
   Widget infosEditeurWidget(DetteModel data) {
     final bodyMedium = Theme.of(context).textTheme.bodyMedium;
@@ -659,7 +658,7 @@ class _DetailDetteState extends State<DetailDette> {
             children: [
               Expanded(
                   flex: 3,
-                  child: Text('Directeur de département',
+                  child: Text('Directeur de departement',
                       style: bodyMedium.copyWith(fontWeight: FontWeight.bold))),
               Expanded(
                 flex: 3,
@@ -676,7 +675,7 @@ class _DetailDetteState extends State<DetailDette> {
                             ),
                             if (data.approbationDD != '-' &&
                                 user!.fonctionOccupe ==
-                                    'Directeur de département')
+                                    'Directeur de departement')
                               SelectableText(
                                 data.approbationDD.toString(),
                                 style: bodyMedium.copyWith(
@@ -740,7 +739,7 @@ class _DetailDetteState extends State<DetailDette> {
                               ),
                             if (data.approbationDD == 'Unapproved' &&
                                 user!.fonctionOccupe ==
-                                    'Directeur de département')
+                                    'Directeur de departement')
                               Container(
                                   margin: const EdgeInsets.only(
                                       bottom: p10, left: p5),
@@ -898,5 +897,4 @@ class _DetailDetteState extends State<DetailDette> {
       backgroundColor: Colors.green[700],
     ));
   }
-
 }

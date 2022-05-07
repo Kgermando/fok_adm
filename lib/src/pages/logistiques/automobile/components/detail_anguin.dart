@@ -852,7 +852,7 @@ class _DetailAnguinState extends State<DetailAnguin> {
               children: [
                 Expanded(
                     flex: 1,
-                    child: Text('Directeur de département',
+                    child: Text('Directeur de departement',
                         style: bodyMedium.copyWith(
                             fontWeight: FontWeight.bold,
                             color: Colors.blue.shade700))),
@@ -872,7 +872,7 @@ class _DetailAnguinState extends State<DetailAnguin> {
                               ),
                               if (data.approbationDD != '-' &&
                                   user!.fonctionOccupe ==
-                                      'Directeur de département')
+                                      'Directeur de departement')
                                 SelectableText(
                                   data.approbationDD.toString(),
                                   style: bodyMedium.copyWith(
@@ -938,7 +938,7 @@ class _DetailAnguinState extends State<DetailAnguin> {
                                 ),
                               if (approbationDDController == 'Unapproved' &&
                                   user!.fonctionOccupe ==
-                                      'Directeur de département')
+                                      'Directeur de departement')
                                 Container(
                                     margin: const EdgeInsets.only(
                                         bottom: p10, left: p5),
@@ -1015,36 +1015,36 @@ class _DetailAnguinState extends State<DetailAnguin> {
 
   Future<void> submitUpdateFIN(AnguinModel data) async {
     final anguinModel = AnguinModel(
-      nom: data.nom,
-      modele: data.modele,
-      marque: data.marque,
-      numeroChassie: data.numeroChassie,
-      couleur: data.couleur,
-      genre: data.genre,
-      qtyMaxReservoir: data.qtyMaxReservoir,
-      dateFabrication: data.dateFabrication,
-      nomeroPLaque: data.nomeroPLaque,
-      nomeroEntreprise: data.nomeroEntreprise,
-      kilometrageInitiale: data.kilometrageInitiale,
-      provenance: data.provenance,
-      typeCaburant: data.typeCaburant,
-      typeMoteur: data.typeMoteur,
-       approbationDG: data.approbationDG.toString(),
-      signatureDG: data.signatureDG.toString(),
-      signatureJustificationDG: data.signatureJustificationDG.toString(),
-      approbationFin: approbationFinController.toString(),
-      signatureFin: user!.matricule.toString(),
-      signatureJustificationFin: signatureJustificationFinController.text,
-      approbationBudget: data.approbationBudget.toString(),
-      signatureBudget: data.signatureBudget.toString(),
-      signatureJustificationBudget:
-          data.signatureJustificationBudget.toString(),
-      approbationDD: data.approbationDD.toString(),
-      signatureDD: data.signatureDD.toString(),
-      signatureJustificationDD: data.signatureJustificationDD.toString(),
+        nom: data.nom,
+        modele: data.modele,
+        marque: data.marque,
+        numeroChassie: data.numeroChassie,
+        couleur: data.couleur,
+        genre: data.genre,
+        qtyMaxReservoir: data.qtyMaxReservoir,
+        dateFabrication: data.dateFabrication,
+        nomeroPLaque: data.nomeroPLaque,
+        nomeroEntreprise: data.nomeroEntreprise,
+        kilometrageInitiale: data.kilometrageInitiale,
+        provenance: data.provenance,
+        typeCaburant: data.typeCaburant,
+        typeMoteur: data.typeMoteur,
+        approbationDG: data.approbationDG.toString(),
+        signatureDG: data.signatureDG.toString(),
+        signatureJustificationDG: data.signatureJustificationDG.toString(),
+        approbationFin: approbationFinController.toString(),
+        signatureFin: user!.matricule.toString(),
+        signatureJustificationFin: signatureJustificationFinController.text,
+        approbationBudget: data.approbationBudget.toString(),
+        signatureBudget: data.signatureBudget.toString(),
+        signatureJustificationBudget:
+            data.signatureJustificationBudget.toString(),
+        approbationDD: data.approbationDD.toString(),
+        signatureDD: data.signatureDD.toString(),
+        signatureJustificationDD: data.signatureJustificationDD.toString(),
         signature: data.signature,
         created: data.created);
-    
+
     await AnguinApi().updateData(data.id!, anguinModel);
     Routemaster.of(context).pop();
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
