@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:fokad_admin/src/api/auth/auth_api.dart';
 import 'package:fokad_admin/src/api/comptabilite/bilan_api.dart';
 import 'package:fokad_admin/src/constants/app_theme.dart';
@@ -451,13 +452,16 @@ class _AddBilanState extends State<AddBilan> {
                                   child: TextFormField(
                                     controller:
                                         montantActifControllerList[index],
+                                    keyboardType: TextInputType.number,
+                                    inputFormatters: <TextInputFormatter>[
+                                      FilteringTextInputFormatter.digitsOnly
+                                    ],
                                     decoration: InputDecoration(
                                       border: OutlineInputBorder(
                                           borderRadius:
                                               BorderRadius.circular(10.0)),
                                       labelText: '${index + 1}. Montant \$',
                                     ),
-                                    keyboardType: TextInputType.text,
                                     style: const TextStyle(),
                                   )),
                             ),
@@ -622,13 +626,15 @@ class _AddBilanState extends State<AddBilan> {
                                   child: TextFormField(
                                     controller:
                                         montantPassifControllerList[index],
+                                    inputFormatters: <TextInputFormatter>[
+                                      FilteringTextInputFormatter.digitsOnly
+                                    ],
                                     decoration: InputDecoration(
                                       border: OutlineInputBorder(
                                           borderRadius:
                                               BorderRadius.circular(10.0)),
                                       labelText: '${index + 1}. Montant \$',
                                     ),
-                                    keyboardType: TextInputType.text,
                                     style: const TextStyle(),
                                   )),
                             ),

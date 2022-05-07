@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:fokad_admin/src/api/auth/auth_api.dart';
-import 'package:fokad_admin/src/api/comptabilite/bilan_api.dart';
+import 'package:fokad_admin/src/api/comptabilite/journal_api.dart';
 import 'package:fokad_admin/src/constants/app_theme.dart';
 import 'package:fokad_admin/src/constants/responsive.dart';
-import 'package:fokad_admin/src/models/comptabilites/bilan_model.dart';
-import 'package:fokad_admin/src/models/comptabilites/comptes.dart';
+import 'package:fokad_admin/src/models/comptabilites/journal_model.dart';
 import 'package:fokad_admin/src/models/users/user_model.dart';
 import 'package:fokad_admin/src/navigation/drawer/drawer_menu.dart';
 import 'package:fokad_admin/src/navigation/header/custom_appbar.dart';
@@ -13,15 +12,15 @@ import 'package:fokad_admin/src/widgets/title_widget.dart';
 import 'package:intl/intl.dart';
 import 'package:routemaster/routemaster.dart';
 
-class DetailBilan extends StatefulWidget {
-  const DetailBilan({Key? key, required this.id}) : super(key: key);
+class DetailJournal extends StatefulWidget {
+  const DetailJournal({Key? key, required this.id}) : super(key: key);
   final int id;
 
   @override
-  State<DetailBilan> createState() => _DetailBilanState();
+  State<DetailJournal> createState() => _DetailJournalState();
 }
 
-class _DetailBilanState extends State<DetailBilan> {
+class _DetailJournalState extends State<DetailJournal> {
   final GlobalKey<ScaffoldState> _key = GlobalKey();
   bool isLoading = false;
 
@@ -62,9 +61,7 @@ class _DetailBilanState extends State<DetailBilan> {
   // BilanModel? bilanModel;
   Future<void> getData() async {
     UserModel userModel = await AuthApi().getUserId();
-    // BilanModel data = await BilanApi().getOneData(widget.id);
     setState(() {
-      // bilanModel = data;
       user = userModel;
     });
   }
@@ -86,12 +83,12 @@ class _DetailBilanState extends State<DetailBilan> {
                 flex: 5,
                 child: Padding(
                     padding: const EdgeInsets.all(p10),
-                    child: FutureBuilder<BilanModel>(
-                        future: BilanApi().getOneData(widget.id),
+                    child: FutureBuilder<JournalModel>(
+                        future: JournalApi().getOneData(widget.id),
                         builder: (BuildContext context,
-                            AsyncSnapshot<BilanModel> snapshot) {
+                            AsyncSnapshot<JournalModel> snapshot) {
                           if (snapshot.hasData) {
-                            BilanModel? data = snapshot.data;
+                            JournalModel? data = snapshot.data;
                             return Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
@@ -107,7 +104,7 @@ class _DetailBilanState extends State<DetailBilan> {
                                     const SizedBox(width: p10),
                                     Expanded(
                                       child: CustomAppbar(
-                                          title: data!.titleBilan,
+                                          title: data!.libele,
                                           controllerMenu: () =>
                                               _key.currentState!.openDrawer()),
                                     ),
@@ -129,7 +126,7 @@ class _DetailBilanState extends State<DetailBilan> {
         ));
   }
 
-  Widget pageDetail(BilanModel data) {
+  Widget pageDetail(JournalModel data) {
     return Row(mainAxisAlignment: MainAxisAlignment.center, children: [
       Card(
         elevation: 10,
@@ -150,7 +147,7 @@ class _DetailBilanState extends State<DetailBilan> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  TitleWidget(title: data.titleBilan),
+                  TitleWidget(title: data.libele),
                   Column(
                     children: [
                       Row(
@@ -169,7 +166,6 @@ class _DetailBilanState extends State<DetailBilan> {
                 ],
               ),
               dataWidget(data),
-              totalMontant(data),
               Divider(
                 color: Colors.amber.shade700,
               ),
@@ -181,77 +177,7 @@ class _DetailBilanState extends State<DetailBilan> {
     ]);
   }
 
-  Widget totalMontant(BilanModel data) {
-    final headline6 = Theme.of(context).textTheme.headline6;
-    List<Comptes> dataList = [];
-    double totalActif = 0.0;
-    var actifList = data.comptesActif.toList();
-    for (var item in actifList) {
-      dataList.add(Comptes.fromJson(item));
-    }
-
-    for (var item in dataList) {
-      totalActif += double.parse(item.montant);
-    }
-
-    double totalPassif = 0.0;
-    List<Comptes> dataPassifList = [];
-    var passifList = data.comptesPactif.toList();
-    for (var item in passifList) {
-      dataPassifList.add(Comptes.fromJson(item));
-    }
-    for (var item in dataPassifList) {
-      totalPassif += double.parse(item.montant);
-    }
-    return Padding(
-      padding: const EdgeInsets.all(p10),
-      child: Row(
-        children: [
-          Expanded(
-            child: Row(
-              children: [
-                Expanded(
-                  flex: 1,
-                  child: Text('TOTAL :',
-                      textAlign: TextAlign.start,
-                      style: headline6!.copyWith(fontWeight: FontWeight.bold)),
-                ),
-                Expanded(
-                  flex: 3,
-                  child: SelectableText(
-                      "${NumberFormat.decimalPattern('fr').format(totalActif)} \$",
-                      textAlign: TextAlign.start,
-                      style: headline6.copyWith(color: Colors.red.shade700)),
-                )
-              ],
-            ),
-          ),
-          const SizedBox(width: p20),
-          Expanded(
-            child: Row(
-              children: [
-                Expanded(
-                  flex: 1,
-                  child: Text('TOTAL :',
-                      textAlign: TextAlign.start,
-                      style: headline6.copyWith(fontWeight: FontWeight.bold)),
-                ),
-                Expanded(
-                  flex: 3,
-                  child: SelectableText(
-                      "${NumberFormat.decimalPattern('fr').format(totalPassif)} \$",
-                      textAlign: TextAlign.start,
-                      style: headline6.copyWith(color: Colors.red.shade700)),
-                )
-              ],
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget deleteButton(BilanModel data) {
+  Widget deleteButton(JournalModel data) {
     return IconButton(
       icon: Icon(Icons.delete, color: Colors.red.shade700),
       tooltip: "Supprimer",
@@ -270,6 +196,7 @@ class _DetailBilanState extends State<DetailBilan> {
               onPressed: () async {
                 submitCorbeille(data);
                 Routemaster.of(context).pop();
+                // await BilanApi().deleteData(data.id!);
               },
               child: const Text('OK'),
             ),
@@ -279,9 +206,9 @@ class _DetailBilanState extends State<DetailBilan> {
     );
   }
 
-  Widget dataWidget(BilanModel data) {
-    final headline6 = Theme.of(context).textTheme.headline6;
-    final bodyLarge = Theme.of(context).textTheme.bodyLarge;
+
+  Widget dataWidget(JournalModel data) {
+    final bodyMedium = Theme.of(context).textTheme.bodyMedium;
     return Padding(
       padding: const EdgeInsets.all(p10),
       child: Column(
@@ -289,78 +216,125 @@ class _DetailBilanState extends State<DetailBilan> {
           Row(
             children: [
               Expanded(
-                child: Column(
-                  children: [
-                    Text('ACTIF',
-                        textAlign: TextAlign.start,
-                        style:
-                            headline6!.copyWith(fontWeight: FontWeight.bold)),
-                    const SizedBox(height: p20),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Expanded(
-                          flex: 3,
-                          child: SelectableText("Comptes",
-                              textAlign: TextAlign.start,
-                              style: bodyLarge!
-                                  .copyWith(fontWeight: FontWeight.bold)),
-                        ),
-                        Expanded(
-                          flex: 1,
-                          child: SelectableText("Montant",
-                              textAlign: TextAlign.center,
-                              style: bodyLarge.copyWith(
-                                  fontWeight: FontWeight.bold)),
-                        )
-                      ],
-                    ),
-                    const SizedBox(height: p30),
-                    actifWidget(data)
-                  ],
-                ),
+                flex: 1,
+                child: Text('Libele :',
+                    textAlign: TextAlign.start,
+                    style: bodyMedium!.copyWith(fontWeight: FontWeight.bold)),
               ),
-              Container(
-                  color: Colors.amber.shade700,
-                  width: 2,
-                  height: MediaQuery.of(context).size.height / 1.5),
               Expanded(
-                child: Padding(
-                  padding: const EdgeInsets.all(p8),
-                  child: Column(
-                    children: [
-                      Text('PASSIF',
-                          textAlign: TextAlign.start,
-                          style:
-                              headline6.copyWith(fontWeight: FontWeight.bold)),
-                      const SizedBox(height: p20),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Expanded(
-                            flex: 3,
-                            child: SelectableText("Comptes",
-                                textAlign: TextAlign.start,
-                                style: bodyLarge.copyWith(
-                                    fontWeight: FontWeight.bold)),
-                          ),
-                          Expanded(
-                            flex: 1,
-                            child: SelectableText("Montant",
-                                textAlign: TextAlign.center,
-                                style: bodyLarge.copyWith(
-                                    fontWeight: FontWeight.bold)),
-                          )
-                        ],
-                      ),
-                      const SizedBox(height: p30),
-                      passifWidget(data)
-                    ],
-                  ),
-                ),
+                flex: 3,
+                child: SelectableText(data.libele,
+                    textAlign: TextAlign.start, style: bodyMedium),
+              )
+            ],
+          ),
+          Divider(
+            color: Colors.amber.shade700,
+          ),
+          Row(
+            children: [
+              Expanded(
+                flex: 1,
+                child: Text('compte Débit :',
+                    textAlign: TextAlign.start,
+                    style: bodyMedium.copyWith(fontWeight: FontWeight.bold)),
               ),
+              Expanded(
+                flex: 3,
+                child: SelectableText(data.compteDebit,
+                    textAlign: TextAlign.start, style: bodyMedium),
+              )
+            ],
+          ),
+          Divider(
+            color: Colors.amber.shade700,
+          ),
+          Row(
+            children: [
+              Expanded(
+                flex: 1,
+                child: Text('compte Crédit:',
+                    textAlign: TextAlign.start,
+                    style: bodyMedium.copyWith(fontWeight: FontWeight.bold)),
+              ),
+              Expanded(
+                flex: 3,
+                child: SelectableText(data.compteCredit,
+                    textAlign: TextAlign.start, style: bodyMedium),
+              )
+            ],
+          ),
+          Divider(
+            color: Colors.amber.shade700,
+          ),
+          Row(
+            children: [
+              Expanded(
+                flex: 1,
+                child: Text('TVA :',
+                    textAlign: TextAlign.start,
+                    style: bodyMedium.copyWith(fontWeight: FontWeight.bold)),
+              ),
+              Expanded(
+                flex: 3,
+                child: SelectableText("${data.montantCredit} %",
+                    textAlign: TextAlign.start, style: bodyMedium),
+              )
+            ],
+          ),
+          Divider(
+            color: Colors.amber.shade700,
+          ),
+          Row(
+            children: [
+              Expanded(
+                flex: 1,
+                child: Text('Montant :',
+                    textAlign: TextAlign.start,
+                    style: bodyMedium.copyWith(fontWeight: FontWeight.bold)),
+              ),
+              Expanded(
+                flex: 3,
+                child: SelectableText(
+                    "${NumberFormat.decimalPattern('fr').format(double.parse(data.montantDebit))} \$",
+                    textAlign: TextAlign.start, style: bodyMedium),
+              )
+            ],
+          ),
+          Divider(
+            color: Colors.amber.shade700,
+          ),
+          Row(
+            children: [
+              Expanded(
+                flex: 1,
+                child: Text('Remarque :',
+                    textAlign: TextAlign.start,
+                    style: bodyMedium.copyWith(fontWeight: FontWeight.bold)),
+              ),
+              Expanded(
+                flex: 3,
+                child: SelectableText(data.remarque,
+                    textAlign: TextAlign.start, style: bodyMedium),
+              )
+            ],
+          ),
+          Divider(
+            color: Colors.amber.shade700,
+          ),
+          Row(
+            children: [
+              Expanded(
+                flex: 1,
+                child: Text('Signature :',
+                    textAlign: TextAlign.start,
+                    style: bodyMedium.copyWith(fontWeight: FontWeight.bold)),
+              ),
+              Expanded(
+                flex: 3,
+                child: SelectableText(data.signature,
+                    textAlign: TextAlign.start, style: bodyMedium),
+              )
             ],
           ),
         ],
@@ -368,112 +342,7 @@ class _DetailBilanState extends State<DetailBilan> {
     );
   }
 
-  Widget actifWidget(BilanModel data) {
-    final bodyMedium = Theme.of(context).textTheme.bodyMedium;
-
-    List<Comptes> dataList = [];
-    var actifList = data.comptesActif.toList();
-    for (var item in actifList) {
-      dataList.add(Comptes.fromJson(item));
-    }
-    return SizedBox(
-      height: MediaQuery.of(context).size.height / 1.5,
-      child: ListView.builder(
-        itemCount: dataList.length,
-        itemBuilder: (context, index) {
-          final actif = dataList[index];
-
-          return Column(
-            children: [
-              Row(
-                children: [
-                  Expanded(
-                    flex: 3,
-                    child: SelectableText(actif.compte,
-                        textAlign: TextAlign.start, style: bodyMedium),
-                  ),
-                  Expanded(
-                    flex: 1,
-                    child: Container(
-                      decoration: BoxDecoration(
-                          border: Border(
-                        left: BorderSide(
-                          color: Colors.amber.shade700,
-                          width: 2,
-                        ),
-                      )),
-                      child: SelectableText(
-                          "${NumberFormat.decimalPattern('fr').format(double.parse(actif.montant))} \$",
-                          textAlign: TextAlign.center,
-                          style: bodyMedium),
-                    ),
-                  )
-                ],
-              ),
-              Divider(
-                color: Colors.amber.shade700,
-              ),
-            ],
-          );
-        },
-      ),
-    );
-  }
-
-  Widget passifWidget(BilanModel data) {
-    final bodyMedium = Theme.of(context).textTheme.bodyMedium;
-
-    List<Comptes> dataPassifList = [];
-    var passifList = data.comptesPactif.toList();
-    for (var item in passifList) {
-      dataPassifList.add(Comptes.fromJson(item));
-    }
-
-    return SizedBox(
-      height: MediaQuery.of(context).size.height / 1.5,
-      child: ListView.builder(
-        itemCount: dataPassifList.length,
-        itemBuilder: (context, index) {
-          final passif = dataPassifList[index];
-
-          return Column(
-            children: [
-              Row(
-                children: [
-                  Expanded(
-                    flex: 3,
-                    child: SelectableText(passif.compte,
-                        textAlign: TextAlign.start, style: bodyMedium),
-                  ),
-                  Expanded(
-                    flex: 1,
-                    child: Container(
-                      decoration: BoxDecoration(
-                          border: Border(
-                        left: BorderSide(
-                          color: Colors.amber.shade700,
-                          width: 2,
-                        ),
-                      )),
-                      child: SelectableText(
-                          "${NumberFormat.decimalPattern('fr').format(double.parse(passif.montant))} \$",
-                          textAlign: TextAlign.center,
-                          style: bodyMedium),
-                    ),
-                  )
-                ],
-              ),
-              Divider(
-                color: Colors.amber.shade700,
-              ),
-            ],
-          );
-        },
-      ),
-    );
-  }
-
-  Widget infosEditeurWidget(BilanModel data) {
+  Widget infosEditeurWidget(JournalModel data) {
     final bodyMedium = Theme.of(context).textTheme.bodyLarge;
     final bodySmall = Theme.of(context).textTheme.bodyMedium;
     List<String> dataList = ['Approved', 'Unapproved', '-'];
@@ -512,7 +381,7 @@ class _DetailBilanState extends State<DetailBilan> {
                                 style: bodySmall!
                                     .copyWith(color: Colors.red.shade700),
                               ),
-                              // if (data.approbationDG != '-')
+                              if (data.approbationDG != '-')
                                 SelectableText(
                                   data.approbationDG.toString(),
                                   style: bodyMedium.copyWith(
@@ -541,8 +410,7 @@ class _DetailBilanState extends State<DetailBilan> {
                                     onChanged: (value) {
                                       setState(() {
                                         approbationDGController = value!;
-                                        if (approbationDGController ==
-                                            "Approved") {
+                                        if (approbationDGController == "Approved") {
                                           submitUpdateDG(data);
                                         }
                                       });
@@ -603,7 +471,6 @@ class _DetailBilanState extends State<DetailBilan> {
                                 IconButton(
                                     onPressed: () {
                                       submitUpdateDG(data);
-                                      
                                     },
                                     icon: const Icon(Icons.send))
                             ],
@@ -743,11 +610,14 @@ class _DetailBilanState extends State<DetailBilan> {
     );
   }
 
-  Future<void> submitUpdateDG(BilanModel data) async {
-    final bilanModel = BilanModel(
-        titleBilan: data.titleBilan,
-        comptesActif: data.comptesActif,
-        comptesPactif: data.comptesPactif,
+  Future<void> submitUpdateDG(JournalModel data) async {
+    final journalModel = JournalModel(
+        libele: data.libele,
+        compteDebit: data.compteDebit,
+        montantDebit: data.montantDebit,
+        compteCredit: data.compteCredit,
+        montantCredit: data.montantCredit,
+        remarque: data.remarque,
         statut: data.statut,
         approbationDG: approbationDGController.toString(),
         signatureDG: user!.matricule.toString(),
@@ -757,7 +627,7 @@ class _DetailBilanState extends State<DetailBilan> {
         signatureJustificationDD: data.signatureJustificationDD.toString(),
         signature: data.signature,
         created: data.created);
-    await BilanApi().updateData(data.id!, bilanModel);
+    await JournalApi().updateData(data.id!, journalModel);
     Routemaster.of(context).pop();
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
       content: const Text("Mise à jour avec succès!"),
@@ -765,11 +635,14 @@ class _DetailBilanState extends State<DetailBilan> {
     ));
   }
 
-  Future<void> submitUpdateDD(BilanModel data) async {
-    final bilanModel = BilanModel(
-        titleBilan: data.titleBilan,
-        comptesActif: data.comptesActif,
-        comptesPactif: data.comptesPactif,
+  Future<void> submitUpdateDD(JournalModel data) async {
+    final journalModel = JournalModel(
+        libele: data.libele,
+        compteDebit: data.compteDebit,
+        montantDebit: data.montantDebit,
+        compteCredit: data.compteCredit,
+        montantCredit: data.montantCredit,
+        remarque: data.remarque,
         statut: data.statut,
         approbationDG: data.approbationDG.toString(),
         signatureDG: data.signatureDG.toString(),
@@ -779,7 +652,7 @@ class _DetailBilanState extends State<DetailBilan> {
         signatureJustificationDD: signatureJustificationDDController.text,
         signature: data.signature.toString(),
         created: data.created);
-    await BilanApi().updateData(data.id!, bilanModel);
+    await JournalApi().updateData(data.id!, journalModel);
     Routemaster.of(context).pop();
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
       content: const Text("Mise à jour avec succès!"),
@@ -787,12 +660,15 @@ class _DetailBilanState extends State<DetailBilan> {
     ));
   }
 
-  Future<void> submitCorbeille(BilanModel data) async {
-    final bilanModel = BilanModel(
-        titleBilan: data.titleBilan,
-        comptesActif: data.comptesActif,
-        comptesPactif: data.comptesPactif,
-        statut: statutCorbeille,
+  Future<void> submitCorbeille(JournalModel data) async {
+    final journalModel = JournalModel(
+        libele: data.libele,
+        compteDebit: data.compteDebit,
+        montantDebit: data.montantDebit,
+        compteCredit: data.compteCredit,
+        montantCredit: data.montantCredit,
+        remarque: data.remarque,
+        statut: true,
         approbationDG: data.approbationDG,
         signatureDG: data.signatureDG,
         signatureJustificationDG: data.signatureJustificationDG,
@@ -801,10 +677,9 @@ class _DetailBilanState extends State<DetailBilan> {
         signatureJustificationDD: data.signatureJustificationDD,
         signature: data.signature,
         created: data.created);
-    await BilanApi().updateData(data.id!, bilanModel);
-    Routemaster.of(context).pop();
-     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-      content: const Text("Mis en corbeille avec succès!"),
+    await JournalApi().updateData(data.id!, journalModel);
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      content: const Text("Mise en corbeille avec succès!"),
       backgroundColor: Colors.red[700],
     ));
   }

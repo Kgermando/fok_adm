@@ -26,6 +26,8 @@ import 'package:fokad_admin/src/pages/comptabilite/bilan/bilan_comptabilite.dart
 import 'package:fokad_admin/src/pages/comptabilite/bilan/components/add_bilan.dart';
 import 'package:fokad_admin/src/pages/comptabilite/compt_bb/comptabilite_dd.dart';
 import 'package:fokad_admin/src/pages/comptabilite/dashboard/dashboard_comptabilite.dart';
+import 'package:fokad_admin/src/pages/comptabilite/journal/components/add_journal_comptabilite.dart';
+import 'package:fokad_admin/src/pages/comptabilite/journal/journal_comptabilite.dart';
 import 'package:fokad_admin/src/pages/devis/devis_page.dart';
 import 'package:fokad_admin/src/pages/exploitations/dashboard/dashboard_exp.dart';
 import 'package:fokad_admin/src/pages/exploitations/expl_dd/exploitaion_dd.dart';
@@ -141,6 +143,7 @@ class ComptabiliteRoutes {
   static const comptabiliteBilan = "/comptabilite-bilan";
   static const comptabiliteBilanAdd = "/comptabilite-bilan-add";
   static const comptabiliteJournal = "/comptabilite-journal";
+  static const comptabiliteJournalAdd = "/comptabilite-journal-add";
   static const comptabiliteValorisation = "/comptabilite-valorisation";
   static const comptabiliteDD = "/comptabilite-dd";
 }
@@ -286,7 +289,9 @@ class Routing {
         ComptabiliteRoutes.comptabiliteDashboard: (_) => const MaterialPage(child: DashboardComptabilite()),
         ComptabiliteRoutes.comptabiliteBilan: (_) => const MaterialPage(child: BilanComptabilite()),
         ComptabiliteRoutes.comptabiliteBilanAdd: (_) => const MaterialPage(child: AddBilan()),
-        // ComptabiliteRoutes.comptabiliteJournal: (_) => const MaterialPage(child: JournalComptabilite()),
+        ComptabiliteRoutes.comptabiliteJournal: (_) => const MaterialPage(child: JournalComptabilite()),
+        ComptabiliteRoutes.comptabiliteJournalAdd: (_) =>
+            const MaterialPage(child: AddJournalComptabilite()),
 
         // DEVIS
         DevisRoutes.devis: (_) => const MaterialPage(child: DevisPage()),

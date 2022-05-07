@@ -147,9 +147,8 @@ class _TableBilanState extends State<TableBilan> {
     if (mounted) {
       setState(() {
         for (var item in data) {
-          id = item!.id;
           rows.add(PlutoRow(cells: {
-            'id': PlutoCell(value: item.id),
+            'id': PlutoCell(value: item!.id),
             'titleBilan': PlutoCell(value: item.titleBilan),
             'signature': PlutoCell(value: item.signature),
             'created': PlutoCell(
