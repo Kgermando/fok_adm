@@ -11,12 +11,21 @@ import 'package:fokad_admin/src/pages/auth/login_auth.dart';
 import 'package:fokad_admin/src/pages/auth/profil_page.dart';
 import 'package:fokad_admin/src/pages/budgets/budget_finance.dart';
 import 'package:fokad_admin/src/pages/comm_marketing/c_m_dd/c_m_dd.dart';
+import 'package:fokad_admin/src/pages/comm_marketing/commercial/achats/achats_page.dart';
+import 'package:fokad_admin/src/pages/comm_marketing/commercial/bon_livraison/bon_livraison_page.dart';
+import 'package:fokad_admin/src/pages/comm_marketing/commercial/cart/cart_page.dart';
+import 'package:fokad_admin/src/pages/comm_marketing/commercial/factures/creance_fact_page.dart';
+import 'package:fokad_admin/src/pages/comm_marketing/commercial/factures/factures_page.dart';
+import 'package:fokad_admin/src/pages/comm_marketing/commercial/history_livraison/history_livaison_page.dart';
+import 'package:fokad_admin/src/pages/comm_marketing/commercial/history_ravitaillement/history_ravitaillement_ipage.dart';
 import 'package:fokad_admin/src/pages/comm_marketing/commercial/prod_model/components/add_prod_model.dart';
 import 'package:fokad_admin/src/pages/comm_marketing/commercial/prod_model/prod_model_page.dart';
+import 'package:fokad_admin/src/pages/comm_marketing/commercial/restitutions/restitution_page.dart';
 import 'package:fokad_admin/src/pages/comm_marketing/commercial/stocks_global/components/add_stock_global.dart';
 import 'package:fokad_admin/src/pages/comm_marketing/commercial/stocks_global/stocks_global_page.dart';
 import 'package:fokad_admin/src/pages/comm_marketing/commercial/succursale/components/add_succursale.dart';
 import 'package:fokad_admin/src/pages/comm_marketing/commercial/succursale/succursale_page.dart';
+import 'package:fokad_admin/src/pages/comm_marketing/commercial/ventes/ventes_page.dart';
 import 'package:fokad_admin/src/pages/comm_marketing/dashboard/dashboard_com_marketing.dart';
 import 'package:fokad_admin/src/pages/comm_marketing/marketing/agenda_marketing.dart';
 import 'package:fokad_admin/src/pages/comm_marketing/marketing/annuaire_marketing.dart';
@@ -207,10 +216,8 @@ class ComMarketingRoutes {
   static const comMarketingCreance = "/com-marketing-creance";
   static const comMarketingFacture = "/com-marketing-facture";
   static const comMarketingGain = "/com-marketing-gain";
-  static const comMarketingHistoryRavitaillement =
-      "/com-marketing-history-ravitaillement";
-  static const comMarketingHistoryLivraison =
-      "/com-marketing-history-livraison";
+  static const comMarketingHistoryRavitaillement = "/com-marketing-history-ravitaillement";
+  static const comMarketingHistoryLivraison = "/com-marketing-history-livraison";
   static const comMarketingnumberFact = "/com-marketing-number-fact";
   static const comMarketingRestitution = "/com-marketing-restitution";
   static const comMarketingVente = "/com-marketing-vente";
@@ -355,7 +362,7 @@ class Routing {
         ExploitationRoutes.expTache: (_) =>
             const MaterialPage(child: TacheExp()),
 
-        // Comm & marketing
+        // Marketing
         ComMarketingRoutes.comMarketingDD: (_) =>
             const MaterialPage(child: CMDD()),
         ComMarketingRoutes.comMarketingDashboard: (_) =>
@@ -369,6 +376,7 @@ class Routing {
         ComMarketingRoutes.comMarketingCampaignAdd: (_) =>
             const MaterialPage(child: AddCampaign()),
 
+        // Commercial
         ComMarketingRoutes.comMarketingProduitModel: (_) =>
             const MaterialPage(child: ProduitModelPage()),
         ComMarketingRoutes.comMarketingProduitModelAdd: (_) =>
@@ -381,6 +389,15 @@ class Routing {
             const MaterialPage(child: SuccursalePage()),
         ComMarketingRoutes.comMarketingSuccursaleAdd: (_) =>
             const MaterialPage(child: AddSurrsale()),
+        ComMarketingRoutes.comMarketingAchat: (_) => const MaterialPage(child: AchatsPage()),
+        ComMarketingRoutes.comMarketingBonLivraison: (_) => const MaterialPage(child: BonLivraisonPage()),
+        ComMarketingRoutes.comMarketingRestitution: (_) => const MaterialPage(child: RestitutionPage()),
+        ComMarketingRoutes.comMarketingFacture: (_) => const MaterialPage(child: FacturePage()),
+        ComMarketingRoutes.comMarketingCreance: (_) => const MaterialPage(child: CreanceFactPage()),
+        ComMarketingRoutes.comMarketingVente: (_) => const MaterialPage(child: VentesPage()),
+        ComMarketingRoutes.comMarketingcart: (_) => const MaterialPage(child: CartPage()),
+        ComMarketingRoutes.comMarketingHistoryRavitaillement: (_) => const MaterialPage(child: HistoryRavitaillement()),
+        ComMarketingRoutes.comMarketingHistoryLivraison: (_) => const MaterialPage(child: HistoryLivraison()),
       },
     );
   }
