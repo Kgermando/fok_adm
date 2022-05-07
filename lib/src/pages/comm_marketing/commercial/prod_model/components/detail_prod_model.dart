@@ -142,9 +142,6 @@ class _DetailProdModelState extends State<DetailProdModel> {
   }
 
   Widget pageDetail(ProductModel data) {
-    // var deleteIdProducts = stockGlobalList.where((element) => element.idProduct == data.idProduct).toList();
-    // var deleteIdProduct =
-    //     stockGlobalList.map((e) => e.idProduct == data.idProduct).first;
     return Row(mainAxisAlignment: MainAxisAlignment.center, children: [
       Card(
         elevation: 10,
@@ -164,7 +161,7 @@ class _DetailProdModelState extends State<DetailProdModel> {
             controller: _controllerScroll,
             children: [
               Row(
-                mainAxisAlignment: MainAxisAlignment.end,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   TitleWidget(title: data.categorie),
                   Column(

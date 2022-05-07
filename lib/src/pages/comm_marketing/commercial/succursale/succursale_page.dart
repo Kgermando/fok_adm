@@ -43,12 +43,7 @@ class _SuccursalePageState extends State<SuccursalePage> {
         floatingActionButton: FloatingActionButton(
           backgroundColor: Colors.amber.shade700,
           foregroundColor: Colors.white,
-          child: Row(
-            children: const [
-              Icon(Icons.add),
-              Icon(Icons.shop),
-            ],
-          ),
+          child: const Icon(Icons.house),
           onPressed: () {
             Routemaster.of(context).push(ComMarketingRoutes.comMarketingSuccursaleAdd);
           },
@@ -83,7 +78,7 @@ class _SuccursalePageState extends State<SuccursalePage> {
                                 return succursaleModels.isEmpty
                                     ? Center(
                                         child: Text(
-                                          'Pas de Succursales.',
+                                          'Créé un nouveau Succursales.',
                                           style: Responsive.isDesktop(context)
                                               ? const TextStyle(fontSize: 24)
                                               : const TextStyle(fontSize: 16),
@@ -123,7 +118,7 @@ class _SuccursalePageState extends State<SuccursalePage> {
               context,
               MaterialPageRoute(
                   builder: (context) =>
-                      DetailSuccursale(succursaleModel: succursaleModel)));
+                      DetailSuccursale(id: succursaleModel.id!)));
         }
       },
       child: Card(

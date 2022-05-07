@@ -28,14 +28,25 @@ class _StockGlobalPageState extends State<StockGlobalPage> {
     super.initState();
   }
 
-  UserModel? user;
+  UserModel user = UserModel(
+      nom: "-",
+      prenom: "-",
+      matricule: "-",
+      departement: "-",
+      servicesAffectation: "-",
+      fonctionOccupe: "-",
+      role: "5",
+      isOnline: false,
+      createdAt: DateTime.now(),
+      passwordHash: "-",
+      succursale: "-");
+    
   Future<void> getData() async {
     UserModel userModel = await AuthApi().getUserId();
     setState(() {
       user = userModel;
     });
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -94,7 +105,7 @@ class _StockGlobalPageState extends State<StockGlobalPage> {
                                                 final data = dataList[index];
                                                 return ListStockGlobal(
                                                     stocksGlobalMOdel: data,
-                                                    role: user!.role);
+                                                    role: user.role);
                                               }),
                                         );
                                 } else {

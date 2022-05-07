@@ -77,26 +77,38 @@ class _ComptabiliteNavState extends State<ComptabiliteNav> {
             }),
         DrawerWidget(
             selected:
-                widget.pageCurrente == ComptabiliteRoutes.comptabiliteValorisation,
+                widget.pageCurrente == ComptabiliteRoutes.comptabiliteCompteResultat,
             icon: Icons.arrow_right,
             sizeIcon: 15.0,
-            title: 'Valorisation',
+            title: 'Compte résultat',
             style: bodyText2,
             onTap: () {
               Routemaster.of(context)
-                  .replace(ComptabiliteRoutes.comptabiliteValorisation);
+                  .replace(ComptabiliteRoutes.comptabiliteCompteResultat);
               // Routemaster.of(context).pop();
             }),
         DrawerWidget(
             selected:
-                widget.pageCurrente == ComptabiliteRoutes.comptabiliteAmortissement,
+                widget.pageCurrente == ComptabiliteRoutes.comptabiliteBalance,
             icon: Icons.arrow_right,
             sizeIcon: 15.0,
-            title: 'Amortissement',
+            title: 'Balance',
             style: bodyText2,
             onTap: () {
               Routemaster.of(context)
-                  .replace(ComptabiliteRoutes.comptabiliteAmortissement);
+                  .replace(ComptabiliteRoutes.comptabiliteBalance);
+              // Routemaster.of(context).pop();
+            }),
+        DrawerWidget(
+            selected: widget.pageCurrente ==
+                ComptabiliteRoutes.comptabiliteGrandLivre,
+            icon: Icons.arrow_right,
+            sizeIcon: 15.0,
+            title: 'Grand livre',
+            style: bodyText2,
+            onTap: () {
+              Routemaster.of(context)
+                  .replace(ComptabiliteRoutes.comptabiliteGrandLivre);
               // Routemaster.of(context).pop();
             }),
         DrawerWidget(

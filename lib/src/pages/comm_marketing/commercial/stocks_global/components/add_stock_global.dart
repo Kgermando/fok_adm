@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_switch/flutter_switch.dart';
 import 'package:fokad_admin/src/api/auth/auth_api.dart';
 import 'package:fokad_admin/src/api/comm_marketing/commerciale/produit_model_api.dart';
+import 'package:fokad_admin/src/api/comm_marketing/commerciale/stock_global_api.dart';
 import 'package:fokad_admin/src/constants/app_theme.dart';
 import 'package:fokad_admin/src/constants/responsive.dart';
 import 'package:fokad_admin/src/models/comm_maketing/prod_model.dart';
@@ -444,11 +445,8 @@ class _AddStockGlobalState extends State<AddStockGlobal> {
 
   tvaValeur() {
     final bodyText1 = Theme.of(context).textTheme.bodyText1;
-
     var pvau = prixVenteUnit * tva / 100;
-
     pavTVA = prixVenteUnit + pvau;
-
     return Container(
         margin: const EdgeInsets.only(left: 10.0, bottom: 20.0),
         child: Text('PVU: ${pavTVA!.toStringAsFixed(2)} \$', style: bodyText1));
@@ -479,7 +477,7 @@ class _AddStockGlobalState extends State<AddStockGlobal> {
         signatureJustificationDD: '-',
         signature: signature.toString(),
         created: DateTime.now());
-
+    await StockGlobalApi().insertData(stocksGlobalMOdel);
     Routemaster.of(context).pop();
     if (!mounted) return;
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(

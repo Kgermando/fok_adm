@@ -22,10 +22,15 @@ import 'package:fokad_admin/src/pages/comm_marketing/marketing/agenda_marketing.
 import 'package:fokad_admin/src/pages/comm_marketing/marketing/annuaire_marketing.dart';
 import 'package:fokad_admin/src/pages/comm_marketing/marketing/campaign_marketing.dart';
 import 'package:fokad_admin/src/pages/comm_marketing/marketing/components/campaign/add_campaign.dart';
+import 'package:fokad_admin/src/pages/comptabilite/balance/balance_comptabilite.dart';
+import 'package:fokad_admin/src/pages/comptabilite/balance/components/add_balance_comptabilite.dart';
 import 'package:fokad_admin/src/pages/comptabilite/bilan/bilan_comptabilite.dart';
 import 'package:fokad_admin/src/pages/comptabilite/bilan/components/add_bilan.dart';
 import 'package:fokad_admin/src/pages/comptabilite/compt_bb/comptabilite_dd.dart';
+import 'package:fokad_admin/src/pages/comptabilite/compte_resultat/components/add_compte_resultat.dart';
+import 'package:fokad_admin/src/pages/comptabilite/compte_resultat/compte_resultat.dart';
 import 'package:fokad_admin/src/pages/comptabilite/dashboard/dashboard_comptabilite.dart';
+import 'package:fokad_admin/src/pages/comptabilite/grand_livre/grand_livre_comptabilite.dart';
 import 'package:fokad_admin/src/pages/comptabilite/journal/components/add_journal_comptabilite.dart';
 import 'package:fokad_admin/src/pages/comptabilite/journal/journal_comptabilite.dart';
 import 'package:fokad_admin/src/pages/devis/devis_page.dart';
@@ -139,12 +144,15 @@ class FinanceRoutes {
 
 class ComptabiliteRoutes {
   static const comptabiliteDashboard = "/comptabilite-dashboard";
-  static const comptabiliteAmortissement = "/comptabilite-amortissement";
   static const comptabiliteBilan = "/comptabilite-bilan";
   static const comptabiliteBilanAdd = "/comptabilite-bilan-add";
   static const comptabiliteJournal = "/comptabilite-journal";
   static const comptabiliteJournalAdd = "/comptabilite-journal-add";
-  static const comptabiliteValorisation = "/comptabilite-valorisation";
+  static const comptabiliteCompteResultat = "/comptabilite-compte-resultat";
+  static const comptabiliteCompteResultatAdd = "/comptabilite-compte-resultat-add";
+  static const comptabiliteBalance = "/comptabilite-balance";
+  static const comptabiliteBalanceAdd = "/comptabilite-balance-add";
+  static const comptabiliteGrandLivre = "/comptabilite-grand-livre";
   static const comptabiliteDD = "/comptabilite-dd";
 }
 
@@ -290,8 +298,12 @@ class Routing {
         ComptabiliteRoutes.comptabiliteBilan: (_) => const MaterialPage(child: BilanComptabilite()),
         ComptabiliteRoutes.comptabiliteBilanAdd: (_) => const MaterialPage(child: AddBilan()),
         ComptabiliteRoutes.comptabiliteJournal: (_) => const MaterialPage(child: JournalComptabilite()),
-        ComptabiliteRoutes.comptabiliteJournalAdd: (_) =>
-            const MaterialPage(child: AddJournalComptabilite()),
+        ComptabiliteRoutes.comptabiliteJournalAdd: (_) => const MaterialPage(child: AddJournalComptabilite()),
+        ComptabiliteRoutes.comptabiliteCompteResultat: (_) => const MaterialPage(child: CompteResultat()),
+        ComptabiliteRoutes.comptabiliteCompteResultatAdd: (_) => const MaterialPage(child: AddCompteResultat()),
+        ComptabiliteRoutes.comptabiliteBalance: (_) => const MaterialPage(child: BalanceComptabilite()),
+        ComptabiliteRoutes.comptabiliteBalanceAdd: (_) => const MaterialPage(child: AddBalanceComptabilite()),
+        ComptabiliteRoutes.comptabiliteGrandLivre: (_) => const MaterialPage(child: GrandLivreComptabilite()),
 
         // DEVIS
         DevisRoutes.devis: (_) => const MaterialPage(child: DevisPage()),

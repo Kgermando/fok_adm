@@ -12,6 +12,7 @@ class CompteResulatsModel {
   late String approbationDD;
   late String signatureDD; // directeur de departement
   late String signatureJustificationDD;
+  
   late String signature;
   late DateTime created;
 

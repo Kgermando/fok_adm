@@ -9,6 +9,7 @@ import 'package:fokad_admin/src/navigation/drawer/drawer_menu.dart';
 import 'package:fokad_admin/src/navigation/header/custom_appbar.dart';
 import 'package:fokad_admin/src/utils/province.dart';
 import 'package:fokad_admin/src/widgets/btn_widget.dart';
+import 'package:fokad_admin/src/widgets/title_widget.dart';
 import 'package:routemaster/routemaster.dart';
 
 class AddSurrsale extends StatefulWidget {
@@ -81,6 +82,9 @@ class _AddSurrsaleState extends State<AddSurrsale> {
                                 },
                                 icon: const Icon(Icons.arrow_back)),
                           ),
+                          const SizedBox(
+                            height: p10,
+                          ),
                           Expanded(
                               flex: 5,
                               child: CustomAppbar(
@@ -120,13 +124,15 @@ class _AddSurrsaleState extends State<AddSurrsale> {
                 child: ListView(
                   controller: _controllerScroll,
                   children: [
-                    // Row(
-                    //   mainAxisAlignment: MainAxisAlignment.end,
-                    //   children: [PrintWidget(onPressed: () {})],
-                    // ),
-                    // const SizedBox(
-                    //   height: p20,
-                    // ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: const [
+                        TitleWidget(title: "Nouveau succursale")
+                      ],
+                    ),
+                    const SizedBox(
+                      height: p20,
+                    ),
                     Row(
                       children: [
                         Expanded(child: nameWidget()),

@@ -11,6 +11,7 @@ import 'package:fokad_admin/src/models/comm_maketing/succursale_model.dart';
 import 'package:fokad_admin/src/models/comm_maketing/vente_cart_model.dart';
 import 'package:fokad_admin/src/utils/class_implemented.dart';
 import 'package:fokad_admin/src/models/users/user_model.dart';
+import 'package:fokad_admin/src/widgets/button_widget.dart';
 import 'package:fokad_admin/src/widgets/print_widget.dart';
 import 'package:intl/intl.dart';
 import 'package:pluto_grid/pluto_grid.dart';
@@ -228,5 +229,37 @@ class _StatsSuccursaleState extends State<StatsSuccursale> {
                 '${NumberFormat.decimalPattern('fr').format(sumDCreance)} \$'),
       })
     ];
+  }
+
+
+  
+  Widget dataRangeFilter() {
+    return Container(
+      constraints: BoxConstraints(maxWidth: MediaQuery.of(context).size.width),
+      child: ButtonWidget(
+        text: getPlageDate(),
+        onClicked: () => setState(() {
+          pickDateRange(context);
+          FocusScope.of(context).requestFocus(FocusNode());
+        }),
+      ),
+    );
+  }
+
+  Future pickDateRange(BuildContext context) async {
+    final initialDateRange = DateTimeRange(
+      start: DateTime.now(),
+      end: DateTime.now().add(const Duration(hours: 24 * 3)),
+    );
+    final newDateRange = await showDateRangePicker(
+      context: context,
+      firstDate: DateTime(DateTime.now().year - 5),
+      lastDate: DateTime(DateTime.now().year + 5),
+      initialDateRange: dateRange ?? initialDateRange,
+    );
+
+    if (newDateRange == null) return;
+
+    setState(() => dateRange = newDateRange);
   }
 }

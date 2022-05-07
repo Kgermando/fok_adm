@@ -13,6 +13,7 @@ import 'package:fokad_admin/src/navigation/drawer/drawer_menu.dart';
 import 'package:fokad_admin/src/navigation/header/custom_appbar.dart';
 import 'package:fokad_admin/src/utils/regex.dart';
 import 'package:fokad_admin/src/widgets/btn_widget.dart';
+import 'package:fokad_admin/src/widgets/title_widget.dart';
 import 'package:routemaster/routemaster.dart';
 
 class LivraisonStock extends StatefulWidget {
@@ -111,6 +112,9 @@ class _LivraisonStockState extends State<LivraisonStock> {
                                 },
                                 icon: const Icon(Icons.arrow_back)),
                           ),
+                          const SizedBox(
+                            height: p10,
+                          ),
                           Expanded(
                               flex: 5,
                               child: CustomAppbar(
@@ -150,13 +154,15 @@ class _LivraisonStockState extends State<LivraisonStock> {
                 child: ListView(
                   controller: _controllerScroll,
                   children: [
-                    // Row(
-                    //   mainAxisAlignment: MainAxisAlignment.end,
-                    //   children: [PrintWidget(onPressed: () {})],
-                    // ),
-                    // const SizedBox(
-                    //   height: p20,
-                    // ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        TitleWidget(title: "Livraison à $succursale"),
+                      ],
+                    ),
+                    const SizedBox(
+                      height: p20,
+                    ),
                     succursaleField(),
                     quantityField(),
                     prixVenteField(),

@@ -36,8 +36,6 @@ class _AddBilanState extends State<AddBilan> {
   List<TextEditingController> montantPassifControllerList = [];
   bool statut = false;
 
-  // String? compteClassActifDrop;
-  // String? compteClassPassifDrop;
   List<List<String>> comptesActifList = [];
   List<List<String>> comptesPassifList = [];
   final comptesDropdown = ComptesDropdown().classCompte;

@@ -125,14 +125,10 @@ class _DetailStockGlobalState extends State<DetailStockGlobal> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  const TitleWidget(title: "Ajout stock"),
+                  TitleWidget(title: widget.stocksGlobalMOdel.idProduct),
                   Column(
                     children: [
-                      Row(
-                        children: [
-                          reporting(),
-                        ],
-                      ),
+                      reporting(),
                       SelectableText(
                           DateFormat("dd-MM-yyyy HH:mm").format(data.created),
                           textAlign: TextAlign.start),
@@ -154,7 +150,6 @@ class _DetailStockGlobalState extends State<DetailStockGlobal> {
       padding: const EdgeInsets.all(p10),
       child: Column(
         children: [
-          headerTitle(),
           achats(),
           const SizedBox(
             height: 20,
@@ -174,22 +169,6 @@ class _DetailStockGlobalState extends State<DetailStockGlobal> {
           ),
         ],
       ),
-    );
-  }
-
-
-  Widget headerTitle() {
-    final headline6 = Theme.of(context).textTheme.headline6;
-    return SizedBox(
-      width: double.infinity,
-      child: Card(
-          child: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Text(widget.stocksGlobalMOdel.idProduct,
-            style: Responsive.isDesktop(context)
-                ? const TextStyle(fontWeight: FontWeight.w600, fontSize: 30)
-                : headline6),
-      )),
     );
   }
 
@@ -541,13 +520,8 @@ class _DetailStockGlobalState extends State<DetailStockGlobal> {
       openBackgroundColor: themeColor,
       speedDialChildren: <SpeedDialChild>[
         SpeedDialChild(
-          child: Row(
-            children: const [
-              Icon(Icons.add),
-              Icon(Icons.monetization_on),
-            ],
-          ),
-          foregroundColor: Colors.black,
+          child: const Icon(Icons.monetization_on),
+          foregroundColor: Colors.white,
           backgroundColor: Colors.green.shade700,
           label: 'Ravitaillement',
           onPressed: () {
@@ -557,12 +531,7 @@ class _DetailStockGlobalState extends State<DetailStockGlobal> {
           },
         ),
         SpeedDialChild(
-            child: Row(
-              children: const [
-                Icon(Icons.add),
-                Icon(Icons.content_paste_sharp),
-              ],
-            ),
+            child: const Icon(Icons.content_paste_sharp),
             foregroundColor: Colors.white,
             backgroundColor: Colors.blue.shade700,
             label: 'Livraison',

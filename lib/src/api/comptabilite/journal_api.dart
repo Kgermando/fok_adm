@@ -99,7 +99,7 @@ class JournalApi {
     var data = journalModel.toJson();
     var body = jsonEncode(data);
     var updateUrl = Uri.parse(
-        "$mainUrl/finances/comptabilite/journals/update-journal/$id");
+        "$mainUrl/comptabilite/journals/update-journal/$id");
 
     var res = await client.put(updateUrl,
         headers: <String, String>{
@@ -118,7 +118,7 @@ class JournalApi {
     final accessToken = await storage.read(key: 'accessToken');
 
     var deleteUrl = Uri.parse(
-        "$mainUrl/finances/comptabilite/journals/delete-journal/$id");
+        "$mainUrl/comptabilite/journals/delete-journal/$id");
 
     var res = await client.delete(deleteUrl, headers: <String, String>{
       'Content-Type': 'application/json; charset=UTF-8',

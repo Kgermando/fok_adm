@@ -2,9 +2,9 @@ class JournalModel {
   late int? id;
   late String libele;
   late String compteDebit; 
-  late String montantDebit;
+  late String montantDebit; // Montant
   late String compteCredit;
-  late String montantCredit;
+  late String montantCredit; // TVA
   late String remarque;
   late bool statut;
 
