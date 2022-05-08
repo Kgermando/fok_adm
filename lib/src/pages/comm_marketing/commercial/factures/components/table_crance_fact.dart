@@ -32,7 +32,18 @@ class _TableCreanceFactState extends State<TableCreanceFact> {
     super.initState();
   }
 
-  UserModel? user;
+  UserModel user = UserModel(
+      nom: '-',
+      prenom: '-',
+      matricule: '-',
+      departement: '-',
+      servicesAffectation: '-',
+      fonctionOccupe: '-',
+      role: '5',
+      isOnline: false,
+      createdAt: DateTime.now(),
+      passwordHash: '-',
+      succursale: '-');
   Future<void> getData() async {
     UserModel userModel = await AuthApi().getUserId();
     setState(() {
@@ -143,7 +154,7 @@ class _TableCreanceFactState extends State<TableCreanceFact> {
   Future agentsRow() async {
     List<CreanceCartModel?> dataList = await CreanceFactureApi().getAllData();
     var data =
-        dataList.where((element) => element!.succursale == user!.succursale);
+        dataList.where((element) => element!.succursale == user.succursale);
 
     if (mounted) {
       setState(() {

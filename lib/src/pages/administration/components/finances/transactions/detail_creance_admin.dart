@@ -73,7 +73,7 @@ class _DetailCreanceAdminState extends State<DetailCreanceAdmin> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      key: _key,
+        key: _key,
         drawer: const DrawerMenu(),
         body: SafeArea(
           child: Row(
@@ -102,15 +102,15 @@ class _DetailCreanceAdminState extends State<DetailCreanceAdmin> {
                                       width: p20,
                                       child: IconButton(
                                           onPressed: () =>
-                                              Routemaster.of(context).pop(),
+                                              Navigator.of(context).pop(),
                                           icon: const Icon(Icons.arrow_back)),
                                     ),
                                     const SizedBox(width: p10),
                                     Expanded(
                                       child: CustomAppbar(
-                                          title:
-                                              creanceModel!.nomComplet,
-                                        controllerMenu: () => _key.currentState!.openDrawer()),
+                                          title: creanceModel!.nomComplet,
+                                          controllerMenu: () =>
+                                              _key.currentState!.openDrawer()),
                                     ),
                                   ],
                                 ),
@@ -411,7 +411,7 @@ class _DetailCreanceAdminState extends State<DetailCreanceAdmin> {
   //       approbation: approbation,
   //       statutPaie: statutPaie);
   //   await CreanceApi().updateData(id!, creanceModel);
-  //   Routemaster.of(context).pop();
+  //   Navigator.of(context).pop();
   //   ScaffoldMessenger.of(context).showSnackBar(SnackBar(
   //     content: const Text("Approbation effectué!"),
   //     backgroundColor: Colors.green[700],

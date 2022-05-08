@@ -102,7 +102,7 @@ class _ArrivePresenceState extends State<ArrivePresence> {
                             width: 20.0,
                             child: IconButton(
                                 onPressed: () {
-                                  Routemaster.of(context).pop();
+                                  Navigator.of(context).pop();
                                 },
                                 icon: const Icon(Icons.arrow_back)),
                           ),
@@ -262,7 +262,7 @@ class _ArrivePresenceState extends State<ArrivePresence> {
         created: DateTime.now());
 
     await PresenceApi().updateData(widget.presenceModel.id!, presenceModel);
-    Routemaster.of(context).pop();
+    Navigator.of(context).pop();
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
       content: const Text("soumis avec succès!"),
       backgroundColor: Colors.green[700],

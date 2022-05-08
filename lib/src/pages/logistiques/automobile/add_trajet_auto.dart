@@ -92,14 +92,15 @@ class _AddTrajetAutoState extends State<AddTrajetAuto> {
                             width: 20.0,
                             child: IconButton(
                                 onPressed: () {
-                                  Routemaster.of(context).pop();
+                                  Navigator.of(context).pop();
                                 },
                                 icon: const Icon(Icons.arrow_back)),
                           ),
                           const SizedBox(width: p10),
-                           Expanded(
+                          Expanded(
                               flex: 5,
-                              child: CustomAppbar(title: 'Ajout Trajet',
+                              child: CustomAppbar(
+                                  title: 'Ajout Trajet',
                                   controllerMenu: () =>
                                       _key.currentState!.openDrawer())),
                         ],
@@ -139,7 +140,8 @@ class _AddTrajetAutoState extends State<AddTrajetAuto> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         const TitleWidget(title: "Indiquer votre Trajet"),
-                        PrintWidget(onPressed: () {})],
+                        PrintWidget(onPressed: () {})
+                      ],
                     ),
                     const SizedBox(
                       height: p20,
@@ -197,25 +199,25 @@ class _AddTrajetAutoState extends State<AddTrajetAuto> {
 
   Widget nomeroEntrepriseWidget() {
     return Container(
-      margin: const EdgeInsets.only(bottom: p20),
-      child: TextFormField(
-        controller: nomeroEntrepriseController,
-        readOnly: true,
-        decoration: InputDecoration(
-          border:
-              OutlineInputBorder(borderRadius: BorderRadius.circular(10.0)),
-          labelText: 'Numero de l\'anguin',
-        ),
-        keyboardType: TextInputType.text,
-        style: const TextStyle(),
-        validator: (value) {
-          if (value != null && value.isEmpty) {
-            return 'Ce champs est obligatoire';
-          } else {
-            return null;
-          }
-        },
-      ));
+        margin: const EdgeInsets.only(bottom: p20),
+        child: TextFormField(
+          controller: nomeroEntrepriseController,
+          readOnly: true,
+          decoration: InputDecoration(
+            border:
+                OutlineInputBorder(borderRadius: BorderRadius.circular(10.0)),
+            labelText: 'Numero de l\'anguin',
+          ),
+          keyboardType: TextInputType.text,
+          style: const TextStyle(),
+          validator: (value) {
+            if (value != null && value.isEmpty) {
+              return 'Ce champs est obligatoire';
+            } else {
+              return null;
+            }
+          },
+        ));
   }
 
   Widget nomUtilisateurWidget() {
@@ -376,7 +378,7 @@ class _AddTrajetAutoState extends State<AddTrajetAuto> {
         signature: signature.toString(),
         created: DateTime.now());
     await TrajetApi().insertData(trajetModel);
-    Routemaster.of(context).pop();
+    Navigator.of(context).pop();
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
       content: const Text("Enregistrer avec succès!"),
       backgroundColor: Colors.green[700],

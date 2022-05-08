@@ -661,7 +661,7 @@ class _CaisseTransactionsState extends State<CaisseTransactions> {
         signature: matricule.toString(),
         created: DateTime.now());
     await CaisseApi().insertData(caisseModel);
-    Routemaster.of(context).pop();
+    Navigator.of(context).pop();
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
       content: const Text("Enregistrer avec succès!"),
       backgroundColor: Colors.green[700],
@@ -696,7 +696,7 @@ class _CaisseTransactionsState extends State<CaisseTransactions> {
         signature: matricule.toString(),
         created: DateTime.now());
     await CaisseApi().insertData(caisseModel);
-    Routemaster.of(context).pop();
+    Navigator.of(context).pop();
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
       content: const Text("Enregistrer avec succès!"),
       backgroundColor: Colors.green[700],

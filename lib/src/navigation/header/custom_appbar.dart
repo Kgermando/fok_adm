@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:fokad_admin/src/api/auth/auth_api.dart';
+import 'package:fokad_admin/src/api/comm_marketing/commerciale/cart_api.dart';
 import 'package:fokad_admin/src/api/exploitations/taches_api.dart';
 import 'package:fokad_admin/src/constants/app_theme.dart';
 import 'package:fokad_admin/src/constants/responsive.dart';
@@ -31,6 +32,7 @@ class _CustomAppbarState extends State<CustomAppbar> {
   bool isActiveNotification = true;
 
   int tacheCount = 0;
+  int cartCount = 0;
 
   @override
   void initState() {
@@ -44,12 +46,14 @@ class _CustomAppbarState extends State<CustomAppbar> {
   Future<void> getData() async {
     UserModel userModel = await AuthApi().getUserId();
     var taches = await TachesApi().getAllData();
+    var cartList = await CartApi().getAllData();
     setState(() {
       tacheCount = taches
           .where((element) =>
               element.signatureResp == userModel.matricule &&
               element.read == false)
           .length;
+      cartCount = cartList.length;
     });
   }
 
@@ -69,11 +73,10 @@ class _CustomAppbarState extends State<CustomAppbar> {
               ),
             HeaderItem(title: widget.title),
             const Spacer(),
-            
             FutureBuilder<UserModel>(
                 future: AuthApi().getUserId(),
-                builder: (BuildContext context,
-                    AsyncSnapshot<UserModel> snapshot) {
+                builder:
+                    (BuildContext context, AsyncSnapshot<UserModel> snapshot) {
                   if (snapshot.hasData) {
                     UserModel? userModel = snapshot.data;
                     // print('photo ${userModel!.photo}');
@@ -82,29 +85,40 @@ class _CustomAppbarState extends State<CustomAppbar> {
 
                     return Row(
                       children: [
-                          IconButton(
+                        if(userModel.departement == "Commercial et Marketing")
+                        IconButton(
+                            onPressed: () {
+                              Routemaster.of(context).replace(
+                                    ComMarketingRoutes.comMarketingcart);
+                            },
+                            icon: Badge(
+                              badgeContent: Text('$cartCount',
+                                  style: const TextStyle(
+                                      fontSize: 10.0, color: Colors.white)),
+                              child: const Icon(Icons.shopping_cart),
+                            )),
+                        IconButton(
                             onPressed: () {},
                             icon: Badge(
                               badgeContent: const Text('33',
-                                  style: TextStyle(fontSize: 10.0, color: Colors.white)),
+                                  style: TextStyle(
+                                      fontSize: 10.0, color: Colors.white)),
                               child: const Icon(Icons.mail),
                             )),
-
-                        if(userModel.departement == "Exploitations")
-                        if (tacheCount >= 1)
-                          IconButton(
-                              onPressed: () {
-                                Routemaster.of(context)
-                                    .replace(ExploitationRoutes.expTache);
-                              },
-                              icon: Badge(
-                                badgeContent: Text('$tacheCount',
-                                    style: const TextStyle(
-                                        fontSize: 10.0, color: Colors.white)),
-                                child: const Icon(Icons.notifications),
-                              )),
+                        if (userModel.departement == "Exploitations")
+                          if (tacheCount >= 1)
+                            IconButton(
+                                onPressed: () {
+                                  Routemaster.of(context)
+                                      .replace(ExploitationRoutes.expTache);
+                                },
+                                icon: Badge(
+                                  badgeContent: Text('$tacheCount',
+                                      style: const TextStyle(
+                                          fontSize: 10.0, color: Colors.white)),
+                                  child: const Icon(Icons.notifications),
+                                )),
                         const SizedBox(width: 10.0),
-
                         SizedBox(
                           width: 30,
                           height: 30,

@@ -13,9 +13,8 @@ import 'package:intl/intl.dart';
 import 'package:pluto_grid/pluto_grid.dart';
 import 'package:routemaster/routemaster.dart';
 
-
 class DetailDetteAdmin extends StatefulWidget {
-  const DetailDetteAdmin({ Key? key, this.id }) : super(key: key);
+  const DetailDetteAdmin({Key? key, this.id}) : super(key: key);
   final int? id;
 
   @override
@@ -24,7 +23,7 @@ class DetailDetteAdmin extends StatefulWidget {
 
 class _DetailDetteAdminState extends State<DetailDetteAdmin> {
   final GlobalKey<ScaffoldState> _key = GlobalKey();
- final ScrollController _controllerScroll = ScrollController();
+  final ScrollController _controllerScroll = ScrollController();
   bool isLoading = false;
   List<UserModel> userList = [];
 
@@ -73,7 +72,7 @@ class _DetailDetteAdminState extends State<DetailDetteAdmin> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      key: _key,
+        key: _key,
         drawer: const DrawerMenu(),
         body: SafeArea(
           child: Row(
@@ -102,7 +101,7 @@ class _DetailDetteAdminState extends State<DetailDetteAdmin> {
                                       width: p20,
                                       child: IconButton(
                                           onPressed: () =>
-                                              Routemaster.of(context).pop(),
+                                              Navigator.of(context).pop(),
                                           icon: const Icon(Icons.arrow_back)),
                                     ),
                                     const SizedBox(width: p10),
@@ -310,29 +309,28 @@ class _DetailDetteAdminState extends State<DetailDetteAdmin> {
             height: p20,
           ),
           if (detteModel.approbationDG == "Approved")
-          Row(
-            children: [
-              Expanded(
-                child: Text('Approbation :',
-                    textAlign: TextAlign.start,
-                    style: bodyMedium.copyWith(fontWeight: FontWeight.bold)),
-              ),
-              if (detteModel.approbationDG == "Approved")
-              Expanded(
-                child: SelectableText(detteModel.approbationDG,
+            Row(
+              children: [
+                Expanded(
+                  child: Text('Approbation :',
+                      textAlign: TextAlign.start,
+                      style: bodyMedium.copyWith(fontWeight: FontWeight.bold)),
+                ),
+                if (detteModel.approbationDG == "Approved")
+                  Expanded(
+                    child: SelectableText(detteModel.approbationDG,
                         textAlign: TextAlign.start,
                         style:
                             bodyMedium.copyWith(color: Colors.blue.shade700)),
-              ),
-              if (detteModel.approbationDG == "Unapproved")
-              Expanded(
-                child: SelectableText(detteModel.approbationDG,
-                    textAlign: TextAlign.start,
-                    style:
-                        bodyMedium.copyWith(color: Colors.red.shade700)),
-              ),
-            ],
-          ),
+                  ),
+                if (detteModel.approbationDG == "Unapproved")
+                  Expanded(
+                    child: SelectableText(detteModel.approbationDG,
+                        textAlign: TextAlign.start,
+                        style: bodyMedium.copyWith(color: Colors.red.shade700)),
+                  ),
+              ],
+            ),
 
           // if (detteModel.approbationDG == "-")
           //   const SizedBox(
@@ -347,7 +345,6 @@ class _DetailDetteAdminState extends State<DetailDetteAdmin> {
     );
   }
 
-
   Color getColor(Set<MaterialState> states) {
     const Set<MaterialState> interactiveStates = <MaterialState>{
       MaterialState.pressed,
@@ -359,9 +356,6 @@ class _DetailDetteAdminState extends State<DetailDetteAdmin> {
     }
     return Colors.green;
   }
-
-  
-
 
   Future<void> submit() async {
     // final detteModel = DetteModel(
@@ -376,7 +370,7 @@ class _DetailDetteAdminState extends State<DetailDetteAdmin> {
     //     approbation: approbation,
     //     statutPaie: statutPaie);
     // await DetteApi().updateData(id!, detteModel);
-    Routemaster.of(context).pop();
+    Navigator.of(context).pop();
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
       content: const Text("Approbation effectué!"),
       backgroundColor: Colors.green[700],

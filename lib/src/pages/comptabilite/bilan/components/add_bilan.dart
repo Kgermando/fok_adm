@@ -113,7 +113,7 @@ class _AddBilanState extends State<AddBilan> {
                             width: 20.0,
                             child: IconButton(
                                 onPressed: () {
-                                  Routemaster.of(context).pop();
+                                  Navigator.of(context).pop();
                                 },
                                 icon: const Icon(Icons.arrow_back)),
                           ),
@@ -200,7 +200,7 @@ class _AddBilanState extends State<AddBilan> {
                                               .add(comptes);
                                           montantActifControllerList
                                               .add(montant);
-                                           comptesActifList.add(actifList);
+                                          comptesActifList.add(actifList);
                                           countActif++;
                                         });
                                       })
@@ -235,7 +235,7 @@ class _AddBilanState extends State<AddBilan> {
                                       setState(() {
                                         var comptes = "";
                                         var montant = TextEditingController();
-                                         List<String> passifList = [];
+                                        List<String> passifList = [];
                                         comptesPassifControllerList
                                             .add(comptes);
                                         montantPassifControllerList
@@ -315,24 +315,24 @@ class _AddBilanState extends State<AddBilan> {
                     Row(
                       children: [
                         if (index == index)
-                        IconButton(
-                            tooltip: "Ajout",
-                            onPressed: () {
-                              setState(() {
-                                var comptes = "";
-                                var montant = TextEditingController();
-                                List<String> actifList = [];
-                                comptesActifControllerList.add(comptes);
-                                montantActifControllerList.add(montant);
-                                comptesActifList.add(actifList);
-                                countActif++;
-                                onUpdateActif(
-                                    index,
-                                    comptesActifControllerList[index],
-                                    montantActifControllerList[index].text);
-                              });
-                            },
-                            icon: const Icon(Icons.add)),
+                          IconButton(
+                              tooltip: "Ajout",
+                              onPressed: () {
+                                setState(() {
+                                  var comptes = "";
+                                  var montant = TextEditingController();
+                                  List<String> actifList = [];
+                                  comptesActifControllerList.add(comptes);
+                                  montantActifControllerList.add(montant);
+                                  comptesActifList.add(actifList);
+                                  countActif++;
+                                  onUpdateActif(
+                                      index,
+                                      comptesActifControllerList[index],
+                                      montantActifControllerList[index].text);
+                                });
+                              },
+                              icon: const Icon(Icons.add)),
                         if (countActif > 0)
                           IconButton(
                               tooltip: "Retirer",
@@ -717,7 +717,7 @@ class _AddBilanState extends State<AddBilan> {
         signature: user!.matricule.toString(),
         created: DateTime.now());
     await BilanApi().insertData(bilanModel);
-    Routemaster.of(context).pop();
+    Navigator.of(context).pop();
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
       content: const Text("Soumis avec succès!"),
       backgroundColor: Colors.green[700],

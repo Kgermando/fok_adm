@@ -106,7 +106,7 @@ class _UpdateUserState extends State<UpdateUser> {
                             width: 20.0,
                             child: IconButton(
                                 onPressed: () {
-                                  Routemaster.of(context).pop();
+                                  Navigator.of(context).pop();
                                 },
                                 icon: const Icon(Icons.arrow_back)),
                           ),
@@ -418,7 +418,7 @@ class _UpdateUserState extends State<UpdateUser> {
         passwordHash: widget.userModel.passwordHash,
         succursale: succursale.toString());
     await UserApi().updateData(widget.userModel.id!, userModel);
-    Routemaster.of(context).pop();
+    Navigator.of(context).pop();
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
       content: const Text("Enregistrer agent avec succès!"),
       backgroundColor: Colors.green[700],

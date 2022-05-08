@@ -91,7 +91,8 @@ class _DetteTransactionsState extends State<DetteTransactions> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      CustomAppbar(title: 'Dettes',
+                      CustomAppbar(
+                          title: 'Dettes',
                           controllerMenu: () =>
                               _key.currentState!.openDrawer()),
                       const Expanded(child: TableDette())
@@ -289,7 +290,7 @@ class _DetteTransactionsState extends State<DetteTransactions> {
       created: DateTime.now(),
     );
     await DetteApi().insertData(detteModel);
-    Routemaster.of(context).pop();
+    Navigator.of(context).pop();
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
       content: const Text("Enregistrer avec succès!"),
       backgroundColor: Colors.green[700],

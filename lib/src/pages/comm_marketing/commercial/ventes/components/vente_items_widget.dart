@@ -1,5 +1,6 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:fokad_admin/src/api/auth/auth_api.dart';
 import 'package:fokad_admin/src/api/comm_marketing/commerciale/achat_api.dart';
 import 'package:fokad_admin/src/api/comm_marketing/commerciale/cart_api.dart';
@@ -9,7 +10,6 @@ import 'package:fokad_admin/src/models/comm_maketing/cart_model.dart';
 import 'package:fokad_admin/src/models/users/user_model.dart';
 import 'package:fokad_admin/src/utils/regex.dart';
 import 'package:intl/intl.dart';
-import 'package:routemaster/routemaster.dart';
 
 class AchatItemWidget extends StatefulWidget {
   const AchatItemWidget({Key? key, required this.achat}) : super(key: key);
@@ -176,6 +176,9 @@ class _AchatItemWidgetState extends State<AchatItemWidget> {
               ),
         controller: controllerQuantityCart,
         keyboardType: TextInputType.number,
+        inputFormatters: <TextInputFormatter>[
+          FilteringTextInputFormatter.digitsOnly
+        ],
         decoration: const InputDecoration(
           hintText: 'Qtés...',
         ),
@@ -223,23 +226,11 @@ class _AchatItemWidgetState extends State<AchatItemWidget> {
         tva: widget.achat.tva,
         remise: widget.achat.remise,
         qtyRemise: widget.achat.qtyRemise,
-        approbationDG: '-',
-        signatureDG: '-',
-        signatureJustificationDG: '-',
-        approbationFin: '-',
-        signatureFin: '-',
-        signatureJustificationFin: '-',
-        approbationBudget: '-',
-        signatureBudget: '-',
-        signatureJustificationBudget: '-',
-        approbationDD: '-',
-        signatureDD: '-',
-        signatureJustificationDD: '-',
         succursale: user!.succursale,
         signature: user!.matricule,
         created: DateTime.now());
     await CartApi().insertData(cartModel);
-    Routemaster.of(context).pop();
+    // Navigator.of(context).pop();
     if (!mounted) return;
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
       content: Text("${cartModel.idProductCart} ajouté!"),
@@ -261,18 +252,6 @@ class _AchatItemWidgetState extends State<AchatItemWidget> {
         remise: widget.achat.remise,
         qtyRemise: widget.achat.qtyRemise,
         qtyLivre: widget.achat.qtyLivre,
-        approbationDG: '-',
-        signatureDG: '-',
-        signatureJustificationDG: '-',
-        approbationFin: '-',
-        signatureFin: '-',
-        signatureJustificationFin: '-',
-        approbationBudget: '-',
-        signatureBudget: '-',
-        signatureJustificationBudget: '-',
-        approbationDD: '-',
-        signatureDD: '-',
-        signatureJustificationDD: '-',
         succursale: widget.achat.succursale,
         signature: widget.achat.signature,
         created: DateTime.now());

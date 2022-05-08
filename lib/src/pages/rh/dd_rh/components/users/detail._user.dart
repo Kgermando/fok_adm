@@ -89,7 +89,7 @@ class _DetailUserState extends State<DetailUser> {
                                         width: p20,
                                         child: IconButton(
                                             onPressed: () =>
-                                                Routemaster.of(context).pop(),
+                                                Navigator.of(context).pop(),
                                             icon: const Icon(Icons.arrow_back)),
                                       ),
                                       const SizedBox(width: p10),
@@ -351,12 +351,12 @@ class _DetailUserState extends State<DetailUser> {
             TextButton(
               onPressed: () async {
                 await UserApi().deleteData(user!.id!);
-                Routemaster.of(context).pop();
+                Navigator.of(context).pop();
                 ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                   content: const Text("Compte supprimé avec succès!"),
                   backgroundColor: Colors.red.shade700,
                 ));
-                Routemaster.of(context).pop();
+                Navigator.of(context).pop();
               },
               child: const Text('OK'),
             ),

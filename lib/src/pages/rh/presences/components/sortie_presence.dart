@@ -101,7 +101,7 @@ class _SortiePresenceState extends State<SortiePresence> {
                             width: 20.0,
                             child: IconButton(
                                 onPressed: () {
-                                  Routemaster.of(context).pop();
+                                  Navigator.of(context).pop();
                                 },
                                 icon: const Icon(Icons.arrow_back)),
                           ),
@@ -117,8 +117,7 @@ class _SortiePresenceState extends State<SortiePresence> {
                         ],
                       ),
                       Expanded(
-                          child: SingleChildScrollView(
-                            child: addPageWidget()))
+                          child: SingleChildScrollView(child: addPageWidget()))
                     ],
                   ),
                 ),
@@ -162,15 +161,17 @@ class _SortiePresenceState extends State<SortiePresence> {
                           const SelectableText(
                               'Vous n\'avez pas encore du personnel'),
                         if (agentAffectesList.isNotEmpty)
-                          Expanded(child: Scrollbar(
-                            controller: _controllerScrollSortie,
-                            child: agentSortiesWidget())),
+                          Expanded(
+                              child: Scrollbar(
+                                  controller: _controllerScrollSortie,
+                                  child: agentSortiesWidget())),
                         const SizedBox(
                           width: p10,
                         ),
-                        Expanded(child: Scrollbar(
-                          controller: _controllerScrollListAgent,
-                          child: listAgentPresent()))
+                        Expanded(
+                            child: Scrollbar(
+                                controller: _controllerScrollListAgent,
+                                child: listAgentPresent()))
                       ],
                     ),
                     checkboxRead(),
@@ -223,7 +224,6 @@ class _SortiePresenceState extends State<SortiePresence> {
   }
 
   Widget agentSortiesWidget() {
-    
     List<UserModel> dataArriveList = [];
     for (var u in arriveAgent) {
       dataArriveList.add(UserModel.fromJson(u));
@@ -235,32 +235,33 @@ class _SortiePresenceState extends State<SortiePresence> {
 
     List<UserModel> dataList = [];
 
-    dataList = dataArriveList.toSet().difference(dataSortieList.toSet()).toList();
+    dataList =
+        dataArriveList.toSet().difference(dataSortieList.toSet()).toList();
 
     return Container(
         margin: const EdgeInsets.only(bottom: 20.0),
         height: MediaQuery.of(context).size.height / 1.5,
         child: ListView.builder(
-          itemCount: dataList.length,
-          itemBuilder: (context, i) {
-            return ListTile(
-                title: Text(
-                    "${dataList[i].matricule} ${dataList[i].nom} ${dataList[i].prenom}"),
-                leading: Checkbox(
-                  value: sortieAgentList.contains(dataList[i]),
-                  onChanged: (val) {
-                    if (val!) {
-                      setState(() {
-                        sortieAgentList.add(dataList[i]);
-                      });
-                    } else {
-                      setState(() {
-                        sortieAgentList.remove(dataList[i]);
-                      });
-                    }
-                  },
-                ));
-          }));
+            itemCount: dataList.length,
+            itemBuilder: (context, i) {
+              return ListTile(
+                  title: Text(
+                      "${dataList[i].matricule} ${dataList[i].nom} ${dataList[i].prenom}"),
+                  leading: Checkbox(
+                    value: sortieAgentList.contains(dataList[i]),
+                    onChanged: (val) {
+                      if (val!) {
+                        setState(() {
+                          sortieAgentList.add(dataList[i]);
+                        });
+                      } else {
+                        setState(() {
+                          sortieAgentList.remove(dataList[i]);
+                        });
+                      }
+                    },
+                  ));
+            }));
   }
 
   Widget listAgentPresent() {
@@ -268,18 +269,19 @@ class _SortiePresenceState extends State<SortiePresence> {
       margin: const EdgeInsets.only(bottom: 20.0),
       height: MediaQuery.of(context).size.height / 1.5,
       child: ListView.builder(
-        controller: _controllerScrollListAgent,
-        itemCount: sortieAgentList.length,
-        itemBuilder: (BuildContext context, index) {
-          final agent = sortieAgentList[index];
-          return ListTile(
-            leading: Icon(
-              Icons.check_circle_rounded,
-              color: Colors.green.shade700,
-            ),
-            title: Text("<<${agent.matricule}>> ${agent.nom} ${agent.prenom}"),
-          );
-        }),
+          controller: _controllerScrollListAgent,
+          itemCount: sortieAgentList.length,
+          itemBuilder: (BuildContext context, index) {
+            final agent = sortieAgentList[index];
+            return ListTile(
+              leading: Icon(
+                Icons.check_circle_rounded,
+                color: Colors.green.shade700,
+              ),
+              title:
+                  Text("<<${agent.matricule}>> ${agent.nom} ${agent.prenom}"),
+            );
+          }),
     );
   }
 
@@ -324,7 +326,7 @@ class _SortiePresenceState extends State<SortiePresence> {
         created: DateTime.now());
 
     await PresenceApi().updateData(widget.presenceModel.id!, presenceModel);
-    Routemaster.of(context).pop();
+    Navigator.of(context).pop();
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
       content: const Text("soumis avec succès!"),
       backgroundColor: Colors.green[700],

@@ -90,7 +90,7 @@ class _AddAnnuaireState extends State<AddAnnuaire> {
                             width: 20.0,
                             child: IconButton(
                                 onPressed: () {
-                                  Routemaster.of(context).pop();
+                                  Navigator.of(context).pop();
                                 },
                                 icon: const Icon(Icons.arrow_back)),
                           ),
@@ -178,7 +178,6 @@ class _AddAnnuaireState extends State<AddAnnuaire> {
                           Expanded(child: nomEntrepriseField()),
                         ],
                       ),
-                     
                     if (!Responsive.isDesktop(context)) nomPostnomPrenomField(),
                     if (!Responsive.isDesktop(context)) emailField(),
                     if (!Responsive.isDesktop(context)) mobile1Field(),
@@ -436,7 +435,7 @@ class _AddAnnuaireState extends State<AddAnnuaire> {
         signature: user!.matricule,
         created: DateTime.now());
     await AnnuaireApi().insertData(annuaireModel);
-    Routemaster.of(context).pop();
+    Navigator.of(context).pop();
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
       content: const Text("soumis avec succès!"),
       backgroundColor: Colors.green[700],

@@ -141,7 +141,7 @@ class _DetailAnguinState extends State<DetailAnguin> {
                                       width: p20,
                                       child: IconButton(
                                           onPressed: () =>
-                                              Routemaster.of(context).pop(),
+                                              Navigator.of(context).pop(),
                                           icon: const Icon(Icons.arrow_back)),
                                     ),
                                     const SizedBox(width: p10),
@@ -1006,7 +1006,7 @@ class _DetailAnguinState extends State<DetailAnguin> {
         signature: data.signature,
         created: data.created);
     await AnguinApi().updateData(data.id!, anguinModel);
-    Routemaster.of(context).pop();
+    Navigator.of(context).pop();
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
       content: const Text("Soumis avec succès!"),
       backgroundColor: Colors.green[700],
@@ -1046,7 +1046,7 @@ class _DetailAnguinState extends State<DetailAnguin> {
         created: data.created);
 
     await AnguinApi().updateData(data.id!, anguinModel);
-    Routemaster.of(context).pop();
+    Navigator.of(context).pop();
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
       content: const Text("Soumis avec succès!"),
       backgroundColor: Colors.green[700],
@@ -1086,7 +1086,7 @@ class _DetailAnguinState extends State<DetailAnguin> {
         created: data.created);
 
     await AnguinApi().updateData(data.id!, anguinModel);
-    Routemaster.of(context).pop();
+    Navigator.of(context).pop();
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
       content: const Text("Soumis avec succès!"),
       backgroundColor: Colors.green[700],
@@ -1125,7 +1125,7 @@ class _DetailAnguinState extends State<DetailAnguin> {
         signature: data.signature.toString(),
         created: data.created);
     await AnguinApi().updateData(data.id!, anguinModel);
-    Routemaster.of(context).pop();
+    Navigator.of(context).pop();
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
       content: const Text("Soumis avec succès!"),
       backgroundColor: Colors.green[700],

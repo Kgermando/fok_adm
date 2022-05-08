@@ -44,7 +44,7 @@ class _ComMarketingState extends State<ComMarketing> {
               Routemaster.of(context).replace(
                 ComMarketingRoutes.comMarketingDashboard,
               );
-              // Routemaster.of(context).pop();
+              // Navigator.of(context).pop();
             }),
         DrawerWidget(
             selected: widget.pageCurrente == ComMarketingRoutes.comMarketingDD,
@@ -56,7 +56,7 @@ class _ComMarketingState extends State<ComMarketing> {
               Routemaster.of(context).replace(
                 ComMarketingRoutes.comMarketingDD,
               );
-              // Routemaster.of(context).pop();
+              // Navigator.of(context).pop();
             }),
         ExpansionTile(
           leading: const Icon(Icons.visibility, size: 20.0),
@@ -78,7 +78,7 @@ class _ComMarketingState extends State<ComMarketing> {
                 onTap: () {
                   Routemaster.of(context)
                       .replace(ComMarketingRoutes.comMarketingAnnuaire);
-                  // Routemaster.of(context).pop();
+                  // Navigator.of(context).pop();
                 }),
             DrawerWidget(
                 selected: widget.pageCurrente ==
@@ -90,7 +90,7 @@ class _ComMarketingState extends State<ComMarketing> {
                 onTap: () {
                   Routemaster.of(context)
                       .replace(ComMarketingRoutes.comMarketingAgenda);
-                  // Routemaster.of(context).pop();
+                  // Navigator.of(context).pop();
                 }),
             DrawerWidget(
                 selected: widget.pageCurrente ==
@@ -102,7 +102,7 @@ class _ComMarketingState extends State<ComMarketing> {
                 onTap: () {
                   Routemaster.of(context)
                       .replace(ComMarketingRoutes.comMarketingCampaign);
-                  // Routemaster.of(context).pop();
+                  // Navigator.of(context).pop();
                 }),
           ],
         ),
@@ -126,7 +126,7 @@ class _ComMarketingState extends State<ComMarketing> {
                 onTap: () {
                   Routemaster.of(context)
                       .replace(ComMarketingRoutes.comMarketingProduitModel);
-                  // Routemaster.of(context).pop();
+                  // Navigator.of(context).pop();
                 }),
             DrawerWidget(
                 selected: widget.pageCurrente ==
@@ -138,7 +138,7 @@ class _ComMarketingState extends State<ComMarketing> {
                 onTap: () {
                   Routemaster.of(context)
                       .replace(ComMarketingRoutes.comMarketingStockGlobal);
-                  // Routemaster.of(context).pop();
+                  // Navigator.of(context).pop();
                 }),
             DrawerWidget(
                 selected: widget.pageCurrente ==
@@ -150,7 +150,7 @@ class _ComMarketingState extends State<ComMarketing> {
                 onTap: () {
                   Routemaster.of(context)
                       .replace(ComMarketingRoutes.comMarketingSuccursale);
-                  // Routemaster.of(context).pop();
+                  // Navigator.of(context).pop();
                 }),
             DrawerWidget(
                 selected:
@@ -162,7 +162,7 @@ class _ComMarketingState extends State<ComMarketing> {
                 onTap: () {
                   Routemaster.of(context)
                       .replace(ComMarketingRoutes.comMarketingAchat);
-                  // Routemaster.of(context).pop();
+                  // Navigator.of(context).pop();
                 }),
             DrawerWidget(
                 selected: widget.pageCurrente ==
@@ -174,7 +174,7 @@ class _ComMarketingState extends State<ComMarketing> {
                 onTap: () {
                   Routemaster.of(context)
                       .replace(ComMarketingRoutes.comMarketingBonLivraison);
-                  // Routemaster.of(context).pop();
+                  // Navigator.of(context).pop();
                 }),
             DrawerWidget(
                 selected: widget.pageCurrente ==
@@ -186,7 +186,7 @@ class _ComMarketingState extends State<ComMarketing> {
                 onTap: () {
                   Routemaster.of(context)
                       .replace(ComMarketingRoutes.comMarketingRestitution);
-                  // Routemaster.of(context).pop();
+                  // Navigator.of(context).pop();
                 }),
             DrawerWidget(
                 selected: widget.pageCurrente ==
@@ -198,7 +198,7 @@ class _ComMarketingState extends State<ComMarketing> {
                 onTap: () {
                   Routemaster.of(context)
                       .replace(ComMarketingRoutes.comMarketingFacture);
-                  // Routemaster.of(context).pop();
+                  // Navigator.of(context).pop();
                 }),
             DrawerWidget(
                 selected: widget.pageCurrente ==
@@ -210,7 +210,7 @@ class _ComMarketingState extends State<ComMarketing> {
                 onTap: () {
                   Routemaster.of(context)
                       .replace(ComMarketingRoutes.comMarketingCreance);
-                  // Routemaster.of(context).pop();
+                  // Navigator.of(context).pop();
                 }),
             DrawerWidget(
                 selected:
@@ -222,7 +222,7 @@ class _ComMarketingState extends State<ComMarketing> {
                 onTap: () {
                   Routemaster.of(context)
                       .replace(ComMarketingRoutes.comMarketingVente);
-                  // Routemaster.of(context).pop();
+                  // Navigator.of(context).pop();
                 }),
             DrawerWidget(
                 selected:
@@ -234,7 +234,7 @@ class _ComMarketingState extends State<ComMarketing> {
                 onTap: () {
                   Routemaster.of(context)
                       .replace(ComMarketingRoutes.comMarketingcart);
-                  // Routemaster.of(context).pop();
+                  // Navigator.of(context).pop();
                 }),
             DrawerWidget(
                 selected: widget.pageCurrente ==
@@ -246,7 +246,7 @@ class _ComMarketingState extends State<ComMarketing> {
                 onTap: () {
                   Routemaster.of(context).replace(
                       ComMarketingRoutes.comMarketingHistoryRavitaillement);
-                  // Routemaster.of(context).pop();
+                  // Navigator.of(context).pop();
                 }),
             DrawerWidget(
                 selected: widget.pageCurrente ==
@@ -258,7 +258,7 @@ class _ComMarketingState extends State<ComMarketing> {
                 onTap: () {
                   Routemaster.of(context)
                       .replace(ComMarketingRoutes.comMarketingHistoryLivraison);
-                  // Routemaster.of(context).pop();
+                  // Navigator.of(context).pop();
                 }),
           ],
         )

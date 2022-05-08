@@ -52,7 +52,7 @@ class _ProfilPageState extends State<ProfilPage> {
                                     width: 20.0,
                                     child: IconButton(
                                         onPressed: () {
-                                          Routemaster.of(context).pop();
+                                          Navigator.of(context).pop();
                                         },
                                         icon: const Icon(Icons.arrow_back)),
                                   ),

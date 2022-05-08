@@ -77,7 +77,7 @@ class _ChangePasswordState extends State<ChangePassword> {
                             width: 20.0,
                             child: IconButton(
                                 onPressed: () {
-                                  Routemaster.of(context).pop();
+                                  Navigator.of(context).pop();
                                 },
                                 icon: const Icon(Icons.arrow_back)),
                           ),
@@ -85,7 +85,8 @@ class _ChangePasswordState extends State<ChangePassword> {
                           Expanded(
                               flex: 5,
                               child: CustomAppbar(
-                                  title: "${widget.userModel.prenom} ${widget.userModel.nom}",
+                                  title:
+                                      "${widget.userModel.prenom} ${widget.userModel.nom}",
                                   controllerMenu: () =>
                                       _key.currentState!.openDrawer())),
                         ],

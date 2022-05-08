@@ -7,6 +7,7 @@ import 'package:fokad_admin/src/models/comm_maketing/achat_model.dart';
 import 'package:fokad_admin/src/models/comm_maketing/cart_model.dart';
 import 'package:fokad_admin/src/models/users/user_model.dart';
 import 'package:fokad_admin/src/pages/comm_marketing/commercial/cart/components/detail_cart.dart';
+import 'package:fokad_admin/src/routes/routes.dart';
 import 'package:fokad_admin/src/utils/loading.dart';
 import 'package:intl/intl.dart';
 import 'package:routemaster/routemaster.dart';
@@ -31,7 +32,18 @@ class _CartItemWidgetState extends State<CartItemWidget> {
   }
 
   List<AchatModel> listAchat = [];
-  UserModel? user;
+  UserModel user = UserModel(
+      nom: '-',
+      prenom: '-',
+      matricule: '-',
+      departement: '-',
+      servicesAffectation: '-',
+      fonctionOccupe: '-',
+      role: '5',
+      isOnline: false,
+      createdAt: DateTime.now(),
+      passwordHash: '-',
+      succursale: '-');
   Future<void> getData() async {
     UserModel userModel = await AuthApi().getUserId();
     List<AchatModel>? dataList = await AchatApi().getAllData();
@@ -51,7 +63,7 @@ class _CartItemWidgetState extends State<CartItemWidget> {
 
   @override
   Widget build(BuildContext context) {
-    var role = int.parse(user!.role) <= 3;
+    var role = int.parse(user.role) <= 3;
     double sum = 0;
     var qtyRemise = double.parse(widget.cart.qtyRemise);
     var quantity = double.parse(widget.cart.quantityCart);
@@ -174,7 +186,12 @@ class _CartItemWidgetState extends State<CartItemWidget> {
           setState(() {
             isloading = true;
           });
-          updateAchat();
+          setState(() {
+            updateAchat();
+          });
+          setState(() {
+            isloading = false;
+          });
         },
         icon: (isloading)
             ? loadingMini()
@@ -215,24 +232,13 @@ class _CartItemWidgetState extends State<CartItemWidget> {
         remise: achatRemise,
         qtyRemise: achatQtyRemise,
         qtyLivre: achatQtyLivre,
-        approbationDG: '-',
-        signatureDG: '-',
-        signatureJustificationDG: '-',
-        approbationFin: '-',
-        signatureFin: '-',
-        signatureJustificationFin: '-',
-        approbationBudget: '-',
-        signatureBudget: '-',
-        signatureJustificationBudget: '-',
-        approbationDD: '-',
-        signatureDD: '-',
-        signatureJustificationDD: '-',
         succursale: achatSuccursale,
         signature: achatSignature,
         created: achatCreated);
 
     await AchatApi().updateData(achatId!, achatModel);
     await CartApi().deleteData(widget.cart.id!);
-    Routemaster.of(context).pop();
+    // Navigator.of(context).pop();
+    Routemaster.of(context).replace(ComMarketingRoutes.comMarketingcart);
   }
 }

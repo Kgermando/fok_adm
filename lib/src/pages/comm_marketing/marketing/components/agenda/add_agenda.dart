@@ -80,7 +80,7 @@ class _AddAgendaState extends State<AddAgenda> {
                             width: 20.0,
                             child: IconButton(
                                 onPressed: () {
-                                  Routemaster.of(context).pop();
+                                  Navigator.of(context).pop();
                                 },
                                 icon: const Icon(Icons.arrow_back)),
                           ),
@@ -222,7 +222,7 @@ class _AddAgendaState extends State<AddAgenda> {
         signature: user!.matricule.toString(),
         created: DateTime.now());
     await AgendaApi().insertData(agendaModel);
-    Routemaster.of(context).pop();
+    Navigator.of(context).pop();
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
       content: const Text("Enregister avec succès!"),
       backgroundColor: Colors.green[700],

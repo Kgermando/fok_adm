@@ -86,7 +86,7 @@ class BonLivraisonApi {
       await AuthApi().refreshAccessToken();
       return insertData(bonLivraisonModel);
     } else {
-      throw Exception(json.decode(resp.body)['message']);
+      throw Exception(json.decode(resp.body)['message']); 
     }
   }
 

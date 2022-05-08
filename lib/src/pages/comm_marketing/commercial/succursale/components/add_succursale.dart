@@ -78,7 +78,7 @@ class _AddSurrsaleState extends State<AddSurrsale> {
                             width: 20.0,
                             child: IconButton(
                                 onPressed: () {
-                                  Routemaster.of(context).pop();
+                                  Navigator.of(context).pop();
                                 },
                                 icon: const Icon(Icons.arrow_back)),
                           ),
@@ -246,12 +246,6 @@ class _AddSurrsaleState extends State<AddSurrsale> {
         approbationDG: '-',
         signatureDG: '-',
         signatureJustificationDG: '-',
-        approbationFin: '-',
-        signatureFin: '-',
-        signatureJustificationFin: '-',
-        approbationBudget: '-',
-        signatureBudget: '-',
-        signatureJustificationBudget: '-',
         approbationDD: '-',
         signatureDD: '-',
         signatureJustificationDD: '-',
@@ -259,7 +253,7 @@ class _AddSurrsaleState extends State<AddSurrsale> {
         created: DateTime.now());
 
     await SuccursaleApi().insertData(succursaleModel);
-    Routemaster.of(context).pop();
+    Navigator.of(context).pop();
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
       content: const Text("soumis avec succès!"),
       backgroundColor: Colors.green[700],

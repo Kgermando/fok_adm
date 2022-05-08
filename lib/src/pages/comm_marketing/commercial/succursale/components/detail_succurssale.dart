@@ -143,7 +143,7 @@ class _DetailSuccursaleState extends State<DetailSuccursale> {
                                       width: p20,
                                       child: IconButton(
                                           onPressed: () =>
-                                              Routemaster.of(context).pop(),
+                                              Navigator.of(context).pop(),
                                           icon: const Icon(Icons.arrow_back)),
                                     ),
                                     const SizedBox(width: p10),
@@ -230,9 +230,6 @@ class _DetailSuccursaleState extends State<DetailSuccursale> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           headerTitle(data),
-          Divider(color: Colors.amber.shade700),
-          statsSuccursaleWidgetTitle(),
-          Divider(color: Colors.amber.shade700),
           StatsSuccursale(succursaleModel: data),
           const SizedBox(
             height: 40.0,
@@ -390,24 +387,6 @@ class _DetailSuccursaleState extends State<DetailSuccursale> {
     );
   }
 
-  Widget statsSuccursaleWidgetTitle() {
-    return SizedBox(
-      width: double.infinity,
-      child: Card(
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Text(
-            'STATISTIQUES GLOBAL',
-            textAlign: TextAlign.center,
-            style: Responsive.isDesktop(context)
-                ? const TextStyle(fontWeight: FontWeight.bold, fontSize: 18.0)
-                : const TextStyle(fontWeight: FontWeight.bold, fontSize: 14.0),
-          ),
-        ),
-      ),
-    );
-  }
-
   Widget infosEditeurWidget(SuccursaleModel data) {
     final bodyMedium = Theme.of(context).textTheme.bodyLarge;
     final bodySmall = Theme.of(context).textTheme.bodyMedium;
@@ -511,9 +490,9 @@ class _DetailSuccursaleState extends State<DetailSuccursale> {
                                     color: Colors.red.shade700),
                               ),
                               SelectableText(
-                                  data.signatureJustificationDG.toString(),
-                                  style: bodyMedium,
-                                ),
+                                data.signatureJustificationDG.toString(),
+                                style: bodyMedium,
+                              ),
                               if (data.approbationDG == 'Unapproved' &&
                                   user.fonctionOccupe == 'Directeur générale')
                                 Container(
@@ -571,7 +550,6 @@ class _DetailSuccursaleState extends State<DetailSuccursale> {
                                 style: bodySmall.copyWith(
                                     color: Colors.blue.shade700),
                               ),
-                              
                               SelectableText(
                                 data.approbationDD.toString(),
                                 style: bodyMedium.copyWith(
@@ -685,20 +663,13 @@ class _DetailSuccursaleState extends State<DetailSuccursale> {
         approbationDG: approbationDGController.toString(),
         signatureDG: user.matricule.toString(),
         signatureJustificationDG: signatureJustificationDGController.text,
-        approbationFin: data.approbationFin.toString(),
-        signatureFin: data.signatureFin.toString(),
-        signatureJustificationFin: data.signatureJustificationFin.toString(),
-        approbationBudget: data.approbationBudget.toString(),
-        signatureBudget: data.signatureBudget.toString(),
-        signatureJustificationBudget:
-            data.signatureJustificationBudget.toString(),
         approbationDD: data.approbationDD.toString(),
         signatureDD: data.signatureDD.toString(),
         signatureJustificationDD: data.signatureJustificationDD.toString(),
         signature: data.signature,
         created: data.created);
     await SuccursaleApi().updateData(data.id!, succursale);
-    Routemaster.of(context).pop();
+    Navigator.of(context).pop();
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
       content: const Text("Soumis avec succès!"),
       backgroundColor: Colors.green[700],
@@ -713,20 +684,13 @@ class _DetailSuccursaleState extends State<DetailSuccursale> {
         approbationDG: data.approbationDG.toString(),
         signatureDG: data.signatureDG.toString(),
         signatureJustificationDG: data.signatureJustificationDG.toString(),
-        approbationFin: data.approbationFin.toString(),
-        signatureFin: data.signatureFin.toString(),
-        signatureJustificationFin: data.signatureJustificationFin.toString(),
-        approbationBudget: data.approbationBudget.toString(),
-        signatureBudget: data.signatureBudget.toString(),
-        signatureJustificationBudget:
-            data.signatureJustificationBudget.toString(),
         approbationDD: approbationDDController.toString(),
         signatureDD: user.matricule.toString(),
         signatureJustificationDD: signatureJustificationDDController.text,
         signature: data.signature,
         created: data.created);
     await SuccursaleApi().updateData(data.id!, succursale);
-    Routemaster.of(context).pop();
+    Navigator.of(context).pop();
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
       content: const Text("Soumis avec succès!"),
       backgroundColor: Colors.green[700],

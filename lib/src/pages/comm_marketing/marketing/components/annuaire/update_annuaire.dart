@@ -12,7 +12,8 @@ import 'package:fokad_admin/src/widgets/title_widget.dart';
 import 'package:routemaster/routemaster.dart';
 
 class UpdateAnnuaire extends StatefulWidget {
-  const UpdateAnnuaire({Key? key, required this.annuaireModel}) : super(key: key);
+  const UpdateAnnuaire({Key? key, required this.annuaireModel})
+      : super(key: key);
   final AnnuaireModel annuaireModel;
 
   @override
@@ -46,8 +47,7 @@ class _UpdateAnnuaireState extends State<UpdateAnnuaire> {
       categorie = widget.annuaireModel.categorie;
       nomPostnomPrenomController =
           TextEditingController(text: widget.annuaireModel.nomPostnomPrenom);
-      emailController =
-          TextEditingController(text: widget.annuaireModel.email);
+      emailController = TextEditingController(text: widget.annuaireModel.email);
       mobile1Controller =
           TextEditingController(text: widget.annuaireModel.mobile1);
       mobile2Controller =
@@ -56,8 +56,7 @@ class _UpdateAnnuaireState extends State<UpdateAnnuaire> {
           TextEditingController(text: widget.annuaireModel.secteurActivite);
       nomEntrepriseController =
           TextEditingController(text: widget.annuaireModel.nomEntreprise);
-      gradeController =
-          TextEditingController(text: widget.annuaireModel.grade);
+      gradeController = TextEditingController(text: widget.annuaireModel.grade);
       adresseEntrepriseController =
           TextEditingController(text: widget.annuaireModel.adresseEntreprise);
     });
@@ -112,7 +111,7 @@ class _UpdateAnnuaireState extends State<UpdateAnnuaire> {
                             width: 20.0,
                             child: IconButton(
                                 onPressed: () {
-                                  Routemaster.of(context).pop();
+                                  Navigator.of(context).pop();
                                 },
                                 icon: const Icon(Icons.arrow_back)),
                           ),
@@ -458,7 +457,7 @@ class _UpdateAnnuaireState extends State<UpdateAnnuaire> {
         created: DateTime.now());
 
     await AnnuaireApi().updateData(id!, annuaireModel);
-    Routemaster.of(context).pop();
+    Navigator.of(context).pop();
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
       content: const Text("soumis avec succès!"),
       backgroundColor: Colors.green[700],

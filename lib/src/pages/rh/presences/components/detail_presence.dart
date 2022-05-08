@@ -49,7 +49,11 @@ class _DetailPresenceState extends State<DetailPresence> {
     return Scaffold(
         key: _key,
         drawer: const DrawerMenu(),
-        floatingActionButton: (presence != null) ? (presence!.finJournee) ? Container() : speedialWidget() : Container(),
+        floatingActionButton: (presence != null)
+            ? (presence!.finJournee)
+                ? Container()
+                : speedialWidget()
+            : Container(),
         body: SafeArea(
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -77,7 +81,7 @@ class _DetailPresenceState extends State<DetailPresence> {
                                       width: p20,
                                       child: IconButton(
                                           onPressed: () =>
-                                              Routemaster.of(context).pop(),
+                                              Navigator.of(context).pop(),
                                           icon: const Icon(Icons.arrow_back)),
                                     ),
                                     const SizedBox(width: p10),
@@ -140,26 +144,33 @@ class _DetailPresenceState extends State<DetailPresence> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
-                  (data.finJournee) 
-                    ? SelectableText("Journée fini.", style: bodyMedium!.copyWith(color: Colors.red.shade700))
-                    : SelectableText("Journée en cours...", style: bodyMedium!.copyWith(color: Colors.orange.shade700)),
+                  (data.finJournee)
+                      ? SelectableText("Journée fini.",
+                          style:
+                              bodyMedium!.copyWith(color: Colors.red.shade700))
+                      : SelectableText("Journée en cours...",
+                          style: bodyMedium!
+                              .copyWith(color: Colors.orange.shade700)),
                 ],
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Expanded(child: SelectableText("ENTRER",
-                    textAlign: TextAlign.center,
-                    style: bodyLarge!.copyWith(color: Colors.blue.shade700, fontWeight: FontWeight.bold)),
+                  Expanded(
+                    child: SelectableText("ENTRER",
+                        textAlign: TextAlign.center,
+                        style: bodyLarge!.copyWith(
+                            color: Colors.blue.shade700,
+                            fontWeight: FontWeight.bold)),
                   ),
                   const SizedBox(
                     width: p20,
                   ),
                   Expanded(
                     child: SelectableText("SORTIE",
-                      textAlign: TextAlign.center,
-                      style:
-                            bodyLarge.copyWith(color: Colors.green.shade700,
+                        textAlign: TextAlign.center,
+                        style: bodyLarge.copyWith(
+                            color: Colors.green.shade700,
                             fontWeight: FontWeight.bold)),
                   ),
                 ],
@@ -173,7 +184,6 @@ class _DetailPresenceState extends State<DetailPresence> {
                   Expanded(child: listAgentSorties(data))
                 ],
               ),
-              
               if (data.finJournee) dataWidget(data),
             ],
           ),
@@ -223,8 +233,10 @@ class _DetailPresenceState extends State<DetailPresence> {
                 Icons.check_circle_rounded,
                 color: Colors.green.shade700,
               ),
-              title: Text('${agent.nom} ${agent.prenom} <<${agent.matricule}>>'),
-              subtitle: Text("Heure: ${DateFormat("HH:mm").format(data.created)}"),
+              title:
+                  Text('${agent.nom} ${agent.prenom} <<${agent.matricule}>>'),
+              subtitle:
+                  Text("Heure: ${DateFormat("HH:mm").format(data.created)}"),
             );
           }),
     );
@@ -256,7 +268,6 @@ class _DetailPresenceState extends State<DetailPresence> {
     );
   }
 
-
   SpeedDial speedialWidget() {
     return SpeedDial(
       child: const Icon(
@@ -274,7 +285,7 @@ class _DetailPresenceState extends State<DetailPresence> {
           backgroundColor: Colors.green.shade700,
           label: 'Sorties',
           onPressed: () {
-             Navigator.of(context).push(MaterialPageRoute(
+            Navigator.of(context).push(MaterialPageRoute(
                 builder: (context) =>
                     SortiePresence(presenceModel: presence!)));
           },
@@ -285,7 +296,7 @@ class _DetailPresenceState extends State<DetailPresence> {
           backgroundColor: Colors.orange.shade700,
           label: 'Entrer',
           onPressed: () {
-             Navigator.of(context).push(MaterialPageRoute(
+            Navigator.of(context).push(MaterialPageRoute(
                 builder: (context) =>
                     ArrivePresence(presenceModel: presence!)));
           },

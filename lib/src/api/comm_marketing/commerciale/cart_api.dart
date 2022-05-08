@@ -111,7 +111,7 @@ class CartApi {
     }
   }
 
-  Future<CartModel> deleteData(int id) async {
+  Future<void> deleteData(int id) async {
     final accessToken = await storage.read(key: 'accessToken');
 
     var deleteUrl =
@@ -122,23 +122,21 @@ class CartApi {
       'Authorization': 'Bearer $accessToken'
     });
     if (res.statusCode == 200) {
-      return CartModel.fromJson(json.decode(res.body)['data']);
     } else {
       throw Exception(json.decode(res.body)['message']);
     }
   }
 
-  Future<CartModel> deleteAllData() async {
+  Future<void> deleteAllData(String succursale) async {
     final accessToken = await storage.read(key: 'accessToken');
 
-    var deleteUrl = Uri.parse("$mainUrl/carts/delete-all-cart");
+    var deleteUrl = Uri.parse("$mainUrl/carts/delete-all-cart/$succursale");
 
     var res = await client.delete(deleteUrl, headers: <String, String>{
       'Content-Type': 'application/json; charset=UTF-8',
       'Authorization': 'Bearer $accessToken'
     });
     if (res.statusCode == 200) {
-      return CartModel.fromJson(json.decode(res.body)['data']);
     } else {
       throw Exception(json.decode(res.body)['message']);
     }

@@ -105,7 +105,7 @@ class _PaiementBulletinState extends State<PaiementBulletin> {
                                 width: p20,
                                 child: IconButton(
                                     onPressed: () =>
-                                        Routemaster.of(context).pop(),
+                                        Navigator.of(context).pop(),
                                     icon: const Icon(Icons.arrow_back)),
                               ),
                               const SizedBox(width: p10),
@@ -1744,7 +1744,7 @@ class _PaiementBulletinState extends State<PaiementBulletin> {
         signatureJustificationDD: data.signatureJustificationDD.toString(),
         signature: data.signature.toString());
     await PaiementSalaireApi().updateData(data.id!, paiementSalaireModel);
-    Routemaster.of(context).pop();
+    Navigator.of(context).pop();
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
       content: const Text("Soumis avec succès!"),
       backgroundColor: Colors.green[700],
@@ -1821,7 +1821,7 @@ class _PaiementBulletinState extends State<PaiementBulletin> {
         signatureJustificationDD: data.signatureJustificationDD.toString(),
         signature: data.signature.toString());
     await PaiementSalaireApi().updateData(data.id!, paiementSalaireModel);
-    Routemaster.of(context).pop();
+    Navigator.of(context).pop();
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
       content: const Text("Soumis avec succès!"),
       backgroundColor: Colors.green[700],
@@ -1898,7 +1898,7 @@ class _PaiementBulletinState extends State<PaiementBulletin> {
         signatureJustificationDD: data.signatureJustificationDD.toString(),
         signature: data.signature.toString());
     await PaiementSalaireApi().updateData(widget.id!, paiementSalaireModel);
-    Routemaster.of(context).pop();
+    Navigator.of(context).pop();
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
       content: const Text("Soumis avec succès!"),
       backgroundColor: Colors.green[700],
@@ -1975,7 +1975,7 @@ class _PaiementBulletinState extends State<PaiementBulletin> {
         signatureJustificationDD: signatureJustificationDDController.text,
         signature: data.signature.toString());
     await PaiementSalaireApi().updateData(widget.id!, paiementSalaireModel);
-    Routemaster.of(context).pop();
+    Navigator.of(context).pop();
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
       content: const Text("Soumis avec succès!"),
       backgroundColor: Colors.green[700],

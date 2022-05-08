@@ -460,7 +460,7 @@ class _DevisPageState extends State<DevisPage> {
         signature: matricule.toString(),
         created: DateTime.now());
     await DevisAPi().insertData(devisModel);
-    Routemaster.of(context).pop();
+    Navigator.of(context).pop();
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
       content: const Text("Envoyer avec succès!"),
       backgroundColor: Colors.green[700],

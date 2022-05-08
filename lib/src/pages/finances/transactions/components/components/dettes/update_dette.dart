@@ -258,7 +258,7 @@ class _UpdateDetteState extends State<UpdateDette> {
         created: DateTime.now());
 
     await DetteApi().insertData(detteModel);
-    Routemaster.of(context).pop();
+    Navigator.of(context).pop();
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
       content: const Text("Enregistrer avec succès!"),
       backgroundColor: Colors.green[700],

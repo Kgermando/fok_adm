@@ -75,7 +75,9 @@ class _AddCampaignState extends State<AddCampaign> {
     var produitModel = await ProduitModelApi().getAllData();
     setState(() {
       user = userModel;
-      agentAffectesList = users.where((element) => element.departement == "Commercial et Marketing").toList();
+      agentAffectesList = users
+          .where((element) => element.departement == "Commercial et Marketing")
+          .toList();
       produitModelList = produitModel;
     });
   }
@@ -106,7 +108,7 @@ class _AddCampaignState extends State<AddCampaign> {
                             width: 20.0,
                             child: IconButton(
                                 onPressed: () {
-                                  Routemaster.of(context).pop();
+                                  Navigator.of(context).pop();
                                 },
                                 icon: const Icon(Icons.arrow_back)),
                           ),
@@ -181,8 +183,8 @@ class _AddCampaignState extends State<AddCampaign> {
                         Expanded(child: objetctifsWidget())
                       ],
                     ),
-                    Text("Select Liste des agents", 
-                      style: Theme.of(context).textTheme.bodyLarge),
+                    Text("Select Liste des agents",
+                        style: Theme.of(context).textTheme.bodyLarge),
                     agentAffectesWidget(),
                     const SizedBox(
                       height: p20,
@@ -298,8 +300,8 @@ class _AddCampaignState extends State<AddCampaign> {
               child: TextFormField(
                 controller: coutCampaignController,
                 decoration: InputDecoration(
-                  border:
-                      OutlineInputBorder(borderRadius: BorderRadius.circular(10.0)),
+                  border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10.0)),
                   labelText: 'Coût Campaign',
                 ),
                 keyboardType: TextInputType.text,
@@ -315,9 +317,8 @@ class _AddCampaignState extends State<AddCampaign> {
             ),
             const SizedBox(width: p20),
             Expanded(
-              flex: 1,
-              child: Text("\$",
-                    style: Theme.of(context).textTheme.headline6))
+                flex: 1,
+                child: Text("\$", style: Theme.of(context).textTheme.headline6))
           ],
         ));
   }
@@ -391,7 +392,8 @@ class _AddCampaignState extends State<AddCampaign> {
   Future<void> submit() async {
     final campaignModel = CampaignModel(
         typeProduit: typeProduitController.text,
-        dateDebutEtFin: "Du ${DateFormat('dd/MM/yyyy').format(dateRange!.start)} - Au ${DateFormat('dd/MM/yyyy').format(dateRange!.end)}",
+        dateDebutEtFin:
+            "Du ${DateFormat('dd/MM/yyyy').format(dateRange!.start)} - Au ${DateFormat('dd/MM/yyyy').format(dateRange!.end)}",
         agentAffectes: multiChecked,
         coutCampaign: coutCampaignController.text,
         lieuCible: lieuCibleController.text,
@@ -415,7 +417,7 @@ class _AddCampaignState extends State<AddCampaign> {
         created: DateTime.now());
 
     await CampaignApi().insertData(campaignModel);
-    Routemaster.of(context).pop();
+    Navigator.of(context).pop();
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
       content: const Text("soumis avec succès!"),
       backgroundColor: Colors.green[700],

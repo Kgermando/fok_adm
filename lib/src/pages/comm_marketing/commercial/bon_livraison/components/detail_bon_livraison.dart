@@ -13,6 +13,7 @@ import 'package:fokad_admin/src/navigation/drawer/drawer_menu.dart';
 import 'package:fokad_admin/src/navigation/header/custom_appbar.dart';
 import 'package:fokad_admin/src/utils/loading.dart';
 import 'package:fokad_admin/src/widgets/print_widget.dart';
+import 'package:fokad_admin/src/widgets/title_widget.dart';
 import 'package:intl/intl.dart';
 import 'package:routemaster/routemaster.dart';
 
@@ -39,14 +40,25 @@ class _DetailBonLivraisonState extends State<DetailBonLivraison> {
     super.initState();
   }
 
-  UserModel? user;
+  UserModel user = UserModel(
+      nom: '-',
+      prenom: '-',
+      matricule: '-',
+      departement: '-',
+      servicesAffectation: '-',
+      fonctionOccupe: '-',
+      role: '5',
+      isOnline: false,
+      createdAt: DateTime.now(),
+      passwordHash: '-',
+      succursale: '-');
   Future<void> getData() async {
-    UserModel data = await AuthApi().getUserId();
+    UserModel userModel = await AuthApi().getUserId();
     BonLivraisonModel? bonLivraison =
         await BonLivraisonApi().getOneData(widget.id);
     List<AchatModel>? dataAchat = await AchatApi().getAllData();
     setState(() {
-      user = data;
+      user = userModel;
       achatList = dataAchat
           .where((element) => element.idProduct == bonLivraison.idProduct)
           .toList();
@@ -85,7 +97,7 @@ class _DetailBonLivraisonState extends State<DetailBonLivraison> {
                                       width: p20,
                                       child: IconButton(
                                           onPressed: () =>
-                                              Routemaster.of(context).pop(),
+                                              Navigator.of(context).pop(),
                                           icon: const Icon(Icons.arrow_back)),
                                     ),
                                     const SizedBox(width: p10),
@@ -135,24 +147,17 @@ class _DetailBonLivraisonState extends State<DetailBonLivraison> {
             controller: _controllerScroll,
             children: [
               Row(
-                mainAxisAlignment: MainAxisAlignment.end,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
+                  const TitleWidget(title: "Bon de livraison"),
                   Column(
                     children: [
-                      Row(
-                        children: [
-                          if (data.succursale == user!.succursale)
-                            accRecepetion(data),
-                          PrintWidget(
-                              tooltip: 'Imprimer le document', 
-                              onPressed: () async {
-                                
-                            },
-                          )
-                        ],
+                      PrintWidget(
+                        tooltip: 'Imprimer le document',
+                        onPressed: () async {},
                       ),
                       SelectableText(
-                          DateFormat("dd-MM-yy").format(data.created),
+                          DateFormat("dd-MM-yyyy HH:mm").format(data.created),
                           textAlign: TextAlign.start),
                     ],
                   )
@@ -173,17 +178,19 @@ class _DetailBonLivraisonState extends State<DetailBonLivraison> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          if (data.succursale == user.succursale) accRecepetion(data),
+          const SizedBox(height: p20),
           Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Expanded(
-                child: Text('Produit',
+                child: Text('Produit :',
                     style: Responsive.isDesktop(context)
                         ? const TextStyle(
                             fontWeight: FontWeight.w700, fontSize: 20)
                         : bodyText2,
                     overflow: TextOverflow.visible),
               ),
-              const Spacer(),
               Expanded(
                 child: Text(data.idProduct,
                     style: Responsive.isDesktop(context)
@@ -194,110 +201,129 @@ class _DetailBonLivraisonState extends State<DetailBonLivraison> {
               ),
             ],
           ),
-          const Divider(
-            color: Colors.black87,
+          Divider(
+            color: Colors.amber.shade700,
           ),
           Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text('Quantité Entrée',
-                  style: Responsive.isDesktop(context)
-                      ? const TextStyle(
-                          fontWeight: FontWeight.w700, fontSize: 20)
-                      : bodyText2,
-                  overflow: TextOverflow.ellipsis),
-              const Spacer(),
-              Text(
-                  '${NumberFormat.decimalPattern('fr').format(double.parse(data.quantityAchat))} ${data.unite}',
-                  style: Responsive.isDesktop(context)
-                      ? const TextStyle(
-                          fontWeight: FontWeight.w700, fontSize: 20)
-                      : bodyText2,
-                  overflow: TextOverflow.ellipsis),
+              Expanded(
+                child: Text('Quantité Entrée :',
+                    style: Responsive.isDesktop(context)
+                        ? const TextStyle(
+                            fontWeight: FontWeight.w700, fontSize: 20)
+                        : bodyText2,
+                    overflow: TextOverflow.ellipsis),
+              ),
+              Expanded(
+                child: Text(
+                    '${NumberFormat.decimalPattern('fr').format(double.parse(data.quantityAchat))} ${data.unite}',
+                    style: Responsive.isDesktop(context)
+                        ? const TextStyle(
+                            fontWeight: FontWeight.w700, fontSize: 20)
+                        : bodyText2,
+                    overflow: TextOverflow.ellipsis),
+              ),
             ],
           ),
-          const Divider(
-            color: Colors.black87,
+          Divider(
+            color: Colors.amber.shade700,
           ),
           Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text('TVA',
-                  style: Responsive.isDesktop(context)
-                      ? const TextStyle(
-                          fontWeight: FontWeight.w700, fontSize: 20)
-                      : bodyText2,
-                  overflow: TextOverflow.ellipsis),
-              const Spacer(),
-              Text('${data.tva} %',
-                  style: Responsive.isDesktop(context)
-                      ? const TextStyle(
-                          fontWeight: FontWeight.w700, fontSize: 20)
-                      : bodyText2,
-                  overflow: TextOverflow.ellipsis),
+              Expanded(
+                child: Text('TVA :',
+                    style: Responsive.isDesktop(context)
+                        ? const TextStyle(
+                            fontWeight: FontWeight.w700, fontSize: 20)
+                        : bodyText2,
+                    overflow: TextOverflow.ellipsis),
+              ),
+              Expanded(
+                child: Text('${data.tva} %',
+                    style: Responsive.isDesktop(context)
+                        ? const TextStyle(
+                            fontWeight: FontWeight.w700, fontSize: 20)
+                        : bodyText2,
+                    overflow: TextOverflow.ellipsis),
+              ),
             ],
           ),
-          const Divider(
-            color: Colors.black87,
+          Divider(
+            color: Colors.amber.shade700,
           ),
           Row(
             children: [
-              Text('Prix de vente unitaire',
-                  style: Responsive.isDesktop(context)
-                      ? const TextStyle(
-                          fontWeight: FontWeight.w700, fontSize: 20)
-                      : bodyText2,
-                  overflow: TextOverflow.ellipsis),
-              const Spacer(),
-              Text(
-                  '${NumberFormat.decimalPattern('fr').format(double.parse(data.prixVenteUnit))} \$',
-                  style: Responsive.isDesktop(context)
-                      ? const TextStyle(
-                          fontWeight: FontWeight.w700, fontSize: 20)
-                      : bodyText2,
-                  overflow: TextOverflow.ellipsis),
+              Expanded(
+                child: Text('Prix de vente unitaire :',
+                    style: Responsive.isDesktop(context)
+                        ? const TextStyle(
+                            fontWeight: FontWeight.w700, fontSize: 20)
+                        : bodyText2,
+                    overflow: TextOverflow.ellipsis),
+              ),
+              Expanded(
+                child: Text(
+                    '${NumberFormat.decimalPattern('fr').format(double.parse(data.prixVenteUnit))} \$',
+                    style: Responsive.isDesktop(context)
+                        ? const TextStyle(
+                            fontWeight: FontWeight.w700, fontSize: 20)
+                        : bodyText2,
+                    overflow: TextOverflow.ellipsis),
+              ),
             ],
           ),
           if (double.parse(data.qtyRemise) >= 1)
-            const Divider(
-              color: Colors.black87,
+            Divider(
+              color: Colors.amber.shade700,
             ),
           if (double.parse(data.qtyRemise) >= 1)
             Row(
               children: [
-                Text('Prix de Remise',
-                    style: Responsive.isDesktop(context)
-                        ? const TextStyle(
-                            fontWeight: FontWeight.w700, fontSize: 20)
-                        : bodyText2,
-                    overflow: TextOverflow.ellipsis),
-                const Spacer(),
-                Text('${data.remise} \$',
-                    style: Responsive.isDesktop(context)
-                        ? const TextStyle(
-                            fontWeight: FontWeight.w700, fontSize: 20)
-                        : bodyText2,
-                    overflow: TextOverflow.ellipsis),
+                Expanded(
+                  child: Text('Prix de Remise :',
+                      style: Responsive.isDesktop(context)
+                          ? const TextStyle(
+                              fontWeight: FontWeight.w700, fontSize: 20)
+                          : bodyText2,
+                      overflow: TextOverflow.ellipsis),
+                ),
+                Expanded(
+                  child: Text(
+                      '${NumberFormat.decimalPattern('fr').format(double.parse(data.remise))} \$',
+                      style: Responsive.isDesktop(context)
+                          ? const TextStyle(
+                              fontWeight: FontWeight.w700, fontSize: 20)
+                          : bodyText2,
+                      overflow: TextOverflow.ellipsis),
+                ),
               ],
             ),
           if (double.parse(data.qtyRemise) >= 1)
-            const Divider(
-              color: Colors.black87,
+            Divider(
+              color: Colors.amber.shade700,
             ),
           if (double.parse(data.qtyRemise) >= 1)
             Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text('Qtés pour la remise',
-                    style: Responsive.isDesktop(context)
-                        ? const TextStyle(
-                            fontWeight: FontWeight.w700, fontSize: 20)
-                        : bodyText2,
-                    overflow: TextOverflow.ellipsis),
-                const Spacer(),
-                Text('${data.qtyRemise} ${data.unite}',
-                    style: Responsive.isDesktop(context)
-                        ? const TextStyle(
-                            fontWeight: FontWeight.w700, fontSize: 20)
-                        : bodyText2,
-                    overflow: TextOverflow.ellipsis),
+                Expanded(
+                  child: Text('Qtés pour la remise :',
+                      style: Responsive.isDesktop(context)
+                          ? const TextStyle(
+                              fontWeight: FontWeight.w700, fontSize: 20)
+                          : bodyText2,
+                      overflow: TextOverflow.ellipsis),
+                ),
+                Expanded(
+                  child: Text('${data.qtyRemise} ${data.unite}',
+                      style: Responsive.isDesktop(context)
+                          ? const TextStyle(
+                              fontWeight: FontWeight.w700, fontSize: 20)
+                          : bodyText2,
+                      overflow: TextOverflow.ellipsis),
+                ),
               ],
             ),
         ],
@@ -315,7 +341,7 @@ class _DetailBonLivraisonState extends State<DetailBonLivraison> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
-                Text('Accusé reception',
+                Text('Accusé reception:',
                     style: Responsive.isDesktop(context)
                         ? const TextStyle(
                             fontWeight: FontWeight.w500, fontSize: 16)
@@ -353,10 +379,11 @@ class _DetailBonLivraisonState extends State<DetailBonLivraison> {
   }
 
   checkboxRead(BonLivraisonModel data) {
+    isChecked = data.accuseReception;
     return Checkbox(
       checkColor: Colors.white,
       fillColor: MaterialStateProperty.resolveWith(getColor),
-      value: data.accuseReception,
+      value: isChecked,
       onChanged: (bool? value) {
         setState(() {
           isLoading = true;
@@ -365,9 +392,9 @@ class _DetailBonLivraisonState extends State<DetailBonLivraison> {
           isChecked = value!;
           bonLivraisonStock(data);
         });
-        //  setState(() {
-        //   isLoading = false;
-        // });
+        setState(() {
+          isLoading = false;
+        });
       },
     );
   }
@@ -386,23 +413,11 @@ class _DetailBonLivraisonState extends State<DetailBonLivraison> {
         tva: data.tva,
         remise: data.remise,
         qtyRemise: data.qtyRemise,
-        accuseReception: true,
-        accuseReceptionFirstName: user!.nom.toString(),
-        accuseReceptionLastName: user!.prenom.toString(),
-        approbationDG: '-',
-        signatureDG: '-',
-        signatureJustificationDG: '-',
-        approbationFin: '-',
-        signatureFin: '-',
-        signatureJustificationFin: '-',
-        approbationBudget: '-',
-        signatureBudget: '-',
-        signatureJustificationBudget: '-',
-        approbationDD: '-',
-        signatureDD: '-',
-        signatureJustificationDD: '-',
+        accuseReception: isChecked,
+        accuseReceptionFirstName: user.nom.toString(),
+        accuseReceptionLastName: user.prenom.toString(),
         succursale: data.succursale,
-        signature: user!.matricule,
+        signature: user.matricule,
         created: DateTime.now());
     await BonLivraisonApi().updateData(data.id!, bonLivraisonModel);
 
@@ -445,18 +460,6 @@ class _DetailBonLivraisonState extends State<DetailBonLivraison> {
           qtyRemise: qtyRemiseAchat.toString(),
           margeBenRemise: margeBenRemise.toString(),
           qtyLivre: qtyLivreAchat,
-          approbationDG: '-',
-          signatureDG: '-',
-          signatureJustificationDG: '-',
-          approbationFin: '-',
-          signatureFin: '-',
-          signatureJustificationFin: '-',
-          approbationBudget: '-',
-          signatureBudget: '-',
-          signatureJustificationBudget: '-',
-          approbationDD: '-',
-          signatureDD: '-',
-          signatureJustificationDD: '-',
           succursale: succursaleAchat.toString(),
           signature: data.signature,
           created: dateAchat);
@@ -475,58 +478,36 @@ class _DetailBonLivraisonState extends State<DetailBonLivraison> {
           remise: data.remise,
           qtyRemise: data.qtyRemise,
           qtyLivre: data.quantityAchat,
-          approbationDG: '-',
-          signatureDG: '-',
-          signatureJustificationDG: '-',
-          approbationFin: '-',
-          signatureFin: '-',
-          signatureJustificationFin: '-',
-          approbationBudget: '-',
-          signatureBudget: '-',
-          signatureJustificationBudget: '-',
-          approbationDD: '-',
-          signatureDD: '-',
-          signatureJustificationDD: '-',
           succursale: data.succursale,
-          signature: user!.matricule,
+          signature: user.matricule,
           created: DateTime.now());
       await AchatApi().updateData(data.id!, achatModel);
-      Routemaster.of(context).pop();
+      // Navigator.of(context).pop();
+      Navigator.of(context).pop();
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: Text("${achatModel.idProduct} a été ajouté!"),
+        content: Text("${achatModel.idProduct} mis à jour!"),
         backgroundColor: Colors.green[700],
       ));
     } else {
       // add to Stocks au comptant
       final achatModel = AchatModel(
-        idProduct: data.idProduct,
-        quantity: data.quantityAchat,
-        quantityAchat: data.quantityAchat, // Qty de livraison (entrant)
-        priceAchatUnit: data.priceAchatUnit,
-        prixVenteUnit: data.prixVenteUnit,
-        unite: data.unite,
-       tva: data.tva,
-        remise: data.remise,
-        qtyRemise: data.qtyRemise,
-        qtyLivre: data.quantityAchat,
-        approbationDG: '-',
-        signatureDG: '-',
-        signatureJustificationDG: '-',
-        approbationFin: '-',
-        signatureFin: '-',
-        signatureJustificationFin: '-',
-        approbationBudget: '-',
-        signatureBudget: '-',
-        signatureJustificationBudget: '-',
-        approbationDD: '-',
-        signatureDD: '-',
-        signatureJustificationDD: '-',
-        succursale: data.succursale,
-        signature: user!.matricule,
-        created: DateTime.now());
+          idProduct: data.idProduct,
+          quantity: data.quantityAchat,
+          quantityAchat: data.quantityAchat, // Qty de livraison (entrant)
+          priceAchatUnit: data.priceAchatUnit,
+          prixVenteUnit: data.prixVenteUnit,
+          unite: data.unite,
+          tva: data.tva,
+          remise: data.remise,
+          qtyRemise: data.qtyRemise,
+          qtyLivre: data.quantityAchat,
+          succursale: data.succursale,
+          signature: user.matricule,
+          created: DateTime.now());
       await AchatApi().insertData(achatModel);
-      Routemaster.of(context).pop();
+      // Navigator.of(context).pop();
+      Navigator.of(context).pop();
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
         content: Text("${achatModel.idProduct} a été ajouté!"),

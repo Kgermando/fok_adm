@@ -7,13 +7,15 @@ import 'package:fokad_admin/src/navigation/drawer/drawer_menu.dart';
 import 'package:fokad_admin/src/navigation/header/custom_appbar.dart';
 import 'package:fokad_admin/src/pages/comm_marketing/commercial/stocks_global/components/livraison_stock.dart';
 import 'package:fokad_admin/src/pages/comm_marketing/commercial/stocks_global/components/ravitaillement_stock.dart';
+import 'package:fokad_admin/src/pages/comm_marketing/commercial/stocks_global/components/table_history_ravitaillement_produit.dart';
 import 'package:fokad_admin/src/widgets/title_widget.dart';
 import 'package:intl/intl.dart';
 import 'package:routemaster/routemaster.dart';
 import 'package:simple_speed_dial/simple_speed_dial.dart';
 
 class DetailStockGlobal extends StatefulWidget {
-  const DetailStockGlobal({Key? key, required this.stocksGlobalMOdel}) : super(key: key);
+  const DetailStockGlobal({Key? key, required this.stocksGlobalMOdel})
+      : super(key: key);
   final StocksGlobalMOdel stocksGlobalMOdel;
 
   @override
@@ -21,7 +23,7 @@ class DetailStockGlobal extends StatefulWidget {
 }
 
 class _DetailStockGlobalState extends State<DetailStockGlobal> {
-   final GlobalKey<ScaffoldState> _key = GlobalKey();
+  final GlobalKey<ScaffoldState> _key = GlobalKey();
   final ScrollController _controllerScroll = ScrollController();
   bool isLoading = false;
 
@@ -33,7 +35,8 @@ class _DetailStockGlobalState extends State<DetailStockGlobal> {
 
   StocksGlobalMOdel? stocksGlobalMOdel;
   Future<void> getData() async {
-    StocksGlobalMOdel data = await StockGlobalApi().getOneData(widget.stocksGlobalMOdel.id!);
+    StocksGlobalMOdel data =
+        await StockGlobalApi().getOneData(widget.stocksGlobalMOdel.id!);
     setState(() {
       stocksGlobalMOdel = data;
     });
@@ -73,7 +76,7 @@ class _DetailStockGlobalState extends State<DetailStockGlobal> {
                                       width: p20,
                                       child: IconButton(
                                           onPressed: () =>
-                                              Routemaster.of(context).pop(),
+                                              Navigator.of(context).pop(),
                                           icon: const Icon(Icons.arrow_back)),
                                     ),
                                     const SizedBox(width: p10),
@@ -163,7 +166,7 @@ class _DetailStockGlobalState extends State<DetailStockGlobal> {
           const SizedBox(
             height: 20,
           ),
-          // ravitailementHistory(),
+          TableHistoryRavitaillementProduit(stocksGlobalMOdel: data),
           const SizedBox(
             height: 50,
           ),
@@ -172,7 +175,6 @@ class _DetailStockGlobalState extends State<DetailStockGlobal> {
     );
   }
 
-  
   Widget achats() {
     final bodyText1 = Theme.of(context).textTheme.bodyText1;
     final bodyText2 = Theme.of(context).textTheme.bodyText2;
@@ -209,8 +211,8 @@ class _DetailStockGlobalState extends State<DetailStockGlobal> {
                     overflow: TextOverflow.ellipsis),
               ],
             ),
-            const Divider(
-              color: Colors.black87,
+            Divider(
+              color: Colors.amber.shade700,
             ),
             Row(
               children: [
@@ -230,8 +232,8 @@ class _DetailStockGlobalState extends State<DetailStockGlobal> {
                     overflow: TextOverflow.ellipsis),
               ],
             ),
-            const Divider(
-              color: Colors.black87,
+            Divider(
+              color: Colors.amber.shade700,
             ),
             Row(
               children: [
@@ -252,8 +254,8 @@ class _DetailStockGlobalState extends State<DetailStockGlobal> {
               ],
             ),
             if (double.parse(widget.stocksGlobalMOdel.tva) > 1)
-              const Divider(
-                color: Colors.black87,
+              Divider(
+                color: Colors.amber.shade700,
               ),
             if (double.parse(widget.stocksGlobalMOdel.tva) > 1)
               Row(
@@ -273,8 +275,8 @@ class _DetailStockGlobalState extends State<DetailStockGlobal> {
                       overflow: TextOverflow.ellipsis),
                 ],
               ),
-            const Divider(
-              color: Colors.black87,
+            Divider(
+              color: Colors.amber.shade700,
             ),
             Row(
               children: [
@@ -294,8 +296,8 @@ class _DetailStockGlobalState extends State<DetailStockGlobal> {
                     overflow: TextOverflow.ellipsis),
               ],
             ),
-            const Divider(
-              color: Colors.black87,
+            Divider(
+              color: Colors.amber.shade700,
             ),
             const SizedBox(
               height: 20.0,
@@ -350,8 +352,8 @@ class _DetailStockGlobalState extends State<DetailStockGlobal> {
                           overflow: TextOverflow.ellipsis),
                     ],
                   ),
-            const Divider(
-              color: Colors.black87,
+            Divider(
+              color: Colors.amber.shade700,
             ),
             Responsive.isDesktop(context)
                 ? Row(
@@ -507,7 +509,6 @@ class _DetailStockGlobalState extends State<DetailStockGlobal> {
 
   Future<void> exportToExcel() async {}
 
-
   SpeedDial speedialWidget() {
     return SpeedDial(
       child: const Icon(
@@ -526,8 +527,8 @@ class _DetailStockGlobalState extends State<DetailStockGlobal> {
           label: 'Ravitaillement',
           onPressed: () {
             Navigator.of(context).push(MaterialPageRoute(
-                builder: (context) =>
-                    RavitailleemntStock(stocksGlobalMOdel: widget.stocksGlobalMOdel)));
+                builder: (context) => RavitailleemntStock(
+                    stocksGlobalMOdel: widget.stocksGlobalMOdel)));
           },
         ),
         SpeedDialChild(
@@ -536,7 +537,8 @@ class _DetailStockGlobalState extends State<DetailStockGlobal> {
             backgroundColor: Colors.blue.shade700,
             label: 'Livraison',
             onPressed: () => Navigator.of(context).push(MaterialPageRoute(
-                builder: (context) => LivraisonStock(stocksGlobalMOdel: widget.stocksGlobalMOdel)))),
+                builder: (context) => LivraisonStock(
+                    stocksGlobalMOdel: widget.stocksGlobalMOdel)))),
       ],
     );
   }

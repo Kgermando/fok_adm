@@ -101,7 +101,7 @@ class _DetailBilanState extends State<DetailBilan> {
                                       width: p20,
                                       child: IconButton(
                                           onPressed: () =>
-                                              Routemaster.of(context).pop(),
+                                              Navigator.of(context).pop(),
                                           icon: const Icon(Icons.arrow_back)),
                                     ),
                                     const SizedBox(width: p10),
@@ -263,13 +263,13 @@ class _DetailBilanState extends State<DetailBilan> {
               'Cette action permet de permet de mettre ce fichier en corbeille.'),
           actions: <Widget>[
             TextButton(
-              onPressed: () => Routemaster.of(context).pop(),
+              onPressed: () => Navigator.of(context).pop(),
               child: const Text('Annuler'),
             ),
             TextButton(
               onPressed: () async {
                 submitCorbeille(data);
-                Routemaster.of(context).pop();
+                Navigator.of(context).pop();
               },
               child: const Text('OK'),
             ),
@@ -757,7 +757,7 @@ class _DetailBilanState extends State<DetailBilan> {
         signature: data.signature,
         created: data.created);
     await BilanApi().updateData(data.id!, bilanModel);
-    Routemaster.of(context).pop();
+    Navigator.of(context).pop();
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
       content: const Text("Mise à jour avec succès!"),
       backgroundColor: Colors.green[700],
@@ -779,7 +779,7 @@ class _DetailBilanState extends State<DetailBilan> {
         signature: data.signature.toString(),
         created: data.created);
     await BilanApi().updateData(data.id!, bilanModel);
-    Routemaster.of(context).pop();
+    Navigator.of(context).pop();
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
       content: const Text("Mise à jour avec succès!"),
       backgroundColor: Colors.green[700],
@@ -801,7 +801,7 @@ class _DetailBilanState extends State<DetailBilan> {
         signature: data.signature,
         created: data.created);
     await BilanApi().updateData(data.id!, bilanModel);
-    Routemaster.of(context).pop();
+    Navigator.of(context).pop();
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
       content: const Text("Mis en corbeille avec succès!"),
       backgroundColor: Colors.red[700],

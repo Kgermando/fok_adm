@@ -109,7 +109,7 @@ class _DetailBanqueState extends State<DetailBanque> {
                                       width: p20,
                                       child: IconButton(
                                           onPressed: () =>
-                                              Routemaster.of(context).pop(),
+                                              Navigator.of(context).pop(),
                                           icon: const Icon(Icons.arrow_back)),
                                     ),
                                     const SizedBox(width: p10),
@@ -948,7 +948,7 @@ class _DetailBanqueState extends State<DetailBanque> {
         created: data.created);
 
     await BanqueApi().updateData(data.id!, banqueModel);
-    Routemaster.of(context).pop();
+    Navigator.of(context).pop();
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
       content: const Text("Soumis avec succès!"),
       backgroundColor: Colors.green[700],
@@ -983,7 +983,7 @@ class _DetailBanqueState extends State<DetailBanque> {
         signature: data.signature,
         created: data.created);
     await BanqueApi().updateData(data.id!, banqueModel);
-    Routemaster.of(context).pop();
+    Navigator.of(context).pop();
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
       content: const Text("Soumis avec succès!"),
       backgroundColor: Colors.green[700],
@@ -1019,7 +1019,7 @@ class _DetailBanqueState extends State<DetailBanque> {
         created: data.created);
 
     await BanqueApi().updateData(data.id!, banqueModel);
-    Routemaster.of(context).pop();
+    Navigator.of(context).pop();
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
       content: const Text("Soumis avec succès!"),
       backgroundColor: Colors.green[700],
@@ -1055,7 +1055,7 @@ class _DetailBanqueState extends State<DetailBanque> {
         created: data.created);
 
     await BanqueApi().updateData(data.id!, banqueModel);
-    Routemaster.of(context).pop();
+    Navigator.of(context).pop();
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
       content: const Text("Soumis avec succès!"),
       backgroundColor: Colors.green[700],

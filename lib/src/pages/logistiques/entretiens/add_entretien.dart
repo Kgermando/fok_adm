@@ -110,13 +110,14 @@ class _AddEntretienPageState extends State<AddEntretienPage> {
                             width: 20.0,
                             child: IconButton(
                                 onPressed: () {
-                                  Routemaster.of(context).pop();
+                                  Navigator.of(context).pop();
                                 },
                                 icon: const Icon(Icons.arrow_back)),
                           ),
-                           Expanded(
+                          Expanded(
                               flex: 5,
-                              child: CustomAppbar(title: 'Nouveau entretien',
+                              child: CustomAppbar(
+                                  title: 'Nouveau entretien',
                                   controllerMenu: () =>
                                       _key.currentState!.openDrawer())),
                         ],
@@ -488,7 +489,7 @@ class _AddEntretienPageState extends State<AddEntretienPage> {
         signature: signature.toString(),
         created: DateTime.now());
     await EntretienApi().insertData(entretienModel);
-    Routemaster.of(context).pop();
+    Navigator.of(context).pop();
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
       content: const Text("Enregistrer avec succès!"),
       backgroundColor: Colors.green[700],

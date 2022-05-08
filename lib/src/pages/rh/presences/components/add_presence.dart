@@ -85,7 +85,7 @@ class _AddPresenceState extends State<AddPresence> {
                             width: 20.0,
                             child: IconButton(
                                 onPressed: () {
-                                  Routemaster.of(context).pop();
+                                  Navigator.of(context).pop();
                                 },
                                 icon: const Icon(Icons.arrow_back)),
                           ),
@@ -204,7 +204,7 @@ class _AddPresenceState extends State<AddPresence> {
     List<UserModel> dataList = [];
     var userAgentList = agentAffectesList;
     var presenceList = presenceAgentList;
-    
+
     dataList = userAgentList.toSet().difference(presenceList.toSet()).toList();
 
     return Container(
@@ -265,7 +265,7 @@ class _AddPresenceState extends State<AddPresence> {
         created: DateTime.now());
 
     await PresenceApi().insertData(presenceModel);
-    Routemaster.of(context).pop();
+    Navigator.of(context).pop();
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
       content: const Text("soumis avec succès!"),
       backgroundColor: Colors.green[700],

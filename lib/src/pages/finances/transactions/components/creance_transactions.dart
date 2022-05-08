@@ -90,7 +90,8 @@ class _CreanceTransactionsState extends State<CreanceTransactions> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      CustomAppbar(title: 'Créances',
+                      CustomAppbar(
+                          title: 'Créances',
                           controllerMenu: () =>
                               _key.currentState!.openDrawer()),
                       const Expanded(child: TableCreance())
@@ -287,7 +288,7 @@ class _CreanceTransactionsState extends State<CreanceTransactions> {
         signature: matricule.toString(),
         created: DateTime.now());
     await CreanceApi().insertData(creanceModel);
-    Routemaster.of(context).pop();
+    Navigator.of(context).pop();
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
       content: const Text("Somis avec succès!"),
       backgroundColor: Colors.green[700],

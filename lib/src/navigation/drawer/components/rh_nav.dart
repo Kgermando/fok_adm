@@ -39,7 +39,7 @@ class _RhNavState extends State<RhNav> {
             style: bodyText1!,
             onTap: () {
               Routemaster.of(context).replace(RhRoutes.rhDashboard);
-              // Routemaster.of(context).pop();
+              // Navigator.of(context).pop();
             }),
         DrawerWidget(
             selected: widget.pageCurrente == RhRoutes.rhDD,
@@ -49,7 +49,7 @@ class _RhNavState extends State<RhNav> {
             style: bodyText1,
             onTap: () {
               Routemaster.of(context).replace(RhRoutes.rhDD);
-              // Routemaster.of(context).pop();
+              // Navigator.of(context).pop();
             }),
         DrawerWidget(
             selected: widget.pageCurrente == RhRoutes.rhPaiement,
@@ -59,7 +59,7 @@ class _RhNavState extends State<RhNav> {
             style: bodyText1,
             onTap: () {
               Routemaster.of(context).replace(RhRoutes.rhPaiement);
-              // Routemaster.of(context).pop();
+              // Navigator.of(context).pop();
             }),
         DrawerWidget(
             selected: widget.pageCurrente == RhRoutes.rhPresence,
@@ -69,7 +69,7 @@ class _RhNavState extends State<RhNav> {
             style: bodyText1,
             onTap: () {
               Routemaster.of(context).replace(RhRoutes.rhPresence);
-              // Routemaster.of(context).pop();
+              // Navigator.of(context).pop();
             }),
         DrawerWidget(
             selected: widget.pageCurrente == RhRoutes.rhAgent,
@@ -79,7 +79,7 @@ class _RhNavState extends State<RhNav> {
             style: bodyText1,
             onTap: () {
               Routemaster.of(context).replace(RhRoutes.rhAgent);
-              // Routemaster.of(context).pop();
+              // Navigator.of(context).pop();
             }),
         DrawerWidget(
             selected: widget.pageCurrente == DevisRoutes.devis,
@@ -89,7 +89,7 @@ class _RhNavState extends State<RhNav> {
             style: bodyText1,
             onTap: () {
               Routemaster.of(context).replace(DevisRoutes.devis);
-              // Routemaster.of(context).pop();
+              // Navigator.of(context).pop();
             }),
         DrawerWidget(
             selected: widget.pageCurrente == RhRoutes.rhPerformence,
@@ -99,7 +99,7 @@ class _RhNavState extends State<RhNav> {
             style: bodyText1,
             onTap: () {
               Routemaster.of(context).replace(RhRoutes.rhPerformence);
-              // Routemaster.of(context).pop();
+              // Navigator.of(context).pop();
             }),
       ],
     );

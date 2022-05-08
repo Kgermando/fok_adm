@@ -43,7 +43,7 @@ class _ComptabiliteNavState extends State<ComptabiliteNav> {
             onTap: () {
               Routemaster.of(context)
                   .replace(ComptabiliteRoutes.comptabiliteDashboard);
-              // Routemaster.of(context).pop();
+              // Navigator.of(context).pop();
             }),
         DrawerWidget(
             selected: widget.pageCurrente == ComptabiliteRoutes.comptabiliteDD,
@@ -54,7 +54,7 @@ class _ComptabiliteNavState extends State<ComptabiliteNav> {
             onTap: () {
               Routemaster.of(context)
                   .replace(ComptabiliteRoutes.comptabiliteDD);
-              // Routemaster.of(context).pop();
+              // Navigator.of(context).pop();
             }),
         DrawerWidget(
             selected:
@@ -66,7 +66,7 @@ class _ComptabiliteNavState extends State<ComptabiliteNav> {
             onTap: () {
               Routemaster.of(context)
                   .replace(ComptabiliteRoutes.comptabiliteBilan);
-              // Routemaster.of(context).pop();
+              // Navigator.of(context).pop();
             }),
         DrawerWidget(
             selected:
@@ -78,7 +78,7 @@ class _ComptabiliteNavState extends State<ComptabiliteNav> {
             onTap: () {
               Routemaster.of(context)
                   .replace(ComptabiliteRoutes.comptabiliteJournal);
-              // Routemaster.of(context).pop();
+              // Navigator.of(context).pop();
             }),
         DrawerWidget(
             selected: widget.pageCurrente ==
@@ -90,7 +90,7 @@ class _ComptabiliteNavState extends State<ComptabiliteNav> {
             onTap: () {
               Routemaster.of(context)
                   .replace(ComptabiliteRoutes.comptabiliteCompteResultat);
-              // Routemaster.of(context).pop();
+              // Navigator.of(context).pop();
             }),
         DrawerWidget(
             selected:
@@ -102,7 +102,7 @@ class _ComptabiliteNavState extends State<ComptabiliteNav> {
             onTap: () {
               Routemaster.of(context)
                   .replace(ComptabiliteRoutes.comptabiliteBalance);
-              // Routemaster.of(context).pop();
+              // Navigator.of(context).pop();
             }),
         DrawerWidget(
             selected: widget.pageCurrente ==
@@ -114,7 +114,7 @@ class _ComptabiliteNavState extends State<ComptabiliteNav> {
             onTap: () {
               Routemaster.of(context)
                   .replace(ComptabiliteRoutes.comptabiliteGrandLivre);
-              // Routemaster.of(context).pop();
+              // Navigator.of(context).pop();
             }),
         DrawerWidget(
             selected: widget.pageCurrente == DevisRoutes.devis,
@@ -124,7 +124,7 @@ class _ComptabiliteNavState extends State<ComptabiliteNav> {
             style: bodyText1,
             onTap: () {
               Routemaster.of(context).replace(DevisRoutes.devis);
-              // Routemaster.of(context).pop();
+              // Navigator.of(context).pop();
             }),
         DrawerWidget(
             selected: widget.pageCurrente == RhRoutes.rhPerformence,
@@ -134,7 +134,7 @@ class _ComptabiliteNavState extends State<ComptabiliteNav> {
             style: bodyText1,
             onTap: () {
               Routemaster.of(context).replace(RhRoutes.rhPerformence);
-              // Routemaster.of(context).pop();
+              // Navigator.of(context).pop();
             }),
       ],
     );

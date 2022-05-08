@@ -42,7 +42,7 @@ class _LogistiqueNavState extends State<LogistiqueNav> {
             style: bodyText1!,
             onTap: () {
               Routemaster.of(context).replace(LogistiqueRoutes.logDashboard);
-              // Routemaster.of(context).pop();
+              // Navigator.of(context).pop();
             }),
         DrawerWidget(
             selected: widget.pageCurrente == LogistiqueRoutes.logDD,
@@ -52,7 +52,7 @@ class _LogistiqueNavState extends State<LogistiqueNav> {
             style: bodyText1,
             onTap: () {
               Routemaster.of(context).replace(LogistiqueRoutes.logDD);
-              // Routemaster.of(context).pop();
+              // Navigator.of(context).pop();
             }),
         ExpansionTile(
           leading: const Icon(Icons.car_rental, size: 20.0),
@@ -73,7 +73,7 @@ class _LogistiqueNavState extends State<LogistiqueNav> {
                 onTap: () {
                   Routemaster.of(context)
                       .replace(LogistiqueRoutes.logAnguinAuto);
-                  // Routemaster.of(context).pop();
+                  // Navigator.of(context).pop();
                 }),
             DrawerWidget(
                 selected:
@@ -85,7 +85,7 @@ class _LogistiqueNavState extends State<LogistiqueNav> {
                 onTap: () {
                   Routemaster.of(context)
                       .replace(LogistiqueRoutes.logCarburantAuto);
-                  // Routemaster.of(context).pop();
+                  // Navigator.of(context).pop();
                 }),
             DrawerWidget(
                 selected: widget.pageCurrente == LogistiqueRoutes.logTrajetAuto,
@@ -96,7 +96,7 @@ class _LogistiqueNavState extends State<LogistiqueNav> {
                 onTap: () {
                   Routemaster.of(context)
                       .replace(LogistiqueRoutes.logTrajetAuto);
-                  // Routemaster.of(context).pop();
+                  // Navigator.of(context).pop();
                 }),
           ],
         ),
@@ -120,7 +120,7 @@ class _LogistiqueNavState extends State<LogistiqueNav> {
                 onTap: () {
                   Routemaster.of(context)
                       .replace(LogistiqueRoutes.logEtatMateriel);
-                  // Routemaster.of(context).pop();
+                  // Navigator.of(context).pop();
                 }),
             DrawerWidget(
                 selected:
@@ -132,7 +132,7 @@ class _LogistiqueNavState extends State<LogistiqueNav> {
                 onTap: () {
                   Routemaster.of(context)
                       .replace(LogistiqueRoutes.logMobilierMateriel);
-                  // Routemaster.of(context).pop();
+                  // Navigator.of(context).pop();
                 }),
             DrawerWidget(
                 selected: widget.pageCurrente ==
@@ -144,7 +144,7 @@ class _LogistiqueNavState extends State<LogistiqueNav> {
                 onTap: () {
                   Routemaster.of(context)
                       .replace(LogistiqueRoutes.logImmobilierMateriel);
-                  // Routemaster.of(context).pop();
+                  // Navigator.of(context).pop();
                 }),
           ],
         ),
@@ -167,7 +167,7 @@ class _LogistiqueNavState extends State<LogistiqueNav> {
                 onTap: () {
                   Routemaster.of(context)
                       .replace(LogistiqueRoutes.logEntretien);
-                  // Routemaster.of(context).pop();
+                  // Navigator.of(context).pop();
                 }),
           ],
         ),
@@ -179,7 +179,7 @@ class _LogistiqueNavState extends State<LogistiqueNav> {
             style: bodyText1,
             onTap: () {
               Routemaster.of(context).replace(DevisRoutes.devis);
-              // Routemaster.of(context).pop();
+              // Navigator.of(context).pop();
             }),
         DrawerWidget(
             selected: widget.pageCurrente == RhRoutes.rhPerformence,
@@ -189,7 +189,7 @@ class _LogistiqueNavState extends State<LogistiqueNav> {
             style: bodyText1,
             onTap: () {
               Routemaster.of(context).replace(RhRoutes.rhPerformence);
-              // Routemaster.of(context).pop();
+              // Navigator.of(context).pop();
             }),
       ],
     );

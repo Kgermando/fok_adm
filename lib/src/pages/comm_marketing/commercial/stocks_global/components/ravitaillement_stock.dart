@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:fokad_admin/src/api/auth/auth_api.dart';
 import 'package:fokad_admin/src/api/comm_marketing/commerciale/history_rabitaillement_api.dart';
 import 'package:fokad_admin/src/api/comm_marketing/commerciale/produit_model_api.dart';
@@ -128,7 +129,7 @@ class _RavitailleemntStockState extends State<RavitailleemntStock> {
                             width: 20.0,
                             child: IconButton(
                                 onPressed: () {
-                                  Routemaster.of(context).pop();
+                                  Navigator.of(context).pop();
                                 },
                                 icon: const Icon(Icons.arrow_back)),
                           ),
@@ -261,6 +262,9 @@ class _RavitailleemntStockState extends State<RavitailleemntStock> {
       child: TextFormField(
         controller: controllerquantity,
         keyboardType: TextInputType.number,
+        inputFormatters: <TextInputFormatter>[
+          FilteringTextInputFormatter.digitsOnly
+        ],
         decoration: InputDecoration(
           labelText: 'Quantités',
           labelStyle: const TextStyle(),
@@ -282,6 +286,9 @@ class _RavitailleemntStockState extends State<RavitailleemntStock> {
       child: TextFormField(
         controller: controllerpriceAchatUnit,
         keyboardType: TextInputType.number,
+        inputFormatters: <TextInputFormatter>[
+          FilteringTextInputFormatter.digitsOnly
+        ],
         decoration: InputDecoration(
           labelText: 'Prix d\'achats unitaire',
           labelStyle: const TextStyle(),
@@ -303,6 +310,9 @@ class _RavitailleemntStockState extends State<RavitailleemntStock> {
       child: TextFormField(
         controller: controllerPrixVenteUnit,
         keyboardType: TextInputType.number,
+        inputFormatters: <TextInputFormatter>[
+          FilteringTextInputFormatter.digitsOnly
+        ],
         decoration: InputDecoration(
           labelText: 'Prix de vente unitaire',
           labelStyle: const TextStyle(),
@@ -337,7 +347,9 @@ class _RavitailleemntStockState extends State<RavitailleemntStock> {
                   margin: const EdgeInsets.only(bottom: 20.0),
                   child: TextFormField(
                     keyboardType: TextInputType.number,
-                    // initialValue: '1',
+                    inputFormatters: <TextInputFormatter>[
+                      FilteringTextInputFormatter.digitsOnly
+                    ],
                     decoration: InputDecoration(
                       labelText: 'TVA en %',
                       // hintText: 'Mettez "1" si vide',
@@ -374,7 +386,9 @@ class _RavitailleemntStockState extends State<RavitailleemntStock> {
                 margin: const EdgeInsets.only(bottom: 20.0),
                 child: TextFormField(
                   keyboardType: TextInputType.number,
-                  // initialValue: '1',
+                  inputFormatters: <TextInputFormatter>[
+                    FilteringTextInputFormatter.digitsOnly
+                  ],
                   decoration: InputDecoration(
                     labelText: 'TVA en %',
                     // hintText: 'Mettez "1" si vide',
@@ -439,18 +453,6 @@ class _RavitailleemntStockState extends State<RavitailleemntStock> {
         margeBen: margeBenMap.toString(),
         tva: widget.stocksGlobalMOdel.tva,
         qtyRavitailler: widget.stocksGlobalMOdel.qtyRavitailler,
-        approbationDG: '-',
-        signatureDG: '-',
-        signatureJustificationDG: '-',
-        approbationFin: '-',
-        signatureFin: '-',
-        signatureJustificationFin: '-',
-        approbationBudget: '-',
-        signatureBudget: '-',
-        signatureJustificationBudget: '-',
-        approbationDD: '-',
-        signatureDD: '-',
-        signatureJustificationDD: '-',
         succursale: user!.succursale,
         signature: user!.matricule.toString(),
         created: widget.stocksGlobalMOdel.created);
@@ -458,33 +460,21 @@ class _RavitailleemntStockState extends State<RavitailleemntStock> {
 
     // Update Achat stock global
     final stocksGlobalMOdel = StocksGlobalMOdel(
-      idProduct: widget.stocksGlobalMOdel.idProduct,
-      quantity: qtyDisponible.toString(),
-      quantityAchat: qtyDisponible.toString(),
-      priceAchatUnit: controllerpriceAchatUnit.text,
-      prixVenteUnit: pavTVA.toString(),
-      unite: widget.stocksGlobalMOdel.unite,
-      modeAchat: modeAchat,
-      tva: widget.stocksGlobalMOdel.tva,
-      qtyRavitailler: widget.stocksGlobalMOdel.qtyRavitailler,
-      approbationDG: '-',
-      signatureDG: '-',
-      signatureJustificationDG: '-',
-      approbationFin: '-',
-      signatureFin: '-',
-      signatureJustificationFin: '-',
-      approbationBudget: '-',
-      signatureBudget: '-',
-      signatureJustificationBudget: '-',
-      approbationDD: '-',
-      signatureDD: '-',
-      signatureJustificationDD: '-',
-      signature: user!.matricule.toString(),
-      created: DateTime.now()
-    );
-    await StockGlobalApi().updateData(widget.stocksGlobalMOdel.id!, stocksGlobalMOdel);
+        idProduct: widget.stocksGlobalMOdel.idProduct,
+        quantity: qtyDisponible.toString(),
+        quantityAchat: qtyDisponible.toString(),
+        priceAchatUnit: controllerpriceAchatUnit.text,
+        prixVenteUnit: pavTVA.toString(),
+        unite: widget.stocksGlobalMOdel.unite,
+        modeAchat: modeAchat,
+        tva: widget.stocksGlobalMOdel.tva,
+        qtyRavitailler: widget.stocksGlobalMOdel.qtyRavitailler,
+        signature: user!.matricule.toString(),
+        created: DateTime.now());
+    await StockGlobalApi()
+        .updateData(widget.stocksGlobalMOdel.id!, stocksGlobalMOdel);
 
-    Routemaster.of(context).pop();
+    Navigator.of(context).pop();
     if (!mounted) return;
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
       content: Text("${stocksGlobalMOdel.idProduct} mis à jour!"),

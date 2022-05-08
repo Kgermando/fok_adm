@@ -110,7 +110,7 @@ class _DetailFinExterieurState extends State<DetailFinExterieur> {
                                       width: p20,
                                       child: IconButton(
                                           onPressed: () =>
-                                              Routemaster.of(context).pop(),
+                                              Navigator.of(context).pop(),
                                           icon: const Icon(Icons.arrow_back)),
                                     ),
                                     const SizedBox(width: p10),
@@ -935,7 +935,7 @@ class _DetailFinExterieurState extends State<DetailFinExterieur> {
         created: data.created);
 
     await FinExterieurApi().updateData(data.id!, financeExterieurModel);
-    Routemaster.of(context).pop();
+    Navigator.of(context).pop();
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
       content: const Text("Soumis avec succès!"),
       backgroundColor: Colors.green[700],
@@ -969,7 +969,7 @@ class _DetailFinExterieurState extends State<DetailFinExterieur> {
         signature: data.signature,
         created: data.created);
     await FinExterieurApi().updateData(data.id!, financeExterieurModel);
-    Routemaster.of(context).pop();
+    Navigator.of(context).pop();
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
       content: const Text("Soumis avec succès!"),
       backgroundColor: Colors.green[700],
@@ -1004,7 +1004,7 @@ class _DetailFinExterieurState extends State<DetailFinExterieur> {
         created: data.created);
 
     await FinExterieurApi().updateData(data.id!, financeExterieurModel);
-    Routemaster.of(context).pop();
+    Navigator.of(context).pop();
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
       content: const Text("Soumis avec succès!"),
       backgroundColor: Colors.green[700],
@@ -1039,7 +1039,7 @@ class _DetailFinExterieurState extends State<DetailFinExterieur> {
         created: data.created);
 
     await FinExterieurApi().updateData(data.id!, financeExterieurModel);
-    Routemaster.of(context).pop();
+    Navigator.of(context).pop();
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
       content: const Text("Soumis avec succès!"),
       backgroundColor: Colors.green[700],

@@ -41,7 +41,7 @@ class _FinancesNavState extends State<FinancesNav> {
             style: bodyText1!,
             onTap: () {
               Routemaster.of(context).replace(FinanceRoutes.financeDashboard);
-              // Routemaster.of(context).pop();
+              // Navigator.of(context).pop();
             }),
         DrawerWidget(
             selected: widget.pageCurrente == FinanceRoutes.financeDashboard,
@@ -51,7 +51,7 @@ class _FinancesNavState extends State<FinancesNav> {
             style: bodyText1,
             onTap: () {
               Routemaster.of(context).replace(FinanceRoutes.financeDashboard);
-              // Routemaster.of(context).pop();
+              // Navigator.of(context).pop();
             }),
         ExpansionTile(
           leading: const Icon(Icons.compare_arrows, size: 20.0),
@@ -73,7 +73,7 @@ class _FinancesNavState extends State<FinancesNav> {
                 onTap: () {
                   Routemaster.of(context)
                       .replace(FinanceRoutes.transactionsBanque);
-                  // Routemaster.of(context).pop();
+                  // Navigator.of(context).pop();
                 }),
             DrawerWidget(
                 selected:
@@ -85,7 +85,7 @@ class _FinancesNavState extends State<FinancesNav> {
                 onTap: () {
                   Routemaster.of(context)
                       .replace(FinanceRoutes.transactionsCaisse);
-                  // Routemaster.of(context).pop();
+                  // Navigator.of(context).pop();
                 }),
             DrawerWidget(
                 selected:
@@ -97,7 +97,7 @@ class _FinancesNavState extends State<FinancesNav> {
                 onTap: () {
                   Routemaster.of(context)
                       .replace(FinanceRoutes.transactionsCreances);
-                  // Routemaster.of(context).pop();
+                  // Navigator.of(context).pop();
                 }),
             DrawerWidget(
                 selected:
@@ -109,7 +109,7 @@ class _FinancesNavState extends State<FinancesNav> {
                 onTap: () {
                   Routemaster.of(context)
                       .replace(FinanceRoutes.transactionsDettes);
-                  // Routemaster.of(context).pop();
+                  // Navigator.of(context).pop();
                 }),
             DrawerWidget(
                 selected: widget.pageCurrente ==
@@ -121,7 +121,7 @@ class _FinancesNavState extends State<FinancesNav> {
                 onTap: () {
                   Routemaster.of(context)
                       .replace(FinanceRoutes.transactionsFinancementExterne);
-                  // Routemaster.of(context).pop();
+                  // Navigator.of(context).pop();
                 }),
             DrawerWidget(
                 selected:
@@ -133,7 +133,7 @@ class _FinancesNavState extends State<FinancesNav> {
                 onTap: () {
                   Routemaster.of(context)
                       .replace(FinanceRoutes.transactionsPaiement);
-                  // Routemaster.of(context).pop();
+                  // Navigator.of(context).pop();
                 }),
           ],
         ),
@@ -145,7 +145,7 @@ class _FinancesNavState extends State<FinancesNav> {
             style: bodyText1,
             onTap: () {
               Routemaster.of(context).replace(DevisRoutes.devis);
-              // Routemaster.of(context).pop();
+              // Navigator.of(context).pop();
             }),
         DrawerWidget(
             selected: widget.pageCurrente == RhRoutes.rhPerformence,
@@ -155,7 +155,7 @@ class _FinancesNavState extends State<FinancesNav> {
             style: bodyText1,
             onTap: () {
               Routemaster.of(context).replace(RhRoutes.rhPerformence);
-              // Routemaster.of(context).pop();
+              // Navigator.of(context).pop();
             }),
       ],
     );

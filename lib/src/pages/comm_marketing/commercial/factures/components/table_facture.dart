@@ -32,7 +32,18 @@ class _TableFactureState extends State<TableFacture> {
     super.initState();
   }
 
-  UserModel? user;
+  UserModel user = UserModel(
+      nom: '-',
+      prenom: '-',
+      matricule: '-',
+      departement: '-',
+      servicesAffectation: '-',
+      fonctionOccupe: '-',
+      role: '5',
+      isOnline: false,
+      createdAt: DateTime.now(),
+      passwordHash: '-',
+      succursale: '-');
   Future<void> getData() async {
     UserModel userModel = await AuthApi().getUserId();
     setState(() {
@@ -141,14 +152,13 @@ class _TableFactureState extends State<TableFacture> {
   }
 
   Future agentsRow() async {
-    List<FactureCartModel?> dataList = await FactureApi().getAllData();
+    List<FactureCartModel> dataList = await FactureApi().getAllData();
     var data =
-        dataList.where((element) => element!.succursale == user!.succursale);
+        dataList.where((element) => element.succursale == user.succursale);
 
     if (mounted) {
       setState(() {
         for (var item in data) {
-          id = item!.id;
           rows.add(PlutoRow(cells: {
             'id': PlutoCell(value: item.id),
             'client': PlutoCell(value: item.client),

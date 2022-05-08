@@ -96,7 +96,7 @@ class _DetailPerformenceState extends State<DetailPerformence> {
                                       width: p20,
                                       child: IconButton(
                                           onPressed: () =>
-                                              Routemaster.of(context).pop(),
+                                              Navigator.of(context).pop(),
                                           icon: const Icon(Icons.arrow_back)),
                                     ),
                                     const SizedBox(width: p10),
@@ -308,8 +308,7 @@ class _DetailPerformenceState extends State<DetailPerformence> {
                 AsyncSnapshot<List<PerformenceNoteModel>> snapshot) {
               if (snapshot.hasData) {
                 List<PerformenceNoteModel>? rapports = snapshot.data!
-                    .where((element) =>
-                        element.agent == data.agent)
+                    .where((element) => element.agent == data.agent)
                     .toList();
                 return rapports.isEmpty
                     ? Column(

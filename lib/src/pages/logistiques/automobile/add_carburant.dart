@@ -59,7 +59,6 @@ class _AddCarburantAutoState extends State<AddCarburantAuto> {
 
   @override
   void dispose() {
-
     fournisseurController.dispose();
     nomeroFactureAchatController.dispose();
     prixAchatParLitreController.dispose();
@@ -97,14 +96,15 @@ class _AddCarburantAutoState extends State<AddCarburantAuto> {
                             width: 20.0,
                             child: IconButton(
                                 onPressed: () {
-                                  Routemaster.of(context).pop();
+                                  Navigator.of(context).pop();
                                 },
                                 icon: const Icon(Icons.arrow_back)),
                           ),
                           const SizedBox(width: p10),
-                           Expanded(
+                          Expanded(
                               flex: 5,
-                              child: CustomAppbar(title: 'Ajout Carburant',
+                              child: CustomAppbar(
+                                  title: 'Ajout Carburant',
                                   controllerMenu: () =>
                                       _key.currentState!.openDrawer())),
                         ],

@@ -122,7 +122,8 @@ class _FinExterneTransactionsState extends State<FinExterneTransactions> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      CustomAppbar(title: 'Fin. Externe',
+                      CustomAppbar(
+                          title: 'Fin. Externe',
                           controllerMenu: () =>
                               _key.currentState!.openDrawer()),
                       const Expanded(child: TableFinExterieur())
@@ -567,7 +568,7 @@ class _FinExterneTransactionsState extends State<FinExterneTransactions> {
         created: DateTime.now());
 
     await FinExterieurApi().insertData(financeExterieurModel);
-    Routemaster.of(context).pop();
+    Navigator.of(context).pop();
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
       content: const Text("Enregistrer avec succès!"),
       backgroundColor: Colors.green[700],

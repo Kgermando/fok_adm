@@ -26,7 +26,18 @@ class _AchatsPageState extends State<AchatsPage> {
     super.initState();
   }
 
-  UserModel? user;
+  UserModel user = UserModel(
+      nom: '-',
+      prenom: '-',
+      matricule: '-',
+      departement: '-',
+      servicesAffectation: '-',
+      fonctionOccupe: '-',
+      role: '5',
+      isOnline: false,
+      createdAt: DateTime.now(),
+      passwordHash: '-',
+      succursale: '-');
   Future<void> getData() async {
     UserModel userModel = await AuthApi().getUserId();
     setState(() {
@@ -85,7 +96,7 @@ class _AchatsPageState extends State<AchatsPage> {
                                                 final data = dataList[index];
                                                 return ListStock(
                                                     achat: data,
-                                                    role: user!.role);
+                                                    role: user.role);
                                               }),
                                         );
                                 } else {

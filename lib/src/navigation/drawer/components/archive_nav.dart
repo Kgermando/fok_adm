@@ -5,7 +5,7 @@ import 'package:fokad_admin/src/routes/routes.dart';
 import 'package:routemaster/routemaster.dart';
 
 class ArchiveNav extends StatefulWidget {
-  const ArchiveNav({ Key? key, required this.pageCurrente }) : super(key: key);
+  const ArchiveNav({Key? key, required this.pageCurrente}) : super(key: key);
   final String pageCurrente;
 
   @override
@@ -41,7 +41,7 @@ class _ArchiveNavState extends State<ArchiveNav> {
               Routemaster.of(context).replace(
                 BudgetRoutes.budgetDashboard,
               );
-              // Routemaster.of(context).pop();
+              // Navigator.of(context).pop();
             }),
       ],
     );

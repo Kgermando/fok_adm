@@ -112,7 +112,7 @@ class _DetailMobilierState extends State<DetailMobilier> {
                                       width: p20,
                                       child: IconButton(
                                           onPressed: () =>
-                                              Routemaster.of(context).pop(),
+                                              Navigator.of(context).pop(),
                                           icon: const Icon(Icons.arrow_back)),
                                     ),
                                     const SizedBox(width: p10),
@@ -832,7 +832,7 @@ class _DetailMobilierState extends State<DetailMobilier> {
         created: data.created);
 
     await MobilierApi().updateData(data.id!, mobilierModel);
-    Routemaster.of(context).pop();
+    Navigator.of(context).pop();
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
       content: const Text("Soumis avec succès!"),
       backgroundColor: Colors.green[700],
@@ -863,7 +863,7 @@ class _DetailMobilierState extends State<DetailMobilier> {
         created: data.created);
 
     await MobilierApi().updateData(data.id!, mobilierModel);
-    Routemaster.of(context).pop();
+    Navigator.of(context).pop();
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
       content: const Text("Soumis avec succès!"),
       backgroundColor: Colors.green[700],
@@ -893,7 +893,7 @@ class _DetailMobilierState extends State<DetailMobilier> {
         signature: data.signature,
         created: data.created);
     await MobilierApi().updateData(data.id!, mobilierModel);
-    Routemaster.of(context).pop();
+    Navigator.of(context).pop();
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
       content: const Text("Soumis avec succès!"),
       backgroundColor: Colors.green[700],
@@ -923,7 +923,7 @@ class _DetailMobilierState extends State<DetailMobilier> {
         signature: data.signature.toString(),
         created: data.created);
     await MobilierApi().updateData(data.id!, mobilierModel);
-    Routemaster.of(context).pop();
+    Navigator.of(context).pop();
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
       content: const Text("Soumis avec succès!"),
       backgroundColor: Colors.green[700],

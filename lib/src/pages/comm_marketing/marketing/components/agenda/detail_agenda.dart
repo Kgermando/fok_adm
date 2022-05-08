@@ -11,7 +11,8 @@ import 'package:intl/intl.dart';
 import 'package:routemaster/routemaster.dart';
 
 class DetailAgenda extends StatefulWidget {
-  const DetailAgenda({ Key? key, required this.agendaModel, required this.color }) : super(key: key);
+  const DetailAgenda({Key? key, required this.agendaModel, required this.color})
+      : super(key: key);
   final AgendaModel agendaModel;
   final Color color;
 
@@ -49,8 +50,7 @@ class _DetailAgendaState extends State<DetailAgenda> {
                             SizedBox(
                               width: p20,
                               child: IconButton(
-                                  onPressed: () =>
-                                      Routemaster.of(context).pop(),
+                                  onPressed: () => Navigator.of(context).pop(),
                                   icon: const Icon(Icons.arrow_back)),
                             ),
                             const SizedBox(width: p10),
@@ -75,7 +75,7 @@ class _DetailAgendaState extends State<DetailAgenda> {
         ));
   }
 
-   Widget pageDetail() {
+  Widget pageDetail() {
     return Row(mainAxisAlignment: MainAxisAlignment.center, children: [
       Card(
         color: widget.color.withOpacity(.8),
@@ -108,7 +108,8 @@ class _DetailAgendaState extends State<DetailAgenda> {
                         ],
                       ),
                       SelectableText(
-                          DateFormat("dd-MM-yyyy HH:mm").format(widget.agendaModel.created),
+                          DateFormat("dd-MM-yyyy HH:mm")
+                              .format(widget.agendaModel.created),
                           textAlign: TextAlign.start),
                     ],
                   )
@@ -137,8 +138,7 @@ class _DetailAgendaState extends State<DetailAgenda> {
               const Icon(Icons.date_range),
               const SizedBox(height: p20),
               SelectableText(
-                "Rappel le ${DateFormat("dd-MM-yyyy à HH:mm")
-                    .format(widget.agendaModel.dateRappel)}",
+                "Rappel le ${DateFormat("dd-MM-yyyy à HH:mm").format(widget.agendaModel.dateRappel)}",
                 style: bodyMedium,
               ),
             ],
@@ -159,8 +159,7 @@ class _DetailAgendaState extends State<DetailAgenda> {
       onPressed: () async {
         if (isLoading) return;
         Navigator.of(context).push(MaterialPageRoute(
-          builder: (context) =>
-              UpdateAgenda(agendaModel: widget.agendaModel),
+          builder: (context) => UpdateAgenda(agendaModel: widget.agendaModel),
         ));
       });
 
@@ -182,7 +181,7 @@ class _DetailAgendaState extends State<DetailAgenda> {
             TextButton(
               onPressed: () async {
                 await AgendaApi().deleteData(widget.agendaModel.id!);
-                Routemaster.of(context).pop();
+                Navigator.of(context).pop();
                 ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                   content: Text(
                       "${widget.agendaModel.title} vient d'être supprimé!"),
@@ -196,5 +195,4 @@ class _DetailAgendaState extends State<DetailAgenda> {
       ),
     );
   }
-
 }

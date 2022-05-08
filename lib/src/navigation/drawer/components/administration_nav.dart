@@ -49,11 +49,13 @@ class _AdministrationNavState extends State<AdministrationNav> {
     List<DetteModel?> dataDetteList = await DetteApi().getAllData();
 
     setState(() {
-       agentInactifs =
+      agentInactifs =
           agents.where((element) => element.statutAgent == false).length;
-          
-      countPaie =
-          paiement.where((element) => element.approbationDG == '-' && element.approbationFin != '-').length;
+
+      countPaie = paiement
+          .where((element) =>
+              element.approbationDG == '-' && element.approbationFin != '-')
+          .length;
       nbrCreance = dataCreanceList
           .where((element) => element!.approbationDG == userLoggIn.matricule)
           .length;
@@ -72,7 +74,7 @@ class _AdministrationNavState extends State<AdministrationNav> {
         Icons.admin_panel_settings,
         size: 30.0,
       ),
-      title: AutoSizeText('Administration', maxLines: 1,  style: bodyLarge),
+      title: AutoSizeText('Administration', maxLines: 1, style: bodyLarge),
       initiallyExpanded: false,
       onExpansionChanged: (val) {
         setState(() {
@@ -89,7 +91,7 @@ class _AdministrationNavState extends State<AdministrationNav> {
             style: bodyText1!,
             onTap: () {
               Routemaster.of(context).replace(AdminRoutes.adminDashboard);
-              // Routemaster.of(context).pop();
+              // Navigator.of(context).pop();
             }),
         DrawerWidget(
             selected: widget.pageCurrente == AdminRoutes.adminBudget,
@@ -99,7 +101,7 @@ class _AdministrationNavState extends State<AdministrationNav> {
             style: bodyText1,
             onTap: () {
               Routemaster.of(context).replace(AdminRoutes.adminBudget);
-              // Routemaster.of(context).pop();
+              // Navigator.of(context).pop();
             }),
         DrawerWidget(
             selected: widget.pageCurrente == AdminRoutes.adminFinance,
@@ -109,7 +111,7 @@ class _AdministrationNavState extends State<AdministrationNav> {
             style: bodyText1,
             onTap: () {
               Routemaster.of(context).replace(AdminRoutes.adminFinance);
-              // Routemaster.of(context).pop();
+              // Navigator.of(context).pop();
             }),
         DrawerWidget(
             selected: widget.pageCurrente == AdminRoutes.adminComptabilite,
@@ -119,7 +121,7 @@ class _AdministrationNavState extends State<AdministrationNav> {
             style: bodyText1,
             onTap: () {
               Routemaster.of(context).replace(AdminRoutes.adminComptabilite);
-              // Routemaster.of(context).pop();
+              // Navigator.of(context).pop();
             }),
         DrawerWidget(
             selected: widget.pageCurrente == AdminRoutes.adminRH,
@@ -129,7 +131,7 @@ class _AdministrationNavState extends State<AdministrationNav> {
             style: bodyText1,
             onTap: () {
               Routemaster.of(context).replace(AdminRoutes.adminRH);
-              // Routemaster.of(context).pop();
+              // Navigator.of(context).pop();
             }),
         DrawerWidget(
             selected: widget.pageCurrente == AdminRoutes.adminExploitation,
@@ -139,7 +141,7 @@ class _AdministrationNavState extends State<AdministrationNav> {
             style: bodyText1,
             onTap: () {
               Routemaster.of(context).replace(AdminRoutes.adminExploitation);
-              // Routemaster.of(context).pop();
+              // Navigator.of(context).pop();
             }),
         DrawerWidget(
             selected: widget.pageCurrente == AdminRoutes.adminCommMarketing,
@@ -149,7 +151,7 @@ class _AdministrationNavState extends State<AdministrationNav> {
             style: bodyText1,
             onTap: () {
               Routemaster.of(context).replace(AdminRoutes.adminCommMarketing);
-              // Routemaster.of(context).pop();
+              // Navigator.of(context).pop();
             }),
         DrawerWidget(
             selected: widget.pageCurrente == AdminRoutes.adminLogistique,
@@ -159,7 +161,7 @@ class _AdministrationNavState extends State<AdministrationNav> {
             style: bodyText1,
             onTap: () {
               Routemaster.of(context).replace(AdminRoutes.adminLogistique);
-              // Routemaster.of(context).pop();
+              // Navigator.of(context).pop();
             }),
         DrawerWidget(
             selected: widget.pageCurrente == DevisRoutes.devis,
@@ -169,7 +171,7 @@ class _AdministrationNavState extends State<AdministrationNav> {
             style: bodyText1,
             onTap: () {
               Routemaster.of(context).replace(DevisRoutes.devis);
-              // Routemaster.of(context).pop();
+              // Navigator.of(context).pop();
             }),
       ],
     );

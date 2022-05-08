@@ -20,6 +20,7 @@ import 'package:fokad_admin/src/models/users/user_model.dart';
 import 'package:fokad_admin/src/navigation/drawer/drawer_menu.dart';
 import 'package:fokad_admin/src/navigation/header/custom_appbar.dart';
 import 'package:fokad_admin/src/pages/comm_marketing/commercial/cart/components/cart_item_widget.dart';
+import 'package:fokad_admin/src/routes/routes.dart';
 import 'package:fokad_admin/src/utils/loading.dart';
 import 'package:intl/intl.dart';
 import 'package:routemaster/routemaster.dart';
@@ -48,7 +49,18 @@ class _CartPageState extends State<CartPage> {
     super.initState();
   }
 
-  UserModel? user;
+    UserModel user = UserModel(
+      nom: '-',
+      prenom: '-',
+      matricule: '-',
+      departement: '-',
+      servicesAffectation: '-',
+      fonctionOccupe: '-',
+      role: '5',
+      isOnline: false,
+      createdAt: DateTime.now(),
+      passwordHash: '-',
+      succursale: '-');
   Future<void> getData() async {
     UserModel userModel = await AuthApi().getUserId();
     List<CartModel>? dataList = await CartApi().getAllData();
@@ -75,7 +87,6 @@ class _CartPageState extends State<CartPage> {
                 icon: const Icon(Icons.do_not_disturb_alt_rounded),
                 color: themeColor,
               ),
-        bottomNavigationBar: isloading ? loading() : totalCart(),
         body: SafeArea(
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -103,7 +114,7 @@ class _CartPageState extends State<CartPage> {
                                       width: p20,
                                       child: IconButton(
                                           onPressed: () =>
-                                              Routemaster.of(context).pop(),
+                                              Navigator.of(context).pop(),
                                           icon: const Icon(Icons.arrow_back)),
                                     ),
                                     const SizedBox(width: p10),
@@ -131,14 +142,22 @@ class _CartPageState extends State<CartPage> {
                                         : Scrollbar(
                                             controller: _controllerScroll,
                                             isAlwaysShown: true,
-                                            child: ListView.builder(
-                                                controller: _controllerScroll,
-                                                itemCount: data.length,
-                                                itemBuilder: (context, index) {
-                                                  final cart = data[index];
-                                                  return CartItemWidget(
-                                                      cart: cart);
-                                                }),
+                                            child: Column(
+                                              children: [
+                                                Expanded(
+                                                  child: ListView.builder(
+                                                      controller: _controllerScroll,
+                                                      itemCount: data.length,
+                                                      itemBuilder: (context, index) {
+                                                        final cart = data[index];
+                                                        return CartItemWidget(cart: cart);
+                                                      }),
+                                                ),
+                                                isloading
+                                                    ? loading()
+                                                    : totalCart(),
+                                              ],
+                                            ),
                                           ))
                               ],
                             );
@@ -190,18 +209,24 @@ class _CartPageState extends State<CartPage> {
       speedDialChildren: <SpeedDialChild>[
         SpeedDialChild(
             child: const Icon(Icons.inventory_rounded),
+            foregroundColor: Colors.white,
+            backgroundColor: Colors.teal.shade700,
             label: 'Facture',
             onPressed: factureData),
         SpeedDialChild(
             child: const Icon(Icons.print),
+            foregroundColor: Colors.white,
+            backgroundColor: Colors.teal.shade700,
             label: 'Impression facture',
             onPressed: () {
               if (isloading) return;
-              _createFacturePDF();
               factureData();
+              _createFacturePDF();
             }),
         SpeedDialChild(
             child: const Icon(Icons.money_off),
+            foregroundColor: Colors.white,
+            backgroundColor: Colors.orange.shade700,
             label: 'Vente à crédit',
             onPressed: () {
               if (isloading) return;
@@ -209,6 +234,8 @@ class _CartPageState extends State<CartPage> {
             }),
         SpeedDialChild(
             child: const Icon(Icons.print),
+            foregroundColor: Colors.white,
+            backgroundColor: Colors.orange.shade700,
             label: 'Impression facture à crédit',
             onPressed: () {
               if (isloading) return;
@@ -224,26 +251,14 @@ class _CartPageState extends State<CartPage> {
     final factureCartModel = FactureCartModel(
         cart: jsonList,
         client: '$numberFacture',
-        approbationDG: '-',
-        signatureDG: '-',
-        signatureJustificationDG: '-',
-        approbationFin: '-',
-        signatureFin: '-',
-        signatureJustificationFin: '-',
-        approbationBudget: '-',
-        signatureBudget: '-',
-        signatureJustificationBudget: '-',
-        approbationDD: '-',
-        signatureDD: '-',
-        signatureJustificationDD: '-',
-        succursale: user!.succursale.toString(),
-        signature: user!.matricule.toString(),
+        succursale: user.succursale.toString(),
+        signature: user.matricule.toString(),
         created: DateTime.now());
     await FactureApi().insertData(factureCartModel);
 
     // Genere le numero de la facture
-    numberFactureField(numberFacture.toString(), user!.succursale.toString(),
-        user!.matricule.toString());
+    numberFactureField(numberFacture.toString(), user.succursale.toString(),
+        user.matricule.toString());
     // Ajout des items dans historique
     venteHisotory();
     // Add Gain par produit
@@ -251,7 +266,7 @@ class _CartPageState extends State<CartPage> {
     // Suppressions total de la table cart
     cleanCart();
 
-    Routemaster.of(context).pop();
+    Routemaster.of(context).replace(ComMarketingRoutes.comMarketingVente);
     if (!mounted) return;
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
       content: Text("Facture $numberFacture ajouté."),
@@ -265,20 +280,8 @@ class _CartPageState extends State<CartPage> {
     final factureCartModel = FactureCartModel(
         cart: jsonList,
         client: '$numberFacture',
-        approbationDG: '-',
-        signatureDG: '-',
-        signatureJustificationDG: '-',
-        approbationFin: '-',
-        signatureFin: '-',
-        signatureJustificationFin: '-',
-        approbationBudget: '-',
-        signatureBudget: '-',
-        signatureJustificationBudget: '-',
-        approbationDD: '-',
-        signatureDD: '-',
-        signatureJustificationDD: '-',
-        succursale: user!.succursale.toString(),
-        signature: user!.matricule.toString(),
+        succursale: user.succursale.toString(),
+        signature: user.matricule.toString(),
         created: DateTime.now());
 
     List<FactureCartModel> factureList = [];
@@ -299,32 +302,20 @@ class _CartPageState extends State<CartPage> {
     final creanceCartModel = CreanceCartModel(
         cart: jsonList,
         client: '$numberFacture',
-        approbationDG: '-',
-        signatureDG: '-',
-        signatureJustificationDG: '-',
-        approbationFin: '-',
-        signatureFin: '-',
-        signatureJustificationFin: '-',
-        approbationBudget: '-',
-        signatureBudget: '-',
-        signatureJustificationBudget: '-',
-        approbationDD: '-',
-        signatureDD: '-',
-        signatureJustificationDD: '-',
-        succursale: user!.succursale.toString(),
-        signature: user!.matricule.toString(),
+        succursale: user.succursale.toString(),
+        signature: user.matricule.toString(),
         created: DateTime.now());
     await CreanceFactureApi().insertData(creanceCartModel);
     // Genere le numero de la facture
-    numberFactureField(numberFacture.toString(), user!.succursale.toString(),
-        user!.matricule.toString());
+    numberFactureField(numberFacture.toString(), user.succursale.toString(),
+        user.matricule.toString());
     // Ajout des items dans historique
     venteHisotory();
     // Add Gain par par produit
     gainVentes();
     // suppressions total de la table cart
     cleanCart();
-    Routemaster.of(context).pop();
+    Routemaster.of(context).replace(ComMarketingRoutes.comMarketingVente);
     if (!mounted) return;
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
       content: Text("Créance $numberFacture ajouté."),
@@ -338,20 +329,8 @@ class _CartPageState extends State<CartPage> {
     final creanceCartModel = CreanceCartModel(
         cart: jsonList,
         client: '$numberFacture',
-        approbationDG: '-',
-        signatureDG: '-',
-        signatureJustificationDG: '-',
-        approbationFin: '-',
-        signatureFin: '-',
-        signatureJustificationFin: '-',
-        approbationBudget: '-',
-        signatureBudget: '-',
-        signatureJustificationBudget: '-',
-        approbationDD: '-',
-        signatureDD: '-',
-        signatureJustificationDD: '-',
-        succursale: user!.succursale.toString(),
-        signature: user!.matricule.toString(),
+        succursale: user.succursale.toString(),
+        signature: user.matricule.toString(),
         created: DateTime.now());
 
     List<CreanceCartModel> creanceList = [];
@@ -371,24 +350,12 @@ class _CartPageState extends State<CartPage> {
   }
 
   cleanCart() async {
-    await CartApi().deleteAllData();
+    await CartApi().deleteAllData(user.succursale);
   }
 
   numberFactureField(String number, String succursale, String signature) async {
     final numberFactureModel = NumberFactureModel(
         number: number,
-        approbationDG: '-',
-        signatureDG: '-',
-        signatureJustificationDG: '-',
-        approbationFin: '-',
-        signatureFin: '-',
-        signatureJustificationFin: '-',
-        approbationBudget: '-',
-        signatureBudget: '-',
-        signatureJustificationBudget: '-',
-        approbationDD: '-',
-        signatureDD: '-',
-        signatureJustificationDD: '-',
         succursale: succursale,
         signature: signature,
         created: DateTime.now());
@@ -413,18 +380,6 @@ class _CartPageState extends State<CartPage> {
           tva: item.tva,
           remise: item.remise,
           qtyRemise: item.qtyRemise,
-          approbationDG: '-',
-          signatureDG: '-',
-          signatureJustificationDG: '-',
-          approbationFin: '-',
-          signatureFin: '-',
-          signatureJustificationFin: '-',
-          approbationBudget: '-',
-          signatureBudget: '-',
-          signatureJustificationBudget: '-',
-          approbationDD: '-',
-          signatureDD: '-',
-          signatureJustificationDD: '-',
           succursale: item.succursale,
           signature: item.signature,
           created: item.created);
@@ -445,22 +400,10 @@ class _CartPageState extends State<CartPage> {
                 double.parse(item.quantityCart);
       }
       final gainModel = GainModel(
-        sum: gainTotal,
-        approbationDG: '-',
-        signatureDG: '-',
-        signatureJustificationDG: '-',
-        approbationFin: '-',
-        signatureFin: '-',
-        signatureJustificationFin: '-',
-        approbationBudget: '-',
-        signatureBudget: '-',
-        signatureJustificationBudget: '-',
-        approbationDD: '-',
-        signatureDD: '-',
-        signatureJustificationDD: '-',
-        succursale: item.succursale,
-        signature: item.signature,
-        created: item.created);
+          sum: gainTotal,
+          succursale: item.succursale,
+          signature: item.signature,
+          created: item.created);
       await GainApi().insertData(gainModel);
     }
   }

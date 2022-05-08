@@ -183,7 +183,7 @@ class _UpdateAgentState extends State<UpdateAgent> {
                           SizedBox(
                             width: p20,
                             child: IconButton(
-                                onPressed: () => Routemaster.of(context).pop(),
+                                onPressed: () => Navigator.of(context).pop(),
                                 icon: const Icon(Icons.arrow_back)),
                           ),
                           const SizedBox(width: p10),

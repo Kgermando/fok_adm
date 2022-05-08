@@ -81,7 +81,7 @@ class _AddPerformenceNoteState extends State<AddPerformenceNote> {
                             width: 20.0,
                             child: IconButton(
                                 onPressed: () {
-                                  Routemaster.of(context).pop();
+                                  Navigator.of(context).pop();
                                 },
                                 icon: const Icon(Icons.arrow_back)),
                           ),
@@ -317,7 +317,7 @@ class _AddPerformenceNoteState extends State<AddPerformenceNote> {
         signature: user!.matricule.toString(),
         created: DateTime.now());
     await PerformenceNoteApi().insertData(performenceNoteModel);
-    Routemaster.of(context).pop();
+    Navigator.of(context).pop();
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
       content: const Text("Enregistrer avec succès!"),
       backgroundColor: Colors.green[700],

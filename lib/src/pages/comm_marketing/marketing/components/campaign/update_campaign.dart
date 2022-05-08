@@ -16,9 +16,9 @@ import 'package:fokad_admin/src/widgets/title_widget.dart';
 import 'package:intl/intl.dart';
 import 'package:routemaster/routemaster.dart';
 
-
 class UpdateCampaign extends StatefulWidget {
-  const UpdateCampaign({Key? key, required this.campaignModel}) : super(key: key);
+  const UpdateCampaign({Key? key, required this.campaignModel})
+      : super(key: key);
   final CampaignModel campaignModel;
 
   @override
@@ -54,11 +54,16 @@ class _UpdateCampaignState extends State<UpdateCampaign> {
   initState() {
     getData();
     setState(() {
-      typeProduitController = TextEditingController(text: widget.campaignModel.typeProduit);
-      coutCampaignController = TextEditingController(text: widget.campaignModel.coutCampaign);
-      lieuCibleController = TextEditingController(text: widget.campaignModel.lieuCible);
-      promotionController = TextEditingController(text: widget.campaignModel.promotion);
-      objetctifsController = TextEditingController(text: widget.campaignModel.objetctifs);
+      typeProduitController =
+          TextEditingController(text: widget.campaignModel.typeProduit);
+      coutCampaignController =
+          TextEditingController(text: widget.campaignModel.coutCampaign);
+      lieuCibleController =
+          TextEditingController(text: widget.campaignModel.lieuCible);
+      promotionController =
+          TextEditingController(text: widget.campaignModel.promotion);
+      objetctifsController =
+          TextEditingController(text: widget.campaignModel.objetctifs);
     });
     super.initState();
   }
@@ -114,7 +119,7 @@ class _UpdateCampaignState extends State<UpdateCampaign> {
                             width: 20.0,
                             child: IconButton(
                                 onPressed: () {
-                                  Routemaster.of(context).pop();
+                                  Navigator.of(context).pop();
                                 },
                                 icon: const Icon(Icons.arrow_back)),
                           ),
@@ -423,7 +428,7 @@ class _UpdateCampaignState extends State<UpdateCampaign> {
         created: DateTime.now());
 
     await CampaignApi().updateData(widget.campaignModel.id!, campaignModel);
-    Routemaster.of(context).pop();
+    Navigator.of(context).pop();
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
       content: const Text("soumis avec succès!"),
       backgroundColor: Colors.green[700],

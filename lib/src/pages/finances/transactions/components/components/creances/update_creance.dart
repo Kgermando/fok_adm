@@ -37,8 +37,10 @@ class _UpdateCreanceState extends State<UpdateCreance> {
         TextEditingController(text: widget.creanceModel.nomComplet);
     pieceJustificativeController =
         TextEditingController(text: widget.creanceModel.pieceJustificative);
-    libelleController = TextEditingController(text: widget.creanceModel.libelle);
-    montantController = TextEditingController(text: widget.creanceModel.montant);
+    libelleController =
+        TextEditingController(text: widget.creanceModel.libelle);
+    montantController =
+        TextEditingController(text: widget.creanceModel.montant);
     getData();
     super.initState();
   }
@@ -258,7 +260,7 @@ class _UpdateCreanceState extends State<UpdateCreance> {
         created: DateTime.now());
 
     await CreanceApi().insertData(creanceModel);
-    Routemaster.of(context).pop();
+    Navigator.of(context).pop();
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
       content: const Text("Enregistrer avec succès!"),
       backgroundColor: Colors.green[700],

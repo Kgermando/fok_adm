@@ -6,20 +6,18 @@ import 'package:fokad_admin/src/models/comm_maketing/achat_model.dart';
 import 'package:fokad_admin/src/navigation/drawer/drawer_menu.dart';
 import 'package:fokad_admin/src/navigation/header/custom_appbar.dart';
 import 'package:fokad_admin/src/pages/comm_marketing/commercial/ventes/components/vente_items_widget.dart';
-import 'package:routemaster/routemaster.dart';
 
 class VentesPage extends StatefulWidget {
-  const VentesPage({ Key? key }) : super(key: key);
+  const VentesPage({Key? key}) : super(key: key);
 
   @override
   State<VentesPage> createState() => _VentesPageState();
 }
 
 class _VentesPageState extends State<VentesPage> {
-   final GlobalKey<ScaffoldState> _key = GlobalKey();
+  final GlobalKey<ScaffoldState> _key = GlobalKey();
   final ScrollController _controllerScroll = ScrollController();
   bool isLoading = false;
-
 
   @override
   Widget build(BuildContext context) {
@@ -47,10 +45,11 @@ class _VentesPageState extends State<VentesPage> {
                             width: 20.0,
                             child: IconButton(
                                 onPressed: () {
-                                  Routemaster.of(context).pop();
+                                  Navigator.of(context).pop();
                                 },
                                 icon: const Icon(Icons.arrow_back)),
                           ),
+                          const SizedBox(width: p10),
                           Expanded(
                               flex: 5,
                               child: CustomAppbar(
@@ -76,17 +75,17 @@ class _VentesPageState extends State<VentesPage> {
                                           ),
                                         )
                                       : Scrollbar(
-                                        controller: _controllerScroll,
-                                        isAlwaysShown: true,
-                                        child: ListView.builder(
-                                            controller: _controllerScroll,
-                                            itemCount: achats.length,
-                                            itemBuilder: (context, index) {
-                                              final achat = achats[index];
-                                              return AchatItemWidget(
-                                                  achat: achat);
-                                            }),
-                                      );
+                                          controller: _controllerScroll,
+                                          isAlwaysShown: true,
+                                          child: ListView.builder(
+                                              controller: _controllerScroll,
+                                              itemCount: achats.length,
+                                              itemBuilder: (context, index) {
+                                                final achat = achats[index];
+                                                return AchatItemWidget(
+                                                    achat: achat);
+                                              }),
+                                        );
                                 } else {
                                   return const Center(
                                       child: CircularProgressIndicator());
@@ -100,9 +99,4 @@ class _VentesPageState extends State<VentesPage> {
           ),
         ));
   }
-
-
-
-
-  
 }

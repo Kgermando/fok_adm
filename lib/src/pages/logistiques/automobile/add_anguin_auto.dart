@@ -58,7 +58,7 @@ class _AddAnguinAutoState extends State<AddAnguinAuto> {
     setState(() {
       signature = userModel.matricule;
     });
-  } 
+  }
 
   @override
   void dispose() {
@@ -106,14 +106,15 @@ class _AddAnguinAutoState extends State<AddAnguinAuto> {
                             width: 20.0,
                             child: IconButton(
                                 onPressed: () {
-                                  Routemaster.of(context).pop();
+                                  Navigator.of(context).pop();
                                 },
                                 icon: const Icon(Icons.arrow_back)),
                           ),
                           const SizedBox(width: p10),
                           Expanded(
                               flex: 5,
-                              child: CustomAppbar(title: 'Ajout anguin',
+                              child: CustomAppbar(
+                                  title: 'Ajout anguin',
                                   controllerMenu: () =>
                                       _key.currentState!.openDrawer())),
                         ],
@@ -153,7 +154,8 @@ class _AddAnguinAutoState extends State<AddAnguinAuto> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         const TitleWidget(title: "Ajout un anguin"),
-                        PrintWidget(onPressed: () {})],
+                        PrintWidget(onPressed: () {})
+                      ],
                     ),
                     const SizedBox(
                       height: p20,

@@ -10,4 +10,4 @@ Widget loading() => Row(
 );
 
 
-Widget loadingMini() => const CircularProgressIndicator(color: Colors.white, strokeWidth: 2.0,);
+Widget loadingMini() => const CircularProgressIndicator(strokeWidth: 2.0,);

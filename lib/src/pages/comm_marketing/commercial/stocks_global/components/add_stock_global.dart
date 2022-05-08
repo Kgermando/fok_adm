@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_switch/flutter_switch.dart';
 import 'package:fokad_admin/src/api/auth/auth_api.dart';
 import 'package:fokad_admin/src/api/comm_marketing/commerciale/produit_model_api.dart';
@@ -90,10 +91,11 @@ class _AddStockGlobalState extends State<AddStockGlobal> {
                             width: 20.0,
                             child: IconButton(
                                 onPressed: () {
-                                  Routemaster.of(context).pop();
+                                  Navigator.of(context).pop();
                                 },
                                 icon: const Icon(Icons.arrow_back)),
                           ),
+                          const SizedBox(width: p10),
                           Expanded(
                               flex: 5,
                               child: CustomAppbar(
@@ -289,6 +291,9 @@ class _AddStockGlobalState extends State<AddStockGlobal> {
         margin: const EdgeInsets.only(bottom: 20.0),
         child: TextFormField(
           keyboardType: TextInputType.number,
+          inputFormatters: <TextInputFormatter>[
+            FilteringTextInputFormatter.digitsOnly
+          ],
           decoration: InputDecoration(
             labelText: 'Quantités entrant',
             labelStyle: const TextStyle(),
@@ -316,6 +321,9 @@ class _AddStockGlobalState extends State<AddStockGlobal> {
       margin: const EdgeInsets.only(bottom: 20.0),
       child: TextFormField(
         keyboardType: TextInputType.number,
+        inputFormatters: <TextInputFormatter>[
+          FilteringTextInputFormatter.digitsOnly
+        ],
         decoration: InputDecoration(
           labelText: 'Prix d\'achat unitaire',
           labelStyle: const TextStyle(),
@@ -344,6 +352,9 @@ class _AddStockGlobalState extends State<AddStockGlobal> {
       margin: const EdgeInsets.only(bottom: 20.0),
       child: TextFormField(
         keyboardType: TextInputType.number,
+        inputFormatters: <TextInputFormatter>[
+          FilteringTextInputFormatter.digitsOnly
+        ],
         decoration: InputDecoration(
           labelText: 'Prix de vente unitaire',
           labelStyle: const TextStyle(),
@@ -378,6 +389,9 @@ class _AddStockGlobalState extends State<AddStockGlobal> {
                   margin: const EdgeInsets.only(bottom: 20.0),
                   child: TextFormField(
                     keyboardType: TextInputType.number,
+                    inputFormatters: <TextInputFormatter>[
+                      FilteringTextInputFormatter.digitsOnly
+                    ],
                     decoration: InputDecoration(
                       labelText: 'TVA en %',
                       // hintText: 'Mettez "1" si vide',
@@ -414,6 +428,9 @@ class _AddStockGlobalState extends State<AddStockGlobal> {
                 margin: const EdgeInsets.only(bottom: 20.0),
                 child: TextFormField(
                   keyboardType: TextInputType.number,
+                  inputFormatters: <TextInputFormatter>[
+                    FilteringTextInputFormatter.digitsOnly
+                  ],
                   decoration: InputDecoration(
                     labelText: 'TVA en %',
                     labelStyle: const TextStyle(),
@@ -463,22 +480,10 @@ class _AddStockGlobalState extends State<AddStockGlobal> {
         modeAchat: modeAchat,
         tva: tva.toString(),
         qtyRavitailler: quantityAchat.toString(),
-        approbationDG: '-',
-        signatureDG: '-',
-        signatureJustificationDG: '-',
-        approbationFin: '-',
-        signatureFin: '-',
-        signatureJustificationFin: '-',
-        approbationBudget: '-',
-        signatureBudget: '-',
-        signatureJustificationBudget: '-',
-        approbationDD: '-',
-        signatureDD: '-',
-        signatureJustificationDD: '-',
         signature: signature.toString(),
         created: DateTime.now());
     await StockGlobalApi().insertData(stocksGlobalMOdel);
-    Routemaster.of(context).pop();
+    Navigator.of(context).pop();
     if (!mounted) return;
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
       content: Text("${stocksGlobalMOdel.idProduct} ajouté!"),

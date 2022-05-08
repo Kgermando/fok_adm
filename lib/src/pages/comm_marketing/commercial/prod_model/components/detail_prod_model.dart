@@ -13,7 +13,6 @@ import 'package:fokad_admin/src/pages/comm_marketing/commercial/prod_model/compo
 import 'package:fokad_admin/src/widgets/print_widget.dart';
 import 'package:fokad_admin/src/widgets/title_widget.dart';
 import 'package:intl/intl.dart';
-import 'package:routemaster/routemaster.dart';
 
 class DetailProdModel extends StatefulWidget {
   const DetailProdModel({Key? key, required this.id}) : super(key: key);
@@ -111,7 +110,7 @@ class _DetailProdModelState extends State<DetailProdModel> {
                                       width: p20,
                                       child: IconButton(
                                           onPressed: () =>
-                                              Routemaster.of(context).pop(),
+                                              Navigator.of(context).pop(),
                                           icon: const Icon(Icons.arrow_back)),
                                     ),
                                     const SizedBox(width: p10),
@@ -428,6 +427,9 @@ class _DetailProdModelState extends State<DetailProdModel> {
                                       onChanged: (value) {
                                         setState(() {
                                           approbationDGController = value!;
+                                          if (approbationDGController == "Approved") {
+                                            submitUpdateDG(data);
+                                          }
                                         });
                                       },
                                     ),
@@ -496,262 +498,8 @@ class _DetailProdModelState extends State<DetailProdModel> {
                   ),
                 ],
               ),
-            if (user!.departement != "Commercial et Marketing")
-              Divider(
-                color: Colors.amber.shade700,
-              ),
-            if (user!.departement != "Commercial et Marketing")
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Expanded(
-                      flex: 1,
-                      child: Text('Directeur de Finance',
-                          style: bodyMedium!.copyWith(
-                              fontWeight: FontWeight.bold,
-                              color: Colors.green.shade700))),
-                  Expanded(
-                    flex: 3,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Expanded(
-                            flex: 3,
-                            child: Column(
-                              children: [
-                                Text(
-                                  'Approbation',
-                                  style: bodySmall!
-                                      .copyWith(color: Colors.green.shade700),
-                                ),
-                                if (data.approbationFin != '-')
-                                  SelectableText(
-                                    data.approbationFin.toString(),
-                                    style: bodyMedium.copyWith(
-                                        color: Colors.green.shade700),
-                                  ),
-                                if (data.approbationFin == '-' &&
-                                    user!.fonctionOccupe ==
-                                        'Directeur des finances')
-                                  Container(
-                                    margin: const EdgeInsets.only(
-                                        bottom: p10, left: p5),
-                                    child: DropdownButtonFormField<String>(
-                                      decoration: InputDecoration(
-                                        labelText: 'Approbation',
-                                        border: OutlineInputBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(5.0)),
-                                      ),
-                                      value: approbationFinController,
-                                      isExpanded: true,
-                                      items: dataList.map((String value) {
-                                        return DropdownMenuItem<String>(
-                                          value: value,
-                                          child: Text(value),
-                                        );
-                                      }).toList(),
-                                      onChanged: (value) {
-                                        setState(() {
-                                          approbationFinController = value!;
-                                        });
-                                      },
-                                    ),
-                                  )
-                              ],
-                            )),
-                        Expanded(
-                            flex: 2,
-                            child: Column(
-                              children: [
-                                Text(
-                                  'Signature',
-                                  style: bodySmall.copyWith(
-                                      color: Colors.green.shade700),
-                                ),
-                                SelectableText(
-                                  data.signatureFin.toString(),
-                                  style: bodyMedium,
-                                ),
-                              ],
-                            )),
-                        Expanded(
-                            flex: 2,
-                            child: Column(
-                              children: [
-                                Text(
-                                  'Justification',
-                                  style: bodySmall.copyWith(
-                                      color: Colors.green.shade700),
-                                ),
-                                if (data.approbationFin == 'Unapproved' &&
-                                    data.signatureFin != '-')
-                                  SelectableText(
-                                    data.signatureJustificationFin.toString(),
-                                    style: bodyMedium,
-                                  ),
-                                if (data.approbationFin == 'Unapproved' &&
-                                    user!.fonctionOccupe ==
-                                        'Directeur des finances')
-                                  Container(
-                                      margin: const EdgeInsets.only(
-                                          bottom: p10, left: p5),
-                                      child: TextFormField(
-                                        controller:
-                                            signatureJustificationFinController,
-                                        decoration: InputDecoration(
-                                          border: OutlineInputBorder(
-                                              borderRadius:
-                                                  BorderRadius.circular(10.0)),
-                                          labelText: 'Motifs...',
-                                          hintText: 'Motifs...',
-                                        ),
-                                        keyboardType: TextInputType.text,
-                                        style: const TextStyle(),
-                                      )),
-                                if (data.approbationFin == 'Unapproved')
-                                  IconButton(
-                                      onPressed: () {
-                                        submitUpdateFIN(data);
-                                      },
-                                      icon: const Icon(Icons.send))
-                              ],
-                            ))
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-            if (user!.departement != "Commercial et Marketing")
-              Divider(
-                color: Colors.amber.shade700,
-              ),
-            if (user!.departement != "Commercial et Marketing")
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Expanded(
-                      flex: 1,
-                      child: Text('Budget',
-                          style: bodyMedium!.copyWith(
-                              fontWeight: FontWeight.bold,
-                              color: Colors.orange.shade700))),
-                  Expanded(
-                    flex: 3,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Expanded(
-                            flex: 3,
-                            child: Column(
-                              children: [
-                                Text(
-                                  'Approbation',
-                                  style: bodySmall!
-                                      .copyWith(color: Colors.orange.shade700),
-                                ),
-                                if (data.approbationBudget != '-')
-                                  SelectableText(
-                                    data.approbationBudget.toString(),
-                                    style: bodyMedium.copyWith(
-                                        color: Colors.orange.shade700),
-                                  ),
-                                if (data.approbationBudget == '-' &&
-                                    user!.fonctionOccupe ==
-                                        'Directeur de budget')
-                                  Container(
-                                    margin: const EdgeInsets.only(
-                                        bottom: p10, left: p5),
-                                    child: DropdownButtonFormField<String>(
-                                      decoration: InputDecoration(
-                                        labelText: 'Approbation',
-                                        border: OutlineInputBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(5.0)),
-                                      ),
-                                      value: approbationBudgetController,
-                                      isExpanded: true,
-                                      items: dataList.map((String value) {
-                                        return DropdownMenuItem<String>(
-                                          value: value,
-                                          child: Text(value),
-                                        );
-                                      }).toList(),
-                                      onChanged: (value) {
-                                        setState(() {
-                                          approbationBudgetController = value!;
-                                        });
-                                      },
-                                    ),
-                                  ),
-                              ],
-                            )),
-                        Expanded(
-                            flex: 2,
-                            child: Column(
-                              children: [
-                                Text(
-                                  'Signature',
-                                  style: bodySmall.copyWith(
-                                      color: Colors.orange.shade700),
-                                ),
-                                SelectableText(
-                                  data.signatureBudget.toString(),
-                                  style: bodyMedium,
-                                ),
-                              ],
-                            )),
-                        Expanded(
-                            flex: 2,
-                            child: Column(
-                              children: [
-                                Text(
-                                  'Justification',
-                                  style: bodySmall.copyWith(
-                                      color: Colors.orange.shade700),
-                                ),
-                                if (data.approbationBudget == 'Unapproved' &&
-                                    data.signatureBudget != '-')
-                                  SelectableText(
-                                    data.signatureJustificationBudget
-                                        .toString(),
-                                    style: bodyMedium,
-                                  ),
-                                if (data.approbationBudget == 'Unapproved' &&
-                                    user!.fonctionOccupe ==
-                                        'Directeur de budget')
-                                  Container(
-                                      margin: const EdgeInsets.only(
-                                          bottom: p10, left: p5),
-                                      child: TextFormField(
-                                        controller:
-                                            signatureJustificationBudgetController,
-                                        decoration: InputDecoration(
-                                          border: OutlineInputBorder(
-                                              borderRadius:
-                                                  BorderRadius.circular(10.0)),
-                                          labelText: 'Motifs...',
-                                          hintText: 'Motifs...',
-                                        ),
-                                        keyboardType: TextInputType.text,
-                                        style: const TextStyle(),
-                                      )),
-                                if (data.approbationBudget == 'Unapproved')
-                                  IconButton(
-                                      onPressed: () {
-                                        submitUpdateBudget(data);
-                                      },
-                                      icon: const Icon(Icons.send))
-                              ],
-                            ))
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-            Divider(
-              color: Colors.amber.shade700,
-            ),
+            
+            
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -894,87 +642,13 @@ class _DetailProdModelState extends State<DetailProdModel> {
             (signatureJustificationDGController.text == "")
                 ? '-'
                 : signatureJustificationDGController.text,
-        approbationFin: data.approbationFin.toString(),
-        signatureFin: data.signatureFin.toString(),
-        signatureJustificationFin: data.signatureJustificationFin.toString(),
-        approbationBudget: data.approbationBudget.toString(),
-        signatureBudget: data.signatureBudget.toString(),
-        signatureJustificationBudget:
-            data.signatureJustificationBudget.toString(),
         approbationDD: data.approbationDD.toString(),
         signatureDD: data.signatureDD.toString(),
         signatureJustificationDD: data.signatureJustificationDD.toString(),
         signature: data.signature,
         created: data.created);
     await ProduitModelApi().updateData(data.id!, productModel);
-    Routemaster.of(context).pop();
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-      content: const Text("Soumis avec succès!"),
-      backgroundColor: Colors.green[700],
-    ));
-  }
-
-  Future<void> submitUpdateFIN(ProductModel data) async {
-    final productModel = ProductModel(
-        categorie: data.categorie,
-        sousCategorie1: data.sousCategorie1,
-        sousCategorie2: data.sousCategorie2,
-        sousCategorie3: data.sousCategorie3,
-        sousCategorie4: data.sousCategorie4,
-        idProduct: data.idProduct,
-        approbationDG: data.approbationDG.toString(),
-        signatureDG: data.signatureDG.toString(),
-        signatureJustificationDG: data.signatureJustificationDG.toString(),
-        approbationFin: approbationFinController.toString(),
-        signatureFin: user!.matricule.toString(),
-        signatureJustificationFin:
-            (signatureJustificationFinController.text == "")
-                ? '-'
-                : signatureJustificationFinController.text,
-        approbationBudget: data.approbationBudget.toString(),
-        signatureBudget: data.signatureBudget.toString(),
-        signatureJustificationBudget:
-            data.signatureJustificationBudget.toString(),
-        approbationDD: data.approbationDD.toString(),
-        signatureDD: data.signatureDD.toString(),
-        signatureJustificationDD: data.signatureJustificationDD.toString(),
-        signature: data.signature,
-        created: data.created);
-    await ProduitModelApi().updateData(data.id!, productModel);
-    Routemaster.of(context).pop();
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-      content: const Text("Soumis avec succès!"),
-      backgroundColor: Colors.green[700],
-    ));
-  }
-
-  Future<void> submitUpdateBudget(ProductModel data) async {
-    final productModel = ProductModel(
-        categorie: data.categorie,
-        sousCategorie1: data.sousCategorie1,
-        sousCategorie2: data.sousCategorie2,
-        sousCategorie3: data.sousCategorie3,
-        sousCategorie4: data.sousCategorie4,
-        idProduct: data.idProduct,
-        approbationDG: data.approbationDG.toString(),
-        signatureDG: data.signatureDG.toString(),
-        signatureJustificationDG: data.signatureJustificationDG.toString(),
-        approbationFin: data.approbationFin.toString(),
-        signatureFin: data.signatureFin.toString(),
-        signatureJustificationFin: data.signatureJustificationFin.toString(),
-        approbationBudget: approbationBudgetController.toString(),
-        signatureBudget: user!.matricule.toString(),
-        signatureJustificationBudget:
-            (signatureJustificationBudgetController.text == "")
-                ? '-'
-                : signatureJustificationBudgetController.text,
-        approbationDD: data.approbationDD.toString(),
-        signatureDD: data.signatureDD.toString(),
-        signatureJustificationDD: data.signatureJustificationDD.toString(),
-        signature: data.signature,
-        created: data.created);
-    await ProduitModelApi().updateData(data.id!, productModel);
-    Routemaster.of(context).pop();
+    Navigator.of(context).pop();
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
       content: const Text("Soumis avec succès!"),
       backgroundColor: Colors.green[700],
@@ -992,13 +666,6 @@ class _DetailProdModelState extends State<DetailProdModel> {
         approbationDG: data.approbationDG.toString(),
         signatureDG: data.signatureDG.toString(),
         signatureJustificationDG: data.signatureJustificationDG.toString(),
-        approbationFin: data.approbationFin.toString(),
-        signatureFin: data.signatureFin.toString(),
-        signatureJustificationFin: data.signatureJustificationFin.toString(),
-        approbationBudget: data.approbationBudget.toString(),
-        signatureBudget: data.signatureBudget.toString(),
-        signatureJustificationBudget:
-            data.signatureJustificationBudget.toString(),
         approbationDD: approbationDDController.toString(),
         signatureDD: user!.matricule.toString(),
         signatureJustificationDD:
@@ -1009,7 +676,7 @@ class _DetailProdModelState extends State<DetailProdModel> {
         created: data.created);
 
     await ProduitModelApi().updateData(data.id!, productModel);
-    Routemaster.of(context).pop();
+    Navigator.of(context).pop();
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
       content: const Text("Soumis avec succès!"),
       backgroundColor: Colors.green[700],

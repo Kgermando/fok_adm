@@ -9,6 +9,8 @@ import 'package:fokad_admin/src/models/comm_maketing/vente_cart_model.dart';
 import 'package:fokad_admin/src/models/users/user_model.dart';
 import 'package:fokad_admin/src/navigation/drawer/drawer_menu.dart';
 import 'package:fokad_admin/src/navigation/header/custom_appbar.dart';
+import 'package:fokad_admin/src/pages/comm_marketing/commercial/achats/components/restitution_stock.dart';
+import 'package:fokad_admin/src/widgets/title_widget.dart';
 import 'package:intl/intl.dart';
 import 'package:routemaster/routemaster.dart';
 
@@ -35,7 +37,18 @@ class _DetailAchatState extends State<DetailAchat> {
   List<VenteCartModel> venteCartList = [];
 
   AchatModel? achatModel;
-  UserModel? user;
+  UserModel user = UserModel(
+      nom: '-',
+      prenom: '-',
+      matricule: '-',
+      departement: '-',
+      servicesAffectation: '-',
+      fonctionOccupe: '-',
+      role: '5',
+      isOnline: false,
+      createdAt: DateTime.now(),
+      passwordHash: '-',
+      succursale: '-');
   Future<void> getData() async {
     UserModel userModel = await AuthApi().getUserId();
     AchatModel data = await AchatApi().getOneData(widget.achat.id!);
@@ -79,7 +92,7 @@ class _DetailAchatState extends State<DetailAchat> {
                                       width: p20,
                                       child: IconButton(
                                           onPressed: () =>
-                                              Routemaster.of(context).pop(),
+                                              Navigator.of(context).pop(),
                                           icon: const Icon(Icons.arrow_back)),
                                     ),
                                     const SizedBox(width: p10),
@@ -110,7 +123,7 @@ class _DetailAchatState extends State<DetailAchat> {
   }
 
   Widget pageDetail(AchatModel data) {
-    var roleAgent = int.parse(user!.role) <= 3;
+    var roleAgent = int.parse(user.role) <= 3;
     return Row(mainAxisAlignment: MainAxisAlignment.center, children: [
       Card(
         elevation: 10,
@@ -130,8 +143,11 @@ class _DetailAchatState extends State<DetailAchat> {
             controller: _controllerScroll,
             children: [
               Row(
-                mainAxisAlignment: MainAxisAlignment.end,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
+                  TitleWidget(
+                      title:
+                          'Succursale: ${widget.achat.succursale.toUpperCase()}'),
                   Column(
                     children: [
                       Row(
@@ -143,7 +159,7 @@ class _DetailAchatState extends State<DetailAchat> {
                         ],
                       ),
                       SelectableText(
-                          DateFormat("dd-MM-yy").format(data.created),
+                          DateFormat("dd-MM-yyyy HH:mm").format(data.created),
                           textAlign: TextAlign.start),
                     ],
                   )
@@ -163,7 +179,6 @@ class _DetailAchatState extends State<DetailAchat> {
       padding: const EdgeInsets.all(p10),
       child: Column(
         children: [
-          header(),
           headerTitle(),
           const SizedBox(
             height: 20,
@@ -183,44 +198,9 @@ class _DetailAchatState extends State<DetailAchat> {
           const SizedBox(
             height: 30,
           ),
-          achatHistorityTitle(),
-          const SizedBox(
-            height: 50,
-          ),
         ],
       ),
     );
-  }
-
-  Widget header() {
-    final bodyText1 = Theme.of(context).textTheme.bodyText1;
-    final bodyText2 = Theme.of(context).textTheme.bodyText2;
-    return Card(
-        child: Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisAlignment: MainAxisAlignment.start,
-        children: [
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              const Text('Ajouté le ',
-                  style: TextStyle(fontWeight: FontWeight.w500, fontSize: 16)),
-              Text(DateFormat("dd.MM.yy HH:mm").format(widget.achat.created),
-                  style: const TextStyle(
-                      fontWeight: FontWeight.w400, fontSize: 16)),
-            ],
-          ),
-          const SizedBox(
-            height: 10.0,
-          ),
-          Text('Succursale: ${widget.achat.succursale.toUpperCase()}',
-              style: Responsive.isDesktop(context) ? bodyText1 : bodyText2),
-        ],
-      ),
-    ));
   }
 
   Widget headerTitle() {
@@ -252,7 +232,7 @@ class _DetailAchatState extends State<DetailAchat> {
   }
 
   Widget achats() {
-    var roleAgent = int.parse(user!.role) <= 3;
+    var roleAgent = int.parse(user.role) <= 3;
 
     final bodyText1 = Theme.of(context).textTheme.bodyText1;
     final bodyText2 = Theme.of(context).textTheme.bodyText2;
@@ -294,8 +274,8 @@ class _DetailAchatState extends State<DetailAchat> {
               ],
             ),
             if (roleAgent)
-              const Divider(
-                color: Colors.black87,
+              Divider(
+                color: Colors.amber.shade700,
               ),
             if (roleAgent)
               Row(
@@ -317,8 +297,8 @@ class _DetailAchatState extends State<DetailAchat> {
                 ],
               ),
             if (roleAgent)
-              const Divider(
-                color: Colors.black87,
+              Divider(
+                color: Colors.amber.shade700,
               ),
             if (roleAgent)
               Row(
@@ -339,8 +319,8 @@ class _DetailAchatState extends State<DetailAchat> {
                       overflow: TextOverflow.ellipsis),
                 ],
               ),
-            const Divider(
-              color: Colors.black87,
+            Divider(
+              color: Colors.amber.shade700,
             ),
             Row(
               children: [
@@ -359,8 +339,8 @@ class _DetailAchatState extends State<DetailAchat> {
                     overflow: TextOverflow.ellipsis),
               ],
             ),
-            const Divider(
-              color: Colors.black87,
+            Divider(
+              color: Colors.amber.shade700,
             ),
             Row(
               children: [
@@ -380,8 +360,8 @@ class _DetailAchatState extends State<DetailAchat> {
                     overflow: TextOverflow.ellipsis),
               ],
             ),
-            const Divider(
-              color: Colors.black87,
+            Divider(
+              color: Colors.amber.shade700,
             ),
             Row(
               children: [
@@ -401,8 +381,8 @@ class _DetailAchatState extends State<DetailAchat> {
                     overflow: TextOverflow.ellipsis),
               ],
             ),
-            const Divider(
-              color: Colors.black87,
+            Divider(
+              color: Colors.amber.shade700,
             ),
             Row(
               children: [
@@ -422,8 +402,8 @@ class _DetailAchatState extends State<DetailAchat> {
               ],
             ),
             if (roleAgent)
-              const Divider(
-                color: Colors.black87,
+              Divider(
+                color: Colors.amber.shade700,
               ),
             if (roleAgent)
               const SizedBox(
@@ -481,8 +461,8 @@ class _DetailAchatState extends State<DetailAchat> {
                       ],
                     ),
             if (roleAgent)
-              const Divider(
-                color: Colors.black87,
+              Divider(
+                color: Colors.amber.shade700,
               ),
             if (roleAgent)
               Responsive.isDesktop(context)
@@ -640,7 +620,7 @@ class _DetailAchatState extends State<DetailAchat> {
       width: double.infinity,
       child: Card(
         child: Text(
-          'STOCKS',
+          'EN STOCKS',
           textAlign: TextAlign.center,
           style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18.0),
         ),
@@ -701,21 +681,6 @@ class _DetailAchatState extends State<DetailAchat> {
     ));
   }
 
-  Widget achatHistorityTitle() {
-    return SizedBox(
-      width: double.infinity,
-      child: Card(
-        child: Text(
-          'HISTORIQUE DES PRODUITS RECUS',
-          textAlign: TextAlign.center,
-          style: Responsive.isDesktop(context)
-              ? const TextStyle(fontWeight: FontWeight.bold, fontSize: 18.0)
-              : const TextStyle(fontWeight: FontWeight.bold, fontSize: 14.0),
-        ),
-      ),
-    );
-  }
-
   Widget transfertProduit() {
     return IconButton(
       color: Colors.red,
@@ -729,12 +694,15 @@ class _DetailAchatState extends State<DetailAchat> {
               'Cette action permet de restitutuer la quantité chez l\'expediteur.'),
           actions: <Widget>[
             TextButton(
-              onPressed: () => Navigator.pop(context, 'Annuler'),
+              onPressed: () => Navigator.of(context).pop(),
               child: const Text('Annuler'),
             ),
             TextButton(
               onPressed: () {
-                Routemaster.of(context).pop();
+                Navigator.of(context).pop();
+                Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context) =>
+                        RestitutionStock(achat: widget.achat)));
               },
               child: const Text('OK'),
             ),

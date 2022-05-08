@@ -695,7 +695,7 @@ class _BanqueTransactionsState extends State<BanqueTransactions> {
         signature: matricule.toString(),
         created: DateTime.now());
     await BanqueApi().insertData(banqueModel);
-    Routemaster.of(context).pop();
+    Navigator.of(context).pop();
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
       content: const Text("Dépôt effectué avec succès!"),
       backgroundColor: Colors.green[700],
@@ -730,7 +730,7 @@ class _BanqueTransactionsState extends State<BanqueTransactions> {
         signature: matricule.toString(),
         created: DateTime.now());
     await BanqueApi().insertData(banqueModel);
-    Routemaster.of(context).pop();
+    Navigator.of(context).pop();
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
       content: const Text("Retrait soumis avec succès!"),
       backgroundColor: Colors.green[700],

@@ -109,7 +109,7 @@ class _DetailEtatMaterielState extends State<DetailEtatMateriel> {
                                       width: p20,
                                       child: IconButton(
                                           onPressed: () =>
-                                              Routemaster.of(context).pop(),
+                                              Navigator.of(context).pop(),
                                           icon: const Icon(Icons.arrow_back)),
                                     ),
                                     const SizedBox(width: p10),
@@ -843,7 +843,7 @@ class _DetailEtatMaterielState extends State<DetailEtatMateriel> {
         signature: data.signature,
         created: data.created);
     await EtatMaterielApi().updateData(data.id!, etatMaterielModel);
-    Routemaster.of(context).pop();
+    Navigator.of(context).pop();
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
       content: const Text("Soumis avec succès!"),
       backgroundColor: Colors.green[700],
@@ -874,7 +874,7 @@ class _DetailEtatMaterielState extends State<DetailEtatMateriel> {
         created: data.created);
 
     await EtatMaterielApi().updateData(data.id!, etatMaterielModel);
-    Routemaster.of(context).pop();
+    Navigator.of(context).pop();
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
       content: const Text("Soumis avec succès!"),
       backgroundColor: Colors.green[700],
@@ -905,7 +905,7 @@ class _DetailEtatMaterielState extends State<DetailEtatMateriel> {
         created: data.created);
 
     await EtatMaterielApi().updateData(data.id!, etatMaterielModel);
-    Routemaster.of(context).pop();
+    Navigator.of(context).pop();
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
       content: const Text("Soumis avec succès!"),
       backgroundColor: Colors.green[700],
@@ -936,7 +936,7 @@ class _DetailEtatMaterielState extends State<DetailEtatMateriel> {
         created: data.created);
 
     await EtatMaterielApi().updateData(data.id!, etatMaterielModel);
-    Routemaster.of(context).pop();
+    Navigator.of(context).pop();
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
       content: const Text("Soumis avec succès!"),
       backgroundColor: Colors.green[700],

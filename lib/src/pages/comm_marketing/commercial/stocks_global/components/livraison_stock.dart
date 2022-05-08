@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:fokad_admin/src/api/auth/auth_api.dart';
 import 'package:fokad_admin/src/api/comm_marketing/commerciale/bon_livraison_api.dart';
 import 'package:fokad_admin/src/api/comm_marketing/commerciale/stock_global_api.dart';
@@ -42,7 +43,6 @@ class _LivraisonStockState extends State<LivraisonStock> {
   String? succursale;
   String? nameBusiness;
 
-  String? monnaie;
   String? firstName;
   String? lastName;
 
@@ -108,7 +108,7 @@ class _LivraisonStockState extends State<LivraisonStock> {
                             width: 20.0,
                             child: IconButton(
                                 onPressed: () {
-                                  Routemaster.of(context).pop();
+                                  Navigator.of(context).pop();
                                 },
                                 icon: const Icon(Icons.arrow_back)),
                           ),
@@ -238,7 +238,10 @@ class _LivraisonStockState extends State<LivraisonStock> {
       margin: const EdgeInsets.only(bottom: 20.0),
       child: TextFormField(
         // controller: controllerQuantity, // Ce champ doit etre vide pour permettre a l'admin de saisir la qty
-        keyboardType: TextInputType.phone,
+        keyboardType: TextInputType.number,
+        inputFormatters: <TextInputFormatter>[
+          FilteringTextInputFormatter.digitsOnly
+        ],
         decoration: InputDecoration(
           labelText:
               'Qtés disponible est de ${widget.stocksGlobalMOdel.quantity} ${widget.stocksGlobalMOdel.unite}',
@@ -271,7 +274,10 @@ class _LivraisonStockState extends State<LivraisonStock> {
       margin: const EdgeInsets.only(bottom: 20.0),
       child: TextFormField(
         controller: controllerPrixVenteUnit,
-        keyboardType: TextInputType.phone,
+        keyboardType: TextInputType.number,
+        inputFormatters: <TextInputFormatter>[
+          FilteringTextInputFormatter.digitsOnly
+        ],
         decoration: InputDecoration(
           labelText: 'Prix de vente unitaire',
           labelStyle: const TextStyle(),
@@ -304,7 +310,9 @@ class _LivraisonStockState extends State<LivraisonStock> {
                   child: TextFormField(
                     // controller: priceController,
                     keyboardType: TextInputType.number,
-                    // initialValue: '1',
+                    inputFormatters: <TextInputFormatter>[
+                      FilteringTextInputFormatter.digitsOnly
+                    ],
                     decoration: InputDecoration(
                       labelText: 'Remise en % (Facultatif) ',
                       // hintText: 'Mettez "1" si vide',
@@ -342,7 +350,9 @@ class _LivraisonStockState extends State<LivraisonStock> {
                 child: TextFormField(
                   // controller: priceController,
                   keyboardType: TextInputType.number,
-                  // initialValue: '1',
+                  inputFormatters: <TextInputFormatter>[
+                    FilteringTextInputFormatter.digitsOnly
+                  ],
                   decoration: InputDecoration(
                     labelText: 'Remise en % (Facultatif) ',
                     // hintText: 'Mettez "1" si vide',
@@ -376,7 +386,9 @@ class _LivraisonStockState extends State<LivraisonStock> {
       margin: const EdgeInsets.only(bottom: 20.0),
       child: TextFormField(
         keyboardType: TextInputType.number,
-        // initialValue: '1',
+        inputFormatters: <TextInputFormatter>[
+          FilteringTextInputFormatter.digitsOnly
+        ],
         decoration: InputDecoration(
           labelText: 'Quantités pour la remise (Facultatif) ',
           // hintText: 'Mettez "1" si vide',
@@ -410,8 +422,8 @@ class _LivraisonStockState extends State<LivraisonStock> {
 
     return Container(
       margin: const EdgeInsets.only(left: 10.0, bottom: 20.0),
-      child: Text('R: ${pavTVARemise!.toStringAsFixed(2)} $monnaie',
-          style: bodyText1),
+      child:
+          Text('R: ${pavTVARemise!.toStringAsFixed(2)} \$', style: bodyText1),
     );
   }
 
@@ -436,18 +448,6 @@ class _LivraisonStockState extends State<LivraisonStock> {
         modeAchat: widget.stocksGlobalMOdel.modeAchat,
         tva: widget.stocksGlobalMOdel.tva,
         qtyRavitailler: widget.stocksGlobalMOdel.qtyRavitailler,
-        approbationDG: '-',
-        signatureDG: '-',
-        signatureJustificationDG: '-',
-        approbationFin: '-',
-        signatureFin: '-',
-        signatureJustificationFin: '-',
-        approbationBudget: '-',
-        signatureBudget: '-',
-        signatureJustificationBudget: '-',
-        approbationDD: '-',
-        signatureDD: '-',
-        signatureJustificationDD: '-',
         signature: widget.stocksGlobalMOdel.signature,
         created: widget.stocksGlobalMOdel.created);
     await StockGlobalApi()
@@ -468,23 +468,11 @@ class _LivraisonStockState extends State<LivraisonStock> {
         accuseReception: false,
         accuseReceptionFirstName: '-',
         accuseReceptionLastName: '-',
-        approbationDG: '-',
-        signatureDG: '-',
-        signatureJustificationDG: '-',
-        approbationFin: '-',
-        signatureFin: '-',
-        signatureJustificationFin: '-',
-        approbationBudget: '-',
-        signatureBudget: '-',
-        signatureJustificationBudget: '-',
-        approbationDD: '-',
-        signatureDD: '-',
-        signatureJustificationDD: '-',
         succursale: succursale.toString(),
         signature: user!.matricule.toString(),
         created: DateTime.now());
     await BonLivraisonApi().insertData(bonLivraisonModel);
-    Routemaster.of(context).pop();
+    Navigator.of(context).pop();
     if (!mounted) return;
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
       content: Text("${bonLivraisonModel.idProduct} livré!"),

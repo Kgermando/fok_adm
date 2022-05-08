@@ -85,13 +85,14 @@ class _AddMobilerMaterielState extends State<AddMobilerMateriel> {
                             width: 20.0,
                             child: IconButton(
                                 onPressed: () {
-                                  Routemaster.of(context).pop();
+                                  Navigator.of(context).pop();
                                 },
                                 icon: const Icon(Icons.arrow_back)),
                           ),
-                           Expanded(
+                          Expanded(
                               flex: 5,
-                              child: CustomAppbar(title: 'Ajout mobilier',
+                              child: CustomAppbar(
+                                  title: 'Ajout mobilier',
                                   controllerMenu: () =>
                                       _key.currentState!.openDrawer())),
                         ],

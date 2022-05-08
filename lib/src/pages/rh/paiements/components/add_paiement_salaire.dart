@@ -159,7 +159,7 @@ class _AddPaiementSalaireState extends State<AddPaiementSalaire> {
                           SizedBox(
                             width: p20,
                             child: IconButton(
-                                onPressed: () => Routemaster.of(context).pop(),
+                                onPressed: () => Navigator.of(context).pop(),
                                 icon: const Icon(Icons.arrow_back)),
                           ),
                           const SizedBox(width: p10),
@@ -1423,7 +1423,7 @@ class _AddPaiementSalaireState extends State<AddPaiementSalaire> {
       signature: signature.toString(),
     );
     await PaiementSalaireApi().insertData(paiementSalaireModel);
-    Routemaster.of(context).pop();
+    Navigator.of(context).pop();
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
       content: const Text("soumis avec succès!"),
       backgroundColor: Colors.green[700],

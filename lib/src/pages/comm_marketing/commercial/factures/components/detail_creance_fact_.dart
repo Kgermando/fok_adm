@@ -12,7 +12,6 @@ import 'package:fokad_admin/src/widgets/print_widget.dart';
 import 'package:fokad_admin/src/widgets/title_widget.dart';
 import 'package:intl/intl.dart';
 import 'package:pluto_grid/pluto_grid.dart';
-import 'package:routemaster/routemaster.dart';
 
 class DetailCreanceFact extends StatefulWidget {
   const DetailCreanceFact({Key? key, this.id}) : super(key: key);
@@ -41,7 +40,18 @@ class _DetailCreanceFactState extends State<DetailCreanceFact> {
   }
 
   CreanceCartModel? facture;
-  UserModel? user;
+  UserModel user = UserModel(
+      nom: '-',
+      prenom: '-',
+      matricule: '-',
+      departement: '-',
+      servicesAffectation: '-',
+      fonctionOccupe: '-',
+      role: '5',
+      isOnline: false,
+      createdAt: DateTime.now(),
+      passwordHash: '-',
+      succursale: '-');
   Future<void> getData() async {
     UserModel userModel = await AuthApi().getUserId();
     CreanceCartModel data = await CreanceFactureApi().getOneData(widget.id!);
@@ -84,7 +94,7 @@ class _DetailCreanceFactState extends State<DetailCreanceFact> {
                                       width: p20,
                                       child: IconButton(
                                           onPressed: () =>
-                                              Routemaster.of(context).pop(),
+                                              Navigator.of(context).pop(),
                                           icon: const Icon(Icons.arrow_back)),
                                     ),
                                     const SizedBox(width: p10),

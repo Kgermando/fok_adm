@@ -26,15 +26,12 @@ class _UpdateTrajetState extends State<UpdateTrajet> {
   bool isLoading = false;
 
   TextEditingController nomeroEntrepriseController = TextEditingController();
-  TextEditingController nomUtilisateurController =
-      TextEditingController();
+  TextEditingController nomUtilisateurController = TextEditingController();
   TextEditingController trajetDeController = TextEditingController();
   TextEditingController trajetAController = TextEditingController();
   TextEditingController missionController = TextEditingController();
-  TextEditingController kilometrageSoriteController =
-      TextEditingController();
-  TextEditingController kilometrageRetourController =
-      TextEditingController();
+  TextEditingController kilometrageSoriteController = TextEditingController();
+  TextEditingController kilometrageRetourController = TextEditingController();
 
   @override
   initState() {
@@ -45,10 +42,8 @@ class _UpdateTrajetState extends State<UpdateTrajet> {
         TextEditingController(text: widget.trajetModel.nomUtilisateur);
     trajetDeController =
         TextEditingController(text: widget.trajetModel.trajetDe);
-    trajetAController =
-        TextEditingController(text: widget.trajetModel.trajetA);
-    missionController =
-        TextEditingController(text: widget.trajetModel.mission);
+    trajetAController = TextEditingController(text: widget.trajetModel.trajetA);
+    missionController = TextEditingController(text: widget.trajetModel.mission);
     kilometrageSoriteController =
         TextEditingController(text: widget.trajetModel.kilometrageSorite);
     super.initState();
@@ -103,7 +98,7 @@ class _UpdateTrajetState extends State<UpdateTrajet> {
                             width: 20.0,
                             child: IconButton(
                                 onPressed: () {
-                                  Routemaster.of(context).pop();
+                                  Navigator.of(context).pop();
                                 },
                                 icon: const Icon(Icons.arrow_back)),
                           ),
@@ -391,7 +386,7 @@ class _UpdateTrajetState extends State<UpdateTrajet> {
         signature: signature.toString(),
         created: DateTime.now());
     await TrajetApi().updateData(widget.trajetModel.id!, trajetModel);
-    Routemaster.of(context).pop();
+    Navigator.of(context).pop();
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
       content: const Text("Enregistrer avec succès!"),
       backgroundColor: Colors.green[700],

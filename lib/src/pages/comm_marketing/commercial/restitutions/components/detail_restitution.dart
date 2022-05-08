@@ -11,6 +11,7 @@ import 'package:fokad_admin/src/navigation/drawer/drawer_menu.dart';
 import 'package:fokad_admin/src/navigation/header/custom_appbar.dart';
 import 'package:fokad_admin/src/utils/loading.dart';
 import 'package:fokad_admin/src/widgets/print_widget.dart';
+import 'package:fokad_admin/src/widgets/title_widget.dart';
 import 'package:intl/intl.dart';
 import 'package:routemaster/routemaster.dart';
 
@@ -37,7 +38,18 @@ class _DetailRestitutionState extends State<DetailRestitution> {
     super.initState();
   }
 
-  UserModel? user;
+    UserModel user = UserModel(
+      nom: '-',
+      prenom: '-',
+      matricule: '-',
+      departement: '-',
+      servicesAffectation: '-',
+      fonctionOccupe: '-',
+      role: '5',
+      isOnline: false,
+      createdAt: DateTime.now(),
+      passwordHash: '-',
+      succursale: '-');
   Future<void> getData() async {
     UserModel data = await AuthApi().getUserId();
     RestitutionModel restitutionModel =
@@ -83,7 +95,7 @@ class _DetailRestitutionState extends State<DetailRestitution> {
                                       width: p20,
                                       child: IconButton(
                                           onPressed: () =>
-                                              Routemaster.of(context).pop(),
+                                            Navigator.of(context).pop(),
                                           icon: const Icon(Icons.arrow_back)),
                                     ),
                                     const SizedBox(width: p10),
@@ -133,22 +145,17 @@ class _DetailRestitutionState extends State<DetailRestitution> {
             controller: _controllerScroll,
             children: [
               Row(
-                mainAxisAlignment: MainAxisAlignment.end,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
+                  const TitleWidget(title: "Bon de restitution"),
                   Column(
                     children: [
-                      Row(
-                        children: [
-                          if (data.succursale == user!.succursale)
-                            accRecepetion(data),
-                          PrintWidget(
-                            tooltip: 'Imprimer le document',
-                            onPressed: () async {},
-                          )
-                        ],
+                     PrintWidget(
+                        tooltip: 'Imprimer le document',
+                        onPressed: () async {},
                       ),
                       SelectableText(
-                          DateFormat("dd-MM-yy").format(data.created),
+                          DateFormat("dd-MM-yyyy HH:mm").format(data.created),
                           textAlign: TextAlign.start),
                     ],
                   )
@@ -169,17 +176,19 @@ class _DetailRestitutionState extends State<DetailRestitution> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          if (data.succursale == user.succursale) accRecepetion(data),
+          const SizedBox(height: p20),
           Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Expanded(
-                child: Text('Produit',
+                child: Text('Produit :',
                     style: Responsive.isDesktop(context)
                         ? const TextStyle(
                             fontWeight: FontWeight.w700, fontSize: 20)
                         : bodyText2,
                     overflow: TextOverflow.visible),
               ),
-              const Spacer(),
               Expanded(
                 child: Text(data.idProduct,
                     style: Responsive.isDesktop(context)
@@ -190,27 +199,31 @@ class _DetailRestitutionState extends State<DetailRestitution> {
               ),
             ],
           ),
-          const Divider(
-            color: Colors.black87,
+          Divider(
+            color: Colors.amber.shade700,
           ),
           Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text('Qté restutué',
-                  style: Responsive.isDesktop(context)
-                      ? const TextStyle(
-                          fontWeight: FontWeight.w700, fontSize: 20)
-                      : bodyText2,
-                  overflow: TextOverflow.ellipsis),
-              const Spacer(),
-              Text(
-                  '${NumberFormat.decimalPattern('fr').format(double.parse(data.quantity))} ${data.unite}',
-                  style: Responsive.isDesktop(context)
-                      ? const TextStyle(
-                          fontWeight: FontWeight.w700, fontSize: 20)
-                      : bodyText2,
-                  overflow: TextOverflow.ellipsis),
+              Expanded(
+                child: Text('Quantité restutué :',
+                    style: Responsive.isDesktop(context)
+                        ? const TextStyle(
+                            fontWeight: FontWeight.w700, fontSize: 20)
+                        : bodyText2,
+                    overflow: TextOverflow.ellipsis),
+              ),
+              Expanded(
+                child: Text(
+                    '${NumberFormat.decimalPattern('fr').format(double.parse(data.quantity))} ${data.unite}',
+                    style: Responsive.isDesktop(context)
+                        ? const TextStyle(
+                            fontWeight: FontWeight.w700, fontSize: 20)
+                        : bodyText2,
+                    overflow: TextOverflow.ellipsis),
+              ),
             ],
-          ),
+          )
         ],
       ),
     );
@@ -226,7 +239,7 @@ class _DetailRestitutionState extends State<DetailRestitution> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
-                Text('Accusé reception',
+                Text('Accusé reception:',
                     style: Responsive.isDesktop(context)
                         ? const TextStyle(
                             fontWeight: FontWeight.w500, fontSize: 16)
@@ -264,10 +277,11 @@ class _DetailRestitutionState extends State<DetailRestitution> {
   }
 
   checkboxRead(RestitutionModel data) {
+    isChecked = data.accuseReception;
     return Checkbox(
       checkColor: Colors.white,
       fillColor: MaterialStateProperty.resolveWith(getColor),
-      value: data.accuseReception,
+      value: isChecked,
       onChanged: (bool? value) {
         setState(() {
           isLoading = true;
@@ -275,6 +289,9 @@ class _DetailRestitutionState extends State<DetailRestitution> {
         setState(() {
           isChecked = value!;
           transfertProduit(data);
+        });
+        setState(() {
+          isLoading = false;
         });
       },
     );
@@ -307,18 +324,6 @@ class _DetailRestitutionState extends State<DetailRestitution> {
         modeAchat: modeAchat,
         tva: tvaAchat,
         qtyRavitailler: qtyRavitaillerStock,
-        approbationDG: '-',
-        signatureDG: '-',
-        signatureJustificationDG: '-',
-        approbationFin: '-',
-        signatureFin: '-',
-        signatureJustificationFin: '-',
-        approbationBudget: '-',
-        signatureBudget: '-',
-        signatureJustificationBudget: '-',
-        approbationDD: '-',
-        signatureDD: '-',
-        signatureJustificationDD: '-',
         signature: signatureAchat,
         created: dateAchat);
     await StockGlobalApi().updateData(stockId!, stocksGlobalMOdel);
@@ -330,26 +335,14 @@ class _DetailRestitutionState extends State<DetailRestitution> {
         firstName: data.firstName,
         lastName: data.lastName,
         accuseReception: true,
-        accuseReceptionFirstName: user!.nom.toString(),
-        accuseReceptionLastName: user!.prenom.toString(),
-        role: user!.role.toString(),
-        approbationDG: '-',
-        signatureDG: '-',
-        signatureJustificationDG: '-',
-        approbationFin: '-',
-        signatureFin: '-',
-        signatureJustificationFin: '-',
-        approbationBudget: '-',
-        signatureBudget: '-',
-        signatureJustificationBudget: '-',
-        approbationDD: '-',
-        signatureDD: '-',
-        signatureJustificationDD: '-',
+        accuseReceptionFirstName: user.nom.toString(),
+        accuseReceptionLastName: user.prenom.toString(),
+        role: user.role.toString(),
         succursale: data.succursale,
-        signature: user!.matricule.toString(),
+        signature: user.matricule.toString(),
         created: DateTime.now());
     await RestitutionApi().updateData(data.id!, restitutionModel);
-    Routemaster.of(context).pop();
+    Navigator.of(context).pop();
     if (!mounted) return;
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
       content: Text("${restitutionModel.idProduct} transferé!"),
