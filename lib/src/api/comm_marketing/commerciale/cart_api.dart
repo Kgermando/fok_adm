@@ -127,10 +127,10 @@ class CartApi {
     }
   }
 
-  Future<void> deleteAllData(String succursale) async {
+  Future<void> deleteAllData(String signature) async {
     final accessToken = await storage.read(key: 'accessToken');
 
-    var deleteUrl = Uri.parse("$mainUrl/carts/delete-all-cart/$succursale");
+    var deleteUrl = Uri.parse("$mainUrl/carts/delete-all-cart/$signature");
 
     var res = await client.delete(deleteUrl, headers: <String, String>{
       'Content-Type': 'application/json; charset=UTF-8',

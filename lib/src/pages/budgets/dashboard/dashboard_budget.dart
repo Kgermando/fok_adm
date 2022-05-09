@@ -3,17 +3,22 @@ import 'package:fokad_admin/src/constants/app_theme.dart';
 import 'package:fokad_admin/src/constants/responsive.dart';
 import 'package:fokad_admin/src/navigation/drawer/drawer_menu.dart';
 import 'package:fokad_admin/src/navigation/header/custom_appbar.dart';
-import 'package:fokad_admin/src/pages/budgets/components/table_departement_budget.dart';
 
-class BudgetFinance extends StatefulWidget {
-  const BudgetFinance({Key? key}) : super(key: key);
+class DashboardBudget extends StatefulWidget {
+  const DashboardBudget({ Key? key }) : super(key: key);
 
   @override
-  State<BudgetFinance> createState() => _BudgetFinanceState();
+  State<DashboardBudget> createState() => _DashboardBudgetState();
 }
 
-class _BudgetFinanceState extends State<BudgetFinance> {
+class _DashboardBudgetState extends State<DashboardBudget> {
   final GlobalKey<ScaffoldState> _key = GlobalKey();
+
+  @override
+  initState() {
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -34,12 +39,15 @@ class _BudgetFinanceState extends State<BudgetFinance> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                       CustomAppbar(title: 'Finance Budget',
+                      CustomAppbar(
+                          title: 'Tableau de bord budget',
                           controllerMenu: () =>
                               _key.currentState!.openDrawer()),
                       Expanded(
                           child: ListView(
-                        children: const [TableDepartementBudget()],
+                        children: const [
+                          Text("Dashboard Budget"),
+                        ],
                       ))
                     ],
                   ),

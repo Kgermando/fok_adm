@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:fokad_admin/src/api/comm_marketing/commerciale/vente_gain_api.dart';
 import 'package:fokad_admin/src/constants/responsive.dart';
-import 'package:fokad_admin/src/models/comm_maketing/courbe_dashboard_model.dart';
+import 'package:fokad_admin/src/models/comm_maketing/courbe_vente_gain_model.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
 class CourbeVenteGainMounth extends StatefulWidget {

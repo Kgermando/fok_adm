@@ -9,7 +9,6 @@ import 'package:fokad_admin/src/navigation/drawer/drawer_menu.dart';
 import 'package:fokad_admin/src/navigation/header/custom_appbar.dart';
 import 'package:fokad_admin/src/widgets/btn_widget.dart';
 import 'package:fokad_admin/src/widgets/title_widget.dart';
-import 'package:routemaster/routemaster.dart';
 
 class AddAnnuaire extends StatefulWidget {
   const AddAnnuaire({Key? key}) : super(key: key);
@@ -176,6 +175,16 @@ class _AddAnnuaireState extends State<AddAnnuaire> {
                             width: 20.0,
                           ),
                           Expanded(child: nomEntrepriseField()),
+                        ],
+                      ),
+                    if (Responsive.isDesktop(context))
+                      Row(
+                        children: [
+                          Expanded(child: gradeField()),
+                          const SizedBox(
+                            width: 20.0,
+                          ),
+                          Expanded(child: adresseEntrepriseField()),
                         ],
                       ),
                     if (!Responsive.isDesktop(context)) nomPostnomPrenomField(),

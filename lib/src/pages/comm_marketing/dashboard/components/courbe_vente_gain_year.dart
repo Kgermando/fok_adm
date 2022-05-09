@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:fokad_admin/src/api/comm_marketing/commerciale/vente_gain_api.dart';
 import 'package:fokad_admin/src/constants/responsive.dart';
-import 'package:fokad_admin/src/models/comm_maketing/courbe_dashboard_model.dart';
+import 'package:fokad_admin/src/models/comm_maketing/courbe_vente_gain_model.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
 class CourbeVenteGainYear extends StatefulWidget {
@@ -83,7 +83,7 @@ class _CourbeVenteGainYearState extends State<CourbeVenteGainYear> {
               sortingOrder: SortingOrder.ascending,
               markerSettings: const MarkerSettings(isVisible: true),
               xValueMapper: (CourbeVenteModel ventes, _) =>
-                  '${ventes.created.toInt()} H',
+                  '${ventes.created.toInt()}',
               yValueMapper: (CourbeVenteModel ventes, _) =>
                   double.parse(ventes.sum.toStringAsFixed(2)),
               // Enable data label
@@ -95,7 +95,7 @@ class _CourbeVenteGainYearState extends State<CourbeVenteGainYear> {
               sortingOrder: SortingOrder.ascending,
               markerSettings: const MarkerSettings(isVisible: true),
               xValueMapper: (CourbeGainModel ventes, _) =>
-                  '${ventes.created.toInt()} H',
+                  '${ventes.created.toInt()}',
               yValueMapper: (CourbeGainModel ventes, _) =>
                   double.parse(ventes.sum.toStringAsFixed(2)),
               // Enable data label

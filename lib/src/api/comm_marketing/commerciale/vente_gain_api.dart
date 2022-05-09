@@ -4,7 +4,7 @@ import 'dart:convert';
 
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:fokad_admin/src/api/route_api.dart';
-import 'package:fokad_admin/src/models/comm_maketing/courbe_dashboard_model.dart';
+import 'package:fokad_admin/src/models/comm_maketing/courbe_vente_gain_model.dart';
 import 'package:fokad_admin/src/models/comm_maketing/vente_chart_model.dart';
 import 'package:http/http.dart' as http;
 

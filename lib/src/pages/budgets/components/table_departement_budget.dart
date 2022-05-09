@@ -31,50 +31,53 @@ class _TableDepartementBudgetState extends State<TableDepartementBudget> {
 
   @override
   Widget build(BuildContext context) {
-    return PlutoGrid(
-      columns: columns,
-      rows: rows,
-      onRowDoubleTap: (PlutoGridOnRowDoubleTapEvent tapEvent) {
-        final dataList = tapEvent.row!.cells.values;
-        final idPlutoRow = dataList.elementAt(0);
+    return SizedBox(
+      height: MediaQuery.of(context).size.height,
+      child: PlutoGrid(
+        columns: columns,
+        rows: rows,
+        onRowDoubleTap: (PlutoGridOnRowDoubleTapEvent tapEvent) {
+          final dataList = tapEvent.row!.cells.values;
+          final idPlutoRow = dataList.elementAt(0);
 
-        Navigator.of(context).push(MaterialPageRoute(
-            builder: (context) =>
-                DetailDepartmentBudget(id: idPlutoRow.value)));
-      },
-      onLoaded: (PlutoGridOnLoadedEvent event) {
-        stateManager = event.stateManager;
-        stateManager!.setShowColumnFilter(true);
-      },
-      createHeader: (PlutoGridStateManager header) {
-        return Row(
-          mainAxisAlignment: MainAxisAlignment.end,
-          children: [PrintWidget(onPressed: () {})],
-        );
-      },
-      configuration: PlutoGridConfiguration(
-        columnFilterConfig: PlutoGridColumnFilterConfig(
-          filters: const [
-            ...FilterHelper.defaultFilters,
-            // custom filter
-            ClassFilterImplemented(),
-          ],
-          resolveDefaultColumnFilter: (column, resolver) {
-            if (column.field == 'departement') {
-              return resolver<ClassFilterImplemented>() as PlutoFilterType;
-            } else if (column.field == 'periodeBudget') {
-              return resolver<ClassFilterImplemented>() as PlutoFilterType;
-            } else if (column.field == 'totalGlobalDispo') {
-              return resolver<ClassFilterImplemented>() as PlutoFilterType;
-            } else if (column.field == 'totalGlobalFinExt') {
-              return resolver<ClassFilterImplemented>() as PlutoFilterType;
-            } else if (column.field == 'totalGlobalPrevisionel') {
-              return resolver<ClassFilterImplemented>() as PlutoFilterType;
-            } else if (column.field == 'created') {
-              return resolver<ClassFilterImplemented>() as PlutoFilterType;
-            }
-            return resolver<PlutoFilterTypeContains>() as PlutoFilterType;
-          },
+          Navigator.of(context).push(MaterialPageRoute(
+              builder: (context) =>
+                  DetailDepartmentBudget(id: idPlutoRow.value)));
+        },
+        onLoaded: (PlutoGridOnLoadedEvent event) {
+          stateManager = event.stateManager;
+          stateManager!.setShowColumnFilter(true);
+        },
+        createHeader: (PlutoGridStateManager header) {
+          return Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [PrintWidget(onPressed: () {})],
+          );
+        },
+        configuration: PlutoGridConfiguration(
+          columnFilterConfig: PlutoGridColumnFilterConfig(
+            filters: const [
+              ...FilterHelper.defaultFilters,
+              // custom filter
+              ClassFilterImplemented(),
+            ],
+            resolveDefaultColumnFilter: (column, resolver) {
+              if (column.field == 'departement') {
+                return resolver<ClassFilterImplemented>() as PlutoFilterType;
+              } else if (column.field == 'periodeBudget') {
+                return resolver<ClassFilterImplemented>() as PlutoFilterType;
+              } else if (column.field == 'totalGlobalDispo') {
+                return resolver<ClassFilterImplemented>() as PlutoFilterType;
+              } else if (column.field == 'totalGlobalFinExt') {
+                return resolver<ClassFilterImplemented>() as PlutoFilterType;
+              } else if (column.field == 'totalGlobalPrevisionel') {
+                return resolver<ClassFilterImplemented>() as PlutoFilterType;
+              } else if (column.field == 'created') {
+                return resolver<ClassFilterImplemented>() as PlutoFilterType;
+              }
+              return resolver<PlutoFilterTypeContains>() as PlutoFilterType;
+            },
+          ),
         ),
       ),
     );

@@ -44,14 +44,26 @@ class _BudgetNavState extends State<BudgetNav> {
               // Navigator.of(context).pop();
             }),
         DrawerWidget(
-            selected: widget.pageCurrente == BudgetRoutes.budgetDashboard,
+            selected: widget.pageCurrente == BudgetRoutes.budgetDD,
             icon: Icons.manage_accounts,
             sizeIcon: 20.0,
             title: 'Directeur de departement',
             style: bodyText1,
             onTap: () {
               Routemaster.of(context).replace(
-                BudgetRoutes.budgetDashboard,
+                BudgetRoutes.budgetDD,
+              );
+              // Navigator.of(context).pop();
+            }),
+        DrawerWidget(
+            selected: widget.pageCurrente == BudgetRoutes.budgetAutreDep,
+            icon: Icons.manage_accounts,
+            sizeIcon: 20.0,
+            title: 'Approbation lignes budgetaires',
+            style: bodyText1,
+            onTap: () {
+              Routemaster.of(context).replace(
+                BudgetRoutes.budgetAutreDep,
               );
               // Navigator.of(context).pop();
             }),

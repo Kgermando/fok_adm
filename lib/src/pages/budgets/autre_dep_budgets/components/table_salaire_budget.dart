@@ -31,55 +31,58 @@ class _TableSalaireBudgetState extends State<TableSalaireBudget> {
 
   @override
   Widget build(BuildContext context) {
-    return PlutoGrid(
-      columns: columns,
-      rows: rows,
-      onRowDoubleTap: (PlutoGridOnRowDoubleTapEvent tapEvent) {
-        final dataList = tapEvent.row!.cells.values;
-        final idPlutoRow = dataList.elementAt(0);
+    return SizedBox(
+      height: MediaQuery.of(context).size.height,
+      child: PlutoGrid(
+        columns: columns,
+        rows: rows,
+        onRowDoubleTap: (PlutoGridOnRowDoubleTapEvent tapEvent) {
+          final dataList = tapEvent.row!.cells.values;
+          final idPlutoRow = dataList.elementAt(0);
 
-        Navigator.of(context).push(MaterialPageRoute(
-            builder: (context) => PaiementBulletin(id: idPlutoRow.value)));
-      },
-      onLoaded: (PlutoGridOnLoadedEvent event) {
-        stateManager = event.stateManager;
-        stateManager!.setShowColumnFilter(true);
-      },
-      createHeader: (PlutoGridStateManager header) {
-        return Row(
-          mainAxisAlignment: MainAxisAlignment.end,
-          children: [PrintWidget(onPressed: () {})],
-        );
-      },
-      configuration: PlutoGridConfiguration(
-        columnFilterConfig: PlutoGridColumnFilterConfig(
-          filters: const [
-            ...FilterHelper.defaultFilters,
-            // custom filter
-            ClassFilterImplemented(),
-          ],
-          resolveDefaultColumnFilter: (column, resolver) {
-            if (column.field == 'prenom') {
-              return resolver<ClassFilterImplemented>() as PlutoFilterType;
-            } else if (column.field == 'nom') {
-              return resolver<ClassFilterImplemented>() as PlutoFilterType;
-            } else if (column.field == 'matricule') {
-              return resolver<ClassFilterImplemented>() as PlutoFilterType;
-            } else if (column.field == 'departement') {
-              return resolver<ClassFilterImplemented>() as PlutoFilterType;
-            } else if (column.field == 'Approbation') {
-              return resolver<ClassFilterImplemented>() as PlutoFilterType;
-            } else if (column.field == 'observation') {
-              return resolver<ClassFilterImplemented>() as PlutoFilterType;
-            } else if (column.field == 'modePaiement') {
-              return resolver<ClassFilterImplemented>() as PlutoFilterType;
-            } else if (column.field == 'salaire') {
-              return resolver<ClassFilterImplemented>() as PlutoFilterType;
-            } else if (column.field == 'created') {
-              return resolver<ClassFilterImplemented>() as PlutoFilterType;
-            }
-            return resolver<PlutoFilterTypeContains>() as PlutoFilterType;
-          },
+          Navigator.of(context).push(MaterialPageRoute(
+              builder: (context) => PaiementBulletin(id: idPlutoRow.value)));
+        },
+        onLoaded: (PlutoGridOnLoadedEvent event) {
+          stateManager = event.stateManager;
+          stateManager!.setShowColumnFilter(true);
+        },
+        createHeader: (PlutoGridStateManager header) {
+          return Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [PrintWidget(onPressed: () {})],
+          );
+        },
+        configuration: PlutoGridConfiguration(
+          columnFilterConfig: PlutoGridColumnFilterConfig(
+            filters: const [
+              ...FilterHelper.defaultFilters,
+              // custom filter
+              ClassFilterImplemented(),
+            ],
+            resolveDefaultColumnFilter: (column, resolver) {
+              if (column.field == 'prenom') {
+                return resolver<ClassFilterImplemented>() as PlutoFilterType;
+              } else if (column.field == 'nom') {
+                return resolver<ClassFilterImplemented>() as PlutoFilterType;
+              } else if (column.field == 'matricule') {
+                return resolver<ClassFilterImplemented>() as PlutoFilterType;
+              } else if (column.field == 'departement') {
+                return resolver<ClassFilterImplemented>() as PlutoFilterType;
+              } else if (column.field == 'Approbation') {
+                return resolver<ClassFilterImplemented>() as PlutoFilterType;
+              } else if (column.field == 'observation') {
+                return resolver<ClassFilterImplemented>() as PlutoFilterType;
+              } else if (column.field == 'modePaiement') {
+                return resolver<ClassFilterImplemented>() as PlutoFilterType;
+              } else if (column.field == 'salaire') {
+                return resolver<ClassFilterImplemented>() as PlutoFilterType;
+              } else if (column.field == 'created') {
+                return resolver<ClassFilterImplemented>() as PlutoFilterType;
+              }
+              return resolver<PlutoFilterTypeContains>() as PlutoFilterType;
+            },
+          ),
         ),
       ),
     );

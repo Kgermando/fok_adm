@@ -17,7 +17,13 @@ class CourbeVenteModel {
       sum: json['sum'],
     );
   }
+
+  Map<String, dynamic> toJson() {
+    return {'created': created, 'sum': sum};
+  }
 }
+
+
 
 class CourbeGainModel {
   final double created;
@@ -32,11 +38,14 @@ class CourbeGainModel {
     );
   }
 
-   factory CourbeGainModel.fromJson(Map<String, dynamic> json) {
+  factory CourbeGainModel.fromJson(Map<String, dynamic> json) {
     return CourbeGainModel(
       created: json['created'],
       sum: json['sum'],
     );
   }
-  
+
+  Map<String, dynamic> toJson() {
+    return {'created': created, 'sum': sum};
+  }
 }

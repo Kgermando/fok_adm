@@ -399,7 +399,7 @@ class _DetailProdModelState extends State<DetailProdModel> {
                                 ),
                                 if (data.approbationDG != '-')
                                   SelectableText(
-                                    data.approbationDG.toString(),
+                                    data.approbationDG,
                                     style: bodyMedium.copyWith(
                                         color: Colors.red.shade700),
                                   ),

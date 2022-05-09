@@ -246,7 +246,7 @@ class _CartPageState extends State<CartPage> {
     );
   }
 
-  Future factureData() async {
+  Future<void> factureData() async {
     final jsonList = listDataCart.map((item) => jsonEncode(item)).toList();
     final factureCartModel = FactureCartModel(
         cart: jsonList,
@@ -275,7 +275,7 @@ class _CartPageState extends State<CartPage> {
   }
 
   // PDF Generate Facture
-  Future _createFacturePDF() async {
+  Future<void> _createFacturePDF() async {
     final jsonList = listDataCart.map((item) => jsonEncode(item)).toList();
     final factureCartModel = FactureCartModel(
         cart: jsonList,
@@ -297,7 +297,7 @@ class _CartPageState extends State<CartPage> {
     // PdfApi.openFile(pdfFile);
   }
 
-  Future creanceData() async {
+  Future<void> creanceData() async {
     final jsonList = listDataCart.map((item) => jsonEncode(item)).toList();
     final creanceCartModel = CreanceCartModel(
         cart: jsonList,
@@ -349,11 +349,11 @@ class _CartPageState extends State<CartPage> {
     // PdfApi.openFile(pdfFile);
   }
 
-  cleanCart() async {
-    await CartApi().deleteAllData(user.succursale);
+  Future<void> cleanCart() async {
+    await CartApi().deleteAllData(user.matricule);
   }
 
-  numberFactureField(String number, String succursale, String signature) async {
+  Future<void> numberFactureField(String number, String succursale, String signature) async {
     final numberFactureModel = NumberFactureModel(
         number: number,
         succursale: succursale,
@@ -362,7 +362,7 @@ class _CartPageState extends State<CartPage> {
     await NumberFactureApi().insertData(numberFactureModel);
   }
 
-  venteHisotory() async {
+  Future<void> venteHisotory() async {
     for (var item in listDataCart) {
       double priceTotal = 0;
       if (double.parse(item.quantityCart) >= double.parse(item.qtyRemise)) {
@@ -387,7 +387,7 @@ class _CartPageState extends State<CartPage> {
     }
   }
 
-  gainVentes() async {
+  Future<void> gainVentes() async {
     for (var item in listDataCart) {
       double gainTotal = 0;
       if (double.parse(item.quantityCart) >= double.parse(item.qtyRemise)) {

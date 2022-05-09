@@ -9,7 +9,9 @@ import 'package:fokad_admin/src/pages/administration/logistique_admin.dart';
 import 'package:fokad_admin/src/pages/administration/rh_admin.dart';
 import 'package:fokad_admin/src/pages/auth/login_auth.dart';
 import 'package:fokad_admin/src/pages/auth/profil_page.dart';
-import 'package:fokad_admin/src/pages/budgets/budget_finance.dart';
+import 'package:fokad_admin/src/pages/budgets/autre_dep_budgets/autres_dep_budget.dart';
+import 'package:fokad_admin/src/pages/budgets/budget_dd/budget_dd.dart';
+import 'package:fokad_admin/src/pages/budgets/dashboard/dashboard_budget.dart';
 import 'package:fokad_admin/src/pages/comm_marketing/c_m_dd/c_m_dd.dart';
 import 'package:fokad_admin/src/pages/comm_marketing/commercial/achats/achats_page.dart';
 import 'package:fokad_admin/src/pages/comm_marketing/commercial/bon_livraison/bon_livraison_page.dart';
@@ -135,6 +137,7 @@ class RhRoutes {
 class BudgetRoutes {
   static const budgetDashboard = "/budget-dashboard";
   static const budgetDD = "/budget-dd";
+  static const budgetAutreDep = "/budget-autre-dep";
 }
 
 class FinanceRoutes {
@@ -278,7 +281,10 @@ class Routing {
 
         // Budget
         BudgetRoutes.budgetDashboard: (_) =>
-            const MaterialPage(child: BudgetFinance()),
+            const MaterialPage(child: DashboardBudget()),
+        BudgetRoutes.budgetDD: (_) =>
+            const MaterialPage(child: BudgetDD()),
+        BudgetRoutes.budgetAutreDep: (_) => const MaterialPage(child: AutresDepBudget()),
 
         // Finance
         FinanceRoutes.financeDashboard: (_) =>

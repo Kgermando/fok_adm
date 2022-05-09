@@ -11,9 +11,8 @@ import 'package:fokad_admin/src/navigation/drawer/components/rh_nav.dart';
 import 'package:routemaster/routemaster.dart';
 
 class DrawerMenu extends StatefulWidget {
-  const DrawerMenu({Key? key, this.controller, this.page}) : super(key: key);
+  const DrawerMenu({Key? key, this.controller}) : super(key: key);
   final PageController? controller;
-  final int? page;
 
   @override
   State<DrawerMenu> createState() => _DrawerMenuState();

@@ -7,18 +7,17 @@ import 'package:fokad_admin/src/models/budgets/ligne_budgetaire_model.dart';
 import 'package:fokad_admin/src/models/rh/paiement_salaire_model.dart';
 import 'package:fokad_admin/src/navigation/drawer/drawer_menu.dart';
 import 'package:fokad_admin/src/navigation/header/custom_appbar.dart';
-import 'package:fokad_admin/src/pages/budgets/components/dep_budgets/table_departement_budget_dd.dart';
-import 'package:fokad_admin/src/pages/budgets/components/dep_budgets/table_salaire_budget.dart';
+import 'package:fokad_admin/src/pages/budgets/autre_dep_budgets/components/table_salaire_budget.dart';
 import 'package:fokad_admin/src/pages/budgets/components/ligne_budgetaire.dart';
 
-class DepBudget extends StatefulWidget {
-  const DepBudget({Key? key}) : super(key: key);
+class AutresDepBudget extends StatefulWidget {
+  const AutresDepBudget({Key? key}) : super(key: key);
 
   @override
-  State<DepBudget> createState() => _DepBudgetState();
+  State<AutresDepBudget> createState() => _AutresDepBudgetState();
 }
 
-class _DepBudgetState extends State<DepBudget> {
+class _AutresDepBudgetState extends State<AutresDepBudget> {
   final GlobalKey<ScaffoldState> _key = GlobalKey();
   final ScrollController _controllerScroll = ScrollController();
 
@@ -73,7 +72,7 @@ class _DepBudgetState extends State<DepBudget> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       CustomAppbar(
-                          title: 'departement de finance',
+                          title: 'Ligne budgetaire pour départements',
                           controllerMenu: () =>
                               _key.currentState!.openDrawer()),
                       Expanded(
@@ -118,7 +117,6 @@ class _DepBudgetState extends State<DepBudget> {
                                 },
                                 trailing: const Icon(Icons.arrow_drop_down),
                                 children: const [
-                                  TableDepartementBudgetDD(),
                                   LigneBudgetaire()
                                 ],
                               ),

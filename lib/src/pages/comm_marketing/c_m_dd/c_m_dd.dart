@@ -89,17 +89,19 @@ class _CMDDState extends State<CMDD> {
                               child: ExpansionTile(
                                 leading: const Icon(Icons.folder),
                                 title:
-                                    Text('Dossier Campagnes', style: headline6),
+                                    Text('Dossier Campagnes', style: headline6!
+                                        .copyWith(color: Colors.white)),
                                 subtitle: Text(
                                     "Vous avez $campaignCount dossiers necessitent votre approbation",
-                                    style: bodyMedium),
+                                    style: bodyMedium!
+                                        .copyWith(color: Colors.white)),
                                 initiallyExpanded: false,
                                 onExpansionChanged: (val) {
                                   setState(() {
                                     isOpenRh1 = !val;
                                   });
                                 },
-                                trailing: const Icon(Icons.arrow_drop_down),
+                                trailing: const Icon(Icons.arrow_drop_down, color: Colors.white,),
                                 children: const [TableCampaignDD()],
                               ),
                             ),
@@ -111,14 +113,14 @@ class _CMDDState extends State<CMDD> {
                                     style: headline6),
                                 subtitle: Text(
                                     "Vous avez $succursaleCount dossiers necessitent votre approbation",
-                                    style: bodyMedium),
+                                    style: bodyMedium.copyWith(color: Colors.white)),
                                 initiallyExpanded: false,
                                 onExpansionChanged: (val) {
                                   setState(() {
                                     isOpenRh1 = !val;
                                   });
                                 },
-                                trailing: const Icon(Icons.arrow_drop_down),
+                                trailing: const Icon(Icons.arrow_drop_down, color: Colors.white,),
                                 children: const [TableSuccursaleDD()],
                               ),
                             ),
@@ -127,17 +129,17 @@ class _CMDDState extends State<CMDD> {
                               child: ExpansionTile(
                                 leading: const Icon(Icons.folder),
                                 title: Text('Dossier modèle produits',
-                                    style: headline6),
+                                    style: headline6.copyWith(color: Colors.white)),
                                 subtitle: Text(
                                     "Vous avez $prodModelCount dossiers necessitent votre approbation",
-                                    style: bodyMedium),
+                                    style: bodyMedium.copyWith(color: Colors.white)),
                                 initiallyExpanded: false,
                                 onExpansionChanged: (val) {
                                   setState(() {
                                     isOpenRh1 = !val;
                                   });
                                 },
-                                trailing: const Icon(Icons.arrow_drop_down),
+                                trailing: const Icon(Icons.arrow_drop_down, color: Colors.white,),
                                 children: const [TableProduitModelDD()],
                               ),
                             ),

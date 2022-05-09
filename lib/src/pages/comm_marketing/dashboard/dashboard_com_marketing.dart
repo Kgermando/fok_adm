@@ -122,7 +122,7 @@ class _ComMarketingState extends State<ComMarketing> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       CustomAppbar(
-                          title: 'Dashboard Commercial & Marketing',
+                          title: 'Commercial & Marketing',
                           controllerMenu: () =>
                               _key.currentState!.openDrawer()),
                       Expanded(
@@ -144,7 +144,7 @@ class _ComMarketingState extends State<ComMarketing> {
                                     number:
                                         '${NumberFormat.decimalPattern('fr').format(sumGain)} \$',
                                     title: 'Gains',
-                                    icon: Icons.turn_sharp_right_outlined,
+                                    icon: Icons.grain,
                                     color: Colors.green.shade700),
                                 DashNumberWidget(
                                     number:

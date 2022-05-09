@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:fokad_admin/src/api/comm_marketing/marketing/annuaire_api.dart';
 import 'package:fokad_admin/src/constants/app_theme.dart';
@@ -8,7 +9,6 @@ import 'package:fokad_admin/src/models/comm_maketing/annuaire_model.dart';
 import 'package:fokad_admin/src/navigation/drawer/drawer_menu.dart';
 import 'package:fokad_admin/src/navigation/header/custom_appbar.dart';
 import 'package:fokad_admin/src/pages/comm_marketing/marketing/components/annuaire/update_annuaire.dart';
-import 'package:routemaster/routemaster.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class DetailAnnuaire extends StatefulWidget {
@@ -48,8 +48,9 @@ class _DetailAnnuaireState extends State<DetailAnnuaire> {
 
   @override
   Widget build(BuildContext context) {
+    final headline5 = Theme.of(context).textTheme.headline5;
     final bodyText2 = Theme.of(context).textTheme.bodyText2;
-    final _size = MediaQuery.of(context).size;
+
     return Scaffold(
         key: _key,
         drawer: const DrawerMenu(),
@@ -100,11 +101,10 @@ class _DetailAnnuaireState extends State<DetailAnnuaire> {
                                           width: (Responsive.isDesktop(context))
                                               ? MediaQuery.of(context)
                                                       .size
-                                                      .width /
-                                                  2
+                                                      .width / 2
                                               : MediaQuery.of(context)
                                                   .size
-                                                  .width,
+                                                  .width / 1,
                                           decoration: BoxDecoration(
                                             borderRadius:
                                                 BorderRadius.circular(p10),
@@ -116,172 +116,98 @@ class _DetailAnnuaireState extends State<DetailAnnuaire> {
                                           child: ListView(
                                             controller: _controllerScroll,
                                             children: [
-                                              if (widget.annuaireModel
-                                                  .nomPostnomPrenom.isNotEmpty)
-                                                Container(
-                                                  height: _size.height / 4,
-                                                  width: double.infinity,
-                                                  padding: const EdgeInsets.all(
-                                                      16.0),
-                                                  decoration: BoxDecoration(
-                                                      color: widget.color),
-                                                  child: Responsive.isDesktop(
-                                                          context)
-                                                      ? Row(
-                                                          crossAxisAlignment:
-                                                              CrossAxisAlignment
-                                                                  .end,
-                                                          children: [
-                                                            const Icon(
-                                                              Icons
-                                                                  .perm_contact_cal_sharp,
+                                              Stack(
+                                                clipBehavior: Clip.none,
+                                                children: [
+                                                  Container(
+                                                    color: widget.color,
+                                                    height: 200,
+                                                    width: double.infinity,
+                                                  ),
+                                                  Positioned(
+                                                    top: 130,
+                                                    left: 50,
+                                                    child: Container(
+                                                      width: 100,
+                                                      height: 100,
+                                                      decoration: BoxDecoration(
+                                                          color: Colors
+                                                              .green.shade700,
+                                                          shape:
+                                                              BoxShape.circle,
+                                                          border: Border.all(
+                                                              width: 2.0,
+                                                              color: Colors
+                                                                  .amber
+                                                                  .shade700)),
+                                                      child: CircleAvatar(
+                                                        backgroundColor:
+                                                            Colors.white,
+                                                        child: Image.asset("assets/images/avatar.jpg",
+                                                        width: 100,
+                                                        height: 100, 
+                                                        fit: BoxFit.cover, centerSlice: Rect.fromCircle(center: const Offset(100, 100), radius: 50))
+                                                      ),
+                                                    ),
+                                                  ),
+                                                  Positioned(
+                                                      top: 150,
+                                                      left: 180,
+                                                      child: AutoSizeText(
+                                                         widget.annuaireModel.nomPostnomPrenom,
+                                                          maxLines: 2,
+                                                          style: headline5!
+                                                              .copyWith(
+                                                                  color: Colors
+                                                                      .white))),
+                                                  Positioned(
+                                                      top: 150,
+                                                      right: 20,
+                                                      child: Row(
+                                                        children: [
+                                                          IconButton(
+                                                              onPressed:
+                                                                  hasCallSupport
+                                                                      ? () =>
+                                                                          setState(
+                                                                              () {
+                                                                            _launched =
+                                                                                _makePhoneCall(widget.annuaireModel.mobile1);
+                                                                          })
+                                                                      : null,
+                                                              icon: const Icon(
+                                                                Icons.call,
+                                                                size: 40.0,
+                                                                color: Colors
+                                                                    .green,
+                                                              )),
+                                                          IconButton(
+                                                              onPressed: () {
+                                                                if (Platform
+                                                                    .isAndroid) {}
+                                                              },
+                                                              icon: const Icon(
+                                                                Icons.sms,
+                                                                size: 40.0,
+                                                                color: Colors
+                                                                    .green,
+                                                              )),
+                                                          const SizedBox(
+                                                              width: 8),
+                                                          IconButton(
+                                                            onPressed: () => {},
+                                                            icon: const Icon(
+                                                              Icons.email_sharp,
                                                               size: 40.0,
-                                                              // color: Colors.white,
+                                                              color:
+                                                                  Colors.purple,
                                                             ),
-                                                            const SizedBox(
-                                                                width: 8),
-                                                            SizedBox(
-                                                              width:
-                                                                  _size.width /
-                                                                      2,
-                                                              child: Text(
-                                                                widget
-                                                                    .annuaireModel
-                                                                    .nomPostnomPrenom,
-                                                                // style: headline4,
-                                                                style: const TextStyle(
-                                                                    fontSize:
-                                                                        30.0),
-                                                              ),
-                                                            ),
-                                                            const Spacer(),
-                                                            Row(
-                                                              children: [
-                                                                IconButton(
-                                                                    onPressed: hasCallSupport
-                                                                        ? () => setState(() {
-                                                                              _launched = _makePhoneCall(widget.annuaireModel.mobile1);
-                                                                            })
-                                                                        : null,
-                                                                    icon: const Icon(
-                                                                      Icons
-                                                                          .call,
-                                                                      size:
-                                                                          40.0,
-                                                                      color: Colors
-                                                                          .green,
-                                                                    )),
-                                                                IconButton(
-                                                                    onPressed:
-                                                                        () {
-                                                                      if (Platform
-                                                                          .isAndroid) {}
-                                                                    },
-                                                                    icon:
-                                                                        const Icon(
-                                                                      Icons.sms,
-                                                                      size:
-                                                                          40.0,
-                                                                      color: Colors
-                                                                          .green,
-                                                                    )),
-                                                                const SizedBox(
-                                                                    width: 8),
-                                                                IconButton(
-                                                                  onPressed:
-                                                                      () => {},
-                                                                  icon:
-                                                                      const Icon(
-                                                                    Icons
-                                                                        .email_sharp,
-                                                                    size: 40.0,
-                                                                    color: Colors
-                                                                        .purple,
-                                                                  ),
-                                                                ),
-                                                              ],
-                                                            )
-                                                          ],
-                                                        )
-                                                      : Column(
-                                                          mainAxisAlignment:
-                                                              MainAxisAlignment
-                                                                  .end,
-                                                          crossAxisAlignment:
-                                                              CrossAxisAlignment
-                                                                  .end,
-                                                          children: [
-                                                            Row(
-                                                              children: [
-                                                                const Icon(
-                                                                  Icons
-                                                                      .perm_contact_cal_sharp,
-                                                                  size: 40.0,
-                                                                  // color: Colors.white,
-                                                                ),
-                                                                const SizedBox(
-                                                                    width: 8),
-                                                                SizedBox(
-                                                                  width: _size
-                                                                          .width /
-                                                                      2,
-                                                                  child: Text(
-                                                                    widget
-                                                                        .annuaireModel
-                                                                        .nomPostnomPrenom,
-                                                                    // style: headline4,
-                                                                    style: Responsive.isDesktop(
-                                                                            context)
-                                                                        ? const TextStyle(
-                                                                            fontSize:
-                                                                                30.0)
-                                                                        : const TextStyle(
-                                                                            // color: Colors.white,
-                                                                            fontSize:
-                                                                                16.0),
-                                                                  ),
-                                                                ),
-                                                              ],
-                                                            ),
-                                                            Row(
-                                                              mainAxisAlignment:
-                                                                  MainAxisAlignment
-                                                                      .end,
-                                                              children: [
-                                                                IconButton(
-                                                                    onPressed: hasCallSupport
-                                                                        ? () => setState(() {
-                                                                              _launched = _makePhoneCall(widget.annuaireModel.mobile1);
-                                                                            })
-                                                                        : null,
-                                                                    icon: const Icon(
-                                                                      Icons
-                                                                          .call,
-                                                                      size:
-                                                                          40.0,
-                                                                      color: Colors
-                                                                          .green,
-                                                                    )),
-                                                                const SizedBox(
-                                                                    width: 8),
-                                                                IconButton(
-                                                                  onPressed:
-                                                                      () => {},
-                                                                  icon:
-                                                                      const Icon(
-                                                                    Icons
-                                                                        .email_sharp,
-                                                                    size: 40.0,
-                                                                    color: Colors
-                                                                        .purple,
-                                                                  ),
-                                                                ),
-                                                              ],
-                                                            ),
-                                                          ],
-                                                        ),
-                                                ),
-                                              const SizedBox(height: 16.0),
+                                                          ),
+                                                        ],
+                                                      ))
+                                                ],
+                                              ),
+                                              const SizedBox(height: p30),
                                               if (!widget.annuaireModel.email
                                                   .contains('null'))
                                                 Card(
