@@ -150,6 +150,13 @@ var addFactureCreancesUrl = Uri.parse("$mainUrl/facture-creances/insert-new-fact
 var ventesUrl = Uri.parse("$mainUrl/ventes/");
 var addVentesUrl = Uri.parse("$mainUrl/ventes/insert-new-vente");
 
+// Chart Commercial
+var venteChartsUrl = Uri.parse("$mainUrl/ventes/vente-chart/");
+var venteChartMonthsUrl = Uri.parse("$mainUrl/ventes/vente-chart-month/");
+var venteChartYearsUrl = Uri.parse("$mainUrl/ventes/vente-chart-year/");
+var gainChartMonthsUrl = Uri.parse("$mainUrl/gains/gain-chart-month/");
+var gainChartYearsUrl = Uri.parse("$mainUrl/gains/gain-chart-year/");
+
 var gainsUrl = Uri.parse("$mainUrl/gains/");
 var addGainsUrl = Uri.parse("$mainUrl/gains/insert-new-gain");
 
