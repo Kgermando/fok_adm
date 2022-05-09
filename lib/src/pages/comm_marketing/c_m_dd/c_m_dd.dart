@@ -87,7 +87,8 @@ class _CMDDState extends State<CMDD> {
                             Card(
                               color: Colors.pink.shade700,
                               child: ExpansionTile(
-                                leading: const Icon(Icons.folder),
+                                leading: const Icon(Icons.folder,
+                                    color: Colors.white),
                                 title:
                                     Text('Dossier Campagnes', style: headline6!
                                         .copyWith(color: Colors.white)),
@@ -108,9 +109,11 @@ class _CMDDState extends State<CMDD> {
                             Card(
                               color: Colors.blue.shade700,
                               child: ExpansionTile(
-                                leading: const Icon(Icons.folder),
+                                leading: const Icon(Icons.folder,
+                                    color: Colors.white),
                                 title: Text('Dossier Succursale',
-                                    style: headline6),
+                                    style: headline6.copyWith(
+                                        color: Colors.white)),
                                 subtitle: Text(
                                     "Vous avez $succursaleCount dossiers necessitent votre approbation",
                                     style: bodyMedium.copyWith(color: Colors.white)),
@@ -127,7 +130,8 @@ class _CMDDState extends State<CMDD> {
                             Card(
                               color: Colors.grey.shade700,
                               child: ExpansionTile(
-                                leading: const Icon(Icons.folder),
+                                leading: const Icon(Icons.folder,
+                                    color: Colors.white),
                                 title: Text('Dossier modèle produits',
                                     style: headline6.copyWith(color: Colors.white)),
                                 subtitle: Text(

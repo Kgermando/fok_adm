@@ -44,7 +44,7 @@ class _CompteResultatState extends State<CompteResultat> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       CustomAppbar(
-                          title: 'Resultats',
+                          title: 'Résultats',
                           controllerMenu: () =>
                               _key.currentState!.openDrawer()),
                       const Expanded(child: TableCompteResultat())
