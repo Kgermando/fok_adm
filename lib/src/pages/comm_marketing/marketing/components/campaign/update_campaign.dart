@@ -14,7 +14,6 @@ import 'package:fokad_admin/src/widgets/btn_widget.dart';
 import 'package:fokad_admin/src/widgets/button_widget.dart';
 import 'package:fokad_admin/src/widgets/title_widget.dart';
 import 'package:intl/intl.dart';
-import 'package:routemaster/routemaster.dart';
 
 class UpdateCampaign extends StatefulWidget {
   const UpdateCampaign({Key? key, required this.campaignModel})
@@ -412,6 +411,7 @@ class _UpdateCampaignState extends State<UpdateCampaign> {
         objetctifs: objetctifsController.text,
         ligneBudgtaire: '-',
         resources: '-',
+        observation: false,
         approbationDG: '-',
         signatureDG: '-',
         signatureJustificationDG: '-',

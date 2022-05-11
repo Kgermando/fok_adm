@@ -187,7 +187,11 @@ class _TableCampaignFinState extends State<TableCampaignFin> {
 
   Future agentsRow() async {
     List<CampaignModel?> dataList = await CampaignApi().getAllData();
-    var data = dataList.where((element) => element!.approbationDD == '-');
+    var data = dataList
+        .where((element) =>
+            element!.approbationDD == "Approved" &&
+            element.approbationBudget == "Approved")
+        .toList();
 
     if (mounted) {
       setState(() {

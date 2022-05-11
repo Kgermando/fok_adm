@@ -9,7 +9,6 @@ import 'package:fokad_admin/src/navigation/header/custom_appbar.dart';
 import 'package:fokad_admin/src/widgets/print_widget.dart';
 import 'package:fokad_admin/src/widgets/title_widget.dart';
 import 'package:intl/intl.dart';
-import 'package:routemaster/routemaster.dart';
 
 class DetailEtatMateriel extends StatefulWidget {
   const DetailEtatMateriel({Key? key, this.id}) : super(key: key);
@@ -164,16 +163,8 @@ class _DetailEtatMaterielState extends State<DetailEtatMateriel> {
                   TitleWidget(title: data.modele),
                   Column(
                     children: [
-                      Row(
-                        children: [
-                          IconButton(
-                              tooltip: 'Modifier',
-                              onPressed: () {},
-                              icon: const Icon(Icons.edit)),
-                          PrintWidget(
-                              tooltip: 'Imprimer le document', onPressed: () {})
-                        ],
-                      ),
+                        PrintWidget(
+                          tooltip: 'Imprimer le document', onPressed: () {}),
                       SelectableText(
                           DateFormat("dd-MM-yy HH:mm").format(data.created),
                           textAlign: TextAlign.start),
@@ -260,6 +251,19 @@ class _DetailEtatMaterielState extends State<DetailEtatMateriel> {
           Divider(
             color: Colors.amber.shade700,
           ),
+          if (user!.fonctionOccupe == "Directeur de departement")
+            Row(
+              children: [
+                Expanded(
+                  child: Text('Changez Statut :',
+                      textAlign: TextAlign.start,
+                      style: bodyMedium.copyWith(fontWeight: FontWeight.bold)),
+                ),
+                Expanded(
+                  child: typeObjetWidget(data),
+                )
+              ],
+            ),
           Row(
             children: [
               Expanded(
@@ -305,6 +309,35 @@ class _DetailEtatMaterielState extends State<DetailEtatMateriel> {
             ],
           ),
         ],
+      ),
+    );
+  }
+
+  Widget typeObjetWidget(EtatMaterielModel data) {
+    List<String> typeObjetList = ["Anguin", "Mobilier", "Immobilier"];
+    return Container(
+      margin: const EdgeInsets.only(bottom: p20),
+      child: DropdownButtonFormField<String>(
+        decoration: InputDecoration(
+          labelText: 'Type d\'Objet',
+          labelStyle: const TextStyle(),
+          border: OutlineInputBorder(borderRadius: BorderRadius.circular(5.0)),
+          contentPadding: const EdgeInsets.only(left: 5.0),
+        ),
+        value: typeObjet,
+        isExpanded: true,
+        items: typeObjetList.map((String value) {
+          return DropdownMenuItem<String>(
+            value: value,
+            child: Text(value),
+          );
+        }).toList(),
+        onChanged: (value) {
+          setState(() {
+            typeObjet = value!;
+            submitStatut(data);
+          });
+        },
       ),
     );
   }
@@ -818,6 +851,36 @@ class _DetailEtatMaterielState extends State<DetailEtatMateriel> {
         ),
       ),
     );
+  }
+
+  Future<void> submitStatut(EtatMaterielModel data) async {
+    final etatMaterielModel = EtatMaterielModel(
+        nom: data.nom,
+        modele: data.modele,
+        marque: data.marque,
+        typeObjet: data.typeObjet,
+        statut: typeObjet.toString(),
+        approbationDG: approbationDGController.toString(),
+        signatureDG: user!.matricule.toString(),
+        signatureJustificationDG: signatureJustificationDGController.text,
+        approbationFin: data.approbationFin.toString(),
+        signatureFin: data.signatureFin.toString(),
+        signatureJustificationFin: data.signatureJustificationFin.toString(),
+        approbationBudget: data.approbationBudget.toString(),
+        signatureBudget: data.signatureBudget.toString(),
+        signatureJustificationBudget:
+            data.signatureJustificationBudget.toString(),
+        approbationDD: data.approbationDD.toString(),
+        signatureDD: data.signatureDD.toString(),
+        signatureJustificationDD: data.signatureJustificationDD.toString(),
+        signature: data.signature,
+        created: data.created);
+    await EtatMaterielApi().updateData(data.id!, etatMaterielModel);
+    Navigator.of(context).pop();
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      content: const Text("Soumis avec succès!"),
+      backgroundColor: Colors.green[700],
+    ));
   }
 
   Future<void> submitUpdateDG(EtatMaterielModel data) async {

@@ -26,7 +26,6 @@ class FonctionOccupee {
   ];
 
    List<String> finDropdown = [
-    'Directeur des finances',
     'Directeur de departement',
     'Directeur de budget',
     'Chef de service',

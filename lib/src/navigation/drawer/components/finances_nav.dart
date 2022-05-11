@@ -44,13 +44,13 @@ class _FinancesNavState extends State<FinancesNav> {
               // Navigator.of(context).pop();
             }),
         DrawerWidget(
-            selected: widget.pageCurrente == FinanceRoutes.financeDashboard,
+            selected: widget.pageCurrente == FinanceRoutes.finDD,
             icon: Icons.manage_accounts,
             sizeIcon: 20.0,
             title: 'Directeur de departement',
             style: bodyText1,
             onTap: () {
-              Routemaster.of(context).replace(FinanceRoutes.financeDashboard);
+              Routemaster.of(context).replace(FinanceRoutes.finDD);
               // Navigator.of(context).pop();
             }),
         ExpansionTile(
@@ -121,18 +121,6 @@ class _FinancesNavState extends State<FinancesNav> {
                 onTap: () {
                   Routemaster.of(context)
                       .replace(FinanceRoutes.transactionsFinancementExterne);
-                  // Navigator.of(context).pop();
-                }),
-            DrawerWidget(
-                selected:
-                    widget.pageCurrente == FinanceRoutes.transactionsPaiement,
-                icon: Icons.arrow_right,
-                sizeIcon: 15.0,
-                title: 'Paiement salaire',
-                style: bodyText2,
-                onTap: () {
-                  Routemaster.of(context)
-                      .replace(FinanceRoutes.transactionsPaiement);
                   // Navigator.of(context).pop();
                 }),
           ],

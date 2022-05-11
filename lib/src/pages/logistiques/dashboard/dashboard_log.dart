@@ -215,77 +215,71 @@ class _DashboardLogState extends State<DashboardLog> {
                                   icon: Icons.ev_station_sharp,
                                   color: Colors.green.shade700),
                                 DashNumberWidget(
-                                  number: '$sortieEssence',
-                                  title: 'Essence Consommation',
-                                  icon: Icons.ev_station_sharp,
-                                  color: Colors.pink.shade700),
+                                    number: '$entrerMazoute',
+                                    title: 'Mazoute Ravitailement',
+                                    icon: Icons.ev_station_sharp,
+                                    color: Colors.green.shade700),
                                 DashNumberWidget(
-                                  number: '${entrerEssence - sortieEssence}',
-                                  title: 'Essence Disponible',
-                                  icon: Icons.ev_station_sharp,
-                                  color: Colors.orange.shade700),
+                                    number: '$entrerPetrole',
+                                    title: 'Petrole Ravitailement',
+                                    icon: Icons.ev_station_sharp,
+                                    color: Colors.green.shade700),
+                                DashNumberWidget(
+                                    number: '$entrerHuilleMoteur',
+                                    title: 'Huile Moteur Ravitailement',
+                                    icon: Icons.ev_station_sharp,
+                                    color: Colors.green.shade700),
                               ],
                             ),
                             Wrap(
                               alignment: WrapAlignment.spaceEvenly,
                               children: [
-                                DashNumberWidget(
-                                  number: '$entrerMazoute',
-                                  title: 'Mazoute Ravitailement',
-                                  icon: Icons.ev_station_sharp,
-                                  color: Colors.green.shade700),
+                                 DashNumberWidget(
+                                    number: '$sortieEssence',
+                                    title: 'Essence Consommation',
+                                    icon: Icons.ev_station_sharp,
+                                    color: Colors.pink.shade700),
                                 DashNumberWidget(
                                   number: '$sortieMazoute',
                                   title: 'Mazoute Consommation',
                                   icon: Icons.ev_station_sharp,
                                   color: Colors.pink.shade700),
                                 DashNumberWidget(
-                                  number: '${entrerMazoute - sortieMazoute}',
-                                  title: 'Mazoute Disponible ',
-                                  icon: Icons.ev_station_sharp,
-                                  color: Colors.orange.shade700),
+                                    number: '$sortiePetrole',
+                                    title: 'Petrole Consommation',
+                                    icon: Icons.ev_station_sharp,
+                                    color: Colors.pink.shade700),
+                                DashNumberWidget(
+                                    number: '$sortieHuilleMoteur',
+                                    title: 'Huile Moteur Consommation',
+                                    icon: Icons.ev_station_sharp,
+                                    color: Colors.pink.shade700),
                               ],
                             ),
                             Wrap(
                               alignment: WrapAlignment.spaceEvenly,
                               children: [
+                                 DashNumberWidget(
+                                    number: '${entrerEssence - sortieEssence}',
+                                    title: 'Essence Disponible',
+                                    icon: Icons.ev_station_sharp,
+                                    color: Colors.orange.shade700),
                                 DashNumberWidget(
-                                  number: '$entrerPetrole',
-                                  title: 'Petrole Ravitailement',
-                                  icon: Icons.ev_station_sharp,
-                                  color: Colors.green.shade700),
-                                DashNumberWidget(
-                                  number: '$sortiePetrole',
-                                  title: 'Petrole Consommation',
-                                  icon: Icons.ev_station_sharp,
-                                  color: Colors.pink.shade700),
+                                    number: '${entrerMazoute - sortieMazoute}',
+                                    title: 'Mazoute Disponible ',
+                                    icon: Icons.ev_station_sharp,
+                                    color: Colors.orange.shade700),
                                 DashNumberWidget(
                                   number: '${entrerPetrole - sortiePetrole}',
                                   title: 'Petrole Disponible ',
                                   icon: Icons.ev_station_sharp,
                                   color: Colors.orange.shade700),
-                              ],
-                            ),
-                            Wrap(
-                              alignment: WrapAlignment.spaceEvenly,
-                              children: [
                                 DashNumberWidget(
-                                  number: '$entrerHuilleMoteur',
-                                  title: 'Huile Moteur Ravitailement',
-                                  icon: Icons.ev_station_sharp,
-                                  color: Colors.green.shade700),
-                                DashNumberWidget(
-                                  number: '$sortieHuilleMoteur',
-                                  title: 'Huile Moteur Consommation',
-                                  icon: Icons.ev_station_sharp,
-                                  color: Colors.pink.shade700),
-                                DashNumberWidget(
-                                  number:
-                                      '${entrerHuilleMoteur - sortieHuilleMoteur}',
-                                  title: 'Huile Moteur Disponible ',
-                                  icon: Icons.ev_station_sharp,
-                                  color: Colors.orange.shade700
-                                ),
+                                    number:
+                                        '${entrerHuilleMoteur - sortieHuilleMoteur}',
+                                    title: 'Huile Moteur Disponible ',
+                                    icon: Icons.ev_station_sharp,
+                                    color: Colors.orange.shade700),
                               ],
                             ),
                           ],
@@ -299,4 +293,7 @@ class _DashboardLogState extends State<DashboardLog> {
           ),
         ));
   }
+
+
+  
 }

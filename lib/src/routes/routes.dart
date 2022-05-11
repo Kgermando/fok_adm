@@ -150,7 +150,6 @@ class FinanceRoutes {
   static const transactionsFinancementExterne =
       "/transactions-financement-externe";
   static const transactionsDepenses = "/transactions-depenses";
-  static const transactionsPaiement = "/transactions-paiement";
   static const finDD = "/fin-dd";
 }
 
@@ -299,8 +298,6 @@ class Routing {
             const MaterialPage(child: CreanceTransactions()),
         FinanceRoutes.transactionsDettes: (_) =>
             const MaterialPage(child: DetteTransactions()),
-        FinanceRoutes.transactionsPaiement: (_) =>
-            const MaterialPage(child: PaiementTransaction()),
         FinanceRoutes.transactionsFinancementExterne: (_) =>
             const MaterialPage(child: FinExterneTransactions()),
         FinanceRoutes.finDD: (_) => const MaterialPage(child: DepartementFin()),

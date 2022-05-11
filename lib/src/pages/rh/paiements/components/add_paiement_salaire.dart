@@ -414,7 +414,7 @@ class _AddPaiementSalaireState extends State<AddPaiementSalaire> {
           children: [
             Expanded(
               child: Text(
-                'departement',
+                'Département',
                 style: bodyMedium.copyWith(fontWeight: FontWeight.bold),
               ),
             ),

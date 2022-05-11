@@ -14,7 +14,7 @@ import 'package:fokad_admin/src/utils/priority_dropdown.dart';
 import 'package:fokad_admin/src/widgets/btn_widget.dart';
 import 'package:fokad_admin/src/widgets/print_widget.dart';
 import 'package:fokad_admin/src/widgets/title_widget.dart';
-import 'package:routemaster/routemaster.dart';
+
 
 class DevisPage extends StatefulWidget {
   const DevisPage({Key? key}) : super(key: key);
@@ -445,6 +445,7 @@ class _DevisPageState extends State<DevisPage> {
         list: jsonList,
         ligneBudgtaire: '-',
         resources: '-',
+        observation: false,
         approbationDG: '-',
         signatureDG: '-',
         signatureJustificationDG: '-',

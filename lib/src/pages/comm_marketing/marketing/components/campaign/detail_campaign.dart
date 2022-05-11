@@ -13,7 +13,6 @@ import 'package:fokad_admin/src/pages/comm_marketing/marketing/components/campai
 import 'package:fokad_admin/src/widgets/print_widget.dart';
 import 'package:fokad_admin/src/widgets/title_widget.dart';
 import 'package:intl/intl.dart';
-import 'package:routemaster/routemaster.dart';
 
 class DetailCampaign extends StatefulWidget {
   const DetailCampaign({Key? key, this.id}) : super(key: key);
@@ -26,6 +25,7 @@ class DetailCampaign extends StatefulWidget {
 class _DetailCampaignState extends State<DetailCampaign> {
   final GlobalKey<ScaffoldState> _key = GlobalKey();
   bool isLoading = false;
+  bool isChecked = false;
 
   String approbationDGController = '-';
   String approbationFinController = '-';
@@ -335,8 +335,72 @@ class _DetailCampaignState extends State<DetailCampaign> {
             ],
           ),
           Divider(color: Colors.amber.shade700),
+          Row(
+            children: [
+              Expanded(
+                child: Text(
+                  'Observation',
+                  style: bodyMedium.copyWith(fontWeight: FontWeight.bold),
+                ),
+              ),
+              const SizedBox(
+                width: p10,
+              ),
+              if (!data.observation && user!.departement == "Finances")
+                Expanded(child: checkboxRead(data)),
+              Expanded(
+                  child: (data.observation)
+                      ? SelectableText(
+                          'Payé',
+                          style: bodyMedium.copyWith(
+                              color: Colors.greenAccent.shade700),
+                        )
+                      : SelectableText(
+                          'Non payé',
+                          style: bodyMedium.copyWith(
+                              color: Colors.redAccent.shade700),
+                        ))
+            ],
+          ),
+          Divider(color: Colors.amber.shade700),
         ],
       ),
+    );
+  }
+
+  Color getColor(Set<MaterialState> states) {
+    const Set<MaterialState> interactiveStates = <MaterialState>{
+      MaterialState.pressed,
+      MaterialState.hovered,
+      MaterialState.focused,
+    };
+    if (states.any(interactiveStates.contains)) {
+      return Colors.red;
+    }
+    return Colors.green;
+  }
+
+  checkboxRead(CampaignModel data) {
+    isChecked = data.observation;
+    return ListTile(
+      leading: Checkbox(
+        checkColor: Colors.white,
+        fillColor: MaterialStateProperty.resolveWith(getColor),
+        value: isChecked,
+        onChanged: (bool? value) {
+          setState(() {
+            isLoading = true;
+          });
+          setState(() {
+            isChecked = value!;
+            submitobservation(data);
+          });
+          setState(() {
+            isLoading = false;
+          });
+        },
+      ),
+      title: const Text("Confirmation de payement"),
     );
   }
 
@@ -896,6 +960,7 @@ class _DetailCampaignState extends State<DetailCampaign> {
         objetctifs: data.objetctifs,
         ligneBudgtaire: data.ligneBudgtaire,
         resources: data.resources,
+        observation: data.observation,
         approbationDG: approbationDGController.toString(),
         signatureDG: user!.matricule.toString(),
         signatureJustificationDG: signatureJustificationDGController.text,
@@ -930,6 +995,7 @@ class _DetailCampaignState extends State<DetailCampaign> {
         objetctifs: data.objetctifs,
         ligneBudgtaire: data.ligneBudgtaire,
         resources: data.resources,
+        observation: data.observation,
         approbationDG: data.approbationDG.toString(),
         signatureDG: data.signatureDG.toString(),
         signatureJustificationDG: data.signatureJustificationDG.toString(),
@@ -964,6 +1030,7 @@ class _DetailCampaignState extends State<DetailCampaign> {
         objetctifs: data.objetctifs,
         ligneBudgtaire: data.ligneBudgtaire,
         resources: data.resources,
+        observation: data.observation,
         approbationDG: data.approbationDG.toString(),
         signatureDG: data.signatureDG.toString(),
         signatureJustificationDG: data.signatureJustificationDG.toString(),
@@ -998,6 +1065,7 @@ class _DetailCampaignState extends State<DetailCampaign> {
         objetctifs: data.objetctifs,
         ligneBudgtaire: data.ligneBudgtaire,
         resources: data.resources,
+        observation: data.observation,
         approbationDG: data.approbationDG.toString(),
         signatureDG: data.signatureDG.toString(),
         signatureJustificationDG: data.signatureJustificationDG.toString(),
@@ -1015,9 +1083,44 @@ class _DetailCampaignState extends State<DetailCampaign> {
         created: data.created);
 
     await CampaignApi().updateData(data.id!, campaignModel);
+     Navigator.of(context).pop();
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      content: const Text("Mise à jour avec succès!"),
+      backgroundColor: Colors.green[700],
+    ));
+  }
+
+  Future<void> submitobservation(CampaignModel data) async {
+    final campaignModel = CampaignModel(
+      typeProduit: data.typeProduit,
+      dateDebutEtFin: data.dateDebutEtFin,
+      agentAffectes: data.agentAffectes,
+      coutCampaign: data.coutCampaign,
+      lieuCible: data.lieuCible,
+      promotion: data.promotion,
+      objetctifs: data.objetctifs,
+      ligneBudgtaire: data.ligneBudgtaire,
+      resources: data.resources,
+      observation: isChecked,
+      approbationDG: data.approbationDG,
+      signatureDG: data.signatureDG,
+      signatureJustificationDG: data.signatureJustificationDG,
+      approbationFin: data.approbationFin,
+      signatureFin: data.signatureFin,
+      signatureJustificationFin: data.signatureJustificationFin,
+      approbationBudget: data.approbationBudget,
+      signatureBudget: data.signatureBudget,
+      signatureJustificationBudget: data.signatureJustificationBudget,
+      approbationDD: data.approbationDD,
+      signatureDD: data.signatureDD,
+      signatureJustificationDD: data.signatureJustificationDD,
+      signature: data.signature,
+      created: data.created
+    );
+    await CampaignApi().updateData(data.id!, campaignModel);
     Navigator.of(context).pop();
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-      content: const Text("Soumis avec succès!"),
+      content: const Text("Mise à jour avec succès!"),
       backgroundColor: Colors.green[700],
     ));
   }

@@ -12,7 +12,6 @@ import 'package:fokad_admin/src/navigation/header/custom_appbar.dart';
 import 'package:fokad_admin/src/widgets/print_widget.dart';
 import 'package:fokad_admin/src/widgets/title_widget.dart';
 import 'package:intl/intl.dart';
-import 'package:routemaster/routemaster.dart';
 
 class PaiementBulletin extends StatefulWidget {
   const PaiementBulletin({Key? key, this.id}) : super(key: key);
@@ -28,6 +27,8 @@ class _PaiementBulletinState extends State<PaiementBulletin> {
   final _formKey = GlobalKey<FormState>();
   bool isLoading = false;
 
+  bool isChecked = false;
+
   String approbationDGController = '-';
   String approbationFinController = '-';
   String approbationBudgetController = '-';
@@ -40,6 +41,8 @@ class _PaiementBulletinState extends State<PaiementBulletin> {
       TextEditingController();
   TextEditingController signatureJustificationDDController =
       TextEditingController();
+
+  String? paye;
 
   @override
   void initState() {
@@ -457,6 +460,8 @@ class _PaiementBulletinState extends State<PaiementBulletin> {
             const SizedBox(
               width: p10,
             ),
+            if (!data.observation && user!.departement == "Finances")
+            Expanded(child: checkboxRead(data)),
             Expanded(
                 child: (data.observation)
                     ? SelectableText(
@@ -491,6 +496,42 @@ class _PaiementBulletinState extends State<PaiementBulletin> {
           ],
         ),
       ],
+    );
+  }
+
+  Color getColor(Set<MaterialState> states) {
+    const Set<MaterialState> interactiveStates = <MaterialState>{
+      MaterialState.pressed,
+      MaterialState.hovered,
+      MaterialState.focused,
+    };
+    if (states.any(interactiveStates.contains)) {
+      return Colors.red;
+    }
+    return Colors.green;
+  }
+
+  checkboxRead(PaiementSalaireModel data) {
+    isChecked = data.observation;
+    return ListTile(
+      leading: Checkbox(
+        checkColor: Colors.white,
+        fillColor: MaterialStateProperty.resolveWith(getColor),
+        value: isChecked,
+        onChanged: (bool? value) {
+          setState(() {
+            isLoading = true;
+          });
+          setState(() {
+            isChecked = value!;
+            submitobservation(data);
+          });
+          setState(() {
+            isLoading = false;
+          });
+        },
+      ),
+      title: const Text("Confirmation de payement"),
     );
   }
 
@@ -1746,7 +1787,7 @@ class _PaiementBulletinState extends State<PaiementBulletin> {
     await PaiementSalaireApi().updateData(data.id!, paiementSalaireModel);
     Navigator.of(context).pop();
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-      content: const Text("Soumis avec succès!"),
+      content: const Text("Mise à jour avec succès!"),
       backgroundColor: Colors.green[700],
     ));
   }
@@ -1823,7 +1864,7 @@ class _PaiementBulletinState extends State<PaiementBulletin> {
     await PaiementSalaireApi().updateData(data.id!, paiementSalaireModel);
     Navigator.of(context).pop();
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-      content: const Text("Soumis avec succès!"),
+      content: const Text("Mise à jour avec succès!"),
       backgroundColor: Colors.green[700],
     ));
   }
@@ -1900,7 +1941,7 @@ class _PaiementBulletinState extends State<PaiementBulletin> {
     await PaiementSalaireApi().updateData(widget.id!, paiementSalaireModel);
     Navigator.of(context).pop();
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-      content: const Text("Soumis avec succès!"),
+      content: const Text("Mise à jour avec succès!"),
       backgroundColor: Colors.green[700],
     ));
   }
@@ -1977,8 +2018,78 @@ class _PaiementBulletinState extends State<PaiementBulletin> {
     await PaiementSalaireApi().updateData(widget.id!, paiementSalaireModel);
     Navigator.of(context).pop();
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-      content: const Text("Soumis avec succès!"),
+      content: const Text("Mise à jour avec succès!"),
       backgroundColor: Colors.green[700],
     ));
   }
+
+  Future<void> submitobservation(PaiementSalaireModel data) async {
+    final paiementSalaireModel = PaiementSalaireModel(
+        nom: data.nom,
+        postNom: data.postNom,
+        prenom: data.prenom,
+        telephone: data.telephone,
+        adresse: data.adresse,
+        departement: data.departement,
+        numeroSecuriteSociale: data.numeroSecuriteSociale,
+        matricule:data. matricule,
+        servicesAffectation: data.servicesAffectation,
+        salaire: data.salaire,
+        observation: isChecked,
+        modePaiement: data.modePaiement,
+        createdAt: data.createdAt,
+        ligneBudgtaire: data.ligneBudgtaire,
+        resources: data.resources,
+        tauxJourHeureMoisSalaire: data.tauxJourHeureMoisSalaire,
+        joursHeuresPayeA100PourecentSalaire:
+            data.joursHeuresPayeA100PourecentSalaire,
+        totalDuSalaire: data.totalDuSalaire,
+        nombreHeureSupplementaires: data.nombreHeureSupplementaires,
+        tauxHeureSupplementaires: data.tauxHeureSupplementaires,
+        totalDuHeureSupplementaires: data.totalDuHeureSupplementaires,
+        supplementTravailSamediDimancheJoursFerie:
+            data.supplementTravailSamediDimancheJoursFerie,
+        prime: data.prime,
+        divers: data.divers,
+        joursCongesPaye: data.joursCongesPaye,
+        tauxCongesPaye: data.tauxCongesPaye,
+        totalDuCongePaye: data.totalDuCongePaye,
+        jourPayeMaladieAccident: data.jourPayeMaladieAccident,
+        tauxJournalierMaladieAccident: data.tauxJournalierMaladieAccident,
+        totalDuMaladieAccident: data.totalDuMaladieAccident,
+        pensionDeduction: data.pensionDeduction,
+        indemniteCompensatricesDeduction: data.indemniteCompensatricesDeduction,
+        avancesDeduction: data.avancesDeduction,
+        diversDeduction: data.diversDeduction,
+        retenuesFiscalesDeduction: data.retenuesFiscalesDeduction,
+        nombreEnfantBeneficaireAllocationsFamiliales:
+            data.nombreEnfantBeneficaireAllocationsFamiliales,
+        nombreDeJoursAllocationsFamiliales: data.nombreDeJoursAllocationsFamiliales,
+        tauxJoursAllocationsFamiliales: data.tauxJoursAllocationsFamiliales,
+        totalAPayerAllocationsFamiliales: data.totalAPayerAllocationsFamiliales,
+        netAPayer: data.netAPayer,
+        montantPrisConsiderationCalculCotisationsINSS:
+            data.montantPrisConsiderationCalculCotisationsINSS,
+        totalDuBrut: data.totalDuBrut,
+        approbationDG: data.approbationDG,
+        signatureDG: data.signatureDG,
+        signatureJustificationDG: data.signatureJustificationDG,
+        approbationFin: data.approbationFin,
+        signatureFin: data.signatureFin,
+        signatureJustificationFin: data.signatureJustificationFin,
+        approbationBudget: data.approbationBudget,
+        signatureBudget: data.signatureBudget,
+        signatureJustificationBudget: data.signatureJustificationBudget,
+        approbationDD: data.approbationDD,
+        signatureDD: data.signatureDD,
+        signatureJustificationDD: data.signatureJustificationDD,
+        signature: data.signature);
+    await PaiementSalaireApi().updateData(widget.id!, paiementSalaireModel);
+    Navigator.of(context).pop();
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      content: const Text("Mise à jour avec succès!"),
+      backgroundColor: Colors.green[700],
+    ));
+  }
+
 }

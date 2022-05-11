@@ -1,6 +1,8 @@
 import 'package:badges/badges.dart';
 import 'package:flutter/material.dart';
 import 'package:fokad_admin/src/api/comm_marketing/marketing/campaign_api.dart';
+import 'package:fokad_admin/src/api/devis/devis_api.dart';
+import 'package:fokad_admin/src/api/exploitations/projets_api.dart';
 import 'package:fokad_admin/src/api/rh/paiement_salaire_api.dart';
 import 'package:fokad_admin/src/constants/app_theme.dart';
 import 'package:fokad_admin/src/constants/responsive.dart';
@@ -9,6 +11,8 @@ import 'package:fokad_admin/src/models/rh/paiement_salaire_model.dart';
 import 'package:fokad_admin/src/navigation/drawer/drawer_menu.dart';
 import 'package:fokad_admin/src/navigation/header/custom_appbar.dart';
 import 'package:fokad_admin/src/pages/finances/dd_finance/components/table_campaign_fin.dart';
+import 'package:fokad_admin/src/pages/finances/dd_finance/components/table_devis_dd.dart';
+import 'package:fokad_admin/src/pages/finances/dd_finance/components/table_projet_fin.dart';
 import 'package:fokad_admin/src/pages/finances/dd_finance/components/table_salaire_fin.dart';
 
 class DepartementFin extends StatefulWidget {
@@ -26,8 +30,10 @@ class _DepartementFinState extends State<DepartementFin> {
   bool isOpenRh2 = false;
   bool isOpenCampaign = false;
 
-  int nonPaye = 0;
+  int salaireCount = 0;
   int campaignCount = 0;
+  int devisCount = 0;
+  int projetCount = 0;
 
   @override
   void initState() {
@@ -36,17 +42,35 @@ class _DepartementFinState extends State<DepartementFin> {
   }
 
   Future<void> getData() async {
-    // UserModel userLoggIn = await AuthApi().getUserId();
     List<PaiementSalaireModel?> dataList =
         await PaiementSalaireApi().getAllData();
     List<CampaignModel> campaign = await CampaignApi().getAllData();
+    var devis = await DevisAPi().getAllData();
+    var projets = await ProjetsApi().getAllData();
+
     setState(() {
-      nonPaye = dataList
-          .where((element) => element!.approbationFin != '-')
+      salaireCount = dataList
+          .where((element) =>
+              element!.approbationFin != '-' &&
+              element.approbationDG == 'Approved')
           .toList()
           .length;
       campaignCount = campaign
-          .where((element) => element.approbationFin != '-')
+          .where((element) =>
+              element.approbationFin != '-' &&
+              element.approbationDG == 'Approved')
+          .toList()
+          .length;
+      devisCount = devis
+          .where((element) =>
+              element.approbationFin != '-' &&
+              element.approbationDG == 'Approved')
+          .toList()
+          .length;
+      projetCount = projets
+          .where((element) =>
+              element.approbationFin != '-' &&
+              element.approbationDG == 'Approved')
           .toList()
           .length;
     });
@@ -75,7 +99,7 @@ class _DepartementFinState extends State<DepartementFin> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       CustomAppbar(
-                          title: 'departement de finance',
+                          title: 'Département de finance',
                           controllerMenu: () =>
                               _key.currentState!.openDrawer()),
                       Expanded(
@@ -85,60 +109,103 @@ class _DepartementFinState extends State<DepartementFin> {
                           controller: _controllerScroll,
                           children: [
                             Card(
-                              color: const Color.fromARGB(255, 126, 170, 214),
+                              color: Colors.red.shade700,
                               child: ExpansionTile(
-                                leading: const Icon(Icons.folder),
-                                title:
-                                    Text('Dossier Salaires', style: headline6),
+                                leading: const Icon(Icons.folder,
+                                    color: Colors.white),
+                                title: Text('Dossier Salaires',
+                                    style: headline6!
+                                        .copyWith(color: Colors.white)),
                                 subtitle: Text(
-                                    "Ces dossiers necessitent votre approbation",
-                                    style: bodyMedium),
+                                    "Vous avez $salaireCount dossiers necessitent votre approbation",
+                                    style: bodyMedium!
+                                        .copyWith(color: Colors.white)),
                                 initiallyExpanded: false,
                                 onExpansionChanged: (val) {
                                   setState(() {
                                     isOpenRh1 = !val;
                                   });
                                 },
-                                trailing: Row(
-                                  children: [
-                                    Badge(
-                                      elevation: 10,
-                                      badgeContent: Text(nonPaye.toString()),
-                                      position: const BadgePosition(top: 20.0),
-                                    ),
-                                    const Icon(Icons.arrow_drop_down),
-                                  ],
+                                trailing: const Icon(
+                                  Icons.arrow_drop_down,
+                                  color: Colors.white,
                                 ),
                                 children: const [TableSalairesFIN()],
                               ),
                             ),
                             Card(
-                              color: const Color.fromARGB(255, 126, 170, 214),
+                              color: Colors.yellow.shade700,
                               child: ExpansionTile(
-                                leading: const Icon(Icons.folder),
-                                title:
-                                    Text('Dossier Campaign', style: headline6),
+                                leading: const Icon(Icons.folder,
+                                    color: Colors.white),
+                                title: Text('Dossier Campaigns',
+                                    style: headline6.copyWith(
+                                        color: Colors.white)),
                                 subtitle: Text(
-                                    "Ces dossiers necessitent votre approbation",
-                                    style: bodyMedium),
+                                    "Vous avez $campaignCount dossiers necessitent votre approbation",
+                                    style: bodyMedium.copyWith(
+                                        color: Colors.white)),
                                 initiallyExpanded: false,
                                 onExpansionChanged: (val) {
                                   setState(() {
-                                    isOpenCampaign = !val;
+                                    isOpenRh1 = !val;
                                   });
                                 },
-                                trailing: Row(
-                                  children: [
-                                    Badge(
-                                      elevation: 10,
-                                      badgeContent:
-                                          Text(campaignCount.toString()),
-                                      position: const BadgePosition(top: 20.0),
-                                    ),
-                                    const Icon(Icons.arrow_drop_down),
-                                  ],
+                                trailing: const Icon(
+                                  Icons.arrow_drop_down,
+                                  color: Colors.white,
                                 ),
                                 children: const [TableCampaignFin()],
+                              ),
+                            ),
+                            Card(
+                              color: Colors.grey.shade700,
+                              child: ExpansionTile(
+                                leading: const Icon(Icons.folder,
+                                    color: Colors.white),
+                                title: Text('Dossier Etat de besoins',
+                                    style: headline6.copyWith(
+                                        color: Colors.white)),
+                                subtitle: Text(
+                                    "Vous avez $devisCount dossiers necessitent votre approbation",
+                                    style: bodyMedium.copyWith(
+                                        color: Colors.white)),
+                                initiallyExpanded: false,
+                                onExpansionChanged: (val) {
+                                  setState(() {
+                                    isOpenRh1 = !val;
+                                  });
+                                },
+                                trailing: const Icon(
+                                  Icons.arrow_drop_down,
+                                  color: Colors.white,
+                                ),
+                                children: const [TableDevisDD()],
+                              ),
+                            ),
+                            Card(
+                              color: Colors.blue.shade700,
+                              child: ExpansionTile(
+                                leading: const Icon(Icons.folder,
+                                    color: Colors.white),
+                                title: Text('Dossier Projets',
+                                    style: headline6.copyWith(
+                                        color: Colors.white)),
+                                subtitle: Text(
+                                    "Vous avez $projetCount dossiers necessitent votre approbation",
+                                    style: bodyMedium.copyWith(
+                                        color: Colors.white)),
+                                initiallyExpanded: false,
+                                onExpansionChanged: (val) {
+                                  setState(() {
+                                    isOpenRh1 = !val;
+                                  });
+                                },
+                                trailing: const Icon(
+                                  Icons.arrow_drop_down,
+                                  color: Colors.white,
+                                ),
+                                children: const [TableProjetFin()],
                               ),
                             ),
                           ],

@@ -142,7 +142,7 @@ class _TableDevisState extends State<TableDevis> {
       ),
       PlutoColumn(
         readOnly: true,
-        title: 'departement',
+        title: 'Département',
         field: 'departement',
         type: PlutoColumnType.text(),
         enableRowDrag: true,
@@ -192,24 +192,25 @@ class _TableDevisState extends State<TableDevis> {
   }
 
   Future agentsRow() async {
+    final userModel = await AuthApi().getUserId();
     List<DevisModel?> dataList = await DevisAPi().getAllData();
     var data = dataList
         .where((element) =>
-            element!.departement == departement &&
-                element.approbationDG == 'Approved' ||
-            element.departement == 'Administration' &&
-                element.approbationDG == 'Unapproved' ||
+          element!.departement == userModel.departement &&
+          element.approbationDG == 'Approuved' || 
+          element.departement == 'Administration' 
+                && element.approbationDG == '-' ||
             element.departement == 'Finances' &&
-                element.approbationDG == 'Approved' &&
-                element.approbationFin == 'Unapproved')
+                element.approbationDG == 'Approved' || 
+            element.departement == 'Budgets' && 
+                element.approbationDG == 'Approved')
         .toList();
 
     if (mounted) {
       setState(() {
         for (var item in data) {
-          id = item!.id;
           rows.add(PlutoRow(cells: {
-            'id': PlutoCell(value: item.id),
+            'id': PlutoCell(value: item!.id),
             'title': PlutoCell(value: item.title),
             'priority': PlutoCell(value: item.priority),
             'departement': PlutoCell(value: item.departement),
