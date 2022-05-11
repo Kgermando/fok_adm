@@ -5,6 +5,7 @@ import 'dart:convert';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:fokad_admin/src/api/auth/auth_api.dart';
 import 'package:fokad_admin/src/api/route_api.dart';
+import 'package:fokad_admin/src/models/comptabilites/courbe_journal_model.dart';
 import 'package:fokad_admin/src/models/comptabilites/journal_model.dart';
 import 'package:http/http.dart' as http;
 
@@ -61,7 +62,7 @@ class JournalApi {
         'Content-Type': 'application/json; charset=UTF-8',
         'Authorization': 'Bearer $token'
       },
-    );
+    ); 
     if (resp.statusCode == 200) {
       return JournalModel.fromJson(json.decode(resp.body));
     } else {
@@ -128,6 +129,63 @@ class JournalApi {
       return JournalModel.fromJson(json.decode(res.body)['data']);
     } else {
       throw Exception(json.decode(res.body)['message']);
+    }
+  }
+
+
+   Future<List<CourbeJournalModel>> getAllDataJournalMouth() async {
+    String? token = await getToken();
+
+    if (token!.isNotEmpty) {
+      var splittedJwt = token.split(".");
+      var payload = json.decode(
+          ascii.decode(base64.decode(base64.normalize(splittedJwt[1]))));
+    }
+    var resp = await client.get(
+      journalsChartMounthUrl,
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+        'Authorization': 'Bearer $token'
+      },
+    );
+
+    if (resp.statusCode == 200) {
+      List<dynamic> bodyList = json.decode(resp.body);
+      List<CourbeJournalModel> data = [];
+      for (var u in bodyList) {
+        data.add(CourbeJournalModel.fromJson(u));
+      }
+      return data;
+    } else {
+      throw Exception(jsonDecode(resp.body)['message']);
+    }
+  }
+
+  Future<List<CourbeJournalModel>> getAllDataJournalYear() async {
+    String? token = await getToken();
+
+    if (token!.isNotEmpty) {
+      var splittedJwt = token.split(".");
+      var payload = json.decode(
+          ascii.decode(base64.decode(base64.normalize(splittedJwt[1]))));
+    }
+    var resp = await client.get(
+      journalsChartYearUrl,
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+        'Authorization': 'Bearer $token'
+      },
+    );
+
+    if (resp.statusCode == 200) {
+      List<dynamic> bodyList = json.decode(resp.body);
+      List<CourbeJournalModel> data = [];
+      for (var u in bodyList) {
+        data.add(CourbeJournalModel.fromJson(u));
+      }
+      return data;
+    } else {
+      throw Exception(jsonDecode(resp.body)['message']);
     }
   }
 }

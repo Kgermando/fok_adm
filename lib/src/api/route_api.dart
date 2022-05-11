@@ -61,6 +61,8 @@ var addbilansUrl = Uri.parse("$mainUrl/comptabilite/bilans/insert-new-bilan");
 
 var journalsUrl = Uri.parse("$mainUrl/comptabilite/journals/");
 var addjournalsUrl = Uri.parse( "$mainUrl/comptabilite/journals/insert-new-journal");
+var journalsChartMounthUrl = Uri.parse("$mainUrl/comptabilite/journals/journal-chart-month/");
+var journalsChartYearUrl = Uri.parse("$mainUrl/comptabilite/journals/journal-chart-year/");
 
 var comptesResultatUrl = Uri.parse("$mainUrl/comptabilite/comptes_resultat/");
 var addComptesResultatUrl = Uri.parse(

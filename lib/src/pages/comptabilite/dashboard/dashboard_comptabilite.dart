@@ -9,6 +9,8 @@ import 'package:fokad_admin/src/constants/app_theme.dart';
 import 'package:fokad_admin/src/constants/responsive.dart';
 import 'package:fokad_admin/src/navigation/drawer/drawer_menu.dart';
 import 'package:fokad_admin/src/navigation/header/custom_appbar.dart';
+import 'package:fokad_admin/src/pages/comptabilite/dashboard/components/courbe_journal_mounth.dart';
+import 'package:fokad_admin/src/pages/comptabilite/dashboard/components/courbe_journal_year.dart';
 import 'package:fokad_admin/src/pages/rh/dashboard/components/dash_number_widget.dart';
 
 class DashboardComptabilite extends StatefulWidget {
@@ -109,25 +111,25 @@ class _DashboardComptabiliteState extends State<DashboardComptabilite> {
                             const SizedBox(
                               height: 20.0,
                             ),
-                            // Responsive.isDesktop(context)
-                            //     ? Row(
-                            //         children: const [
-                            //           Expanded(child: CourbeVenteGainMounth()),
-                            //           Expanded(child: CourbeVenteGainYear()),
-                            //         ],
-                            //       )
-                            //     : Column(
-                            //         children: const [
-                            //           CourbeVenteGainMounth(),
-                            //           SizedBox(
-                            //             height: 20.0,
-                            //           ),
-                            //           CourbeVenteGainYear(),
-                            //         ],
-                            //       ),
-                            // const SizedBox(
-                            //   height: 20.0,
-                            // ),
+                            Responsive.isDesktop(context)
+                                ? Row(
+                                    children: const [
+                                      Expanded(child: CourbeJournalMounth()),
+                                      Expanded(child: CourbeJournalYear()),
+                                    ],
+                                  )
+                                : Column(
+                                    children: const [
+                                      CourbeJournalMounth(),
+                                      SizedBox(
+                                        height: 20.0,
+                                      ),
+                                      CourbeJournalYear(),
+                                    ],
+                                  ),
+                            const SizedBox(
+                              height: 20.0,
+                            ),
                           ],
                         ),
                       ))
