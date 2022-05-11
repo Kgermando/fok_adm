@@ -85,7 +85,7 @@ class _ComptabiliteNavState extends State<ComptabiliteNav> {
                 ComptabiliteRoutes.comptabiliteCompteResultat,
             icon: Icons.arrow_right,
             sizeIcon: 15.0,
-            title: 'Compte résultat',
+            title: 'Compte resultats',
             style: bodyText2,
             onTap: () {
               Routemaster.of(context)

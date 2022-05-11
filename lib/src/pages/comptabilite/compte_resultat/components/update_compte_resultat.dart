@@ -12,14 +12,16 @@ import 'package:fokad_admin/src/widgets/btn_widget.dart';
 import 'package:fokad_admin/src/widgets/print_widget.dart';
 import 'package:fokad_admin/src/widgets/title_widget.dart';
 
-class AddCompteResultat extends StatefulWidget {
-  const AddCompteResultat({Key? key}) : super(key: key);
+class UpdateCompteResultat extends StatefulWidget {
+  const UpdateCompteResultat({Key? key, required this.compteResulatsModel})
+      : super(key: key);
+  final CompteResulatsModel compteResulatsModel;
 
   @override
-  State<AddCompteResultat> createState() => _AddCompteResultatState();
+  State<UpdateCompteResultat> createState() => _UpdateCompteResultatState();
 }
 
-class _AddCompteResultatState extends State<AddCompteResultat> {
+class _UpdateCompteResultatState extends State<UpdateCompteResultat> {
   final GlobalKey<ScaffoldState> _key = GlobalKey();
   final _formKey = GlobalKey<FormState>();
   bool isLoading = false;
@@ -63,15 +65,47 @@ class _AddCompteResultatState extends State<AddCompteResultat> {
       TextEditingController();
   TextEditingController soldeDebiteurController = TextEditingController();
 
+
   @override
   void initState() {
     getData();
+    setState(() {
+      intituleController = TextEditingController(text: widget.compteResulatsModel.intitule);
+      achatMarchandisesController = TextEditingController(text: widget.compteResulatsModel.achatMarchandises);
+      variationStockMarchandisesController = TextEditingController(text: widget.compteResulatsModel.variationStockMarchandises);
+      achatApprovionnementsController = TextEditingController(text: widget.compteResulatsModel.achatApprovionnements);
+      variationApprovionnementsController = TextEditingController(text: widget.compteResulatsModel.variationApprovionnements);
+      autresChargesExterneController = TextEditingController(text: widget.compteResulatsModel.autresChargesExterne);
+      chargesfinancieresController = TextEditingController(
+          text: widget.compteResulatsModel.chargesfinancieres);
+      impotsTaxesVersementsAssimilesController = TextEditingController(text: widget.compteResulatsModel.impotsTaxesVersementsAssimiles);
+      renumerationPersonnelController = TextEditingController(text: widget.compteResulatsModel.renumerationPersonnel);
+      chargesSocialasController = TextEditingController(text: widget.compteResulatsModel.chargesSocialas);
+      dotatiopnsProvisionsController = TextEditingController(text: widget.compteResulatsModel.dotatiopnsProvisions);
+      autresChargesController = TextEditingController(text: widget.compteResulatsModel.autresCharges);
+      chargesExptionnellesController = TextEditingController(text: widget.compteResulatsModel.chargesExptionnelles);
+      impotSurbeneficesController = TextEditingController(text: widget.compteResulatsModel.impotSurbenefices);
+      soldeCrediteurController = TextEditingController(text: widget.compteResulatsModel.soldeCrediteur);
+      ventesMarchandisesController = TextEditingController(text: widget.compteResulatsModel.ventesMarchandises);
+
+      productionVendueBienEtSericesController = TextEditingController(text: widget.compteResulatsModel.productionVendueBienEtSerices);
+      productionStockeeController = TextEditingController(text: widget.compteResulatsModel.productionStockee);
+      productionImmobiliseeController = TextEditingController(text: widget.compteResulatsModel.productionImmobilisee);
+      subventionExploitationController = TextEditingController(text: widget.compteResulatsModel.subventionExploitation);
+      autreProduitsController = TextEditingController(text: widget.compteResulatsModel.autreProduits);
+      montantExportationController = TextEditingController(text: widget.compteResulatsModel.montantExportation);
+      produitfinancieresController = TextEditingController(
+          text: widget.compteResulatsModel.produitfinancieres);
+      produitExceptionnelsController = TextEditingController(text: widget.compteResulatsModel.produitExceptionnels);
+      soldeDebiteurController = TextEditingController(text: widget.compteResulatsModel.soldeDebiteur);
+    });
+    
     super.initState();
   }
 
   @override
   void dispose() {
-    intituleController.dispose();
+     intituleController.dispose();
     achatMarchandisesController.dispose();
     variationStockMarchandisesController.dispose();
     achatApprovionnementsController.dispose();
@@ -107,6 +141,7 @@ class _AddCompteResultatState extends State<AddCompteResultat> {
       user = userModel;
     });
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -260,6 +295,7 @@ class _AddCompteResultatState extends State<AddCompteResultat> {
                   Expanded(child: impotsTaxesVersementsAssimilesWidget())
                 ],
               ),
+              chargesfinancieresWidget(),
               Row(
                 children: [
                   Expanded(child: renumerationPersonnelWidget()),
@@ -274,7 +310,6 @@ class _AddCompteResultatState extends State<AddCompteResultat> {
                   Expanded(child: autresChargesWidget())
                 ],
               ),
-              chargesfinancieresWidget(),
               Row(
                 children: [
                   Expanded(child: chargesExptionnellesWidget()),
@@ -282,7 +317,13 @@ class _AddCompteResultatState extends State<AddCompteResultat> {
                   Expanded(child: importSurbeneficesWidget())
                 ],
               ),
-              soldeCrediteurWidget()
+              Row(
+                children: [
+                  Expanded(child: soldeCrediteurWidget()),
+                  const SizedBox(height: p20),
+                  Expanded(child: ventesMarchandisesWidget())
+                ],
+              )
             ],
           ),
         ],
@@ -292,50 +333,37 @@ class _AddCompteResultatState extends State<AddCompteResultat> {
 
   Widget intituleWidget() {
     return Container(
-      margin: const EdgeInsets.only(bottom: p10, left: p5),
-      child: TextFormField(
-        controller: intituleController,
-        decoration: InputDecoration(
-          border:
-              OutlineInputBorder(borderRadius: BorderRadius.circular(10.0)),
-          labelText: 'Intitulé',
-          hintText: 'intitule',
-        ),
-        keyboardType: TextInputType.text,
-        validator: (value) {
-          if (value != null && value.isEmpty) {
-            return 'Ce champs est obligatoire';
-          } else {
-            return null;
-          }
-        },
-      ));
+        margin: const EdgeInsets.only(bottom: p10, left: p5),
+        child: TextFormField(
+          controller: intituleController,
+          decoration: InputDecoration(
+            border:
+                OutlineInputBorder(borderRadius: BorderRadius.circular(10.0)),
+            labelText: 'Intitulé',
+            hintText: 'intitule',
+          ),
+          keyboardType: TextInputType.text,
+          style: const TextStyle(),
+        ));
   }
 
   Widget achatMarchandisesWidget() {
     return Container(
-      margin: const EdgeInsets.only(bottom: p10, left: p5),
-      child: TextFormField(
-        controller: achatMarchandisesController,
-        keyboardType: TextInputType.number,
-        inputFormatters: <TextInputFormatter>[
-          FilteringTextInputFormatter.digitsOnly
-        ],
-        decoration: InputDecoration(
-          border:
-              OutlineInputBorder(borderRadius: BorderRadius.circular(10.0)),
-          labelText: 'Achats Marchandises',
-          hintText: 'Achats Marchandises',
-        ),
-        validator: (value) {
-          if (value != null && value.isEmpty) {
-            return 'Ce champs est obligatoire';
-          } else {
-            return null;
-          }
-        },
-      )
-    );
+        margin: const EdgeInsets.only(bottom: p10, left: p5),
+        child: TextFormField(
+          controller: achatMarchandisesController,
+          keyboardType: TextInputType.number,
+          inputFormatters: <TextInputFormatter>[
+            FilteringTextInputFormatter.digitsOnly
+          ],
+          decoration: InputDecoration(
+            border:
+                OutlineInputBorder(borderRadius: BorderRadius.circular(10.0)),
+            labelText: 'Achats Marchandises',
+            hintText: 'Achats Marchandises',
+          ),
+          style: const TextStyle(),
+        ));
   }
 
   Widget variationStockMarchandisesWidget() {
@@ -353,13 +381,6 @@ class _AddCompteResultatState extends State<AddCompteResultat> {
             labelText: 'Variation Stocks Marchandises',
             hintText: 'Variation Stocks Marchandises',
           ),
-          validator: (value) {
-            if (value != null && value.isEmpty) {
-              return 'Ce champs est obligatoire';
-            } else {
-              return null;
-            }
-          },
         ));
   }
 
@@ -378,13 +399,7 @@ class _AddCompteResultatState extends State<AddCompteResultat> {
             labelText: 'Achats Approvionnements',
             hintText: 'Achats Approvionnements',
           ),
-          validator: (value) {
-          if (value != null && value.isEmpty) {
-            return 'Ce champs est obligatoire';
-          } else {
-            return null;
-          }
-        },
+          style: const TextStyle(),
         ));
   }
 
@@ -403,13 +418,7 @@ class _AddCompteResultatState extends State<AddCompteResultat> {
             labelText: 'Variation Approvionnements',
             hintText: 'Variation Approvionnements',
           ),
-          validator: (value) {
-          if (value != null && value.isEmpty) {
-            return 'Ce champs est obligatoire';
-          } else {
-            return null;
-          }
-        },
+          style: const TextStyle(),
         ));
   }
 
@@ -428,13 +437,7 @@ class _AddCompteResultatState extends State<AddCompteResultat> {
             labelText: 'Autres Charges Externe',
             hintText: 'Autres Charges Externe',
           ),
-          validator: (value) {
-          if (value != null && value.isEmpty) {
-            return 'Ce champs est obligatoire';
-          } else {
-            return null;
-          }
-        },
+          style: const TextStyle(),
         ));
   }
 
@@ -453,13 +456,7 @@ class _AddCompteResultatState extends State<AddCompteResultat> {
             labelText: 'Impôts Taxes Versements Assimiles',
             hintText: 'Impôts Taxes Versements Assimiles',
           ),
-          validator: (value) {
-          if (value != null && value.isEmpty) {
-            return 'Ce champs est obligatoire';
-          } else {
-            return null;
-          }
-        },
+          style: const TextStyle(),
         ));
   }
 
@@ -478,13 +475,7 @@ class _AddCompteResultatState extends State<AddCompteResultat> {
             labelText: 'Renumeration du Personnel',
             hintText: 'Renumeration du Personnel',
           ),
-          validator: (value) {
-          if (value != null && value.isEmpty) {
-            return 'Ce champs est obligatoire';
-          } else {
-            return null;
-          }
-        },
+          style: const TextStyle(),
         ));
   }
 
@@ -503,13 +494,7 @@ class _AddCompteResultatState extends State<AddCompteResultat> {
             labelText: 'Charges Sociales',
             hintText: 'Charges Sociales',
           ),
-          validator: (value) {
-          if (value != null && value.isEmpty) {
-            return 'Ce champs est obligatoire';
-          } else {
-            return null;
-          }
-        },
+          style: const TextStyle(),
         ));
   }
 
@@ -528,13 +513,7 @@ class _AddCompteResultatState extends State<AddCompteResultat> {
             labelText: 'Dotatioins Provisions',
             hintText: 'Dotatioins Provisions',
           ),
-          validator: (value) {
-          if (value != null && value.isEmpty) {
-            return 'Ce champs est obligatoire';
-          } else {
-            return null;
-          }
-        },
+          style: const TextStyle(),
         ));
   }
 
@@ -553,13 +532,7 @@ class _AddCompteResultatState extends State<AddCompteResultat> {
             labelText: 'Autres Charges',
             hintText: 'Autres Charges',
           ),
-          validator: (value) {
-          if (value != null && value.isEmpty) {
-            return 'Ce champs est obligatoire';
-          } else {
-            return null;
-          }
-        },
+          style: const TextStyle(),
         ));
   }
 
@@ -578,13 +551,7 @@ class _AddCompteResultatState extends State<AddCompteResultat> {
             labelText: 'Charges financieres',
             hintText: 'Charges financieres',
           ),
-          validator: (value) {
-          if (value != null && value.isEmpty) {
-            return 'Ce champs est obligatoire';
-          } else {
-            return null;
-          }
-        },
+          style: const TextStyle(),
         ));
   }
 
@@ -603,13 +570,7 @@ class _AddCompteResultatState extends State<AddCompteResultat> {
             labelText: 'Charges Exptionnelles',
             hintText: 'Charges Exptionnelles',
           ),
-          validator: (value) {
-          if (value != null && value.isEmpty) {
-            return 'Ce champs est obligatoire';
-          } else {
-            return null;
-          }
-        },
+          style: const TextStyle(),
         ));
   }
 
@@ -628,13 +589,7 @@ class _AddCompteResultatState extends State<AddCompteResultat> {
             labelText: 'Impôt Sur le benefices',
             hintText: 'Impôt Sur le benefices',
           ),
-          validator: (value) {
-          if (value != null && value.isEmpty) {
-            return 'Ce champs est obligatoire';
-          } else {
-            return null;
-          }
-        },
+          style: const TextStyle(),
         ));
   }
 
@@ -653,13 +608,7 @@ class _AddCompteResultatState extends State<AddCompteResultat> {
             labelText: 'Solde Crediteur',
             hintText: 'Solde Crediteur',
           ),
-          validator: (value) {
-          if (value != null && value.isEmpty) {
-            return 'Ce champs est obligatoire';
-          } else {
-            return null;
-          }
-        },
+          style: const TextStyle(),
         ));
   }
 
@@ -678,13 +627,7 @@ class _AddCompteResultatState extends State<AddCompteResultat> {
             labelText: 'Ventes Marchandises',
             hintText: 'Ventes Marchandises',
           ),
-          validator: (value) {
-          if (value != null && value.isEmpty) {
-            return 'Ce champs est obligatoire';
-          } else {
-            return null;
-          }
-        },
+          style: const TextStyle(),
         ));
   }
 
@@ -708,32 +651,26 @@ class _AddCompteResultatState extends State<AddCompteResultat> {
             children: [
               Row(
                 children: [
-                  Expanded(child: ventesMarchandisesWidget()),
+                  Expanded(child: productionVendueBienEtSericesWidget()),
                   const SizedBox(height: p20),
-                  Expanded(child: productionVendueBienEtSericesWidget())
+                  Expanded(child: productionStockeeWidget())
                 ],
               ),
               Row(
                 children: [
-                  Expanded(child: productionStockeeWidget()),
+                  Expanded(child: productionImmobiliseeWidget()),
                   const SizedBox(height: p20),
-                  Expanded(child: productionImmobiliseeWidget())
+                  Expanded(child: subventionExploitationWidget())
                 ],
               ),
               Row(
                 children: [
-                  Expanded(child: subventionExploitationWidget()),
-                  const SizedBox(height: p20),
-                  Expanded(child: autreProduitsWidget())
-                ],
-              ),
-              Row(
-                children: [
-                  Expanded(child: produitfinancieresWidget()),
+                  Expanded(child: autreProduitsWidget()),
                   const SizedBox(height: p20),
                   Expanded(child: montantExportationWidget())
                 ],
               ),
+              produitfinancieresWidget(),
               Row(
                 children: [
                   Expanded(child: produitExceptionnelsWidget()),
@@ -760,13 +697,7 @@ class _AddCompteResultatState extends State<AddCompteResultat> {
             hintText: 'Production Vendue Bien et Serices',
           ),
           keyboardType: TextInputType.text,
-          validator: (value) {
-          if (value != null && value.isEmpty) {
-            return 'Ce champs est obligatoire';
-          } else {
-            return null;
-          }
-        },
+          style: const TextStyle(),
         ));
   }
 
@@ -782,13 +713,7 @@ class _AddCompteResultatState extends State<AddCompteResultat> {
             hintText: 'Production Stockee',
           ),
           keyboardType: TextInputType.text,
-          validator: (value) {
-          if (value != null && value.isEmpty) {
-            return 'Ce champs est obligatoire';
-          } else {
-            return null;
-          }
-        },
+          style: const TextStyle(),
         ));
   }
 
@@ -804,13 +729,7 @@ class _AddCompteResultatState extends State<AddCompteResultat> {
             hintText: 'Production Immobilisée',
           ),
           keyboardType: TextInputType.text,
-          validator: (value) {
-          if (value != null && value.isEmpty) {
-            return 'Ce champs est obligatoire';
-          } else {
-            return null;
-          }
-        },
+          style: const TextStyle(),
         ));
   }
 
@@ -822,17 +741,11 @@ class _AddCompteResultatState extends State<AddCompteResultat> {
           decoration: InputDecoration(
             border:
                 OutlineInputBorder(borderRadius: BorderRadius.circular(10.0)),
-            labelText: 'Subventions Exploitation',
-            hintText: 'Subventions Exploitation',
+            labelText: 'Subvention Exploitation',
+            hintText: 'Subvention Exploitation',
           ),
           keyboardType: TextInputType.text,
-          validator: (value) {
-          if (value != null && value.isEmpty) {
-            return 'Ce champs est obligatoire';
-          } else {
-            return null;
-          }
-        },
+          style: const TextStyle(),
         ));
   }
 
@@ -844,17 +757,11 @@ class _AddCompteResultatState extends State<AddCompteResultat> {
           decoration: InputDecoration(
             border:
                 OutlineInputBorder(borderRadius: BorderRadius.circular(10.0)),
-            labelText: 'Autres Produits',
-            hintText: 'Autres Produits',
+            labelText: 'Autre Produits',
+            hintText: 'Autre Produits',
           ),
           keyboardType: TextInputType.text,
-          validator: (value) {
-          if (value != null && value.isEmpty) {
-            return 'Ce champs est obligatoire';
-          } else {
-            return null;
-          }
-        },
+          style: const TextStyle(),
         ));
   }
 
@@ -866,17 +773,11 @@ class _AddCompteResultatState extends State<AddCompteResultat> {
           decoration: InputDecoration(
             border:
                 OutlineInputBorder(borderRadius: BorderRadius.circular(10.0)),
-            labelText: "Dont à l'Exportation",
-            hintText: "Dont à l'xportation",
+            labelText: 'Montant Exportation',
+            hintText: 'Montant Exportation',
           ),
           keyboardType: TextInputType.text,
-          validator: (value) {
-          if (value != null && value.isEmpty) {
-            return 'Ce champs est obligatoire';
-          } else {
-            return null;
-          }
-        },
+          style: const TextStyle(),
         ));
   }
 
@@ -892,13 +793,7 @@ class _AddCompteResultatState extends State<AddCompteResultat> {
             hintText: 'Produits financieres',
           ),
           keyboardType: TextInputType.text,
-          validator: (value) {
-          if (value != null && value.isEmpty) {
-            return 'Ce champs est obligatoire';
-          } else {
-            return null;
-          }
-        },
+          style: const TextStyle(),
         ));
   }
 
@@ -914,13 +809,7 @@ class _AddCompteResultatState extends State<AddCompteResultat> {
             hintText: 'Produit Exceptionnels',
           ),
           keyboardType: TextInputType.text,
-          validator: (value) {
-          if (value != null && value.isEmpty) {
-            return 'Ce champs est obligatoire';
-          } else {
-            return null;
-          }
-        },
+          style: const TextStyle(),
         ));
   }
 
@@ -936,19 +825,12 @@ class _AddCompteResultatState extends State<AddCompteResultat> {
             hintText: 'Solde Debiteur',
           ),
           keyboardType: TextInputType.text,
-          validator: (value) {
-          if (value != null && value.isEmpty) {
-            return 'Ce champs est obligatoire';
-          } else {
-            return null;
-          }
-        },
+          style: const TextStyle(),
         ));
   }
-
   Future<void> submit() async {
     final compteResulatsModel = CompteResulatsModel(
-        intitule: intituleController.text,
+       intitule: intituleController.text,
         achatMarchandises: achatMarchandisesController.text,
         variationStockMarchandises: variationStockMarchandisesController.text,
         achatApprovionnements: achatApprovionnementsController.text,

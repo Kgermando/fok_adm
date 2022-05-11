@@ -10,7 +10,6 @@ import 'package:fokad_admin/src/navigation/header/custom_appbar.dart';
 import 'package:fokad_admin/src/widgets/print_widget.dart';
 import 'package:fokad_admin/src/widgets/title_widget.dart';
 import 'package:intl/intl.dart';
-import 'package:routemaster/routemaster.dart';
 
 class DetailJournal extends StatefulWidget {
   const DetailJournal({Key? key, required this.id}) : super(key: key);
@@ -613,13 +612,14 @@ class _DetailJournalState extends State<DetailJournal> {
 
   Future<void> submitUpdateDG(JournalModel data) async {
     final journalModel = JournalModel(
+        numeroOperation: data.numeroOperation,
         libele: data.libele,
         compteDebit: data.compteDebit,
         montantDebit: data.montantDebit,
         compteCredit: data.compteCredit,
         montantCredit: data.montantCredit,
+        tva: data.tva,
         remarque: data.remarque,
-        statut: data.statut,
         approbationDG: approbationDGController.toString(),
         signatureDG: user!.matricule.toString(),
         signatureJustificationDG: signatureJustificationDGController.text,
@@ -638,13 +638,14 @@ class _DetailJournalState extends State<DetailJournal> {
 
   Future<void> submitUpdateDD(JournalModel data) async {
     final journalModel = JournalModel(
+        numeroOperation: data.numeroOperation,
         libele: data.libele,
         compteDebit: data.compteDebit,
         montantDebit: data.montantDebit,
         compteCredit: data.compteCredit,
         montantCredit: data.montantCredit,
+        tva: data.tva,
         remarque: data.remarque,
-        statut: data.statut,
         approbationDG: data.approbationDG.toString(),
         signatureDG: data.signatureDG.toString(),
         signatureJustificationDG: data.signatureJustificationDG.toString(),
@@ -663,13 +664,14 @@ class _DetailJournalState extends State<DetailJournal> {
 
   Future<void> submitCorbeille(JournalModel data) async {
     final journalModel = JournalModel(
+        numeroOperation: data.numeroOperation,
         libele: data.libele,
         compteDebit: data.compteDebit,
         montantDebit: data.montantDebit,
         compteCredit: data.compteCredit,
         montantCredit: data.montantCredit,
+        tva: data.tva,
         remarque: data.remarque,
-        statut: true,
         approbationDG: data.approbationDG,
         signatureDG: data.signatureDG,
         signatureJustificationDG: data.signatureJustificationDG,

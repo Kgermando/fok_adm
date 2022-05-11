@@ -1,9 +1,14 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:fokad_admin/src/api/auth/auth_api.dart';
+import 'package:fokad_admin/src/api/comptabilite/balance_compte_api.dart';
+import 'package:fokad_admin/src/models/comptabilites/balance_comptes_model.dart';
+import 'package:fokad_admin/src/models/users/user_model.dart';
 import 'package:fokad_admin/src/pages/comptabilite/balance/components/detail_balance.dart';
 import 'package:fokad_admin/src/utils/class_implemented.dart';
 import 'package:fokad_admin/src/widgets/print_widget.dart';
+import 'package:intl/intl.dart';
 import 'package:pluto_grid/pluto_grid.dart';
 
 class TableBilanComptabilite extends StatefulWidget {
@@ -94,8 +99,8 @@ class _TableBilanComptabiliteState extends State<TableBilanComptabilite> {
       ),
       PlutoColumn(
         readOnly: true,
-        title: 'Titre du Bilan',
-        field: 'titleBilan',
+        title: 'Titre',
+        field: 'title',
         type: PlutoColumnType.text(),
         enableRowDrag: true,
         enableContextMenu: false,
@@ -132,26 +137,26 @@ class _TableBilanComptabiliteState extends State<TableBilanComptabilite> {
   }
 
   Future agentsRow() async {
-    // UserModel userModel = await AuthApi().getUserId();
-    // List<BilanModel?> dataList = await BilanApi().getAllData();
-    // var data = dataList.where((element) =>
-    //     element!.approbationDG == "Approved" &&
-    //         element.approbationDD == "Approved" ||
-    //     element.signature == userModel.matricule);
+    UserModel userModel = await AuthApi().getUserId();
+    List<BalanceCompteModel?> dataList = await BalanceCompteApi().getAllData();
+    var data = dataList.where((element) =>
+        element!.approbationDG == "Approved" &&
+            element.approbationDD == "Approved" ||
+        element.signature == userModel.matricule);
 
-    // if (mounted) {
-    //   setState(() {
-    //     for (var item in data) {
-    //       rows.add(PlutoRow(cells: {
-    //         'id': PlutoCell(value: item!.id),
-    //         'titleBilan': PlutoCell(value: item.titleBilan),
-    //         'signature': PlutoCell(value: item.signature),
-    //         'created': PlutoCell(
-    //             value: DateFormat("dd-MM-yy HH:mm").format(item.created))
-    //       }));
-    //     }
-    //     stateManager!.resetCurrentState();
-    //   });
-    // }
+    if (mounted) {
+      setState(() {
+        for (var item in data) {
+          rows.add(PlutoRow(cells: {
+            'id': PlutoCell(value: item!.id),
+            'title': PlutoCell(value: item.title),
+            'signature': PlutoCell(value: item.signature),
+            'created': PlutoCell(
+                value: DateFormat("dd-MM-yy HH:mm").format(item.created))
+          }));
+        }
+        stateManager!.resetCurrentState();
+      });
+    }
   }
 }

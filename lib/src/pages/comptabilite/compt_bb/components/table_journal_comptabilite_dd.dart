@@ -1,25 +1,23 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:fokad_admin/src/api/auth/auth_api.dart';
 import 'package:fokad_admin/src/api/comptabilite/journal_api.dart';
 import 'package:fokad_admin/src/models/comptabilites/journal_model.dart';
-import 'package:fokad_admin/src/models/users/user_model.dart';
 import 'package:fokad_admin/src/pages/comptabilite/journal/components/detail_journal.dart';
 import 'package:fokad_admin/src/utils/class_implemented.dart';
 import 'package:fokad_admin/src/widgets/print_widget.dart';
 import 'package:intl/intl.dart';
 import 'package:pluto_grid/pluto_grid.dart';
 
-class TableJournal extends StatefulWidget {
-  const TableJournal({Key? key}) : super(key: key);
+class TableJournalComptabiliteDD extends StatefulWidget {
+  const TableJournalComptabiliteDD({ Key? key }) : super(key: key);
 
   @override
-  State<TableJournal> createState() => _TableJournalState();
+  State<TableJournalComptabiliteDD> createState() => _TableJournalComptabiliteDDState();
 }
 
-class _TableJournalState extends State<TableJournal> {
-  Timer? timer;
+class _TableJournalComptabiliteDDState extends State<TableJournalComptabiliteDD> {
+ Timer? timer;
   List<PlutoColumn> columns = [];
   List<PlutoRow> rows = [];
   PlutoGridStateManager? stateManager;
@@ -42,58 +40,61 @@ class _TableJournalState extends State<TableJournal> {
 
   @override
   Widget build(BuildContext context) {
-    return PlutoGrid(
-      columns: columns,
-      rows: rows,
-      onRowDoubleTap: (PlutoGridOnRowDoubleTapEvent tapEvent) {
-        final dataList = tapEvent.row!.cells.values;
-        final idPlutoRow = dataList.elementAt(0);
+    return SizedBox(
+      height: MediaQuery.of(context).size.height,
+      child: PlutoGrid(
+        columns: columns,
+        rows: rows,
+        onRowDoubleTap: (PlutoGridOnRowDoubleTapEvent tapEvent) {
+          final dataList = tapEvent.row!.cells.values;
+          final idPlutoRow = dataList.elementAt(0);
 
-        Navigator.of(context).push(MaterialPageRoute(
-            builder: (context) => DetailJournal(id: idPlutoRow.value)));
-      },
-      onLoaded: (PlutoGridOnLoadedEvent event) {
-        stateManager = event.stateManager;
-        stateManager!.notifyListeners();
-        stateManager!.setShowColumnFilter(true);
-      },
-      createHeader: (PlutoGridStateManager header) {
-        return Row(
-          mainAxisAlignment: MainAxisAlignment.end,
-          children: [PrintWidget(onPressed: () {})],
-        );
-      },
-      configuration: PlutoGridConfiguration(
-        columnFilterConfig: PlutoGridColumnFilterConfig(
-          filters: const [
-            ...FilterHelper.defaultFilters,
-            // custom filter
-            ClassFilterImplemented(),
-          ],
-          resolveDefaultColumnFilter: (column, resolver) {
-            if (column.field == 'id') {
-              return resolver<ClassFilterImplemented>() as PlutoFilterType;
-            } else if (column.field == 'numeroOperation') {
-              return resolver<ClassFilterImplemented>() as PlutoFilterType;
-            } else if (column.field == 'libele') {
-              return resolver<ClassFilterImplemented>() as PlutoFilterType;
-            } else if (column.field == 'compteDebit') {
-              return resolver<ClassFilterImplemented>() as PlutoFilterType;
-            } else if (column.field == 'montantDebit') {
-              return resolver<ClassFilterImplemented>() as PlutoFilterType;
-            } else if (column.field == 'compteCredit') {
-              return resolver<ClassFilterImplemented>() as PlutoFilterType;
-            } else if (column.field == 'montantCredit') {
-              return resolver<ClassFilterImplemented>() as PlutoFilterType;
-            } else if (column.field == 'remarque') {
-              return resolver<ClassFilterImplemented>() as PlutoFilterType;
-            } else if (column.field == 'signature') {
-              return resolver<ClassFilterImplemented>() as PlutoFilterType;
-            } else if (column.field == 'created') {
-              return resolver<ClassFilterImplemented>() as PlutoFilterType;
-            }
-            return resolver<PlutoFilterTypeContains>() as PlutoFilterType;
-          },
+          Navigator.of(context).push(MaterialPageRoute(
+              builder: (context) => DetailJournal(id: idPlutoRow.value)));
+        },
+        onLoaded: (PlutoGridOnLoadedEvent event) {
+          stateManager = event.stateManager;
+          stateManager!.notifyListeners();
+          stateManager!.setShowColumnFilter(true);
+        },
+        createHeader: (PlutoGridStateManager header) {
+          return Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [PrintWidget(onPressed: () {})],
+          );
+        },
+        configuration: PlutoGridConfiguration(
+          columnFilterConfig: PlutoGridColumnFilterConfig(
+            filters: const [
+              ...FilterHelper.defaultFilters,
+              // custom filter
+              ClassFilterImplemented(),
+            ],
+            resolveDefaultColumnFilter: (column, resolver) {
+              if (column.field == 'id') {
+                return resolver<ClassFilterImplemented>() as PlutoFilterType;
+              } else if (column.field == 'numeroOperation') {
+                return resolver<ClassFilterImplemented>() as PlutoFilterType;
+              } else if (column.field == 'libele') {
+                return resolver<ClassFilterImplemented>() as PlutoFilterType;
+              } else if (column.field == 'compteDebit') {
+                return resolver<ClassFilterImplemented>() as PlutoFilterType;
+              } else if (column.field == 'montantDebit') {
+                return resolver<ClassFilterImplemented>() as PlutoFilterType;
+              } else if (column.field == 'compteCredit') {
+                return resolver<ClassFilterImplemented>() as PlutoFilterType;
+              } else if (column.field == 'montantCredit') {
+                return resolver<ClassFilterImplemented>() as PlutoFilterType;
+              } else if (column.field == 'remarque') {
+                return resolver<ClassFilterImplemented>() as PlutoFilterType;
+              } else if (column.field == 'signature') {
+                return resolver<ClassFilterImplemented>() as PlutoFilterType;
+              } else if (column.field == 'created') {
+                return resolver<ClassFilterImplemented>() as PlutoFilterType;
+              }
+              return resolver<PlutoFilterTypeContains>() as PlutoFilterType;
+            },
+          ),
         ),
       ),
     );
@@ -225,12 +226,8 @@ class _TableJournalState extends State<TableJournal> {
   }
 
   Future agentsRow() async {
-    UserModel userModel = await AuthApi().getUserId();
     List<JournalModel?> dataList = await JournalApi().getAllData();
-    var data = dataList.where((element) =>
-        element!.approbationDG == "Approved" &&
-            element.approbationDD == "Approved" ||
-        element.signature == userModel.matricule);
+     var data = dataList.where((element) => element!.approbationDD == "-");
 
     if (mounted) {
       setState(() {

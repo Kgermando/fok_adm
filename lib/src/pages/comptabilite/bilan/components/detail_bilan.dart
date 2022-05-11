@@ -11,7 +11,6 @@ import 'package:fokad_admin/src/navigation/header/custom_appbar.dart';
 import 'package:fokad_admin/src/widgets/print_widget.dart';
 import 'package:fokad_admin/src/widgets/title_widget.dart';
 import 'package:intl/intl.dart';
-import 'package:routemaster/routemaster.dart';
 
 class DetailBilan extends StatefulWidget {
   const DetailBilan({Key? key, required this.id}) : super(key: key);
@@ -59,12 +58,9 @@ class _DetailBilanState extends State<DetailBilan> {
       passwordHash: '-',
       succursale: '-');
 
-  // BilanModel? bilanModel;
   Future<void> getData() async {
     UserModel userModel = await AuthApi().getUserId();
-    // BilanModel data = await BilanApi().getOneData(widget.id);
     setState(() {
-      // bilanModel = data;
       user = userModel;
     });
   }

@@ -38,13 +38,15 @@ class _AddJournalComptabiliteState extends State<AddJournalComptabilite> {
   List<String> comptesDebitList = [];
   List<String> comptesCreditList = [];
 
+  TextEditingController numeroOperationController = TextEditingController();
   TextEditingController libeleController = TextEditingController();
   String? comptesDebitController;
   String? comptesCreditController;
-  TextEditingController montantController = TextEditingController();
+  TextEditingController montantDebitController = TextEditingController();
+  TextEditingController montantCreditController = TextEditingController();
   TextEditingController tvaController = TextEditingController();
   TextEditingController remarqueController = TextEditingController();
-
+  
   @override
   initState() {
     getData();
@@ -61,8 +63,10 @@ class _AddJournalComptabiliteState extends State<AddJournalComptabilite> {
 
   @override
   void dispose() {
+    numeroOperationController.dispose();
     libeleController.dispose();
-    montantController.dispose();
+    montantDebitController.dispose();
+    montantCreditController.dispose();
     tvaController.dispose();
     remarqueController.dispose();
 
@@ -93,10 +97,16 @@ class _AddJournalComptabiliteState extends State<AddJournalComptabilite> {
               child: Row(
                 children: [
                   Expanded(
+                      flex: 1,
+                      child: Text("N° operation",
+                          textAlign: TextAlign.center,
+                          style: bodyLarge!
+                              .copyWith(fontWeight: FontWeight.bold))),
+                  Expanded(
                       flex: 2,
                       child: Text("Libele",
                           textAlign: TextAlign.center,
-                          style: bodyLarge!
+                          style: bodyLarge
                               .copyWith(fontWeight: FontWeight.bold))),
                   const SizedBox(
                     width: p10,
@@ -120,15 +130,6 @@ class _AddJournalComptabiliteState extends State<AddJournalComptabilite> {
                     width: p10,
                   ),
                   Expanded(
-                      flex: 2,
-                      child: Text("Montant",
-                          textAlign: TextAlign.center,
-                          style:
-                              bodyLarge.copyWith(fontWeight: FontWeight.bold))),
-                  const SizedBox(
-                    width: p10,
-                  ),
-                  Expanded(
                       flex: 3,
                       child: Text("Remarque",
                           textAlign: TextAlign.center,
@@ -141,6 +142,12 @@ class _AddJournalComptabiliteState extends State<AddJournalComptabilite> {
               padding: const EdgeInsets.all(p10),
               child: Row(
                 children: [
+                  SizedBox(
+                    height: 50.0,
+                    width: 100.0, child: numeroOperationWidget()),
+                  const SizedBox(
+                    width: p10,
+                  ),
                   Expanded(flex: 2, child: libeleWidget()),
                   const SizedBox(
                     width: p10,
@@ -152,8 +159,15 @@ class _AddJournalComptabiliteState extends State<AddJournalComptabilite> {
                         Expanded(
                             child: Column(
                           children: [
-                            classDebitWidget(),
-                            compteDebitWidget(),
+                            SizedBox(
+                              height: 50.0,
+                              child: classDebitWidget()),
+                            SizedBox(
+                              height: 50.0,
+                              child: compteDebitWidget()),
+                            SizedBox(
+                              height: 50.0,
+                              child: montantDebitWidget())
                           ],
                         )),
                         const SizedBox(
@@ -164,6 +178,7 @@ class _AddJournalComptabiliteState extends State<AddJournalComptabilite> {
                           children: [
                             classCreditWidget(),
                             compteCreditWidget(),
+                            montantCreditWidget()
                           ],
                         )),
                       ],
@@ -173,10 +188,6 @@ class _AddJournalComptabiliteState extends State<AddJournalComptabilite> {
                     width: p10,
                   ),
                   Expanded(flex: 1, child: tvaWidget()),
-                  const SizedBox(
-                    width: p10,
-                  ),
-                  Expanded(flex: 2, child: montantDebitWidget()),
                   const SizedBox(
                     width: p10,
                   ),
@@ -210,6 +221,30 @@ class _AddJournalComptabiliteState extends State<AddJournalComptabilite> {
     );
   }
 
+  Widget numeroOperationWidget() {
+    return Container(
+        margin: const EdgeInsets.only(bottom: p20),
+        child: TextFormField(
+          controller: numeroOperationController,
+          decoration: InputDecoration(
+            border:
+                OutlineInputBorder(borderRadius: BorderRadius.circular(10.0)),
+            labelText: 'N°',
+            contentPadding:
+                const EdgeInsets.symmetric(vertical: 2, horizontal: 10),
+          ),
+          keyboardType: TextInputType.text,
+          style: const TextStyle(),
+          validator: (value) {
+            if (value != null && value.isEmpty) {
+              return 'Ce champs est obligatoire';
+            } else {
+              return null;
+            }
+          },
+        ));
+  }
+
   Widget libeleWidget() {
     return Container(
         margin: const EdgeInsets.only(bottom: p20),
@@ -236,7 +271,7 @@ class _AddJournalComptabiliteState extends State<AddJournalComptabilite> {
 
   Widget classDebitWidget() {
     return Container(
-      margin: const EdgeInsets.only(bottom: p20),
+      margin: const EdgeInsets.only(bottom: p8),
       child: DropdownButtonFormField<String>(
         decoration: InputDecoration(
           labelText: 'Classe',
@@ -430,11 +465,35 @@ class _AddJournalComptabiliteState extends State<AddJournalComptabilite> {
     return Container(
         margin: const EdgeInsets.only(bottom: p20),
         child: TextFormField(
-          controller: montantController,
+          controller: montantDebitController,
           decoration: InputDecoration(
             border:
                 OutlineInputBorder(borderRadius: BorderRadius.circular(10.0)),
-            labelText: 'Montant',
+            labelText: 'Montant débit',
+            contentPadding:
+                const EdgeInsets.symmetric(vertical: 2, horizontal: 10),
+          ),
+          keyboardType: TextInputType.text,
+          style: const TextStyle(),
+          validator: (value) {
+            if (value != null && value.isEmpty) {
+              return 'Ce champs est obligatoire';
+            } else {
+              return null;
+            }
+          },
+        ));
+  }
+
+  Widget montantCreditWidget() {
+    return Container(
+        margin: const EdgeInsets.only(bottom: p20),
+        child: TextFormField(
+          controller: montantCreditController,
+          decoration: InputDecoration(
+            border:
+                OutlineInputBorder(borderRadius: BorderRadius.circular(10.0)),
+            labelText: 'Montant crédit',
             contentPadding:
                 const EdgeInsets.symmetric(vertical: 2, horizontal: 10),
           ),
@@ -476,21 +535,23 @@ class _AddJournalComptabiliteState extends State<AddJournalComptabilite> {
 
   Future<void> submit() async {
     final journalModel = JournalModel(
-        libele: libeleController.text,
-        compteDebit: comptesDebitController.toString(),
-        montantDebit: montantController.text,
-        compteCredit: comptesCreditController.toString(),
-        montantCredit: tvaController.text,
-        remarque: remarqueController.text,
-        statut: false,
-        approbationDG: '-',
-        signatureDG: '-',
-        signatureJustificationDG: '-',
-        approbationDD: '-',
-        signatureDD: '-',
-        signatureJustificationDD: '-',
-        signature: signature.toString(),
-        created: DateTime.now());
+      numeroOperation: numeroOperationController.text,
+      libele: libeleController.text,
+      compteDebit: comptesDebitController.toString(),
+      montantDebit: montantDebitController.text,
+      compteCredit: comptesCreditController.toString(),
+      montantCredit: montantCreditController.text,
+      tva: tvaController.text,
+      remarque: remarqueController.text,
+      approbationDG: '-',
+      signatureDG: '-',
+      signatureJustificationDG: '-',
+      approbationDD: '-',
+      signatureDD: '-',
+      signatureJustificationDD: '-',
+      signature: signature.toString(),
+      created: DateTime.now()
+    );
     await JournalApi().insertData(journalModel);
     Routemaster.of(context).replace(ComptabiliteRoutes.comptabiliteJournal);
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(

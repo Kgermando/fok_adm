@@ -13,7 +13,6 @@ import 'package:fokad_admin/src/widgets/btn_widget.dart';
 import 'package:fokad_admin/src/widgets/print_widget.dart';
 import 'package:fokad_admin/src/widgets/title_widget.dart';
 import 'package:intl/intl.dart';
-import 'package:routemaster/routemaster.dart';
 
 class AddPaiementSalaire extends StatefulWidget {
   const AddPaiementSalaire({Key? key, this.agentModel}) : super(key: key);
@@ -477,7 +476,7 @@ class _AddPaiementSalaireState extends State<AddPaiementSalaire> {
       padding: const EdgeInsets.only(top: p16, bottom: p16),
       decoration: BoxDecoration(
         border: Border(
-          top: const BorderSide(width: 1.0),
+          top: BorderSide(width: 1.0, color: Colors.amber.shade700),
           bottom: BorderSide(width: 1.0, color: Colors.amber.shade700),
         ),
       ),
@@ -1425,7 +1424,7 @@ class _AddPaiementSalaireState extends State<AddPaiementSalaire> {
     await PaiementSalaireApi().insertData(paiementSalaireModel);
     Navigator.of(context).pop();
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-      content: const Text("soumis avec succès!"),
+      content: const Text("Soumis avec succès!"),
       backgroundColor: Colors.green[700],
     ));
   }
