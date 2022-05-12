@@ -11,6 +11,8 @@ import 'package:fokad_admin/src/constants/responsive.dart';
 import 'package:fokad_admin/src/models/logistiques/carburant_model.dart';
 import 'package:fokad_admin/src/navigation/drawer/drawer_menu.dart';
 import 'package:fokad_admin/src/navigation/header/custom_appbar.dart';
+import 'package:fokad_admin/src/pages/logistiques/dashboard/components/enguin_pie.dart';
+import 'package:fokad_admin/src/pages/logistiques/dashboard/components/etat_materiel_pie.dart';
 import 'package:fokad_admin/src/pages/rh/dashboard/components/dash_number_widget.dart';
 
 class DashboardLog extends StatefulWidget {
@@ -282,6 +284,26 @@ class _DashboardLogState extends State<DashboardLog> {
                                     color: Colors.orange.shade700),
                               ],
                             ),
+
+                            const SizedBox(
+                              height: 20.0,
+                            ),
+                            Responsive.isDesktop(context)
+                                ? Row(
+                                    children: const [
+                                      Expanded(child: EtatMaterielPie()),
+                                      Expanded(child: EnguinPie()),
+                                    ],
+                                  )
+                                : Column(
+                                    children: const [
+                                      EtatMaterielPie(),
+                                      SizedBox(
+                                        height: 20.0,
+                                      ),
+                                      EnguinPie(),
+                                    ],
+                                  ),
                           ],
                         ),
                       ))

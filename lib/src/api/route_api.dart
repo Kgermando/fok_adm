@@ -97,6 +97,7 @@ var addbudgetLigneBudgetairesUrl = Uri.parse("$mainUrl/budgets/ligne-budgetaires
 // Logistiques
 var anguinsUrl = Uri.parse("$mainUrl/anguins/");
 var aaddAnguinsUrl = Uri.parse("$mainUrl/anguins/insert-new-anguin");
+var anguinsChartPieUrl = Uri.parse("$mainUrl/anguins/chart-pie-genre/");
 
 var carburantsUrl = Uri.parse("$mainUrl/carburants/");
 var addCarburantsUrl = Uri.parse("$mainUrl/carburants/insert-new-carburant");
@@ -106,6 +107,7 @@ var addEntretiensUrl = Uri.parse("$mainUrl/entretiens/insert-new-entretien");
 
 var etatMaterielUrl = Uri.parse("$mainUrl/etat_materiels/");
 var addEtatMaterielUrl = Uri.parse("$mainUrl/etat_materiels/insert-new-etat-materiel");
+var etatMaterieChartPielUrl = Uri.parse("$mainUrl/etat_materiels/chart-pie-statut/");
 
 var immobiliersUrl = Uri.parse("$mainUrl/immobiliers/");
 var addImmobiliersUrl = Uri.parse("$mainUrl/immobiliers/insert-new-immobilier");

@@ -35,14 +35,14 @@ class _DashRHPieWidgetState extends State<DashRHPieWidget> {
 
   @override
   Widget build(BuildContext context) {
-    final bodyLarge = Theme.of(context).textTheme.bodyLarge;
     return SizedBox(
       width: 400,
       height: 200,
-      child: Card(
+      child: Material(
         elevation: 10.0,
         child: SfCircularChart(
-            title: ChartTitle(text: 'Genre', textStyle: bodyLarge),
+            title: ChartTitle(text: 'Genre',
+                textStyle: const TextStyle(fontWeight: FontWeight.bold)),
             legend: Legend(isVisible: true, isResponsive: true),
             series: <CircularSeries>[
               // Render pie chart

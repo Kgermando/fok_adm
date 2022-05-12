@@ -21,7 +21,6 @@ import 'package:fokad_admin/src/pages/finances/dashboard/components/caisse/courb
 import 'package:fokad_admin/src/pages/finances/dashboard/components/caisse/courbe_caisse_year.dart';
 import 'package:fokad_admin/src/pages/finances/dashboard/components/depenses/devie_pie_dep_mounth.dart';
 import 'package:fokad_admin/src/pages/finances/dashboard/components/depenses/devie_pie_dep_year.dart';
-import 'package:fokad_admin/src/widgets/animation_line_chart.dart';
 import 'package:fokad_admin/src/widgets/dashboard_card_widget.dart';
 
 class DashboardFinance extends StatefulWidget {
