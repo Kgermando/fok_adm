@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:fokad_admin/src/api/auth/auth_api.dart';
 import 'package:fokad_admin/src/api/budgets/ligne_budgetaire_api.dart';
@@ -7,6 +9,7 @@ import 'package:fokad_admin/src/constants/app_theme.dart';
 import 'package:fokad_admin/src/constants/responsive.dart';
 import 'package:fokad_admin/src/models/budgets/ligne_budgetaire_model.dart';
 import 'package:fokad_admin/src/models/finances/banque_model.dart';
+import 'package:fokad_admin/src/models/finances/coupure_billet_model.dart';
 import 'package:fokad_admin/src/models/users/user_model.dart';
 import 'package:fokad_admin/src/navigation/drawer/drawer_menu.dart';
 import 'package:fokad_admin/src/navigation/header/custom_appbar.dart';
@@ -14,7 +17,6 @@ import 'package:fokad_admin/src/widgets/print_widget.dart';
 import 'package:fokad_admin/src/widgets/title_widget.dart';
 import 'package:intl/intl.dart';
 import 'package:pluto_grid/pluto_grid.dart';
-import 'package:routemaster/routemaster.dart';
 
 class DetailBanque extends StatefulWidget {
   const DetailBanque({Key? key, required this.id}) : super(key: key);
@@ -56,23 +58,39 @@ class _DetailBanqueState extends State<DetailBanque> {
 
   @override
   initState() {
-    getData();
+    Timer.periodic(const Duration(milliseconds: 500), ((timer) {
+      setState(() {
+        getData();
+        agentsRow();
+      });
+      timer.cancel();
+    }));
+
     agentsColumn();
-    agentsRow();
     super.initState();
   }
 
   List<LigneBudgetaireModel> ligneBudgetaireList = [];
-  UserModel? user;
+    UserModel? user = UserModel(
+      nom: '-',
+      prenom: '-',
+      matricule: '-',
+      departement: '-',
+      servicesAffectation: '-',
+      fonctionOccupe: '-',
+      role: '-',
+      isOnline: false,
+      createdAt: DateTime.now(),
+      passwordHash: '-',
+      succursale: '-');
+
   Future<void> getData() async {
     final dataUser = await UserApi().getAllData();
     UserModel userModel = await AuthApi().getUserId();
-    BanqueModel data = await BanqueApi().getOneData(widget.id);
     var budgets = await LIgneBudgetaireApi().getAllData();
     setState(() {
       userList = dataUser;
       user = userModel;
-      coupureBillet = data.coupureBillet;
       ligneBudgetaireList = budgets;
     });
   }
@@ -100,6 +118,7 @@ class _DetailBanqueState extends State<DetailBanque> {
                             AsyncSnapshot<BanqueModel> snapshot) {
                           if (snapshot.hasData) {
                             BanqueModel? banqueModel = snapshot.data;
+                            coupureBillet = banqueModel!.coupureBillet;
                             return Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
@@ -115,7 +134,7 @@ class _DetailBanqueState extends State<DetailBanque> {
                                     const SizedBox(width: p10),
                                     Expanded(
                                       child: CustomAppbar(
-                                          title: banqueModel!.nomComplet,
+                                          title: banqueModel.nomComplet,
                                           controllerMenu: () =>
                                               _key.currentState!.openDrawer()),
                                     ),
@@ -164,16 +183,8 @@ class _DetailBanqueState extends State<DetailBanque> {
                   TitleWidget(title: banqueModel.libelle),
                   Column(
                     children: [
-                      Row(
-                        children: [
-                          IconButton(
-                              tooltip: 'Modifier',
-                              onPressed: () {},
-                              icon: const Icon(Icons.edit)),
-                          PrintWidget(
-                              tooltip: 'Imprimer le document', onPressed: () {})
-                        ],
-                      ),
+                      PrintWidget(
+                          tooltip: 'Imprimer le document', onPressed: () {}),
                       SelectableText(
                           DateFormat("dd-MM-yy").format(banqueModel.created),
                           textAlign: TextAlign.start),
@@ -393,13 +404,18 @@ class _DetailBanqueState extends State<DetailBanque> {
   }
 
   Future agentsRow() async {
+    List<CoupureBilletModel> dataList = [];
+    for (var item in coupureBillet) {
+      dataList.add(CoupureBilletModel.fromJson(item));
+    }
+
     if (mounted) {
       setState(() {
-        for (var item in coupureBillet) {
+        for (var item in dataList) {
           rows.add(PlutoRow(cells: {
-            'id': PlutoCell(value: item[0]['id']),
-            'nombreBillet': PlutoCell(value: item[1]['nombreBillet']),
-            'coupureBillet': PlutoCell(value: item[2]['coupureBillet'])
+            'id': PlutoCell(value: item.id),
+            'nombreBillet': PlutoCell(value: item.nombreBillet),
+            'coupureBillet': PlutoCell(value: item.coupureBillet)
           }));
         }
         stateManager!.resetCurrentState();

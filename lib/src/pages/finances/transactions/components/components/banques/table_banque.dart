@@ -30,9 +30,15 @@ class _TableBanqueState extends State<TableBanque> {
 
   @override
   initState() {
-    getData();
+    Timer.periodic(const Duration(milliseconds: 500), ((timer) {
+      setState(() {
+        getData();
+        agentsRow();
+      });
+      timer.cancel();
+    }));
+
     agentsColumn();
-    agentsRow();
     super.initState();
   }
 

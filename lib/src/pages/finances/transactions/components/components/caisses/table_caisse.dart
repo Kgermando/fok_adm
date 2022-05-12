@@ -34,12 +34,17 @@ class _TableCaisseState extends State<TableCaisse> {
 
   @override
   initState() {
-    getData();
+    Timer.periodic(const Duration(milliseconds: 500), ((timer) {
+      setState(() {
+        getData();
+        agentsRow();
+      });
+      timer.cancel();
+    }));
+
     agentsColumn();
-    agentsRow();
     super.initState();
   }
-
   Future<void> getData() async {
     List<CaisseModel?> dataList = await CaisseApi().getAllData();
     setState(() {

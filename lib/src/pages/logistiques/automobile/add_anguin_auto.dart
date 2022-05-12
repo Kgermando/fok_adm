@@ -9,6 +9,7 @@ import 'package:fokad_admin/src/models/users/user_model.dart';
 import 'package:fokad_admin/src/navigation/drawer/drawer_menu.dart';
 import 'package:fokad_admin/src/navigation/header/custom_appbar.dart';
 import 'package:fokad_admin/src/routes/routes.dart';
+import 'package:fokad_admin/src/utils/enguins_dropdown.dart';
 import 'package:fokad_admin/src/widgets/btn_widget.dart';
 import 'package:fokad_admin/src/widgets/print_widget.dart';
 import 'package:fokad_admin/src/widgets/title_widget.dart';
@@ -27,12 +28,14 @@ class _AddAnguinAutoState extends State<AddAnguinAuto> {
   final _formKey = GlobalKey<FormState>();
   bool isLoading = false;
 
+  final genreDrop = EnguinsDropdown().anguinDropdown;
+
   final TextEditingController nomController = TextEditingController();
   final TextEditingController modeleController = TextEditingController();
   final TextEditingController marqueController = TextEditingController();
   final TextEditingController numeroChassieController = TextEditingController();
   final TextEditingController couleurController = TextEditingController();
-  final TextEditingController genreController = TextEditingController();
+  String? genre;
   final TextEditingController qtyMaxReservoirController =
       TextEditingController();
   final TextEditingController dateFabricationController =
@@ -67,7 +70,6 @@ class _AddAnguinAutoState extends State<AddAnguinAuto> {
     marqueController.dispose();
     numeroChassieController.dispose();
     couleurController.dispose();
-    genreController.dispose();
     qtyMaxReservoirController.dispose();
     dateFabricationController.dispose();
     nomeroPLaqueController.dispose();
@@ -114,7 +116,7 @@ class _AddAnguinAutoState extends State<AddAnguinAuto> {
                           Expanded(
                               flex: 5,
                               child: CustomAppbar(
-                                  title: 'Ajout anguin',
+                                  title: 'Ajout enguin',
                                   controllerMenu: () =>
                                       _key.currentState!.openDrawer())),
                         ],
@@ -153,7 +155,7 @@ class _AddAnguinAutoState extends State<AddAnguinAuto> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        const TitleWidget(title: "Ajout un anguin"),
+                        const TitleWidget(title: "Ajout un enguin"),
                         PrintWidget(onPressed: () {})
                       ],
                     ),
@@ -245,7 +247,7 @@ class _AddAnguinAutoState extends State<AddAnguinAuto> {
           decoration: InputDecoration(
             border:
                 OutlineInputBorder(borderRadius: BorderRadius.circular(10.0)),
-            labelText: 'Type anguin',
+            labelText: "Nom de l'enguin",
           ),
           keyboardType: TextInputType.text,
           style: const TextStyle(),
@@ -349,24 +351,29 @@ class _AddAnguinAutoState extends State<AddAnguinAuto> {
 
   Widget genreWidget() {
     return Container(
-        margin: const EdgeInsets.only(bottom: p20),
-        child: TextFormField(
-          controller: genreController,
-          decoration: InputDecoration(
-            border:
-                OutlineInputBorder(borderRadius: BorderRadius.circular(10.0)),
-            labelText: 'Genre',
-          ),
-          keyboardType: TextInputType.text,
-          style: const TextStyle(),
-          validator: (value) {
-            if (value != null && value.isEmpty) {
-              return 'Ce champs est obligatoire';
-            } else {
-              return null;
-            }
-          },
-        ));
+      margin: const EdgeInsets.only(bottom: p20),
+      child: DropdownButtonFormField<String>(
+        decoration: InputDecoration(
+          labelText: 'Genre',
+          labelStyle: const TextStyle(),
+          border: OutlineInputBorder(borderRadius: BorderRadius.circular(5.0)),
+          contentPadding: const EdgeInsets.only(left: 5.0),
+        ),
+        value: genre,
+        isExpanded: true,
+        items: genreDrop.map((String value) {
+          return DropdownMenuItem<String>(
+            value: value,
+            child: Text(value),
+          );
+        }).toList(),
+        onChanged: (value) {
+          setState(() {
+            genre = value;
+          });
+        },
+      ),
+    );
   }
 
   Widget qtyMaxReservoirWidget() {
@@ -510,7 +517,7 @@ class _AddAnguinAutoState extends State<AddAnguinAuto> {
         marque: marqueController.text,
         numeroChassie: numeroChassieController.text,
         couleur: couleurController.text,
-        genre: genreController.text,
+        genre: genre.toString(),
         qtyMaxReservoir: qtyMaxReservoirController.text,
         dateFabrication: DateTime.parse(dateFabricationController.text),
         nomeroPLaque: nomeroPLaqueController.text,

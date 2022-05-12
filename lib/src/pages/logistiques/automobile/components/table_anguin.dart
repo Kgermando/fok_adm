@@ -65,6 +65,8 @@ class _TableAnguinState extends State<TableAnguin> {
               return resolver<ClassFilterImplemented>() as PlutoFilterType;
             } else if (column.field == 'marque') {
               return resolver<ClassFilterImplemented>() as PlutoFilterType;
+            } else if (column.field == 'genre') {
+              return resolver<ClassFilterImplemented>() as PlutoFilterType;
             } else if (column.field == 'numeroChassie') {
               return resolver<ClassFilterImplemented>() as PlutoFilterType;
             } else if (column.field == 'qtyMaxReservoir') {
@@ -127,6 +129,18 @@ class _TableAnguinState extends State<TableAnguin> {
         readOnly: true,
         title: 'Marque',
         field: 'marque',
+        type: PlutoColumnType.text(),
+        enableRowDrag: true,
+        enableContextMenu: false,
+        enableDropToResize: true,
+        titleTextAlign: PlutoColumnTextAlign.left,
+        width: 150,
+        minWidth: 150,
+      ),
+      PlutoColumn(
+        readOnly: true,
+        title: 'Genre',
+        field: 'genre',
         type: PlutoColumnType.text(),
         enableRowDrag: true,
         enableContextMenu: false,
@@ -211,6 +225,7 @@ class _TableAnguinState extends State<TableAnguin> {
             'nom': PlutoCell(value: item.nom),
             'modele': PlutoCell(value: item.modele),
             'marque': PlutoCell(value: item.marque),
+            'genre': PlutoCell(value: item.genre),
             'numeroChassie': PlutoCell(value: item.numeroChassie),
             'qtyMaxReservoir': PlutoCell(value: item.qtyMaxReservoir),
             'dateFabrication': PlutoCell(

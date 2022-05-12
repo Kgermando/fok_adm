@@ -33,8 +33,6 @@ class _DetailDevisState extends State<DetailDevis> {
 
   List<UserModel> userList = [];
 
-  bool statutAgent = false;
-
   List<PlutoColumn> columns = [];
   List<PlutoRow> rows = [];
   PlutoGridStateManager? stateManager;

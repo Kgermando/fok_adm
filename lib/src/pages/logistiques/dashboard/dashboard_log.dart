@@ -294,7 +294,7 @@ class _DashboardLogState extends State<DashboardLog> {
                                       Expanded(child: EtatMaterielPie()),
                                       Expanded(child: EnguinPie()),
                                     ],
-                                  )
+                                  ) 
                                 : Column(
                                     children: const [
                                       EtatMaterielPie(),

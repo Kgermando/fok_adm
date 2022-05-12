@@ -8,12 +8,10 @@ import 'package:fokad_admin/src/models/finances/creances_model.dart';
 import 'package:fokad_admin/src/models/users/user_model.dart';
 import 'package:fokad_admin/src/navigation/drawer/drawer_menu.dart';
 import 'package:fokad_admin/src/navigation/header/custom_appbar.dart';
-import 'package:fokad_admin/src/pages/finances/transactions/components/components/creances/update_creance.dart';
 import 'package:fokad_admin/src/widgets/print_widget.dart';
 import 'package:fokad_admin/src/widgets/title_widget.dart';
 import 'package:intl/intl.dart';
 import 'package:pluto_grid/pluto_grid.dart';
-import 'package:routemaster/routemaster.dart';
 
 class DetailCreance extends StatefulWidget {
   const DetailCreance({Key? key, this.id}) : super(key: key);
@@ -29,7 +27,7 @@ class _DetailCreanceState extends State<DetailCreance> {
   bool isLoading = false;
   List<UserModel> userList = [];
 
-  bool statutAgent = false;
+  bool isChecked = false;
 
   List<PlutoColumn> columns = [];
   List<PlutoRow> rows = [];
@@ -153,22 +151,10 @@ class _DetailCreanceState extends State<DetailCreance> {
                   TitleWidget(title: creanceModel.libelle),
                   Column(
                     children: [
-                      Row(
-                        children: [
-                          IconButton(
-                              tooltip: 'Créance payé ?',
-                              onPressed: () {
-                                Navigator.of(context).push(MaterialPageRoute(
-                                    builder: (context) => UpdateCreance(
-                                        creanceModel: creanceModel)));
-                              },
-                              icon: const Icon(Icons.edit)),
-                          PrintWidget(
-                              tooltip: 'Imprimer le document', onPressed: () {})
-                        ],
-                      ),
+                      PrintWidget(
+                          tooltip: 'Imprimer le document', onPressed: () {}),
                       SelectableText(
-                          DateFormat("dd-MM-yy").format(creanceModel.created),
+                          DateFormat("dd-MM-yyyy HH:mm").format(creanceModel.created),
                           textAlign: TextAlign.start),
                     ],
                   )
@@ -274,6 +260,11 @@ class _DetailCreanceState extends State<DetailCreance> {
                     textAlign: TextAlign.start,
                     style: bodyMedium.copyWith(fontWeight: FontWeight.bold)),
               ),
+               const SizedBox(
+                width: p10,
+              ),
+              if (!creanceModel.statutPaie && user!.departement == "Finances")
+                Expanded(child: checkboxRead(creanceModel)),
               (creanceModel.statutPaie)
                   ? Expanded(
                       child: SelectableText('Payé',
@@ -293,6 +284,44 @@ class _DetailCreanceState extends State<DetailCreance> {
       ),
     );
   }
+
+  Color getColor(Set<MaterialState> states) {
+    const Set<MaterialState> interactiveStates = <MaterialState>{
+      MaterialState.pressed,
+      MaterialState.hovered,
+      MaterialState.focused,
+    };
+    if (states.any(interactiveStates.contains)) {
+      return Colors.red;
+    }
+    return Colors.green;
+  }
+
+  checkboxRead(CreanceModel data) {
+    isChecked = data.statutPaie;
+    return ListTile(
+      leading: Checkbox(
+        checkColor: Colors.white,
+        fillColor: MaterialStateProperty.resolveWith(getColor),
+        value: isChecked,
+        onChanged: (bool? value) {
+          setState(() {
+            isLoading = true;
+          });
+          setState(() {
+            isChecked = value!;
+            submitobservation(data);
+          });
+          setState(() {
+            isLoading = false;
+          });
+        },
+      ),
+      title: const Text("Confirmation de payement"),
+    );
+  }
+
+
 
   Widget infosEditeurWidget(CreanceModel data) {
     final bodyMedium = Theme.of(context).textTheme.bodyMedium;
@@ -897,4 +926,37 @@ class _DetailCreanceState extends State<DetailCreance> {
       backgroundColor: Colors.green[700],
     ));
   }
+
+
+  Future<void> submitobservation(CreanceModel data) async {
+    final creanceModel = CreanceModel(
+        nomComplet: data.nomComplet,
+        pieceJustificative: data.pieceJustificative,
+        libelle: data.libelle,
+        montant: data.montant,
+        numeroOperation: data.numeroOperation,
+        statutPaie: isChecked,
+        approbationDG: data.approbationDG,
+        signatureDG: data.signatureDG,
+        signatureJustificationDG: data.signatureJustificationDG,
+        approbationFin: data.approbationFin,
+        signatureFin: data.signatureFin,
+        signatureJustificationFin: data.signatureJustificationFin,
+        approbationBudget: data.approbationBudget,
+        signatureBudget: data.signatureBudget,
+        signatureJustificationBudget: data.signatureJustificationBudget,
+        approbationDD: data.approbationDD,
+        signatureDD: data.signatureDD,
+        signatureJustificationDD: data.signatureJustificationDD,
+        signature: data.signature,
+        created: data.created);
+    await CreanceApi().updateData(data.id!, creanceModel);
+    Navigator.of(context).pop();
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      content: const Text("Soumis avec succès!"),
+      backgroundColor: Colors.green[700],
+    ));
+  }
+
+  
 }

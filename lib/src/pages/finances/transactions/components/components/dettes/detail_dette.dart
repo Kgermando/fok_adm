@@ -8,13 +8,10 @@ import 'package:fokad_admin/src/models/finances/dette_model.dart';
 import 'package:fokad_admin/src/models/users/user_model.dart';
 import 'package:fokad_admin/src/navigation/drawer/drawer_menu.dart';
 import 'package:fokad_admin/src/navigation/header/custom_appbar.dart';
-import 'package:fokad_admin/src/pages/finances/transactions/components/components/dettes/update_dette.dart';
 import 'package:fokad_admin/src/widgets/print_widget.dart';
 import 'package:fokad_admin/src/widgets/title_widget.dart';
 import 'package:intl/intl.dart';
 import 'package:pluto_grid/pluto_grid.dart';
-import 'package:routemaster/routemaster.dart';
-
 class DetailDette extends StatefulWidget {
   const DetailDette({Key? key, this.id}) : super(key: key);
   final int? id;
@@ -29,7 +26,7 @@ class _DetailDetteState extends State<DetailDette> {
   bool isLoading = false;
   List<UserModel> userList = [];
 
-  bool statutAgent = false;
+   bool isChecked = false;
 
   List<PlutoColumn> columns = [];
   List<PlutoRow> rows = [];
@@ -59,7 +56,6 @@ class _DetailDetteState extends State<DetailDette> {
   Future<void> getData() async {
     final dataUser = await UserApi().getAllData();
     UserModel userModel = await AuthApi().getUserId();
-    // DetteModel data = await DetteApi().getOneData(widget.id!);
     setState(() {
       userList = dataUser;
       user = userModel;
@@ -153,22 +149,10 @@ class _DetailDetteState extends State<DetailDette> {
                   TitleWidget(title: detteModel.libelle),
                   Column(
                     children: [
-                      Row(
-                        children: [
-                          IconButton(
-                              tooltip: 'Dette payé ?',
-                              onPressed: () {
-                                Navigator.of(context).push(MaterialPageRoute(
-                                    builder: (context) =>
-                                        UpdateDette(detteModel: detteModel)));
-                              },
-                              icon: const Icon(Icons.edit)),
-                          PrintWidget(
-                              tooltip: 'Imprimer le document', onPressed: () {})
-                        ],
-                      ),
+                      PrintWidget(
+                              tooltip: 'Imprimer le document', onPressed: () {}),
                       SelectableText(
-                          DateFormat("dd-MM-yy").format(detteModel.created),
+                          DateFormat("dd-MM-yyyy HH:mm").format(detteModel.created),
                           textAlign: TextAlign.start),
                     ],
                   )
@@ -202,6 +186,7 @@ class _DetailDetteState extends State<DetailDette> {
               )
             ],
           ),
+          Divider(color: Colors.amber.shade700),
           Row(
             children: [
               Expanded(
@@ -215,6 +200,7 @@ class _DetailDetteState extends State<DetailDette> {
               )
             ],
           ),
+          Divider(color: Colors.amber.shade700),
           Row(
             children: [
               Expanded(
@@ -227,7 +213,8 @@ class _DetailDetteState extends State<DetailDette> {
                     textAlign: TextAlign.start, style: bodyMedium),
               )
             ],
-          ),
+          ), 
+          Divider(color: Colors.amber.shade700),
           Row(
             children: [
               Expanded(
@@ -241,6 +228,7 @@ class _DetailDetteState extends State<DetailDette> {
               )
             ],
           ),
+          Divider(color: Colors.amber.shade700),
           Row(
             children: [
               Expanded(
@@ -254,6 +242,7 @@ class _DetailDetteState extends State<DetailDette> {
               )
             ],
           ),
+           Divider(color: Colors.amber.shade700),
           Row(
             children: [
               Expanded(
@@ -267,6 +256,7 @@ class _DetailDetteState extends State<DetailDette> {
               )
             ],
           ),
+          Divider(color: Colors.amber.shade700),
           Row(
             children: [
               Expanded(
@@ -274,6 +264,11 @@ class _DetailDetteState extends State<DetailDette> {
                     textAlign: TextAlign.start,
                     style: bodyMedium.copyWith(fontWeight: FontWeight.bold)),
               ),
+              const SizedBox(
+                width: p10,
+              ),
+              if (!detteModel.statutPaie && user!.departement == "Finances")
+              Expanded(child: checkboxRead(detteModel)),
               (detteModel.statutPaie)
                   ? Expanded(
                       child: SelectableText('Payé',
@@ -289,10 +284,49 @@ class _DetailDetteState extends State<DetailDette> {
                     )
             ],
           ),
+          Divider(color: Colors.amber.shade700),
         ],
       ),
     );
   }
+
+Color getColor(Set<MaterialState> states) {
+    const Set<MaterialState> interactiveStates = <MaterialState>{
+      MaterialState.pressed,
+      MaterialState.hovered,
+      MaterialState.focused,
+    };
+    if (states.any(interactiveStates.contains)) {
+      return Colors.red;
+    }
+    return Colors.green;
+  }
+
+  checkboxRead(DetteModel data) {
+    isChecked = data.statutPaie;
+    return ListTile(
+      leading: Checkbox(
+        checkColor: Colors.white,
+        fillColor: MaterialStateProperty.resolveWith(getColor),
+        value: isChecked,
+        onChanged: (bool? value) {
+          setState(() {
+            isLoading = true;
+          });
+          setState(() {
+            isChecked = value!;
+            submitobservation(data);
+          });
+          setState(() {
+            isLoading = false;
+          });
+        },
+      ),
+      title: const Text("Confirmation de payement"),
+    );
+  }
+
+
 
   Widget infosEditeurWidget(DetteModel data) {
     final bodyMedium = Theme.of(context).textTheme.bodyMedium;
@@ -889,6 +923,37 @@ class _DetailDetteState extends State<DetailDette> {
         signatureDD: user!.matricule.toString(),
         signatureJustificationDD: signatureJustificationDDController.text,
         signature: data.signature.toString(),
+        created: data.created);
+    await DetteApi().updateData(data.id!, detteModel);
+    Navigator.of(context).pop();
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      content: const Text("Soumis avec succès!"),
+      backgroundColor: Colors.green[700],
+    ));
+  }
+
+  Future<void> submitobservation(DetteModel data) async {
+    final detteModel = DetteModel(
+        nomComplet: data.nomComplet,
+        pieceJustificative: data.pieceJustificative,
+        libelle: data.libelle,
+        montant: data.montant,
+        numeroOperation: data.numeroOperation,
+        statutPaie: isChecked,
+        approbationDG: data.approbationDG,
+        signatureDG: data.signatureDG,
+        signatureJustificationDG: data.signatureJustificationDG,
+        approbationFin: data.approbationFin,
+        signatureFin: data.signatureFin,
+        signatureJustificationFin: data.signatureJustificationFin,
+        approbationBudget: data.approbationBudget,
+        signatureBudget: data.signatureBudget,
+        signatureJustificationBudget:
+            data.signatureJustificationBudget,
+        approbationDD: data.approbationDD,
+        signatureDD: data.signatureDD,
+        signatureJustificationDD: data.signatureJustificationDD,
+        signature: data.signature,
         created: data.created);
     await DetteApi().updateData(data.id!, detteModel);
     Navigator.of(context).pop();

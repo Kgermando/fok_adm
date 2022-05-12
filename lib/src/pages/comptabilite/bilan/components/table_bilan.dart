@@ -30,7 +30,9 @@ class _TableBilanState extends State<TableBilan> {
   void initState() {
     agentsColumn();
     Timer.periodic(const Duration(milliseconds: 500), ((timer) {
-      agentsRow();
+      setState(() {
+        agentsRow();
+      });
       timer.cancel();
     }));
 

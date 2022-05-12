@@ -562,7 +562,7 @@ class _BanqueTransactionsState extends State<BanqueTransactions> {
       margin: const EdgeInsets.only(bottom: p20),
       child: DropdownButtonFormField<String>(
         decoration: InputDecoration(
-          labelText: 'departement',
+          labelText: 'Département',
           labelStyle: const TextStyle(),
           border: OutlineInputBorder(borderRadius: BorderRadius.circular(5.0)),
           contentPadding: const EdgeInsets.only(left: 5.0),
@@ -654,7 +654,7 @@ class _BanqueTransactionsState extends State<BanqueTransactions> {
         return map['id'] == foundKey;
       });
     }
-    Map<String, dynamic> json = {
+    Map<String, dynamic> json = { 
       'id': key,
       'nombreBillet': nombreBillet,
       'coupureBillet': coupureBillet

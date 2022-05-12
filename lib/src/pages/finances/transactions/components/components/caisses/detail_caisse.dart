@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:fokad_admin/src/api/auth/auth_api.dart';
 import 'package:fokad_admin/src/api/budgets/ligne_budgetaire_api.dart';
@@ -7,6 +9,7 @@ import 'package:fokad_admin/src/constants/app_theme.dart';
 import 'package:fokad_admin/src/constants/responsive.dart';
 import 'package:fokad_admin/src/models/budgets/ligne_budgetaire_model.dart';
 import 'package:fokad_admin/src/models/finances/caisse_model.dart';
+import 'package:fokad_admin/src/models/finances/coupure_billet_model.dart';
 import 'package:fokad_admin/src/models/users/user_model.dart';
 import 'package:fokad_admin/src/navigation/drawer/drawer_menu.dart';
 import 'package:fokad_admin/src/navigation/header/custom_appbar.dart';
@@ -14,7 +17,6 @@ import 'package:fokad_admin/src/widgets/print_widget.dart';
 import 'package:fokad_admin/src/widgets/title_widget.dart';
 import 'package:intl/intl.dart';
 import 'package:pluto_grid/pluto_grid.dart';
-import 'package:routemaster/routemaster.dart';
 
 class DetailCaisse extends StatefulWidget {
   const DetailCaisse({Key? key, this.id}) : super(key: key);
@@ -56,25 +58,41 @@ class _DetailCaisseState extends State<DetailCaisse> {
 
   @override
   initState() {
-    getData();
+    Timer.periodic(const Duration(milliseconds: 500), ((timer) {
+      setState(() {
+        getData();
+        agentsRow();
+      });
+      timer.cancel();
+    }));
+    
     agentsColumn();
-    agentsRow();
     super.initState();
   }
 
   List<LigneBudgetaireModel> ligneBudgetaireList = [];
-  UserModel? user;
+    UserModel? user = UserModel(
+      nom: '-',
+      prenom: '-',
+      matricule: '-',
+      departement: '-',
+      servicesAffectation: '-',
+      fonctionOccupe: '-',
+      role: '-',
+      isOnline: false,
+      createdAt: DateTime.now(),
+      passwordHash: '-',
+      succursale: '-');
+
   Future<void> getData() async {
     UserModel userModel = await AuthApi().getUserId();
     final ligneBudgetaire = await LIgneBudgetaireApi().getAllData();
     final dataUser = await UserApi().getAllData();
-    CaisseModel data = await CaisseApi().getOneData(widget.id!);
     var budgets = await LIgneBudgetaireApi().getAllData();
     setState(() {
       ligneBudgetaireList = ligneBudgetaire;
       user = userModel;
       userList = dataUser;
-      coupureBillet = data.coupureBillet;
       ligneBudgetaireList = budgets;
     });
   }
@@ -102,6 +120,7 @@ class _DetailCaisseState extends State<DetailCaisse> {
                             AsyncSnapshot<CaisseModel> snapshot) {
                           if (snapshot.hasData) {
                             CaisseModel? caisseModel = snapshot.data;
+                            coupureBillet = caisseModel!.coupureBillet;
                             return Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
@@ -117,7 +136,7 @@ class _DetailCaisseState extends State<DetailCaisse> {
                                     const SizedBox(width: p10),
                                     Expanded(
                                       child: CustomAppbar(
-                                          title: caisseModel!.nomComplet,
+                                          title: caisseModel.nomComplet,
                                           controllerMenu: () =>
                                               _key.currentState!.openDrawer()),
                                     ),
@@ -166,16 +185,8 @@ class _DetailCaisseState extends State<DetailCaisse> {
                   TitleWidget(title: caisseModel.typeOperation),
                   Column(
                     children: [
-                      Row(
-                        children: [
-                          IconButton(
-                              tooltip: 'Modifier',
-                              onPressed: () {},
-                              icon: const Icon(Icons.edit)),
-                          PrintWidget(
-                              tooltip: 'Imprimer le document', onPressed: () {})
-                        ],
-                      ),
+                      PrintWidget(
+                          tooltip: 'Imprimer le document', onPressed: () {}),
                       SelectableText(
                           DateFormat("dd-MM-yy").format(caisseModel.created),
                           textAlign: TextAlign.start),
@@ -380,21 +391,25 @@ class _DetailCaisseState extends State<DetailCaisse> {
     ];
   }
 
-  Future agentsRow() async {
+Future agentsRow() async {
+    List<CoupureBilletModel> dataList = [];
+    for (var item in coupureBillet) {
+      dataList.add(CoupureBilletModel.fromJson(item));
+    }
+
     if (mounted) {
       setState(() {
-        for (var item in coupureBillet) {
+        for (var item in dataList) {
           rows.add(PlutoRow(cells: {
-            'id': PlutoCell(value: item[0]['id']),
-            'nombreBillet': PlutoCell(value: item[1]['nombreBillet']),
-            'coupureBillet': PlutoCell(value: item[2]['coupureBillet'])
+            'id': PlutoCell(value: item.id),
+            'nombreBillet': PlutoCell(value: item.nombreBillet),
+            'coupureBillet': PlutoCell(value: item.coupureBillet)
           }));
         }
         stateManager!.resetCurrentState();
       });
     }
   }
-
   Widget infosEditeurWidget(CaisseModel data) {
     final bodyMedium = Theme.of(context).textTheme.bodyMedium;
     final bodySmall = Theme.of(context).textTheme.bodySmall;
