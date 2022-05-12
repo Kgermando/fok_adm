@@ -78,7 +78,7 @@ class _DashboardLogState extends State<DashboardLog> {
           .toList();
       List<CarburantModel?> sortieListEssence = dataList
           .where((element) =>
-              element!.operationEntreSortie == "Sortie" &&
+              element!.operationEntreSortie == "Sortie" && 
               element.typeCaburant == "Essence")
           .toList();
       for (var item in entreListEssence) {

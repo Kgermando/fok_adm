@@ -71,12 +71,10 @@ class _DetailDevisState extends State<DetailDevis> {
     final dataUser = await UserApi().getAllData();
     UserModel userModel = await AuthApi().getUserId();
     var budgets = await LIgneBudgetaireApi().getAllData();
-    DevisModel devis = await DevisAPi().getOneData(widget.id);
     setState(() {
       userList = dataUser;
       user = userModel;
       ligneBudgetaireList = budgets;
-      listObjets = devis.list;
     });
   }
 
@@ -103,6 +101,7 @@ class _DetailDevisState extends State<DetailDevis> {
                             AsyncSnapshot<DevisModel> snapshot) {
                           if (snapshot.hasData) {
                             DevisModel? data = snapshot.data;
+                            listObjets = data!.list;
                             return Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
@@ -118,7 +117,7 @@ class _DetailDevisState extends State<DetailDevis> {
                                     const SizedBox(width: p10),
                                     Expanded(
                                       child: CustomAppbar(
-                                          title: data!.title,
+                                          title: data.title,
                                           controllerMenu: () =>
                                               _key.currentState!.openDrawer()),
                                     ),
@@ -254,7 +253,7 @@ class _DetailDevisState extends State<DetailDevis> {
                 width: p10,
               ),
               if (!data.observation && user!.departement == "Finances")
-              Expanded(child: checkboxRead(data)),
+                Expanded(child: checkboxRead(data)),
               Expanded(
                   child: (data.observation)
                       ? SelectableText(
@@ -317,7 +316,6 @@ class _DetailDevisState extends State<DetailDevis> {
       rows: rows,
       onLoaded: (PlutoGridOnLoadedEvent event) {
         stateManager = event.stateManager;
-        stateManager!.setShowColumnFilter(true);
       },
     );
   }
@@ -376,14 +374,18 @@ class _DetailDevisState extends State<DetailDevis> {
   }
 
   Future agentsRow() async {
+    List<DevisListObjetModel> dataList = [];
+    for (var item in listObjets) {
+      dataList.add(DevisListObjetModel.fromJson(item));
+    }
     if (mounted) {
       setState(() {
-        for (var item in listObjets) {
+        for (var item in dataList) {
           rows.add(PlutoRow(cells: {
-            'id': PlutoCell(value: item[0]['id']),
-            'nombre': PlutoCell(value: item[1]['nombre']),
-            'description': PlutoCell(value: item[2]['description']),
-            'frais': PlutoCell(value: item[2]['frais'])
+            'id': PlutoCell(value: item.id),
+            'nombre': PlutoCell(value: item.nombre),
+            'description': PlutoCell(value: item.description),
+            'frais': PlutoCell(value: item.frais)
           }));
         }
         stateManager!.resetCurrentState();
@@ -1022,8 +1024,7 @@ class _DetailDevisState extends State<DetailDevis> {
         signatureDD: data.signatureDD,
         signatureJustificationDD: data.signatureJustificationDD,
         signature: data.signature,
-        created: DateTime.now()
-    );
+        created: DateTime.now());
     await DevisAPi().updateData(data.id!, devisModel);
     Navigator.of(context).pop();
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(

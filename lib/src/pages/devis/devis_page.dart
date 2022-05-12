@@ -365,13 +365,6 @@ class _DevisPageState extends State<DevisPage> {
                                   return null;
                                 }
                               },
-                              onEditingComplete: () {
-                                onUpdate(
-                                    index,
-                                    listNbreController[index].text,
-                                    listDescriptionController[index].text,
-                                    listFraisController[index].text);
-                              },
                             ))),
                     const SizedBox(width: p10),
                     Expanded(
