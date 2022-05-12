@@ -63,7 +63,8 @@ class _CourbeVenteGainMounthState extends State<CourbeVenteGainMounth> {
           primaryXAxis: CategoryAxis(),
           // Chart title
           title: ChartTitle(
-              text: 'Courbe de Ventes par mois'),
+            text: 'Courbe de Ventes par mois', 
+            textStyle: const TextStyle(fontWeight: FontWeight.bold)),
           // Enable legend
           legend: Legend(
               position: Responsive.isDesktop(context)
