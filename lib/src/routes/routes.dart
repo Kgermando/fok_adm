@@ -58,7 +58,6 @@ import 'package:fokad_admin/src/pages/finances/transactions/components/caisses_t
 import 'package:fokad_admin/src/pages/finances/transactions/components/creance_transactions.dart';
 import 'package:fokad_admin/src/pages/finances/transactions/components/dette_transcations.dart';
 import 'package:fokad_admin/src/pages/finances/transactions/components/fin_externe_transactions.dart';
-import 'package:fokad_admin/src/pages/finances/transactions/components/paiement_transactions.dart';
 import 'package:fokad_admin/src/pages/finances/transactions/transactions_fincance.dart';
 import 'package:fokad_admin/src/pages/logistiques/automobile/add_anguin_auto.dart';
 import 'package:fokad_admin/src/pages/logistiques/automobile/add_carburant.dart';

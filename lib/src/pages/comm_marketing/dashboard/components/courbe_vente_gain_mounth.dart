@@ -26,9 +26,10 @@ class _CourbeVenteGainMounthState extends State<CourbeVenteGainMounth> {
     _tooltipBehavior = TooltipBehavior(enable: true);
 
     Timer.periodic(const Duration(milliseconds: 500), (t) {
-      loadVente();
-      loadGain();
-
+      setState(() {
+        loadVente();
+        loadGain();
+      });
       t.cancel();
     });
     super.initState();

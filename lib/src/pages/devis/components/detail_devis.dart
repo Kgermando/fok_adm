@@ -338,7 +338,7 @@ class _DetailDevisState extends State<DetailDevis> {
       ),
       PlutoColumn(
         readOnly: true,
-        title: '?ombre',
+        title: 'Nombre',
         field: 'nombre',
         type: PlutoColumnType.text(),
         enableRowDrag: true,

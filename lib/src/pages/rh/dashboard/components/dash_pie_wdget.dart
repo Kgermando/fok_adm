@@ -16,17 +16,20 @@ class _DashRHPieWidgetState extends State<DashRHPieWidget> {
   @override
   void initState() {
     Timer.periodic(const Duration(milliseconds: 500), ((timer) {
-      getData();
+      setState(() {
+        getData();
+      });
+      
       timer.cancel();
     }));
     super.initState();
   }
 
-  List<AgentPieChartModel> agentList = [];
+  List<AgentPieChartModel> dataList = [];
   Future<void> getData() async {
-    var agents = await AgentsApi().getChartPieSexe();
+    var data = await AgentsApi().getChartPieSexe();
     setState(() {
-      agentList = agents;
+      dataList = data;
     });
   }
 
@@ -44,7 +47,7 @@ class _DashRHPieWidgetState extends State<DashRHPieWidget> {
             series: <CircularSeries>[
               // Render pie chart
               PieSeries<AgentPieChartModel, String>(
-                  dataSource: agentList,
+                  dataSource: dataList,
                   // pointColorMapper: (ChartData data, _) => data.color,
                   xValueMapper: (AgentPieChartModel data, _) => data.sexe,
                   yValueMapper: (AgentPieChartModel data, _) => data.count)

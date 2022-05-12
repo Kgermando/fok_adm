@@ -5,6 +5,7 @@ import 'dart:convert';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:fokad_admin/src/api/auth/auth_api.dart';
 import 'package:fokad_admin/src/api/route_api.dart';
+import 'package:fokad_admin/src/models/charts/courbe_chart_model.dart';
 import 'package:fokad_admin/src/models/finances/banque_model.dart';
 import 'package:http/http.dart' as http;
 
@@ -128,5 +129,123 @@ class BanqueApi {
       throw Exception(json.decode(res.body)['message']);
     }
   }
+
+
+
+
+
+
+  
+  Future<List<CourbeChartModel>> getAllDataMouthDepot() async {
+    String? token = await getToken();
+
+    if (token!.isNotEmpty) {
+      var splittedJwt = token.split(".");
+      var payload = json.decode(
+          ascii.decode(base64.decode(base64.normalize(splittedJwt[1]))));
+    }
+    var resp = await client.get(
+      banqueDepotMouthUrl,
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+        'Authorization': 'Bearer $token'
+      },
+    );
+    if (resp.statusCode == 200) {
+      List<dynamic> bodyList = json.decode(resp.body);
+      List<CourbeChartModel> data = [];
+      for (var u in bodyList) {
+        data.add(CourbeChartModel.fromJson(u));
+      }
+      return data;
+    } else {
+      throw Exception(jsonDecode(resp.body)['message']);
+    }
+  }
+
+
+  Future<List<CourbeChartModel>> getAllDataMouthRetrait() async {
+    String? token = await getToken();
+
+    if (token!.isNotEmpty) {
+      var splittedJwt = token.split(".");
+      var payload = json.decode(
+          ascii.decode(base64.decode(base64.normalize(splittedJwt[1]))));
+    }
+    var resp = await client.get(
+      banqueRetraitMountUrl,
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+        'Authorization': 'Bearer $token'
+      },
+    );
+    if (resp.statusCode == 200) {
+      List<dynamic> bodyList = json.decode(resp.body);
+      List<CourbeChartModel> data = [];
+      for (var u in bodyList) {
+        data.add(CourbeChartModel.fromJson(u));
+      }
+      return data;
+    } else {
+      throw Exception(jsonDecode(resp.body)['message']);
+    }
+  }
+
+  Future<List<CourbeChartModel>> getAllDataYearDepot() async {
+    String? token = await getToken();
+
+    if (token!.isNotEmpty) {
+      var splittedJwt = token.split(".");
+      var payload = json.decode(
+          ascii.decode(base64.decode(base64.normalize(splittedJwt[1]))));
+    }
+    var resp = await client.get(
+      banqueDepotYearUrl,
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+        'Authorization': 'Bearer $token'
+      },
+    );
+
+    if (resp.statusCode == 200) {
+      List<dynamic> bodyList = json.decode(resp.body);
+      List<CourbeChartModel> data = [];
+      for (var u in bodyList) {
+        data.add(CourbeChartModel.fromJson(u));
+      }
+      return data;
+    } else {
+      throw Exception(jsonDecode(resp.body)['message']);
+    }
+  }
+
+  Future<List<CourbeChartModel>> getAllDataYearRetrait() async {
+    String? token = await getToken();
+
+    if (token!.isNotEmpty) {
+      var splittedJwt = token.split(".");
+      var payload = json.decode(
+          ascii.decode(base64.decode(base64.normalize(splittedJwt[1]))));
+    }
+    var resp = await client.get(
+      banqueRetraitYeartUrl,
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+        'Authorization': 'Bearer $token'
+      },
+    );
+
+    if (resp.statusCode == 200) {
+      List<dynamic> bodyList = json.decode(resp.body);
+      List<CourbeChartModel> data = [];
+      for (var u in bodyList) {
+        data.add(CourbeChartModel.fromJson(u));
+      }
+      return data;
+    } else {
+      throw Exception(jsonDecode(resp.body)['message']);
+    }
+  }
+
 
 }

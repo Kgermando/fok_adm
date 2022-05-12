@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:fokad_admin/src/api/auth/auth_api.dart';
 import 'package:fokad_admin/src/api/finances/caisse_api.dart';
 import 'package:fokad_admin/src/constants/app_theme.dart';
@@ -15,7 +16,6 @@ import 'package:fokad_admin/src/utils/type_operation.dart';
 import 'package:fokad_admin/src/widgets/btn_widget.dart';
 import 'package:fokad_admin/src/widgets/print_widget.dart';
 import 'package:fokad_admin/src/widgets/title_widget.dart';
-import 'package:routemaster/routemaster.dart';
 import 'package:simple_speed_dial/simple_speed_dial.dart';
 
 class CaisseTransactions extends StatefulWidget {
@@ -437,12 +437,15 @@ class _CaisseTransactionsState extends State<CaisseTransactions> {
               flex: 5,
               child: TextFormField(
                 controller: montantController,
+                keyboardType: TextInputType.number,
+                inputFormatters: <TextInputFormatter>[
+                  FilteringTextInputFormatter.digitsOnly
+                ],
                 decoration: InputDecoration(
                   border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(10.0)),
                   labelText: 'Montant',
                 ),
-                keyboardType: TextInputType.text,
                 validator: (value) => value != null && value.isEmpty
                     ? 'Ce champs est obligatoire.'
                     : null,
