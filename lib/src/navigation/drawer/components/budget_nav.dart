@@ -56,14 +56,27 @@ class _BudgetNavState extends State<BudgetNav> {
               // Navigator.of(context).pop();
             }),
         DrawerWidget(
-            selected: widget.pageCurrente == BudgetRoutes.budgetAutreDep,
-            icon: Icons.manage_accounts,
+            selected: widget.pageCurrente == BudgetRoutes.budgetBudgetPrevisionel,
+            icon: Icons.wallet_giftcard,
             sizeIcon: 20.0,
-            title: 'Approbation lignes budgetaires',
+            title: 'Budgets previsonels',
             style: bodyText1,
             onTap: () {
               Routemaster.of(context).replace(
-                BudgetRoutes.budgetAutreDep,
+                BudgetRoutes.budgetBudgetPrevisionel,
+              );
+              // Navigator.of(context).pop();
+            }),
+        DrawerWidget(
+            selected:
+                widget.pageCurrente == BudgetRoutes.historiqueBudgetBudgetPrevisionel,
+            icon: Icons.history_sharp,
+            sizeIcon: 20.0,
+            title: 'Historique Budgetaires',
+            style: bodyText1,
+            onTap: () {
+              Routemaster.of(context).replace(
+                BudgetRoutes.historiqueBudgetBudgetPrevisionel,
               );
               // Navigator.of(context).pop();
             }),

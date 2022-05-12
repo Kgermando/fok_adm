@@ -1,7 +1,8 @@
 class DepartementBudgetModel { 
   late int? id;
   late String departement;
-  late String periodeBudget; // Durée
+  late DateTime periodeDebut; // Durée
+  late DateTime periodeFin; // Durée de fin
   late String totalGlobalDispo;
   late String totalGlobalFinExt; // Reste à trouver
   late String totalGlobalPrevisionel;
@@ -28,7 +29,8 @@ class DepartementBudgetModel {
   DepartementBudgetModel(
       {this.id,
       required this.departement,
-      required this.periodeBudget,
+      required this.periodeDebut,
+      required this.periodeFin,
       required this.totalGlobalDispo,
       required this.totalGlobalFinExt,
       required this.totalGlobalPrevisionel, 
@@ -58,26 +60,27 @@ class DepartementBudgetModel {
     return DepartementBudgetModel(
         id: row[0],
         departement: row[1],
-        periodeBudget: row[2],
-        totalGlobalDispo: row[3],
-        totalGlobalFinExt: row[4],
-        totalGlobalPrevisionel: row[5],
+        periodeDebut: row[2],
+        periodeFin: row[3],
+        totalGlobalDispo: row[4],
+        totalGlobalFinExt: row[5],
+        totalGlobalPrevisionel: row[6],
 
-        approbationDG: row[6],
-        signatureDG: row[7],
-        signatureJustificationDG: row[8],
-        approbationFin: row[9],
-        signatureFin: row[10],
-        signatureJustificationFin: row[11],
-        approbationBudget: row[12],
-        signatureBudget: row[13],
-        signatureJustificationBudget: row[14],
-        approbationDD: row[15],
-        signatureDD: row[16],
-        signatureJustificationDD: row[17],
+        approbationDG: row[7],
+        signatureDG: row[8],
+        signatureJustificationDG: row[9],
+        approbationFin: row[10],
+        signatureFin: row[11],
+        signatureJustificationFin: row[12],
+        approbationBudget: row[13],
+        signatureBudget: row[14],
+        signatureJustificationBudget: row[15],
+        approbationDD: row[16],
+        signatureDD: row[17],
+        signatureJustificationDD: row[18],
 
-        signature: row[18],
-        created: row[19]
+        signature: row[19],
+        created: row[20]
     );
   }
 
@@ -85,7 +88,8 @@ class DepartementBudgetModel {
     return DepartementBudgetModel(
         id: json['id'],
         departement: json['departement'],
-        periodeBudget: json['periodeBudget'],
+        periodeDebut: DateTime.parse(json['periodeDebut']),
+        periodeFin: DateTime.parse(json['periodeFin']),
         totalGlobalDispo: json['totalGlobalDispo'],
         totalGlobalFinExt: json['totalGlobalFinExt'],
         totalGlobalPrevisionel: json['totalGlobalPrevisionel'],
@@ -115,7 +119,8 @@ class DepartementBudgetModel {
     return {
       'id': id,
       'departement': departement,
-      'periodeBudget': periodeBudget,
+      'periodeDebut': periodeDebut.toIso8601String(),
+      'periodeFin': periodeFin.toIso8601String(),
       'totalGlobalDispo': totalGlobalDispo,
       'totalGlobalFinExt': totalGlobalFinExt,
       'totalGlobalPrevisionel': totalGlobalPrevisionel,

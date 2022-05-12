@@ -5,11 +5,10 @@ import 'package:fokad_admin/src/constants/responsive.dart';
 import 'package:fokad_admin/src/models/budgets/departement_budget_model.dart';
 import 'package:fokad_admin/src/navigation/drawer/drawer_menu.dart';
 import 'package:fokad_admin/src/navigation/header/custom_appbar.dart';
-import 'package:fokad_admin/src/pages/budgets/components/ligne_budgetaire.dart';
+import 'package:fokad_admin/src/pages/budgets/ligne_budgetaire/components/ligne_budgetaire.dart';
 import 'package:fokad_admin/src/widgets/print_widget.dart';
 import 'package:fokad_admin/src/widgets/title_widget.dart';
 import 'package:intl/intl.dart';
-import 'package:routemaster/routemaster.dart';
 
 class DetailDepartmentBudget extends StatefulWidget {
   const DetailDepartmentBudget({Key? key, required this.id}) : super(key: key);
@@ -25,27 +24,27 @@ class _DetailDepartmentBudgetState extends State<DetailDepartmentBudget> {
 
   @override
   void initState() {
-    getData();
+    // getData();
     super.initState();
   }
 
-  String departement = "";
-  String periodeBudget = "";
-  String totalGlobalDispo = "";
-  String totalGlobalFinExt = "";
-  String totalGlobalPrevisionel = "";
+  // String departement = "";
+  // String periodeBudget = "";
+  // String totalGlobalDispo = "";
+  // String totalGlobalFinExt = "";
+  // String totalGlobalPrevisionel = "";
 
-  Future<void> getData() async {
-    DepartementBudgetModel data =
-        await DepeartementBudgetApi().getOneData(widget.id);
-    setState(() {
-      departement = data.departement;
-      periodeBudget = data.periodeBudget;
-      totalGlobalDispo = data.totalGlobalDispo;
-      totalGlobalFinExt = data.totalGlobalFinExt;
-      totalGlobalPrevisionel = data.totalGlobalPrevisionel;
-    });
-  }
+  // Future<void> getData() async {
+  //   DepartementBudgetModel data =
+  //       await DepeartementBudgetApi().getOneData(widget.id);
+  //   setState(() {
+  //     departement = data.departement;
+  //     periodeBudget = data.periodeBudget;
+  //     totalGlobalDispo = data.totalGlobalDispo;
+  //     totalGlobalFinExt = data.totalGlobalFinExt;
+  //     totalGlobalPrevisionel = data.totalGlobalPrevisionel;
+  //   });
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -130,21 +129,13 @@ class _DetailDepartmentBudgetState extends State<DetailDepartmentBudget> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  TitleWidget(title: data.periodeBudget),
+                  TitleWidget(title: data.departement),
                   Column(
                     children: [
-                      Row(
-                        children: [
-                          IconButton(
-                              tooltip: 'Modifier',
-                              onPressed: () {},
-                              icon: const Icon(Icons.edit)),
-                          PrintWidget(
-                              tooltip: 'Imprimer le document', onPressed: () {})
-                        ],
-                      ),
+                       PrintWidget(
+                          tooltip: 'Imprimer le document', onPressed: () {}),
                       SelectableText(
-                          DateFormat("dd-MM-yy").format(data.created),
+                          DateFormat("dd-MM-yyyy HH:mm").format(data.created),
                           textAlign: TextAlign.start),
                     ],
                   )
@@ -168,7 +159,7 @@ class _DetailDepartmentBudgetState extends State<DetailDepartmentBudget> {
           Row(
             children: [
               Expanded(
-                child: Text('departement :',
+                child: Text('Département :',
                     textAlign: TextAlign.start,
                     style: bodyMedium!.copyWith(fontWeight: FontWeight.bold)),
               ),
@@ -178,19 +169,38 @@ class _DetailDepartmentBudgetState extends State<DetailDepartmentBudget> {
               )
             ],
           ),
+          Divider(color: Colors.amber.shade700),
           Row(
             children: [
               Expanded(
-                child: Text('Periode Budget :',
+                child: Text('Periode de début :',
                     textAlign: TextAlign.start,
                     style: bodyMedium.copyWith(fontWeight: FontWeight.bold)),
               ),
               Expanded(
-                child: SelectableText(data.periodeBudget,
+                child: SelectableText(
+                    DateFormat("dd-MM-yyyy HH:mm").format(data.periodeDebut),
                     textAlign: TextAlign.start, style: bodyMedium),
               )
             ],
           ),
+          Divider(color: Colors.amber.shade700),
+          Row(
+            children: [
+              Expanded(
+                child: Text('Periode de Fin :',
+                    textAlign: TextAlign.start,
+                    style: bodyMedium.copyWith(fontWeight: FontWeight.bold)),
+              ),
+              Expanded(
+                child: SelectableText(
+                    DateFormat("dd-MM-yyyy HH:mm").format(data.periodeFin),
+                    textAlign: TextAlign.start,
+                    style: bodyMedium),
+              )
+            ],
+          ),
+          Divider(color: Colors.amber.shade700),
           Row(
             children: [
               Expanded(
@@ -205,6 +215,7 @@ class _DetailDepartmentBudgetState extends State<DetailDepartmentBudget> {
               )
             ],
           ),
+          Divider(color: Colors.amber.shade700),
           Row(
             children: [
               Expanded(
@@ -218,6 +229,7 @@ class _DetailDepartmentBudgetState extends State<DetailDepartmentBudget> {
               )
             ],
           ),
+          Divider(color: Colors.amber.shade700),
           Row(
             children: [
               Expanded(
@@ -235,4 +247,6 @@ class _DetailDepartmentBudgetState extends State<DetailDepartmentBudget> {
       ),
     );
   }
+
+
 }

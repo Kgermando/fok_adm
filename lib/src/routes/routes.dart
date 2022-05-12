@@ -9,9 +9,11 @@ import 'package:fokad_admin/src/pages/administration/logistique_admin.dart';
 import 'package:fokad_admin/src/pages/administration/rh_admin.dart';
 import 'package:fokad_admin/src/pages/auth/login_auth.dart';
 import 'package:fokad_admin/src/pages/auth/profil_page.dart';
-import 'package:fokad_admin/src/pages/budgets/autre_dep_budgets/autres_dep_budget.dart';
 import 'package:fokad_admin/src/pages/budgets/budget_dd/budget_dd.dart';
+import 'package:fokad_admin/src/pages/budgets/budgets_previsionels/budgets_previsionnels.dart';
+import 'package:fokad_admin/src/pages/budgets/budgets_previsionels/components/add_budget_previsionel.dart';
 import 'package:fokad_admin/src/pages/budgets/dashboard/dashboard_budget.dart';
+import 'package:fokad_admin/src/pages/budgets/historique_budget/historique_budgets_previsionnels.dart';
 import 'package:fokad_admin/src/pages/comm_marketing/c_m_dd/c_m_dd.dart';
 import 'package:fokad_admin/src/pages/comm_marketing/commercial/achats/achats_page.dart';
 import 'package:fokad_admin/src/pages/comm_marketing/commercial/bon_livraison/bon_livraison_page.dart';
@@ -136,7 +138,9 @@ class RhRoutes {
 class BudgetRoutes {
   static const budgetDashboard = "/budget-dashboard";
   static const budgetDD = "/budget-dd";
-  static const budgetAutreDep = "/budget-autre-dep";
+  static const budgetBudgetPrevisionel = "/budgets-previsionels";
+  static const budgetBudgetPrevisionelAdd = "/budgets-previsionels-add";
+  static const historiqueBudgetBudgetPrevisionel = "/historique-budgets-previsionels";
 }
 
 class FinanceRoutes {
@@ -282,7 +286,11 @@ class Routing {
             const MaterialPage(child: DashboardBudget()),
         BudgetRoutes.budgetDD: (_) =>
             const MaterialPage(child: BudgetDD()),
-        BudgetRoutes.budgetAutreDep: (_) => const MaterialPage(child: AutresDepBudget()),
+        BudgetRoutes.budgetBudgetPrevisionel: (_) => const MaterialPage(child: BudgetsPrevisionnels()),
+        BudgetRoutes.budgetBudgetPrevisionelAdd: (_) =>
+            const MaterialPage(child: AddBudgetPrevionel()),
+        BudgetRoutes.historiqueBudgetBudgetPrevisionel: (_) =>
+            const MaterialPage(child: HistoriqueBudgetsPrevisionnels()),
 
         // Finance
         FinanceRoutes.financeDashboard: (_) =>

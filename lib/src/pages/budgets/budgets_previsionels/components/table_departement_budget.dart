@@ -1,21 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:fokad_admin/src/api/budgets/departement_budget_api.dart';
 import 'package:fokad_admin/src/models/budgets/departement_budget_model.dart';
-import 'package:fokad_admin/src/pages/budgets/components/detail_departement_budget.dart';
+import 'package:fokad_admin/src/pages/budgets/budgets_previsionels/components/detail_departement_budget.dart';
 import 'package:fokad_admin/src/widgets/print_widget.dart';
 import 'package:fokad_admin/src/utils/class_implemented.dart';
 import 'package:intl/intl.dart';
 import 'package:pluto_grid/pluto_grid.dart';
 
-class TableDepartementBudgetDD extends StatefulWidget {
-  const TableDepartementBudgetDD({Key? key}) : super(key: key);
+class TableDepartementBudget extends StatefulWidget {
+  const TableDepartementBudget({Key? key}) : super(key: key);
 
   @override
-  State<TableDepartementBudgetDD> createState() =>
-      _TableDepartementBudgetDDState();
+  State<TableDepartementBudget> createState() => _TableDepartementBudgetState();
 }
 
-class _TableDepartementBudgetDDState extends State<TableDepartementBudgetDD> {
+class _TableDepartementBudgetState extends State<TableDepartementBudget> {
   List<PlutoColumn> columns = [];
   List<PlutoRow> rows = [];
   PlutoGridStateManager? stateManager;
@@ -32,53 +31,52 @@ class _TableDepartementBudgetDDState extends State<TableDepartementBudgetDD> {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      height: MediaQuery.of(context).size.height,
-      child: PlutoGrid(
-        columns: columns,
-        rows: rows,
-        onRowDoubleTap: (PlutoGridOnRowDoubleTapEvent tapEvent) {
-          final dataList = tapEvent.row!.cells.values;
-          final idPlutoRow = dataList.elementAt(0);
+    return PlutoGrid(
+      columns: columns,
+      rows: rows,
+      onRowDoubleTap: (PlutoGridOnRowDoubleTapEvent tapEvent) {
+        final dataList = tapEvent.row!.cells.values;
+        final idPlutoRow = dataList.elementAt(0);
 
-          Navigator.of(context).push(MaterialPageRoute(
-              builder: (context) =>
-                  DetailDepartmentBudget(id: idPlutoRow.value)));
-        },
-        onLoaded: (PlutoGridOnLoadedEvent event) {
-          stateManager = event.stateManager;
-          stateManager!.setShowColumnFilter(true);
-        },
-        createHeader: (PlutoGridStateManager header) {
-          return Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [PrintWidget(onPressed: () {})],
-          );
-        },
-        configuration: PlutoGridConfiguration(
-          columnFilterConfig: PlutoGridColumnFilterConfig(
-            filters: const [
-              ...FilterHelper.defaultFilters,
-              // custom filter
-              ClassFilterImplemented(),
-            ],
-            resolveDefaultColumnFilter: (column, resolver) {
-              if (column.field == 'departement') {
-                return resolver<ClassFilterImplemented>() as PlutoFilterType;
-              } else if (column.field == 'periodeBudget') {
-                return resolver<ClassFilterImplemented>() as PlutoFilterType;
-              } else if (column.field == 'totalGlobalDispo') {
-                return resolver<ClassFilterImplemented>() as PlutoFilterType;
-              } else if (column.field == 'totalGlobalFinExt') {
-                return resolver<ClassFilterImplemented>() as PlutoFilterType;
-              } else if (column.field == 'totalGlobalPrevisionel') {
-                return resolver<ClassFilterImplemented>() as PlutoFilterType;
-              } else if (column.field == 'created') {
-                return resolver<ClassFilterImplemented>() as PlutoFilterType;
-              }
-              return resolver<PlutoFilterTypeContains>() as PlutoFilterType;
-            },
-          ),
+        Navigator.of(context).push(MaterialPageRoute(
+            builder: (context) =>
+                DetailDepartmentBudget(id: idPlutoRow.value)));
+      },
+      onLoaded: (PlutoGridOnLoadedEvent event) {
+        stateManager = event.stateManager;
+        stateManager!.setShowColumnFilter(true);
+      },
+      createHeader: (PlutoGridStateManager header) {
+        return Row(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: [PrintWidget(onPressed: () {})],
+        );
+      },
+      configuration: PlutoGridConfiguration(
+        columnFilterConfig: PlutoGridColumnFilterConfig(
+          filters: const [
+            ...FilterHelper.defaultFilters,
+            // custom filter
+            ClassFilterImplemented(),
+          ],
+          resolveDefaultColumnFilter: (column, resolver) {
+            if (column.field == 'id') {
+              return resolver<ClassFilterImplemented>() as PlutoFilterType;
+            } if (column.field == 'departement') {
+              return resolver<ClassFilterImplemented>() as PlutoFilterType;
+            } else if (column.field == 'periodeBudget') {
+              return resolver<ClassFilterImplemented>() as PlutoFilterType;
+            } else if (column.field == 'totalGlobalDispo') {
+              return resolver<ClassFilterImplemented>() as PlutoFilterType;
+            } else if (column.field == 'totalGlobalFinExt') {
+              return resolver<ClassFilterImplemented>() as PlutoFilterType;
+            } else if (column.field == 'totalGlobalPrevisionel') {
+              return resolver<ClassFilterImplemented>() as PlutoFilterType;
+            } else if (column.field == 'created') {
+              return resolver<ClassFilterImplemented>() as PlutoFilterType;
+            }
+            return resolver<PlutoFilterTypeContains>() as PlutoFilterType;
+          },
         ),
       ),
     );
@@ -100,14 +98,14 @@ class _TableDepartementBudgetDDState extends State<TableDepartementBudgetDD> {
       ),
       PlutoColumn(
         readOnly: true,
-        title: 'departement',
+        title: 'Département',
         field: 'departement',
         type: PlutoColumnType.text(),
         enableRowDrag: true,
         enableContextMenu: false,
         enableDropToResize: true,
         titleTextAlign: PlutoColumnTextAlign.left,
-        width: 150,
+        width: 200,
         minWidth: 150,
       ),
       PlutoColumn(
@@ -119,7 +117,7 @@ class _TableDepartementBudgetDDState extends State<TableDepartementBudgetDD> {
         enableContextMenu: false,
         enableDropToResize: true,
         titleTextAlign: PlutoColumnTextAlign.left,
-        width: 150,
+        width: 300,
         minWidth: 150,
       ),
       PlutoColumn(
@@ -143,7 +141,7 @@ class _TableDepartementBudgetDDState extends State<TableDepartementBudgetDD> {
         enableContextMenu: false,
         enableDropToResize: true,
         titleTextAlign: PlutoColumnTextAlign.left,
-        width: 150,
+        width: 200,
         minWidth: 150,
       ),
       PlutoColumn(
@@ -160,8 +158,8 @@ class _TableDepartementBudgetDDState extends State<TableDepartementBudgetDD> {
       ),
       PlutoColumn(
         readOnly: true,
-        title: 'created',
-        field: 'createdAt',
+        title: 'Date',
+        field: 'created',
         type: PlutoColumnType.date(),
         enableRowDrag: true,
         enableContextMenu: false,
@@ -177,8 +175,9 @@ class _TableDepartementBudgetDDState extends State<TableDepartementBudgetDD> {
     List<DepartementBudgetModel?> dataList =
         await DepeartementBudgetApi().getAllData();
     var data = dataList
-        .where((element) => element!.approbationDD == "Approved")
-        .toList();
+      .where((element) => element!.approbationDG == "Approved" && 
+      element.approbationDD == "Approved" && DateTime.now().millisecondsSinceEpoch <= element.periodeFin.millisecondsSinceEpoch )
+      .toList();
 
     if (mounted) {
       setState(() {
@@ -187,11 +186,11 @@ class _TableDepartementBudgetDDState extends State<TableDepartementBudgetDD> {
           rows.add(PlutoRow(cells: {
             'id': PlutoCell(value: item.id),
             'departement': PlutoCell(value: item.departement),
-            'periodeBudget': PlutoCell(value: item.periodeBudget),
-            'totalGlobalDispo': PlutoCell(value: item.totalGlobalDispo),
-            'totalGlobalFinExt': PlutoCell(value: item.totalGlobalFinExt),
-            'createdAt': PlutoCell(
-                value: DateFormat("DD-MM-yy HH:mm").format(item.created))
+            'periodeBudget': PlutoCell(value: "${DateFormat("DD-MM-yyyy HH:mm").format(item.periodeDebut)}-${DateFormat("DD-MM-yyyy HH:mm").format(item.periodeFin)}" ),
+            'totalGlobalDispo': PlutoCell(value: NumberFormat.decimalPattern('fr').format(double.parse(item.totalGlobalDispo))),
+            'totalGlobalFinExt': PlutoCell(value: NumberFormat.decimalPattern('fr').format(double.parse(item.totalGlobalFinExt))),
+            'created': PlutoCell(
+                value: DateFormat("DD-MM-yyyy HH:mm").format(item.created))
           }));
         }
         stateManager!.resetCurrentState();
