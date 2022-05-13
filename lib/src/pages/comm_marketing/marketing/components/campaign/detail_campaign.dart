@@ -707,7 +707,7 @@ class _DetailCampaignState extends State<DetailCampaign> {
                               Row(
                                 children: [
                                   Expanded(child: ligneBudgtaireWidget()),
-                                  Expanded(child: ligneBudgtaireWidget())
+                                  Expanded(child: resourcesWidget())
                                 ],
                               )
                           ],
@@ -1028,8 +1028,8 @@ class _DetailCampaignState extends State<DetailCampaign> {
         lieuCible: data.lieuCible,
         promotion: data.promotion,
         objetctifs: data.objetctifs,
-        ligneBudgtaire: data.ligneBudgtaire,
-        resources: data.resources,
+        ligneBudgtaire: ligneBudgtaire.toString(),
+        resources: resource.toString(),
         observation: data.observation,
         approbationDG: data.approbationDG.toString(),
         signatureDG: data.signatureDG.toString(),

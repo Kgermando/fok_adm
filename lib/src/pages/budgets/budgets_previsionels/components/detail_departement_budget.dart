@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:fokad_admin/src/api/auth/auth_api.dart';
 import 'package:fokad_admin/src/api/budgets/departement_budget_api.dart';
+import 'package:fokad_admin/src/api/budgets/ligne_budgetaire_api.dart';
 import 'package:fokad_admin/src/constants/app_theme.dart';
 import 'package:fokad_admin/src/constants/responsive.dart';
 import 'package:fokad_admin/src/models/budgets/departement_budget_model.dart';
+import 'package:fokad_admin/src/models/budgets/ligne_budgetaire_model.dart';
 import 'package:fokad_admin/src/models/users/user_model.dart';
 import 'package:fokad_admin/src/navigation/drawer/drawer_menu.dart';
 import 'package:fokad_admin/src/navigation/header/custom_appbar.dart';
@@ -44,6 +46,10 @@ class _DetailDepartmentBudgetState extends State<DetailDepartmentBudget> {
     super.initState();
   }
 
+  String? ligneBudgtaire;
+  String? resource;
+  List<LigneBudgetaireModel> ligneBudgetaireList = [];
+
   DepartementBudgetModel? departementBudget;
   UserModel? user = UserModel(
       nom: '-',
@@ -60,9 +66,11 @@ class _DetailDepartmentBudgetState extends State<DetailDepartmentBudget> {
   Future<void> getData() async {
     UserModel userModel = await AuthApi().getUserId();
     var dataList = await DepeartementBudgetApi().getOneData(widget.id);
+    var budgets = await LIgneBudgetaireApi().getAllData();
     setState(() {
       user = userModel;
       departementBudget = dataList;
+      ligneBudgetaireList = budgets;
     });
   }
 
@@ -292,9 +300,9 @@ class _DetailDepartmentBudgetState extends State<DetailDepartmentBudget> {
     );
   }
 
-  Widget infosEditeurWidget(DepartementBudgetModel data) {
-    final bodyMedium = Theme.of(context).textTheme.bodyMedium;
-    final bodySmall = Theme.of(context).textTheme.bodySmall;
+   Widget infosEditeurWidget(DepartementBudgetModel data) {
+    final bodyMedium = Theme.of(context).textTheme.bodyLarge;
+    final bodySmall = Theme.of(context).textTheme.bodyMedium;
     List<String> dataList = ['Approved', 'Unapproved', '-'];
     return Container(
       padding: const EdgeInsets.only(top: p16, bottom: p16),
@@ -304,473 +312,570 @@ class _DetailDepartmentBudgetState extends State<DetailDepartmentBudget> {
           bottom: BorderSide(width: 1.0),
         ),
       ),
-      child: Column(
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Expanded(
+      child: Padding(
+        padding: const EdgeInsets.all(p10),
+        child: Column(
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Expanded(
+                    flex: 1,
+                    child: Text('Directeur Générale',
+                        style: bodyMedium!.copyWith(
+                            fontWeight: FontWeight.bold,
+                            color: Colors.red.shade700))),
+                Expanded(
                   flex: 3,
-                  child: Text('Directeur Générale',
-                      style:
-                          bodyMedium!.copyWith(fontWeight: FontWeight.bold))),
-              Expanded(
-                flex: 3,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Expanded(
-                        flex: 3,
-                        child: Column(
-                          children: [
-                            Text(
-                              'Approbation',
-                              style: bodySmall,
-                            ),
-                            if (data.approbationDG != '-')
-                              SelectableText(
-                                data.approbationDG.toString(),
-                                style: bodyMedium.copyWith(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Expanded(
+                          flex: 3,
+                          child: Column(
+                            children: [
+                              Text(
+                                'Approbation',
+                                style: bodySmall!
+                                    .copyWith(color: Colors.red.shade700),
+                              ),
+                              if (data.approbationDG != '-')
+                                SelectableText(
+                                  data.approbationDG.toString(),
+                                  style: bodyMedium.copyWith(
+                                      color: Colors.red.shade700),
+                                ),
+                              if (data.approbationDG == '-' &&
+                                  user!.fonctionOccupe == 'Directeur générale')
+                                Container(
+                                  margin: const EdgeInsets.only(
+                                      bottom: p10, left: p5),
+                                  child: DropdownButtonFormField<String>(
+                                    decoration: InputDecoration(
+                                      labelText: 'Approbation',
+                                      border: OutlineInputBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(5.0)),
+                                    ),
+                                    value: approbationDGController,
+                                    isExpanded: true,
+                                    items: dataList.map((String value) {
+                                      return DropdownMenuItem<String>(
+                                        value: value,
+                                        child: Text(value),
+                                      );
+                                    }).toList(),
+                                    onChanged: (value) {
+                                      setState(() {
+                                        approbationDGController = value!;
+                                      });
+                                    },
+                                  ),
+                                )
+                            ],
+                          )),
+                      Expanded(
+                          flex: 2,
+                          child: Column(
+                            children: [
+                              Text(
+                                'Signature',
+                                style: bodySmall.copyWith(
                                     color: Colors.red.shade700),
                               ),
-                            if (data.approbationDG == '-' &&
-                                user!.fonctionOccupe == 'Directeur générale')
-                              Container(
-                                margin: const EdgeInsets.only(
-                                    bottom: p10, left: p5),
-                                child: DropdownButtonFormField<String>(
-                                  decoration: InputDecoration(
-                                    labelText: 'Approbation',
-                                    border: OutlineInputBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(5.0)),
-                                  ),
-                                  value: approbationDGController,
-                                  isExpanded: true,
-                                  items: dataList.map((String value) {
-                                    return DropdownMenuItem<String>(
-                                      value: value,
-                                      child: Text(value),
-                                    );
-                                  }).toList(),
-                                  onChanged: (value) {
-                                    setState(() {
-                                      approbationDGController = value!;
-                                    });
-                                  },
-                                ),
-                              )
-                          ],
-                        )),
-                    Expanded(
-                        flex: 2,
-                        child: Column(
-                          children: [
-                            Text(
-                              'Signature',
-                              style: bodySmall,
-                            ),
-                            SelectableText(
-                              data.signatureDG.toString(),
-                              style: bodyMedium,
-                            ),
-                          ],
-                        )),
-                    Expanded(
-                        flex: 2,
-                        child: Column(
-                          children: [
-                            Text(
-                              'Justification',
-                              style: bodySmall,
-                            ),
-                            if (data.approbationDG == 'Unapproved' &&
-                                data.signatureDG != '-')
                               SelectableText(
-                                data.signatureJustificationDG.toString(),
+                                data.signatureDG.toString(),
                                 style: bodyMedium,
                               ),
-                            if (data.approbationDG == 'Unapproved' &&
-                                user!.fonctionOccupe == 'Directeur générale')
-                              Container(
-                                  margin: const EdgeInsets.only(
-                                      bottom: p10, left: p5),
-                                  child: TextFormField(
-                                    controller:
-                                        signatureJustificationDGController,
-                                    decoration: InputDecoration(
-                                      border: OutlineInputBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(10.0)),
-                                      labelText: 'Quelque chose à dire',
-                                      hintText: 'Quelque chose à dire',
-                                    ),
-                                    keyboardType: TextInputType.text,
-                                    style: const TextStyle(),
-                                  )),
-                            if (data.approbationDG == 'Unapproved')
-                              IconButton(
-                                  onPressed: () {
-                                    submitUpdateDG(data);
-                                  },
-                                  icon: const Icon(Icons.send))
-                          ],
-                        ))
-                  ],
+                            ],
+                          )),
+                      Expanded(
+                          flex: 2,
+                          child: Column(
+                            children: [
+                              Text(
+                                'Justification',
+                                style: bodySmall.copyWith(
+                                    color: Colors.red.shade700),
+                              ),
+                              if (data.approbationDG == 'Unapproved' &&
+                                  data.signatureDG != '-')
+                                SelectableText(
+                                  data.signatureJustificationDG.toString(),
+                                  style: bodyMedium,
+                                ),
+                              if (data.approbationDG == 'Unapproved' &&
+                                  user!.fonctionOccupe == 'Directeur générale')
+                                Container(
+                                    margin: const EdgeInsets.only(
+                                        bottom: p10, left: p5),
+                                    child: TextFormField(
+                                      controller:
+                                          signatureJustificationDGController,
+                                      decoration: InputDecoration(
+                                        border: OutlineInputBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(10.0)),
+                                        labelText: 'Quelque chose à dire',
+                                        hintText: 'Quelque chose à dire',
+                                      ),
+                                      keyboardType: TextInputType.text,
+                                      style: const TextStyle(),
+                                    )),
+                              if (data.approbationDG == 'Unapproved')
+                                IconButton(
+                                    onPressed: () {
+                                      submitUpdateDG(data);
+                                    },
+                                    icon: const Icon(Icons.send))
+                            ],
+                          ))
+                    ],
+                  ),
                 ),
-              ),
-            ],
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Expanded(
+              ],
+            ),
+            Divider(
+              color: Colors.amber.shade700,
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Expanded(
+                    flex: 1,
+                    child: Text('Directeur de Finance',
+                        style: bodyMedium.copyWith(
+                            fontWeight: FontWeight.bold,
+                            color: Colors.green.shade700))),
+                Expanded(
                   flex: 3,
-                  child: Text('Directeur de Finance',
-                      style: bodyMedium.copyWith(fontWeight: FontWeight.bold))),
-              Expanded(
-                flex: 3,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Expanded(
-                        flex: 3,
-                        child: Column(
-                          children: [
-                            Text(
-                              'Approbation',
-                              style: bodySmall,
-                            ),
-                            if (data.approbationFin != '-')
-                              SelectableText(
-                                data.approbationFin.toString(),
-                                style: bodyMedium.copyWith(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Expanded(
+                          flex: 3,
+                          child: Column(
+                            children: [
+                              Text(
+                                'Approbation',
+                                style: bodySmall.copyWith(
                                     color: Colors.green.shade700),
                               ),
-                            if (data.approbationFin == '-' &&
-                                user!.fonctionOccupe ==
-                                    'Directeur des finances')
-                              Container(
-                                margin: const EdgeInsets.only(
-                                    bottom: p10, left: p5),
-                                child: DropdownButtonFormField<String>(
-                                  decoration: InputDecoration(
-                                    labelText: 'Approbation',
-                                    border: OutlineInputBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(5.0)),
-                                  ),
-                                  value: approbationFinController,
-                                  isExpanded: true,
-                                  items: dataList.map((String value) {
-                                    return DropdownMenuItem<String>(
-                                      value: value,
-                                      child: Text(value),
-                                    );
-                                  }).toList(),
-                                  onChanged: (value) {
-                                    setState(() {
-                                      approbationFinController = value!;
-                                    });
-                                  },
+                              if (data.approbationFin != '-')
+                                SelectableText(
+                                  data.approbationFin.toString(),
+                                  style: bodyMedium.copyWith(
+                                      color: Colors.green.shade700),
                                 ),
-                              )
-                          ],
-                        )),
-                    Expanded(
-                        flex: 2,
-                        child: Column(
-                          children: [
-                            Text(
-                              'Signature',
-                              style: bodySmall,
-                            ),
-                            SelectableText(
-                              data.signatureFin.toString(),
-                              style: bodyMedium,
-                            ),
-                          ],
-                        )),
-                    Expanded(
-                        flex: 2,
-                        child: Column(
-                          children: [
-                            Text(
-                              'Justification',
-                              style: bodySmall,
-                            ),
-                            if (data.approbationFin == 'Unapproved' &&
-                                data.signatureFin != '-')
-                              SelectableText(
-                                data.signatureJustificationFin.toString(),
-                                style: bodyMedium,
-                              ),
-                            if (data.approbationFin == 'Unapproved' &&
-                                user!.fonctionOccupe ==
-                                    'Directeur des finances')
-                              Container(
+                              if (data.approbationFin == '-' &&
+                                  user!.fonctionOccupe ==
+                                      'Directeur des finances')
+                                Container(
                                   margin: const EdgeInsets.only(
                                       bottom: p10, left: p5),
-                                  child: TextFormField(
-                                    controller:
-                                        signatureJustificationFinController,
+                                  child: DropdownButtonFormField<String>(
                                     decoration: InputDecoration(
+                                      labelText: 'Approbation',
                                       border: OutlineInputBorder(
                                           borderRadius:
-                                              BorderRadius.circular(10.0)),
-                                      labelText: 'Quelque chose à dire',
-                                      hintText: 'Quelque chose à dire',
+                                              BorderRadius.circular(5.0)),
                                     ),
-                                    keyboardType: TextInputType.text,
-                                    style: const TextStyle(),
-                                  )),
-                            if (data.approbationFin == 'Unapproved')
-                              IconButton(
-                                  onPressed: () {
-                                    submitUpdateFIN(data);
-                                  },
-                                  icon: const Icon(Icons.send))
-                          ],
-                        ))
-                  ],
-                ),
-              ),
-            ],
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Expanded(
-                  flex: 3,
-                  child: Text('Budget',
-                      style: bodyMedium.copyWith(fontWeight: FontWeight.bold))),
-              Expanded(
-                flex: 3,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Expanded(
-                        flex: 3,
-                        child: Column(
-                          children: [
-                            Text(
-                              'Approbation',
-                              style: bodySmall,
-                            ),
-                            if (data.approbationBudget != '-')
+                                    value: approbationFinController,
+                                    isExpanded: true,
+                                    items: dataList.map((String value) {
+                                      return DropdownMenuItem<String>(
+                                        value: value,
+                                        child: Text(value),
+                                      );
+                                    }).toList(),
+                                    onChanged: (value) {
+                                      setState(() {
+                                        approbationFinController = value!;
+                                      });
+                                    },
+                                  ),
+                                )
+                            ],
+                          )),
+                      Expanded(
+                          flex: 2,
+                          child: Column(
+                            children: [
+                              Text(
+                                'Signature',
+                                style: bodySmall.copyWith(
+                                    color: Colors.green.shade700),
+                              ),
                               SelectableText(
-                                data.approbationBudget.toString(),
-                                style: bodyMedium.copyWith(
+                                data.signatureFin.toString(),
+                                style: bodyMedium,
+                              ),
+                            ],
+                          )),
+                      Expanded(
+                          flex: 2,
+                          child: Column(
+                            children: [
+                              Text(
+                                'Justification',
+                                style: bodySmall.copyWith(
+                                    color: Colors.green.shade700),
+                              ),
+                              if (data.approbationFin == 'Unapproved' &&
+                                  data.signatureFin != '-')
+                                SelectableText(
+                                  data.signatureJustificationFin.toString(),
+                                  style: bodyMedium,
+                                ),
+                              if (data.approbationFin == 'Unapproved' &&
+                                  user!.fonctionOccupe ==
+                                      'Directeur des finances')
+                                Container(
+                                    margin: const EdgeInsets.only(
+                                        bottom: p10, left: p5),
+                                    child: TextFormField(
+                                      controller:
+                                          signatureJustificationFinController,
+                                      decoration: InputDecoration(
+                                        border: OutlineInputBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(10.0)),
+                                        labelText: 'Quelque chose à dire',
+                                        hintText: 'Quelque chose à dire',
+                                      ),
+                                      keyboardType: TextInputType.text,
+                                      style: const TextStyle(),
+                                    )),
+                              if (data.approbationFin == 'Unapproved')
+                                IconButton(
+                                    onPressed: () {
+                                      submitUpdateFIN(data);
+                                    },
+                                    icon: const Icon(Icons.send))
+                            ],
+                          ))
+                    ],
+                  ),
+                ),
+              ],
+            ),
+            Divider(
+              color: Colors.amber.shade700,
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Expanded(
+                    flex: 1,
+                    child: Text('Budget',
+                        style: bodyMedium.copyWith(
+                            fontWeight: FontWeight.bold,
+                            color: Colors.orange.shade700))),
+                Expanded(
+                  flex: 3,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Expanded(
+                          flex: 3,
+                          child: Column(
+                            children: [
+                              Text(
+                                'Approbation',
+                                style: bodySmall.copyWith(
                                     color: Colors.orange.shade700),
                               ),
-                            if (data.approbationBudget == '-' &&
-                                user!.fonctionOccupe == 'Directeur de budget')
-                              Container(
-                                margin: const EdgeInsets.only(
-                                    bottom: p10, left: p5),
-                                child: DropdownButtonFormField<String>(
-                                  decoration: InputDecoration(
-                                    labelText: 'Approbation',
-                                    border: OutlineInputBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(5.0)),
-                                  ),
-                                  value: approbationBudgetController,
-                                  isExpanded: true,
-                                  items: dataList.map((String value) {
-                                    return DropdownMenuItem<String>(
-                                      value: value,
-                                      child: Text(value),
-                                    );
-                                  }).toList(),
-                                  onChanged: (value) {
-                                    setState(() {
-                                      approbationBudgetController = value!;
-                                    });
-                                  },
+                              if (data.approbationBudget != '-')
+                                SelectableText(
+                                  data.approbationBudget.toString(),
+                                  style: bodyMedium.copyWith(
+                                      color: Colors.orange.shade700),
                                 ),
-                              )
-                          ],
-                        )),
-                    Expanded(
-                        flex: 2,
-                        child: Column(
-                          children: [
-                            Text(
-                              'Signature',
-                              style: bodySmall,
-                            ),
-                            SelectableText(
-                              data.signatureBudget.toString(),
-                              style: bodyMedium,
-                            ),
-                          ],
-                        )),
-                    Expanded(
-                        flex: 2,
-                        child: Column(
-                          children: [
-                            Text(
-                              'Justification',
-                              style: bodySmall,
-                            ),
-                            if (data.approbationBudget == 'Unapproved' &&
-                                data.signatureBudget != '-')
-                              SelectableText(
-                                data.signatureJustificationBudget.toString(),
-                                style: bodyMedium,
-                              ),
-                            if (data.approbationBudget == 'Unapproved' &&
-                                user!.fonctionOccupe == 'Directeur de budget')
-                              Container(
+                              if (data.approbationBudget == '-' &&
+                                  user!.fonctionOccupe == 'Directeur de budget')
+                                Container(
                                   margin: const EdgeInsets.only(
                                       bottom: p10, left: p5),
-                                  child: TextFormField(
-                                    controller:
-                                        signatureJustificationBudgetController,
+                                  child: DropdownButtonFormField<String>(
                                     decoration: InputDecoration(
+                                      labelText: 'Approbation',
                                       border: OutlineInputBorder(
                                           borderRadius:
-                                              BorderRadius.circular(10.0)),
-                                      labelText: 'Quelque chose à dire',
-                                      hintText: 'Quelque chose à dire',
+                                              BorderRadius.circular(5.0)),
                                     ),
-                                    keyboardType: TextInputType.text,
-                                    style: const TextStyle(),
-                                  )),
-                            if (data.approbationBudget == 'Unapproved')
-                              IconButton(
-                                  onPressed: () {
-                                    submitUpdateBudget(data);
-                                  },
-                                  icon: const Icon(Icons.send))
-                          ],
-                        ))
-                  ],
-                ),
-              ),
-            ],
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Expanded(
-                  flex: 3,
-                  child: Text('Directeur de departement',
-                      style: bodyMedium.copyWith(fontWeight: FontWeight.bold))),
-              Expanded(
-                flex: 3,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Expanded(
-                        flex: 3,
-                        child: Column(
-                          children: [
-                            Text(
-                              'Approbation',
-                              style: bodySmall,
-                            ),
-                            if (data.approbationDD != '-' &&
-                                user!.fonctionOccupe ==
-                                    'Directeur de departement')
+                                    value: approbationBudgetController,
+                                    isExpanded: true,
+                                    items: dataList.map((String value) {
+                                      return DropdownMenuItem<String>(
+                                        value: value,
+                                        child: Text(value),
+                                      );
+                                    }).toList(),
+                                    onChanged: (value) {
+                                      setState(() {
+                                        approbationBudgetController = value!;
+                                      });
+                                    },
+                                  ),
+                                ),
+                              if (data.approbationBudget == '-' &&
+                                  user!.fonctionOccupe == 'Directeur de budget')
+                                Row(
+                                  children: [
+                                    Expanded(child: ligneBudgtaireWidget()),
+                                    Expanded(child: resourcesWidget())
+                                  ],
+                                )
+                            ],
+                          )),
+                      Expanded(
+                          flex: 2,
+                          child: Column(
+                            children: [
+                              Text(
+                                'Signature',
+                                style: bodySmall.copyWith(
+                                    color: Colors.orange.shade700),
+                              ),
                               SelectableText(
-                                data.approbationDD.toString(),
-                                style: bodyMedium.copyWith(
+                                data.signatureBudget.toString(),
+                                style: bodyMedium,
+                              ),
+                            ],
+                          )),
+                      Expanded(
+                          flex: 2,
+                          child: Column(
+                            children: [
+                              Text(
+                                'Justification',
+                                style: bodySmall.copyWith(
+                                    color: Colors.orange.shade700),
+                              ),
+                              if (data.approbationBudget == 'Unapproved' &&
+                                  data.signatureBudget != '-')
+                                SelectableText(
+                                  data.signatureJustificationBudget.toString(),
+                                  style: bodyMedium,
+                                ),
+                              if (data.approbationBudget == 'Unapproved' &&
+                                  user!.fonctionOccupe == 'Directeur de budget')
+                                Container(
+                                    margin: const EdgeInsets.only(
+                                        bottom: p10, left: p5),
+                                    child: TextFormField(
+                                      controller:
+                                          signatureJustificationBudgetController,
+                                      decoration: InputDecoration(
+                                        border: OutlineInputBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(10.0)),
+                                        labelText: 'Quelque chose à dire',
+                                        hintText: 'Quelque chose à dire',
+                                      ),
+                                      keyboardType: TextInputType.text,
+                                      style: const TextStyle(),
+                                    )),
+                              if (data.approbationBudget == 'Unapproved')
+                                IconButton(
+                                    onPressed: () {
+                                      submitUpdateBudget(data);
+                                    },
+                                    icon: const Icon(Icons.send))
+                            ],
+                          ))
+                    ],
+                  ),
+                ),
+              ],
+            ),
+            Divider(
+              color: Colors.amber.shade700,
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Expanded(
+                    flex: 1,
+                    child: Text('Directeur de departement',
+                        style: bodyMedium.copyWith(
+                            fontWeight: FontWeight.bold,
+                            color: Colors.blue.shade700))),
+                Expanded(
+                  flex: 3,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Expanded(
+                          flex: 3,
+                          child: Column(
+                            children: [
+                              Text(
+                                'Approbation',
+                                style: bodySmall.copyWith(
                                     color: Colors.blue.shade700),
                               ),
-                            if (data.approbationDD == '-')
-                              Container(
-                                margin: const EdgeInsets.only(
-                                    bottom: p10, left: p5),
-                                child: DropdownButtonFormField<String>(
-                                  decoration: InputDecoration(
-                                    labelText: 'Approbation',
-                                    border: OutlineInputBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(5.0)),
-                                  ),
-                                  value: approbationDDController,
-                                  isExpanded: true,
-                                  items: dataList.map((String value) {
-                                    return DropdownMenuItem<String>(
-                                      value: value,
-                                      child: Text(value),
-                                    );
-                                  }).toList(),
-                                  onChanged: (value) {
-                                    setState(() {
-                                      approbationDDController = value!;
-                                    });
-                                  },
+                              if (data.approbationDD != '-' &&
+                                  user!.fonctionOccupe ==
+                                      'Directeur de departement')
+                                SelectableText(
+                                  data.approbationDD.toString(),
+                                  style: bodyMedium.copyWith(
+                                      color: Colors.blue.shade700),
                                 ),
-                              )
-                          ],
-                        )),
-                    Expanded(
-                        flex: 2,
-                        child: Column(
-                          children: [
-                            Text(
-                              'Signature',
-                              style: bodySmall,
-                            ),
-                            SelectableText(
-                              data.signatureDD.toString(),
-                              style: bodyMedium,
-                            ),
-                          ],
-                        )),
-                    Expanded(
-                        flex: 2,
-                        child: Column(
-                          children: [
-                            Text(
-                              'Justification',
-                              style: bodySmall,
-                            ),
-                            if (data.approbationDD == 'Unapproved' &&
-                                data.signatureDD != '-')
-                              SelectableText(
-                                data.signatureJustificationDD.toString(),
-                                style: bodyMedium,
-                              ),
-                            if (data.approbationDD == 'Unapproved' &&
-                                user!.fonctionOccupe ==
-                                    'Directeur de departement')
-                              Container(
+                              if (data.approbationDD == '-')
+                                Container(
                                   margin: const EdgeInsets.only(
                                       bottom: p10, left: p5),
-                                  child: TextFormField(
-                                    controller:
-                                        signatureJustificationDDController,
+                                  child: DropdownButtonFormField<String>(
                                     decoration: InputDecoration(
+                                      // labelText: 'Approbation',
                                       border: OutlineInputBorder(
                                           borderRadius:
-                                              BorderRadius.circular(10.0)),
-                                      labelText: 'Quelque chose à dire',
-                                      hintText: 'Quelque chose à dire',
+                                              BorderRadius.circular(5.0)),
                                     ),
-                                    keyboardType: TextInputType.text,
-                                    style: const TextStyle(),
-                                  )),
-                            if (data.approbationDD == 'Unapproved')
-                              IconButton(
-                                  onPressed: () {
-                                    submitUpdateDD(data);
-                                  },
-                                  icon: const Icon(Icons.send))
-                          ],
-                        ))
-                  ],
+                                    value: approbationDDController,
+                                    isExpanded: true,
+                                    items: dataList.map((String value) {
+                                      return DropdownMenuItem<String>(
+                                        value: value,
+                                        child: Text(value),
+                                      );
+                                    }).toList(),
+                                    onChanged: (value) {
+                                      setState(() {
+                                        approbationDDController = value!;
+                                      });
+                                    },
+                                  ),
+                                )
+                            ],
+                          )),
+                      Expanded(
+                          flex: 2,
+                          child: Column(
+                            children: [
+                              Text(
+                                'Signature',
+                                style: bodySmall.copyWith(
+                                    color: Colors.blue.shade700),
+                              ),
+                              SelectableText(
+                                data.signatureDD.toString(),
+                                style: bodyMedium,
+                              ),
+                            ],
+                          )),
+                      Expanded(
+                          flex: 2,
+                          child: Column(
+                            children: [
+                              Text(
+                                'Justification',
+                                style: bodySmall.copyWith(
+                                    color: Colors.blue.shade700),
+                              ),
+                              if (data.approbationDD == 'Unapproved' &&
+                                  data.signatureDD != '-')
+                                SelectableText(
+                                  data.signatureJustificationDD.toString(),
+                                  style: bodyMedium,
+                                ),
+                              if (approbationDDController == 'Unapproved' &&
+                                  user!.fonctionOccupe ==
+                                      'Directeur de departement')
+                                Container(
+                                    margin: const EdgeInsets.only(
+                                        bottom: p10, left: p5),
+                                    child: TextFormField(
+                                      controller:
+                                          signatureJustificationDDController,
+                                      decoration: InputDecoration(
+                                        border: OutlineInputBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(10.0)),
+                                        labelText: 'Quelque chose à dire',
+                                        hintText: 'Quelque chose à dire',
+                                      ),
+                                      keyboardType: TextInputType.text,
+                                      style: const TextStyle(),
+                                    )),
+                              if (approbationDDController == 'Unapproved')
+                                IconButton(
+                                    onPressed: () {
+                                      submitUpdateDD(data);
+                                    },
+                                    icon: const Icon(Icons.send))
+                            ],
+                          ))
+                    ],
+                  ),
                 ),
-              ),
-            ],
-          ),
-        ],
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }
+
+  Widget ligneBudgtaireWidget() {
+    var dataList =
+        ligneBudgetaireList.map((e) => e.nomLigneBudgetaire).toList();
+    return Container(
+      margin: const EdgeInsets.only(bottom: p20),
+      child: DropdownButtonFormField<String>(
+        decoration: InputDecoration(
+          labelText: 'Ligne Budgetaire',
+          labelStyle: const TextStyle(),
+          border: OutlineInputBorder(borderRadius: BorderRadius.circular(5.0)),
+          contentPadding: const EdgeInsets.only(left: 5.0),
+        ),
+        value: ligneBudgtaire,
+        isExpanded: true,
+        items: dataList.map((String value) {
+          return DropdownMenuItem<String>(
+            value: value,
+            child: Text(value),
+          );
+        }).toList(),
+        onChanged: (value) {
+          setState(() {
+            ligneBudgtaire = value!;
+          });
+        },
+      ),
+    );
+  }
+
+  Widget resourcesWidget() {
+    List<String> dataList = ['caisse', 'banque', 'finPropre', 'finExterieur'];
+    return Container(
+      margin: const EdgeInsets.only(bottom: p20),
+      child: DropdownButtonFormField<String>(
+        decoration: InputDecoration(
+          labelText: 'Ligne Budgetaire',
+          labelStyle: const TextStyle(),
+          border: OutlineInputBorder(borderRadius: BorderRadius.circular(5.0)),
+          contentPadding: const EdgeInsets.only(left: 5.0),
+        ),
+        value: resource,
+        isExpanded: true,
+        items: dataList.map((String value) {
+          return DropdownMenuItem<String>(
+            value: value,
+            child: Text(value),
+          );
+        }).toList(),
+        onChanged: (value) {
+          setState(() {
+            resource = value!;
+          });
+        },
+      ),
+    );
+  }
+
 
   Future<void> submitUpdateDG(DepartementBudgetModel data) async {
     final departementBudgetModel = DepartementBudgetModel(
