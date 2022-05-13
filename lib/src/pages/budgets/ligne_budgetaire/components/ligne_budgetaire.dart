@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fokad_admin/src/api/budgets/ligne_budgetaire_api.dart';
+import 'package:fokad_admin/src/models/budgets/departement_budget_model.dart';
 import 'package:fokad_admin/src/models/budgets/ligne_budgetaire_model.dart';
 import 'package:fokad_admin/src/pages/budgets/ligne_budgetaire/components/detail_ligne_budgetaire.dart';
 import 'package:fokad_admin/src/widgets/print_widget.dart';
@@ -8,7 +9,8 @@ import 'package:intl/intl.dart';
 import 'package:pluto_grid/pluto_grid.dart';
 
 class LigneBudgetaire extends StatefulWidget {
-  const LigneBudgetaire({Key? key}) : super(key: key);
+  const LigneBudgetaire({Key? key, required this.departementBudgetModel}) : super(key: key);
+  final DepartementBudgetModel departementBudgetModel;
 
   @override
   State<LigneBudgetaire> createState() => _LigneBudgetaireState();
@@ -262,7 +264,9 @@ class _LigneBudgetaireState extends State<LigneBudgetaire> {
     List<LigneBudgetaireModel?> dataList =
         await LIgneBudgetaireApi().getAllData();
     var data = dataList
-        .where((element) => element!.approbationDD == "Approved")
+        .where((element) => element!.departement == widget.departementBudgetModel.departement 
+          // && element.approbationDD == "Approved"
+          )
         .toList();
 
     if (mounted) {
@@ -276,13 +280,23 @@ class _LigneBudgetaireState extends State<LigneBudgetaire> {
             'uniteChoisie': PlutoCell(value: item.uniteChoisie),
             'nombreUnite': PlutoCell(value: item.nombreUnite),
             'coutUnitaire': PlutoCell(value: item.coutUnitaire),
-            'coutTotal': PlutoCell(value: NumberFormat.decimalPattern('fr').format(double.parse(item.coutTotal))),
-            'caisse': PlutoCell(value: NumberFormat.decimalPattern('fr').format(double.parse(item.caisse))),
-            'banque': PlutoCell(value: NumberFormat.decimalPattern('fr').format(double.parse(item.banque))),
-            'finPropre': PlutoCell(value: NumberFormat.decimalPattern('fr').format(double.parse(item.finPropre))),
-            'finExterieur': PlutoCell(value: NumberFormat.decimalPattern('fr').format(double.parse(item.finExterieur))),
+            'coutTotal': PlutoCell(
+                value: NumberFormat.decimalPattern('fr')
+                    .format(double.parse(item.coutTotal))),
+            'caisse': PlutoCell(
+                value: NumberFormat.decimalPattern('fr')
+                    .format(double.parse(item.caisse))),
+            'banque': PlutoCell(
+                value: NumberFormat.decimalPattern('fr')
+                    .format(double.parse(item.banque))),
+            'finPropre': PlutoCell(
+                value: NumberFormat.decimalPattern('fr')
+                    .format(double.parse(item.finPropre))),
+            'finExterieur': PlutoCell(
+                value: NumberFormat.decimalPattern('fr')
+                    .format(double.parse(item.finExterieur))),
             'created': PlutoCell(
-                value: DateFormat("DD-MM-yyyy HH:mm").format(item.created))
+                value: DateFormat("dd-MM-yyyy HH:mm").format(item.created))
           }));
         }
         stateManager!.resetCurrentState();

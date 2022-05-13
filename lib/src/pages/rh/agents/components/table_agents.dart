@@ -66,7 +66,9 @@ class _TableAgentsState extends State<TableAgents> {
             ClassFilterImplemented(),
           ],
           resolveDefaultColumnFilter: (column, resolver) {
-            if (column.field == 'nom') {
+            if (column.field == 'id') {
+              return resolver<ClassFilterImplemented>() as PlutoFilterType;
+            } else if (column.field == 'nom') {
               return resolver<ClassFilterImplemented>() as PlutoFilterType;
             } else if (column.field == 'postNom') {
               return resolver<ClassFilterImplemented>() as PlutoFilterType;

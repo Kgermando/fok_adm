@@ -61,7 +61,9 @@ class _TableCampaignFinState extends State<TableCampaignFin> {
               ClassFilterImplemented(),
             ],
             resolveDefaultColumnFilter: (column, resolver) {
-              if (column.field == 'typeProduit') {
+              if (column.field == 'id') {
+                return resolver<ClassFilterImplemented>() as PlutoFilterType;
+              } else if (column.field == 'typeProduit') {
                 return resolver<ClassFilterImplemented>() as PlutoFilterType;
               } else if (column.field == 'dateDebutEtFin') {
                 return resolver<ClassFilterImplemented>() as PlutoFilterType;

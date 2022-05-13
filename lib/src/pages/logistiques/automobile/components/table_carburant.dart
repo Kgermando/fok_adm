@@ -60,12 +60,14 @@ class _TableCarburantState extends State<TableCarburant> {
               ClassFilterImplemented(),
             ],
             resolveDefaultColumnFilter: (column, resolver) {
-              if (column.field == 'qtyEntreSortie') {
+              if (column.field == 'id') {
+                return resolver<ClassFilterImplemented>()
+                    as PlutoFilterType;
+              } else if (column.field == 'qtyEntreSortie') {
                 return resolver<ClassFilterImplemented>()
                     as PlutoFilterType;
               } else if (column.field == 'typeCaburant') {
-                return resolver<ClassFilterImplemented>()
-                    as PlutoFilterType;
+                return resolver<ClassFilterImplemented>() as PlutoFilterType;
               } else if (column.field == 'fournisseur') {
                 return resolver<ClassFilterImplemented>()
                     as PlutoFilterType;

@@ -66,9 +66,11 @@ class _TableProjetFinState extends State<TableProjetFin> {
               ClassFilterImplemented(),
             ],
             resolveDefaultColumnFilter: (column, resolver) {
-              if (column.field == 'nomProjet') {
+              if (column.field == 'id') {
                 return resolver<ClassFilterImplemented>() as PlutoFilterType;
-              } else if (column.field == 'responsable') {
+              } else if (column.field == 'nomProjet') {
+                return resolver<ClassFilterImplemented>() as PlutoFilterType;
+              }  else if (column.field == 'responsable') {
                 return resolver<ClassFilterImplemented>() as PlutoFilterType;
               } else if (column.field == 'objectifs') {
                 return resolver<ClassFilterImplemented>() as PlutoFilterType;

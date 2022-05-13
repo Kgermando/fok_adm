@@ -59,7 +59,9 @@ class _TableAnguinState extends State<TableAnguin> {
             ClassFilterImplemented(),
           ],
           resolveDefaultColumnFilter: (column, resolver) {
-            if (column.field == 'nom') {
+            if (column.field == 'id') {
+              return resolver<ClassFilterImplemented>() as PlutoFilterType;
+            } else if (column.field == 'nom') {
               return resolver<ClassFilterImplemented>() as PlutoFilterType;
             } else if (column.field == 'modele') {
               return resolver<ClassFilterImplemented>() as PlutoFilterType;

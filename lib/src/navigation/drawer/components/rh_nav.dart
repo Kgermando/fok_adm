@@ -22,7 +22,7 @@ class _RhNavState extends State<RhNav> {
 
     return ExpansionTile(
       leading: const Icon(Icons.group, size: 30.0),
-      title: AutoSizeText('RH', maxLines: 1, style: bodyLarge),
+      title: AutoSizeText('Ressources Humaines', maxLines: 1, style: bodyLarge),
       initiallyExpanded: false,
       onExpansionChanged: (val) {
         setState(() {
@@ -45,7 +45,7 @@ class _RhNavState extends State<RhNav> {
             selected: widget.pageCurrente == RhRoutes.rhDD,
             icon: Icons.manage_accounts,
             sizeIcon: 20.0,
-            title: 'Directeur de departement',
+            title: 'Directeur de département',
             style: bodyText1,
             onTap: () {
               Routemaster.of(context).replace(RhRoutes.rhDD);
@@ -55,7 +55,7 @@ class _RhNavState extends State<RhNav> {
             selected: widget.pageCurrente == RhRoutes.rhPaiement,
             icon: Icons.real_estate_agent_sharp,
             sizeIcon: 20.0,
-            title: 'Liste des paiements',
+            title: 'Paiements',
             style: bodyText1,
             onTap: () {
               Routemaster.of(context).replace(RhRoutes.rhPaiement);
@@ -65,7 +65,7 @@ class _RhNavState extends State<RhNav> {
             selected: widget.pageCurrente == RhRoutes.rhPresence,
             icon: Icons.checklist_outlined,
             sizeIcon: 20.0,
-            title: 'Présences des agents',
+            title: 'Présences',
             style: bodyText1,
             onTap: () {
               Routemaster.of(context).replace(RhRoutes.rhPresence);
@@ -75,7 +75,7 @@ class _RhNavState extends State<RhNav> {
             selected: widget.pageCurrente == RhRoutes.rhAgent,
             icon: Icons.group,
             sizeIcon: 20.0,
-            title: 'Liste des agents',
+            title: 'Agents',
             style: bodyText1,
             onTap: () {
               Routemaster.of(context).replace(RhRoutes.rhAgent);
@@ -85,7 +85,7 @@ class _RhNavState extends State<RhNav> {
             selected: widget.pageCurrente == DevisRoutes.devis,
             icon: Icons.note_alt,
             sizeIcon: 20.0,
-            title: 'Etat de besoin',
+            title: 'Etat de besoins',
             style: bodyText1,
             onTap: () {
               Routemaster.of(context).replace(DevisRoutes.devis);

@@ -59,9 +59,11 @@ class _TablePerformenceState extends State<TablePerformence> {
             ClassFilterImplemented(),
           ],
           resolveDefaultColumnFilter: (column, resolver) {
-            if (column.field == 'agent') {
+            if (column.field == 'id') {
               return resolver<ClassFilterImplemented>() as PlutoFilterType;
-            } else if (column.field == 'departement') {
+            } else if (column.field == 'agent') {
+              return resolver<ClassFilterImplemented>() as PlutoFilterType;
+            }  else if (column.field == 'departement') {
               return resolver<ClassFilterImplemented>() as PlutoFilterType;
             } else if (column.field == 'hospitalite') {
               return resolver<ClassFilterImplemented>() as PlutoFilterType;

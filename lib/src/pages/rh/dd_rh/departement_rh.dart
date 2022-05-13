@@ -22,8 +22,8 @@ class DepartementRH extends StatefulWidget {
 class _DepartementRHState extends State<DepartementRH> {
   final GlobalKey<ScaffoldState> _key = GlobalKey();
 
-  bool isOpenRh1 = false;
-  bool isOpenRh2 = false;
+  bool isOpen1 = false;
+  bool isOpen2 = false;
 
   int agentInactifs = 0;
   int userAcount = 0;
@@ -81,40 +81,45 @@ class _DepartementRHState extends State<DepartementRH> {
                         child: Column(
                           children: [
                             Card(
-                              color: const Color.fromARGB(255, 126, 170, 214),
+                              color: Colors.red.shade700,
                               child: ExpansionTile(
-                                leading: const Icon(Icons.folder),
+                                leading: const Icon(Icons.folder, color: Colors.white),
                                 title:
-                                    Text('Dossier Salaires', style: headline6),
+                                    Text('Dossier Salaires', style: headline6!.copyWith(color: Colors.white)),
                                 subtitle: Text(
                                     "Vous $agentInactifs dossiers necessitent votre approbation",
-                                    style: bodyMedium),
+                                    style: bodyMedium!.copyWith(
+                                        color: Colors.white)),
                                 initiallyExpanded: false,
                                 onExpansionChanged: (val) {
                                   setState(() {
-                                    isOpenRh1 = !val;
+                                    isOpen1 = !val;
                                   });
                                 },
-                                trailing: const Icon(Icons.arrow_drop_down),
+                                trailing: const Icon(Icons.arrow_drop_down,
+                                    color: Colors.white),
                                 children: const [TableSalairesDD()],
                               ),
                             ),
                             Card(
-                              color: const Color.fromARGB(255, 238, 56, 32),
+                              color: Colors.green.shade700,
                               child: ExpansionTile(
-                                leading: const Icon(Icons.folder),
+                                leading: const Icon(Icons.folder, color: Colors.white),
                                 title: Text('Dossier utilisateurs actifs',
-                                    style: headline6),
+                                    style: headline6.copyWith(
+                                        color: Colors.white)),
                                 subtitle: Text(
                                     "Vous $userAcount dossiers necessitent votre approbation",
-                                    style: bodyMedium),
+                                    style: bodyMedium.copyWith(
+                                        color: Colors.white)),
                                 initiallyExpanded: false,
                                 onExpansionChanged: (val) {
                                   setState(() {
-                                    isOpenRh1 = !val;
+                                    isOpen2 = !val;
                                   });
                                 },
-                                trailing: const Icon(Icons.arrow_drop_down),
+                                trailing: const Icon(Icons.arrow_drop_down, 
+                                  color: Colors.white),
                                 children: const [TableUsers()],
                               ),
                             ),

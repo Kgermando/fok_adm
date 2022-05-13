@@ -69,7 +69,9 @@ class _TableTrajetAnguinState extends State<TableTrajetAnguin> {
             ClassFilterImplemented(),
           ],
           resolveDefaultColumnFilter: (column, resolver) {
-            if (column.field == 'nomeroEntreprise') {
+            if (column.field == 'id') {
+              return resolver<ClassFilterImplemented>() as PlutoFilterType;
+            } else if (column.field == 'nomeroEntreprise') {
               return resolver<ClassFilterImplemented>() as PlutoFilterType;
             } else if (column.field == 'nomUtilisateur') {
               return resolver<ClassFilterImplemented>() as PlutoFilterType;

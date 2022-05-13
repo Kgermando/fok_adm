@@ -63,7 +63,9 @@ class _TablePresenceState extends State<TablePresence> {
             ClassFilterImplemented(),
           ],
           resolveDefaultColumnFilter: (column, resolver) {
-            if (column.field == 'arrive') {
+            if (column.field == 'id') {
+              return resolver<ClassFilterImplemented>() as PlutoFilterType;
+            } else if (column.field == 'arrive') {
               return resolver<ClassFilterImplemented>() as PlutoFilterType;
             } else if (column.field == 'sortie') {
               return resolver<ClassFilterImplemented>() as PlutoFilterType;

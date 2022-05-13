@@ -215,7 +215,7 @@ class _DetailDepartmentBudgetState extends State<DetailDepartmentBudget> {
                               ),
                             ),
                             const SizedBox(width: p10),
-                            Text("Expirée!",
+                            Text("Obsolète!",
                                 style: TextStyle(color: Colors.red.shade700))
                           ],
                         )
@@ -224,7 +224,7 @@ class _DetailDepartmentBudgetState extends State<DetailDepartmentBudget> {
                 ],
               ),
               dataWidget(data),
-              const LigneBudgetaire(),
+              LigneBudgetaire(departementBudgetModel: data),
               infosEditeurWidget(data),
               const SizedBox(
                 height: p20,
