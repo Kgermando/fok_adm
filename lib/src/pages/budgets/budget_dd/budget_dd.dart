@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fokad_admin/src/api/budgets/departement_budget_api.dart';
 import 'package:fokad_admin/src/api/comm_marketing/marketing/campaign_api.dart';
 import 'package:fokad_admin/src/api/devis/devis_api.dart';
 import 'package:fokad_admin/src/api/exploitations/projets_api.dart';
@@ -9,11 +10,11 @@ import 'package:fokad_admin/src/models/comm_maketing/campaign_model.dart';
 import 'package:fokad_admin/src/models/rh/paiement_salaire_model.dart';
 import 'package:fokad_admin/src/navigation/drawer/drawer_menu.dart';
 import 'package:fokad_admin/src/navigation/header/custom_appbar.dart';
-import 'package:fokad_admin/src/pages/budgets/budgets_previsionels/components/table_departement_budget.dart';
-import 'package:fokad_admin/src/pages/finances/dd_finance/components/table_campaign_fin.dart';
-import 'package:fokad_admin/src/pages/finances/dd_finance/components/table_devis_dd.dart';
-import 'package:fokad_admin/src/pages/finances/dd_finance/components/table_projet_fin.dart';
-import 'package:fokad_admin/src/pages/finances/dd_finance/components/table_salaire_fin.dart';
+import 'package:fokad_admin/src/pages/budgets/budget_dd/components/table_campaign_fin.dart';
+import 'package:fokad_admin/src/pages/budgets/budget_dd/components/table_departement_budget_dd.dart';
+import 'package:fokad_admin/src/pages/budgets/budget_dd/components/table_devis_budget_dd.dart';
+import 'package:fokad_admin/src/pages/budgets/budget_dd/components/table_projet_budget_dd.dart';
+import 'package:fokad_admin/src/pages/budgets/budget_dd/components/table_salaire_budget.dart';
 
 class BudgetDD extends StatefulWidget {
   const BudgetDD({Key? key}) : super(key: key);
@@ -26,14 +27,17 @@ class _BudgetDDState extends State<BudgetDD> {
   final GlobalKey<ScaffoldState> _key = GlobalKey();
   final ScrollController _controllerScroll = ScrollController();
 
-  bool isOpenRh1 = false;
-  bool isOpenRh2 = false;
-  bool isOpenCampaign = false;
+  bool isOpen1 = false;
+  bool isOpen2 = false;
+  bool isOpen3 = false;
+  bool isOpen4 = false;
+  bool isOpen5 = false;
 
   int salaireCount = 0;
   int campaignCount = 0;
   int devisCount = 0;
   int projetCount = 0;
+  int budgetDepCount = 0;
 
   @override
   void initState() {
@@ -47,30 +51,32 @@ class _BudgetDDState extends State<BudgetDD> {
     List<CampaignModel> campaign = await CampaignApi().getAllData();
     var devis = await DevisAPi().getAllData();
     var projets = await ProjetsApi().getAllData();
+    var budgetDep = await DepeartementBudgetApi().getAllData();
 
     setState(() {
       salaireCount = dataList
           .where((element) =>
-              element!.approbationBudget != '-' &&
-              element.approbationDG == 'Approved')
+              element!.approbationBudget == '-')
           .toList()
           .length;
       campaignCount = campaign
           .where((element) =>
-              element.approbationBudget != '-' &&
-              element.approbationDG == 'Approved')
+              element.approbationBudget == '-')
           .toList()
           .length;
       devisCount = devis
           .where((element) =>
-              element.approbationBudget != '-' &&
-              element.approbationDG == 'Approved')
+              element.approbationBudget == '-')
           .toList()
           .length;
       projetCount = projets
           .where((element) =>
-              element.approbationBudget != '-' &&
-              element.approbationDG == 'Approved')
+              element.approbationBudget == '-')
+          .toList()
+          .length;
+      budgetDepCount = budgetDep
+          .where((element) =>
+              element.approbationBudget == '-' && DateTime.now().isBefore(element.periodeFin))
           .toList()
           .length;
     });
@@ -99,7 +105,7 @@ class _BudgetDDState extends State<BudgetDD> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       CustomAppbar(
-                          title: 'Département de finance',
+                          title: 'Département de Budget',
                           controllerMenu: () =>
                               _key.currentState!.openDrawer()),
                       Expanded(
@@ -123,14 +129,14 @@ class _BudgetDDState extends State<BudgetDD> {
                                 initiallyExpanded: false,
                                 onExpansionChanged: (val) {
                                   setState(() {
-                                    isOpenRh1 = !val;
+                                    isOpen1 = !val;
                                   });
                                 },
                                 trailing: const Icon(
                                   Icons.arrow_drop_down,
                                   color: Colors.white,
                                 ),
-                                children: const [TableSalairesFIN()],
+                                children: const [TableSalairesBudget()],
                               ),
                             ),
                             Card(
@@ -148,14 +154,14 @@ class _BudgetDDState extends State<BudgetDD> {
                                 initiallyExpanded: false,
                                 onExpansionChanged: (val) {
                                   setState(() {
-                                    isOpenRh1 = !val;
+                                    isOpen2 = !val;
                                   });
                                 },
                                 trailing: const Icon(
                                   Icons.arrow_drop_down,
                                   color: Colors.white,
                                 ),
-                                children: const [TableCampaignFin()],
+                                children: const [TableCampaignBudget()],
                               ),
                             ),
                             Card(
@@ -173,14 +179,14 @@ class _BudgetDDState extends State<BudgetDD> {
                                 initiallyExpanded: false,
                                 onExpansionChanged: (val) {
                                   setState(() {
-                                    isOpenRh1 = !val;
+                                    isOpen3 = !val;
                                   });
                                 },
                                 trailing: const Icon(
                                   Icons.arrow_drop_down,
                                   color: Colors.white,
                                 ),
-                                children: const [TableDevisDD()],
+                                children: const [TableDevisBudgetDD()],
                               ),
                             ),
                             Card(
@@ -198,14 +204,39 @@ class _BudgetDDState extends State<BudgetDD> {
                                 initiallyExpanded: false,
                                 onExpansionChanged: (val) {
                                   setState(() {
-                                    isOpenRh1 = !val;
+                                    isOpen4 = !val;
                                   });
                                 },
                                 trailing: const Icon(
                                   Icons.arrow_drop_down,
                                   color: Colors.white,
                                 ),
-                                children: const [TableProjetFin()],
+                                children: const [TableProjeBudget()],
+                              ),
+                            ),
+                            Card(
+                              color: Colors.green.shade700,
+                              child: ExpansionTile(
+                                leading: const Icon(Icons.folder,
+                                    color: Colors.white),
+                                title: Text('Dossier budgets',
+                                    style: headline6.copyWith(
+                                        color: Colors.white)),
+                                subtitle: Text(
+                                    "Vous avez $budgetDepCount dossiers necessitent votre approbation",
+                                    style: bodyMedium.copyWith(
+                                        color: Colors.white)),
+                                initiallyExpanded: false,
+                                onExpansionChanged: (val) {
+                                  setState(() {
+                                    isOpen5 = !val;
+                                  });
+                                },
+                                trailing: const Icon(
+                                  Icons.arrow_drop_down,
+                                  color: Colors.white,
+                                ),
+                                children: const [TableDepartementBudgetDD()],
                               ),
                             ),
                           ],

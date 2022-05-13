@@ -1,20 +1,22 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
-import 'package:fokad_admin/src/api/budgets/ligne_budgetaire_api.dart';
-import 'package:fokad_admin/src/models/budgets/ligne_budgetaire_model.dart';
-import 'package:fokad_admin/src/pages/budgets/ligne_budgetaire/components/detail_ligne_budgetaire.dart';
+import 'package:fokad_admin/src/api/rh/paiement_salaire_api.dart';
+import 'package:fokad_admin/src/models/rh/paiement_salaire_model.dart';
+import 'package:fokad_admin/src/pages/rh/paiements/components/paiement_bulletin.dart';
 import 'package:fokad_admin/src/widgets/print_widget.dart';
 import 'package:fokad_admin/src/utils/class_implemented.dart';
 import 'package:intl/intl.dart';
 import 'package:pluto_grid/pluto_grid.dart';
 
-class LigneBudgetaire extends StatefulWidget {
-  const LigneBudgetaire({Key? key}) : super(key: key);
+class TableSalairesBudget extends StatefulWidget {
+  const TableSalairesBudget({Key? key}) : super(key: key);
 
   @override
-  State<LigneBudgetaire> createState() => _LigneBudgetaireState();
+  State<TableSalairesBudget> createState() => _TableSalairesBudgetState();
 }
 
-class _LigneBudgetaireState extends State<LigneBudgetaire> {
+class _TableSalairesBudgetState extends State<TableSalairesBudget> {
   List<PlutoColumn> columns = [];
   List<PlutoRow> rows = [];
   PlutoGridStateManager? stateManager;
@@ -41,8 +43,7 @@ class _LigneBudgetaireState extends State<LigneBudgetaire> {
           final idPlutoRow = dataList.elementAt(0);
 
           Navigator.of(context).push(MaterialPageRoute(
-              builder: (context) =>
-                  DetailLigneBudgetaire(id: idPlutoRow.value)));
+              builder: (context) => PaiementBulletin(id: idPlutoRow.value)));
         },
         onLoaded: (PlutoGridOnLoadedEvent event) {
           stateManager = event.stateManager;
@@ -62,29 +63,21 @@ class _LigneBudgetaireState extends State<LigneBudgetaire> {
               ClassFilterImplemented(),
             ],
             resolveDefaultColumnFilter: (column, resolver) {
-              if (column.field == 'id') {
+              if (column.field == 'prenom') {
                 return resolver<ClassFilterImplemented>() as PlutoFilterType;
-              } else if (column.field == 'nomLigneBudgetaire') {
+              } else if (column.field == 'nom') {
+                return resolver<ClassFilterImplemented>() as PlutoFilterType;
+              } else if (column.field == 'matricule') {
                 return resolver<ClassFilterImplemented>() as PlutoFilterType;
               } else if (column.field == 'departement') {
                 return resolver<ClassFilterImplemented>() as PlutoFilterType;
-              } else if (column.field == 'periodeBudget') {
+              } else if (column.field == 'Approbation') {
                 return resolver<ClassFilterImplemented>() as PlutoFilterType;
-              } else if (column.field == 'uniteChoisie') {
+              } else if (column.field == 'observation') {
                 return resolver<ClassFilterImplemented>() as PlutoFilterType;
-              } else if (column.field == 'nombreUnite') {
+              } else if (column.field == 'modePaiement') {
                 return resolver<ClassFilterImplemented>() as PlutoFilterType;
-              } else if (column.field == 'coutUnitaire') {
-                return resolver<ClassFilterImplemented>() as PlutoFilterType;
-              } else if (column.field == 'coutTotal') {
-                return resolver<ClassFilterImplemented>() as PlutoFilterType;
-              } else if (column.field == 'caisse') {
-                return resolver<ClassFilterImplemented>() as PlutoFilterType;
-              } else if (column.field == 'banque') {
-                return resolver<ClassFilterImplemented>() as PlutoFilterType;
-              } else if (column.field == 'finPropre') {
-                return resolver<ClassFilterImplemented>() as PlutoFilterType;
-              } else if (column.field == 'finExterieur') {
+              } else if (column.field == 'salaire') {
                 return resolver<ClassFilterImplemented>() as PlutoFilterType;
               } else if (column.field == 'created') {
                 return resolver<ClassFilterImplemented>() as PlutoFilterType;
@@ -113,116 +106,8 @@ class _LigneBudgetaireState extends State<LigneBudgetaire> {
       ),
       PlutoColumn(
         readOnly: true,
-        title: 'Ligne Budgetaire',
-        field: 'nomLigneBudgetaire',
-        type: PlutoColumnType.text(),
-        enableRowDrag: true,
-        enableContextMenu: false,
-        enableDropToResize: true,
-        titleTextAlign: PlutoColumnTextAlign.left,
-        width: 300,
-        minWidth: 150,
-      ),
-      PlutoColumn(
-        readOnly: true,
-        title: 'Département',
-        field: 'departement',
-        type: PlutoColumnType.text(),
-        enableRowDrag: true,
-        enableContextMenu: false,
-        enableDropToResize: true,
-        titleTextAlign: PlutoColumnTextAlign.left,
-        width: 250,
-        minWidth: 150,
-      ),
-      PlutoColumn(
-        readOnly: true,
-        title: 'Date de cloture',
-        field: 'periodeBudget',
-        type: PlutoColumnType.text(),
-        enableRowDrag: true,
-        enableContextMenu: false,
-        enableDropToResize: true,
-        titleTextAlign: PlutoColumnTextAlign.left,
-        width: 200,
-        minWidth: 150,
-      ),
-      PlutoColumn(
-        readOnly: true,
-        title: 'Unité',
-        field: 'uniteChoisie',
-        type: PlutoColumnType.text(),
-        enableRowDrag: true,
-        enableContextMenu: false,
-        enableDropToResize: true,
-        titleTextAlign: PlutoColumnTextAlign.left,
-        width: 200,
-        minWidth: 150,
-      ),
-      PlutoColumn(
-        readOnly: true,
-        title: 'Nombre d\'Unité',
-        field: 'nombreUnite',
-        type: PlutoColumnType.text(),
-        enableRowDrag: true,
-        enableContextMenu: false,
-        enableDropToResize: true,
-        titleTextAlign: PlutoColumnTextAlign.left,
-        width: 200,
-        minWidth: 150,
-      ),
-      PlutoColumn(
-        readOnly: true,
-        title: 'Coût Unitaire',
-        field: 'coutUnitaire',
-        type: PlutoColumnType.text(),
-        enableRowDrag: true,
-        enableContextMenu: false,
-        enableDropToResize: true,
-        titleTextAlign: PlutoColumnTextAlign.left,
-        width: 200,
-        minWidth: 150,
-      ),
-      PlutoColumn(
-        readOnly: true,
-        title: 'Coût Total',
-        field: 'coutTotal',
-        type: PlutoColumnType.text(),
-        enableRowDrag: true,
-        enableContextMenu: false,
-        enableDropToResize: true,
-        titleTextAlign: PlutoColumnTextAlign.left,
-        width: 200,
-        minWidth: 150,
-      ),
-      PlutoColumn(
-        readOnly: true,
-        title: 'Caisse',
-        field: 'caisse',
-        type: PlutoColumnType.text(),
-        enableRowDrag: true,
-        enableContextMenu: false,
-        enableDropToResize: true,
-        titleTextAlign: PlutoColumnTextAlign.left,
-        width: 200,
-        minWidth: 150,
-      ),
-      PlutoColumn(
-        readOnly: true,
-        title: 'Banque',
-        field: 'banque',
-        type: PlutoColumnType.text(),
-        enableRowDrag: true,
-        enableContextMenu: false,
-        enableDropToResize: true,
-        titleTextAlign: PlutoColumnTextAlign.left,
-        width: 200,
-        minWidth: 150,
-      ),
-      PlutoColumn(
-        readOnly: true,
-        title: 'Fond Propre',
-        field: 'finPropre',
+        title: 'Prénom',
+        field: 'prenom',
         type: PlutoColumnType.text(),
         enableRowDrag: true,
         enableContextMenu: false,
@@ -233,56 +118,119 @@ class _LigneBudgetaireState extends State<LigneBudgetaire> {
       ),
       PlutoColumn(
         readOnly: true,
-        title: 'Fond Exterieur',
-        field: 'finExterieur',
+        title: 'Nom',
+        field: 'nom',
         type: PlutoColumnType.text(),
         enableRowDrag: true,
         enableContextMenu: false,
         enableDropToResize: true,
         titleTextAlign: PlutoColumnTextAlign.left,
-        width: 200,
+        width: 150,
         minWidth: 150,
       ),
       PlutoColumn(
         readOnly: true,
-        title: 'Date',
-        field: 'created',
+        title: 'Matricule',
+        field: 'matricule',
+        type: PlutoColumnType.text(),
+        enableRowDrag: true,
+        enableContextMenu: false,
+        enableDropToResize: true,
+        titleTextAlign: PlutoColumnTextAlign.left,
+        width: 150,
+        minWidth: 150,
+      ),
+      PlutoColumn(
+        readOnly: true,
+        title: 'departement',
+        field: 'departement',
+        type: PlutoColumnType.text(),
+        enableRowDrag: true,
+        enableContextMenu: false,
+        enableDropToResize: true,
+        titleTextAlign: PlutoColumnTextAlign.left,
+        width: 150,
+        minWidth: 150,
+      ),
+      PlutoColumn(
+        readOnly: true,
+        title: 'Approbation',
+        field: 'approbation',
+        type: PlutoColumnType.text(),
+        enableRowDrag: true,
+        enableContextMenu: false,
+        enableDropToResize: true,
+        titleTextAlign: PlutoColumnTextAlign.left,
+        width: 150,
+        minWidth: 150,
+      ),
+      PlutoColumn(
+        readOnly: true,
+        title: 'Observation',
+        field: 'observation',
+        type: PlutoColumnType.text(),
+        enableRowDrag: true,
+        enableContextMenu: false,
+        enableDropToResize: true,
+        titleTextAlign: PlutoColumnTextAlign.left,
+        width: 150,
+        minWidth: 150,
+      ),
+      PlutoColumn(
+        readOnly: true,
+        title: 'Mode de paiement',
+        field: 'modePaiement',
+        type: PlutoColumnType.text(),
+        enableRowDrag: true,
+        enableContextMenu: false,
+        enableDropToResize: true,
+        titleTextAlign: PlutoColumnTextAlign.left,
+        width: 150,
+        minWidth: 150,
+      ),
+      PlutoColumn(
+        readOnly: true,
+        title: 'created',
+        field: 'createdAt',
         type: PlutoColumnType.date(),
         enableRowDrag: true,
         enableContextMenu: false,
         enableDropToResize: true,
         titleTextAlign: PlutoColumnTextAlign.left,
-        width: 200,
+        width: 150,
         minWidth: 150,
       ),
     ];
   }
 
   Future agentsRow() async {
-    List<LigneBudgetaireModel?> dataList =
-        await LIgneBudgetaireApi().getAllData();
+    List<PaiementSalaireModel?> dataList =
+        await PaiementSalaireApi().getAllData();
     var data = dataList
-        .where((element) => element!.approbationDD == "Approved")
+        .where((element) =>
+            element!.approbationDD == "Approved" &&
+            element.approbationBudget == "-")
         .toList();
 
     if (mounted) {
       setState(() {
         for (var item in data) {
+          id = item!.id;
           rows.add(PlutoRow(cells: {
-            'id': PlutoCell(value: item!.id),
-            'nomLigneBudgetaire': PlutoCell(value: item.nomLigneBudgetaire),
+            'id': PlutoCell(value: item.id),
+            'prenom': PlutoCell(value: item.prenom),
+            'nom': PlutoCell(value: item.nom),
+            'matricule': PlutoCell(value: item.matricule),
             'departement': PlutoCell(value: item.departement),
-            'periodeBudget': PlutoCell(value: item.periodeBudget),
-            'uniteChoisie': PlutoCell(value: item.uniteChoisie),
-            'nombreUnite': PlutoCell(value: item.nombreUnite),
-            'coutUnitaire': PlutoCell(value: item.coutUnitaire),
-            'coutTotal': PlutoCell(value: NumberFormat.decimalPattern('fr').format(double.parse(item.coutTotal))),
-            'caisse': PlutoCell(value: NumberFormat.decimalPattern('fr').format(double.parse(item.caisse))),
-            'banque': PlutoCell(value: NumberFormat.decimalPattern('fr').format(double.parse(item.banque))),
-            'finPropre': PlutoCell(value: NumberFormat.decimalPattern('fr').format(double.parse(item.finPropre))),
-            'finExterieur': PlutoCell(value: NumberFormat.decimalPattern('fr').format(double.parse(item.finExterieur))),
-            'created': PlutoCell(
-                value: DateFormat("DD-MM-yyyy HH:mm").format(item.created))
+            'approbation': PlutoCell(
+                value: (item.approbationDG == "Approved")
+                    ? "Approuvé"
+                    : "Non Approuvé"),
+            'observation': PlutoCell(
+                value: (item.observation == true) ? "Payé" : "Non payé"),
+            'modePaiement': PlutoCell(value: item.modePaiement),
+            'createdAt': PlutoCell(
+                value: DateFormat("DD-MM-yy HH:mm").format(item.createdAt))
           }));
         }
         stateManager!.resetCurrentState();

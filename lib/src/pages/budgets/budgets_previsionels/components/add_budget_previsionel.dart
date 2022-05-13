@@ -31,11 +31,7 @@ class _AddBudgetPrevionelState extends State<AddBudgetPrevionel> {
   DateTimeRange? dateRange;
 
   String? departement;
-  TextEditingController periodeBudgetController = TextEditingController();
-  TextEditingController totalGlobalDispoController = TextEditingController();
-  TextEditingController totalGlobalFinExtController = TextEditingController();
-  TextEditingController totalGlobalPrevisionelController =
-      TextEditingController();
+  TextEditingController titleController = TextEditingController();
 
   String getPlageDate() {
     if (dateRange == null) {
@@ -53,10 +49,7 @@ class _AddBudgetPrevionelState extends State<AddBudgetPrevionel> {
 
   @override
   void dispose() {
-    periodeBudgetController.dispose();
-    totalGlobalDispoController.dispose();
-    totalGlobalFinExtController.dispose();
-    totalGlobalPrevisionelController.dispose();
+    titleController.dispose();
 
     super.dispose();
   }
@@ -147,25 +140,24 @@ class _AddBudgetPrevionelState extends State<AddBudgetPrevionel> {
                       ],
                     ),
                     const SizedBox(
-                      height: p20,
+                      width: p20,
                     ),
-                    departmentWidget(),
+                    Row(
+                      children: [
+                        Expanded(child: titleWidget()),
+                        const SizedBox(
+                          width: p10,
+                        ),
+                        Expanded(child: departmentWidget())
+                      ],
+                    ),
                     Row(
                       children: [
                         Expanded(child: dateDebutEtFinWidget()),
                         const SizedBox(
                           width: p10,
                         ),
-                        Expanded(child: totalGlobalDispoWidget())
-                      ],
-                    ),
-                    Row(
-                      children: [
-                        Expanded(child: totalGlobalFinExtWidget()),
-                        const SizedBox(
-                          width: p10,
-                        ),
-                        Expanded(child: totalGlobalPrevisionelWidget())
+                        Expanded(child: Container())
                       ],
                     ),
                     const SizedBox(
@@ -189,6 +181,28 @@ class _AddBudgetPrevionelState extends State<AddBudgetPrevionel> {
         ],
       ),
     );
+  }
+
+  Widget titleWidget() {
+    return Container(
+        margin: const EdgeInsets.only(bottom: p20),
+        child: TextFormField(
+          controller: titleController,
+          keyboardType: TextInputType.text,
+          decoration: InputDecoration(
+            border:
+                OutlineInputBorder(borderRadius: BorderRadius.circular(10.0)),
+            labelText: 'Titre',
+          ),
+          style: const TextStyle(),
+          validator: (value) {
+            if (value != null && value.isEmpty) {
+              return 'Ce champs est obligatoire';
+            } else {
+              return null;
+            }
+          },
+        ));
   }
 
   Widget departmentWidget() {
@@ -239,6 +253,7 @@ class _AddBudgetPrevionelState extends State<AddBudgetPrevionel> {
     );
     final newDateRange = await showDateRangePicker(
       context: context,
+      initialEntryMode: DatePickerEntryMode.input,
       firstDate: DateTime(DateTime.now().year - 5),
       lastDate: DateTime(DateTime.now().year + 20),
       initialDateRange: dateRange ?? initialDateRange,
@@ -249,89 +264,12 @@ class _AddBudgetPrevionelState extends State<AddBudgetPrevionel> {
     setState(() => dateRange = newDateRange);
   }
 
-  Widget totalGlobalDispoWidget() {
-    return Container(
-        margin: const EdgeInsets.only(bottom: p20),
-        child: TextFormField(
-          controller: totalGlobalDispoController,
-          keyboardType: TextInputType.number,
-          inputFormatters: <TextInputFormatter>[
-            FilteringTextInputFormatter.digitsOnly
-          ],
-          decoration: InputDecoration(
-            border:
-                OutlineInputBorder(borderRadius: BorderRadius.circular(10.0)),
-            labelText: 'Total Global Disponible',
-          ),
-          style: const TextStyle(),
-          validator: (value) {
-            if (value != null && value.isEmpty) {
-              return 'Ce champs est obligatoire';
-            } else {
-              return null;
-            }
-          },
-        ));
-  }
-
-  Widget totalGlobalFinExtWidget() {
-    return Container(
-        margin: const EdgeInsets.only(bottom: p20),
-        child: TextFormField(
-          controller: totalGlobalFinExtController,
-          keyboardType: TextInputType.number,
-          inputFormatters: <TextInputFormatter>[
-            FilteringTextInputFormatter.digitsOnly
-          ],
-          decoration: InputDecoration(
-            border:
-                OutlineInputBorder(borderRadius: BorderRadius.circular(10.0)),
-            labelText: 'Total Global Finance exterieur',
-          ),
-          style: const TextStyle(),
-          validator: (value) {
-            if (value != null && value.isEmpty) {
-              return 'Ce champs est obligatoire';
-            } else {
-              return null;
-            }
-          },
-        ));
-  }
-
-  Widget totalGlobalPrevisionelWidget() {
-    return Container(
-        margin: const EdgeInsets.only(bottom: p20),
-        child: TextFormField(
-          controller: totalGlobalPrevisionelController,
-          keyboardType: TextInputType.number,
-          inputFormatters: <TextInputFormatter>[
-            FilteringTextInputFormatter.digitsOnly
-          ],
-          decoration: InputDecoration(
-            border:
-                OutlineInputBorder(borderRadius: BorderRadius.circular(10.0)),
-            labelText: 'Total Global Previsionel',
-          ),
-          style: const TextStyle(),
-          validator: (value) {
-            if (value != null && value.isEmpty) {
-              return 'Ce champs est obligatoire';
-            } else {
-              return null;
-            }
-          },
-        ));
-  }
-
   Future<void> submit() async {
     final departementBudgetModel = DepartementBudgetModel(
+        title: titleController.text,
         departement: departement.toString(),
         periodeDebut: dateRange!.start,
         periodeFin: dateRange!.end,
-        totalGlobalDispo: totalGlobalDispoController.text,
-        totalGlobalFinExt: totalGlobalFinExtController.text,
-        totalGlobalPrevisionel: totalGlobalPrevisionelController.text,
         approbationDG: '-',
         signatureDG: '-',
         signatureJustificationDG: '-',

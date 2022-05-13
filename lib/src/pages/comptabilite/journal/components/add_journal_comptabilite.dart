@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:fokad_admin/src/api/auth/auth_api.dart';
 import 'package:fokad_admin/src/api/comptabilite/journal_api.dart';
 import 'package:fokad_admin/src/constants/app_theme.dart';
@@ -226,6 +227,10 @@ class _AddJournalComptabiliteState extends State<AddJournalComptabilite> {
         margin: const EdgeInsets.only(bottom: p20),
         child: TextFormField(
           controller: numeroOperationController,
+          keyboardType: TextInputType.number,
+          inputFormatters: <TextInputFormatter>[
+            FilteringTextInputFormatter.digitsOnly
+          ],
           decoration: InputDecoration(
             border:
                 OutlineInputBorder(borderRadius: BorderRadius.circular(10.0)),
@@ -233,7 +238,6 @@ class _AddJournalComptabiliteState extends State<AddJournalComptabilite> {
             contentPadding:
                 const EdgeInsets.symmetric(vertical: 2, horizontal: 10),
           ),
-          keyboardType: TextInputType.text,
           style: const TextStyle(),
           validator: (value) {
             if (value != null && value.isEmpty) {
@@ -442,6 +446,10 @@ class _AddJournalComptabiliteState extends State<AddJournalComptabilite> {
         margin: const EdgeInsets.only(bottom: p20),
         child: TextFormField(
           controller: tvaController,
+          keyboardType: TextInputType.number,
+          inputFormatters: <TextInputFormatter>[
+            FilteringTextInputFormatter.digitsOnly
+          ],
           decoration: InputDecoration(
             border:
                 OutlineInputBorder(borderRadius: BorderRadius.circular(10.0)),
@@ -449,7 +457,6 @@ class _AddJournalComptabiliteState extends State<AddJournalComptabilite> {
             contentPadding:
                 const EdgeInsets.symmetric(vertical: 2, horizontal: 10),
           ),
-          keyboardType: TextInputType.text,
           style: const TextStyle(),
           validator: (value) {
             if (value != null && value.isEmpty) {
@@ -466,6 +473,10 @@ class _AddJournalComptabiliteState extends State<AddJournalComptabilite> {
         margin: const EdgeInsets.only(bottom: p20),
         child: TextFormField(
           controller: montantDebitController,
+          keyboardType: TextInputType.number,
+          inputFormatters: <TextInputFormatter>[
+            FilteringTextInputFormatter.digitsOnly
+          ],
           decoration: InputDecoration(
             border:
                 OutlineInputBorder(borderRadius: BorderRadius.circular(10.0)),
@@ -473,7 +484,7 @@ class _AddJournalComptabiliteState extends State<AddJournalComptabilite> {
             contentPadding:
                 const EdgeInsets.symmetric(vertical: 2, horizontal: 10),
           ),
-          keyboardType: TextInputType.text,
+          
           style: const TextStyle(),
           validator: (value) {
             if (value != null && value.isEmpty) {
@@ -490,6 +501,10 @@ class _AddJournalComptabiliteState extends State<AddJournalComptabilite> {
         margin: const EdgeInsets.only(bottom: p20),
         child: TextFormField(
           controller: montantCreditController,
+          keyboardType: TextInputType.number,
+          inputFormatters: <TextInputFormatter>[
+            FilteringTextInputFormatter.digitsOnly
+          ],
           decoration: InputDecoration(
             border:
                 OutlineInputBorder(borderRadius: BorderRadius.circular(10.0)),
@@ -497,7 +512,6 @@ class _AddJournalComptabiliteState extends State<AddJournalComptabilite> {
             contentPadding:
                 const EdgeInsets.symmetric(vertical: 2, horizontal: 10),
           ),
-          keyboardType: TextInputType.text,
           style: const TextStyle(),
           validator: (value) {
             if (value != null && value.isEmpty) {

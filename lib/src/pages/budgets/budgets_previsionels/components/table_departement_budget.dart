@@ -66,12 +66,6 @@ class _TableDepartementBudgetState extends State<TableDepartementBudget> {
               return resolver<ClassFilterImplemented>() as PlutoFilterType;
             } else if (column.field == 'periodeBudget') {
               return resolver<ClassFilterImplemented>() as PlutoFilterType;
-            } else if (column.field == 'totalGlobalDispo') {
-              return resolver<ClassFilterImplemented>() as PlutoFilterType;
-            } else if (column.field == 'totalGlobalFinExt') {
-              return resolver<ClassFilterImplemented>() as PlutoFilterType;
-            } else if (column.field == 'totalGlobalPrevisionel') {
-              return resolver<ClassFilterImplemented>() as PlutoFilterType;
             } else if (column.field == 'created') {
               return resolver<ClassFilterImplemented>() as PlutoFilterType;
             }
@@ -122,42 +116,6 @@ class _TableDepartementBudgetState extends State<TableDepartementBudget> {
       ),
       PlutoColumn(
         readOnly: true,
-        title: 'Total Global Dispo',
-        field: 'totalGlobalDispo',
-        type: PlutoColumnType.text(),
-        enableRowDrag: true,
-        enableContextMenu: false,
-        enableDropToResize: true,
-        titleTextAlign: PlutoColumnTextAlign.left,
-        width: 150,
-        minWidth: 150,
-      ),
-      PlutoColumn(
-        readOnly: true,
-        title: 'Total Global Fin',
-        field: 'totalGlobalFinExt',
-        type: PlutoColumnType.text(),
-        enableRowDrag: true,
-        enableContextMenu: false,
-        enableDropToResize: true,
-        titleTextAlign: PlutoColumnTextAlign.left,
-        width: 200,
-        minWidth: 150,
-      ),
-      PlutoColumn(
-        readOnly: true,
-        title: 'Total Global Previsionel',
-        field: 'totalGlobalPrevisionel',
-        type: PlutoColumnType.text(),
-        enableRowDrag: true,
-        enableContextMenu: false,
-        enableDropToResize: true,
-        titleTextAlign: PlutoColumnTextAlign.left,
-        width: 150,
-        minWidth: 150,
-      ),
-      PlutoColumn(
-        readOnly: true,
         title: 'Date',
         field: 'created',
         type: PlutoColumnType.date(),
@@ -176,19 +134,17 @@ class _TableDepartementBudgetState extends State<TableDepartementBudget> {
         await DepeartementBudgetApi().getAllData();
     var data = dataList
       .where((element) => element!.approbationDG == "Approved" && 
-      element.approbationDD == "Approved" && DateTime.now().millisecondsSinceEpoch <= element.periodeFin.millisecondsSinceEpoch )
+      element.approbationDD == "Approved" && DateTime.now().isBefore(element.periodeFin))
       .toList();
 
     if (mounted) {
       setState(() {
         for (var item in data) {
-          id = item!.id;
+
           rows.add(PlutoRow(cells: {
-            'id': PlutoCell(value: item.id),
+            'id': PlutoCell(value: item!.id),
             'departement': PlutoCell(value: item.departement),
-            'periodeBudget': PlutoCell(value: "${DateFormat("DD-MM-yyyy HH:mm").format(item.periodeDebut)}-${DateFormat("DD-MM-yyyy HH:mm").format(item.periodeFin)}" ),
-            'totalGlobalDispo': PlutoCell(value: NumberFormat.decimalPattern('fr').format(double.parse(item.totalGlobalDispo))),
-            'totalGlobalFinExt': PlutoCell(value: NumberFormat.decimalPattern('fr').format(double.parse(item.totalGlobalFinExt))),
+            'periodeBudget': PlutoCell(value: "${DateFormat("DD-MM-yyyy").format(item.periodeDebut)}-${DateFormat("dd-MM-yyyy").format(item.periodeFin)}" ),
             'created': PlutoCell(
                 value: DateFormat("DD-MM-yyyy HH:mm").format(item.created))
           }));

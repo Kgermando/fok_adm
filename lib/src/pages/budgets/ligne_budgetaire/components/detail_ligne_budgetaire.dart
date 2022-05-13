@@ -142,22 +142,17 @@ class _DetailLigneBudgetaireState extends State<DetailLigneBudgetaire> {
                   TitleWidget(title: data.periodeBudget),
                   Column(
                     children: [
-                      Row(
-                        children: [
-                          IconButton(
-                              tooltip: 'Modifier',
-                              onPressed: () {},
-                              icon: const Icon(Icons.edit)),
-                          PrintWidget(
-                              tooltip: 'Imprimer le document', onPressed: () {})
-                        ],
-                      ),
+                      PrintWidget(
+                          tooltip: 'Imprimer le document', onPressed: () {}),
                       SelectableText(
-                          DateFormat("dd-MM-yy").format(data.created),
+                          DateFormat("dd-MM-yyyy").format(data.created),
                           textAlign: TextAlign.start),
                     ],
                   )
                 ],
+              ),
+              const SizedBox(
+                height: p30,
               ),
               dataWidget(data),
               infosEditeurWidget(data),
@@ -328,7 +323,7 @@ class _DetailLigneBudgetaireState extends State<DetailLigneBudgetaire> {
   Widget infosEditeurWidget(LigneBudgetaireModel data) {
     final bodyMedium = Theme.of(context).textTheme.bodyMedium;
     final bodySmall = Theme.of(context).textTheme.bodySmall;
-    List<String> dataList = ['Approved', 'Unapproved'];
+    List<String> dataList = ['Approved', 'Unapproved', '-'];
     return Container(
       padding: const EdgeInsets.only(top: p16, bottom: p16),
       decoration: const BoxDecoration(
@@ -837,7 +832,7 @@ class _DetailLigneBudgetaireState extends State<DetailLigneBudgetaire> {
     await LIgneBudgetaireApi().updateData(data.id!, ligneBudgetaireModel);
     Navigator.of(context).pop();
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-      content: const Text("Soumis avec succès!"),
+      content: const Text("Mises à jour  avec succès!"),
       backgroundColor: Colors.green[700],
     ));
   }
@@ -874,7 +869,7 @@ class _DetailLigneBudgetaireState extends State<DetailLigneBudgetaire> {
     await LIgneBudgetaireApi().updateData(data.id!, ligneBudgetaireModel);
     Navigator.of(context).pop();
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-      content: const Text("Soumis avec succès!"),
+      content: const Text("Mises à jour  avec succès!"),
       backgroundColor: Colors.green[700],
     ));
   }
@@ -911,7 +906,7 @@ class _DetailLigneBudgetaireState extends State<DetailLigneBudgetaire> {
     await LIgneBudgetaireApi().updateData(data.id!, ligneBudgetaireModel);
     Navigator.of(context).pop();
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-      content: const Text("Soumis avec succès!"),
+      content: const Text("Mises à jour  avec succès!"),
       backgroundColor: Colors.green[700],
     ));
   }
@@ -948,7 +943,7 @@ class _DetailLigneBudgetaireState extends State<DetailLigneBudgetaire> {
     await LIgneBudgetaireApi().updateData(data.id!, ligneBudgetaireModel);
     Navigator.of(context).pop();
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-      content: const Text("Soumis avec succès!"),
+      content: const Text("Mises à jour  avec succès!"),
       backgroundColor: Colors.green[700],
     ));
   }

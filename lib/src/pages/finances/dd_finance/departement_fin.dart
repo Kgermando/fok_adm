@@ -26,9 +26,10 @@ class _DepartementFinState extends State<DepartementFin> {
   final GlobalKey<ScaffoldState> _key = GlobalKey();
   final ScrollController _controllerScroll = ScrollController();
 
-  bool isOpenRh1 = false;
-  bool isOpenRh2 = false;
-  bool isOpenCampaign = false;
+  bool isOpen1 = false;
+  bool isOpen2 = false;
+  bool isOpen3 = false;
+  bool isOpen4 = false;
 
   int salaireCount = 0;
   int campaignCount = 0;
@@ -51,25 +52,25 @@ class _DepartementFinState extends State<DepartementFin> {
     setState(() {
       salaireCount = dataList
           .where((element) =>
-              element!.approbationFin != '-' &&
+              element!.approbationFin == '-' &&
               element.approbationDG == 'Approved')
           .toList()
           .length;
       campaignCount = campaign
           .where((element) =>
-              element.approbationFin != '-' &&
+              element.approbationFin == '-' &&
               element.approbationDG == 'Approved')
           .toList()
           .length;
       devisCount = devis
           .where((element) =>
-              element.approbationFin != '-' &&
+              element.approbationFin == '-' &&
               element.approbationDG == 'Approved')
           .toList()
           .length;
       projetCount = projets
           .where((element) =>
-              element.approbationFin != '-' &&
+              element.approbationFin == '-' &&
               element.approbationDG == 'Approved')
           .toList()
           .length;
@@ -123,7 +124,7 @@ class _DepartementFinState extends State<DepartementFin> {
                                 initiallyExpanded: false,
                                 onExpansionChanged: (val) {
                                   setState(() {
-                                    isOpenRh1 = !val;
+                                    isOpen1 = !val;
                                   });
                                 },
                                 trailing: const Icon(
@@ -148,7 +149,7 @@ class _DepartementFinState extends State<DepartementFin> {
                                 initiallyExpanded: false,
                                 onExpansionChanged: (val) {
                                   setState(() {
-                                    isOpenRh1 = !val;
+                                    isOpen2 = !val;
                                   });
                                 },
                                 trailing: const Icon(
@@ -173,7 +174,7 @@ class _DepartementFinState extends State<DepartementFin> {
                                 initiallyExpanded: false,
                                 onExpansionChanged: (val) {
                                   setState(() {
-                                    isOpenRh1 = !val;
+                                    isOpen3 = !val;
                                   });
                                 },
                                 trailing: const Icon(
@@ -198,7 +199,7 @@ class _DepartementFinState extends State<DepartementFin> {
                                 initiallyExpanded: false,
                                 onExpansionChanged: (val) {
                                   setState(() {
-                                    isOpenRh1 = !val;
+                                    isOpen4 = !val;
                                   });
                                 },
                                 trailing: const Icon(

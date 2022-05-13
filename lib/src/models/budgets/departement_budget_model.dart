@@ -1,11 +1,9 @@
 class DepartementBudgetModel { 
   late int? id;
+  late String title;
   late String departement;
   late DateTime periodeDebut; // Durée
   late DateTime periodeFin; // Durée de fin
-  late String totalGlobalDispo;
-  late String totalGlobalFinExt; // Reste à trouver
-  late String totalGlobalPrevisionel;
   
   late String approbationDG; // button radio OUi et NON if non text field
   late String signatureDG;
@@ -28,12 +26,10 @@ class DepartementBudgetModel {
 
   DepartementBudgetModel(
       {this.id,
+      required this.title,
       required this.departement,
       required this.periodeDebut,
       required this.periodeFin,
-      required this.totalGlobalDispo,
-      required this.totalGlobalFinExt,
-      required this.totalGlobalPrevisionel, 
 
       required this.approbationDG,
       required this.signatureDG,
@@ -59,12 +55,10 @@ class DepartementBudgetModel {
   factory DepartementBudgetModel.fromSQL(List<dynamic> row) {
     return DepartementBudgetModel(
         id: row[0],
-        departement: row[1],
-        periodeDebut: row[2],
-        periodeFin: row[3],
-        totalGlobalDispo: row[4],
-        totalGlobalFinExt: row[5],
-        totalGlobalPrevisionel: row[6],
+        title: row[1],
+        departement: row[2],
+        periodeDebut: row[3],
+        periodeFin: row[4],
 
         approbationDG: row[7],
         signatureDG: row[8],
@@ -87,12 +81,10 @@ class DepartementBudgetModel {
   factory DepartementBudgetModel.fromJson(Map<String, dynamic> json) {
     return DepartementBudgetModel(
         id: json['id'],
+        title: json['title'],
         departement: json['departement'],
         periodeDebut: DateTime.parse(json['periodeDebut']),
         periodeFin: DateTime.parse(json['periodeFin']),
-        totalGlobalDispo: json['totalGlobalDispo'],
-        totalGlobalFinExt: json['totalGlobalFinExt'],
-        totalGlobalPrevisionel: json['totalGlobalPrevisionel'],
 
         approbationDG: json['approbationDG'],
         signatureDG: json['signatureDG'],
@@ -118,12 +110,10 @@ class DepartementBudgetModel {
   Map<String, dynamic> toJson() {
     return {
       'id': id,
+      'title': title,
       'departement': departement,
       'periodeDebut': periodeDebut.toIso8601String(),
       'periodeFin': periodeFin.toIso8601String(),
-      'totalGlobalDispo': totalGlobalDispo,
-      'totalGlobalFinExt': totalGlobalFinExt,
-      'totalGlobalPrevisionel': totalGlobalPrevisionel,
       
       'approbationDG': approbationDG,
       'signatureDG': signatureDG,
