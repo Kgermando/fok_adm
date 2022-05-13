@@ -11,7 +11,6 @@ import 'package:fokad_admin/src/pages/rh/presences/components/arrive_presence.da
 import 'package:fokad_admin/src/pages/rh/presences/components/sortie_presence.dart';
 import 'package:fokad_admin/src/widgets/title_widget.dart';
 import 'package:intl/intl.dart';
-import 'package:routemaster/routemaster.dart';
 import 'package:simple_speed_dial/simple_speed_dial.dart';
 
 class DetailPresence extends StatefulWidget {
@@ -88,7 +87,7 @@ class _DetailPresenceState extends State<DetailPresence> {
                                     Expanded(
                                       child: CustomAppbar(
                                           title:
-                                              "Présence du ${DateFormat("dd-MM-yy").format(data!.created)}",
+                                              "Présence du ${DateFormat("dd-MM-yyyy").format(data!.created)}",
                                           controllerMenu: () =>
                                               _key.currentState!.openDrawer()),
                                     ),
@@ -281,9 +280,9 @@ class _DetailPresenceState extends State<DetailPresence> {
       speedDialChildren: <SpeedDialChild>[
         SpeedDialChild(
           child: const Icon(Icons.check_box_outline_blank),
-          foregroundColor: Colors.black,
-          backgroundColor: Colors.green.shade700,
-          label: 'Sorties',
+          foregroundColor: Colors.white,
+          backgroundColor: Colors.pink.shade700,
+          label: 'Sortie',
           onPressed: () {
             Navigator.of(context).push(MaterialPageRoute(
                 builder: (context) =>
@@ -293,7 +292,7 @@ class _DetailPresenceState extends State<DetailPresence> {
         SpeedDialChild(
           child: const Icon(Icons.check_box),
           foregroundColor: Colors.white,
-          backgroundColor: Colors.orange.shade700,
+          backgroundColor: Colors.green.shade700,
           label: 'Entrer',
           onPressed: () {
             Navigator.of(context).push(MaterialPageRoute(

@@ -292,50 +292,49 @@ class _AddCompteResultatState extends State<AddCompteResultat> {
 
   Widget intituleWidget() {
     return Container(
-      margin: const EdgeInsets.only(bottom: p10, left: p5),
-      child: TextFormField(
-        controller: intituleController,
-        decoration: InputDecoration(
-          border:
-              OutlineInputBorder(borderRadius: BorderRadius.circular(10.0)),
-          labelText: 'Intitulé',
-          hintText: 'intitule',
-        ),
-        keyboardType: TextInputType.text,
-        validator: (value) {
-          if (value != null && value.isEmpty) {
-            return 'Ce champs est obligatoire';
-          } else {
-            return null;
-          }
-        },
-      ));
+        margin: const EdgeInsets.only(bottom: p10, left: p5),
+        child: TextFormField(
+          controller: intituleController,
+          decoration: InputDecoration(
+            border:
+                OutlineInputBorder(borderRadius: BorderRadius.circular(10.0)),
+            labelText: 'Intitulé',
+            hintText: 'intitule',
+          ),
+          keyboardType: TextInputType.text,
+          validator: (value) {
+            if (value != null && value.isEmpty) {
+              return 'Ce champs est obligatoire';
+            } else {
+              return null;
+            }
+          },
+        ));
   }
 
   Widget achatMarchandisesWidget() {
     return Container(
-      margin: const EdgeInsets.only(bottom: p10, left: p5),
-      child: TextFormField(
-        controller: achatMarchandisesController,
-        keyboardType: TextInputType.number,
-        inputFormatters: <TextInputFormatter>[
-          FilteringTextInputFormatter.digitsOnly
-        ],
-        decoration: InputDecoration(
-          border:
-              OutlineInputBorder(borderRadius: BorderRadius.circular(10.0)),
-          labelText: 'Achats Marchandises',
-          hintText: 'Achats Marchandises',
-        ),
-        validator: (value) {
-          if (value != null && value.isEmpty) {
-            return 'Ce champs est obligatoire';
-          } else {
-            return null;
-          }
-        },
-      )
-    );
+        margin: const EdgeInsets.only(bottom: p10, left: p5),
+        child: TextFormField(
+          controller: achatMarchandisesController,
+          keyboardType: TextInputType.number,
+          inputFormatters: <TextInputFormatter>[
+            FilteringTextInputFormatter.digitsOnly
+          ],
+          decoration: InputDecoration(
+            border:
+                OutlineInputBorder(borderRadius: BorderRadius.circular(10.0)),
+            labelText: 'Achats Marchandises',
+            hintText: 'Achats Marchandises',
+          ),
+          validator: (value) {
+            if (value != null && value.isEmpty) {
+              return 'Ce champs est obligatoire';
+            } else {
+              return null;
+            }
+          },
+        ));
   }
 
   Widget variationStockMarchandisesWidget() {
@@ -379,12 +378,12 @@ class _AddCompteResultatState extends State<AddCompteResultat> {
             hintText: 'Achats Approvionnements',
           ),
           validator: (value) {
-          if (value != null && value.isEmpty) {
-            return 'Ce champs est obligatoire';
-          } else {
-            return null;
-          }
-        },
+            if (value != null && value.isEmpty) {
+              return 'Ce champs est obligatoire';
+            } else {
+              return null;
+            }
+          },
         ));
   }
 
@@ -404,12 +403,12 @@ class _AddCompteResultatState extends State<AddCompteResultat> {
             hintText: 'Variation Approvionnements',
           ),
           validator: (value) {
-          if (value != null && value.isEmpty) {
-            return 'Ce champs est obligatoire';
-          } else {
-            return null;
-          }
-        },
+            if (value != null && value.isEmpty) {
+              return 'Ce champs est obligatoire';
+            } else {
+              return null;
+            }
+          },
         ));
   }
 
@@ -429,12 +428,12 @@ class _AddCompteResultatState extends State<AddCompteResultat> {
             hintText: 'Autres Charges Externe',
           ),
           validator: (value) {
-          if (value != null && value.isEmpty) {
-            return 'Ce champs est obligatoire';
-          } else {
-            return null;
-          }
-        },
+            if (value != null && value.isEmpty) {
+              return 'Ce champs est obligatoire';
+            } else {
+              return null;
+            }
+          },
         ));
   }
 
@@ -454,12 +453,12 @@ class _AddCompteResultatState extends State<AddCompteResultat> {
             hintText: 'Impôts Taxes Versements Assimiles',
           ),
           validator: (value) {
-          if (value != null && value.isEmpty) {
-            return 'Ce champs est obligatoire';
-          } else {
-            return null;
-          }
-        },
+            if (value != null && value.isEmpty) {
+              return 'Ce champs est obligatoire';
+            } else {
+              return null;
+            }
+          },
         ));
   }
 
@@ -479,12 +478,12 @@ class _AddCompteResultatState extends State<AddCompteResultat> {
             hintText: 'Renumeration du Personnel',
           ),
           validator: (value) {
-          if (value != null && value.isEmpty) {
-            return 'Ce champs est obligatoire';
-          } else {
-            return null;
-          }
-        },
+            if (value != null && value.isEmpty) {
+              return 'Ce champs est obligatoire';
+            } else {
+              return null;
+            }
+          },
         ));
   }
 
@@ -504,12 +503,12 @@ class _AddCompteResultatState extends State<AddCompteResultat> {
             hintText: 'Charges Sociales',
           ),
           validator: (value) {
-          if (value != null && value.isEmpty) {
-            return 'Ce champs est obligatoire';
-          } else {
-            return null;
-          }
-        },
+            if (value != null && value.isEmpty) {
+              return 'Ce champs est obligatoire';
+            } else {
+              return null;
+            }
+          },
         ));
   }
 
@@ -529,12 +528,12 @@ class _AddCompteResultatState extends State<AddCompteResultat> {
             hintText: 'Dotatioins Provisions',
           ),
           validator: (value) {
-          if (value != null && value.isEmpty) {
-            return 'Ce champs est obligatoire';
-          } else {
-            return null;
-          }
-        },
+            if (value != null && value.isEmpty) {
+              return 'Ce champs est obligatoire';
+            } else {
+              return null;
+            }
+          },
         ));
   }
 
@@ -554,12 +553,12 @@ class _AddCompteResultatState extends State<AddCompteResultat> {
             hintText: 'Autres Charges',
           ),
           validator: (value) {
-          if (value != null && value.isEmpty) {
-            return 'Ce champs est obligatoire';
-          } else {
-            return null;
-          }
-        },
+            if (value != null && value.isEmpty) {
+              return 'Ce champs est obligatoire';
+            } else {
+              return null;
+            }
+          },
         ));
   }
 
@@ -579,12 +578,12 @@ class _AddCompteResultatState extends State<AddCompteResultat> {
             hintText: 'Charges financieres',
           ),
           validator: (value) {
-          if (value != null && value.isEmpty) {
-            return 'Ce champs est obligatoire';
-          } else {
-            return null;
-          }
-        },
+            if (value != null && value.isEmpty) {
+              return 'Ce champs est obligatoire';
+            } else {
+              return null;
+            }
+          },
         ));
   }
 
@@ -604,12 +603,12 @@ class _AddCompteResultatState extends State<AddCompteResultat> {
             hintText: 'Charges Exptionnelles',
           ),
           validator: (value) {
-          if (value != null && value.isEmpty) {
-            return 'Ce champs est obligatoire';
-          } else {
-            return null;
-          }
-        },
+            if (value != null && value.isEmpty) {
+              return 'Ce champs est obligatoire';
+            } else {
+              return null;
+            }
+          },
         ));
   }
 
@@ -629,12 +628,12 @@ class _AddCompteResultatState extends State<AddCompteResultat> {
             hintText: 'Impôt Sur le benefices',
           ),
           validator: (value) {
-          if (value != null && value.isEmpty) {
-            return 'Ce champs est obligatoire';
-          } else {
-            return null;
-          }
-        },
+            if (value != null && value.isEmpty) {
+              return 'Ce champs est obligatoire';
+            } else {
+              return null;
+            }
+          },
         ));
   }
 
@@ -654,12 +653,12 @@ class _AddCompteResultatState extends State<AddCompteResultat> {
             hintText: 'Solde Crediteur',
           ),
           validator: (value) {
-          if (value != null && value.isEmpty) {
-            return 'Ce champs est obligatoire';
-          } else {
-            return null;
-          }
-        },
+            if (value != null && value.isEmpty) {
+              return 'Ce champs est obligatoire';
+            } else {
+              return null;
+            }
+          },
         ));
   }
 
@@ -679,12 +678,12 @@ class _AddCompteResultatState extends State<AddCompteResultat> {
             hintText: 'Ventes Marchandises',
           ),
           validator: (value) {
-          if (value != null && value.isEmpty) {
-            return 'Ce champs est obligatoire';
-          } else {
-            return null;
-          }
-        },
+            if (value != null && value.isEmpty) {
+              return 'Ce champs est obligatoire';
+            } else {
+              return null;
+            }
+          },
         ));
   }
 
@@ -761,12 +760,12 @@ class _AddCompteResultatState extends State<AddCompteResultat> {
           ),
           keyboardType: TextInputType.text,
           validator: (value) {
-          if (value != null && value.isEmpty) {
-            return 'Ce champs est obligatoire';
-          } else {
-            return null;
-          }
-        },
+            if (value != null && value.isEmpty) {
+              return 'Ce champs est obligatoire';
+            } else {
+              return null;
+            }
+          },
         ));
   }
 
@@ -783,12 +782,12 @@ class _AddCompteResultatState extends State<AddCompteResultat> {
           ),
           keyboardType: TextInputType.text,
           validator: (value) {
-          if (value != null && value.isEmpty) {
-            return 'Ce champs est obligatoire';
-          } else {
-            return null;
-          }
-        },
+            if (value != null && value.isEmpty) {
+              return 'Ce champs est obligatoire';
+            } else {
+              return null;
+            }
+          },
         ));
   }
 
@@ -805,12 +804,12 @@ class _AddCompteResultatState extends State<AddCompteResultat> {
           ),
           keyboardType: TextInputType.text,
           validator: (value) {
-          if (value != null && value.isEmpty) {
-            return 'Ce champs est obligatoire';
-          } else {
-            return null;
-          }
-        },
+            if (value != null && value.isEmpty) {
+              return 'Ce champs est obligatoire';
+            } else {
+              return null;
+            }
+          },
         ));
   }
 
@@ -827,12 +826,12 @@ class _AddCompteResultatState extends State<AddCompteResultat> {
           ),
           keyboardType: TextInputType.text,
           validator: (value) {
-          if (value != null && value.isEmpty) {
-            return 'Ce champs est obligatoire';
-          } else {
-            return null;
-          }
-        },
+            if (value != null && value.isEmpty) {
+              return 'Ce champs est obligatoire';
+            } else {
+              return null;
+            }
+          },
         ));
   }
 
@@ -849,12 +848,12 @@ class _AddCompteResultatState extends State<AddCompteResultat> {
           ),
           keyboardType: TextInputType.text,
           validator: (value) {
-          if (value != null && value.isEmpty) {
-            return 'Ce champs est obligatoire';
-          } else {
-            return null;
-          }
-        },
+            if (value != null && value.isEmpty) {
+              return 'Ce champs est obligatoire';
+            } else {
+              return null;
+            }
+          },
         ));
   }
 
@@ -871,12 +870,12 @@ class _AddCompteResultatState extends State<AddCompteResultat> {
           ),
           keyboardType: TextInputType.text,
           validator: (value) {
-          if (value != null && value.isEmpty) {
-            return 'Ce champs est obligatoire';
-          } else {
-            return null;
-          }
-        },
+            if (value != null && value.isEmpty) {
+              return 'Ce champs est obligatoire';
+            } else {
+              return null;
+            }
+          },
         ));
   }
 
@@ -893,12 +892,12 @@ class _AddCompteResultatState extends State<AddCompteResultat> {
           ),
           keyboardType: TextInputType.text,
           validator: (value) {
-          if (value != null && value.isEmpty) {
-            return 'Ce champs est obligatoire';
-          } else {
-            return null;
-          }
-        },
+            if (value != null && value.isEmpty) {
+              return 'Ce champs est obligatoire';
+            } else {
+              return null;
+            }
+          },
         ));
   }
 
@@ -915,12 +914,12 @@ class _AddCompteResultatState extends State<AddCompteResultat> {
           ),
           keyboardType: TextInputType.text,
           validator: (value) {
-          if (value != null && value.isEmpty) {
-            return 'Ce champs est obligatoire';
-          } else {
-            return null;
-          }
-        },
+            if (value != null && value.isEmpty) {
+              return 'Ce champs est obligatoire';
+            } else {
+              return null;
+            }
+          },
         ));
   }
 
@@ -937,12 +936,12 @@ class _AddCompteResultatState extends State<AddCompteResultat> {
           ),
           keyboardType: TextInputType.text,
           validator: (value) {
-          if (value != null && value.isEmpty) {
-            return 'Ce champs est obligatoire';
-          } else {
-            return null;
-          }
-        },
+            if (value != null && value.isEmpty) {
+              return 'Ce champs est obligatoire';
+            } else {
+              return null;
+            }
+          },
         ));
   }
 

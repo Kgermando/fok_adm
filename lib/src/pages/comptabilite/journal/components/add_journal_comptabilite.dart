@@ -47,7 +47,7 @@ class _AddJournalComptabiliteState extends State<AddJournalComptabilite> {
   TextEditingController montantCreditController = TextEditingController();
   TextEditingController tvaController = TextEditingController();
   TextEditingController remarqueController = TextEditingController();
-  
+
   @override
   initState() {
     getData();
@@ -107,8 +107,8 @@ class _AddJournalComptabiliteState extends State<AddJournalComptabilite> {
                       flex: 2,
                       child: Text("Libele",
                           textAlign: TextAlign.center,
-                          style: bodyLarge
-                              .copyWith(fontWeight: FontWeight.bold))),
+                          style:
+                              bodyLarge.copyWith(fontWeight: FontWeight.bold))),
                   const SizedBox(
                     width: p10,
                   ),
@@ -144,8 +144,9 @@ class _AddJournalComptabiliteState extends State<AddJournalComptabilite> {
               child: Row(
                 children: [
                   SizedBox(
-                    height: 50.0,
-                    width: 100.0, child: numeroOperationWidget()),
+                      height: 50.0,
+                      width: 100.0,
+                      child: numeroOperationWidget()),
                   const SizedBox(
                     width: p10,
                   ),
@@ -160,15 +161,9 @@ class _AddJournalComptabiliteState extends State<AddJournalComptabilite> {
                         Expanded(
                             child: Column(
                           children: [
-                            SizedBox(
-                              height: 50.0,
-                              child: classDebitWidget()),
-                            SizedBox(
-                              height: 50.0,
-                              child: compteDebitWidget()),
-                            SizedBox(
-                              height: 50.0,
-                              child: montantDebitWidget())
+                            SizedBox(height: 50.0, child: classDebitWidget()),
+                            SizedBox(height: 50.0, child: compteDebitWidget()),
+                            SizedBox(height: 50.0, child: montantDebitWidget())
                           ],
                         )),
                         const SizedBox(
@@ -484,7 +479,6 @@ class _AddJournalComptabiliteState extends State<AddJournalComptabilite> {
             contentPadding:
                 const EdgeInsets.symmetric(vertical: 2, horizontal: 10),
           ),
-          
           style: const TextStyle(),
           validator: (value) {
             if (value != null && value.isEmpty) {
@@ -549,23 +543,22 @@ class _AddJournalComptabiliteState extends State<AddJournalComptabilite> {
 
   Future<void> submit() async {
     final journalModel = JournalModel(
-      numeroOperation: numeroOperationController.text,
-      libele: libeleController.text,
-      compteDebit: comptesDebitController.toString(),
-      montantDebit: montantDebitController.text,
-      compteCredit: comptesCreditController.toString(),
-      montantCredit: montantCreditController.text,
-      tva: tvaController.text,
-      remarque: remarqueController.text,
-      approbationDG: '-',
-      signatureDG: '-',
-      signatureJustificationDG: '-',
-      approbationDD: '-',
-      signatureDD: '-',
-      signatureJustificationDD: '-',
-      signature: signature.toString(),
-      created: DateTime.now()
-    );
+        numeroOperation: numeroOperationController.text,
+        libele: libeleController.text,
+        compteDebit: comptesDebitController.toString(),
+        montantDebit: montantDebitController.text,
+        compteCredit: comptesCreditController.toString(),
+        montantCredit: montantCreditController.text,
+        tva: tvaController.text,
+        remarque: remarqueController.text,
+        approbationDG: '-',
+        signatureDG: '-',
+        signatureJustificationDG: '-',
+        approbationDD: '-',
+        signatureDD: '-',
+        signatureJustificationDD: '-',
+        signature: signature.toString(),
+        created: DateTime.now());
     await JournalApi().insertData(journalModel);
     Routemaster.of(context).replace(ComptabiliteRoutes.comptabiliteJournal);
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(

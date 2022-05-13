@@ -13,7 +13,7 @@ import 'package:fokad_admin/src/navigation/header/custom_appbar.dart';
 import 'package:fokad_admin/src/widgets/btn_widget.dart';
 import 'package:fokad_admin/src/widgets/print_widget.dart';
 import 'package:fokad_admin/src/widgets/title_widget.dart';
-import 'package:routemaster/routemaster.dart';
+import 'package:intl/intl.dart';
 
 class SortiePresence extends StatefulWidget {
   const SortiePresence({Key? key, required this.presenceModel})
@@ -26,7 +26,6 @@ class SortiePresence extends StatefulWidget {
 
 class _SortiePresenceState extends State<SortiePresence> {
   final GlobalKey<ScaffoldState> _key = GlobalKey();
-  // final ScrollController _controllerScroll = ScrollController();
   final ScrollController _controllerScrollSortie = ScrollController();
   final ScrollController _controllerScrollListAgent = ScrollController();
   final _formKey = GlobalKey<FormState>();
@@ -53,7 +52,6 @@ class _SortiePresenceState extends State<SortiePresence> {
       sortieAgent = widget.presenceModel.sortieAgent;
       remarqueController =
           TextEditingController(text: widget.presenceModel.remarque);
-      finJournee = widget.presenceModel.finJournee;
     });
     super.initState();
   }
@@ -148,7 +146,13 @@ class _SortiePresenceState extends State<SortiePresence> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         const TitleWidget(title: 'Sortie'),
-                        PrintWidget(onPressed: () {})
+                        Column(
+                          children: [
+                            PrintWidget(onPressed: () {}),
+                            Text(DateFormat("dd-MM-yyyy HH:mm")
+                                .format(DateTime.now()))
+                          ],
+                        )
                       ],
                     ),
                     const SizedBox(
@@ -157,14 +161,10 @@ class _SortiePresenceState extends State<SortiePresence> {
                     Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        if (agentAffectesList.isEmpty)
-                          const SelectableText(
-                              'Vous n\'avez pas encore du personnel'),
-                        if (agentAffectesList.isNotEmpty)
-                          Expanded(
-                              child: Scrollbar(
-                                  controller: _controllerScrollSortie,
-                                  child: agentSortiesWidget())),
+                        Expanded(
+                            child: Scrollbar(
+                                controller: _controllerScrollSortie,
+                                child: agentSortiesWidget())),
                         const SizedBox(
                           width: p10,
                         ),
@@ -180,7 +180,7 @@ class _SortiePresenceState extends State<SortiePresence> {
                       height: p20,
                     ),
                     BtnWidget(
-                        title: 'Soumettre',
+                        title: 'Sortie',
                         isLoading: isLoading,
                         press: () {
                           final form = _formKey.currentState!;
@@ -225,11 +225,13 @@ class _SortiePresenceState extends State<SortiePresence> {
 
   Widget agentSortiesWidget() {
     List<UserModel> dataArriveList = [];
+    print("arriveAgent $arriveAgent");
+
     for (var u in arriveAgent) {
       dataArriveList.add(UserModel.fromJson(u));
     }
     List<UserModel> dataSortieList = [];
-    for (var u in arriveAgent) {
+    for (var u in sortieAgent) {
       dataSortieList.add(UserModel.fromJson(u));
     }
 
@@ -240,7 +242,7 @@ class _SortiePresenceState extends State<SortiePresence> {
 
     return Container(
         margin: const EdgeInsets.only(bottom: 20.0),
-        height: MediaQuery.of(context).size.height / 1.5,
+        height: MediaQuery.of(context).size.height / 1.8,
         child: ListView.builder(
             itemCount: dataList.length,
             itemBuilder: (context, i) {
@@ -267,7 +269,7 @@ class _SortiePresenceState extends State<SortiePresence> {
   Widget listAgentPresent() {
     return Container(
       margin: const EdgeInsets.only(bottom: 20.0),
-      height: MediaQuery.of(context).size.height / 1.5,
+      height: MediaQuery.of(context).size.height / 1.8,
       child: ListView.builder(
           controller: _controllerScrollListAgent,
           itemCount: sortieAgentList.length,
@@ -298,6 +300,7 @@ class _SortiePresenceState extends State<SortiePresence> {
   }
 
   checkboxRead() {
+    finJournee = widget.presenceModel.finJournee;
     return ListTile(
       leading: Checkbox(
         checkColor: Colors.white,
@@ -305,7 +308,13 @@ class _SortiePresenceState extends State<SortiePresence> {
         value: finJournee,
         onChanged: (bool? value) {
           setState(() {
+            isLoading = true;
+          });
+          setState(() {
             finJournee = value!;
+          });
+          setState(() {
+            isLoading = false;
           });
         },
       ),
@@ -328,7 +337,7 @@ class _SortiePresenceState extends State<SortiePresence> {
     await PresenceApi().updateData(widget.presenceModel.id!, presenceModel);
     Navigator.of(context).pop();
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-      content: const Text("soumis avec succès!"),
+      content: const Text("Sortie confirmé avec succès!"),
       backgroundColor: Colors.green[700],
     ));
   }

@@ -654,7 +654,7 @@ class _BanqueTransactionsState extends State<BanqueTransactions> {
         return map['id'] == foundKey;
       });
     }
-    Map<String, dynamic> json = { 
+    Map<String, dynamic> json = {
       'id': key,
       'nombreBillet': nombreBillet,
       'coupureBillet': coupureBillet
@@ -735,7 +735,7 @@ class _BanqueTransactionsState extends State<BanqueTransactions> {
     await BanqueApi().insertData(banqueModel);
     Navigator.of(context).pop();
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-      content: const Text("Retrait soumis avec succès!"),
+      content: const Text("Retrait Soumis avec succès!"),
       backgroundColor: Colors.green[700],
     ));
   }

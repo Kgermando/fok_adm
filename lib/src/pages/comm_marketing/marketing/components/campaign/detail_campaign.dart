@@ -1083,7 +1083,7 @@ class _DetailCampaignState extends State<DetailCampaign> {
         created: data.created);
 
     await CampaignApi().updateData(data.id!, campaignModel);
-     Navigator.of(context).pop();
+    Navigator.of(context).pop();
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
       content: const Text("Mise à jour avec succès!"),
       backgroundColor: Colors.green[700],
@@ -1092,31 +1092,30 @@ class _DetailCampaignState extends State<DetailCampaign> {
 
   Future<void> submitobservation(CampaignModel data) async {
     final campaignModel = CampaignModel(
-      typeProduit: data.typeProduit,
-      dateDebutEtFin: data.dateDebutEtFin,
-      agentAffectes: data.agentAffectes,
-      coutCampaign: data.coutCampaign,
-      lieuCible: data.lieuCible,
-      promotion: data.promotion,
-      objetctifs: data.objetctifs,
-      ligneBudgtaire: data.ligneBudgtaire,
-      resources: data.resources,
-      observation: isChecked,
-      approbationDG: data.approbationDG,
-      signatureDG: data.signatureDG,
-      signatureJustificationDG: data.signatureJustificationDG,
-      approbationFin: data.approbationFin,
-      signatureFin: data.signatureFin,
-      signatureJustificationFin: data.signatureJustificationFin,
-      approbationBudget: data.approbationBudget,
-      signatureBudget: data.signatureBudget,
-      signatureJustificationBudget: data.signatureJustificationBudget,
-      approbationDD: data.approbationDD,
-      signatureDD: data.signatureDD,
-      signatureJustificationDD: data.signatureJustificationDD,
-      signature: data.signature,
-      created: data.created
-    );
+        typeProduit: data.typeProduit,
+        dateDebutEtFin: data.dateDebutEtFin,
+        agentAffectes: data.agentAffectes,
+        coutCampaign: data.coutCampaign,
+        lieuCible: data.lieuCible,
+        promotion: data.promotion,
+        objetctifs: data.objetctifs,
+        ligneBudgtaire: data.ligneBudgtaire,
+        resources: data.resources,
+        observation: isChecked,
+        approbationDG: data.approbationDG,
+        signatureDG: data.signatureDG,
+        signatureJustificationDG: data.signatureJustificationDG,
+        approbationFin: data.approbationFin,
+        signatureFin: data.signatureFin,
+        signatureJustificationFin: data.signatureJustificationFin,
+        approbationBudget: data.approbationBudget,
+        signatureBudget: data.signatureBudget,
+        signatureJustificationBudget: data.signatureJustificationBudget,
+        approbationDD: data.approbationDD,
+        signatureDD: data.signatureDD,
+        signatureJustificationDD: data.signatureJustificationDD,
+        signature: data.signature,
+        created: data.created);
     await CampaignApi().updateData(data.id!, campaignModel);
     Navigator.of(context).pop();
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(

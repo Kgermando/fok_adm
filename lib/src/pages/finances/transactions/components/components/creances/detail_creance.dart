@@ -154,7 +154,8 @@ class _DetailCreanceState extends State<DetailCreance> {
                       PrintWidget(
                           tooltip: 'Imprimer le document', onPressed: () {}),
                       SelectableText(
-                          DateFormat("dd-MM-yyyy HH:mm").format(creanceModel.created),
+                          DateFormat("dd-MM-yyyy HH:mm")
+                              .format(creanceModel.created),
                           textAlign: TextAlign.start),
                     ],
                   )
@@ -260,7 +261,7 @@ class _DetailCreanceState extends State<DetailCreance> {
                     textAlign: TextAlign.start,
                     style: bodyMedium.copyWith(fontWeight: FontWeight.bold)),
               ),
-               const SizedBox(
+              const SizedBox(
                 width: p10,
               ),
               if (!creanceModel.statutPaie && user!.departement == "Finances")
@@ -320,8 +321,6 @@ class _DetailCreanceState extends State<DetailCreance> {
       title: const Text("Confirmation de payement"),
     );
   }
-
-
 
   Widget infosEditeurWidget(CreanceModel data) {
     final bodyMedium = Theme.of(context).textTheme.bodyMedium;
@@ -927,7 +926,6 @@ class _DetailCreanceState extends State<DetailCreance> {
     ));
   }
 
-
   Future<void> submitobservation(CreanceModel data) async {
     final creanceModel = CreanceModel(
         nomComplet: data.nomComplet,
@@ -957,6 +955,4 @@ class _DetailCreanceState extends State<DetailCreance> {
       backgroundColor: Colors.green[700],
     ));
   }
-
-  
 }

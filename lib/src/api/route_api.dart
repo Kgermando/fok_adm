@@ -152,7 +152,7 @@ var addBonLivraisonsUrl = Uri.parse("$mainUrl/bon-livraisons/insert-new-bon-livr
 var achatsUrl = Uri.parse("$mainUrl/achats/");
 var addAchatsUrl = Uri.parse("$mainUrl/achats/insert-new-achat");
 
-var cartsUrl = Uri.parse("$mainUrl/carts/");
+// var cartsUrl = Uri.parse("$mainUrl/carts/");
 var addCartsUrl = Uri.parse("$mainUrl/carts/insert-new-cart");
 
 var facturesUrl = Uri.parse("$mainUrl/factures/");

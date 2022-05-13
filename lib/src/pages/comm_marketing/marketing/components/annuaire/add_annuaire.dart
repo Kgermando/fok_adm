@@ -446,7 +446,7 @@ class _AddAnnuaireState extends State<AddAnnuaire> {
     await AnnuaireApi().insertData(annuaireModel);
     Navigator.of(context).pop();
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-      content: const Text("soumis avec succès!"),
+      content: const Text("Soumis avec succès!"),
       backgroundColor: Colors.green[700],
     ));
   }

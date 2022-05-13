@@ -13,7 +13,7 @@ import 'package:fokad_admin/src/navigation/header/custom_appbar.dart';
 import 'package:fokad_admin/src/widgets/btn_widget.dart';
 import 'package:fokad_admin/src/widgets/print_widget.dart';
 import 'package:fokad_admin/src/widgets/title_widget.dart';
-import 'package:routemaster/routemaster.dart';
+import 'package:intl/intl.dart';
 
 class ArrivePresence extends StatefulWidget {
   const ArrivePresence({Key? key, required this.presenceModel})
@@ -148,8 +148,14 @@ class _ArrivePresenceState extends State<ArrivePresence> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        const TitleWidget(title: 'Entrer'),
-                        PrintWidget(onPressed: () {})
+                        const TitleWidget(title: 'Arrivée'),
+                        Column(
+                          children: [
+                            PrintWidget(onPressed: () {}),
+                            Text(DateFormat("dd-MM-yyyy HH:mm")
+                                .format(DateTime.now()))
+                          ],
+                        )
                       ],
                     ),
                     const SizedBox(
@@ -174,7 +180,7 @@ class _ArrivePresenceState extends State<ArrivePresence> {
                       height: p20,
                     ),
                     BtnWidget(
-                        title: 'Soumettre',
+                        title: 'Presence',
                         isLoading: isLoading,
                         press: () {
                           final form = _formKey.currentState!;
@@ -264,7 +270,7 @@ class _ArrivePresenceState extends State<ArrivePresence> {
     await PresenceApi().updateData(widget.presenceModel.id!, presenceModel);
     Navigator.of(context).pop();
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-      content: const Text("soumis avec succès!"),
+      content: const Text("Ajouté à la liste de presence avec succès!"),
       backgroundColor: Colors.green[700],
     ));
   }

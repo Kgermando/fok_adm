@@ -12,6 +12,7 @@ import 'package:fokad_admin/src/widgets/print_widget.dart';
 import 'package:fokad_admin/src/widgets/title_widget.dart';
 import 'package:intl/intl.dart';
 import 'package:pluto_grid/pluto_grid.dart';
+
 class DetailDette extends StatefulWidget {
   const DetailDette({Key? key, this.id}) : super(key: key);
   final int? id;
@@ -26,7 +27,7 @@ class _DetailDetteState extends State<DetailDette> {
   bool isLoading = false;
   List<UserModel> userList = [];
 
-   bool isChecked = false;
+  bool isChecked = false;
 
   List<PlutoColumn> columns = [];
   List<PlutoRow> rows = [];
@@ -150,9 +151,10 @@ class _DetailDetteState extends State<DetailDette> {
                   Column(
                     children: [
                       PrintWidget(
-                              tooltip: 'Imprimer le document', onPressed: () {}),
+                          tooltip: 'Imprimer le document', onPressed: () {}),
                       SelectableText(
-                          DateFormat("dd-MM-yyyy HH:mm").format(detteModel.created),
+                          DateFormat("dd-MM-yyyy HH:mm")
+                              .format(detteModel.created),
                           textAlign: TextAlign.start),
                     ],
                   )
@@ -213,7 +215,7 @@ class _DetailDetteState extends State<DetailDette> {
                     textAlign: TextAlign.start, style: bodyMedium),
               )
             ],
-          ), 
+          ),
           Divider(color: Colors.amber.shade700),
           Row(
             children: [
@@ -242,7 +244,7 @@ class _DetailDetteState extends State<DetailDette> {
               )
             ],
           ),
-           Divider(color: Colors.amber.shade700),
+          Divider(color: Colors.amber.shade700),
           Row(
             children: [
               Expanded(
@@ -268,7 +270,7 @@ class _DetailDetteState extends State<DetailDette> {
                 width: p10,
               ),
               if (!detteModel.statutPaie && user!.departement == "Finances")
-              Expanded(child: checkboxRead(detteModel)),
+                Expanded(child: checkboxRead(detteModel)),
               (detteModel.statutPaie)
                   ? Expanded(
                       child: SelectableText('Payé',
@@ -290,7 +292,7 @@ class _DetailDetteState extends State<DetailDette> {
     );
   }
 
-Color getColor(Set<MaterialState> states) {
+  Color getColor(Set<MaterialState> states) {
     const Set<MaterialState> interactiveStates = <MaterialState>{
       MaterialState.pressed,
       MaterialState.hovered,
@@ -325,8 +327,6 @@ Color getColor(Set<MaterialState> states) {
       title: const Text("Confirmation de payement"),
     );
   }
-
-
 
   Widget infosEditeurWidget(DetteModel data) {
     final bodyMedium = Theme.of(context).textTheme.bodyMedium;
@@ -948,8 +948,7 @@ Color getColor(Set<MaterialState> states) {
         signatureJustificationFin: data.signatureJustificationFin,
         approbationBudget: data.approbationBudget,
         signatureBudget: data.signatureBudget,
-        signatureJustificationBudget:
-            data.signatureJustificationBudget,
+        signatureJustificationBudget: data.signatureJustificationBudget,
         approbationDD: data.approbationDD,
         signatureDD: data.signatureDD,
         signatureJustificationDD: data.signatureJustificationDD,

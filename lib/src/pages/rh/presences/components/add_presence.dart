@@ -13,7 +13,7 @@ import 'package:fokad_admin/src/navigation/header/custom_appbar.dart';
 import 'package:fokad_admin/src/widgets/btn_widget.dart';
 import 'package:fokad_admin/src/widgets/print_widget.dart';
 import 'package:fokad_admin/src/widgets/title_widget.dart';
-import 'package:routemaster/routemaster.dart';
+import 'package:intl/intl.dart';
 
 class AddPresence extends StatefulWidget {
   const AddPresence({Key? key}) : super(key: key);
@@ -24,12 +24,10 @@ class AddPresence extends StatefulWidget {
 
 class _AddPresenceState extends State<AddPresence> {
   final GlobalKey<ScaffoldState> _key = GlobalKey();
-  // final ScrollController _controllerScroll = ScrollController();
   final _formKey = GlobalKey<FormState>();
   bool isLoading = false;
 
   List<UserModel> arriveAgentList = [];
-  List<UserModel> sortieAgentList = [];
   TextEditingController remarqueController = TextEditingController();
   bool finJournee = false;
 
@@ -132,8 +130,13 @@ class _AddPresenceState extends State<AddPresence> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        const TitleWidget(title: 'Entrer'),
-                        PrintWidget(onPressed: () {})
+                        const TitleWidget(title: 'Arrivée'),
+                        Column(
+                          children: [
+                            PrintWidget(onPressed: () {}),
+                            Text(DateFormat("dd-MM-yyyy HH:mm").format(DateTime.now()))
+                          ],
+                        )
                       ],
                     ),
                     const SizedBox(
@@ -143,7 +146,7 @@ class _AddPresenceState extends State<AddPresence> {
                       children: [
                         if (agentAffectesList.isEmpty)
                           const SelectableText(
-                              'Vous n\'avez pas encore du personnelle'),
+                              'Vous n\'avez pas encore du personnels'),
                         if (agentAffectesList.isNotEmpty)
                           Expanded(child: agentAffectesWidget()),
                         const SizedBox(
@@ -152,12 +155,11 @@ class _AddPresenceState extends State<AddPresence> {
                         Expanded(child: listAgentPresent())
                       ],
                     ),
-                    // remarqueWidget(),
                     const SizedBox(
                       height: p20,
                     ),
                     BtnWidget(
-                        title: 'Soumettre',
+                        title: 'Presence',
                         isLoading: isLoading,
                         press: () {
                           final form = _formKey.currentState!;
@@ -258,7 +260,7 @@ class _AddPresenceState extends State<AddPresence> {
         arrive: DateTime.now(),
         arriveAgent: jsonList,
         sortie: DateTime.now(),
-        sortieAgent: sortieAgentList,
+        sortieAgent: [],
         remarque: remarqueController.text,
         finJournee: finJournee,
         signature: user!.matricule,
@@ -267,8 +269,9 @@ class _AddPresenceState extends State<AddPresence> {
     await PresenceApi().insertData(presenceModel);
     Navigator.of(context).pop();
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-      content: const Text("soumis avec succès!"),
+      content: const Text("Ajouté à la liste de presence avec succès!"),
       backgroundColor: Colors.green[700],
     ));
   }
 }
+

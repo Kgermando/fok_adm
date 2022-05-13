@@ -65,13 +65,13 @@ class _DetailCaisseState extends State<DetailCaisse> {
       });
       timer.cancel();
     }));
-    
+
     agentsColumn();
     super.initState();
   }
 
   List<LigneBudgetaireModel> ligneBudgetaireList = [];
-    UserModel? user = UserModel(
+  UserModel? user = UserModel(
       nom: '-',
       prenom: '-',
       matricule: '-',
@@ -391,7 +391,7 @@ class _DetailCaisseState extends State<DetailCaisse> {
     ];
   }
 
-Future agentsRow() async {
+  Future agentsRow() async {
     List<CoupureBilletModel> dataList = [];
     for (var item in coupureBillet) {
       dataList.add(CoupureBilletModel.fromJson(item));
@@ -410,6 +410,7 @@ Future agentsRow() async {
       });
     }
   }
+
   Widget infosEditeurWidget(CaisseModel data) {
     final bodyMedium = Theme.of(context).textTheme.bodyMedium;
     final bodySmall = Theme.of(context).textTheme.bodySmall;

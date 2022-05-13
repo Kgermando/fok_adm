@@ -46,7 +46,7 @@ class _CustomAppbarState extends State<CustomAppbar> {
   Future<void> getData() async {
     UserModel userModel = await AuthApi().getUserId();
     var taches = await TachesApi().getAllData();
-    var cartList = await CartApi().getAllData();
+    var cartList = await CartApi().getAllData(userModel.matricule);
     setState(() {
       tacheCount = taches
           .where((element) =>

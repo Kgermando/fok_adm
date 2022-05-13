@@ -65,47 +65,69 @@ class _UpdateCompteResultatState extends State<UpdateCompteResultat> {
       TextEditingController();
   TextEditingController soldeDebiteurController = TextEditingController();
 
-
   @override
   void initState() {
     getData();
     setState(() {
-      intituleController = TextEditingController(text: widget.compteResulatsModel.intitule);
-      achatMarchandisesController = TextEditingController(text: widget.compteResulatsModel.achatMarchandises);
-      variationStockMarchandisesController = TextEditingController(text: widget.compteResulatsModel.variationStockMarchandises);
-      achatApprovionnementsController = TextEditingController(text: widget.compteResulatsModel.achatApprovionnements);
-      variationApprovionnementsController = TextEditingController(text: widget.compteResulatsModel.variationApprovionnements);
-      autresChargesExterneController = TextEditingController(text: widget.compteResulatsModel.autresChargesExterne);
+      intituleController =
+          TextEditingController(text: widget.compteResulatsModel.intitule);
+      achatMarchandisesController = TextEditingController(
+          text: widget.compteResulatsModel.achatMarchandises);
+      variationStockMarchandisesController = TextEditingController(
+          text: widget.compteResulatsModel.variationStockMarchandises);
+      achatApprovionnementsController = TextEditingController(
+          text: widget.compteResulatsModel.achatApprovionnements);
+      variationApprovionnementsController = TextEditingController(
+          text: widget.compteResulatsModel.variationApprovionnements);
+      autresChargesExterneController = TextEditingController(
+          text: widget.compteResulatsModel.autresChargesExterne);
       chargesfinancieresController = TextEditingController(
           text: widget.compteResulatsModel.chargesfinancieres);
-      impotsTaxesVersementsAssimilesController = TextEditingController(text: widget.compteResulatsModel.impotsTaxesVersementsAssimiles);
-      renumerationPersonnelController = TextEditingController(text: widget.compteResulatsModel.renumerationPersonnel);
-      chargesSocialasController = TextEditingController(text: widget.compteResulatsModel.chargesSocialas);
-      dotatiopnsProvisionsController = TextEditingController(text: widget.compteResulatsModel.dotatiopnsProvisions);
-      autresChargesController = TextEditingController(text: widget.compteResulatsModel.autresCharges);
-      chargesExptionnellesController = TextEditingController(text: widget.compteResulatsModel.chargesExptionnelles);
-      impotSurbeneficesController = TextEditingController(text: widget.compteResulatsModel.impotSurbenefices);
-      soldeCrediteurController = TextEditingController(text: widget.compteResulatsModel.soldeCrediteur);
-      ventesMarchandisesController = TextEditingController(text: widget.compteResulatsModel.ventesMarchandises);
+      impotsTaxesVersementsAssimilesController = TextEditingController(
+          text: widget.compteResulatsModel.impotsTaxesVersementsAssimiles);
+      renumerationPersonnelController = TextEditingController(
+          text: widget.compteResulatsModel.renumerationPersonnel);
+      chargesSocialasController = TextEditingController(
+          text: widget.compteResulatsModel.chargesSocialas);
+      dotatiopnsProvisionsController = TextEditingController(
+          text: widget.compteResulatsModel.dotatiopnsProvisions);
+      autresChargesController =
+          TextEditingController(text: widget.compteResulatsModel.autresCharges);
+      chargesExptionnellesController = TextEditingController(
+          text: widget.compteResulatsModel.chargesExptionnelles);
+      impotSurbeneficesController = TextEditingController(
+          text: widget.compteResulatsModel.impotSurbenefices);
+      soldeCrediteurController = TextEditingController(
+          text: widget.compteResulatsModel.soldeCrediteur);
+      ventesMarchandisesController = TextEditingController(
+          text: widget.compteResulatsModel.ventesMarchandises);
 
-      productionVendueBienEtSericesController = TextEditingController(text: widget.compteResulatsModel.productionVendueBienEtSerices);
-      productionStockeeController = TextEditingController(text: widget.compteResulatsModel.productionStockee);
-      productionImmobiliseeController = TextEditingController(text: widget.compteResulatsModel.productionImmobilisee);
-      subventionExploitationController = TextEditingController(text: widget.compteResulatsModel.subventionExploitation);
-      autreProduitsController = TextEditingController(text: widget.compteResulatsModel.autreProduits);
-      montantExportationController = TextEditingController(text: widget.compteResulatsModel.montantExportation);
+      productionVendueBienEtSericesController = TextEditingController(
+          text: widget.compteResulatsModel.productionVendueBienEtSerices);
+      productionStockeeController = TextEditingController(
+          text: widget.compteResulatsModel.productionStockee);
+      productionImmobiliseeController = TextEditingController(
+          text: widget.compteResulatsModel.productionImmobilisee);
+      subventionExploitationController = TextEditingController(
+          text: widget.compteResulatsModel.subventionExploitation);
+      autreProduitsController =
+          TextEditingController(text: widget.compteResulatsModel.autreProduits);
+      montantExportationController = TextEditingController(
+          text: widget.compteResulatsModel.montantExportation);
       produitfinancieresController = TextEditingController(
           text: widget.compteResulatsModel.produitfinancieres);
-      produitExceptionnelsController = TextEditingController(text: widget.compteResulatsModel.produitExceptionnels);
-      soldeDebiteurController = TextEditingController(text: widget.compteResulatsModel.soldeDebiteur);
+      produitExceptionnelsController = TextEditingController(
+          text: widget.compteResulatsModel.produitExceptionnels);
+      soldeDebiteurController =
+          TextEditingController(text: widget.compteResulatsModel.soldeDebiteur);
     });
-    
+
     super.initState();
   }
 
   @override
   void dispose() {
-     intituleController.dispose();
+    intituleController.dispose();
     achatMarchandisesController.dispose();
     variationStockMarchandisesController.dispose();
     achatApprovionnementsController.dispose();
@@ -141,7 +163,6 @@ class _UpdateCompteResultatState extends State<UpdateCompteResultat> {
       user = userModel;
     });
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -828,9 +849,10 @@ class _UpdateCompteResultatState extends State<UpdateCompteResultat> {
           style: const TextStyle(),
         ));
   }
+
   Future<void> submit() async {
     final compteResulatsModel = CompteResulatsModel(
-       intitule: intituleController.text,
+        intitule: intituleController.text,
         achatMarchandises: achatMarchandisesController.text,
         variationStockMarchandises: variationStockMarchandisesController.text,
         achatApprovionnements: achatApprovionnementsController.text,

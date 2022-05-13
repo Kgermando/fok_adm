@@ -15,7 +15,8 @@ import 'package:fokad_admin/src/widgets/title_widget.dart';
 import 'package:intl/intl.dart';
 
 class AjoutLigneBudgetaire extends StatefulWidget {
-  const AjoutLigneBudgetaire({Key? key, required this.departementBudgetModel}) : super(key: key);
+  const AjoutLigneBudgetaire({Key? key, required this.departementBudgetModel})
+      : super(key: key);
   final DepartementBudgetModel departementBudgetModel;
 
   @override
@@ -40,7 +41,6 @@ class _AjoutLigneBudgetaireState extends State<AjoutLigneBudgetaire> {
   TextEditingController finPropreController = TextEditingController();
   TextEditingController finExterieurController = TextEditingController();
 
-
   @override
   initState() {
     getData();
@@ -48,7 +48,8 @@ class _AjoutLigneBudgetaireState extends State<AjoutLigneBudgetaire> {
       departementController = TextEditingController(
           text: widget.departementBudgetModel.departement);
       periodeBudgetController = TextEditingController(
-          text: DateFormat("dd-MM-yyyy").format(widget.departementBudgetModel.periodeFin));
+          text: DateFormat("dd-MM-yyyy")
+              .format(widget.departementBudgetModel.periodeFin));
     });
     super.initState();
   }
@@ -235,7 +236,6 @@ class _AjoutLigneBudgetaireState extends State<AjoutLigneBudgetaire> {
     );
   }
 
-
   Widget nomLigneBudgetaireWidget() {
     return Container(
         margin: const EdgeInsets.only(bottom: p20),
@@ -258,7 +258,7 @@ class _AjoutLigneBudgetaireState extends State<AjoutLigneBudgetaire> {
         ));
   }
 
-   Widget departementWidget() {
+  Widget departementWidget() {
     return Container(
         margin: const EdgeInsets.only(bottom: p20),
         child: TextFormField(
@@ -280,7 +280,7 @@ class _AjoutLigneBudgetaireState extends State<AjoutLigneBudgetaire> {
         ));
   }
 
-   Widget periodeBudgetWidget() {
+  Widget periodeBudgetWidget() {
     return Container(
         margin: const EdgeInsets.only(bottom: p20),
         child: TextFormField(
@@ -302,7 +302,7 @@ class _AjoutLigneBudgetaireState extends State<AjoutLigneBudgetaire> {
         ));
   }
 
-   Widget uniteChoisieWidget() {
+  Widget uniteChoisieWidget() {
     return Container(
         margin: const EdgeInsets.only(bottom: p20),
         child: TextFormField(
@@ -324,7 +324,7 @@ class _AjoutLigneBudgetaireState extends State<AjoutLigneBudgetaire> {
         ));
   }
 
-   Widget nombreUniteWidget() {
+  Widget nombreUniteWidget() {
     return Container(
         margin: const EdgeInsets.only(bottom: p20),
         child: TextFormField(
@@ -346,7 +346,7 @@ class _AjoutLigneBudgetaireState extends State<AjoutLigneBudgetaire> {
         ));
   }
 
-   Widget coutUnitaireWidget() {
+  Widget coutUnitaireWidget() {
     return Container(
         margin: const EdgeInsets.only(bottom: p20),
         child: TextFormField(
@@ -371,7 +371,7 @@ class _AjoutLigneBudgetaireState extends State<AjoutLigneBudgetaire> {
         ));
   }
 
-   Widget coutTotalWidget() {
+  Widget coutTotalWidget() {
     return Container(
         margin: const EdgeInsets.only(bottom: p20),
         child: TextFormField(
@@ -396,7 +396,7 @@ class _AjoutLigneBudgetaireState extends State<AjoutLigneBudgetaire> {
         ));
   }
 
-   Widget caisseWidget() {
+  Widget caisseWidget() {
     return Container(
         margin: const EdgeInsets.only(bottom: p20),
         child: TextFormField(
@@ -421,7 +421,7 @@ class _AjoutLigneBudgetaireState extends State<AjoutLigneBudgetaire> {
         ));
   }
 
-   Widget banqueWidget() {
+  Widget banqueWidget() {
     return Container(
         margin: const EdgeInsets.only(bottom: p20),
         child: TextFormField(
@@ -496,7 +496,7 @@ class _AjoutLigneBudgetaireState extends State<AjoutLigneBudgetaire> {
         ));
   }
 
-    Future<void> submit() async {
+  Future<void> submit() async {
     final ligneBudgetaireModel = LigneBudgetaireModel(
         nomLigneBudgetaire: nomLigneBudgetaireController.text,
         departement: departementController.text,
@@ -517,7 +517,7 @@ class _AjoutLigneBudgetaireState extends State<AjoutLigneBudgetaire> {
         signatureJustificationFin: '-',
         approbationBudget: '-',
         signatureBudget: '-',
-        signatureJustificationBudget:'-',
+        signatureJustificationBudget: '-',
         approbationDD: '-',
         signatureDD: '-',
         signatureJustificationDD: '-',
@@ -531,6 +531,4 @@ class _AjoutLigneBudgetaireState extends State<AjoutLigneBudgetaire> {
       backgroundColor: Colors.green[700],
     ));
   }
-
-
 }

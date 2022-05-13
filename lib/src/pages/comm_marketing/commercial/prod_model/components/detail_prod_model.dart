@@ -427,7 +427,8 @@ class _DetailProdModelState extends State<DetailProdModel> {
                                       onChanged: (value) {
                                         setState(() {
                                           approbationDGController = value!;
-                                          if (approbationDGController == "Approved") {
+                                          if (approbationDGController ==
+                                              "Approved") {
                                             submitUpdateDG(data);
                                           }
                                         });
@@ -498,8 +499,6 @@ class _DetailProdModelState extends State<DetailProdModel> {
                   ),
                 ],
               ),
-            
-            
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [

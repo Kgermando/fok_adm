@@ -17,7 +17,7 @@ class CartApi {
     return data;
   }
 
-  Future<List<CartModel>> getAllData() async {
+  Future<List<CartModel>> getAllData(String matricule) async {
     String? token = await getToken();
 
     if (token!.isNotEmpty) {
@@ -25,6 +25,8 @@ class CartApi {
       var payload = json.decode(
           ascii.decode(base64.decode(base64.normalize(splittedJwt[1]))));
     }
+
+    var cartsUrl = Uri.parse("$mainUrl/carts/$matricule");
     var resp = await client.get(
       cartsUrl,
       headers: <String, String>{

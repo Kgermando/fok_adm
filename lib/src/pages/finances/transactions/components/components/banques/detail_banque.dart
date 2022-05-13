@@ -71,7 +71,7 @@ class _DetailBanqueState extends State<DetailBanque> {
   }
 
   List<LigneBudgetaireModel> ligneBudgetaireList = [];
-    UserModel? user = UserModel(
+  UserModel? user = UserModel(
       nom: '-',
       prenom: '-',
       matricule: '-',

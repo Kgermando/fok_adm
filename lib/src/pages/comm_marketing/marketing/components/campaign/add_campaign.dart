@@ -15,7 +15,6 @@ import 'package:fokad_admin/src/widgets/button_widget.dart';
 import 'package:fokad_admin/src/widgets/title_widget.dart';
 import 'package:intl/intl.dart';
 
-
 class AddCampaign extends StatefulWidget {
   const AddCampaign({Key? key}) : super(key: key);
 
@@ -420,7 +419,7 @@ class _AddCampaignState extends State<AddCampaign> {
     await CampaignApi().insertData(campaignModel);
     Navigator.of(context).pop();
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-      content: const Text("soumis avec succès!"),
+      content: const Text("Soumis avec succès!"),
       backgroundColor: Colors.green[700],
     ));
   }

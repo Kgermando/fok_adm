@@ -63,7 +63,7 @@ class _CartPageState extends State<CartPage> {
       succursale: '-');
   Future<void> getData() async {
     UserModel userModel = await AuthApi().getUserId();
-    List<CartModel>? dataList = await CartApi().getAllData();
+    List<CartModel>? dataList = await CartApi().getAllData(userModel.matricule);
     final numberFac = await NumberFactureApi().getAllData();
     if (!mounted) return;
     setState(() {
@@ -100,7 +100,7 @@ class _CartPageState extends State<CartPage> {
                 child: Padding(
                     padding: const EdgeInsets.all(p10),
                     child: FutureBuilder<List<CartModel>>(
-                        future: CartApi().getAllData(),
+                        future: CartApi().getAllData(user.matricule),
                         builder: (BuildContext context,
                             AsyncSnapshot<List<CartModel>> snapshot) {
                           if (snapshot.hasData) {
