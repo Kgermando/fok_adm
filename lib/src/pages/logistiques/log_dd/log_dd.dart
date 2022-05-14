@@ -121,133 +121,158 @@ class _LogDDState extends State<LogDD> {
                         child: Column(
                           children: [
                             Card(
-                              color: const Color.fromARGB(255, 26, 132, 158),
+                              color: Colors.blue.shade700,
                               child: ExpansionTile(
-                                leading: const Icon(Icons.folder),
+                                leading: const Icon(Icons.folder, color: Colors.white),
                                 title:
-                                    Text('Dossier Anguins', style: headline6),
+                                    Text('Dossier Anguins', style: headline6!.copyWith(color: Colors.white)),
                                 subtitle: Text(
                                     "Vous $anguinsapprobationDD dossiers necessitent votre approbation",
-                                    style: bodyMedium),
+                                    style: bodyMedium!.copyWith(
+                                        color: Colors.white)),
                                 initiallyExpanded: false,
                                 onExpansionChanged: (val) {
                                   setState(() {
                                     isOpenLog1 = !val;
                                   });
                                 },
-                                trailing: const Icon(Icons.arrow_drop_down),
+                                trailing: const Icon(Icons.arrow_drop_down,
+                                    color: Colors.white),
                                 children: const [TableTrajetAnguinDD()],
                               ),
                             ),
                             Card(
-                              color: const Color.fromARGB(255, 221, 27, 173),
+                              color: Colors.orange.shade700,
                               child: ExpansionTile(
-                                leading: const Icon(Icons.folder),
+                                leading: const Icon(Icons.folder, color: Colors.white),
                                 title:
-                                    Text('Dossier Carburant', style: headline6),
+                                    Text('Dossier Carburants', style: headline6
+                                        .copyWith(color: Colors.white)),
                                 subtitle: Text(
                                     "Vous $carburantCount dossiers necessitent votre approbation",
-                                    style: bodyMedium),
+                                    style: bodyMedium.copyWith(
+                                        color: Colors.white)),
                                 initiallyExpanded: false,
                                 onExpansionChanged: (val) {
                                   setState(() {
                                     isOpenLog2 = !val;
                                   });
                                 },
-                                trailing: const Icon(Icons.arrow_drop_down),
+                                trailing: const Icon(Icons.arrow_drop_down,
+                                    color: Colors.white),
                                 children: const [TableCarburantDD()],
                               ),
                             ),
                             Card(
-                              color: const Color.fromARGB(255, 61, 180, 235),
+                              color: Colors.teal.shade700,
                               child: ExpansionTile(
-                                leading: const Icon(Icons.folder),
+                                leading: const Icon(Icons.folder,
+                                    color: Colors.white),
                                 title:
-                                    Text('Dossier Trajet', style: headline6),
+                                    Text('Dossier Trajets', style: headline6.copyWith(
+                                        color: Colors.white)),
                                 subtitle: Text(
                                     "Vous $trajetsCount dossiers necessitent votre approbation",
-                                    style: bodyMedium),
+                                    style: bodyMedium.copyWith(
+                                        color: Colors.white)),
                                 initiallyExpanded: false,
                                 onExpansionChanged: (val) {
                                   setState(() {
                                     isOpenLog3 = !val;
                                   });
                                 },
-                                trailing: const Icon(Icons.arrow_drop_down),
+                                trailing: const Icon(Icons.arrow_drop_down,
+                                    color: Colors.white),
                                 children: const [TableTrajetDD()],
                               ),
                             ),
                             Card(
-                              color: const Color.fromARGB(255, 25, 194, 95),
+                              color: Colors.lime.shade700,
                               child: ExpansionTile(
-                                leading: const Icon(Icons.folder),
-                                title: Text('Dossier Immobilier', style: headline6),
+                                leading: const Icon(Icons.folder,
+                                    color: Colors.white),
+                                title: Text('Dossier Immobiliers', style: headline6.copyWith(
+                                        color: Colors.white)),
                                 subtitle: Text(
                                     "Vous $immobiliersCount dossiers necessitent votre approbation",
-                                    style: bodyMedium),
+                                    style: bodyMedium.copyWith(
+                                        color: Colors.white)),
                                 initiallyExpanded: false,
                                 onExpansionChanged: (val) {
                                   setState(() {
                                     isOpenLog4 = !val;
                                   });
                                 },
-                                trailing: const Icon(Icons.arrow_drop_down),
+                                trailing: const Icon(Icons.arrow_drop_down,
+                                    color: Colors.white),
                                 children: const [TableImmobilierDD()],
                               ),
                             ),
                             Card(
-                              color: const Color.fromARGB(255, 53, 212, 218),
+                              color: Colors.blueGrey,
                               child: ExpansionTile(
-                                leading: const Icon(Icons.folder),
-                                title: Text('Dossier Mobilier', style: headline6),
+                                leading: const Icon(Icons.folder,
+                                    color: Colors.white),
+                                title: Text('Dossier Mobiliers', style: headline6.copyWith(
+                                        color: Colors.white)),
                                 subtitle: Text(
                                     "Vous $mobiliersCount dossiers necessitent votre approbation",
-                                    style: bodyMedium),
+                                    style: bodyMedium.copyWith(
+                                        color: Colors.white)),
                                 initiallyExpanded: false,
                                 onExpansionChanged: (val) {
                                   setState(() {
                                     isOpenLog5 = !val;
                                   });
                                 },
-                                trailing: const Icon(Icons.arrow_drop_down),
+                                trailing: const Icon(Icons.arrow_drop_down,
+                                    color: Colors.white),
                                 children: const [TableMobilierDD()],
                               ),
                             ),
                             Card(
-                              color: const Color.fromARGB(255, 233, 156, 40),
+                              color: Colors.brown.shade700,
                               child: ExpansionTile(
-                                leading: const Icon(Icons.folder),
+                                leading: const Icon(Icons.folder,
+                                    color: Colors.white),
                                 title:
-                                    Text('Dossier Entretien', style: headline6),
+                                    Text('Dossier maintenances', style: headline6.copyWith(
+                                        color: Colors.white)),
                                 subtitle: Text(
                                     "Vous $entretiensCount dossiers necessitent votre approbation",
-                                    style: bodyMedium),
+                                    style: bodyMedium.copyWith(
+                                        color: Colors.white)),
                                 initiallyExpanded: false,
                                 onExpansionChanged: (val) {
                                   setState(() {
                                     isOpenLog6 = !val;
                                   });
                                 },
-                                trailing: const Icon(Icons.arrow_drop_down),
+                                trailing: const Icon(Icons.arrow_drop_down,
+                                    color: Colors.white),
                                 children: const [TableEntretienDD()],
                               ),
                             ),
                             Card(
                               color: Colors.grey.shade700,
                               child: ExpansionTile(
-                                leading: const Icon(Icons.folder),
+                                leading: const Icon(Icons.folder,
+                                    color: Colors.white),
                                 title:
-                                    Text('Dossier Etat de materiels', style: headline6),
+                                    Text('Dossier Etat de materiels', style: headline6.copyWith(
+                                        color: Colors.white)),
                                 subtitle: Text(
                                     "Vous $etatmaterielsCount dossiers necessitent votre approbation",
-                                    style: bodyMedium),
+                                    style: bodyMedium.copyWith(
+                                        color: Colors.white)),
                                 initiallyExpanded: false,
                                 onExpansionChanged: (val) {
                                   setState(() {
                                     isOpenLog6 = !val;
                                   });
                                 },
-                                trailing: const Icon(Icons.arrow_drop_down),
+                                trailing: const Icon(Icons.arrow_drop_down,
+                                    color: Colors.white),
                                 children: const [TableEtatMaterielDD()],
                               ),
                             ),
