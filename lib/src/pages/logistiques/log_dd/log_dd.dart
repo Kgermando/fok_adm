@@ -113,7 +113,7 @@ class _LogDDState extends State<LogDD> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       CustomAppbar(
-                          title: 'DD Logistique',
+                          title: 'Département Logistique',
                           controllerMenu: () =>
                               _key.currentState!.openDrawer()),
                       Expanded(

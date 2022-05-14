@@ -83,7 +83,7 @@ class _ComptabiliteDDState extends State<ComptabiliteDD> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       CustomAppbar(
-                          title: 'DD Comptabilité',
+                          title: 'Département Comptabilités',
                           controllerMenu: () =>
                               _key.currentState!.openDrawer()),
                       Expanded(

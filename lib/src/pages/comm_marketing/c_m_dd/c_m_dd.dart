@@ -75,7 +75,7 @@ class _CMDDState extends State<CMDD> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       CustomAppbar(
-                          title: 'DD COM && Marketing',
+                          title: 'Département COMM && Marketing',
                           controllerMenu: () =>
                               _key.currentState!.openDrawer()),
                       Expanded(
