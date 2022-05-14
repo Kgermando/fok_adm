@@ -5,7 +5,7 @@ import 'package:fokad_admin/src/constants/responsive.dart';
 import 'package:fokad_admin/src/models/budgets/ligne_budgetaire_model.dart';
 import 'package:fokad_admin/src/navigation/drawer/drawer_menu.dart';
 import 'package:fokad_admin/src/navigation/header/custom_appbar.dart';
-import 'package:fokad_admin/src/pages/administration/components/budgets/ligne_budgetaire_admin.dart';
+import 'package:fokad_admin/src/pages/administration/components/budgets/table_departement_budget_dd.dart';
 
 class BudgetsAdmin extends StatefulWidget {
   const BudgetsAdmin({Key? key}) : super(key: key);
@@ -33,8 +33,8 @@ class _BudgetsAdminState extends State<BudgetsAdmin> {
         await LIgneBudgetaireApi().getAllData();
     setState(() {
       nbrBudget = dataLigneBudgetaireList
-          .where((element) => element!.approbationDG == "-")
-          .length;
+        .where((element) => element!.approbationBudget == "Approved" && element.approbationDG == "-")
+        .length;
     });
   }
 
@@ -61,7 +61,7 @@ class _BudgetsAdminState extends State<BudgetsAdmin> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       CustomAppbar(
-                          title: 'Budgets Admin', controllerMenu: () => _key.currentState!.openDrawer()),
+                          title: 'Budgets', controllerMenu: () => _key.currentState!.openDrawer()),
                       Expanded(
                           child: Scrollbar(
                         controller: _controllerScroll,
@@ -69,22 +69,23 @@ class _BudgetsAdminState extends State<BudgetsAdmin> {
                           controller: _controllerScroll,
                           children: [
                             Card(
-                                color: const Color.fromARGB(255, 117, 190, 121),
+                                color: Colors.blue.shade700,
                                 child: ExpansionTile(
-                                  leading: const Icon(Icons.folder),
+                                  leading: const Icon(Icons.folder, color: Colors.white),
                                   title:
-                                      Text('Dossier Budgets', style: headline6),
+                                      Text('Dossier Budgets', style: headline6!.copyWith(color: Colors.white)),
                                   subtitle: Text(
                                       "Vous avez $nbrBudget dossiers necessitent votre approbation",
-                                      style: bodyMedium),
+                                      style: bodyMedium!
+                                          .copyWith(color: Colors.white)),
                                   initiallyExpanded: false,
                                   onExpansionChanged: (val) {
                                     setState(() {
                                       isOpenBudget = !val;
                                     });
                                   },
-                                  trailing: const Icon(Icons.arrow_drop_down),
-                                  children: const [LigneBudgetaireAdmin()],
+                                  trailing: const Icon(Icons.arrow_drop_down, color: Colors.white),
+                                  children: const [TableDepartementBudgetDG()],
                                 )),
                           ],
                         ),
