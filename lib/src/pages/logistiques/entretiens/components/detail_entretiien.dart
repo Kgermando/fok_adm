@@ -12,7 +12,7 @@ import 'package:fokad_admin/src/widgets/print_widget.dart';
 import 'package:fokad_admin/src/widgets/title_widget.dart';
 import 'package:intl/intl.dart';
 import 'package:pluto_grid/pluto_grid.dart';
-import 'package:routemaster/routemaster.dart';
+
 
 class DetailEntretien extends StatefulWidget {
   const DetailEntretien({Key? key, this.id}) : super(key: key);

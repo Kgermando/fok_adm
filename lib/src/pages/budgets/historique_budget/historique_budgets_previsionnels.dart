@@ -36,7 +36,7 @@ class _HistoriqueBudgetsPrevisionnelsState extends State<HistoriqueBudgetsPrevis
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       CustomAppbar(
-                          title: 'Budgets previsionels',
+                          title: 'Historique des Budgets',
                           controllerMenu: () =>
                               _key.currentState!.openDrawer()),
                       const Expanded(child: HistoriqueTableDepartementBudget())

@@ -225,7 +225,7 @@ class _SortiePresenceState extends State<SortiePresence> {
 
   Widget agentSortiesWidget() {
     List<UserModel> dataArriveList = [];
-    print("arriveAgent $arriveAgent");
+    // print("arriveAgent $arriveAgent");
 
     for (var u in arriveAgent) {
       dataArriveList.add(UserModel.fromJson(u));

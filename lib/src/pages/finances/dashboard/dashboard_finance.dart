@@ -164,7 +164,6 @@ class _DashboardFinanceState extends State<DashboardFinance> {
 
   @override
   Widget build(BuildContext context) {
-    double montant = 25312.00;
 
     return Scaffold(
         key: _key,

@@ -10,7 +10,6 @@ import 'package:fokad_admin/src/pages/comm_marketing/commercial/stocks_global/co
 import 'package:fokad_admin/src/pages/comm_marketing/commercial/stocks_global/components/table_history_ravitaillement_produit.dart';
 import 'package:fokad_admin/src/widgets/title_widget.dart';
 import 'package:intl/intl.dart';
-import 'package:routemaster/routemaster.dart';
 import 'package:simple_speed_dial/simple_speed_dial.dart';
 
 class DetailStockGlobal extends StatefulWidget {

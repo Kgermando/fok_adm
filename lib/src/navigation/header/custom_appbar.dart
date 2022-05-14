@@ -47,7 +47,9 @@ class _CustomAppbarState extends State<CustomAppbar> {
     UserModel userModel = await AuthApi().getUserId();
     var taches = await TachesApi().getAllData();
     var cartList = await CartApi().getAllData(userModel.matricule);
-    setState(() {
+
+    if(mounted) {
+      setState(() {
       tacheCount = taches
           .where((element) =>
               element.signatureResp == userModel.matricule &&
@@ -55,6 +57,7 @@ class _CustomAppbarState extends State<CustomAppbar> {
           .length;
       cartCount = cartList.length;
     });
+    }
   }
 
   @override

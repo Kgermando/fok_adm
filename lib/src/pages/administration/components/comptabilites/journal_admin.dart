@@ -38,13 +38,13 @@ class _JournalAdminState extends State<JournalAdmin> {
       child: PlutoGrid(
         columns: columns,
         rows: rows,
-        onRowDoubleTap: (PlutoGridOnRowDoubleTapEvent tapEvent) {
-          final dataList = tapEvent.row!.cells.values;
-          final idPlutoRow = dataList.elementAt(0);
+        // onRowDoubleTap: (PlutoGridOnRowDoubleTapEvent tapEvent) {
+        //   final dataList = tapEvent.row!.cells.values;
+        //   final idPlutoRow = dataList.elementAt(0);
 
-          // Navigator.of(context).push(MaterialPageRoute(
-          //     builder: (context) => DetailJournal(id: idPlutoRow.value)));
-        },
+        //   Navigator.of(context).push(MaterialPageRoute(
+        //       builder: (context) => DetailJournal(id: idPlutoRow.value)));
+        // },
         onLoaded: (PlutoGridOnLoadedEvent event) {
           stateManager = event.stateManager;
           stateManager!.setShowColumnFilter(true);

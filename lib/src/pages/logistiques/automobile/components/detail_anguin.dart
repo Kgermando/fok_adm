@@ -12,7 +12,7 @@ import 'package:fokad_admin/src/pages/logistiques/automobile/components/table_tr
 import 'package:fokad_admin/src/widgets/print_widget.dart';
 import 'package:fokad_admin/src/widgets/title_widget.dart';
 import 'package:intl/intl.dart';
-import 'package:routemaster/routemaster.dart';
+
 
 class DetailAnguin extends StatefulWidget {
   const DetailAnguin({Key? key, this.id}) : super(key: key);

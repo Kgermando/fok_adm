@@ -134,7 +134,6 @@ class _AddBalanceComptabiliteState extends State<AddBalanceComptabilite> {
   }
 
   Widget addPageWidget() {
-    final headline6 = Theme.of(context).textTheme.headline6;
     return Form(
       key: _formKey,
       child: Row(

@@ -10,7 +10,7 @@ import 'package:fokad_admin/src/navigation/header/custom_appbar.dart';
 import 'package:fokad_admin/src/widgets/print_widget.dart';
 import 'package:fokad_admin/src/widgets/title_widget.dart';
 import 'package:intl/intl.dart';
-import 'package:routemaster/routemaster.dart';
+
 
 class DetailMobilier extends StatefulWidget {
   const DetailMobilier({Key? key, this.id}) : super(key: key);

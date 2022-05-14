@@ -10,7 +10,7 @@ import 'package:fokad_admin/src/navigation/header/custom_appbar.dart';
 import 'package:fokad_admin/src/widgets/btn_widget.dart';
 import 'package:fokad_admin/src/widgets/print_widget.dart';
 import 'package:fokad_admin/src/widgets/title_widget.dart';
-import 'package:routemaster/routemaster.dart';
+
 
 class AddTrajetAuto extends StatefulWidget {
   const AddTrajetAuto({Key? key, this.numeroMatricule}) : super(key: key);

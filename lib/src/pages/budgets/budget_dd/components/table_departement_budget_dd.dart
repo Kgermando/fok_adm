@@ -50,8 +50,10 @@ class _TableDepartementBudgetDDState extends State<TableDepartementBudgetDD> {
         },
         createHeader: (PlutoGridStateManager header) {
           return Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [PrintWidget(onPressed: () {})],
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text("Liste des budgets", style: Theme.of(context).textTheme.headline6),
+              PrintWidget(onPressed: () {})],
           );
         },
         configuration: PlutoGridConfiguration(
@@ -147,9 +149,9 @@ class _TableDepartementBudgetDDState extends State<TableDepartementBudgetDD> {
           rows.add(PlutoRow(cells: {
             'id': PlutoCell(value: item.id),
             'departement': PlutoCell(value: item.departement),
-            'periodeBudget': PlutoCell(value: "${DateFormat("DD-MM-yyyy HH:mm").format(item.periodeDebut)}-${DateFormat("dd-MM-yyyy HH:mm").format(item.periodeFin)}" ),
+            'periodeBudget': PlutoCell(value: "${DateFormat("dd-MM-yyyy").format(item.periodeDebut)} - ${DateFormat("dd-MM-yyyy").format(item.periodeFin)}" ),
             'created': PlutoCell(
-                value: DateFormat("DD-MM-yyyy HH:mm").format(item.created))
+                value: DateFormat("dd-MM-yyyy HH:mm").format(item.created))
           }));
         }
         stateManager!.resetCurrentState();

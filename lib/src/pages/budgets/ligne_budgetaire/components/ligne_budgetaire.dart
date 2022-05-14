@@ -9,7 +9,8 @@ import 'package:intl/intl.dart';
 import 'package:pluto_grid/pluto_grid.dart';
 
 class LigneBudgetaire extends StatefulWidget {
-  const LigneBudgetaire({Key? key, required this.departementBudgetModel}) : super(key: key);
+  const LigneBudgetaire({Key? key, required this.departementBudgetModel})
+      : super(key: key);
   final DepartementBudgetModel departementBudgetModel;
 
   @override
@@ -146,7 +147,7 @@ class _LigneBudgetaireState extends State<LigneBudgetaire> {
         enableContextMenu: false,
         enableDropToResize: true,
         titleTextAlign: PlutoColumnTextAlign.left,
-        width: 200,
+        width: 250,
         minWidth: 150,
       ),
       PlutoColumn(
@@ -230,12 +231,12 @@ class _LigneBudgetaireState extends State<LigneBudgetaire> {
         enableContextMenu: false,
         enableDropToResize: true,
         titleTextAlign: PlutoColumnTextAlign.left,
-        width: 150,
+        width: 200,
         minWidth: 150,
       ),
       PlutoColumn(
         readOnly: true,
-        title: 'Fond Exterieur',
+        title: 'Reste à trouver',
         field: 'finExterieur',
         type: PlutoColumnType.text(),
         enableRowDrag: true,
@@ -264,9 +265,14 @@ class _LigneBudgetaireState extends State<LigneBudgetaire> {
     List<LigneBudgetaireModel?> dataList =
         await LIgneBudgetaireApi().getAllData();
     var data = dataList
-        .where((element) => element!.departement == widget.departementBudgetModel.departement 
-          // && element.approbationDD == "Approved"
-          )
+        .where((element) =>
+                element!.departement ==
+                    widget.departementBudgetModel.departement &&
+                DateFormat("dd-MM-yyyy")
+                        .format(DateTime.parse(element.periodeBudget)) ==
+                    DateFormat("dd-MM-yyyy")
+                        .format(widget.departementBudgetModel.periodeFin)
+            )
         .toList();
 
     if (mounted) {
@@ -276,25 +282,27 @@ class _LigneBudgetaireState extends State<LigneBudgetaire> {
             'id': PlutoCell(value: item!.id),
             'nomLigneBudgetaire': PlutoCell(value: item.nomLigneBudgetaire),
             'departement': PlutoCell(value: item.departement),
-            'periodeBudget': PlutoCell(value: item.periodeBudget),
+            'periodeBudget': PlutoCell(
+                value: DateFormat("dd-MM-yyyy")
+                    .format(DateTime.parse(item.periodeBudget))),
             'uniteChoisie': PlutoCell(value: item.uniteChoisie),
             'nombreUnite': PlutoCell(value: item.nombreUnite),
             'coutUnitaire': PlutoCell(value: item.coutUnitaire),
             'coutTotal': PlutoCell(
-                value: NumberFormat.decimalPattern('fr')
-                    .format(double.parse(item.coutTotal))),
+                value:
+                    "${NumberFormat.decimalPattern('fr').format(double.parse(item.coutTotal))} \$"),
             'caisse': PlutoCell(
-                value: NumberFormat.decimalPattern('fr')
-                    .format(double.parse(item.caisse))),
+                value:
+                    "${NumberFormat.decimalPattern('fr').format(double.parse(item.caisse))} \$"),
             'banque': PlutoCell(
-                value: NumberFormat.decimalPattern('fr')
-                    .format(double.parse(item.banque))),
+                value:
+                    "${NumberFormat.decimalPattern('fr').format(double.parse(item.banque))} \$"),
             'finPropre': PlutoCell(
-                value: NumberFormat.decimalPattern('fr')
-                    .format(double.parse(item.finPropre))),
+                value:
+                    "${NumberFormat.decimalPattern('fr').format(double.parse(item.finPropre))} \$"),
             'finExterieur': PlutoCell(
-                value: NumberFormat.decimalPattern('fr')
-                    .format(double.parse(item.finExterieur))),
+                value:
+                    "${NumberFormat.decimalPattern('fr').format(double.parse(item.finExterieur))} \$"),
             'created': PlutoCell(
                 value: DateFormat("dd-MM-yyyy HH:mm").format(item.created))
           }));

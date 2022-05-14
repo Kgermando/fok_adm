@@ -847,7 +847,6 @@ class _DetailCompteResultatState extends State<DetailCompteResultat> {
 
   Widget produitWidget(CompteResulatsModel data) {
     final headline6 = Theme.of(context).textTheme.headline6;
-    final bodyLarge = Theme.of(context).textTheme.bodyLarge;
     final bodyMedium = Theme.of(context).textTheme.bodyMedium;
     return Column(
       children: [

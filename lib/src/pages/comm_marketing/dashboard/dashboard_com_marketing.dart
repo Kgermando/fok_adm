@@ -17,7 +17,7 @@ import 'package:fokad_admin/src/navigation/header/custom_appbar.dart';
 import 'package:fokad_admin/src/pages/comm_marketing/dashboard/components/arcticle_plus_vendus.dart';
 import 'package:fokad_admin/src/pages/comm_marketing/dashboard/components/courbe_vente_gain_mounth.dart';
 import 'package:fokad_admin/src/pages/comm_marketing/dashboard/components/courbe_vente_gain_year.dart';
-import 'package:fokad_admin/src/pages/rh/dashboard/components/dash_number_widget.dart';
+import 'package:fokad_admin/src/widgets/dash_number_widget.dart';
 import 'package:intl/intl.dart';
 
 class ComMarketing extends StatefulWidget {

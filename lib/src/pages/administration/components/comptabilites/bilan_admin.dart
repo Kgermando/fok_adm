@@ -36,13 +36,13 @@ class _BilanAdminState extends State<BilanAdmin> {
       child: PlutoGrid(
         columns: columns,
         rows: rows,
-        onRowDoubleTap: (PlutoGridOnRowDoubleTapEvent tapEvent) {
-          final dataList = tapEvent.row!.cells.values;
-          final idPlutoRow = dataList.elementAt(0);
+        // onRowDoubleTap: (PlutoGridOnRowDoubleTapEvent tapEvent) {
+        //   final dataList = tapEvent.row!.cells.values;
+        //   final idPlutoRow = dataList.elementAt(0);
 
-          // Navigator.of(context).push(MaterialPageRoute(
-          //     builder: (context) => DetailBilan(id: idPlutoRow.value)));
-        },
+        //   Navigator.of(context).push(MaterialPageRoute(
+        //       builder: (context) => DetailBilan(id: idPlutoRow.value)));
+        // },
         onLoaded: (PlutoGridOnLoadedEvent event) {
           stateManager = event.stateManager;
           stateManager!.setShowColumnFilter(true);

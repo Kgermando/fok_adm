@@ -192,7 +192,7 @@ class _TableSalairesState extends State<TableSalaires> {
       ),
       PlutoColumn(
         readOnly: true,
-        title: 'created',
+        title: 'Date',
         field: 'createdAt',
         type: PlutoColumnType.date(),
         enableRowDrag: true,
@@ -214,9 +214,8 @@ class _TableSalairesState extends State<TableSalaires> {
     if (mounted) {
       setState(() {
         for (var item in dataList) {
-          id = item!.id;
           rows.add(PlutoRow(cells: {
-            'id': PlutoCell(value: item.id),
+            'id': PlutoCell(value: item!.id),
             'prenom': PlutoCell(value: item.prenom),
             'nom': PlutoCell(value: item.nom),
             'matricule': PlutoCell(value: item.matricule),
@@ -229,7 +228,7 @@ class _TableSalairesState extends State<TableSalaires> {
                 value: (item.observation == true) ? "Payé" : "Non payé"),
             'modePaiement': PlutoCell(value: item.modePaiement),
             'createdAt': PlutoCell(
-                value: DateFormat("DD-MM-yy HH:mm").format(item.createdAt))
+                value: DateFormat("dd-MM-yy HH:mm").format(item.createdAt))
           }));
           stateManager!.resetCurrentState();
         }

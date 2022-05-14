@@ -8,7 +8,7 @@ import 'package:fokad_admin/src/navigation/header/custom_appbar.dart';
 import 'package:fokad_admin/src/pages/comm_marketing/marketing/components/agenda/update_agenda.dart';
 import 'package:fokad_admin/src/widgets/title_widget.dart';
 import 'package:intl/intl.dart';
-import 'package:routemaster/routemaster.dart';
+
 
 class DetailAgenda extends StatefulWidget {
   const DetailAgenda({Key? key, required this.agendaModel, required this.color})

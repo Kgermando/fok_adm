@@ -1,16 +1,27 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:fokad_admin/src/api/auth/auth_api.dart';
 import 'package:fokad_admin/src/api/budgets/ligne_budgetaire_api.dart';
-import 'package:fokad_admin/src/api/user/user_api.dart';
+import 'package:fokad_admin/src/api/comm_marketing/marketing/campaign_api.dart';
+import 'package:fokad_admin/src/api/devis/devis_api.dart';
+import 'package:fokad_admin/src/api/exploitations/projets_api.dart';
+import 'package:fokad_admin/src/api/rh/paiement_salaire_api.dart';
 import 'package:fokad_admin/src/constants/app_theme.dart';
 import 'package:fokad_admin/src/constants/responsive.dart';
 import 'package:fokad_admin/src/models/budgets/ligne_budgetaire_model.dart';
+import 'package:fokad_admin/src/models/comm_maketing/campaign_model.dart';
+import 'package:fokad_admin/src/models/devis/devis_models.dart';
+import 'package:fokad_admin/src/models/exploitations/projet_model.dart';
+import 'package:fokad_admin/src/models/rh/paiement_salaire_model.dart';
 import 'package:fokad_admin/src/models/users/user_model.dart';
 import 'package:fokad_admin/src/navigation/drawer/drawer_menu.dart';
 import 'package:fokad_admin/src/navigation/header/custom_appbar.dart';
+import 'package:fokad_admin/src/utils/class_implemented.dart';
 import 'package:fokad_admin/src/widgets/print_widget.dart';
 import 'package:fokad_admin/src/widgets/title_widget.dart';
 import 'package:intl/intl.dart';
+import 'package:pluto_grid/pluto_grid.dart';
 
 class DetailLigneBudgetaire extends StatefulWidget {
   const DetailLigneBudgetaire({Key? key, required this.id}) : super(key: key);
@@ -24,6 +35,14 @@ class _DetailLigneBudgetaireState extends State<DetailLigneBudgetaire> {
   final GlobalKey<ScaffoldState> _key = GlobalKey();
   final ScrollController _controllerScroll = ScrollController();
   bool isLoading = false;
+
+  List<PlutoColumn> columns = [];
+  List<PlutoRow> rowSalaires = [];
+  List<PlutoRow> rowCampaigns = [];
+  List<PlutoRow> rowProjets = [];
+  List<PlutoRow> rowEtatBesion = [];
+  PlutoGridStateManager? stateManager;
+  PlutoGridSelectingMode gridSelectingMode = PlutoGridSelectingMode.row;
 
   String approbationDGController = '-';
   String approbationFinController = '-';
@@ -40,18 +59,64 @@ class _DetailLigneBudgetaireState extends State<DetailLigneBudgetaire> {
 
   @override
   initState() {
-    getData();
+    agentsColumn();
+    Timer.periodic(const Duration(milliseconds: 500), ((timer) {
+      setState(() {
+        getData();
+        salaireRow();
+        campaignRow();
+        projetRow();
+        etatBesionRow();
+      });
+      timer.cancel();
+    }));
     super.initState();
   }
 
-  List<UserModel> userList = [];
-  UserModel? user;
+  String? ligneBudgtaire;
+  String? resource;
+  List<LigneBudgetaireModel> ligneBudgetaireList = [];
+  List<CampaignModel> dataCampaignList = [];
+  List<DevisModel> dataDevisList = [];
+  List<ProjetModel> dataProjetList = [];
+  List<PaiementSalaireModel> dataSalaireList = [];
+
+  LigneBudgetaireModel? ligneBudgetaireModel;
+
+  UserModel? user = UserModel(
+      nom: '-',
+      prenom: '-',
+      matricule: '-',
+      departement: '-',
+      servicesAffectation: '-',
+      fonctionOccupe: '-',
+      role: '-',
+      isOnline: false,
+      createdAt: DateTime.now(),
+      passwordHash: '-',
+      succursale: '-');
   Future<void> getData() async {
-    final dataUser = await UserApi().getAllData();
     UserModel userModel = await AuthApi().getUserId();
+    var budgets = await LIgneBudgetaireApi().getAllData();
+    var campaigns = await CampaignApi().getAllData();
+    var devis = await DevisAPi().getAllData();
+    var projets = await ProjetsApi().getAllData();
+    var salaires = await PaiementSalaireApi().getAllData();
     setState(() {
-      userList = dataUser;
       user = userModel;
+      ligneBudgetaireList = budgets;
+      dataCampaignList = campaigns
+          .where((element) => element.approbationBudget == "Approved")
+          .toList();
+      dataDevisList = devis
+          .where((element) => element.approbationBudget == "Approved")
+          .toList();
+      dataProjetList = projets
+          .where((element) => element.approbationBudget == "Approved")
+          .toList();
+      dataSalaireList = salaires
+          .where((element) => element.approbationBudget == "Approved")
+          .toList();
     });
   }
 
@@ -78,6 +143,7 @@ class _DetailLigneBudgetaireState extends State<DetailLigneBudgetaire> {
                             AsyncSnapshot<LigneBudgetaireModel> snapshot) {
                           if (snapshot.hasData) {
                             LigneBudgetaireModel? data = snapshot.data;
+                            ligneBudgetaireModel = data;
                             return Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
@@ -139,13 +205,13 @@ class _DetailLigneBudgetaireState extends State<DetailLigneBudgetaire> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  TitleWidget(title: data.periodeBudget),
+                  TitleWidget(title: data.nomLigneBudgetaire),
                   Column(
                     children: [
                       PrintWidget(
                           tooltip: 'Imprimer le document', onPressed: () {}),
                       SelectableText(
-                          DateFormat("dd-MM-yyyy").format(data.created),
+                          DateFormat("dd-MM-yyyy HH:mm").format(data.created),
                           textAlign: TextAlign.start),
                     ],
                   )
@@ -155,10 +221,40 @@ class _DetailLigneBudgetaireState extends State<DetailLigneBudgetaire> {
                 height: p30,
               ),
               dataWidget(data),
-              infosEditeurWidget(data),
+              soldeBudgets(data),
               const SizedBox(
                 height: p20,
               ),
+              if (dataSalaireList.isNotEmpty)
+                Text("Salaire", style: Theme.of(context).textTheme.headline6),
+              if (dataSalaireList.isNotEmpty) tableSalaires(data),
+              if (dataSalaireList.isNotEmpty)
+                const SizedBox(
+                  height: p20,
+                ),
+              if (dataDevisList.isNotEmpty)
+                Text("Etat de besoins",
+                    style: Theme.of(context).textTheme.headline6),
+              if (dataDevisList.isNotEmpty) tableEtatBesions(data),
+              if (dataDevisList.isNotEmpty)
+                const SizedBox(
+                  height: p20,
+                ),
+              if (dataProjetList.isNotEmpty)
+                Text("Exploitation",
+                    style: Theme.of(context).textTheme.headline6),
+              if (dataProjetList.isNotEmpty) tableProjets(data),
+              if (dataProjetList.isNotEmpty)
+                const SizedBox(
+                  height: p20,
+                ),
+              if (dataCampaignList.isNotEmpty)
+                Text("Marketing", style: Theme.of(context).textTheme.headline6),
+              if (dataCampaignList.isNotEmpty) tableCampaigns(data),
+              if (dataCampaignList.isNotEmpty)
+                const SizedBox(
+                  height: p20,
+                ),
             ],
           ),
         ),
@@ -167,6 +263,7 @@ class _DetailLigneBudgetaireState extends State<DetailLigneBudgetaire> {
   }
 
   Widget dataWidget(LigneBudgetaireModel data) {
+    final headline6 = Theme.of(context).textTheme.headline6;
     final bodyMedium = Theme.of(context).textTheme.bodyMedium;
     return Padding(
       padding: const EdgeInsets.all(p10),
@@ -185,10 +282,11 @@ class _DetailLigneBudgetaireState extends State<DetailLigneBudgetaire> {
               )
             ],
           ),
+          Divider(color: Colors.amber.shade700),
           Row(
             children: [
               Expanded(
-                child: Text('departement :',
+                child: Text('Département :',
                     textAlign: TextAlign.start,
                     style: bodyMedium.copyWith(fontWeight: FontWeight.bold)),
               ),
@@ -198,6 +296,7 @@ class _DetailLigneBudgetaireState extends State<DetailLigneBudgetaire> {
               )
             ],
           ),
+          Divider(color: Colors.amber.shade700),
           Row(
             children: [
               Expanded(
@@ -206,11 +305,13 @@ class _DetailLigneBudgetaireState extends State<DetailLigneBudgetaire> {
                     style: bodyMedium.copyWith(fontWeight: FontWeight.bold)),
               ),
               Expanded(
-                child: SelectableText(data.periodeBudget,
+                child: SelectableText(DateFormat("dd-MM-yyyy")
+              .format(DateTime.parse(data.periodeBudget)),
                     textAlign: TextAlign.start, style: bodyMedium),
               )
             ],
           ),
+          Divider(color: Colors.amber.shade700),
           Row(
             children: [
               Expanded(
@@ -224,6 +325,7 @@ class _DetailLigneBudgetaireState extends State<DetailLigneBudgetaire> {
               )
             ],
           ),
+          Divider(color: Colors.amber.shade700),
           Row(
             children: [
               Expanded(
@@ -237,6 +339,7 @@ class _DetailLigneBudgetaireState extends State<DetailLigneBudgetaire> {
               )
             ],
           ),
+          Divider(color: Colors.amber.shade700),
           Row(
             children: [
               Expanded(
@@ -245,11 +348,15 @@ class _DetailLigneBudgetaireState extends State<DetailLigneBudgetaire> {
                     style: bodyMedium.copyWith(fontWeight: FontWeight.bold)),
               ),
               Expanded(
-                child: SelectableText(data.coutUnitaire,
-                    textAlign: TextAlign.start, style: bodyMedium),
+                child: SelectableText(
+                    "${NumberFormat.decimalPattern('fr').format(double.parse(data.coutUnitaire))} \$",
+                    textAlign: TextAlign.start,
+                    style: bodyMedium),
               )
             ],
           ),
+          Divider(color: Colors.amber.shade700),
+          const SizedBox(height: p20),
           Row(
             children: [
               Expanded(
@@ -258,11 +365,15 @@ class _DetailLigneBudgetaireState extends State<DetailLigneBudgetaire> {
                     style: bodyMedium.copyWith(fontWeight: FontWeight.bold)),
               ),
               Expanded(
-                child: SelectableText(data.coutTotal,
-                    textAlign: TextAlign.start, style: bodyMedium),
+                child: SelectableText(
+                    "${NumberFormat.decimalPattern('fr').format(double.parse(data.coutTotal))} \$",
+                    textAlign: TextAlign.start,
+                    style: headline6),
               )
             ],
           ),
+          const SizedBox(height: p20),
+          Divider(color: Colors.amber.shade700),
           Row(
             children: [
               Expanded(
@@ -271,11 +382,14 @@ class _DetailLigneBudgetaireState extends State<DetailLigneBudgetaire> {
                     style: bodyMedium.copyWith(fontWeight: FontWeight.bold)),
               ),
               Expanded(
-                child: SelectableText(data.caisse,
-                    textAlign: TextAlign.start, style: bodyMedium),
+                child: SelectableText(
+                    "${NumberFormat.decimalPattern('fr').format(double.parse(data.caisse))} \$",
+                    textAlign: TextAlign.start,
+                    style: bodyMedium),
               )
             ],
           ),
+          Divider(color: Colors.amber.shade700),
           Row(
             children: [
               Expanded(
@@ -284,11 +398,14 @@ class _DetailLigneBudgetaireState extends State<DetailLigneBudgetaire> {
                     style: bodyMedium.copyWith(fontWeight: FontWeight.bold)),
               ),
               Expanded(
-                child: SelectableText(data.banque,
-                    textAlign: TextAlign.start, style: bodyMedium),
+                child: SelectableText(
+                    "${NumberFormat.decimalPattern('fr').format(double.parse(data.banque))} \$",
+                    textAlign: TextAlign.start,
+                    style: bodyMedium),
               )
             ],
           ),
+          Divider(color: Colors.amber.shade700),
           Row(
             children: [
               Expanded(
@@ -297,654 +414,684 @@ class _DetailLigneBudgetaireState extends State<DetailLigneBudgetaire> {
                     style: bodyMedium.copyWith(fontWeight: FontWeight.bold)),
               ),
               Expanded(
-                child: SelectableText(data.finPropre,
-                    textAlign: TextAlign.start, style: bodyMedium),
+                child: SelectableText(
+                    "${NumberFormat.decimalPattern('fr').format(double.parse(data.finPropre))} \$",
+                    textAlign: TextAlign.start,
+                    style: bodyMedium),
               )
             ],
           ),
+          Divider(color: Colors.amber.shade700),
           Row(
             children: [
               Expanded(
-                child: Text('Financement Exterieur :',
+                child: Text('Reste à trouver :',
                     textAlign: TextAlign.start,
                     style: bodyMedium.copyWith(fontWeight: FontWeight.bold)),
               ),
               Expanded(
-                child: SelectableText(data.finExterieur,
-                    textAlign: TextAlign.start, style: bodyMedium),
+                child: SelectableText(
+                    "${NumberFormat.decimalPattern('fr').format(double.parse(data.finExterieur))} \$",
+                    textAlign: TextAlign.start,
+                    style: bodyMedium.copyWith(color: Colors.red.shade700)),
               )
             ],
           ),
+          Divider(color: Colors.amber.shade700),
         ],
       ),
     );
   }
 
-  Widget infosEditeurWidget(LigneBudgetaireModel data) {
-    final bodyMedium = Theme.of(context).textTheme.bodyMedium;
-    final bodySmall = Theme.of(context).textTheme.bodySmall;
-    List<String> dataList = ['Approved', 'Unapproved', '-'];
-    return Container(
-      padding: const EdgeInsets.only(top: p16, bottom: p16),
-      decoration: const BoxDecoration(
-        border: Border(
-          // top: BorderSide(width: 1.0),
-          bottom: BorderSide(width: 1.0),
+  Widget soldeBudgets(LigneBudgetaireModel data) {
+    final headline6 = Theme.of(context).textTheme.headline6;
+    // List<String> dataList = ['caisse', 'banque', 'finPropre', 'finExterieur'];
+    double caisse = 0.0;
+    double banque = 0.0;
+    double finPropre = 0.0;
+    double finExterieur = 0.0;
+
+    double caisseetatBesion = 0.0;
+    double banqueetatBesion = 0.0;
+    double finPropreetatBesion = 0.0;
+    double finExterieuretatBesion = 0.0;
+
+    double caissesalaire = 0.0;
+    double banquesalaire = 0.0;
+    double finPropresalaire = 0.0;
+    double finExterieursalaire = 0.0;
+
+    double caisseCampaign = 0.0;
+    double banqueCampaign = 0.0;
+    double finPropreCampaign = 0.0;
+    double finExterieurCampaign = 0.0;
+
+    double caisseProjet = 0.0;
+    double banqueProjet = 0.0;
+    double finPropreProjet = 0.0;
+    double finExterieurProjet = 0.0;
+
+
+
+    var etatBesionCaisseList = dataDevisList
+        .where((element) =>
+            element.departement == ligneBudgetaireModel!.departement &&
+            element.ligneBudgtaire ==
+                ligneBudgetaireModel!.nomLigneBudgetaire &&
+            element.created.isBefore(
+                DateTime.parse(ligneBudgetaireModel!.periodeBudget)) &&
+            element.resources == "caisse")
+        .toList();
+    var etatBesionBanqueList = dataDevisList
+        .where((element) =>
+            element.departement == ligneBudgetaireModel!.departement &&
+            element.ligneBudgtaire ==
+                ligneBudgetaireModel!.nomLigneBudgetaire &&
+            element.created.isBefore(
+                DateTime.parse(ligneBudgetaireModel!.periodeBudget)) &&
+            element.resources == "banque")
+        .toList();
+    var etatBesionFinPropreList = dataDevisList
+        .where((element) =>
+            element.departement == ligneBudgetaireModel!.departement &&
+            element.ligneBudgtaire ==
+                ligneBudgetaireModel!.nomLigneBudgetaire &&
+            element.created.isBefore(
+                DateTime.parse(ligneBudgetaireModel!.periodeBudget)) &&
+            element.resources == "finPropre")
+        .toList();
+    var etatBesionFinExterieurList = dataDevisList
+        .where((element) =>
+            element.departement == ligneBudgetaireModel!.departement &&
+            element.ligneBudgtaire ==
+                ligneBudgetaireModel!.nomLigneBudgetaire &&
+            element.created.isBefore(
+                DateTime.parse(ligneBudgetaireModel!.periodeBudget)) &&
+            element.resources == "finExterieur")
+        .toList();
+
+    for (var item in etatBesionCaisseList) {
+      caisseetatBesion += double.parse(item.resources);
+    }
+    for (var item in etatBesionBanqueList) {
+      banqueetatBesion += double.parse(item.resources);
+    }
+    for (var item in etatBesionFinPropreList) {
+      finPropreetatBesion += double.parse(item.resources);
+    }
+    for (var item in etatBesionFinExterieurList) {
+      finExterieuretatBesion += double.parse(item.resources);
+    }
+
+    var salairecaisseList = dataSalaireList
+        .where((element) =>
+            element.departement == ligneBudgetaireModel!.departement &&
+            element.ligneBudgtaire ==
+                ligneBudgetaireModel!.nomLigneBudgetaire &&
+            element.createdAt.isBefore(
+                DateTime.parse(ligneBudgetaireModel!.periodeBudget)) &&
+            element.resources == "caisse")
+        .toList();
+    var salairebanqueList = dataSalaireList
+        .where((element) =>
+            element.departement == ligneBudgetaireModel!.departement &&
+            element.ligneBudgtaire ==
+                ligneBudgetaireModel!.nomLigneBudgetaire &&
+            element.createdAt.isBefore(
+                DateTime.parse(ligneBudgetaireModel!.periodeBudget)) &&
+            element.resources == "banque")
+        .toList();
+    var salairefinPropreList = dataSalaireList
+        .where((element) =>
+            element.departement == ligneBudgetaireModel!.departement &&
+            element.ligneBudgtaire ==
+                ligneBudgetaireModel!.nomLigneBudgetaire &&
+            element.createdAt.isBefore(
+                DateTime.parse(ligneBudgetaireModel!.periodeBudget)) &&
+            element.resources == "finPropre")
+        .toList();
+    var salairefinExterieurList = dataSalaireList
+        .where((element) =>
+            element.departement == ligneBudgetaireModel!.departement &&
+            element.ligneBudgtaire ==
+                ligneBudgetaireModel!.nomLigneBudgetaire &&
+            element.createdAt.isBefore(
+                DateTime.parse(ligneBudgetaireModel!.periodeBudget)) &&
+            element.resources == "finExterieur")
+        .toList();
+    for (var item in salairecaisseList) {
+      caissesalaire += double.parse(item.resources);
+    }
+    for (var item in salairebanqueList) {
+      banquesalaire += double.parse(item.resources);
+    }
+    for (var item in salairefinPropreList) {
+      finPropresalaire += double.parse(item.resources);
+    }
+    for (var item in salairefinExterieurList) {
+      finExterieursalaire += double.parse(item.resources);
+    }
+
+    var campaigncaisseList = dataCampaignList
+        .where((element) =>
+            "Commercial et Marketing" == ligneBudgetaireModel!.departement &&
+            element.ligneBudgtaire ==
+                ligneBudgetaireModel!.nomLigneBudgetaire &&
+            element.created.isBefore(
+                DateTime.parse(ligneBudgetaireModel!.periodeBudget)) &&
+            element.resources == "caisse")
+        .toList();
+    var campaignbanqueList = dataCampaignList
+        .where((element) =>
+            "Commercial et Marketing" == ligneBudgetaireModel!.departement &&
+            element.ligneBudgtaire ==
+                ligneBudgetaireModel!.nomLigneBudgetaire &&
+            element.created.isBefore(
+                DateTime.parse(ligneBudgetaireModel!.periodeBudget)) &&
+            element.resources == "banque")
+        .toList();
+    var campaignfinPropreList = dataCampaignList
+        .where((element) =>
+            "Commercial et Marketing" == ligneBudgetaireModel!.departement &&
+            element.ligneBudgtaire ==
+                ligneBudgetaireModel!.nomLigneBudgetaire &&
+            element.created.isBefore(
+                DateTime.parse(ligneBudgetaireModel!.periodeBudget)) &&
+            element.resources == "finPropre")
+        .toList();
+    var campaignfinExterieurList = dataCampaignList
+        .where((element) =>
+            "Commercial et Marketing" == ligneBudgetaireModel!.departement &&
+            element.ligneBudgtaire ==
+                ligneBudgetaireModel!.nomLigneBudgetaire &&
+            element.created.isBefore(
+                DateTime.parse(ligneBudgetaireModel!.periodeBudget)) &&
+            element.resources == "finExterieur")
+        .toList();
+    for (var item in campaigncaisseList) {
+      caisseCampaign += double.parse(item.resources);
+    }
+    for (var item in campaignbanqueList) {
+      banqueCampaign += double.parse(item.resources);
+    }
+    for (var item in campaignfinPropreList) {
+      finPropreCampaign += double.parse(item.resources);
+    }
+    for (var item in campaignfinExterieurList) {
+      finExterieurCampaign += double.parse(item.resources);
+    }
+
+    var projetcaisseList = dataProjetList
+        .where((element) =>
+            "Exploitations" == ligneBudgetaireModel!.departement &&
+            element.ligneBudgtaire ==
+                ligneBudgetaireModel!.nomLigneBudgetaire &&
+            element.created.isBefore(
+                DateTime.parse(ligneBudgetaireModel!.periodeBudget)) &&
+            element.resources == "caisse")
+        .toList();
+    var projetbanqueList = dataProjetList
+        .where((element) =>
+            "Exploitations" == ligneBudgetaireModel!.departement &&
+            element.ligneBudgtaire ==
+                ligneBudgetaireModel!.nomLigneBudgetaire &&
+            element.created.isBefore(
+                DateTime.parse(ligneBudgetaireModel!.periodeBudget)) &&
+            element.resources == "banque")
+        .toList();
+    var projetfinPropreList = dataProjetList
+        .where((element) =>
+            "Exploitations" == ligneBudgetaireModel!.departement &&
+            element.ligneBudgtaire ==
+                ligneBudgetaireModel!.nomLigneBudgetaire &&
+            element.created.isBefore(
+                DateTime.parse(ligneBudgetaireModel!.periodeBudget)) &&
+            element.resources == "finPropre")
+        .toList();
+    var projetfinExterieurList = dataProjetList
+        .where((element) =>
+            "Exploitations" == ligneBudgetaireModel!.departement &&
+            element.ligneBudgtaire ==
+                ligneBudgetaireModel!.nomLigneBudgetaire &&
+            element.created.isBefore(
+                DateTime.parse(ligneBudgetaireModel!.periodeBudget)) &&
+            element.resources == "finExterieur")
+        .toList();
+
+    for (var item in projetcaisseList) {
+      caisseProjet += double.parse(item.resources);
+    }
+    for (var item in projetbanqueList) {
+      banqueProjet += double.parse(item.resources);
+    }
+    for (var item in projetfinPropreList) {
+      finPropreProjet += double.parse(item.resources);
+    }
+    for (var item in projetfinExterieurList) {
+      finExterieurProjet += double.parse(item.resources);
+    }
+
+    // Total par ressources
+    caisse = caisseetatBesion + caissesalaire + caisseCampaign + caisseProjet;
+    banque = banqueetatBesion + banquesalaire + banqueCampaign + banqueProjet;
+    finPropre = finPropreetatBesion +
+        finPropresalaire +
+        finPropreCampaign +
+        finPropreProjet;
+    finExterieur = finExterieuretatBesion +
+        finExterieursalaire +
+        finExterieurCampaign +
+        finExterieurProjet;
+    
+    double caisseSolde = double.parse(data.caisse) - caisse;
+    double banqueSolde = double.parse(data.banque) - banque;
+    double finPropreSolde = double.parse(data.finPropre) - finPropre;
+    double finExterieurSolde = double.parse(data.finExterieur) - finExterieur;
+
+
+    return Row(children: [
+      Expanded(
+          child: Column(
+        children: [
+          const Text("Solde Caisse",
+              style: TextStyle(fontWeight: FontWeight.bold)),
+          SelectableText(
+              "${NumberFormat.decimalPattern('fr').format(caisseSolde)} \$",
+              textAlign: TextAlign.center,
+              style: headline6),
+        ],
+      )),
+      Expanded(
+          child: Container(
+        decoration: BoxDecoration(
+            border: Border(
+          left: BorderSide(
+            color: Colors.amber.shade700,
+            width: 2,
+          ),
+        )),
+        child: Column(
+          children: [
+            const Text("Solde Banque",
+                style: TextStyle(fontWeight: FontWeight.bold)),
+            SelectableText(
+                "${NumberFormat.decimalPattern('fr').format(banqueSolde)} \$",
+                textAlign: TextAlign.center,
+                style: headline6),
+          ],
+        ),
+      )),
+      Expanded(
+          child: Container(
+        decoration: BoxDecoration(
+            border: Border(
+          left: BorderSide(
+            color: Colors.amber.shade700,
+            width: 2,
+          ),
+        )),
+        child: Column(
+          children: [
+            const Text("Solde Fonds Propres",
+                style: TextStyle(fontWeight: FontWeight.bold)),
+            SelectableText(
+                "${NumberFormat.decimalPattern('fr').format(finPropreSolde)} \$",
+                textAlign: TextAlign.center,
+                style: headline6),
+          ],
+        ),
+      )),
+      Expanded(
+          child: Container(
+        decoration: BoxDecoration(
+            border: Border(
+          left: BorderSide(
+            color: Colors.amber.shade700,
+            width: 2,
+          ),
+        )),
+        child: Column(
+          children: [
+            const Text("Solde Reste à trouver",
+                style: TextStyle(fontWeight: FontWeight.bold)),
+            SelectableText(
+                "${NumberFormat.decimalPattern('fr').format(finExterieurSolde)} \$",
+                textAlign: TextAlign.center,
+                style: headline6!.copyWith(color: Colors.red.shade700)),
+          ],
+        ),
+      )),
+    ]);
+  }
+
+  void agentsColumn() {
+    columns = [
+      PlutoColumn(
+        readOnly: true,
+        title: 'Id',
+        field: 'id',
+        type: PlutoColumnType.number(),
+        enableRowDrag: true,
+        enableContextMenu: false,
+        enableDropToResize: true,
+        titleTextAlign: PlutoColumnTextAlign.left,
+        width: 100,
+        minWidth: 80,
+      ),
+      PlutoColumn(
+        readOnly: true,
+        title: 'Designation',
+        field: 'designation',
+        type: PlutoColumnType.number(),
+        enableRowDrag: true,
+        enableContextMenu: false,
+        enableDropToResize: true,
+        titleTextAlign: PlutoColumnTextAlign.left,
+        width: 200,
+        minWidth: 80,
+      ),
+      PlutoColumn(
+        readOnly: true,
+        title: 'Ligne Budgetaire',
+        field: 'nomLigneBudgetaire',
+        type: PlutoColumnType.number(),
+        enableRowDrag: true,
+        enableContextMenu: false,
+        enableDropToResize: true,
+        titleTextAlign: PlutoColumnTextAlign.left,
+        width: 200,
+        minWidth: 80,
+      ),
+      PlutoColumn(
+        readOnly: true,
+        title: 'Resources',
+        field: 'resources',
+        type: PlutoColumnType.number(),
+        enableRowDrag: true,
+        enableContextMenu: false,
+        enableDropToResize: true,
+        titleTextAlign: PlutoColumnTextAlign.left,
+        width: 200,
+        minWidth: 80,
+      ),
+      PlutoColumn(
+        readOnly: true,
+        title: 'Date',
+        field: 'created',
+        type: PlutoColumnType.date(),
+        enableRowDrag: true,
+        enableContextMenu: false,
+        enableDropToResize: true,
+        titleTextAlign: PlutoColumnTextAlign.left,
+        width: 200,
+        minWidth: 150,
+      ),
+    ];
+  }
+
+  Future salaireRow() async {
+    var dataList = dataSalaireList.where((element) =>
+        element.departement == ligneBudgetaireModel!.departement &&
+        element.ligneBudgtaire == ligneBudgetaireModel!.nomLigneBudgetaire &&
+        element.createdAt
+            .isBefore(DateTime.parse(ligneBudgetaireModel!.periodeBudget)));
+
+    if (mounted) {
+      setState(() {
+        for (var item in dataList) {
+          rowSalaires.add(PlutoRow(cells: {
+            'id': PlutoCell(value: item.id),
+            'designation': PlutoCell(value: "${item.prenom} ${item.nom}"),
+            'nomLigneBudgetaire': PlutoCell(value: item.ligneBudgtaire),
+            'resources': PlutoCell(value: item.resources),
+            'created': PlutoCell(
+                value: DateFormat("dd-MM-yy HH:mm").format(item.createdAt))
+          }));
+          stateManager!.resetCurrentState();
+        }
+      });
+    }
+  }
+
+  Future campaignRow() async {
+    var dataList = dataCampaignList.where((element) =>
+        "Commercial et Marketing" == ligneBudgetaireModel!.departement &&
+        element.ligneBudgtaire == ligneBudgetaireModel!.nomLigneBudgetaire &&
+        element.created
+            .isBefore(DateTime.parse(ligneBudgetaireModel!.periodeBudget)));
+
+    if (mounted) {
+      setState(() {
+        for (var item in dataList) {
+          rowCampaigns.add(PlutoRow(cells: {
+            'id': PlutoCell(value: item.id),
+            'designation': PlutoCell(value: item.typeProduit),
+            'nomLigneBudgetaire': PlutoCell(value: item.ligneBudgtaire),
+            'resources': PlutoCell(value: item.resources),
+            'created': PlutoCell(
+                value: DateFormat("dd-MM-yy HH:mm").format(item.created))
+          }));
+          stateManager!.resetCurrentState();
+        }
+      });
+    }
+  }
+
+  Future projetRow() async {
+    var dataList = dataProjetList.where((element) =>
+        "Exploitations" == ligneBudgetaireModel!.departement &&
+        element.ligneBudgtaire == ligneBudgetaireModel!.nomLigneBudgetaire &&
+        element.created
+            .isBefore(DateTime.parse(ligneBudgetaireModel!.periodeBudget)));
+    if (mounted) {
+      setState(() {
+        for (var item in dataList) {
+          rowProjets.add(PlutoRow(cells: {
+            'id': PlutoCell(value: item.id),
+            'designation': PlutoCell(value: item.nomProjet),
+            'nomLigneBudgetaire': PlutoCell(value: item.ligneBudgtaire),
+            'resources': PlutoCell(value: item.resources),
+            'created': PlutoCell(
+                value: DateFormat("dd-MM-yy HH:mm").format(item.created))
+          }));
+          stateManager!.resetCurrentState();
+        }
+      });
+    }
+  }
+
+  Future etatBesionRow() async {
+    var dataList = dataDevisList.where((element) =>
+        element.departement == ligneBudgetaireModel!.departement &&
+        element.ligneBudgtaire == ligneBudgetaireModel!.nomLigneBudgetaire &&
+        element.created
+            .isBefore(DateTime.parse(ligneBudgetaireModel!.periodeBudget)));
+    if (mounted) {
+      setState(() {
+        for (var item in dataList) {
+          rowEtatBesion.add(PlutoRow(cells: {
+            'id': PlutoCell(value: item.id),
+            'designation': PlutoCell(value: item.title),
+            'nomLigneBudgetaire': PlutoCell(value: item.ligneBudgtaire),
+            'resources': PlutoCell(value: item.resources),
+            'created': PlutoCell(
+                value: DateFormat("dd-MM-yy HH:mm").format(item.created))
+          }));
+          stateManager!.resetCurrentState();
+        }
+      });
+    }
+  }
+
+  Widget tableSalaires(LigneBudgetaireModel data) {
+    return SizedBox(
+      height: 400,
+      child: PlutoGrid(
+        columns: columns,
+        rows: rowSalaires,
+        onLoaded: (PlutoGridOnLoadedEvent event) {
+          stateManager = event.stateManager;
+          stateManager!.setShowColumnFilter(true);
+        },
+        createHeader: (PlutoGridStateManager header) {
+          return Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [PrintWidget(onPressed: () {})],
+          );
+        },
+        configuration: PlutoGridConfiguration(
+          columnFilterConfig: PlutoGridColumnFilterConfig(
+            filters: const [
+              ...FilterHelper.defaultFilters,
+              // custom filter
+              ClassFilterImplemented(),
+            ],
+            resolveDefaultColumnFilter: (column, resolver) {
+              if (column.field == 'id') {
+                return resolver<ClassFilterImplemented>() as PlutoFilterType;
+              } else if (column.field == 'nomLigneBudgetaire') {
+                return resolver<ClassFilterImplemented>() as PlutoFilterType;
+              } else if (column.field == 'departement') {
+                return resolver<ClassFilterImplemented>() as PlutoFilterType;
+              } else if (column.field == 'nombreUnite') {
+                return resolver<ClassFilterImplemented>() as PlutoFilterType;
+              } else if (column.field == 'coutUnitaire') {
+                return resolver<ClassFilterImplemented>() as PlutoFilterType;
+              }
+              return resolver<PlutoFilterTypeContains>() as PlutoFilterType;
+            },
+          ),
         ),
       ),
-      child: Column(
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Expanded(
-                  flex: 3,
-                  child: Text('Directeur Générale',
-                      style:
-                          bodyMedium!.copyWith(fontWeight: FontWeight.bold))),
-              Expanded(
-                flex: 3,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Expanded(
-                        flex: 3,
-                        child: Column(
-                          children: [
-                            Text(
-                              'Approbation',
-                              style: bodySmall,
-                            ),
-                            if (data.approbationDG != '-')
-                              SelectableText(
-                                data.approbationDG.toString(),
-                                style: bodyMedium.copyWith(
-                                    color: Colors.red.shade700),
-                              ),
-                            if (data.approbationDG == '-' &&
-                                user!.fonctionOccupe == 'Directeur générale')
-                              Container(
-                                margin: const EdgeInsets.only(
-                                    bottom: p10, left: p5),
-                                child: DropdownButtonFormField<String>(
-                                  decoration: InputDecoration(
-                                    labelText: 'Approbation',
-                                    border: OutlineInputBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(5.0)),
-                                  ),
-                                  value: approbationDGController,
-                                  isExpanded: true,
-                                  items: dataList.map((String value) {
-                                    return DropdownMenuItem<String>(
-                                      value: value,
-                                      child: Text(value),
-                                    );
-                                  }).toList(),
-                                  onChanged: (value) {
-                                    setState(() {
-                                      approbationDGController = value!;
-                                    });
-                                  },
-                                ),
-                              )
-                          ],
-                        )),
-                    Expanded(
-                        flex: 2,
-                        child: Column(
-                          children: [
-                            Text(
-                              'Signature',
-                              style: bodySmall,
-                            ),
-                            SelectableText(
-                              data.signatureDG.toString(),
-                              style: bodyMedium,
-                            ),
-                          ],
-                        )),
-                    Expanded(
-                        flex: 2,
-                        child: Column(
-                          children: [
-                            Text(
-                              'Justification',
-                              style: bodySmall,
-                            ),
-                            if (data.approbationDG == 'Unapproved' &&
-                                data.signatureDG != '-')
-                              SelectableText(
-                                data.signatureJustificationDG.toString(),
-                                style: bodyMedium,
-                              ),
-                            if (data.approbationDG == 'Unapproved' &&
-                                user!.fonctionOccupe == 'Directeur générale')
-                              Container(
-                                  margin: const EdgeInsets.only(
-                                      bottom: p10, left: p5),
-                                  child: TextFormField(
-                                    controller:
-                                        signatureJustificationDGController,
-                                    decoration: InputDecoration(
-                                      border: OutlineInputBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(10.0)),
-                                      labelText: 'Quelque chose à dire',
-                                      hintText: 'Quelque chose à dire',
-                                    ),
-                                    keyboardType: TextInputType.text,
-                                    style: const TextStyle(),
-                                  )),
-                            if (data.approbationDG == 'Unapproved')
-                              IconButton(
-                                  onPressed: () {
-                                    submitUpdateDG(data);
-                                  },
-                                  icon: const Icon(Icons.send))
-                          ],
-                        ))
-                  ],
-                ),
-              ),
+    );
+  }
+
+  Widget tableEtatBesions(LigneBudgetaireModel data) {
+    return SizedBox(
+      height: 400,
+      child: PlutoGrid(
+        columns: columns,
+        rows: rowEtatBesion,
+        onLoaded: (PlutoGridOnLoadedEvent event) {
+          stateManager = event.stateManager;
+          stateManager!.setShowColumnFilter(true);
+        },
+        createHeader: (PlutoGridStateManager header) {
+          return Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [PrintWidget(onPressed: () {})],
+          );
+        },
+        configuration: PlutoGridConfiguration(
+          columnFilterConfig: PlutoGridColumnFilterConfig(
+            filters: const [
+              ...FilterHelper.defaultFilters,
+              // custom filter
+              ClassFilterImplemented(),
             ],
+            resolveDefaultColumnFilter: (column, resolver) {
+              if (column.field == 'id') {
+                return resolver<ClassFilterImplemented>() as PlutoFilterType;
+              } else if (column.field == 'nomLigneBudgetaire') {
+                return resolver<ClassFilterImplemented>() as PlutoFilterType;
+              } else if (column.field == 'departement') {
+                return resolver<ClassFilterImplemented>() as PlutoFilterType;
+              } else if (column.field == 'nombreUnite') {
+                return resolver<ClassFilterImplemented>() as PlutoFilterType;
+              } else if (column.field == 'coutUnitaire') {
+                return resolver<ClassFilterImplemented>() as PlutoFilterType;
+              }
+              return resolver<PlutoFilterTypeContains>() as PlutoFilterType;
+            },
           ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Expanded(
-                  flex: 3,
-                  child: Text('Directeur de Finance',
-                      style: bodyMedium.copyWith(fontWeight: FontWeight.bold))),
-              Expanded(
-                flex: 3,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Expanded(
-                        flex: 3,
-                        child: Column(
-                          children: [
-                            Text(
-                              'Approbation',
-                              style: bodySmall,
-                            ),
-                            if (data.approbationFin != '-')
-                              SelectableText(
-                                data.approbationFin.toString(),
-                                style: bodyMedium.copyWith(
-                                    color: Colors.green.shade700),
-                              ),
-                            if (data.approbationFin == '-' &&
-                                user!.fonctionOccupe ==
-                                    'Directeur des finances')
-                              Container(
-                                margin: const EdgeInsets.only(
-                                    bottom: p10, left: p5),
-                                child: DropdownButtonFormField<String>(
-                                  decoration: InputDecoration(
-                                    labelText: 'Approbation',
-                                    border: OutlineInputBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(5.0)),
-                                  ),
-                                  value: approbationFinController,
-                                  isExpanded: true,
-                                  items: dataList.map((String value) {
-                                    return DropdownMenuItem<String>(
-                                      value: value,
-                                      child: Text(value),
-                                    );
-                                  }).toList(),
-                                  onChanged: (value) {
-                                    setState(() {
-                                      approbationFinController = value!;
-                                    });
-                                  },
-                                ),
-                              )
-                          ],
-                        )),
-                    Expanded(
-                        flex: 2,
-                        child: Column(
-                          children: [
-                            Text(
-                              'Signature',
-                              style: bodySmall,
-                            ),
-                            SelectableText(
-                              data.signatureFin.toString(),
-                              style: bodyMedium,
-                            ),
-                          ],
-                        )),
-                    Expanded(
-                        flex: 2,
-                        child: Column(
-                          children: [
-                            Text(
-                              'Justification',
-                              style: bodySmall,
-                            ),
-                            if (data.approbationFin == 'Unapproved' &&
-                                data.signatureFin != '-')
-                              SelectableText(
-                                data.signatureJustificationFin.toString(),
-                                style: bodyMedium,
-                              ),
-                            if (data.approbationFin == 'Unapproved' &&
-                                user!.fonctionOccupe ==
-                                    'Directeur des finances')
-                              Container(
-                                  margin: const EdgeInsets.only(
-                                      bottom: p10, left: p5),
-                                  child: TextFormField(
-                                    controller:
-                                        signatureJustificationFinController,
-                                    decoration: InputDecoration(
-                                      border: OutlineInputBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(10.0)),
-                                      labelText: 'Quelque chose à dire',
-                                      hintText: 'Quelque chose à dire',
-                                    ),
-                                    keyboardType: TextInputType.text,
-                                    style: const TextStyle(),
-                                  )),
-                            if (data.approbationFin == 'Unapproved')
-                              IconButton(
-                                  onPressed: () {
-                                    submitUpdateFIN(data);
-                                  },
-                                  icon: const Icon(Icons.send))
-                          ],
-                        ))
-                  ],
-                ),
-              ),
-            ],
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Expanded(
-                  flex: 3,
-                  child: Text('Budget',
-                      style: bodyMedium.copyWith(fontWeight: FontWeight.bold))),
-              Expanded(
-                flex: 3,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Expanded(
-                        flex: 3,
-                        child: Column(
-                          children: [
-                            Text(
-                              'Approbation',
-                              style: bodySmall,
-                            ),
-                            if (data.approbationBudget != '-')
-                              SelectableText(
-                                data.approbationBudget.toString(),
-                                style: bodyMedium.copyWith(
-                                    color: Colors.orange.shade700),
-                              ),
-                            if (data.approbationBudget == '-' &&
-                                user!.fonctionOccupe == 'Directeur de budget')
-                              Container(
-                                margin: const EdgeInsets.only(
-                                    bottom: p10, left: p5),
-                                child: DropdownButtonFormField<String>(
-                                  decoration: InputDecoration(
-                                    labelText: 'Approbation',
-                                    border: OutlineInputBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(5.0)),
-                                  ),
-                                  value: approbationBudgetController,
-                                  isExpanded: true,
-                                  items: dataList.map((String value) {
-                                    return DropdownMenuItem<String>(
-                                      value: value,
-                                      child: Text(value),
-                                    );
-                                  }).toList(),
-                                  onChanged: (value) {
-                                    setState(() {
-                                      approbationBudgetController = value!;
-                                    });
-                                  },
-                                ),
-                              )
-                          ],
-                        )),
-                    Expanded(
-                        flex: 2,
-                        child: Column(
-                          children: [
-                            Text(
-                              'Signature',
-                              style: bodySmall,
-                            ),
-                            SelectableText(
-                              data.signatureBudget.toString(),
-                              style: bodyMedium,
-                            ),
-                          ],
-                        )),
-                    Expanded(
-                        flex: 2,
-                        child: Column(
-                          children: [
-                            Text(
-                              'Justification',
-                              style: bodySmall,
-                            ),
-                            if (data.approbationBudget == 'Unapproved' &&
-                                data.signatureBudget != '-')
-                              SelectableText(
-                                data.signatureJustificationBudget.toString(),
-                                style: bodyMedium,
-                              ),
-                            if (data.approbationBudget == 'Unapproved' &&
-                                user!.fonctionOccupe == 'Directeur de budget')
-                              Container(
-                                  margin: const EdgeInsets.only(
-                                      bottom: p10, left: p5),
-                                  child: TextFormField(
-                                    controller:
-                                        signatureJustificationBudgetController,
-                                    decoration: InputDecoration(
-                                      border: OutlineInputBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(10.0)),
-                                      labelText: 'Quelque chose à dire',
-                                      hintText: 'Quelque chose à dire',
-                                    ),
-                                    keyboardType: TextInputType.text,
-                                    style: const TextStyle(),
-                                  )),
-                            if (data.approbationBudget == 'Unapproved')
-                              IconButton(
-                                  onPressed: () {
-                                    submitUpdateBudget(data);
-                                  },
-                                  icon: const Icon(Icons.send))
-                          ],
-                        ))
-                  ],
-                ),
-              ),
-            ],
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Expanded(
-                  flex: 3,
-                  child: Text('Directeur de departement',
-                      style: bodyMedium.copyWith(fontWeight: FontWeight.bold))),
-              Expanded(
-                flex: 3,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Expanded(
-                        flex: 3,
-                        child: Column(
-                          children: [
-                            Text(
-                              'Approbation',
-                              style: bodySmall,
-                            ),
-                            if (data.approbationDD != '-' &&
-                                user!.fonctionOccupe ==
-                                    'Directeur de departement')
-                              SelectableText(
-                                data.approbationDD.toString(),
-                                style: bodyMedium.copyWith(
-                                    color: Colors.blue.shade700),
-                              ),
-                            if (data.approbationDD == '-')
-                              Container(
-                                margin: const EdgeInsets.only(
-                                    bottom: p10, left: p5),
-                                child: DropdownButtonFormField<String>(
-                                  decoration: InputDecoration(
-                                    labelText: 'Approbation',
-                                    border: OutlineInputBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(5.0)),
-                                  ),
-                                  value: approbationDDController,
-                                  isExpanded: true,
-                                  items: dataList.map((String value) {
-                                    return DropdownMenuItem<String>(
-                                      value: value,
-                                      child: Text(value),
-                                    );
-                                  }).toList(),
-                                  onChanged: (value) {
-                                    setState(() {
-                                      approbationDDController = value!;
-                                    });
-                                  },
-                                ),
-                              )
-                          ],
-                        )),
-                    Expanded(
-                        flex: 2,
-                        child: Column(
-                          children: [
-                            Text(
-                              'Signature',
-                              style: bodySmall,
-                            ),
-                            SelectableText(
-                              data.signatureDD.toString(),
-                              style: bodyMedium,
-                            ),
-                          ],
-                        )),
-                    Expanded(
-                        flex: 2,
-                        child: Column(
-                          children: [
-                            Text(
-                              'Justification',
-                              style: bodySmall,
-                            ),
-                            if (data.approbationDD == 'Unapproved' &&
-                                data.signatureDD != '-')
-                              SelectableText(
-                                data.signatureJustificationDD.toString(),
-                                style: bodyMedium,
-                              ),
-                            if (data.approbationDD == 'Unapproved' &&
-                                user!.fonctionOccupe ==
-                                    'Directeur de departement')
-                              Container(
-                                  margin: const EdgeInsets.only(
-                                      bottom: p10, left: p5),
-                                  child: TextFormField(
-                                    controller:
-                                        signatureJustificationDDController,
-                                    decoration: InputDecoration(
-                                      border: OutlineInputBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(10.0)),
-                                      labelText: 'Quelque chose à dire',
-                                      hintText: 'Quelque chose à dire',
-                                    ),
-                                    keyboardType: TextInputType.text,
-                                    style: const TextStyle(),
-                                  )),
-                            if (data.approbationDD == 'Unapproved')
-                              IconButton(
-                                  onPressed: () {
-                                    submitUpdateDD(data);
-                                  },
-                                  icon: const Icon(Icons.send))
-                          ],
-                        ))
-                  ],
-                ),
-              ),
-            ],
-          ),
-        ],
+        ),
       ),
     );
   }
 
-  Future<void> submitUpdateDG(LigneBudgetaireModel data) async {
-    final ligneBudgetaireModel = LigneBudgetaireModel(
-        nomLigneBudgetaire: data.nomLigneBudgetaire,
-        departement: data.departement,
-        periodeBudget: data.periodeBudget,
-        uniteChoisie: data.uniteChoisie,
-        nombreUnite: data.nombreUnite,
-        coutUnitaire: data.coutUnitaire,
-        coutTotal: data.coutTotal,
-        caisse: data.caisse,
-        banque: data.banque,
-        finPropre: data.finPropre,
-        finExterieur: data.finExterieur,
-        approbationDG: approbationDGController.toString(),
-        signatureDG: user!.matricule.toString(),
-        signatureJustificationDG: signatureJustificationDGController.text,
-        approbationFin: data.approbationFin.toString(),
-        signatureFin: data.signatureFin.toString(),
-        signatureJustificationFin: data.signatureJustificationFin.toString(),
-        approbationBudget: data.approbationBudget.toString(),
-        signatureBudget: data.signatureBudget.toString(),
-        signatureJustificationBudget:
-            data.signatureJustificationBudget.toString(),
-        approbationDD: data.approbationDD.toString(),
-        signatureDD: data.signatureDD.toString(),
-        signatureJustificationDD: data.signatureJustificationDD.toString(),
-        signature: data.signature,
-        created: data.created);
-
-    await LIgneBudgetaireApi().updateData(data.id!, ligneBudgetaireModel);
-    Navigator.of(context).pop();
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-      content: const Text("Mises à jour  avec succès!"),
-      backgroundColor: Colors.green[700],
-    ));
+  Widget tableCampaigns(LigneBudgetaireModel data) {
+    return SizedBox(
+      height: 400,
+      child: PlutoGrid(
+        columns: columns,
+        rows: rowCampaigns,
+        onLoaded: (PlutoGridOnLoadedEvent event) {
+          stateManager = event.stateManager;
+          stateManager!.setShowColumnFilter(true);
+        },
+        createHeader: (PlutoGridStateManager header) {
+          return Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [PrintWidget(onPressed: () {})],
+          );
+        },
+        configuration: PlutoGridConfiguration(
+          columnFilterConfig: PlutoGridColumnFilterConfig(
+            filters: const [
+              ...FilterHelper.defaultFilters,
+              // custom filter
+              ClassFilterImplemented(),
+            ],
+            resolveDefaultColumnFilter: (column, resolver) {
+              if (column.field == 'id') {
+                return resolver<ClassFilterImplemented>() as PlutoFilterType;
+              } else if (column.field == 'nomLigneBudgetaire') {
+                return resolver<ClassFilterImplemented>() as PlutoFilterType;
+              } else if (column.field == 'departement') {
+                return resolver<ClassFilterImplemented>() as PlutoFilterType;
+              } else if (column.field == 'nombreUnite') {
+                return resolver<ClassFilterImplemented>() as PlutoFilterType;
+              } else if (column.field == 'coutUnitaire') {
+                return resolver<ClassFilterImplemented>() as PlutoFilterType;
+              }
+              return resolver<PlutoFilterTypeContains>() as PlutoFilterType;
+            },
+          ),
+        ),
+      ),
+    );
   }
 
-  Future<void> submitUpdateFIN(LigneBudgetaireModel data) async {
-    final ligneBudgetaireModel = LigneBudgetaireModel(
-        nomLigneBudgetaire: data.nomLigneBudgetaire,
-        departement: data.departement,
-        periodeBudget: data.periodeBudget,
-        uniteChoisie: data.uniteChoisie,
-        nombreUnite: data.nombreUnite,
-        coutUnitaire: data.coutUnitaire,
-        coutTotal: data.coutTotal,
-        caisse: data.caisse,
-        banque: data.banque,
-        finPropre: data.finPropre,
-        finExterieur: data.finExterieur,
-        approbationDG: data.approbationDG.toString(),
-        signatureDG: data.signatureDG.toString(),
-        signatureJustificationDG: data.signatureJustificationDG.toString(),
-        approbationFin: approbationFinController.toString(),
-        signatureFin: user!.matricule.toString(),
-        signatureJustificationFin: signatureJustificationFinController.text,
-        approbationBudget: data.approbationBudget.toString(),
-        signatureBudget: data.signatureBudget.toString(),
-        signatureJustificationBudget:
-            data.signatureJustificationBudget.toString(),
-        approbationDD: data.approbationDD.toString(),
-        signatureDD: data.signatureDD.toString(),
-        signatureJustificationDD: data.signatureJustificationDD.toString(),
-        signature: data.signature,
-        created: data.created);
-
-    await LIgneBudgetaireApi().updateData(data.id!, ligneBudgetaireModel);
-    Navigator.of(context).pop();
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-      content: const Text("Mises à jour  avec succès!"),
-      backgroundColor: Colors.green[700],
-    ));
-  }
-
-  Future<void> submitUpdateBudget(LigneBudgetaireModel data) async {
-    final ligneBudgetaireModel = LigneBudgetaireModel(
-        nomLigneBudgetaire: data.nomLigneBudgetaire,
-        departement: data.departement,
-        periodeBudget: data.periodeBudget,
-        uniteChoisie: data.uniteChoisie,
-        nombreUnite: data.nombreUnite,
-        coutUnitaire: data.coutUnitaire,
-        coutTotal: data.coutTotal,
-        caisse: data.caisse,
-        banque: data.banque,
-        finPropre: data.finPropre,
-        finExterieur: data.finExterieur,
-        approbationDG: data.approbationDG.toString(),
-        signatureDG: data.signatureDG.toString(),
-        signatureJustificationDG: data.signatureJustificationDG.toString(),
-        approbationFin: data.approbationFin.toString(),
-        signatureFin: data.signatureFin.toString(),
-        signatureJustificationFin: data.signatureJustificationFin.toString(),
-        approbationBudget: approbationBudgetController.toString(),
-        signatureBudget: user!.matricule.toString(),
-        signatureJustificationBudget:
-            signatureJustificationBudgetController.text,
-        approbationDD: data.approbationDD.toString(),
-        signatureDD: data.signatureDD.toString(),
-        signatureJustificationDD: data.signatureJustificationDD.toString(),
-        signature: data.signature,
-        created: data.created);
-
-    await LIgneBudgetaireApi().updateData(data.id!, ligneBudgetaireModel);
-    Navigator.of(context).pop();
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-      content: const Text("Mises à jour  avec succès!"),
-      backgroundColor: Colors.green[700],
-    ));
-  }
-
-  Future<void> submitUpdateDD(LigneBudgetaireModel data) async {
-    final ligneBudgetaireModel = LigneBudgetaireModel(
-        nomLigneBudgetaire: data.nomLigneBudgetaire,
-        departement: data.departement,
-        periodeBudget: data.periodeBudget,
-        uniteChoisie: data.uniteChoisie,
-        nombreUnite: data.nombreUnite,
-        coutUnitaire: data.coutUnitaire,
-        coutTotal: data.coutTotal,
-        caisse: data.caisse,
-        banque: data.banque,
-        finPropre: data.finPropre,
-        finExterieur: data.finExterieur,
-        approbationDG: data.approbationDG.toString(),
-        signatureDG: data.signatureDG.toString(),
-        signatureJustificationDG: data.signatureJustificationDG.toString(),
-        approbationFin: data.approbationFin.toString(),
-        signatureFin: data.signatureFin.toString(),
-        signatureJustificationFin: data.signatureJustificationFin.toString(),
-        approbationBudget: data.approbationBudget.toString(),
-        signatureBudget: data.signatureBudget.toString(),
-        signatureJustificationBudget:
-            data.signatureJustificationBudget.toString(),
-        approbationDD: approbationDDController.toString(),
-        signatureDD: user!.matricule.toString(),
-        signatureJustificationDD: signatureJustificationDDController.text,
-        signature: data.signature.toString(),
-        created: data.created);
-
-    await LIgneBudgetaireApi().updateData(data.id!, ligneBudgetaireModel);
-    Navigator.of(context).pop();
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-      content: const Text("Mises à jour  avec succès!"),
-      backgroundColor: Colors.green[700],
-    ));
+  Widget tableProjets(LigneBudgetaireModel data) {
+    return SizedBox(
+      height: 400,
+      child: PlutoGrid(
+        columns: columns,
+        rows: rowProjets,
+        onLoaded: (PlutoGridOnLoadedEvent event) {
+          stateManager = event.stateManager;
+          stateManager!.setShowColumnFilter(true);
+        },
+        createHeader: (PlutoGridStateManager header) {
+          return Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [PrintWidget(onPressed: () {})],
+          );
+        },
+        configuration: PlutoGridConfiguration(
+          columnFilterConfig: PlutoGridColumnFilterConfig(
+            filters: const [
+              ...FilterHelper.defaultFilters,
+              // custom filter
+              ClassFilterImplemented(),
+            ],
+            resolveDefaultColumnFilter: (column, resolver) {
+              if (column.field == 'id') {
+                return resolver<ClassFilterImplemented>() as PlutoFilterType;
+              } else if (column.field == 'nomLigneBudgetaire') {
+                return resolver<ClassFilterImplemented>() as PlutoFilterType;
+              } else if (column.field == 'departement') {
+                return resolver<ClassFilterImplemented>() as PlutoFilterType;
+              } else if (column.field == 'nombreUnite') {
+                return resolver<ClassFilterImplemented>() as PlutoFilterType;
+              } else if (column.field == 'coutUnitaire') {
+                return resolver<ClassFilterImplemented>() as PlutoFilterType;
+              }
+              return resolver<PlutoFilterTypeContains>() as PlutoFilterType;
+            },
+          ),
+        ),
+      ),
+    );
   }
 }

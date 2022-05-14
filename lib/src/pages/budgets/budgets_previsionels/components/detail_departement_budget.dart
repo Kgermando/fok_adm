@@ -2,10 +2,18 @@ import 'package:flutter/material.dart';
 import 'package:fokad_admin/src/api/auth/auth_api.dart';
 import 'package:fokad_admin/src/api/budgets/departement_budget_api.dart';
 import 'package:fokad_admin/src/api/budgets/ligne_budgetaire_api.dart';
+import 'package:fokad_admin/src/api/comm_marketing/marketing/campaign_api.dart';
+import 'package:fokad_admin/src/api/devis/devis_api.dart';
+import 'package:fokad_admin/src/api/exploitations/projets_api.dart';
+import 'package:fokad_admin/src/api/rh/paiement_salaire_api.dart';
 import 'package:fokad_admin/src/constants/app_theme.dart';
 import 'package:fokad_admin/src/constants/responsive.dart';
 import 'package:fokad_admin/src/models/budgets/departement_budget_model.dart';
 import 'package:fokad_admin/src/models/budgets/ligne_budgetaire_model.dart';
+import 'package:fokad_admin/src/models/comm_maketing/campaign_model.dart';
+import 'package:fokad_admin/src/models/devis/devis_models.dart';
+import 'package:fokad_admin/src/models/exploitations/projet_model.dart';
+import 'package:fokad_admin/src/models/rh/paiement_salaire_model.dart';
 import 'package:fokad_admin/src/models/users/user_model.dart';
 import 'package:fokad_admin/src/navigation/drawer/drawer_menu.dart';
 import 'package:fokad_admin/src/navigation/header/custom_appbar.dart';
@@ -49,6 +57,10 @@ class _DetailDepartmentBudgetState extends State<DetailDepartmentBudget> {
   String? ligneBudgtaire;
   String? resource;
   List<LigneBudgetaireModel> ligneBudgetaireList = [];
+  List<CampaignModel> dataCampaignList = [];
+  List<DevisModel> dataDevisList = [];
+  List<ProjetModel> dataProjetList = [];
+  List<PaiementSalaireModel> dataSalaireList = [];
 
   DepartementBudgetModel? departementBudget;
   UserModel? user = UserModel(
@@ -67,10 +79,27 @@ class _DetailDepartmentBudgetState extends State<DetailDepartmentBudget> {
     UserModel userModel = await AuthApi().getUserId();
     var dataList = await DepeartementBudgetApi().getOneData(widget.id);
     var budgets = await LIgneBudgetaireApi().getAllData();
+    var campaigns = await CampaignApi().getAllData();
+    var devis = await DevisAPi().getAllData();
+    var projets = await ProjetsApi().getAllData();
+    var salaires = await PaiementSalaireApi().getAllData();
     setState(() {
       user = userModel;
       departementBudget = dataList;
       ligneBudgetaireList = budgets;
+
+      dataCampaignList = campaigns
+          .where((element) => element.approbationBudget == "Approved")
+          .toList();
+      dataDevisList = devis
+          .where((element) => element.approbationBudget == "Approved")
+          .toList();
+      dataProjetList = projets
+          .where((element) => element.approbationBudget == "Approved")
+          .toList();
+      dataSalaireList = salaires
+          .where((element) => element.approbationBudget == "Approved")
+          .toList();
     });
   }
 
@@ -207,7 +236,7 @@ class _DetailDepartmentBudgetState extends State<DetailDepartmentBudget> {
                               ),
                             ),
                             const SizedBox(width: p10),
-                            Text("En marche...",
+                            Text("En cours...",
                                 style: TextStyle(color: Colors.green.shade700))
                           ],
                         ),
@@ -232,7 +261,12 @@ class _DetailDepartmentBudgetState extends State<DetailDepartmentBudget> {
                 ],
               ),
               dataWidget(data),
+              Divider(color: Colors.red.shade700),
+              soldeBudgets(data),
+              Divider(color: Colors.red.shade700),
+              const SizedBox(height: p20),
               LigneBudgetaire(departementBudgetModel: data),
+              const SizedBox(height: p20),
               infosEditeurWidget(data),
               const SizedBox(
                 height: p20,
@@ -267,7 +301,7 @@ class _DetailDepartmentBudgetState extends State<DetailDepartmentBudget> {
           Row(
             children: [
               Expanded(
-                child: Text('Periode de début :',
+                child: Text('Date de début :',
                     textAlign: TextAlign.start,
                     style: bodyMedium.copyWith(fontWeight: FontWeight.bold)),
               ),
@@ -283,7 +317,7 @@ class _DetailDepartmentBudgetState extends State<DetailDepartmentBudget> {
           Row(
             children: [
               Expanded(
-                child: Text('Periode de Fin :',
+                child: Text('Date de Fin :',
                     textAlign: TextAlign.start,
                     style: bodyMedium.copyWith(fontWeight: FontWeight.bold)),
               ),
@@ -295,12 +329,338 @@ class _DetailDepartmentBudgetState extends State<DetailDepartmentBudget> {
               )
             ],
           ),
+          
         ],
       ),
     );
   }
 
-   Widget infosEditeurWidget(DepartementBudgetModel data) {
+
+  Widget soldeBudgets(DepartementBudgetModel data) {
+    final headline6 = Theme.of(context).textTheme.headline6;
+    // List<String> dataList = ['caisse', 'banque', 'finPropre', 'finExterieur'];
+    double caisse = 0.0;
+    double banque = 0.0;
+    double finPropre = 0.0;
+    double finExterieur = 0.0;
+
+    double caisseetatBesion = 0.0;
+    double banqueetatBesion = 0.0;
+    double finPropreetatBesion = 0.0;
+    double finExterieuretatBesion = 0.0;
+
+    double caissesalaire = 0.0;
+    double banquesalaire = 0.0;
+    double finPropresalaire = 0.0;
+    double finExterieursalaire = 0.0;
+
+    double caisseCampaign = 0.0;
+    double banqueCampaign = 0.0;
+    double finPropreCampaign = 0.0;
+    double finExterieurCampaign = 0.0;
+
+    double caisseProjet = 0.0;
+    double banqueProjet = 0.0;
+    double finPropreProjet = 0.0;
+    double finExterieurProjet = 0.0;
+
+    var etatBesionCaisseList = dataDevisList
+        .where((element) =>
+            element.departement == data.departement &&
+            element.created.isBefore(data.periodeFin) &&
+            element.resources == "caisse")
+        .toList();
+    var etatBesionBanqueList = dataDevisList
+        .where((element) =>
+            element.departement == data.departement &&
+            element.created.isBefore(data.periodeFin) &&
+            element.resources == "banque")
+        .toList();
+    var etatBesionFinPropreList = dataDevisList
+        .where((element) =>
+            element.departement == data.departement &&
+            element.created.isBefore(data.periodeFin) &&
+            element.resources == "finPropre")
+        .toList();
+    var etatBesionFinExterieurList = dataDevisList
+        .where((element) =>
+            element.departement == data.departement &&
+            element.created.isBefore(data.periodeFin) &&
+            element.resources == "finExterieur")
+        .toList();
+
+    for (var item in etatBesionCaisseList) {
+      caisseetatBesion += double.parse(item.resources);
+    }
+    for (var item in etatBesionBanqueList) {
+      banqueetatBesion += double.parse(item.resources);
+    }
+    for (var item in etatBesionFinPropreList) {
+      finPropreetatBesion += double.parse(item.resources);
+    }
+    for (var item in etatBesionFinExterieurList) {
+      finExterieuretatBesion += double.parse(item.resources);
+    }
+
+    var salairecaisseList = dataSalaireList
+        .where((element) =>
+            element.departement == data.departement &&
+            element.createdAt.isBefore(data.periodeFin) &&
+            element.resources == "caisse")
+        .toList();
+    var salairebanqueList = dataSalaireList
+        .where((element) =>
+            element.departement == data.departement &&
+            element.createdAt.isBefore(data.periodeFin) &&
+            element.resources == "banque")
+        .toList();
+    var salairefinPropreList = dataSalaireList
+        .where((element) =>
+            element.departement == data.departement &&
+            element.createdAt.isBefore(data.periodeFin) &&
+            element.resources == "finPropre")
+        .toList();
+    var salairefinExterieurList = dataSalaireList
+        .where((element) =>
+            element.departement == data.departement &&
+            element.createdAt.isBefore(data.periodeFin) &&
+            element.resources == "finExterieur")
+        .toList();
+    for (var item in salairecaisseList) {
+      caissesalaire += double.parse(item.resources);
+    }
+    for (var item in salairebanqueList) {
+      banquesalaire += double.parse(item.resources);
+    }
+    for (var item in salairefinPropreList) {
+      finPropresalaire += double.parse(item.resources);
+    }
+    for (var item in salairefinExterieurList) {
+      finExterieursalaire += double.parse(item.resources);
+    }
+
+    var campaigncaisseList = dataCampaignList
+        .where((element) =>
+            "Commercial et Marketing" == data.departement &&
+            element.created.isBefore(data.periodeFin) &&
+            element.resources == "caisse")
+        .toList();
+    var campaignbanqueList = dataCampaignList
+        .where((element) =>
+            "Commercial et Marketing" == data.departement &&
+            element.created.isBefore(data.periodeFin) &&
+            element.resources == "banque")
+        .toList();
+    var campaignfinPropreList = dataCampaignList
+        .where((element) =>
+            "Commercial et Marketing" == data.departement &&
+            element.created.isBefore(data.periodeFin) &&
+            element.resources == "finPropre")
+        .toList();
+    var campaignfinExterieurList = dataCampaignList
+        .where((element) =>
+            "Commercial et Marketing" == data.departement &&
+            element.created.isBefore(data.periodeFin) &&
+            element.resources == "finExterieur")
+        .toList();
+    for (var item in campaigncaisseList) {
+      caisseCampaign += double.parse(item.resources);
+    }
+    for (var item in campaignbanqueList) {
+      banqueCampaign += double.parse(item.resources);
+    }
+    for (var item in campaignfinPropreList) {
+      finPropreCampaign += double.parse(item.resources);
+    }
+    for (var item in campaignfinExterieurList) {
+      finExterieurCampaign += double.parse(item.resources);
+    }
+
+    var projetcaisseList = dataProjetList
+        .where((element) =>
+            "Exploitations" == data.departement &&
+            element.created.isBefore(data.periodeFin) &&
+            element.resources == "caisse")
+        .toList();
+    var projetbanqueList = dataProjetList
+        .where((element) =>
+            "Exploitations" == data.departement &&
+            element.created.isBefore(data.periodeFin) &&
+            element.resources == "banque")
+        .toList();
+    var projetfinPropreList = dataProjetList
+        .where((element) =>
+            "Exploitations" == data.departement &&
+            element.created.isBefore(data.periodeFin) &&
+            element.resources == "finPropre")
+        .toList();
+    var projetfinExterieurList = dataProjetList
+        .where((element) =>
+            "Exploitations" == data.departement &&
+            element.created.isBefore(data.periodeFin) &&
+            element.resources == "finExterieur")
+        .toList();
+
+    for (var item in projetcaisseList) {
+      caisseProjet += double.parse(item.resources);
+    }
+    for (var item in projetbanqueList) {
+      banqueProjet += double.parse(item.resources);
+    }
+    for (var item in projetfinPropreList) {
+      finPropreProjet += double.parse(item.resources);
+    }
+    for (var item in projetfinExterieurList) {
+      finExterieurProjet += double.parse(item.resources);
+    }
+
+    // Total par ressources
+    caisse = caisseetatBesion + caissesalaire + caisseCampaign + caisseProjet;
+    banque = banqueetatBesion + banquesalaire + banqueCampaign + banqueProjet;
+    finPropre = finPropreetatBesion +
+        finPropresalaire +
+        finPropreCampaign +
+        finPropreProjet;
+    finExterieur = finExterieuretatBesion +
+        finExterieursalaire +
+        finExterieurCampaign +
+        finExterieurProjet;
+    
+    var coutTotalLigne = ligneBudgetaireList.where((element) => element.departement == data.departement && 
+      element.created.isBefore(data.periodeFin)).toList();
+    var caisseLigne = ligneBudgetaireList.where((element) => element.departement == data.departement && 
+      element.created.isBefore(data.periodeFin)).toList();
+    var banqueLigne = ligneBudgetaireList.where((element) => element.departement == data.departement && 
+      element.created.isBefore(data.periodeFin)).toList();
+    var finPropreLigne = ligneBudgetaireList.where((element) => element.departement == data.departement && 
+      element.created.isBefore(data.periodeFin)).toList();
+    var finExterieurLigne = ligneBudgetaireList.where((element) => element.departement == data.departement && 
+      element.created.isBefore(data.periodeFin)).toList();
+
+    double coutTotalSolde = 0.0;
+    double caisseSolde = 0.0;
+    double banqueSolde = 0.0;
+    double finPropreSolde = 0.0;
+    double finExterieurSolde = 0.0;
+
+    for (var item in coutTotalLigne) {
+      coutTotalSolde += double.parse(item.coutTotal);
+    }
+    for (var item in caisseLigne) {
+      caisseSolde += double.parse(item.caisse) - caisse;
+    }
+    for (var item in banqueLigne) {
+      banqueSolde += double.parse(item.banque) - banque;
+    }
+    for (var item in finPropreLigne) {
+      finPropreSolde += double.parse(item.finPropre) - finPropre;
+    }
+    for (var item in finExterieurLigne) {
+      finExterieurSolde += double.parse(item.finExterieur) - finExterieur;
+    }
+
+    return Row(children: [
+      Expanded(
+          child: Column(
+        children: [
+          const Text("Coût total",
+              style: TextStyle(fontWeight: FontWeight.bold)),
+          SelectableText(
+              "${NumberFormat.decimalPattern('fr').format(coutTotalSolde)} \$",
+              textAlign: TextAlign.center,
+              style: headline6),
+        ],
+      )),
+      Expanded(
+          child: Container(
+            decoration: BoxDecoration(
+              border: Border(
+            left: BorderSide(
+              color: Colors.amber.shade700,
+              width: 2,
+            ),
+          )),
+            child: Column(
+        children: [
+            const Text("Solde Caisse",
+                style: TextStyle(fontWeight: FontWeight.bold)),
+            SelectableText(
+                "${NumberFormat.decimalPattern('fr').format(caisseSolde)} \$",
+                textAlign: TextAlign.center,
+                style: headline6),
+        ],
+      ),
+          )),
+      Expanded(
+          child: Container(
+        decoration: BoxDecoration(
+            border: Border(
+          left: BorderSide(
+            color: Colors.amber.shade700,
+            width: 2,
+          ),
+        )),
+        child: Column(
+          children: [
+            const Text("Solde Banque",
+                style: TextStyle(fontWeight: FontWeight.bold)),
+            SelectableText(
+                "${NumberFormat.decimalPattern('fr').format(banqueSolde)} \$",
+                textAlign: TextAlign.center,
+                style: headline6),
+          ],
+        ),
+      )),
+      Expanded(
+          child: Container(
+        decoration: BoxDecoration(
+            border: Border(
+          left: BorderSide(
+            color: Colors.amber.shade700,
+            width: 2,
+          ),
+        )),
+        child: Column(
+          children: [
+            const Text("Solde Fonds Propres",
+                style: TextStyle(fontWeight: FontWeight.bold)),
+            SelectableText(
+                "${NumberFormat.decimalPattern('fr').format(finPropreSolde)} \$",
+                textAlign: TextAlign.center,
+                style: headline6),
+          ],
+        ),
+      )),
+      Expanded(
+          child: Container(
+        decoration: BoxDecoration(
+            border: Border(
+          left: BorderSide(
+            color: Colors.amber.shade700,
+            width: 2,
+          ),
+        )),
+        child: Column(
+          children: [
+            const Text("Solde Reste à trouver",
+                style: TextStyle(fontWeight: FontWeight.bold)),
+            SelectableText(
+                "${NumberFormat.decimalPattern('fr').format(finExterieurSolde)} \$",
+                textAlign: TextAlign.center,
+                style: headline6!.copyWith(color: Colors.red.shade700)),
+          ],
+        ),
+      )),
+    ]);
+  }
+
+
+
+
+
+
+
+  Widget infosEditeurWidget(DepartementBudgetModel data) {
     final bodyMedium = Theme.of(context).textTheme.bodyLarge;
     final bodySmall = Theme.of(context).textTheme.bodyMedium;
     List<String> dataList = ['Approved', 'Unapproved', '-'];
@@ -453,7 +813,7 @@ class _DetailDepartmentBudgetState extends State<DetailDepartmentBudget> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Expanded(
-                          flex: 3,
+                        flex: 3,
                           child: Column(
                             children: [
                               Text(

@@ -33,13 +33,11 @@ class _AjoutLigneBudgetaireState extends State<AjoutLigneBudgetaire> {
   TextEditingController departementController = TextEditingController();
   TextEditingController periodeBudgetController = TextEditingController();
   TextEditingController uniteChoisieController = TextEditingController();
-  TextEditingController nombreUniteController = TextEditingController();
-  TextEditingController coutUnitaireController = TextEditingController();
-  TextEditingController coutTotalController = TextEditingController();
-  TextEditingController caisseController = TextEditingController();
-  TextEditingController banqueController = TextEditingController();
-  TextEditingController finPropreController = TextEditingController();
-  TextEditingController finExterieurController = TextEditingController();
+  double nombreUniteController = 0.0;
+  double coutUnitaireController = 0.0;
+  double caisseController = 0.0;
+  double banqueController = 0.0;
+  double finPropreController = 0.0;
 
   @override
   initState() {
@@ -60,13 +58,6 @@ class _AjoutLigneBudgetaireState extends State<AjoutLigneBudgetaire> {
     departementController.dispose();
     periodeBudgetController.dispose();
     uniteChoisieController.dispose();
-    nombreUniteController.dispose();
-    coutUnitaireController.dispose();
-    coutTotalController.dispose();
-    caisseController.dispose();
-    banqueController.dispose();
-    finPropreController.dispose();
-    finExterieurController.dispose();
 
     super.dispose();
   }
@@ -188,7 +179,7 @@ class _AjoutLigneBudgetaireState extends State<AjoutLigneBudgetaire> {
                     ),
                     Row(
                       children: [
-                        Expanded(child: coutTotalWidget()),
+                        Expanded(child: coutTotalValeur()),
                         const SizedBox(
                           width: p10,
                         ),
@@ -210,7 +201,7 @@ class _AjoutLigneBudgetaireState extends State<AjoutLigneBudgetaire> {
                         const SizedBox(
                           width: p10,
                         ),
-                        Expanded(child: finExterieurWidget())
+                        Expanded(child: finExterieurValeur())
                       ],
                     ),
                     const SizedBox(
@@ -328,8 +319,10 @@ class _AjoutLigneBudgetaireState extends State<AjoutLigneBudgetaire> {
     return Container(
         margin: const EdgeInsets.only(bottom: p20),
         child: TextFormField(
-          controller: nombreUniteController,
-          keyboardType: TextInputType.text,
+          keyboardType: TextInputType.number,
+          inputFormatters: <TextInputFormatter>[
+            FilteringTextInputFormatter.digitsOnly
+          ],
           decoration: InputDecoration(
             border:
                 OutlineInputBorder(borderRadius: BorderRadius.circular(10.0)),
@@ -343,6 +336,9 @@ class _AjoutLigneBudgetaireState extends State<AjoutLigneBudgetaire> {
               return null;
             }
           },
+          onChanged: (value) => setState(() {
+            nombreUniteController = (value == "") ? 1 : double.parse(value);
+          }),
         ));
   }
 
@@ -350,7 +346,6 @@ class _AjoutLigneBudgetaireState extends State<AjoutLigneBudgetaire> {
     return Container(
         margin: const EdgeInsets.only(bottom: p20),
         child: TextFormField(
-          controller: coutUnitaireController,
           keyboardType: TextInputType.number,
           inputFormatters: <TextInputFormatter>[
             FilteringTextInputFormatter.digitsOnly
@@ -368,147 +363,169 @@ class _AjoutLigneBudgetaireState extends State<AjoutLigneBudgetaire> {
               return null;
             }
           },
-        ));
-  }
-
-  Widget coutTotalWidget() {
-    return Container(
-        margin: const EdgeInsets.only(bottom: p20),
-        child: TextFormField(
-          controller: coutTotalController,
-          keyboardType: TextInputType.number,
-          inputFormatters: <TextInputFormatter>[
-            FilteringTextInputFormatter.digitsOnly
-          ],
-          decoration: InputDecoration(
-            border:
-                OutlineInputBorder(borderRadius: BorderRadius.circular(10.0)),
-            labelText: 'Coût Total',
-          ),
-          style: const TextStyle(),
-          validator: (value) {
-            if (value != null && value.isEmpty) {
-              return 'Ce champs est obligatoire';
-            } else {
-              return null;
-            }
-          },
+          onChanged: (value) => setState(() {
+            coutUnitaireController = (value == "") ? 1 : double.parse(value);
+          }),
         ));
   }
 
   Widget caisseWidget() {
+    final headline6 = Theme.of(context).textTheme.headline6;
     return Container(
         margin: const EdgeInsets.only(bottom: p20),
-        child: TextFormField(
-          controller: caisseController,
-          keyboardType: TextInputType.number,
-          inputFormatters: <TextInputFormatter>[
-            FilteringTextInputFormatter.digitsOnly
+        child: Row(
+          children: [
+            Expanded(
+              flex: 3,
+              child: TextFormField(
+                keyboardType: TextInputType.number,
+                inputFormatters: <TextInputFormatter>[
+                  FilteringTextInputFormatter.digitsOnly
+                ],
+                decoration: InputDecoration(
+                  border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10.0)),
+                  labelText: 'Caisse',
+                ),
+                style: const TextStyle(),
+                validator: (value) {
+                  if (value != null && value.isEmpty) {
+                    return 'Ce champs est obligatoire';
+                  } else {
+                    return null;
+                  }
+                },
+                onChanged: (value) => setState(() {
+                  caisseController = (value == "") ? 1 : double.parse(value);
+                }),
+              ),
+            ),
+            Expanded(
+                flex: 1,
+                child: Container(
+                    margin: const EdgeInsets.only(left: 10.0, bottom: 20.0),
+                    child: Text('\$', style: headline6)))
           ],
-          decoration: InputDecoration(
-            border:
-                OutlineInputBorder(borderRadius: BorderRadius.circular(10.0)),
-            labelText: 'Caisse',
-          ),
-          style: const TextStyle(),
-          validator: (value) {
-            if (value != null && value.isEmpty) {
-              return 'Ce champs est obligatoire';
-            } else {
-              return null;
-            }
-          },
         ));
   }
 
   Widget banqueWidget() {
+    final headline6 = Theme.of(context).textTheme.headline6;
     return Container(
         margin: const EdgeInsets.only(bottom: p20),
-        child: TextFormField(
-          controller: banqueController,
-          keyboardType: TextInputType.number,
-          inputFormatters: <TextInputFormatter>[
-            FilteringTextInputFormatter.digitsOnly
+        child: Row(
+          children: [
+            Expanded(
+              flex: 3,
+              child: TextFormField(
+                keyboardType: TextInputType.number,
+                inputFormatters: <TextInputFormatter>[
+                  FilteringTextInputFormatter.digitsOnly
+                ],
+                decoration: InputDecoration(
+                  border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10.0)),
+                  labelText: 'Banque',
+                ),
+                style: const TextStyle(),
+                validator: (value) {
+                  if (value != null && value.isEmpty) {
+                    return 'Ce champs est obligatoire';
+                  } else {
+                    return null;
+                  }
+                },
+                onChanged: (value) => setState(() {
+                  banqueController = (value == "") ? 1 : double.parse(value);
+                }),
+              ),
+            ),
+            Expanded(
+                flex: 1,
+                child: Container(
+                    margin: const EdgeInsets.only(left: 10.0, bottom: 20.0),
+                    child: Text('\$', style: headline6)))
           ],
-          decoration: InputDecoration(
-            border:
-                OutlineInputBorder(borderRadius: BorderRadius.circular(10.0)),
-            labelText: 'Banque',
-          ),
-          style: const TextStyle(),
-          validator: (value) {
-            if (value != null && value.isEmpty) {
-              return 'Ce champs est obligatoire';
-            } else {
-              return null;
-            }
-          },
         ));
   }
 
   Widget finPropreWidget() {
+    final headline6 = Theme.of(context).textTheme.headline6;
     return Container(
         margin: const EdgeInsets.only(bottom: p20),
-        child: TextFormField(
-          controller: finPropreController,
-          keyboardType: TextInputType.number,
-          inputFormatters: <TextInputFormatter>[
-            FilteringTextInputFormatter.digitsOnly
+        child: Row(
+          children: [
+            Expanded(
+              flex: 3,
+              child: TextFormField(
+                keyboardType: TextInputType.number,
+                inputFormatters: <TextInputFormatter>[
+                  FilteringTextInputFormatter.digitsOnly
+                ],
+                decoration: InputDecoration(
+                  border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10.0)),
+                  labelText: 'Fonds Propres',
+                ),
+                style: const TextStyle(),
+                validator: (value) {
+                  if (value != null && value.isEmpty) {
+                    return 'Ce champs est obligatoire';
+                  } else {
+                    return null;
+                  }
+                },
+                onChanged: (value) => setState(() {
+                  finPropreController = (value == "") ? 1 : double.parse(value);
+                }),
+              ),
+            ),
+            Expanded(
+                flex: 1,
+                child: Container(
+                    margin: const EdgeInsets.only(left: 10.0, bottom: 20.0),
+                    child: Text('\$', style: headline6)))
           ],
-          decoration: InputDecoration(
-            border:
-                OutlineInputBorder(borderRadius: BorderRadius.circular(10.0)),
-            labelText: 'Fond Propre',
-          ),
-          style: const TextStyle(),
-          validator: (value) {
-            if (value != null && value.isEmpty) {
-              return 'Ce champs est obligatoire';
-            } else {
-              return null;
-            }
-          },
         ));
   }
 
-  Widget finExterieurWidget() {
+  Widget coutTotalValeur() {
+    final headline6 = Theme.of(context).textTheme.headline6;
+    final coutToal = nombreUniteController * coutUnitaireController;
     return Container(
-        margin: const EdgeInsets.only(bottom: p20),
-        child: TextFormField(
-          controller: finExterieurController,
-          keyboardType: TextInputType.number,
-          inputFormatters: <TextInputFormatter>[
-            FilteringTextInputFormatter.digitsOnly
-          ],
-          decoration: InputDecoration(
-            border:
-                OutlineInputBorder(borderRadius: BorderRadius.circular(10.0)),
-            labelText: 'fond Exterieur',
-          ),
-          style: const TextStyle(),
-          validator: (value) {
-            if (value != null && value.isEmpty) {
-              return 'Ce champs est obligatoire';
-            } else {
-              return null;
-            }
-          },
-        ));
+        margin: const EdgeInsets.only(left: 10.0, bottom: 20.0),
+        child: Text('Coût total: ${coutToal.toStringAsFixed(2)} \$',
+            style: headline6));
+  }
+
+  Widget finExterieurValeur() {
+    final headline6 = Theme.of(context).textTheme.headline6;
+    final coutToal = nombreUniteController * coutUnitaireController;
+    final fonds = caisseController + banqueController + finPropreController;
+    final fondsAtrouver = coutToal - fonds;
+    return Container(
+        margin: const EdgeInsets.only(left: 10.0, bottom: 20.0),
+        child: Text('Reste à trouver: ${fondsAtrouver.toStringAsFixed(2)} \$',
+            style: headline6!.copyWith(color: Colors.red.shade700)));
   }
 
   Future<void> submit() async {
+    final coutToal = nombreUniteController * coutUnitaireController;
+    final fonds = caisseController + banqueController + finPropreController;
+    final fondsAtrouver = coutToal - fonds;
+
     final ligneBudgetaireModel = LigneBudgetaireModel(
         nomLigneBudgetaire: nomLigneBudgetaireController.text,
         departement: departementController.text,
-        periodeBudget: periodeBudgetController.text,
+        periodeBudget: widget.departementBudgetModel.periodeFin.toIso8601String(),
         uniteChoisie: uniteChoisieController.text,
-        nombreUnite: nombreUniteController.text,
-        coutUnitaire: coutUnitaireController.text,
-        coutTotal: coutTotalController.text,
-        caisse: caisseController.text,
-        banque: banqueController.text,
-        finPropre: finPropreController.text,
-        finExterieur: finExterieurController.text,
+        nombreUnite: nombreUniteController.toString(),
+        coutUnitaire: coutUnitaireController.toString(),
+        coutTotal: coutToal.toString(),
+        caisse: caisseController.toString(),
+        banque: banqueController.toString(),
+        finPropre: finPropreController.toString(),
+        finExterieur: fondsAtrouver.toString(),
         approbationDG: '-',
         signatureDG: '-',
         signatureJustificationDG: '-',

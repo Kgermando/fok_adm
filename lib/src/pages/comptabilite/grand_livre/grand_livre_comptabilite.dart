@@ -4,7 +4,6 @@ import 'package:fokad_admin/src/constants/responsive.dart';
 import 'package:fokad_admin/src/navigation/drawer/drawer_menu.dart';
 import 'package:fokad_admin/src/navigation/header/custom_appbar.dart';
 import 'package:fokad_admin/src/pages/comptabilite/grand_livre/components/search_grand_livre.dart';
-import 'package:fokad_admin/src/pages/comptabilite/grand_livre/components/table_grand_livre.dart';
 
 
 class GrandLivreComptabilite extends StatefulWidget {

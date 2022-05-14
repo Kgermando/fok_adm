@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:fokad_admin/src/api/logistiques/anguin_api.dart';
 import 'package:fokad_admin/src/api/logistiques/carburant_api.dart';
@@ -13,7 +14,9 @@ import 'package:fokad_admin/src/navigation/drawer/drawer_menu.dart';
 import 'package:fokad_admin/src/navigation/header/custom_appbar.dart';
 import 'package:fokad_admin/src/pages/logistiques/dashboard/components/enguin_pie.dart';
 import 'package:fokad_admin/src/pages/logistiques/dashboard/components/etat_materiel_pie.dart';
-import 'package:fokad_admin/src/pages/rh/dashboard/components/dash_number_widget.dart';
+import 'package:fokad_admin/src/widgets/dash_number_widget.dart';
+import 'package:fokad_admin/src/widgets/title_widget.dart';
+import 'package:intl/intl.dart';
 
 class DashboardLog extends StatefulWidget {
   const DashboardLog({Key? key}) : super(key: key);
@@ -208,80 +211,17 @@ class _DashboardLogState extends State<DashboardLog> {
                                   color: Colors.red.shade700),
                               ],
                             ),
-                            Wrap(
-                              alignment: WrapAlignment.spaceEvenly,
-                              children: [
-                                DashNumberWidget(
-                                  number: '$entrerEssence',
-                                  title: 'Essence Ravitailement',
-                                  icon: Icons.ev_station_sharp,
-                                  color: Colors.green.shade700),
-                                DashNumberWidget(
-                                    number: '$entrerMazoute',
-                                    title: 'Mazoute Ravitailement',
-                                    icon: Icons.ev_station_sharp,
-                                    color: Colors.green.shade700),
-                                DashNumberWidget(
-                                    number: '$entrerPetrole',
-                                    title: 'Petrole Ravitailement',
-                                    icon: Icons.ev_station_sharp,
-                                    color: Colors.green.shade700),
-                                DashNumberWidget(
-                                    number: '$entrerHuilleMoteur',
-                                    title: 'Huile Moteur Ravitailement',
-                                    icon: Icons.ev_station_sharp,
-                                    color: Colors.green.shade700),
-                              ],
-                            ),
-                            Wrap(
-                              alignment: WrapAlignment.spaceEvenly,
-                              children: [
-                                 DashNumberWidget(
-                                    number: '$sortieEssence',
-                                    title: 'Essence Consommation',
-                                    icon: Icons.ev_station_sharp,
-                                    color: Colors.pink.shade700),
-                                DashNumberWidget(
-                                  number: '$sortieMazoute',
-                                  title: 'Mazoute Consommation',
-                                  icon: Icons.ev_station_sharp,
-                                  color: Colors.pink.shade700),
-                                DashNumberWidget(
-                                    number: '$sortiePetrole',
-                                    title: 'Petrole Consommation',
-                                    icon: Icons.ev_station_sharp,
-                                    color: Colors.pink.shade700),
-                                DashNumberWidget(
-                                    number: '$sortieHuilleMoteur',
-                                    title: 'Huile Moteur Consommation',
-                                    icon: Icons.ev_station_sharp,
-                                    color: Colors.pink.shade700),
-                              ],
-                            ),
-                            Wrap(
-                              alignment: WrapAlignment.spaceEvenly,
-                              children: [
-                                 DashNumberWidget(
-                                    number: '${entrerEssence - sortieEssence}',
-                                    title: 'Essence Disponible',
-                                    icon: Icons.ev_station_sharp,
-                                    color: Colors.orange.shade700),
-                                DashNumberWidget(
-                                    number: '${entrerMazoute - sortieMazoute}',
-                                    title: 'Mazoute Disponible ',
-                                    icon: Icons.ev_station_sharp,
-                                    color: Colors.orange.shade700),
-                                DashNumberWidget(
-                                  number: '${entrerPetrole - sortiePetrole}',
-                                  title: 'Petrole Disponible ',
-                                  icon: Icons.ev_station_sharp,
-                                  color: Colors.orange.shade700),
-                                DashNumberWidget(
-                                    number:
-                                        '${entrerHuilleMoteur - sortieHuilleMoteur}',
-                                    title: 'Huile Moteur Disponible ',
-                                    icon: Icons.ev_station_sharp,
-                                    color: Colors.orange.shade700),
+
+                            const SizedBox(height: p30),
+                            const TitleWidget(title: "Tableau carburants"),
+                            const SizedBox(height: p10),
+                            Table(
+                              children: <TableRow>[
+                                tableCarburant(),
+                                tableCellEssence(),
+                                tableCellMazoute(),
+                                tableCellPetrole(),
+                                tableCellHuileMoteur()
                               ],
                             ),
 
@@ -315,6 +255,459 @@ class _DashboardLogState extends State<DashboardLog> {
           ),
         ));
   }
+
+
+  TableRow tableCarburant() {
+    final headline6 = Theme.of(context).textTheme.headline6;
+    return TableRow(children: [
+      Card(
+        elevation: 10.0,
+        shadowColor: Colors.amber.shade700,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10.0),
+        ),
+        child: Container(
+          width: 300,
+          height: 50,
+          color: Colors.amber.shade700,
+          padding: const EdgeInsets.all(16.0 * 0.75),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const Icon(Icons.ev_station_sharp, color: Colors.white),
+              const SizedBox(width: p10),
+              AutoSizeText(
+                "CARBURANTS",
+                maxLines: 1,
+                style: headline6!.copyWith(color: Colors.white),
+              ),
+            ],
+          ),
+        ),
+      ),
+      Card(
+        elevation: 10.0,
+        shadowColor: Colors.amber.shade700,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10.0),
+        ),
+        child: Container(
+          width: 300,
+          height: 50,
+          padding: const EdgeInsets.all(16.0 * 0.75),
+          decoration:
+              BoxDecoration(border: Border.all(color: Colors.amber.shade700)),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const Icon(Icons.ev_station_sharp),
+              const SizedBox(width: p10),
+              AutoSizeText(
+                "Ravitailements".toUpperCase(),
+                maxLines: 1,
+                textAlign: TextAlign.center,
+                style: headline6.copyWith(fontWeight: FontWeight.bold),
+              ),
+            ],
+          ),
+        ),
+      ),
+      Card(
+        elevation: 10.0,
+        shadowColor: Colors.amber.shade700,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10.0),
+        ),
+        child: Container(
+          width: 300,
+          height: 50,
+          padding: const EdgeInsets.all(16.0 * 0.75),
+          decoration:
+              BoxDecoration(border: Border.all(color: Colors.amber.shade700)),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const Icon(Icons.ev_station_sharp),
+              const SizedBox(width: p10),
+              AutoSizeText(
+                "Consommations".toUpperCase(),
+                maxLines: 1,
+                textAlign: TextAlign.center,
+                style: headline6.copyWith(fontWeight: FontWeight.bold),
+              ),
+            ],
+          ),
+        ),
+      ),
+      Card(
+        elevation: 10.0,
+        shadowColor: Colors.amber.shade700,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10.0),
+        ),
+        child: Container(
+          width: 300,
+          height: 50,
+          padding: const EdgeInsets.all(16.0 * 0.75),
+          decoration:
+              BoxDecoration(border: Border.all(color: Colors.amber.shade700)),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const Icon(Icons.ev_station_sharp),
+              const SizedBox(width: p10),
+              AutoSizeText(
+                "Disponibles".toUpperCase(),
+                maxLines: 1,
+                textAlign: TextAlign.center,
+                style: headline6.copyWith(fontWeight: FontWeight.bold),
+              ),
+            ],
+          ),
+        ),
+      ),
+     
+    ]);
+  }
+
+  TableRow tableCellEssence() {
+    final headline6 = Theme.of(context).textTheme.headline6;
+    return TableRow(children: [
+      Card(
+        elevation: 10.0,
+        shadowColor: Colors.orange.shade700,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10.0),
+        ),
+        child: Container(
+          width: 300,
+          height: 50,
+          color: Colors.orange.shade700,
+          padding: const EdgeInsets.all(16.0 * 0.75),
+          child: AutoSizeText(
+            "Essence",
+            maxLines: 1,
+            style: headline6!.copyWith(color: Colors.white),
+          ),
+        ),
+      ),
+      Card(
+        elevation: 10.0,
+        shadowColor: Colors.orange.shade700,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10.0),
+        ),
+        child: Container(
+          width: 300,
+          height: 50,
+          padding: const EdgeInsets.all(16.0 * 0.75),
+          decoration:
+              BoxDecoration(border: Border.all(color: Colors.orange.shade700)),
+          child: AutoSizeText(
+            "${NumberFormat.decimalPattern('fr').format(entrerEssence)} L",
+            maxLines: 1,
+            textAlign: TextAlign.center,
+            style: headline6,
+          ),
+        ),
+      ),
+      Card(
+        elevation: 10.0,
+        shadowColor: Colors.orange.shade700,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10.0),
+        ),
+        child: Container(
+          width: 300,
+          height: 50,
+          padding: const EdgeInsets.all(16.0 * 0.75),
+          decoration:
+              BoxDecoration(border: Border.all(color: Colors.orange.shade700)),
+          child: AutoSizeText(
+            "${NumberFormat.decimalPattern('fr').format(sortieEssence)} L",
+            maxLines: 1,
+            textAlign: TextAlign.center,
+            style: headline6,
+          ),
+        ),
+      ),
+      Card(
+        elevation: 10.0,
+        shadowColor: Colors.orange.shade700,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10.0),
+        ),
+        child: Container(
+          width: 300,
+          height: 50,
+          padding: const EdgeInsets.all(16.0 * 0.75),
+          decoration:
+              BoxDecoration(border: Border.all(color: Colors.orange.shade700)),
+          child: AutoSizeText(
+            "${NumberFormat.decimalPattern('fr').format(entrerEssence - sortieEssence)} L",
+            maxLines: 1,
+            textAlign: TextAlign.center,
+            style: headline6,
+          ),
+        ),
+      ),
+    ]);
+  }
+
+  TableRow tableCellMazoute() {
+    final headline6 = Theme.of(context).textTheme.headline6;
+    return TableRow(children: [
+      Card(
+        elevation: 10.0,
+        shadowColor: Colors.teal.shade700,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10.0),
+        ),
+        child: Container(
+          width: 300,
+          height: 50,
+          color: Colors.teal.shade700,
+          padding: const EdgeInsets.all(16.0 * 0.75),
+          child: AutoSizeText(
+            "Mazoute",
+            maxLines: 1,
+            style: headline6!.copyWith(color: Colors.white),
+          ),
+        ),
+      ),
+      Card(
+        elevation: 10.0,
+        shadowColor: Colors.teal.shade700,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10.0),
+        ),
+        child: Container(
+          width: 300,
+          height: 50,
+          padding: const EdgeInsets.all(16.0 * 0.75),
+          decoration:
+              BoxDecoration(border: Border.all(color: Colors.teal.shade700)),
+          child: AutoSizeText(
+            "${NumberFormat.decimalPattern('fr').format(entrerMazoute)} L",
+            maxLines: 1,
+            textAlign: TextAlign.center,
+            style: headline6,
+          ),
+        ),
+      ),
+      Card(
+        elevation: 10.0,
+        shadowColor: Colors.teal.shade700,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10.0),
+        ),
+        child: Container(
+          width: 300,
+          height: 50,
+          padding: const EdgeInsets.all(16.0 * 0.75),
+          decoration:
+              BoxDecoration(border: Border.all(color: Colors.teal.shade700)),
+          child: AutoSizeText(
+            "${NumberFormat.decimalPattern('fr').format(sortieMazoute)} L",
+            maxLines: 1,
+            textAlign: TextAlign.center,
+            style: headline6,
+          ),
+        ),
+      ),
+      Card(
+        elevation: 10.0,
+        shadowColor: Colors.teal.shade700,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10.0),
+        ),
+        child: Container(
+          width: 300,
+          height: 50,
+          padding: const EdgeInsets.all(16.0 * 0.75),
+          decoration:
+              BoxDecoration(border: Border.all(color: Colors.teal.shade700)),
+          child: AutoSizeText(
+            "${NumberFormat.decimalPattern('fr').format(entrerMazoute - sortieMazoute)} L",
+            maxLines: 1,
+            textAlign: TextAlign.center,
+            style: headline6,
+          ),
+        ),
+      ),
+    ]);
+  }
+
+  TableRow tableCellPetrole() {
+    final headline6 = Theme.of(context).textTheme.headline6;
+    return TableRow(children: [
+      Card(
+        elevation: 10.0,
+        shadowColor: Colors.lime.shade700,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10.0),
+        ),
+        child: Container(
+          width: 300,
+          height: 50,
+          color: Colors.lime.shade700,
+          padding: const EdgeInsets.all(16.0 * 0.75),
+          child: AutoSizeText(
+            "Petrole",
+            maxLines: 1,
+            style: headline6!.copyWith(color: Colors.white),
+          ),
+        ),
+      ),
+      Card(
+        elevation: 10.0,
+        shadowColor: Colors.lime.shade700,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10.0),
+        ),
+        child: Container(
+          width: 300,
+          height: 50,
+          padding: const EdgeInsets.all(16.0 * 0.75),
+          decoration:
+              BoxDecoration(border: Border.all(color: Colors.lime.shade700)),
+          child: AutoSizeText(
+            "${NumberFormat.decimalPattern('fr').format(entrerPetrole)} L",
+            maxLines: 1,
+            textAlign: TextAlign.center,
+            style: headline6,
+          ),
+        ),
+      ),
+      Card(
+        elevation: 10.0,
+        shadowColor: Colors.lime.shade700,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10.0),
+        ),
+        child: Container(
+          width: 300,
+          height: 50,
+          padding: const EdgeInsets.all(16.0 * 0.75),
+          decoration:
+              BoxDecoration(border: Border.all(color: Colors.lime.shade700)),
+          child: AutoSizeText(
+            "${NumberFormat.decimalPattern('fr').format(sortiePetrole)} L",
+            maxLines: 1,
+            textAlign: TextAlign.center,
+            style: headline6,
+          ),
+        ),
+      ),
+      Card(
+        elevation: 10.0,
+        shadowColor: Colors.lime.shade700,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10.0),
+        ),
+        child: Container(
+          width: 300,
+          height: 50,
+          padding: const EdgeInsets.all(16.0 * 0.75),
+          decoration:
+              BoxDecoration(border: Border.all(color: Colors.lime.shade700)),
+          child: AutoSizeText(
+            "${NumberFormat.decimalPattern('fr').format(entrerPetrole - sortiePetrole)} L",
+            maxLines: 1,
+            textAlign: TextAlign.center,
+            style: headline6,
+          ),
+        ),
+      ),
+    ]);
+  }
+
+  TableRow tableCellHuileMoteur() {
+    final headline6 = Theme.of(context).textTheme.headline6;
+    return TableRow(children: [
+      Card(
+        elevation: 10.0,
+        shadowColor: Colors.indigo.shade700,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10.0),
+        ),
+        child: Container(
+          width: 300,
+          height: 50,
+          color: Colors.indigo.shade700,
+          padding: const EdgeInsets.all(16.0 * 0.75),
+          child: AutoSizeText(
+            "Huile Moteur",
+            maxLines: 1,
+            style: headline6!.copyWith(color: Colors.white),
+          ),
+        ),
+      ),
+      Card(
+        elevation: 10.0,
+        shadowColor: Colors.indigo.shade700,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10.0),
+        ),
+        child: Container(
+          width: 300,
+          height: 50,
+          padding: const EdgeInsets.all(16.0 * 0.75),
+          decoration:
+              BoxDecoration(border: Border.all(color: Colors.indigo.shade700)),
+          child: AutoSizeText(
+            "${NumberFormat.decimalPattern('fr').format(entrerHuilleMoteur)} L",
+            maxLines: 1,
+            textAlign: TextAlign.center,
+            style: headline6,
+          ),
+        ),
+      ),
+      Card(
+        elevation: 10.0,
+        shadowColor: Colors.indigo.shade700,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10.0),
+        ),
+        child: Container(
+          width: 300,
+          height: 50,
+          padding: const EdgeInsets.all(16.0 * 0.75),
+          decoration:
+              BoxDecoration(border: Border.all(color: Colors.indigo.shade700)),
+          child: AutoSizeText(
+            "${NumberFormat.decimalPattern('fr').format(sortieHuilleMoteur)} L",
+            maxLines: 1,
+            textAlign: TextAlign.center,
+            style: headline6,
+          ),
+        ),
+      ),
+      Card(
+        elevation: 10.0,
+        shadowColor: Colors.indigo.shade700,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10.0),
+        ),
+        child: Container(
+          width: 300,
+          height: 50,
+          padding: const EdgeInsets.all(16.0 * 0.75),
+          decoration:
+              BoxDecoration(border: Border.all(color: Colors.indigo.shade700)),
+          child: AutoSizeText(
+            "${NumberFormat.decimalPattern('fr').format(entrerHuilleMoteur - sortieHuilleMoteur)} L",
+            maxLines: 1,
+            textAlign: TextAlign.center,
+            style: headline6,
+          ),
+        ),
+      ),
+    ]);
+  }
+
+  
+ 
 
 
   

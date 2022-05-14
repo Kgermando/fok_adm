@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:fokad_admin/src/api/auth/auth_api.dart';
 import 'package:fokad_admin/src/api/budgets/departement_budget_api.dart';
 import 'package:fokad_admin/src/models/budgets/departement_budget_model.dart';
+import 'package:fokad_admin/src/models/users/user_model.dart';
 import 'package:fokad_admin/src/pages/budgets/budgets_previsionels/components/detail_departement_budget.dart';
 import 'package:fokad_admin/src/widgets/print_widget.dart';
 import 'package:fokad_admin/src/utils/class_implemented.dart';
@@ -130,10 +132,13 @@ class _TableDepartementBudgetState extends State<TableDepartementBudget> {
   }
 
   Future agentsRow() async {
+    UserModel userModel = await AuthApi().getUserId();
     List<DepartementBudgetModel?> dataList =
         await DepeartementBudgetApi().getAllData();
     var data = dataList
-      .where((element) => element!.approbationDG == "Approved" && 
+      .where((element) => element!.signature == userModel.matricule  &&
+                DateTime.now().isBefore(element.periodeFin) 
+        || element.approbationDG == "Approved" && 
       element.approbationDD == "Approved" && DateTime.now().isBefore(element.periodeFin))
       .toList();
 
@@ -144,9 +149,9 @@ class _TableDepartementBudgetState extends State<TableDepartementBudget> {
           rows.add(PlutoRow(cells: {
             'id': PlutoCell(value: item!.id),
             'departement': PlutoCell(value: item.departement),
-            'periodeBudget': PlutoCell(value: "${DateFormat("DD-MM-yyyy").format(item.periodeDebut)}-${DateFormat("dd-MM-yyyy").format(item.periodeFin)}" ),
+            'periodeBudget': PlutoCell(value: "${DateFormat("dd-MM-yyyy").format(item.periodeDebut)} - ${DateFormat("dd-MM-yyyy").format(item.periodeFin)}" ),
             'created': PlutoCell(
-                value: DateFormat("DD-MM-yyyy HH:mm").format(item.created))
+                value: DateFormat("dd-MM-yyyy HH:mm").format(item.created))
           }));
         }
         stateManager!.resetCurrentState();

@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:fokad_admin/src/api/budgets/departement_budget_api.dart';
 import 'package:fokad_admin/src/api/comm_marketing/marketing/campaign_api.dart';
@@ -7,7 +9,6 @@ import 'package:fokad_admin/src/api/rh/paiement_salaire_api.dart';
 import 'package:fokad_admin/src/constants/app_theme.dart';
 import 'package:fokad_admin/src/constants/responsive.dart';
 import 'package:fokad_admin/src/models/comm_maketing/campaign_model.dart';
-import 'package:fokad_admin/src/models/rh/paiement_salaire_model.dart';
 import 'package:fokad_admin/src/navigation/drawer/drawer_menu.dart';
 import 'package:fokad_admin/src/navigation/header/custom_appbar.dart';
 import 'package:fokad_admin/src/pages/budgets/budget_dd/components/table_campaign_fin.dart';
@@ -41,12 +42,18 @@ class _BudgetDDState extends State<BudgetDD> {
 
   @override
   void initState() {
-    getData();
+    Timer.periodic(const Duration(milliseconds: 500), ((timer) {
+      setState(() {
+        getData();
+      });
+      timer.cancel();
+    }));
+
     super.initState();
   }
 
   Future<void> getData() async {
-    List<PaiementSalaireModel?> dataList =
+    var dataList =
         await PaiementSalaireApi().getAllData();
     List<CampaignModel> campaign = await CampaignApi().getAllData();
     var devis = await DevisAPi().getAllData();
@@ -56,27 +63,32 @@ class _BudgetDDState extends State<BudgetDD> {
     setState(() {
       salaireCount = dataList
           .where((element) =>
-              element!.approbationBudget == '-')
+              element.approbationDD == "Approved" &&
+              element.approbationBudget == "-")
           .toList()
           .length;
       campaignCount = campaign
           .where((element) =>
-              element.approbationBudget == '-')
+              element.approbationDD == "Approved" &&
+              element.approbationBudget == "-")
           .toList()
           .length;
       devisCount = devis
           .where((element) =>
-              element.approbationBudget == '-')
+              element.approbationDD == "Approved" &&
+              element.approbationBudget == "-")
           .toList()
           .length;
       projetCount = projets
           .where((element) =>
-              element.approbationBudget == '-')
+              element.approbationDD == "Approved" &&
+              element.approbationBudget == "-")
           .toList()
           .length;
       budgetDepCount = budgetDep
           .where((element) =>
-              element.approbationBudget == '-' && DateTime.now().isBefore(element.periodeFin))
+              element.approbationBudget == '-' &&
+              DateTime.now().isBefore(element.periodeFin))
           .toList()
           .length;
     });

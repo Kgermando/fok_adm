@@ -144,7 +144,7 @@ class _HistoriqueTableDepartementBudgetState extends State<HistoriqueTableDepart
           rows.add(PlutoRow(cells: {
             'id': PlutoCell(value: item.id),
             'departement': PlutoCell(value: item.departement),
-            'periodeBudget': PlutoCell(value: "${DateFormat("DD-MM-yyyy HH:mm").format(item.periodeDebut)}-${DateFormat("DD-MM-yyyy HH:mm").format(item.periodeFin)}" ),
+            'periodeBudget': PlutoCell(value: "${DateFormat("DD-MM-yyyy HH:mm").format(item.periodeDebut)} - ${DateFormat("DD-MM-yyyy HH:mm").format(item.periodeFin)}" ),
             'created': PlutoCell(
                 value: DateFormat("DD-MM-yyyy HH:mm").format(item.created))
           }));
