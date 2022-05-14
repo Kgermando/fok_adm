@@ -189,6 +189,7 @@ class _DetailCreanceState extends State<DetailCreance> {
               )
             ],
           ),
+          Divider(color: Colors.amber.shade700),
           Row(
             children: [
               Expanded(
@@ -202,6 +203,7 @@ class _DetailCreanceState extends State<DetailCreance> {
               )
             ],
           ),
+          Divider(color: Colors.amber.shade700),
           Row(
             children: [
               Expanded(
@@ -215,6 +217,7 @@ class _DetailCreanceState extends State<DetailCreance> {
               )
             ],
           ),
+          Divider(color: Colors.amber.shade700),
           Row(
             children: [
               Expanded(
@@ -228,6 +231,7 @@ class _DetailCreanceState extends State<DetailCreance> {
               )
             ],
           ),
+          Divider(color: Colors.amber.shade700),
           Row(
             children: [
               Expanded(
@@ -241,6 +245,7 @@ class _DetailCreanceState extends State<DetailCreance> {
               )
             ],
           ),
+          Divider(color: Colors.amber.shade700),
           Row(
             children: [
               Expanded(
@@ -254,6 +259,7 @@ class _DetailCreanceState extends State<DetailCreance> {
               )
             ],
           ),
+          Divider(color: Colors.amber.shade700),
           Row(
             children: [
               Expanded(

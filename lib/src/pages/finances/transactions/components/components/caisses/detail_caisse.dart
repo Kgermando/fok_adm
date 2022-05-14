@@ -188,7 +188,7 @@ class _DetailCaisseState extends State<DetailCaisse> {
                       PrintWidget(
                           tooltip: 'Imprimer le document', onPressed: () {}),
                       SelectableText(
-                          DateFormat("dd-MM-yy").format(caisseModel.created),
+                          DateFormat("dd-MM-yyyy HH:mm").format(caisseModel.created),
                           textAlign: TextAlign.start),
                     ],
                   )
@@ -228,6 +228,7 @@ class _DetailCaisseState extends State<DetailCaisse> {
               )
             ],
           ),
+          Divider(color: Colors.amber.shade700),
           Row(
             children: [
               Expanded(
@@ -241,6 +242,7 @@ class _DetailCaisseState extends State<DetailCaisse> {
               )
             ],
           ),
+          Divider(color: Colors.amber.shade700),
           Row(
             children: [
               Expanded(
@@ -254,6 +256,7 @@ class _DetailCaisseState extends State<DetailCaisse> {
               )
             ],
           ),
+          Divider(color: Colors.amber.shade700),
           Row(
             children: [
               Expanded(
@@ -268,6 +271,8 @@ class _DetailCaisseState extends State<DetailCaisse> {
             ],
           ),
           if (caisseModel.typeOperation != 'Depot')
+          Divider(color: Colors.amber.shade700),
+          if (caisseModel.typeOperation != 'Depot')
             Row(
               children: [
                 Expanded(
@@ -281,6 +286,8 @@ class _DetailCaisseState extends State<DetailCaisse> {
                 )
               ],
             ),
+             if (caisseModel.typeOperation != 'Depot')
+             Divider(color: Colors.amber.shade700),
           if (caisseModel.typeOperation != 'Depot')
             Row(
               children: [
@@ -295,6 +302,7 @@ class _DetailCaisseState extends State<DetailCaisse> {
                 )
               ],
             ),
+          Divider(color: Colors.amber.shade700),
           Row(
             children: [
               Expanded(
@@ -308,6 +316,7 @@ class _DetailCaisseState extends State<DetailCaisse> {
               )
             ],
           ),
+          Divider(color: Colors.amber.shade700),
           Row(
             children: [
               Expanded(
@@ -321,6 +330,7 @@ class _DetailCaisseState extends State<DetailCaisse> {
               )
             ],
           ),
+          Divider(color: Colors.amber.shade700),
           Row(
             children: [
               Expanded(

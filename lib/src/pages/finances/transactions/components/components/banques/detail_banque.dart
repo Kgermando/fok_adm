@@ -186,7 +186,7 @@ class _DetailBanqueState extends State<DetailBanque> {
                       PrintWidget(
                           tooltip: 'Imprimer le document', onPressed: () {}),
                       SelectableText(
-                          DateFormat("dd-MM-yy").format(banqueModel.created),
+                          DateFormat("dd-MM-yyyy HH:mm").format(banqueModel.created),
                           textAlign: TextAlign.start),
                     ],
                   )
@@ -226,6 +226,7 @@ class _DetailBanqueState extends State<DetailBanque> {
               )
             ],
           ),
+          Divider(color: Colors.amber.shade700),
           Row(
             children: [
               Expanded(
@@ -239,6 +240,7 @@ class _DetailBanqueState extends State<DetailBanque> {
               )
             ],
           ),
+          Divider(color: Colors.amber.shade700),
           Row(
             children: [
               Expanded(
@@ -252,6 +254,7 @@ class _DetailBanqueState extends State<DetailBanque> {
               )
             ],
           ),
+          Divider(color: Colors.amber.shade700),
           Row(
             children: [
               Expanded(
@@ -265,6 +268,7 @@ class _DetailBanqueState extends State<DetailBanque> {
               )
             ],
           ),
+          Divider(color: Colors.amber.shade700),
           if (banqueModel.typeOperation != 'Depot')
             Row(
               children: [
@@ -279,6 +283,8 @@ class _DetailBanqueState extends State<DetailBanque> {
                 )
               ],
             ),
+            if (banqueModel.typeOperation != 'Depot')
+          Divider(color: Colors.amber.shade700),
           if (banqueModel.typeOperation != 'Depot')
             Row(
               children: [
@@ -294,6 +300,8 @@ class _DetailBanqueState extends State<DetailBanque> {
               ],
             ),
           if (banqueModel.typeOperation != 'Depot')
+          Divider(color: Colors.amber.shade700),
+          if (banqueModel.typeOperation != 'Depot')
             Row(
               children: [
                 Expanded(
@@ -307,6 +315,7 @@ class _DetailBanqueState extends State<DetailBanque> {
                 )
               ],
             ),
+          Divider(color: Colors.amber.shade700),
           Row(
             children: [
               Expanded(
@@ -320,6 +329,7 @@ class _DetailBanqueState extends State<DetailBanque> {
               )
             ],
           ),
+          Divider(color: Colors.amber.shade700),
           Row(
             children: [
               Expanded(
@@ -333,6 +343,7 @@ class _DetailBanqueState extends State<DetailBanque> {
               )
             ],
           ),
+          Divider(color: Colors.amber.shade700),
           Row(
             children: [
               Expanded(

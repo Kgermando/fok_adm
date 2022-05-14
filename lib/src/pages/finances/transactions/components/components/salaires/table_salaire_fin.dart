@@ -72,7 +72,9 @@ class _TableSalaireFinState extends State<TableSalaireFin> {
             ClassFilterImplemented(),
           ],
           resolveDefaultColumnFilter: (column, resolver) {
-            if (column.field == 'prenom') {
+            if (column.field == 'id') {
+              return resolver<ClassFilterImplemented>() as PlutoFilterType;
+            } else if (column.field == 'prenom') {
               return resolver<ClassFilterImplemented>() as PlutoFilterType;
             } else if (column.field == 'nom') {
               return resolver<ClassFilterImplemented>() as PlutoFilterType;

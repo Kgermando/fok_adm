@@ -178,7 +178,7 @@ class _DetailFinExterieurState extends State<DetailFinExterieur> {
                         ],
                       ),
                       SelectableText(
-                          DateFormat("dd-MM-yy").format(data.created),
+                          DateFormat("dd-MM-yyyy HH:mm").format(data.created),
                           textAlign: TextAlign.start),
                     ],
                   )
@@ -218,6 +218,7 @@ class _DetailFinExterieurState extends State<DetailFinExterieur> {
               )
             ],
           ),
+          Divider(color: Colors.amber.shade700),
           Row(
             children: [
               Expanded(
@@ -231,6 +232,7 @@ class _DetailFinExterieurState extends State<DetailFinExterieur> {
               )
             ],
           ),
+          Divider(color: Colors.amber.shade700),
           Row(
             children: [
               Expanded(
@@ -244,6 +246,7 @@ class _DetailFinExterieurState extends State<DetailFinExterieur> {
               )
             ],
           ),
+          Divider(color: Colors.amber.shade700),
           Row(
             children: [
               Expanded(
@@ -257,6 +260,8 @@ class _DetailFinExterieurState extends State<DetailFinExterieur> {
               )
             ],
           ),
+           if (data.typeOperation != 'Depot de fond')
+          Divider(color: Colors.amber.shade700),
           if (data.typeOperation != 'Depot de fond')
             Row(
               children: [
@@ -271,6 +276,7 @@ class _DetailFinExterieurState extends State<DetailFinExterieur> {
                 )
               ],
             ),
+          Divider(color: Colors.amber.shade700),
           Row(
             children: [
               Expanded(
@@ -284,6 +290,7 @@ class _DetailFinExterieurState extends State<DetailFinExterieur> {
               )
             ],
           ),
+          Divider(color: Colors.amber.shade700),
           Row(
             children: [
               Expanded(
@@ -297,6 +304,7 @@ class _DetailFinExterieurState extends State<DetailFinExterieur> {
               )
             ],
           ),
+          Divider(color: Colors.amber.shade700),
           Row(
             children: [
               Expanded(
@@ -310,6 +318,7 @@ class _DetailFinExterieurState extends State<DetailFinExterieur> {
               )
             ],
           ),
+          Divider(color: Colors.amber.shade700),
           Row(
             children: [
               Expanded(
