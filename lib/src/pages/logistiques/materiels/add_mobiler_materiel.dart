@@ -10,6 +10,7 @@ import 'package:fokad_admin/src/navigation/header/custom_appbar.dart';
 import 'package:fokad_admin/src/routes/routes.dart';
 import 'package:fokad_admin/src/widgets/btn_widget.dart';
 import 'package:fokad_admin/src/widgets/print_widget.dart';
+import 'package:fokad_admin/src/widgets/title_widget.dart';
 import 'package:routemaster/routemaster.dart';
 
 class AddMobilerMateriel extends StatefulWidget {
@@ -89,10 +90,11 @@ class _AddMobilerMaterielState extends State<AddMobilerMateriel> {
                                 },
                                 icon: const Icon(Icons.arrow_back)),
                           ),
+                          const SizedBox(width: p10),
                           Expanded(
                               flex: 5,
                               child: CustomAppbar(
-                                  title: 'Ajout mobilier',
+                                  title: 'mobilier',
                                   controllerMenu: () =>
                                       _key.currentState!.openDrawer())),
                         ],
@@ -129,8 +131,10 @@ class _AddMobilerMaterielState extends State<AddMobilerMateriel> {
                   controller: _controllerScroll,
                   children: [
                     Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [PrintWidget(onPressed: () {})],
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        const TitleWidget(title: "Ajout mobilier"),
+                        PrintWidget(onPressed: () {})],
                     ),
                     const SizedBox(
                       height: p20,

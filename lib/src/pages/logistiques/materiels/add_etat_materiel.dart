@@ -10,6 +10,7 @@ import 'package:fokad_admin/src/navigation/header/custom_appbar.dart';
 import 'package:fokad_admin/src/routes/routes.dart';
 import 'package:fokad_admin/src/widgets/btn_widget.dart';
 import 'package:fokad_admin/src/widgets/print_widget.dart';
+import 'package:fokad_admin/src/widgets/title_widget.dart';
 import 'package:routemaster/routemaster.dart';
 
 class AddEtatMateriel extends StatefulWidget {
@@ -86,6 +87,7 @@ class _AddEtatMaterielState extends State<AddEtatMateriel> {
                                 },
                                 icon: const Icon(Icons.arrow_back)),
                           ),
+                          const SizedBox(width: p10),
                           Expanded(
                               flex: 5,
                               child: CustomAppbar(
@@ -125,9 +127,12 @@ class _AddEtatMaterielState extends State<AddEtatMateriel> {
                 child: ListView(
                   controller: _controllerScroll,
                   children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [PrintWidget(onPressed: () {})],
+                   Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        const TitleWidget(title: "Ajout Materiel"),
+                        PrintWidget(onPressed: () {})
+                      ],
                     ),
                     const SizedBox(
                       height: p20,
