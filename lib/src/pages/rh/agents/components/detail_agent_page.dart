@@ -647,6 +647,8 @@ class _AgentPageState extends State<AgentPage> {
                             createUser(
                                 agentModel.nom,
                                 agentModel.prenom,
+                                agentModel.email,
+                                agentModel.telephone,
                                 agentModel.matricule,
                                 agentModel.departement,
                                 agentModel.servicesAffectation,
@@ -724,6 +726,8 @@ class _AgentPageState extends State<AgentPage> {
   Future<void> createUser(
     String nom,
     String prenom,
+    String email,
+    String telephone,
     String matricule,
     String departement,
     String servicesAffectation,
@@ -733,6 +737,8 @@ class _AgentPageState extends State<AgentPage> {
     final userModel = UserModel(
         nom: nom,
         prenom: prenom,
+        email: email,
+        telephone: telephone,
         matricule: matricule,
         departement: departement,
         servicesAffectation: servicesAffectation,

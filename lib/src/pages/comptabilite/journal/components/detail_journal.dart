@@ -47,6 +47,8 @@ class _DetailJournalState extends State<DetailJournal> {
   UserModel? user = UserModel(
       nom: '-',
       prenom: '-',
+      email: '-',
+      telephone: '-',
       matricule: '-',
       departement: '-',
       servicesAffectation: '-',

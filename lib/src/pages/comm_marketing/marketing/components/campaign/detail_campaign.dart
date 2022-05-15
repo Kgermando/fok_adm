@@ -53,6 +53,8 @@ class _DetailCampaignState extends State<DetailCampaign> {
   UserModel? user = UserModel(
       nom: '-',
       prenom: '-',
+      email: '-',
+      telephone: '-',
       matricule: '-',
       departement: '-',
       servicesAffectation: '-',

@@ -37,14 +37,17 @@ class _DetailRestitutionState extends State<DetailRestitution> {
     super.initState();
   }
 
-    UserModel user = UserModel(
+
+  UserModel user = UserModel(
       nom: '-',
       prenom: '-',
+      email: '-',
+      telephone: '-',
       matricule: '-',
       departement: '-',
       servicesAffectation: '-',
       fonctionOccupe: '-',
-      role: '5',
+      role: '-',
       isOnline: false,
       createdAt: DateTime.now(),
       passwordHash: '-',

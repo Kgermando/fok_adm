@@ -47,6 +47,8 @@ class _DetailBalanceState extends State<DetailBalance> {
   UserModel? user = UserModel(
       nom: '-',
       prenom: '-',
+      email: '-',
+      telephone: '-',
       matricule: '-',
       departement: '-',
       servicesAffectation: '-',

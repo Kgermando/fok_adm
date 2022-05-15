@@ -48,9 +48,12 @@ class _DetailProdModelState extends State<DetailProdModel> {
 
   List<StocksGlobalMOdel> stockGlobalList = [];
   ProductModel? productModel;
-  UserModel? user = UserModel(
+
+  UserModel user = UserModel(
       nom: '-',
       prenom: '-',
+      email: '-',
+      telephone: '-',
       matricule: '-',
       departement: '-',
       servicesAffectation: '-',
@@ -373,7 +376,7 @@ class _DetailProdModelState extends State<DetailProdModel> {
         padding: const EdgeInsets.all(p10),
         child: Column(
           children: [
-            if (user!.departement != "Commercial et Marketing")
+            if (user.departement != "Commercial et Marketing")
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -404,7 +407,7 @@ class _DetailProdModelState extends State<DetailProdModel> {
                                         color: Colors.red.shade700),
                                   ),
                                 if (data.approbationDG == '-' &&
-                                    user!.fonctionOccupe ==
+                                    user.fonctionOccupe ==
                                         'Directeur générale')
                                   Container(
                                     margin: const EdgeInsets.only(
@@ -468,7 +471,7 @@ class _DetailProdModelState extends State<DetailProdModel> {
                                     style: bodyMedium,
                                   ),
                                 if (data.approbationDG == 'Unapproved' &&
-                                    user!.fonctionOccupe ==
+                                    user.fonctionOccupe ==
                                         'Directeur générale')
                                   Container(
                                       margin: const EdgeInsets.only(
@@ -588,7 +591,7 @@ class _DetailProdModelState extends State<DetailProdModel> {
                                 style: bodyMedium,
                               ),
                               if (approbationDDController == 'Unapproved' &&
-                                  user!.fonctionOccupe ==
+                                  user.fonctionOccupe ==
                                       'Directeur de departement')
                                 Container(
                                     margin: const EdgeInsets.only(
@@ -607,7 +610,7 @@ class _DetailProdModelState extends State<DetailProdModel> {
                                       style: const TextStyle(),
                                     )),
                               if (approbationDDController == 'Unapproved' &&
-                                  user!.fonctionOccupe ==
+                                  user.fonctionOccupe ==
                                       'Directeur de departement')
                                 IconButton(
                                     onPressed: () {
@@ -636,7 +639,7 @@ class _DetailProdModelState extends State<DetailProdModel> {
         sousCategorie4: data.sousCategorie4,
         idProduct: data.idProduct,
         approbationDG: approbationDGController.toString(),
-        signatureDG: user!.matricule.toString(),
+        signatureDG: user.matricule.toString(),
         signatureJustificationDG:
             (signatureJustificationDGController.text == "")
                 ? '-'
@@ -666,7 +669,7 @@ class _DetailProdModelState extends State<DetailProdModel> {
         signatureDG: data.signatureDG.toString(),
         signatureJustificationDG: data.signatureJustificationDG.toString(),
         approbationDD: approbationDDController.toString(),
-        signatureDD: user!.matricule.toString(),
+        signatureDD: user.matricule.toString(),
         signatureJustificationDD:
             (signatureJustificationDDController.text == "")
                 ? '-'

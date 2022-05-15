@@ -55,6 +55,8 @@ class _DetailCompteResultatState extends State<DetailCompteResultat> {
   UserModel? user = UserModel(
       nom: '-',
       prenom: '-',
+      email: '-',
+      telephone: '-',
       matricule: '-',
       departement: '-',
       servicesAffectation: '-',

@@ -66,6 +66,8 @@ class _PaiementBulletinState extends State<PaiementBulletin> {
   UserModel? user = UserModel(
       nom: '-',
       prenom: '-',
+      email: '-',
+      telephone: '-',
       matricule: '-',
       departement: '-',
       servicesAffectation: '-',

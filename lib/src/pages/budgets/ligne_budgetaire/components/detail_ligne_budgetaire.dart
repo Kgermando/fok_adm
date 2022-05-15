@@ -83,9 +83,12 @@ class _DetailLigneBudgetaireState extends State<DetailLigneBudgetaire> {
 
   LigneBudgetaireModel? ligneBudgetaireModel;
 
-  UserModel? user = UserModel(
+
+  UserModel user = UserModel(
       nom: '-',
       prenom: '-',
+      email: '-',
+      telephone: '-',
       matricule: '-',
       departement: '-',
       servicesAffectation: '-',
@@ -95,6 +98,7 @@ class _DetailLigneBudgetaireState extends State<DetailLigneBudgetaire> {
       createdAt: DateTime.now(),
       passwordHash: '-',
       succursale: '-');
+      
   Future<void> getData() async {
     UserModel userModel = await AuthApi().getUserId();
     var budgets = await LIgneBudgetaireApi().getAllData();

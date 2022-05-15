@@ -408,6 +408,8 @@ class _UpdateUserState extends State<UpdateUser> {
     final userModel = UserModel(
         nom: widget.userModel.nom,
         prenom: widget.userModel.prenom,
+        email: widget.userModel.email,
+        telephone: widget.userModel.telephone,
         matricule: widget.userModel.matricule,
         departement: widget.userModel.departement,
         servicesAffectation: widget.userModel.servicesAffectation,

@@ -64,6 +64,8 @@ class _DetailAnguinState extends State<DetailAnguin> {
   UserModel? user = UserModel(
       nom: '-',
       prenom: '-',
+      email: '-',
+      telephone: '-',
       matricule: '-',
       departement: '-',
       servicesAffectation: '-',

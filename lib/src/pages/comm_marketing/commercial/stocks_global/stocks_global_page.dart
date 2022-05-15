@@ -29,18 +29,20 @@ class _StockGlobalPageState extends State<StockGlobalPage> {
   }
 
   UserModel user = UserModel(
-      nom: "-",
-      prenom: "-",
-      matricule: "-",
-      departement: "-",
-      servicesAffectation: "-",
-      fonctionOccupe: "-",
-      role: "5",
+      nom: '-',
+      prenom: '-',
+      email: '-',
+      telephone: '-',
+      matricule: '-',
+      departement: '-',
+      servicesAffectation: '-',
+      fonctionOccupe: '-',
+      role: '-',
       isOnline: false,
       createdAt: DateTime.now(),
-      passwordHash: "-",
-      succursale: "-");
-    
+      passwordHash: '-',
+      succursale: '-');
+      
   Future<void> getData() async {
     UserModel userModel = await AuthApi().getUserId();
     setState(() {

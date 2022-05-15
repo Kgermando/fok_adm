@@ -63,9 +63,12 @@ class _DetailDepartmentBudgetState extends State<DetailDepartmentBudget> {
   List<PaiementSalaireModel> dataSalaireList = [];
 
   DepartementBudgetModel? departementBudget;
-  UserModel? user = UserModel(
+
+  UserModel user = UserModel(
       nom: '-',
       prenom: '-',
+      email: '-',
+      telephone: '-',
       matricule: '-',
       departement: '-',
       servicesAffectation: '-',
@@ -706,7 +709,7 @@ class _DetailDepartmentBudgetState extends State<DetailDepartmentBudget> {
                                       color: Colors.red.shade700),
                                 ),
                               if (data.approbationDG == '-' &&
-                                  user!.fonctionOccupe == 'Directeur générale')
+                                  user.fonctionOccupe == 'Directeur générale')
                                 Container(
                                   margin: const EdgeInsets.only(
                                       bottom: p10, left: p5),
@@ -765,7 +768,7 @@ class _DetailDepartmentBudgetState extends State<DetailDepartmentBudget> {
                                   style: bodyMedium,
                                 ),
                               if (data.approbationDG == 'Unapproved' &&
-                                  user!.fonctionOccupe == 'Directeur générale')
+                                  user.fonctionOccupe == 'Directeur générale')
                                 Container(
                                     margin: const EdgeInsets.only(
                                         bottom: p10, left: p5),
@@ -828,7 +831,7 @@ class _DetailDepartmentBudgetState extends State<DetailDepartmentBudget> {
                                       color: Colors.orange.shade700),
                                 ),
                               if (data.approbationBudget == '-' &&
-                                  user!.fonctionOccupe == 'Directeur de budget')
+                                  user.fonctionOccupe == 'Directeur de budget')
                                 Container(
                                   margin: const EdgeInsets.only(
                                       bottom: p10, left: p5),
@@ -855,7 +858,7 @@ class _DetailDepartmentBudgetState extends State<DetailDepartmentBudget> {
                                   ),
                                 ),
                               if (data.approbationBudget == '-' &&
-                                  user!.fonctionOccupe == 'Directeur de budget')
+                                  user.fonctionOccupe == 'Directeur de budget')
                                 Row(
                                   children: [
                                     Expanded(child: ligneBudgtaireWidget()),
@@ -895,7 +898,7 @@ class _DetailDepartmentBudgetState extends State<DetailDepartmentBudget> {
                                   style: bodyMedium,
                                 ),
                               if (data.approbationBudget == 'Unapproved' &&
-                                  user!.fonctionOccupe == 'Directeur de budget')
+                                  user.fonctionOccupe == 'Directeur de budget')
                                 Container(
                                     margin: const EdgeInsets.only(
                                         bottom: p10, left: p5),
@@ -997,7 +1000,7 @@ class _DetailDepartmentBudgetState extends State<DetailDepartmentBudget> {
         periodeDebut: data.periodeDebut,
         periodeFin: data.periodeFin,
         approbationDG: approbationDGController.toString(),
-        signatureDG: user!.matricule.toString(),
+        signatureDG: user.matricule.toString(),
         signatureJustificationDG: signatureJustificationDGController.text,
         approbationFin: data.approbationFin.toString(),
         signatureFin: data.signatureFin.toString(),
@@ -1033,7 +1036,7 @@ class _DetailDepartmentBudgetState extends State<DetailDepartmentBudget> {
         signatureFin: data.signatureFin.toString(),
         signatureJustificationFin: data.signatureJustificationFin.toString(),
         approbationBudget: approbationBudgetController.toString(),
-        signatureBudget: user!.matricule.toString(),
+        signatureBudget: user.matricule.toString(),
         signatureJustificationBudget:
             signatureJustificationBudgetController.text,
         approbationDD: data.approbationDD.toString(),

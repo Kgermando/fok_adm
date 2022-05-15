@@ -55,6 +55,8 @@ class _DetailMobilierState extends State<DetailMobilier> {
   UserModel? user = UserModel(
       nom: '-',
       prenom: '-',
+      email: '-',
+      telephone: '-',
       matricule: '-',
       departement: '-',
       servicesAffectation: '-',

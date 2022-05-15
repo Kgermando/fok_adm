@@ -65,6 +65,8 @@ class _DetailEntretienState extends State<DetailEntretien> {
   UserModel? user = UserModel(
       nom: '-',
       prenom: '-',
+      email: '-',
+      telephone: '-',
       matricule: '-',
       departement: '-',
       servicesAffectation: '-',
@@ -74,7 +76,6 @@ class _DetailEntretienState extends State<DetailEntretien> {
       createdAt: DateTime.now(),
       passwordHash: '-',
       succursale: '-');
-
   Future<void> getData() async {
     UserModel userModel = await AuthApi().getUserId();
     EntretienModel data = await EntretienApi().getOneData(widget.id!);

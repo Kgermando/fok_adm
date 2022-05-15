@@ -20,9 +20,12 @@ class UserSecureStorage {
       UserModel user = UserModel.fromJson(jsonDecode(prefs));
       return user;
     } else {
-      final user = UserModel(
+      
+      UserModel user = UserModel(
           nom: '-',
           prenom: '-',
+          email: '-',
+          telephone: '-',
           matricule: '-',
           departement: '-',
           servicesAffectation: '-',

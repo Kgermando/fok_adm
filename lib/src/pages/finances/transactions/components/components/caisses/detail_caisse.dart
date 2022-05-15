@@ -74,6 +74,8 @@ class _DetailCaisseState extends State<DetailCaisse> {
   UserModel? user = UserModel(
       nom: '-',
       prenom: '-',
+      email: '-',
+      telephone: '-',
       matricule: '-',
       departement: '-',
       servicesAffectation: '-',

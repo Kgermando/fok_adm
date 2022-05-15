@@ -74,6 +74,8 @@ class _DetailBanqueState extends State<DetailBanque> {
   UserModel? user = UserModel(
       nom: '-',
       prenom: '-',
+      email: '-',
+      telephone: '-',
       matricule: '-',
       departement: '-',
       servicesAffectation: '-',
@@ -83,7 +85,6 @@ class _DetailBanqueState extends State<DetailBanque> {
       createdAt: DateTime.now(),
       passwordHash: '-',
       succursale: '-');
-
   Future<void> getData() async {
     final dataUser = await UserApi().getAllData();
     UserModel userModel = await AuthApi().getUserId();

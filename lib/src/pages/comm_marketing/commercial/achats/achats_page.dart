@@ -26,14 +26,17 @@ class _AchatsPageState extends State<AchatsPage> {
     super.initState();
   }
 
+
   UserModel user = UserModel(
       nom: '-',
       prenom: '-',
+      email: '-',
+      telephone: '-',
       matricule: '-',
       departement: '-',
       servicesAffectation: '-',
       fonctionOccupe: '-',
-      role: '5',
+      role: '-',
       isOnline: false,
       createdAt: DateTime.now(),
       passwordHash: '-',

@@ -59,6 +59,8 @@ class _DetailCaburantState extends State<DetailCaburant> {
   UserModel? user = UserModel(
       nom: '-',
       prenom: '-',
+      email: '-',
+      telephone: '-',
       matricule: '-',
       departement: '-',
       servicesAffectation: '-',

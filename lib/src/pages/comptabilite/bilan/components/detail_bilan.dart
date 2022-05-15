@@ -48,6 +48,8 @@ class _DetailBilanState extends State<DetailBilan> {
   UserModel? user = UserModel(
       nom: '-',
       prenom: '-',
+      email: '-',
+      telephone: '-',
       matricule: '-',
       departement: '-',
       servicesAffectation: '-',
@@ -57,7 +59,6 @@ class _DetailBilanState extends State<DetailBilan> {
       createdAt: DateTime.now(),
       passwordHash: '-',
       succursale: '-');
-
   Future<void> getData() async {
     UserModel userModel = await AuthApi().getUserId();
     setState(() {

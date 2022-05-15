@@ -50,9 +50,11 @@ class _DetailEtatMaterielState extends State<DetailEtatMateriel> {
     super.initState();
   }
 
-  UserModel? user = UserModel(
+   UserModel? user = UserModel(
       nom: '-',
       prenom: '-',
+      email: '-',
+      telephone: '-',
       matricule: '-',
       departement: '-',
       servicesAffectation: '-',

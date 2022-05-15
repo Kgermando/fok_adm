@@ -1,10 +1,12 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:fokad_admin/src/api/auth/auth_api.dart';
 import 'package:fokad_admin/src/api/mails/mail_api.dart';
 import 'package:fokad_admin/src/constants/app_theme.dart';
 import 'package:fokad_admin/src/constants/responsive.dart';
 import 'package:fokad_admin/src/models/mail/mail_model.dart';
+import 'package:fokad_admin/src/models/users/user_model.dart';
 import 'package:fokad_admin/src/navigation/drawer/drawer_menu.dart';
 import 'package:fokad_admin/src/navigation/header/custom_appbar.dart';
 import 'package:fokad_admin/src/pages/mails/components/list_mails.dart';
@@ -30,9 +32,10 @@ class _MailPagesState extends State<MailPages> {
 
   List<MailModel> mailsList = [];
   Future<void> getData() async {
+    UserModel userModel = await AuthApi().getUserId();
     var mails = await MailApi().getAllData();
     setState(() {
-      mailsList = mails;
+      mailsList = mails.where((element) => element.email == userModel.email).toList();
     });
   }
 

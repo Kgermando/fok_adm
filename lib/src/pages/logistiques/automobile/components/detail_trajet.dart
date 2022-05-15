@@ -58,6 +58,8 @@ class _DetailTrajetState extends State<DetailTrajet> {
   UserModel? user = UserModel(
       nom: '-',
       prenom: '-',
+      email: '-',
+      telephone: '-',
       matricule: '-',
       departement: '-',
       servicesAffectation: '-',
@@ -67,7 +69,6 @@ class _DetailTrajetState extends State<DetailTrajet> {
       createdAt: DateTime.now(),
       passwordHash: '-',
       succursale: '-');
-
   Future<void> getData() async {
     UserModel userModel = await AuthApi().getUserId();
     TrajetModel data = await TrajetApi().getOneData(widget.id!);

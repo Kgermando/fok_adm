@@ -51,9 +51,11 @@ class _DetailImmobilierState extends State<DetailImmobilier> {
     super.initState();
   }
 
-  UserModel? user = UserModel(
+   UserModel? user = UserModel(
       nom: '-',
       prenom: '-',
+      email: '-',
+      telephone: '-',
       matricule: '-',
       departement: '-',
       servicesAffectation: '-',
