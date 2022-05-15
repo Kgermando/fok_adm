@@ -61,7 +61,9 @@ class _TableSuccursaleDGState extends State<TableSuccursaleDG> {
               ClassFilterImplemented(),
             ],
             resolveDefaultColumnFilter: (column, resolver) {
-              if (column.field == 'name') {
+              if (column.field == 'id') {
+                return resolver<ClassFilterImplemented>() as PlutoFilterType;
+              } else if (column.field == 'name') {
                 return resolver<ClassFilterImplemented>() as PlutoFilterType;
               } else if (column.field == 'province') {
                 return resolver<ClassFilterImplemented>() as PlutoFilterType;
@@ -103,7 +105,7 @@ class _TableSuccursaleDGState extends State<TableSuccursaleDG> {
         enableContextMenu: false,
         enableDropToResize: true,
         titleTextAlign: PlutoColumnTextAlign.left,
-        width: 150,
+        width: 200,
         minWidth: 150,
       ),
       PlutoColumn(
@@ -115,7 +117,7 @@ class _TableSuccursaleDGState extends State<TableSuccursaleDG> {
         enableContextMenu: false,
         enableDropToResize: true,
         titleTextAlign: PlutoColumnTextAlign.left,
-        width: 150,
+        width: 200,
         minWidth: 150,
       ),
       PlutoColumn(
@@ -127,7 +129,7 @@ class _TableSuccursaleDGState extends State<TableSuccursaleDG> {
         enableContextMenu: false,
         enableDropToResize: true,
         titleTextAlign: PlutoColumnTextAlign.left,
-        width: 150,
+        width: 200,
         minWidth: 150,
       ),
       PlutoColumn(
@@ -139,7 +141,7 @@ class _TableSuccursaleDGState extends State<TableSuccursaleDG> {
         enableContextMenu: false,
         enableDropToResize: true,
         titleTextAlign: PlutoColumnTextAlign.left,
-        width: 150,
+        width: 200,
         minWidth: 150,
       ),
       PlutoColumn(
@@ -151,7 +153,7 @@ class _TableSuccursaleDGState extends State<TableSuccursaleDG> {
         enableContextMenu: false,
         enableDropToResize: true,
         titleTextAlign: PlutoColumnTextAlign.left,
-        width: 150,
+        width: 200,
         minWidth: 150,
       ),
     ];
