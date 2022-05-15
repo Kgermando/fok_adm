@@ -3,8 +3,6 @@ import 'package:fokad_admin/src/api/finances/creance_api.dart';
 import 'package:fokad_admin/src/api/finances/dette_api.dart';
 import 'package:fokad_admin/src/constants/app_theme.dart';
 import 'package:fokad_admin/src/constants/responsive.dart';
-import 'package:fokad_admin/src/models/finances/creances_model.dart';
-import 'package:fokad_admin/src/models/finances/dette_model.dart';
 import 'package:fokad_admin/src/navigation/drawer/drawer_menu.dart';
 import 'package:fokad_admin/src/navigation/header/custom_appbar.dart';
 import 'package:fokad_admin/src/pages/administration/components/finances/transactions/table_creance_admin.dart';
@@ -73,7 +71,7 @@ class _FinancesAdminState extends State<FinancesAdmin> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      CustomAppbar(title: 'Finances Admin', controllerMenu: () =>
+                      CustomAppbar(title: 'Finances', controllerMenu: () =>
                               _key.currentState!.openDrawer()),
                       Expanded(
                           child: Scrollbar(
@@ -126,41 +124,6 @@ class _FinancesAdminState extends State<FinancesAdmin> {
                                   Icons.arrow_drop_down,
                                   color: Colors.white,
                                 ),
-                                children: const [TableDetteAdmin()],
-                              ),
-                            ),
-
-
-
-
-                            Card(
-                              color: const Color.fromARGB(255, 126, 170, 214),
-                              child: ExpansionTile(
-                                leading: const Icon(Icons.folder),
-                                title:
-                                    Text('Dossier Créances $nbrCreance', style: headline6),
-                                initiallyExpanded: false,
-                                onExpansionChanged: (val) {
-                                  setState(() {
-                                    isOpenFin1 = !val;
-                                  });
-                                },
-                                trailing: const Icon(Icons.arrow_drop_down),
-                                children: const [TableCreanceAdmin()],
-                              ),
-                            ),
-                            Card(
-                              color: const Color.fromARGB(255, 117, 190, 121),
-                              child: ExpansionTile(
-                                leading: const Icon(Icons.folder),
-                                title: Text('Dossier Dettes $nbrDette', style: headline6),
-                                initiallyExpanded: false,
-                                onExpansionChanged: (val) {
-                                  setState(() {
-                                    isOpenFin2 = !val;
-                                  });
-                                },
-                                trailing: const Icon(Icons.arrow_drop_down),
                                 children: const [TableDetteAdmin()],
                               ),
                             ),
