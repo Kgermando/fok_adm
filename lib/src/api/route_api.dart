@@ -205,3 +205,6 @@ var addCampaignsUrl = Uri.parse("$mainUrl/campaigns/insert-new-campaign");
 var archvesUrl = Uri.parse("$mainUrl/archves/");
 var addArchvesUrl = Uri.parse("$mainUrl/archves/insert-new-archve");
 
+// MAILS
+var mailsUrl = Uri.parse("$mainUrl/mails/");
+var addMailUrl = Uri.parse("$mainUrl/mails/insert-new-mail");

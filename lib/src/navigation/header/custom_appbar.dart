@@ -83,9 +83,9 @@ class _CustomAppbarState extends State<CustomAppbar> {
                   if (snapshot.hasData) {
                     UserModel? userModel = snapshot.data;
                     // print('photo ${userModel!.photo}');
-                    final String firstLettter2 = userModel!.prenom[0];
-                    final String firstLettter = userModel.nom[0];
-
+                    final String firstLettter = userModel!.nom[0];
+                    final String firstLettter2 = userModel.prenom[0];
+                    
                     return Row(
                       children: [
                         if(userModel.departement == "Commercial et Marketing")
@@ -101,7 +101,9 @@ class _CustomAppbarState extends State<CustomAppbar> {
                               child: const Icon(Icons.shopping_cart),
                             )),
                         IconButton(
-                            onPressed: () {},
+                            onPressed: () {
+                              Routemaster.of(context).replace(MailRoutes.mails);
+                            },
                             icon: Badge(
                               badgeContent: const Text('33',
                                   style: TextStyle(

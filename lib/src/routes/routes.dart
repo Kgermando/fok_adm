@@ -77,6 +77,8 @@ import 'package:fokad_admin/src/pages/logistiques/materiels/add_mobiler_materiel
 import 'package:fokad_admin/src/pages/logistiques/materiels/etat_materiel.dart';
 import 'package:fokad_admin/src/pages/logistiques/materiels/immobilier_materiel.dart';
 import 'package:fokad_admin/src/pages/logistiques/materiels/mobilier_materiel.dart';
+import 'package:fokad_admin/src/pages/mails/components/new_mail.dart';
+import 'package:fokad_admin/src/pages/mails/mails_page.dart';
 import 'package:fokad_admin/src/pages/rh/agents/agents_rh.dart';
 import 'package:fokad_admin/src/pages/rh/agents/components/add_agent.dart';
 import 'package:fokad_admin/src/pages/rh/agents/components/detail_agent_page.dart';
@@ -227,6 +229,12 @@ class ComMarketingRoutes {
   static const comMarketingnumberFact = "/com-marketing-number-fact";
   static const comMarketingRestitution = "/com-marketing-restitution";
   static const comMarketingVente = "/com-marketing-vente";
+}
+
+
+class MailRoutes {
+  static const mails = "/mails";
+  static const addMail = "/mail-add";
 }
 
 class Routing {
@@ -410,6 +418,9 @@ class Routing {
         ComMarketingRoutes.comMarketingcart: (_) => const MaterialPage(child: CartPage()),
         ComMarketingRoutes.comMarketingHistoryRavitaillement: (_) => const MaterialPage(child: HistoryRavitaillement()),
         ComMarketingRoutes.comMarketingHistoryLivraison: (_) => const MaterialPage(child: HistoryLivraison()),
+
+        MailRoutes.mails: (_) => const MaterialPage(child: MailPages()),
+        // MailRoutes.addMail: (_) => const MaterialPage(child: NewMail())
       },
     );
   }

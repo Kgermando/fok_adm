@@ -162,8 +162,6 @@ class AgentsApi {
   }
 
 
-
-
   Future<AgentModel> insertData(AgentModel agentModel) async {
     final accessToken = await storage.read(key: 'accessToken');
 

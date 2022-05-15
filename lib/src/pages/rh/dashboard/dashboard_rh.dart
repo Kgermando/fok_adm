@@ -113,6 +113,7 @@ class _DashboardRhState extends State<DashboardRh> {
                                     color: Colors.grey.shade700),
                               ],
                             ),
+                            const SizedBox(height: p20),
                             Wrap(
                               alignment: WrapAlignment.spaceEvenly,
                               children: const [
