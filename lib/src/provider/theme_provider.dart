@@ -73,6 +73,10 @@ class MyThemes {
     fontFamily: 'Poppins',
     colorScheme: const ColorScheme.light(),
     // iconTheme: const IconThemeData(color: Colors.orange, opacity: 0.8),
+    floatingActionButtonTheme: FloatingActionButtonThemeData(
+      foregroundColor: Colors.white,
+      backgroundColor: Colors.amber.shade700
+    ),
     elevatedButtonTheme: ElevatedButtonThemeData(
       style: ButtonStyle(
         elevation: MaterialStateProperty.all(5.0),

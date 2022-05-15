@@ -74,10 +74,7 @@ class _AdministrationNavState extends State<AdministrationNav> {
 
   @override
   void initState() {
-    Timer.periodic(const Duration(milliseconds: 500), ((timer) {
-      getData();
-      timer.cancel();
-    }));
+     getData();
     super.initState();
   }
 

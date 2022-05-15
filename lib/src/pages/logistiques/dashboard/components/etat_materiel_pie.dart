@@ -7,31 +7,30 @@ import 'package:fokad_admin/src/models/charts/pie_chart_model.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
 class EtatMaterielPie extends StatefulWidget {
-  const EtatMaterielPie({ Key? key }) : super(key: key);
+  const EtatMaterielPie({Key? key}) : super(key: key);
 
   @override
   State<EtatMaterielPie> createState() => _EtatMaterielPieState();
 }
 
 class _EtatMaterielPieState extends State<EtatMaterielPie> {
-   @override
-  void initState() {
-    Timer.periodic(const Duration(milliseconds: 500), ((timer) {
-      setState(() {
-        getData();
-      });
 
-      timer.cancel();
-    }));
+
+  @override
+  void initState() {
+    getData();
     super.initState();
   }
+
 
   List<PieChartMaterielModel> dataList = [];
   Future<void> getData() async {
     var data = await EtatMaterielApi().getChartPieStatut();
-    setState(() {
-      dataList = data;
-    });
+    if (mounted) {
+      setState(() {
+        dataList = data;
+      });
+    }
   }
 
   @override
@@ -41,7 +40,8 @@ class _EtatMaterielPieState extends State<EtatMaterielPie> {
       child: Material(
         elevation: 10.0,
         child: SfCircularChart(
-            title: ChartTitle(text: 'Statut materiels',
+            title: ChartTitle(
+                text: 'Statut materiels',
                 textStyle: const TextStyle(fontWeight: FontWeight.bold)),
             legend: Legend(isVisible: true, isResponsive: true),
             series: <CircularSeries>[

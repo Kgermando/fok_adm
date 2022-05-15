@@ -79,7 +79,6 @@ import 'package:fokad_admin/src/pages/logistiques/materiels/add_mobiler_materiel
 import 'package:fokad_admin/src/pages/logistiques/materiels/etat_materiel.dart';
 import 'package:fokad_admin/src/pages/logistiques/materiels/immobilier_materiel.dart';
 import 'package:fokad_admin/src/pages/logistiques/materiels/mobilier_materiel.dart';
-import 'package:fokad_admin/src/pages/mails/components/new_mail.dart';
 import 'package:fokad_admin/src/pages/mails/mails_page.dart';
 import 'package:fokad_admin/src/pages/rh/agents/agents_rh.dart';
 import 'package:fokad_admin/src/pages/rh/agents/components/add_agent.dart';

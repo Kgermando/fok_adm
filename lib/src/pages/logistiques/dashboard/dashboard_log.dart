@@ -47,10 +47,7 @@ class _DashboardLogState extends State<DashboardLog> {
 
   @override
   void initState() {
-    Timer.periodic(const Duration(milliseconds: 500), ((timer) {
-      getData();
-      timer.cancel();
-    }));
+    getData();
 
     super.initState();
   }
@@ -268,18 +265,24 @@ class _DashboardLogState extends State<DashboardLog> {
         ),
         child: Container(
           width: 300,
-          height: 50,
+          height: Responsive.isMobile(context) ? 100 : 50,
           color: Colors.amber.shade700,
           padding: const EdgeInsets.all(16.0 * 0.75),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              const Icon(Icons.ev_station_sharp, color: Colors.white),
-              const SizedBox(width: p10),
-              AutoSizeText(
-                "CARBURANTS",
-                maxLines: 1,
-                style: headline6!.copyWith(color: Colors.white),
+              Responsive.isMobile(context)
+                  ? Container()
+                  : const Icon(Icons.ev_station_sharp),
+              Responsive.isMobile(context)
+                  ? Container()
+                  : const SizedBox(width: p10),
+              Expanded(
+                child: AutoSizeText(
+                  "CARBURANTS",
+                  maxLines: 2,
+                  style: headline6!.copyWith(color: Colors.white),
+                ),
               ),
             ],
           ),
@@ -293,20 +296,26 @@ class _DashboardLogState extends State<DashboardLog> {
         ),
         child: Container(
           width: 300,
-          height: 50,
+          height: Responsive.isMobile(context) ? 100 : 50,
           padding: const EdgeInsets.all(16.0 * 0.75),
           decoration:
               BoxDecoration(border: Border.all(color: Colors.amber.shade700)),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              const Icon(Icons.ev_station_sharp),
-              const SizedBox(width: p10),
-              AutoSizeText(
-                "Ravitailements".toUpperCase(),
-                maxLines: 1,
-                textAlign: TextAlign.center,
-                style: headline6.copyWith(fontWeight: FontWeight.bold),
+              Responsive.isMobile(context)
+                  ? Container()
+                  : const Icon(Icons.ev_station_sharp),
+              Responsive.isMobile(context)
+                  ? Container()
+                  : const SizedBox(width: p10),
+              Expanded(
+                child: AutoSizeText(
+                  "Ravitailements".toUpperCase(),
+                  maxLines: 2,
+                  textAlign: TextAlign.center,
+                  style: headline6.copyWith(fontWeight: FontWeight.bold),
+                ),
               ),
             ],
           ),
@@ -320,20 +329,26 @@ class _DashboardLogState extends State<DashboardLog> {
         ),
         child: Container(
           width: 300,
-          height: 50,
+          height: Responsive.isMobile(context) ? 100 : 50,
           padding: const EdgeInsets.all(16.0 * 0.75),
           decoration:
               BoxDecoration(border: Border.all(color: Colors.amber.shade700)),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              const Icon(Icons.ev_station_sharp),
-              const SizedBox(width: p10),
-              AutoSizeText(
-                "Consommations".toUpperCase(),
-                maxLines: 1,
-                textAlign: TextAlign.center,
-                style: headline6.copyWith(fontWeight: FontWeight.bold),
+              Responsive.isMobile(context)
+                  ? Container()
+                  : const Icon(Icons.ev_station_sharp),
+              Responsive.isMobile(context)
+                  ? Container()
+                  : const SizedBox(width: p10),
+              Expanded(
+                child: AutoSizeText(
+                  "Consommations".toUpperCase(),
+                  maxLines: 2,
+                  textAlign: TextAlign.center,
+                  style: headline6.copyWith(fontWeight: FontWeight.bold),
+                ),
               ),
             ],
           ),
@@ -347,20 +362,26 @@ class _DashboardLogState extends State<DashboardLog> {
         ),
         child: Container(
           width: 300,
-          height: 50,
+          height: Responsive.isMobile(context) ? 100 : 50,
           padding: const EdgeInsets.all(16.0 * 0.75),
           decoration:
               BoxDecoration(border: Border.all(color: Colors.amber.shade700)),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              const Icon(Icons.ev_station_sharp),
-              const SizedBox(width: p10),
-              AutoSizeText(
-                "Disponibles".toUpperCase(),
-                maxLines: 1,
-                textAlign: TextAlign.center,
-                style: headline6.copyWith(fontWeight: FontWeight.bold),
+              Responsive.isMobile(context)
+                  ? Container()
+                  : const Icon(Icons.ev_station_sharp),
+              Responsive.isMobile(context)
+                  ? Container()
+                  : const SizedBox(width: p10),
+              Expanded(
+                child: AutoSizeText(
+                  "Disponibles".toUpperCase(),
+                  maxLines: 2,
+                  textAlign: TextAlign.center,
+                  style: headline6.copyWith(fontWeight: FontWeight.bold),
+                ),
               ),
             ],
           ),
@@ -386,7 +407,7 @@ class _DashboardLogState extends State<DashboardLog> {
           padding: const EdgeInsets.all(16.0 * 0.75),
           child: AutoSizeText(
             "Essence",
-            maxLines: 1,
+            maxLines: 2,
             style: headline6!.copyWith(color: Colors.white),
           ),
         ),
@@ -405,7 +426,7 @@ class _DashboardLogState extends State<DashboardLog> {
               BoxDecoration(border: Border.all(color: Colors.orange.shade700)),
           child: AutoSizeText(
             "${NumberFormat.decimalPattern('fr').format(entrerEssence)} L",
-            maxLines: 1,
+            maxLines: 2,
             textAlign: TextAlign.center,
             style: headline6,
           ),
@@ -425,7 +446,7 @@ class _DashboardLogState extends State<DashboardLog> {
               BoxDecoration(border: Border.all(color: Colors.orange.shade700)),
           child: AutoSizeText(
             "${NumberFormat.decimalPattern('fr').format(sortieEssence)} L",
-            maxLines: 1,
+            maxLines: 2,
             textAlign: TextAlign.center,
             style: headline6,
           ),
@@ -445,7 +466,7 @@ class _DashboardLogState extends State<DashboardLog> {
               BoxDecoration(border: Border.all(color: Colors.orange.shade700)),
           child: AutoSizeText(
             "${NumberFormat.decimalPattern('fr').format(entrerEssence - sortieEssence)} L",
-            maxLines: 1,
+            maxLines: 2,
             textAlign: TextAlign.center,
             style: headline6,
           ),
@@ -470,7 +491,7 @@ class _DashboardLogState extends State<DashboardLog> {
           padding: const EdgeInsets.all(16.0 * 0.75),
           child: AutoSizeText(
             "Mazoute",
-            maxLines: 1,
+            maxLines: 2,
             style: headline6!.copyWith(color: Colors.white),
           ),
         ),
@@ -489,7 +510,7 @@ class _DashboardLogState extends State<DashboardLog> {
               BoxDecoration(border: Border.all(color: Colors.teal.shade700)),
           child: AutoSizeText(
             "${NumberFormat.decimalPattern('fr').format(entrerMazoute)} L",
-            maxLines: 1,
+            maxLines: 2,
             textAlign: TextAlign.center,
             style: headline6,
           ),
@@ -509,7 +530,7 @@ class _DashboardLogState extends State<DashboardLog> {
               BoxDecoration(border: Border.all(color: Colors.teal.shade700)),
           child: AutoSizeText(
             "${NumberFormat.decimalPattern('fr').format(sortieMazoute)} L",
-            maxLines: 1,
+            maxLines: 2,
             textAlign: TextAlign.center,
             style: headline6,
           ),
@@ -529,7 +550,7 @@ class _DashboardLogState extends State<DashboardLog> {
               BoxDecoration(border: Border.all(color: Colors.teal.shade700)),
           child: AutoSizeText(
             "${NumberFormat.decimalPattern('fr').format(entrerMazoute - sortieMazoute)} L",
-            maxLines: 1,
+            maxLines: 2,
             textAlign: TextAlign.center,
             style: headline6,
           ),
@@ -554,7 +575,7 @@ class _DashboardLogState extends State<DashboardLog> {
           padding: const EdgeInsets.all(16.0 * 0.75),
           child: AutoSizeText(
             "Petrole",
-            maxLines: 1,
+            maxLines: 2,
             style: headline6!.copyWith(color: Colors.white),
           ),
         ),
@@ -573,7 +594,7 @@ class _DashboardLogState extends State<DashboardLog> {
               BoxDecoration(border: Border.all(color: Colors.lime.shade700)),
           child: AutoSizeText(
             "${NumberFormat.decimalPattern('fr').format(entrerPetrole)} L",
-            maxLines: 1,
+            maxLines: 2,
             textAlign: TextAlign.center,
             style: headline6,
           ),
@@ -593,7 +614,7 @@ class _DashboardLogState extends State<DashboardLog> {
               BoxDecoration(border: Border.all(color: Colors.lime.shade700)),
           child: AutoSizeText(
             "${NumberFormat.decimalPattern('fr').format(sortiePetrole)} L",
-            maxLines: 1,
+            maxLines: 2,
             textAlign: TextAlign.center,
             style: headline6,
           ),
@@ -613,7 +634,7 @@ class _DashboardLogState extends State<DashboardLog> {
               BoxDecoration(border: Border.all(color: Colors.lime.shade700)),
           child: AutoSizeText(
             "${NumberFormat.decimalPattern('fr').format(entrerPetrole - sortiePetrole)} L",
-            maxLines: 1,
+            maxLines: 2,
             textAlign: TextAlign.center,
             style: headline6,
           ),
@@ -638,7 +659,7 @@ class _DashboardLogState extends State<DashboardLog> {
           padding: const EdgeInsets.all(16.0 * 0.75),
           child: AutoSizeText(
             "Huile Moteur",
-            maxLines: 1,
+            maxLines: 2,
             style: headline6!.copyWith(color: Colors.white),
           ),
         ),
@@ -657,7 +678,7 @@ class _DashboardLogState extends State<DashboardLog> {
               BoxDecoration(border: Border.all(color: Colors.indigo.shade700)),
           child: AutoSizeText(
             "${NumberFormat.decimalPattern('fr').format(entrerHuilleMoteur)} L",
-            maxLines: 1,
+            maxLines: 2,
             textAlign: TextAlign.center,
             style: headline6,
           ),
@@ -677,7 +698,7 @@ class _DashboardLogState extends State<DashboardLog> {
               BoxDecoration(border: Border.all(color: Colors.indigo.shade700)),
           child: AutoSizeText(
             "${NumberFormat.decimalPattern('fr').format(sortieHuilleMoteur)} L",
-            maxLines: 1,
+            maxLines: 2,
             textAlign: TextAlign.center,
             style: headline6,
           ),
@@ -697,7 +718,7 @@ class _DashboardLogState extends State<DashboardLog> {
               BoxDecoration(border: Border.all(color: Colors.indigo.shade700)),
           child: AutoSizeText(
             "${NumberFormat.decimalPattern('fr').format(entrerHuilleMoteur - sortieHuilleMoteur)} L",
-            maxLines: 1,
+            maxLines: 2,
             textAlign: TextAlign.center,
             style: headline6,
           ),

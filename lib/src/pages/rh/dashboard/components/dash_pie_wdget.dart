@@ -13,16 +13,21 @@ class DashRHPieWidget extends StatefulWidget {
 }
 
 class _DashRHPieWidgetState extends State<DashRHPieWidget> {
+  Timer? timer;
+
   @override
   void initState() {
-    Timer.periodic(const Duration(milliseconds: 500), ((timer) {
-      setState(() {
-        getData();
-      });
-      
-      timer.cancel();
+    timer = Timer.periodic(const Duration(milliseconds: 500), ((timer) {
+      getData();
     }));
+
     super.initState();
+  }
+
+  @override
+  dispose() {
+    timer!.cancel();
+    super.dispose();
   }
 
   List<AgentPieChartModel> dataList = [];
@@ -36,12 +41,14 @@ class _DashRHPieWidgetState extends State<DashRHPieWidget> {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      width: 400,
-      height: 200,
+      // width: Responsive.isMobile(context) ? 200 : double.infinity,
+      // height: Responsive.isMobile(context) ? 200 : double.infinity,
       child: Material(
         elevation: 10.0,
         child: SfCircularChart(
-            title: ChartTitle(text: 'Genre',
+          enableMultiSelection: true,
+            title: ChartTitle(
+                text: 'Genre',
                 textStyle: const TextStyle(fontWeight: FontWeight.bold)),
             legend: Legend(isVisible: true, isResponsive: true),
             series: <CircularSeries>[

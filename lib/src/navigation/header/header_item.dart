@@ -27,7 +27,7 @@ class HeaderItem extends StatelessWidget {
           
           if (!Responsive.isDesktop(context))
           AutoSizeText(title.toUpperCase(),
-            maxLines: 1,
+            maxLines: 2,
             overflow: TextOverflow.ellipsis,
             style: headline6
           ),

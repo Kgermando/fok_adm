@@ -1,6 +1,7 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:fokad_admin/src/constants/app_theme.dart';
+import 'package:fokad_admin/src/constants/responsive.dart';
 
 class DashNumberWidget extends StatelessWidget {
   const DashNumberWidget(
@@ -29,7 +30,7 @@ class DashNumberWidget extends StatelessWidget {
           borderRadius: BorderRadius.circular(10.0),
         ),
         child: Container(
-          width: 200,
+          width: Responsive.isMobile(context) ? double.infinity : 200,
           height: 100,
           color: color,
           padding: const EdgeInsets.all(16.0 * 0.75),

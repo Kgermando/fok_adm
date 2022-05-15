@@ -62,7 +62,9 @@ class _ComMarketingState extends State<ComMarketing> {
       ventesList = ventes;
       gainsList = gains;
       creanceFactureList = creanceFacture;
-      campaignCount = campaigns.length;
+      campaignCount = campaigns
+          .where((element) => element.approbationDG == "Approved")
+          .length;
       annuaireCount = annuaires.length;
       agendaCount = agendas.length;
     });

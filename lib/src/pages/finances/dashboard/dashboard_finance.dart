@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:fokad_admin/src/api/devis/devis_api.dart';
 import 'package:fokad_admin/src/api/finances/banque_api.dart';
@@ -64,16 +66,11 @@ class _DashboardFinanceState extends State<DashboardFinance> {
   double disponible = 0.0;
 
   @override
-  initState() {
-    getData();
+  void initState() {
+   getData();
     super.initState();
   }
 
-  @override
-  void dispose() {
-    scrollController.dispose();
-    super.dispose();
-  }
 
   Future<void> getData() async {
     List<BanqueModel?> dataBanqueList = await BanqueApi().getAllData();

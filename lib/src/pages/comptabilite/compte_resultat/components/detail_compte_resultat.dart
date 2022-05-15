@@ -769,6 +769,7 @@ class _DetailCompteResultatState extends State<DetailCompteResultat> {
                     flex: 3,
                     child: AutoSizeText('Total des charges(I + II + III):',
                         textAlign: TextAlign.start,
+                        maxLines: 1,
                         style: headline6.copyWith(fontWeight: FontWeight.bold)),
                   ),
                   Expanded(

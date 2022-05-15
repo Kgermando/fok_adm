@@ -67,16 +67,12 @@ class _DashboardBudgetState extends State<DashboardBudget> {
 
   @override
   void initState() {
-    Timer.periodic(const Duration(milliseconds: 500), ((timer) {
-      setState(() {
-        getData();
-      });
-
-      timer.cancel();
-    }));
+    getData();
 
     super.initState();
   }
+
+
 
   List<LigneBudgetaireModel> ligneBudgetaireList = [];
   List<CampaignModel> dataCampaignList = [];
@@ -93,7 +89,8 @@ class _DashboardBudgetState extends State<DashboardBudget> {
     var projets = await ProjetsApi().getAllData();
     var salaires = await PaiementSalaireApi().getAllData();
 
-    setState(() {
+    if(mounted) {
+      setState(() {
       departementsList = departements
           .where((element) => DateTime.now().isBefore(element.periodeFin))
           .toList();
@@ -126,6 +123,7 @@ class _DashboardBudgetState extends State<DashboardBudget> {
             .toList();
       }
     });
+    }
   }
 
   @override

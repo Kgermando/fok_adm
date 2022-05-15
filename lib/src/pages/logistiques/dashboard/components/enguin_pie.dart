@@ -14,15 +14,10 @@ class EnguinPie extends StatefulWidget {
 }
 
 class _EnguinPieState extends State<EnguinPie> {
-   @override
+  
+  @override
   void initState() {
-    Timer.periodic(const Duration(milliseconds: 500), ((timer) {
-      setState(() {
-        getData();
-      });
-
-      timer.cancel();
-    }));
+    getData();
     super.initState();
   }
 

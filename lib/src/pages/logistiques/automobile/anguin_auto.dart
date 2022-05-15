@@ -23,12 +23,7 @@ class _AnguinAutoState extends State<AnguinAuto> {
         key: _key,
         drawer: const DrawerMenu(),
         floatingActionButton: FloatingActionButton(
-            child: Row(
-              children: const [
-                Icon(Icons.add),
-                Icon(Icons.car_rental),
-              ],
-            ),
+            child: const Icon(Icons.car_rental),
             onPressed: () {
               Routemaster.of(context).push(LogistiqueRoutes.logAddAnguinAuto);
             }),

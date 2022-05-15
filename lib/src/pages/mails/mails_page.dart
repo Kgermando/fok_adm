@@ -21,15 +21,10 @@ class MailPages extends StatefulWidget {
 
 class _MailPagesState extends State<MailPages> {
   final GlobalKey<ScaffoldState> _key = GlobalKey();
-  Timer? _timer;
 
   @override
   void initState() {
-    _timer = Timer(const Duration(milliseconds: 500), () {
-      setState(() {
-        getData();
-      });
-    });
+    getData();
     super.initState();
   }
 

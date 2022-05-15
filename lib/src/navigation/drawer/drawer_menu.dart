@@ -7,7 +7,6 @@ import 'package:fokad_admin/src/navigation/drawer/components/comptabilite_nav.da
 import 'package:fokad_admin/src/navigation/drawer/components/exploitation_nav.dart';
 import 'package:fokad_admin/src/navigation/drawer/components/finances_nav.dart';
 import 'package:fokad_admin/src/navigation/drawer/components/logistique_nav.dart';
-import 'package:fokad_admin/src/navigation/drawer/components/mails_nav.dart';
 import 'package:fokad_admin/src/navigation/drawer/components/rh_nav.dart';
 import 'package:routemaster/routemaster.dart';
 

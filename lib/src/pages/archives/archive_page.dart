@@ -29,12 +29,9 @@ class _ArchivePageState extends State<ArchivePage> {
         key: _key,
         drawer: const DrawerMenu(),
         floatingActionButton: FloatingActionButton(
-            child: Row(
-              children: const [
-                Icon(Icons.add),
-                Icon(Icons.car_rental),
-              ],
-            ),
+          foregroundColor: Colors.white,
+          backgroundColor: Colors.brown.shade700,
+            child: const Icon(Icons.add),
             onPressed: () {
               Routemaster.of(context).push(ArchiveRoutes.addArcihves);
             }),

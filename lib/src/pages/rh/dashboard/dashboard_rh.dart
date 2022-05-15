@@ -10,7 +10,6 @@ import 'package:fokad_admin/src/pages/rh/dashboard/components/calendar_widget.da
 import 'package:fokad_admin/src/widgets/dash_number_widget.dart';
 import 'package:fokad_admin/src/pages/rh/dashboard/components/dash_pie_wdget.dart';
 
-
 class DashboardRh extends StatefulWidget {
   const DashboardRh({Key? key}) : super(key: key);
 
@@ -21,6 +20,7 @@ class DashboardRh extends StatefulWidget {
 class _DashboardRhState extends State<DashboardRh> {
   final GlobalKey<ScaffoldState> _key = GlobalKey();
   final ScrollController _controllerScroll = ScrollController();
+  Timer? timer;
 
   int agentsCount = 0;
   int agentActifCount = 0;
@@ -30,12 +30,18 @@ class _DashboardRhState extends State<DashboardRh> {
 
   @override
   void initState() {
-    Timer.periodic(const Duration(milliseconds: 500), ((timer) {
+    timer = Timer.periodic(const Duration(milliseconds: 500), ((timer) {
       getData();
       timer.cancel();
     }));
 
     super.initState();
+  }
+
+  @override
+  dispose() {
+    timer!.cancel();
+    super.dispose();
   }
 
   Future<void> getData() async {
