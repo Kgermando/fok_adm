@@ -85,7 +85,7 @@ class _CourbeVenteGainMounthState extends State<CourbeVenteGainMounth> {
               sortingOrder: SortingOrder.ascending,
               markerSettings: const MarkerSettings(isVisible: true),
               xValueMapper: (CourbeVenteModel ventes, _) =>
-                  '${ventes.created.toInt()} Mois',
+                  '${ventes.created.toInt()}',
               yValueMapper: (CourbeVenteModel ventes, _) =>
                   double.parse(ventes.sum.toStringAsFixed(2)),
               // Enable data label
@@ -97,7 +97,7 @@ class _CourbeVenteGainMounthState extends State<CourbeVenteGainMounth> {
               sortingOrder: SortingOrder.ascending,
               markerSettings: const MarkerSettings(isVisible: true),
               xValueMapper: (CourbeGainModel ventes, _) =>
-                  '${ventes.created.toInt()} Mois',
+                  '${ventes.created.toInt()}',
               yValueMapper: (CourbeGainModel ventes, _) =>
                   double.parse(ventes.sum.toStringAsFixed(2)),
               // Enable data label
