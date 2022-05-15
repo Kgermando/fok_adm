@@ -154,7 +154,7 @@ class _ComMarketingState extends State<ComMarketing> {
                                     color: Colors.pink.shade700),
                                 DashNumberWidget(
                                     number: '$campaignCount',
-                                    title: 'Campaigne',
+                                    title: 'Campaignes',
                                     icon: Icons.campaign,
                                     color: Colors.orange.shade700),
                                 DashNumberWidget(
