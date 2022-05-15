@@ -7,6 +7,8 @@ import 'package:fokad_admin/src/pages/administration/exploitations_admin.dart';
 import 'package:fokad_admin/src/pages/administration/finances_admin.dart';
 import 'package:fokad_admin/src/pages/administration/logistique_admin.dart';
 import 'package:fokad_admin/src/pages/administration/rh_admin.dart';
+import 'package:fokad_admin/src/pages/archives/add_archive.dart';
+import 'package:fokad_admin/src/pages/archives/archive_page.dart';
 import 'package:fokad_admin/src/pages/auth/login_auth.dart';
 import 'package:fokad_admin/src/pages/auth/profil_page.dart';
 import 'package:fokad_admin/src/pages/budgets/budget_dd/budget_dd.dart';
@@ -231,6 +233,10 @@ class ComMarketingRoutes {
   static const comMarketingVente = "/com-marketing-vente";
 }
 
+class ArchiveRoutes {
+  static const arcihves = "/arcihves";
+  static const addArcihves = "/arcihves-add";
+}
 
 class MailRoutes {
   static const mails = "/mails";
@@ -421,6 +427,9 @@ class Routing {
 
         MailRoutes.mails: (_) => const MaterialPage(child: MailPages()),
         // MailRoutes.addMail: (_) => const MaterialPage(child: NewMail())
+
+        ArchiveRoutes.arcihves: (_) => const MaterialPage(child: ArchivePage()),
+        ArchiveRoutes.addArcihves: (_) => const MaterialPage(child: AddArchive()),
       },
     );
   }
