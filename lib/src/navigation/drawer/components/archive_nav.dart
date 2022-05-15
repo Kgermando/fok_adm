@@ -32,14 +32,14 @@ class _ArchiveNavState extends State<ArchiveNav> {
       trailing: const Icon(Icons.arrow_drop_down),
       children: [
         DrawerWidget(
-            selected: widget.pageCurrente == BudgetRoutes.budgetDashboard,
-            icon: Icons.dashboard,
+            selected: widget.pageCurrente == ArchiveRoutes.arcihves,
+            icon: Icons.archive_outlined,
             sizeIcon: 20.0,
-            title: 'Dashboard',
+            title: 'Archives',
             style: bodyText1!,
             onTap: () {
               Routemaster.of(context).replace(
-                BudgetRoutes.budgetDashboard,
+                ArchiveRoutes.arcihves,
               );
               // Navigator.of(context).pop();
             }),
