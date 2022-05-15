@@ -54,7 +54,7 @@ class _ArchivePageState extends State<ArchivePage> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       CustomAppbar(
-                          title: 'Geston des archives',
+                          title: 'Gestion des archives',
                           controllerMenu: () =>
                               _key.currentState!.openDrawer()),
                       Expanded(
