@@ -41,7 +41,7 @@ class _EtatMaterielPieState extends State<EtatMaterielPie> {
       child: Material(
         elevation: 10.0,
         child: SfCircularChart(
-            title: ChartTitle(text: 'Statut materiel',
+            title: ChartTitle(text: 'Statut materiels',
                 textStyle: const TextStyle(fontWeight: FontWeight.bold)),
             legend: Legend(isVisible: true, isResponsive: true),
             series: <CircularSeries>[
