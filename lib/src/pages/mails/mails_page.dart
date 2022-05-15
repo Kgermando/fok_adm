@@ -76,12 +76,14 @@ class _MailPagesState extends State<MailPages> {
                           controllerMenu: () =>
                               _key.currentState!.openDrawer()),
                       Expanded(
-                        child: ListView.builder(
-                          itemCount: mailsList.length,
-                          itemBuilder: (context, index) {
-                            final mail = mailsList[index];
-                            return pageWidget(mail);
-                          }))
+                          child: (mailsList.isEmpty)
+                              ? alertWidget()
+                              : ListView.builder(
+                                  itemCount: mailsList.length,
+                                  itemBuilder: (context, index) {
+                                    final mail = mailsList[index];
+                                    return pageWidget(mail);
+                                  }))
                     ],
                   ),
                 ),
@@ -94,19 +96,34 @@ class _MailPagesState extends State<MailPages> {
   Widget pageWidget(MailModel mail) {
     return InkWell(
       onTap: () {
-        Navigator.of(context).push(MaterialPageRoute(
-            builder: (context) => NewMail(mailModel: mail)));
+        Navigator.of(context).push(
+            MaterialPageRoute(builder: (context) => NewMail(mailModel: mail)));
       },
       child: Padding(
         padding: const EdgeInsets.all(p10),
         child: ListMails(
-          fullName: mail.fullName,
-          email: mail.email,
-          cc: mail.cc,
-          objet: mail.objet,
-          read: mail.read,
-          dateSend: mail.dateSend
-        ),
+            fullName: mail.fullName,
+            email: mail.email,
+            cc: mail.cc,
+            objet: mail.objet,
+            read: mail.read,
+            dateSend: mail.dateSend),
+      ),
+    );
+  }
+
+  Widget alertWidget() {
+    final headline6 = Theme.of(context).textTheme.headline6;
+    // Duration isDuration = const Duration(minutes: 1);
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Text("En attente d'une connexion API sécurisée ...",
+              style: headline6),
+          // const CircularProgressIndicator(),
+
+        ],
       ),
     );
   }
