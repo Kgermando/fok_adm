@@ -1,8 +1,10 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:fokad_admin/src/api/auth/auth_api.dart';
 import 'package:fokad_admin/src/api/finances/creance_api.dart';
 import 'package:fokad_admin/src/models/finances/creances_model.dart';
+import 'package:fokad_admin/src/models/users/user_model.dart';
 import 'package:fokad_admin/src/pages/finances/transactions/components/components/creances/detail_creance.dart';
 import 'package:fokad_admin/src/widgets/print_widget.dart';
 import 'package:fokad_admin/src/utils/class_implemented.dart';
@@ -277,8 +279,13 @@ class _TableCreanceState extends State<TableCreance> {
   }
 
   Future agentsRow() async {
+    UserModel userModel = await AuthApi().getUserId();
     List<CreanceModel?> dataList = await CreanceApi().getAllData();
-    var data = dataList;
+    var data = dataList
+        .where((element) => element!.statutPaie == true ||
+          element.approbationDG == 'Approved' || 
+            element.signature == userModel.matricule)
+        .toList();
 
     if (mounted) {
       setState(() {

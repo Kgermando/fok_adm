@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:fokad_admin/src/api/comm_marketing/marketing/campaign_api.dart';
 import 'package:fokad_admin/src/api/devis/devis_api.dart';
 import 'package:fokad_admin/src/api/exploitations/projets_api.dart';
+import 'package:fokad_admin/src/api/finances/creance_api.dart';
+import 'package:fokad_admin/src/api/finances/dette_api.dart';
 import 'package:fokad_admin/src/api/rh/paiement_salaire_api.dart';
 import 'package:fokad_admin/src/constants/app_theme.dart';
 import 'package:fokad_admin/src/constants/responsive.dart';
@@ -30,6 +32,9 @@ class _DepartementFinState extends State<DepartementFin> {
   bool isOpen3 = false;
   bool isOpen4 = false;
 
+  int creanceCount = 0;
+  int detteCount = 0;
+
   int salaireCount = 0;
   int campaignCount = 0;
   int devisCount = 0;
@@ -42,20 +47,31 @@ class _DepartementFinState extends State<DepartementFin> {
   }
 
   Future<void> getData() async {
-    List<PaiementSalaireModel?> dataList =
-        await PaiementSalaireApi().getAllData();
-    List<CampaignModel> campaign = await CampaignApi().getAllData();
+    var creances = await CreanceApi().getAllData();
+    var dettes = await DetteApi().getAllData();
+    var salaires = await PaiementSalaireApi().getAllData();
+    var campaigns = await CampaignApi().getAllData();
     var devis = await DevisAPi().getAllData();
     var projets = await ProjetsApi().getAllData();
 
     setState(() {
-      salaireCount = dataList
-          .where((element) =>
-              element!.approbationFin == '-' &&
+      creanceCount = creances
+          .where((element) => element.statutPaie == false && 
               element.approbationDG == 'Approved')
           .toList()
           .length;
-      campaignCount = campaign
+      detteCount = dettes
+          .where((element) => element.statutPaie == false &&  element.approbationDG == 'Approved')
+          .toList()
+          .length;
+
+      salaireCount = salaires
+          .where((element) =>
+              element.approbationFin == '-' &&
+              element.approbationDG == 'Approved')
+          .toList()
+          .length;
+      campaignCount = campaigns
           .where((element) =>
               element.approbationFin == '-' &&
               element.approbationDG == 'Approved')

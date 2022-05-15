@@ -20,7 +20,7 @@ class _BudgetsAdminState extends State<BudgetsAdmin> {
 
   bool isOpenBudget = false;
 
-  int nbrBudget = 0;
+  int budgetCount = 0;
 
   @override
   initState() {
@@ -32,7 +32,7 @@ class _BudgetsAdminState extends State<BudgetsAdmin> {
     List<LigneBudgetaireModel?> dataLigneBudgetaireList =
         await LIgneBudgetaireApi().getAllData();
     setState(() {
-      nbrBudget = dataLigneBudgetaireList
+      budgetCount = dataLigneBudgetaireList
         .where((element) => element!.approbationBudget == "Approved" && element.approbationDG == "-")
         .length;
     });
@@ -75,7 +75,7 @@ class _BudgetsAdminState extends State<BudgetsAdmin> {
                                   title:
                                       Text('Dossier Budgets', style: headline6!.copyWith(color: Colors.white)),
                                   subtitle: Text(
-                                      "Vous avez $nbrBudget dossiers necessitent votre approbation",
+                                      "Vous avez $budgetCount dossiers necessitent votre approbation",
                                       style: bodyMedium!
                                           .copyWith(color: Colors.white)),
                                   initiallyExpanded: false,

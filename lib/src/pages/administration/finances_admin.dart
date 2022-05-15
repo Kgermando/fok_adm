@@ -38,15 +38,15 @@ class _FinancesAdminState extends State<FinancesAdmin> {
   }
 
   Future<void> getData() async {
-    List<CreanceModel?> dataCreanceList = await CreanceApi().getAllData();
-    List<DetteModel?> dataDetteList = await DetteApi().getAllData();
+    var dataCreanceList = await CreanceApi().getAllData();
+    var dataDetteList = await DetteApi().getAllData();
     
     setState(() {
        nbrCreance = dataCreanceList
-          .where((element) => element!.approbationDG == "-")
+          .where((element) => element.statutPaie == false && element.approbationDG == "-")
           .length;
       nbrDette = dataDetteList
-          .where((element) => element!.approbationDG == "-")
+          .where((element) =>  element.statutPaie == false && element.approbationDG == "-")
           .length;
     });
   }
@@ -54,6 +54,7 @@ class _FinancesAdminState extends State<FinancesAdmin> {
   @override
   Widget build(BuildContext context) {
     final headline6 = Theme.of(context).textTheme.headline6;
+    final bodyMedium = Theme.of(context).textTheme.bodyMedium;
     return Scaffold(
         key: _key,
         drawer: const DrawerMenu(),
@@ -80,6 +81,58 @@ class _FinancesAdminState extends State<FinancesAdmin> {
                         child: ListView(
                           controller: _controllerScroll,
                           children: [
+                            Card(
+                              color: Colors.red.shade700,
+                              child: ExpansionTile(
+                                leading: const Icon(Icons.folder,
+                                    color: Colors.white),
+                                title: Text('Dossier Créances',
+                                    style: headline6!
+                                        .copyWith(color: Colors.white)),
+                                subtitle: Text(
+                                    "Vous avez $nbrCreance dossiers necessitent votre approbation",
+                                    style: bodyMedium!
+                                        .copyWith(color: Colors.white)),
+                                initiallyExpanded: false,
+                                onExpansionChanged: (val) {
+                                  setState(() {
+                                    isOpenFin1 = !val;
+                                  });
+                                },
+                                trailing: const Icon(
+                                  Icons.arrow_drop_down,
+                                  color: Colors.white,
+                                ),
+                                children: const [TableCreanceAdmin()],
+                              ),
+                            ),
+                            Card(
+                              color: Colors.pink.shade700,
+                              child: ExpansionTile(
+                                leading: const Icon(Icons.folder,
+                                    color: Colors.white),
+                                title: Text('Dossier Dettes',
+                                    style: headline6.copyWith(color: Colors.white)),
+                                subtitle: Text(
+                                    "Vous avez $nbrDette dossiers necessitent votre approbation",
+                                    style: bodyMedium.copyWith(color: Colors.white)),
+                                initiallyExpanded: false,
+                                onExpansionChanged: (val) {
+                                  setState(() {
+                                    isOpenFin2 = !val;
+                                  });
+                                },
+                                trailing: const Icon(
+                                  Icons.arrow_drop_down,
+                                  color: Colors.white,
+                                ),
+                                children: const [TableDetteAdmin()],
+                              ),
+                            ),
+
+
+
+
                             Card(
                               color: const Color.fromARGB(255, 126, 170, 214),
                               child: ExpansionTile(

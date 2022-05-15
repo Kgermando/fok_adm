@@ -38,7 +38,6 @@ class _CMDDState extends State<CMDD> {
   }
 
   Future<void> getData() async {
-    // RH
     List<CampaignModel> campaign = await CampaignApi().getAllData();
     List<SuccursaleModel> succursale = await SuccursaleApi().getAllData();
     List<ProductModel> prodModel = await ProduitModelApi().getAllData();

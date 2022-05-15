@@ -1,8 +1,10 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:fokad_admin/src/api/auth/auth_api.dart';
 import 'package:fokad_admin/src/api/finances/dette_api.dart';
 import 'package:fokad_admin/src/models/finances/dette_model.dart';
+import 'package:fokad_admin/src/models/users/user_model.dart';
 import 'package:fokad_admin/src/pages/finances/transactions/components/components/dettes/detail_dette.dart';
 import 'package:fokad_admin/src/widgets/print_widget.dart';
 import 'package:fokad_admin/src/utils/class_implemented.dart';
@@ -277,8 +279,14 @@ class _TableDetteState extends State<TableDette> {
   }
 
   Future agentsRow() async {
+    UserModel userModel = await AuthApi().getUserId();
     List<DetteModel?> dataList = await DetteApi().getAllData();
-    var data = dataList;
+    var data = dataList
+        .where((element) =>
+          element!.statutPaie == true ||
+            element.approbationDG == 'Approved' ||
+            element.signature == userModel.matricule)
+        .toList();
     if (mounted) {
       setState(() {
         for (var item in data) {

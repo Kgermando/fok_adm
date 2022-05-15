@@ -62,7 +62,7 @@ class _RhAdminState extends State<RhAdmin> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      CustomAppbar(title: 'RH Admin', controllerMenu: () => _key.currentState!.openDrawer()),
+                      CustomAppbar(title: 'Ressources Humaines', controllerMenu: () => _key.currentState!.openDrawer()),
                       Expanded(
                           child: Scrollbar(
                         controller: _controllerScroll,
