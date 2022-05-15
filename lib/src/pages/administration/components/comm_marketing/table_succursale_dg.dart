@@ -159,7 +159,8 @@ class _TableSuccursaleDGState extends State<TableSuccursaleDG> {
 
   Future agentsRow() async {
     List<SuccursaleModel?> dataList = await SuccursaleApi().getAllData();
-    var data = dataList.where((element) => element!.approbationDG == '-');
+    var data = dataList.where((element) => element!.approbationDD == 'Approved' 
+        && element.approbationDG == '-');
 
     if (mounted) {
       setState(() {
@@ -172,7 +173,7 @@ class _TableSuccursaleDGState extends State<TableSuccursaleDG> {
             'approbationDG': PlutoCell(value: item.approbationDG),
             'approbationDD': PlutoCell(value: item.approbationDD),
             'created': PlutoCell(
-                value: DateFormat("dd-MM-yy H:mm").format(item.created))
+                value: DateFormat("dd-MM-yyyy HH:mm").format(item.created))
           }));
         }
         stateManager!.resetCurrentState();

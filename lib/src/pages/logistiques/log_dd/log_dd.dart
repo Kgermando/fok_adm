@@ -10,22 +10,15 @@ import 'package:fokad_admin/src/api/logistiques/mobilier_api.dart';
 import 'package:fokad_admin/src/api/logistiques/trajet_api.dart';
 import 'package:fokad_admin/src/constants/app_theme.dart';
 import 'package:fokad_admin/src/constants/responsive.dart';
-import 'package:fokad_admin/src/models/logistiques/anguin_model.dart';
-import 'package:fokad_admin/src/models/logistiques/carburant_model.dart';
-import 'package:fokad_admin/src/models/logistiques/entretien_model.dart';
-import 'package:fokad_admin/src/models/logistiques/etat_materiel_model.dart';
-import 'package:fokad_admin/src/models/logistiques/immobilier_model.dart';
-import 'package:fokad_admin/src/models/logistiques/mobilier_model.dart';
-import 'package:fokad_admin/src/models/logistiques/trajet_model.dart';
 import 'package:fokad_admin/src/navigation/drawer/drawer_menu.dart';
 import 'package:fokad_admin/src/navigation/header/custom_appbar.dart';
-import 'package:fokad_admin/src/pages/logistiques/log_dd/components/table_carburant.dart';
-import 'package:fokad_admin/src/pages/logistiques/log_dd/components/table_entretien.dart';
-import 'package:fokad_admin/src/pages/logistiques/log_dd/components/table_etat_materiels.dart';
-import 'package:fokad_admin/src/pages/logistiques/log_dd/components/table_immobilier.dart';
-import 'package:fokad_admin/src/pages/logistiques/log_dd/components/table_mobilier.dart';
-import 'package:fokad_admin/src/pages/logistiques/log_dd/components/table_trajet.dart';
-import 'package:fokad_admin/src/pages/logistiques/log_dd/components/table_trajet_anguin.dart';
+import 'package:fokad_admin/src/pages/logistiques/log_dd/components/table_carburant_dd.dart';
+import 'package:fokad_admin/src/pages/logistiques/log_dd/components/table_entretien_dd.dart';
+import 'package:fokad_admin/src/pages/logistiques/log_dd/components/table_etat_materiels_dd.dart';
+import 'package:fokad_admin/src/pages/logistiques/log_dd/components/table_immobilier_dd.dart';
+import 'package:fokad_admin/src/pages/logistiques/log_dd/components/table_mobilier_dd.dart';
+import 'package:fokad_admin/src/pages/logistiques/log_dd/components/table_trajet_dd.dart';
+import 'package:fokad_admin/src/pages/logistiques/log_dd/components/table_trajet_anguin_dd.dart';
 
 class LogDD extends StatefulWidget {
   const LogDD({ Key? key }) : super(key: key);
@@ -43,6 +36,7 @@ class _LogDDState extends State<LogDD> {
   bool isOpenLog4 = false;
   bool isOpenLog5 = false;
   bool isOpenLog6 = false;
+  bool isOpenLog7 = false;
 
   int anguinsapprobationDD = 0;
   int carburantCount = 0;
@@ -64,13 +58,13 @@ class _LogDDState extends State<LogDD> {
   }
 
   Future<void> getData() async {
-    List<AnguinModel> anguins = await AnguinApi().getAllData();
-    List<CarburantModel> carburants = await CarburantApi().getAllData();
-    List<TrajetModel> trajets = await TrajetApi().getAllData();
-    List<ImmobilierModel> immobiliers = await ImmobilierApi().getAllData();
-    List<MobilierModel> mobiliers = await MobilierApi().getAllData();
-    List<EntretienModel> entretiens = await EntretienApi().getAllData();
-    List<EtatMaterielModel> etatmateriels = await EtatMaterielApi().getAllData();
+var anguins = await AnguinApi().getAllData();
+    var carburants = await CarburantApi().getAllData();
+    var trajets = await TrajetApi().getAllData();
+    var immobiliers = await ImmobilierApi().getAllData();
+    var mobiliers = await MobilierApi().getAllData();
+    var entretiens = await EntretienApi().getAllData();
+    var etatmateriels = await EtatMaterielApi().getAllData();
 
     setState(() {
       anguinsapprobationDD =
@@ -127,7 +121,7 @@ class _LogDDState extends State<LogDD> {
                                 title:
                                     Text('Dossier Anguins', style: headline6!.copyWith(color: Colors.white)),
                                 subtitle: Text(
-                                    "Vous $anguinsapprobationDD dossiers necessitent votre approbation",
+                                    "Vous avez $anguinsapprobationDD dossiers necessitent votre approbation",
                                     style: bodyMedium!.copyWith(
                                         color: Colors.white)),
                                 initiallyExpanded: false,
@@ -149,7 +143,7 @@ class _LogDDState extends State<LogDD> {
                                     Text('Dossier Carburants', style: headline6
                                         .copyWith(color: Colors.white)),
                                 subtitle: Text(
-                                    "Vous $carburantCount dossiers necessitent votre approbation",
+                                    "Vous avez $carburantCount dossiers necessitent votre approbation",
                                     style: bodyMedium.copyWith(
                                         color: Colors.white)),
                                 initiallyExpanded: false,
@@ -172,7 +166,7 @@ class _LogDDState extends State<LogDD> {
                                     Text('Dossier Trajets', style: headline6.copyWith(
                                         color: Colors.white)),
                                 subtitle: Text(
-                                    "Vous $trajetsCount dossiers necessitent votre approbation",
+                                    "Vous avez $trajetsCount dossiers necessitent votre approbation",
                                     style: bodyMedium.copyWith(
                                         color: Colors.white)),
                                 initiallyExpanded: false,
@@ -194,7 +188,7 @@ class _LogDDState extends State<LogDD> {
                                 title: Text('Dossier Immobiliers', style: headline6.copyWith(
                                         color: Colors.white)),
                                 subtitle: Text(
-                                    "Vous $immobiliersCount dossiers necessitent votre approbation",
+                                    "Vous avez $immobiliersCount dossiers necessitent votre approbation",
                                     style: bodyMedium.copyWith(
                                         color: Colors.white)),
                                 initiallyExpanded: false,
@@ -216,7 +210,7 @@ class _LogDDState extends State<LogDD> {
                                 title: Text('Dossier Mobiliers', style: headline6.copyWith(
                                         color: Colors.white)),
                                 subtitle: Text(
-                                    "Vous $mobiliersCount dossiers necessitent votre approbation",
+                                    "Vous avez $mobiliersCount dossiers necessitent votre approbation",
                                     style: bodyMedium.copyWith(
                                         color: Colors.white)),
                                 initiallyExpanded: false,
@@ -239,7 +233,7 @@ class _LogDDState extends State<LogDD> {
                                     Text('Dossier maintenances', style: headline6.copyWith(
                                         color: Colors.white)),
                                 subtitle: Text(
-                                    "Vous $entretiensCount dossiers necessitent votre approbation",
+                                    "Vous avez $entretiensCount dossiers necessitent votre approbation",
                                     style: bodyMedium.copyWith(
                                         color: Colors.white)),
                                 initiallyExpanded: false,
@@ -262,13 +256,13 @@ class _LogDDState extends State<LogDD> {
                                     Text('Dossier Etat de materiels', style: headline6.copyWith(
                                         color: Colors.white)),
                                 subtitle: Text(
-                                    "Vous $etatmaterielsCount dossiers necessitent votre approbation",
+                                    "Vous avez $etatmaterielsCount dossiers necessitent votre approbation",
                                     style: bodyMedium.copyWith(
                                         color: Colors.white)),
                                 initiallyExpanded: false,
                                 onExpansionChanged: (val) {
                                   setState(() {
-                                    isOpenLog6 = !val;
+                                    isOpenLog7 = !val;
                                   });
                                 },
                                 trailing: const Icon(Icons.arrow_drop_down,

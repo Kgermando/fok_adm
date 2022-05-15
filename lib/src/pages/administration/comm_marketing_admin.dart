@@ -43,7 +43,7 @@ class _CommMarketingAdminState extends State<CommMarketingAdmin> {
       succursaleCount =
           succursale.where((element) => element.approbationDG == '-').length;
     });
-  }
+  } 
 
   @override
   Widget build(BuildContext context) {

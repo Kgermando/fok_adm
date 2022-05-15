@@ -70,21 +70,25 @@ class _RhAdminState extends State<RhAdmin> {
                           controller: _controllerScroll,
                           children: [
                             Card(
-                              color: const Color.fromARGB(255, 126, 170, 214),
+                              color: Colors.orange.shade700,
                               child: ExpansionTile(
-                                leading: const Icon(Icons.folder),
-                                title:
-                                    Text('Dossier agents', style: headline6),
+                                leading: const Icon(Icons.folder,
+                                    color: Colors.white),
+                                title: Text('Dossier agents',
+                                    style: headline6!.copyWith(
+                                        color: Colors.white)),
                                 subtitle: Text(
                                     "Vous avez $agentInactifs dossiers necessitent votre approbation",
-                                    style: bodyMedium),
+                                    style: bodyMedium!.copyWith(
+                                        color: Colors.white)),
                                 initiallyExpanded: false,
                                 onExpansionChanged: (val) {
                                   setState(() {
                                     isOpenRh1 = !val;
                                   });
                                 },
-                                trailing: const Icon(Icons.arrow_drop_down),
+                                trailing: const Icon(Icons.arrow_drop_down,
+                                    color: Colors.white),
                                 children: const [TableAgentAdmin()],
                               ),
                             ),

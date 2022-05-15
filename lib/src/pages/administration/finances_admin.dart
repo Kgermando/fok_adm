@@ -21,8 +21,7 @@ class _FinancesAdminState extends State<FinancesAdmin> {
   final ScrollController _controllerScroll = ScrollController();
 
   bool isOpenFin1 = false;
-  bool isOpenFin2 = false;  
-  bool isOpenBudget = false;
+  bool isOpenFin2 = false; 
 
 
   int nbrCreance = 0;

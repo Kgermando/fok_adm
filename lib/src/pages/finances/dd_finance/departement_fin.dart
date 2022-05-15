@@ -7,8 +7,6 @@ import 'package:fokad_admin/src/api/finances/dette_api.dart';
 import 'package:fokad_admin/src/api/rh/paiement_salaire_api.dart';
 import 'package:fokad_admin/src/constants/app_theme.dart';
 import 'package:fokad_admin/src/constants/responsive.dart';
-import 'package:fokad_admin/src/models/comm_maketing/campaign_model.dart';
-import 'package:fokad_admin/src/models/rh/paiement_salaire_model.dart';
 import 'package:fokad_admin/src/navigation/drawer/drawer_menu.dart';
 import 'package:fokad_admin/src/navigation/header/custom_appbar.dart';
 import 'package:fokad_admin/src/pages/finances/dd_finance/components/table_campaign_fin.dart';

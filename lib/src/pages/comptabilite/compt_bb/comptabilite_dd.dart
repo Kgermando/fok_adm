@@ -24,8 +24,10 @@ class ComptabiliteDD extends StatefulWidget {
 class _ComptabiliteDDState extends State<ComptabiliteDD> {
   final GlobalKey<ScaffoldState> _key = GlobalKey();
 
-  bool isOpenCompte1 = false;
-  bool isOpenCompte2 = false;
+  bool isOpen1 = false;
+  bool isOpen2 = false;
+  bool isOpen3 = false;
+  bool isOpen4 = false;
 
   int bilanCount = 0;
   int compteResultatCount = 0;
@@ -97,17 +99,17 @@ class _ComptabiliteDDState extends State<ComptabiliteDD> {
                                   Icons.folder,
                                   color: Colors.white,
                                 ),
-                                title: Text('Dossier Bilan',
+                                title: Text('Dossier Bilans',
                                     style: headline6!
                                         .copyWith(color: Colors.white)),
                                 subtitle: Text(
-                                    "Vous $bilanCount dossiers necessitent votre approbation",
+                                    "Vous avez $bilanCount dossiers necessitent votre approbation",
                                     style: bodyMedium!
                                         .copyWith(color: Colors.white)),
                                 initiallyExpanded: false,
                                 onExpansionChanged: (val) {
                                   setState(() {
-                                    isOpenCompte1 = !val;
+                                    isOpen1 = !val;
                                   });
                                 },
                                 trailing: const Icon(
@@ -124,17 +126,17 @@ class _ComptabiliteDDState extends State<ComptabiliteDD> {
                                   Icons.folder,
                                   color: Colors.white,
                                 ),
-                                title: Text('Dossier Compte journal',
+                                title: Text('Dossier Compte journals',
                                     style: headline6.copyWith(
                                         color: Colors.white)),
                                 subtitle: Text(
-                                    "Vous $journalCount dossiers necessitent votre approbation",
+                                    "Vous avez $journalCount dossiers necessitent votre approbation",
                                     style: bodyMedium.copyWith(
                                         color: Colors.white)),
                                 initiallyExpanded: false,
                                 onExpansionChanged: (val) {
                                   setState(() {
-                                    isOpenCompte1 = !val;
+                                    isOpen2 = !val;
                                   });
                                 },
                                 trailing: const Icon(
@@ -151,17 +153,17 @@ class _ComptabiliteDDState extends State<ComptabiliteDD> {
                                   Icons.folder,
                                   color: Colors.white,
                                 ),
-                                title: Text('Dossier Compte resultat',
+                                title: Text('Dossier Compte resultats',
                                     style: headline6.copyWith(
                                         color: Colors.white)),
                                 subtitle: Text(
-                                    "Vous $compteResultatCount dossiers necessitent votre approbation",
+                                    "Vous avez $compteResultatCount dossiers necessitent votre approbation",
                                     style: bodyMedium.copyWith(
                                         color: Colors.white)),
                                 initiallyExpanded: false,
                                 onExpansionChanged: (val) {
                                   setState(() {
-                                    isOpenCompte1 = !val;
+                                    isOpen4 = !val;
                                   });
                                 },
                                 trailing: const Icon(
@@ -178,17 +180,17 @@ class _ComptabiliteDDState extends State<ComptabiliteDD> {
                                   Icons.folder,
                                   color: Colors.white,
                                 ),
-                                title: Text('Dossier Compte Balance',
+                                title: Text('Dossier Compte Balances',
                                     style: headline6.copyWith(
                                         color: Colors.white)),
                                 subtitle: Text(
-                                    "Vous $balanceCount dossiers necessitent votre approbation",
+                                    "Vous avez $balanceCount dossiers necessitent votre approbation",
                                     style: bodyMedium.copyWith(
                                         color: Colors.white)),
                                 initiallyExpanded: false,
                                 onExpansionChanged: (val) {
                                   setState(() {
-                                    isOpenCompte1 = !val;
+                                    isOpen4 = !val;
                                   });
                                 },
                                 trailing: const Icon(

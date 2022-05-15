@@ -1,22 +1,20 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
-import 'package:fokad_admin/src/api/exploitations/projets_api.dart';
-import 'package:fokad_admin/src/models/exploitations/projet_model.dart';
-import 'package:fokad_admin/src/pages/exploitations/projets/components/detail_projet.dart';
+import 'package:fokad_admin/src/api/logistiques/mobilier_api.dart';
+import 'package:fokad_admin/src/models/logistiques/mobilier_model.dart';
+import 'package:fokad_admin/src/pages/logistiques/materiels/components/detail_mobilier.dart';
 import 'package:fokad_admin/src/widgets/print_widget.dart';
 import 'package:fokad_admin/src/utils/class_implemented.dart';
 import 'package:intl/intl.dart';
 import 'package:pluto_grid/pluto_grid.dart';
 
-class TableProjetDD extends StatefulWidget {
-  const TableProjetDD({Key? key}) : super(key: key);
+class TableMobilierDG extends StatefulWidget {
+  const TableMobilierDG({Key? key}) : super(key: key);
 
   @override
-  State<TableProjetDD> createState() => _TableProjetDDState();
+  State<TableMobilierDG> createState() => _TableMobilierDGState();
 }
 
-class _TableProjetDDState extends State<TableProjetDD> {
+class _TableMobilierDGState extends State<TableMobilierDG> {
   List<PlutoColumn> columns = [];
   List<PlutoRow> rows = [];
   PlutoGridStateManager? stateManager;
@@ -27,10 +25,7 @@ class _TableProjetDDState extends State<TableProjetDD> {
   @override
   void initState() {
     agentsColumn();
-    Timer.periodic(const Duration(milliseconds: 500), ((timer) {
-      agentsRow();
-      timer.cancel();
-    }));
+    agentsRow();
     super.initState();
   }
 
@@ -46,7 +41,7 @@ class _TableProjetDDState extends State<TableProjetDD> {
           final idPlutoRow = dataList.elementAt(0);
 
           Navigator.of(context).push(MaterialPageRoute(
-              builder: (context) => DetailProjet(id: idPlutoRow.value)));
+              builder: (context) => DetailMobilier(id: idPlutoRow.value)));
         },
         onLoaded: (PlutoGridOnLoadedEvent event) {
           stateManager = event.stateManager;
@@ -66,19 +61,13 @@ class _TableProjetDDState extends State<TableProjetDD> {
               ClassFilterImplemented(),
             ],
             resolveDefaultColumnFilter: (column, resolver) {
-              if (column.field == 'id') {
+              if (column.field == 'nom') {
                 return resolver<ClassFilterImplemented>() as PlutoFilterType;
-              } else if (column.field == 'nomProjet') {
+              } else if (column.field == 'modele') {
                 return resolver<ClassFilterImplemented>() as PlutoFilterType;
-              } else if (column.field == 'responsable') {
+              } else if (column.field == 'marque') {
                 return resolver<ClassFilterImplemented>() as PlutoFilterType;
-              } else if (column.field == 'objectifs') {
-                return resolver<ClassFilterImplemented>() as PlutoFilterType;
-              } else if (column.field == 'dateDebutEtFin') {
-                return resolver<ClassFilterImplemented>() as PlutoFilterType;
-              } else if (column.field == 'typeFinancement') {
-                return resolver<ClassFilterImplemented>() as PlutoFilterType;
-              } else if (column.field == 'approbation') {
+              } else if (column.field == 'nombre') {
                 return resolver<ClassFilterImplemented>() as PlutoFilterType;
               } else if (column.field == 'created') {
                 return resolver<ClassFilterImplemented>() as PlutoFilterType;
@@ -107,8 +96,8 @@ class _TableProjetDDState extends State<TableProjetDD> {
       ),
       PlutoColumn(
         readOnly: true,
-        title: 'Nom projet',
-        field: 'nomProjet',
+        title: 'Nom complet',
+        field: 'nom',
         type: PlutoColumnType.text(),
         enableRowDrag: true,
         enableContextMenu: false,
@@ -119,8 +108,8 @@ class _TableProjetDDState extends State<TableProjetDD> {
       ),
       PlutoColumn(
         readOnly: true,
-        title: 'Responsable',
-        field: 'responsable',
+        title: 'Modèle',
+        field: 'modele',
         type: PlutoColumnType.text(),
         enableRowDrag: true,
         enableContextMenu: false,
@@ -131,8 +120,8 @@ class _TableProjetDDState extends State<TableProjetDD> {
       ),
       PlutoColumn(
         readOnly: true,
-        title: 'Objectifs',
-        field: 'objectifs',
+        title: 'Marque',
+        field: 'marque',
         type: PlutoColumnType.text(),
         enableRowDrag: true,
         enableContextMenu: false,
@@ -143,32 +132,8 @@ class _TableProjetDDState extends State<TableProjetDD> {
       ),
       PlutoColumn(
         readOnly: true,
-        title: 'Date de Debut Et Fin',
-        field: 'dateDebutEtFin',
-        type: PlutoColumnType.text(),
-        enableRowDrag: true,
-        enableContextMenu: false,
-        enableDropToResize: true,
-        titleTextAlign: PlutoColumnTextAlign.left,
-        width: 150,
-        minWidth: 150,
-      ),
-      PlutoColumn(
-        readOnly: true,
-        title: 'Type de Financement',
-        field: 'typeFinancement',
-        type: PlutoColumnType.text(),
-        enableRowDrag: true,
-        enableContextMenu: false,
-        enableDropToResize: true,
-        titleTextAlign: PlutoColumnTextAlign.left,
-        width: 150,
-        minWidth: 150,
-      ),
-      PlutoColumn(
-        readOnly: true,
-        title: 'Approbation',
-        field: 'approbation',
+        title: 'Nombre',
+        field: 'nombre',
         type: PlutoColumnType.text(),
         enableRowDrag: true,
         enableContextMenu: false,
@@ -193,9 +158,9 @@ class _TableProjetDDState extends State<TableProjetDD> {
   }
 
   Future agentsRow() async {
-    List<ProjetModel?> dataList = await ProjetsApi().getAllData();
-    var data = dataList.where((element) => element!.approbationDD == '-').toList();
-
+    List<MobilierModel?> dataList = await MobilierApi().getAllData();
+    var data =
+        dataList.where((element) => element!.approbationDG == "-" && element.approbationDD == "Approved").toList();
 
     if (mounted) {
       setState(() {
@@ -203,18 +168,15 @@ class _TableProjetDDState extends State<TableProjetDD> {
           id = item!.id;
           rows.add(PlutoRow(cells: {
             'id': PlutoCell(value: item.id),
-            'nomProjet': PlutoCell(value: item.nomProjet),
-            'responsable': PlutoCell(value: item.responsable),
-            'objectifs': PlutoCell(value: item.objectifs),
-            'dateDebutEtFin': PlutoCell(value: item.dateDebutEtFin),
-            'typeFinancement': PlutoCell(value: item.typeFinancement),
-            'approbation': PlutoCell(value: item.approbationDG),
+            'nom': PlutoCell(value: item.nom),
+            'modele': PlutoCell(value: item.modele),
+            'marque': PlutoCell(value: item.marque),
+            'nombre': PlutoCell(value: item.nombre),
             'created': PlutoCell(
-                value: DateFormat("dd-MM-yy HH:mm").format(item.created))
+                value: DateFormat("dd-MM-yy H:mm").format(item.created))
           }));
-          stateManager!.resetCurrentState();
         }
-        
+        stateManager!.resetCurrentState();
       });
     }
   }

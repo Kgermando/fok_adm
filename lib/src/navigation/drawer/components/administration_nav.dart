@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:badges/badges.dart';
 import 'package:flutter/material.dart';
-import 'package:fokad_admin/src/api/auth/auth_api.dart';
 import 'package:fokad_admin/src/api/budgets/ligne_budgetaire_api.dart';
 import 'package:fokad_admin/src/api/comm_marketing/commerciale/produit_model_api.dart';
 import 'package:fokad_admin/src/api/comm_marketing/commerciale/succursale_api.dart';
@@ -67,13 +66,10 @@ class _AdministrationNavState extends State<AdministrationNav> {
   int prodModelCount = 0;
 
   // Logistique
-  int anguinsapprobationDD = 0;
+  int anguinsCount = 0;
   int carburantCount = 0;
-  int trajetsCount = 0;
   int immobiliersCount = 0;
   int mobiliersCount = 0;
-  int entretiensCount = 0;
-  int etatmaterielsCount = 0;
 
   int countPaie = 0;
   int nbrCreance = 0;
@@ -117,11 +113,8 @@ class _AdministrationNavState extends State<AdministrationNav> {
     // Logistique
     var anguins = await AnguinApi().getAllData();
     var carburants = await CarburantApi().getAllData();
-    var trajets = await TrajetApi().getAllData();
     var immobiliers = await ImmobilierApi().getAllData();
     var mobiliers = await MobilierApi().getAllData();
-    var entretiens = await EntretienApi().getAllData();
-    var etatmateriels = await EtatMaterielApi().getAllData();
 
     // Etaat de Besoins
     var etatBesions = await DevisAPi().getAllData();
@@ -196,17 +189,12 @@ class _AdministrationNavState extends State<AdministrationNav> {
           .length;
 
       // Logistique
-      anguinsapprobationDD = anguins
+      anguinsCount = anguins
           .where((element) =>
               element.approbationDD == "Approved" &&
               element.approbationDG == "-")
           .length;
       carburantCount = carburants
-          .where((element) =>
-              element.approbationDD == "Approved" &&
-              element.approbationDG == "-")
-          .length;
-      trajetsCount = trajets
           .where((element) =>
               element.approbationDD == "Approved" &&
               element.approbationDG == "-")
@@ -217,16 +205,6 @@ class _AdministrationNavState extends State<AdministrationNav> {
               element.approbationDG == "-")
           .length;
       mobiliersCount = mobiliers
-          .where((element) =>
-              element.approbationDD == "Approved" &&
-              element.approbationDG == "-")
-          .length;
-      entretiensCount = entretiens
-          .where((element) =>
-              element.approbationDD == "Approved" &&
-              element.approbationDG == "-")
-          .length;
-      etatmaterielsCount = etatmateriels
           .where((element) =>
               element.approbationDD == "Approved" &&
               element.approbationDG == "-")
@@ -254,13 +232,10 @@ class _AdministrationNavState extends State<AdministrationNav> {
 
     commMarketingCount = campaignCount + succursaleCount + prodModelCount;
 
-    logistiqueCount = anguinsapprobationDD +
+    logistiqueCount = anguinsCount +
         carburantCount +
-        trajetsCount +
         immobiliersCount +
-        mobiliersCount +
-        entretiensCount +
-        etatmaterielsCount;
+        mobiliersCount;
 
     return ExpansionTile(
       leading: const Icon(

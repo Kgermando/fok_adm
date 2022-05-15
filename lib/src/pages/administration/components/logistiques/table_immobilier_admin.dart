@@ -1,19 +1,20 @@
 import 'package:flutter/material.dart';
-import 'package:fokad_admin/src/api/comptabilite/bilan_api.dart';
-import 'package:fokad_admin/src/models/comptabilites/bilan_model.dart';
+import 'package:fokad_admin/src/api/logistiques/immobiler_api.dart';
+import 'package:fokad_admin/src/models/logistiques/immobilier_model.dart';
+import 'package:fokad_admin/src/pages/logistiques/materiels/components/detail_immobilier.dart';
 import 'package:fokad_admin/src/widgets/print_widget.dart';
 import 'package:fokad_admin/src/utils/class_implemented.dart';
 import 'package:intl/intl.dart';
 import 'package:pluto_grid/pluto_grid.dart';
 
-class BilanAdmin extends StatefulWidget {
-  const BilanAdmin({Key? key}) : super(key: key);
+class TableImmobilierDG extends StatefulWidget {
+  const TableImmobilierDG({Key? key}) : super(key: key);
 
   @override
-  State<BilanAdmin> createState() => _BilanAdminState();
+  State<TableImmobilierDG> createState() => _TableImmobilierDGState();
 }
 
-class _BilanAdminState extends State<BilanAdmin> {
+class _TableImmobilierDGState extends State<TableImmobilierDG> {
   List<PlutoColumn> columns = [];
   List<PlutoRow> rows = [];
   PlutoGridStateManager? stateManager;
@@ -22,10 +23,9 @@ class _BilanAdminState extends State<BilanAdmin> {
   int? id;
 
   @override
-  initState() {
+  void initState() {
     agentsColumn();
     agentsRow();
-
     super.initState();
   }
 
@@ -36,13 +36,13 @@ class _BilanAdminState extends State<BilanAdmin> {
       child: PlutoGrid(
         columns: columns,
         rows: rows,
-        // onRowDoubleTap: (PlutoGridOnRowDoubleTapEvent tapEvent) {
-        //   final dataList = tapEvent.row!.cells.values;
-        //   final idPlutoRow = dataList.elementAt(0);
+        onRowDoubleTap: (PlutoGridOnRowDoubleTapEvent tapEvent) {
+          final dataList = tapEvent.row!.cells.values;
+          final idPlutoRow = dataList.elementAt(0);
 
-        //   Navigator.of(context).push(MaterialPageRoute(
-        //       builder: (context) => DetailBilan(id: idPlutoRow.value)));
-        // },
+          Navigator.of(context).push(MaterialPageRoute(
+              builder: (context) => DetailImmobilier(id: idPlutoRow.value)));
+        },
         onLoaded: (PlutoGridOnLoadedEvent event) {
           stateManager = event.stateManager;
           stateManager!.setShowColumnFilter(true);
@@ -61,15 +61,15 @@ class _BilanAdminState extends State<BilanAdmin> {
               ClassFilterImplemented(),
             ],
             resolveDefaultColumnFilter: (column, resolver) {
-              if (column.field == 'titleBilan') {
+              if (column.field == 'typeAllocation') {
                 return resolver<ClassFilterImplemented>() as PlutoFilterType;
-              } else if (column.field == 'comptes') {
+              } else if (column.field == 'numeroCertificat') {
                 return resolver<ClassFilterImplemented>() as PlutoFilterType;
-              } else if (column.field == 'intitule') {
+              } else if (column.field == 'superficie') {
                 return resolver<ClassFilterImplemented>() as PlutoFilterType;
-              } else if (column.field == 'montant') {
+              } else if (column.field == 'dateAcquisition') {
                 return resolver<ClassFilterImplemented>() as PlutoFilterType;
-              } else if (column.field == 'typeBilan') {
+              } else if (column.field == 'created') {
                 return resolver<ClassFilterImplemented>() as PlutoFilterType;
               }
               return resolver<PlutoFilterTypeContains>() as PlutoFilterType;
@@ -96,8 +96,8 @@ class _BilanAdminState extends State<BilanAdmin> {
       ),
       PlutoColumn(
         readOnly: true,
-        title: 'Titre du bilan',
-        field: 'titleBilan',
+        title: 'Type d\'Allocation',
+        field: 'typeAllocation',
         type: PlutoColumnType.text(),
         enableRowDrag: true,
         enableContextMenu: false,
@@ -108,8 +108,8 @@ class _BilanAdminState extends State<BilanAdmin> {
       ),
       PlutoColumn(
         readOnly: true,
-        title: 'Comptes',
-        field: 'comptes',
+        title: 'Numero Certificat',
+        field: 'numeroCertificat',
         type: PlutoColumnType.text(),
         enableRowDrag: true,
         enableContextMenu: false,
@@ -120,8 +120,8 @@ class _BilanAdminState extends State<BilanAdmin> {
       ),
       PlutoColumn(
         readOnly: true,
-        title: 'Intitulé',
-        field: 'intitule',
+        title: 'Superficie',
+        field: 'superficie',
         type: PlutoColumnType.text(),
         enableRowDrag: true,
         enableContextMenu: false,
@@ -132,20 +132,8 @@ class _BilanAdminState extends State<BilanAdmin> {
       ),
       PlutoColumn(
         readOnly: true,
-        title: 'Montant',
-        field: 'montant',
-        type: PlutoColumnType.text(),
-        enableRowDrag: true,
-        enableContextMenu: false,
-        enableDropToResize: true,
-        titleTextAlign: PlutoColumnTextAlign.left,
-        width: 150,
-        minWidth: 150,
-      ),
-      PlutoColumn(
-        readOnly: true,
-        title: 'Type de bilan',
-        field: 'typeBilan',
+        title: 'Date d\'Acquisition',
+        field: 'dateAcquisition',
         type: PlutoColumnType.text(),
         enableRowDrag: true,
         enableContextMenu: false,
@@ -170,8 +158,9 @@ class _BilanAdminState extends State<BilanAdmin> {
   }
 
   Future agentsRow() async {
-    List<BilanModel?> dataList = await BilanApi().getAllData();
-    var data = dataList.where((element) => element!.approbationDG == "-");
+    List<ImmobilierModel?> dataList = await ImmobilierApi().getAllData();
+    var data =
+        dataList.where((element) => element!.approbationDG == "-" && element.approbationDD == "Approved").toList();
 
     if (mounted) {
       setState(() {
@@ -179,13 +168,14 @@ class _BilanAdminState extends State<BilanAdmin> {
           id = item!.id;
           rows.add(PlutoRow(cells: {
             'id': PlutoCell(value: item.id),
-            'titleBilan': PlutoCell(value: item.titleBilan),
-            // 'comptes': PlutoCell(value: item.comptes),
-            // 'intitule': PlutoCell(value: item.intitule),
-            // 'montant': PlutoCell(value: item.montant),
-            // 'typeBilan': PlutoCell(value: item.typeBilan),
+            'typeAllocation': PlutoCell(value: item.typeAllocation),
+            'numeroCertificat': PlutoCell(value: item.numeroCertificat),
+            'superficie': PlutoCell(value: item.superficie),
+            'dateAcquisition': PlutoCell(
+                value:
+                    DateFormat("dd-MM-yy H:mm").format(item.dateAcquisition)),
             'created': PlutoCell(
-                value: DateFormat("DD-MM-yy H:mm").format(item.created))
+                value: DateFormat("dd-MM-yy H:mm").format(item.created))
           }));
         }
         stateManager!.resetCurrentState();

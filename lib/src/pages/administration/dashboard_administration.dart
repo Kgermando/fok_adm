@@ -46,7 +46,7 @@ class _DashboardAdministrationState extends State<DashboardAdministration> {
                       Expanded(
                           child: ListView(
                         children: const [
-                          Text("Dashboard Budget"),
+                          Text("Dashboard "),
                         ],
                       ))
                     ],
