@@ -88,22 +88,22 @@ class _DashboardComptabiliteState extends State<DashboardComptabilite> {
                               children: [
                                 DashNumberWidget(
                                     number: '$bilanCount',
-                                    title: 'Opérations bilan',
+                                    title: 'Bilans',
                                     icon: Icons.blur_linear_rounded,
                                     color: Colors.green.shade700),
                                 DashNumberWidget(
                                     number: '$journalCount',
-                                    title: 'Opérations journal',
+                                    title: 'Journals',
                                     icon: Icons.backup_table,
                                     color: Colors.blue.shade700),
                                 DashNumberWidget(
                                     number: '$compteResultatCount',
-                                    title: 'Opérations compte resultat',
+                                    title: 'Comptes resultats',
                                     icon: Icons.view_compact_rounded,
                                     color: Colors.teal.shade700),
                                 DashNumberWidget(
                                     number: '$balanceCount',
-                                    title: 'Opérations balance',
+                                    title: 'Balances',
                                     icon: Icons.balcony_outlined,
                                     color: Colors.orange.shade700),
                               ],
