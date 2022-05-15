@@ -96,6 +96,7 @@ import '../app_state/app_state.dart';
 
 class UserRoutes {
   static const login = "/";
+  static const logout = "/login";
   static const profile = "/profile";
   static const helps = "/helps";
   static const settings = "/settings";
@@ -233,6 +234,7 @@ class Routing {
     onUnknownRoute: (route) => const Redirect(UserRoutes.login),
     routes: {
       UserRoutes.login: (_) => const MaterialPage(child: LoginPage()),
+      UserRoutes.logout: (_) => const MaterialPage(child: LoginPage()),
     },
   );
 

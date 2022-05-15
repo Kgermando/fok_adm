@@ -3,7 +3,10 @@ import 'package:fokad_admin/src/api/auth/auth_api.dart';
 import 'package:fokad_admin/src/models/menu_item.dart';
 import 'package:fokad_admin/src/routes/routes.dart';
 import 'package:fokad_admin/src/utils/menu_items.dart';
+import 'package:provider/provider.dart';
 import 'package:routemaster/routemaster.dart';
+
+import '../app_state/app_state.dart';
 
 class MenuOptions with ChangeNotifier {
   PopupMenuItem<MenuItem> buildItem(MenuItem item) => PopupMenuItem(
@@ -33,7 +36,8 @@ class MenuOptions with ChangeNotifier {
       case MenuItems.itemLogout:
         // Remove stockage jwt here.
         AuthApi().logout();
-        Routemaster.of(context).replace(UserRoutes.login);
+        Provider.of<AppState>(context, listen: false).isLoggedIn = false;
+        Routemaster.of(context).replace(UserRoutes.logout); 
     }
   }
 }

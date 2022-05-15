@@ -228,18 +228,24 @@ class _AgentPageState extends State<AgentPage> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               CircleAvatar(
-                  radius: 50,
-                  child: (agentModel.photo == '' || agentModel.photo == null)
-                      ? Image.asset(
-                          'assets/images/avatar.jpg',
-                          width: 150,
-                          height: 150,
-                        )
-                      : Image.network(
-                          agentModel.photo!,
-                          width: 150,
-                          height: 150,
-                        )),
+                radius: 55,
+                backgroundColor: Colors.deepOrangeAccent,
+                child: ClipOval(
+                  child: (agentModel.photo == '' || agentModel.photo == null) 
+                    ? Image.asset(
+                        'assets/images/avatar.jpg',
+                        fit: BoxFit.cover,
+                        width: 100,
+                        height: 100,
+                      )
+                    : Image.network(
+                        agentModel.photo!,
+                        fit: BoxFit.cover,
+                        width: 150,
+                        height: 150,
+                      )
+                ),
+              ),
               Column(
                 children: [
                   Row(
@@ -260,7 +266,7 @@ class _AgentPageState extends State<AgentPage> {
                     ],
                   ),
                   Text(
-                      "Créé le. ${DateFormat("dd-MM-yy").format(agentModel.createdAt)}",
+                      "Créé le. ${DateFormat("dd-MM-yyyy HH:mm").format(agentModel.createdAt)}",
                       textAlign: TextAlign.start,
                       style: bodyMedium),
                 ],

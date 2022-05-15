@@ -209,10 +209,6 @@ class _LoginPageState extends State<LoginPage> {
                   .then((value) {
                 if (value) { 
                 Provider.of<AppState>(context, listen: false).isLoggedIn =true;
-                // if () {
-                  
-                // } else {
-                // }
                   ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                     content: const Text("Login succès!"),
                     backgroundColor: Colors.green[700],
