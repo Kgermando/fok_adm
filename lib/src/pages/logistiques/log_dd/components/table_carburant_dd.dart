@@ -134,6 +134,7 @@ class _TableCarburantDDState extends State<TableCarburantDD> {
           onLoaded: (PlutoGridOnLoadedEvent event) {
             stateManager = event.stateManager;
             stateManager!.setShowColumnFilter(true);
+            stateManager!.notifyListeners();
           },
           createHeader: (PlutoGridStateManager header) {
             return Row(

@@ -138,7 +138,7 @@ class _DetailCaisseState extends State<DetailCaisse> {
                                     const SizedBox(width: p10),
                                     Expanded(
                                       child: CustomAppbar(
-                                          title: caisseModel.nomComplet,
+                                          title: "Caisse",
                                           controllerMenu: () =>
                                               _key.currentState!.openDrawer()),
                                     ),
@@ -190,7 +190,8 @@ class _DetailCaisseState extends State<DetailCaisse> {
                       PrintWidget(
                           tooltip: 'Imprimer le document', onPressed: () {}),
                       SelectableText(
-                          DateFormat("dd-MM-yyyy HH:mm").format(caisseModel.created),
+                          DateFormat("dd-MM-yyyy HH:mm")
+                              .format(caisseModel.created),
                           textAlign: TextAlign.start),
                     ],
                   )
@@ -273,28 +274,12 @@ class _DetailCaisseState extends State<DetailCaisse> {
             ],
           ),
           if (caisseModel.typeOperation != 'Depot')
-          Divider(color: Colors.amber.shade700),
+            Divider(color: Colors.amber.shade700),
           if (caisseModel.typeOperation != 'Depot')
             Row(
               children: [
                 Expanded(
-                  child: Text('Ligne budgtaire :',
-                      textAlign: TextAlign.start,
-                      style: bodyMedium.copyWith(fontWeight: FontWeight.bold)),
-                ),
-                Expanded(
-                  child: SelectableText(caisseModel.ligneBudgtaire,
-                      textAlign: TextAlign.start, style: bodyMedium),
-                )
-              ],
-            ),
-             if (caisseModel.typeOperation != 'Depot')
-             Divider(color: Colors.amber.shade700),
-          if (caisseModel.typeOperation != 'Depot')
-            Row(
-              children: [
-                Expanded(
-                  child: Text('departement :',
+                  child: Text('Département :',
                       textAlign: TextAlign.start,
                       style: bodyMedium.copyWith(fontWeight: FontWeight.bold)),
                 ),
@@ -336,7 +321,7 @@ class _DetailCaisseState extends State<DetailCaisse> {
           Row(
             children: [
               Expanded(
-                child: Text('signature :',
+                child: Text('Signature :',
                     textAlign: TextAlign.start,
                     style: bodyMedium.copyWith(fontWeight: FontWeight.bold)),
               ),
@@ -358,6 +343,7 @@ class _DetailCaisseState extends State<DetailCaisse> {
       onLoaded: (PlutoGridOnLoadedEvent event) {
         stateManager = event.stateManager;
         stateManager!.setShowColumnFilter(true);
+        stateManager!.notifyListeners();
       },
     );
   }

@@ -51,6 +51,7 @@ class _TableProjetFinState extends State<TableProjetFin> {
         onLoaded: (PlutoGridOnLoadedEvent event) {
           stateManager = event.stateManager;
           stateManager!.setShowColumnFilter(true);
+          stateManager!.notifyListeners();
         },
         createHeader: (PlutoGridStateManager header) {
           return Row(
@@ -70,7 +71,7 @@ class _TableProjetFinState extends State<TableProjetFin> {
                 return resolver<ClassFilterImplemented>() as PlutoFilterType;
               } else if (column.field == 'nomProjet') {
                 return resolver<ClassFilterImplemented>() as PlutoFilterType;
-              }  else if (column.field == 'responsable') {
+              } else if (column.field == 'responsable') {
                 return resolver<ClassFilterImplemented>() as PlutoFilterType;
               } else if (column.field == 'objectifs') {
                 return resolver<ClassFilterImplemented>() as PlutoFilterType;

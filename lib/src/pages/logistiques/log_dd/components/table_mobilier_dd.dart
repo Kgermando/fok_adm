@@ -46,6 +46,7 @@ class _TableMobilierDDState extends State<TableMobilierDD> {
         onLoaded: (PlutoGridOnLoadedEvent event) {
           stateManager = event.stateManager;
           stateManager!.setShowColumnFilter(true);
+          stateManager!.notifyListeners();
         },
         createHeader: (PlutoGridStateManager header) {
           return Row(

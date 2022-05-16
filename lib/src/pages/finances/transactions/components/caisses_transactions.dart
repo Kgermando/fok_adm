@@ -213,7 +213,6 @@ class _CaisseTransactionsState extends State<CaisseTransactions> {
                                 Expanded(child: montantWidget())
                               ],
                             ),
-                            ligneBudgtaireWidget(),
                             if (count == 0)
                               Row(
                                 mainAxisAlignment: MainAxisAlignment.end,
@@ -312,15 +311,7 @@ class _CaisseTransactionsState extends State<CaisseTransactions> {
                                 Expanded(child: montantWidget())
                               ],
                             ),
-                            Row(
-                              children: [
-                                Expanded(child: ligneBudgtaireWidget()),
-                                const SizedBox(
-                                  width: p10,
-                                ),
-                                Expanded(child: deperatmentWidget())
-                              ],
-                            ),
+                            deperatmentWidget(),
                             const SizedBox(
                               width: p10,
                             ),
@@ -548,33 +539,6 @@ class _CaisseTransactionsState extends State<CaisseTransactions> {
               ],
             );
           }),
-    );
-  }
-
-  Widget ligneBudgtaireWidget() {
-    return Container(
-      margin: const EdgeInsets.only(bottom: p20),
-      child: DropdownButtonFormField<String>(
-        decoration: InputDecoration(
-          labelText: 'Ligne Budgetaire',
-          labelStyle: const TextStyle(),
-          border: OutlineInputBorder(borderRadius: BorderRadius.circular(5.0)),
-          contentPadding: const EdgeInsets.only(left: 5.0),
-        ),
-        value: ligneBudgtaire,
-        isExpanded: true,
-        items: typeCaisse.map((String value) {
-          return DropdownMenuItem<String>(
-            value: value,
-            child: Text(value),
-          );
-        }).toList(),
-        onChanged: (value) {
-          setState(() {
-            ligneBudgtaire = value!;
-          });
-        },
-      ),
     );
   }
 

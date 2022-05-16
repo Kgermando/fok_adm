@@ -8,6 +8,7 @@ import 'package:fokad_admin/src/models/rh/perfomence_model.dart';
 import 'package:fokad_admin/src/models/users/user_model.dart';
 import 'package:fokad_admin/src/navigation/drawer/drawer_menu.dart';
 import 'package:fokad_admin/src/navigation/header/custom_appbar.dart';
+import 'package:fokad_admin/src/pages/rh/performences/components/add_performence_note.dart';
 import 'package:fokad_admin/src/widgets/print_widget.dart';
 import 'package:fokad_admin/src/widgets/title_widget.dart';
 import 'package:intl/intl.dart';
@@ -69,6 +70,13 @@ class _DetailPerformenceState extends State<DetailPerformence> {
     return Scaffold(
         key: _key,
         drawer: const DrawerMenu(),
+        floatingActionButton: FloatingActionButton(
+          child: const Icon(Icons.add),
+          onPressed: () {
+            Navigator.of(context).push(MaterialPageRoute(
+              builder: (context) => AddPerformenceNote(performenceModel: performenceModel!)));
+          }
+        ),
         body: SafeArea(
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -102,7 +110,7 @@ class _DetailPerformenceState extends State<DetailPerformence> {
                                     const SizedBox(width: p10),
                                     Expanded(
                                       child: CustomAppbar(
-                                          title: data!.agent,
+                                          title: "Performences",
                                           controllerMenu: () =>
                                               _key.currentState!.openDrawer()),
                                     ),
@@ -110,7 +118,7 @@ class _DetailPerformenceState extends State<DetailPerformence> {
                                 ),
                                 Expanded(
                                     child: SingleChildScrollView(
-                                        child: pageDetail(data)))
+                                        child: pageDetail(data!)))
                               ],
                             );
                           } else {
@@ -145,13 +153,13 @@ class _DetailPerformenceState extends State<DetailPerformence> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  const TitleWidget(title: 'Votre tache'),
+                  TitleWidget(title: data.agent),
                   Column(
                     children: [
                       PrintWidget(
                           tooltip: 'Imprimer le document', onPressed: () {}),
                       SelectableText(
-                          DateFormat("dd-MM-yy HH:mm").format(data.created),
+                          DateFormat("dd-MM-yyyy HH:mm").format(data.created),
                           textAlign: TextAlign.start),
                     ],
                   )
@@ -170,6 +178,7 @@ class _DetailPerformenceState extends State<DetailPerformence> {
   }
 
   Widget dataWidget(PerformenceModel data) {
+    final headline6 = Theme.of(context).textTheme.headline6;
     final bodyMedium = Theme.of(context).textTheme.bodyMedium;
     return Padding(
       padding: const EdgeInsets.all(p10),
@@ -250,16 +259,42 @@ class _DetailPerformenceState extends State<DetailPerformence> {
           Row(
             children: [
               Expanded(
+                flex: 1,
+                child: Text('Département :',
+                    textAlign: TextAlign.start,
+                    style: bodyMedium.copyWith(fontWeight: FontWeight.bold)),
+              ),
+              Expanded(
+                flex: 3,
+                child: SelectableText(data.departement,
+                    textAlign: TextAlign.start, style: bodyMedium),
+              )
+            ],
+          ),
+          Divider(
+            color: Colors.red.shade700,
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              SelectableText("CUMULS",
+                textAlign: TextAlign.center, style: headline6!.
+                copyWith(color: Colors.red.shade700, 
+                fontWeight: FontWeight.bold)),
+          ]),
+          Row(
+            children: [
+              Expanded(
                 flex: 3,
                 child: Column(
                   children: [
                     Text('Hospitalité :',
                         textAlign: TextAlign.start,
-                        style: bodyMedium.copyWith(
+                        style: headline6.copyWith(
                             fontWeight: FontWeight.bold,
                             color: Colors.blue.shade700)),
                     SelectableText("$hospitaliteTotal",
-                        textAlign: TextAlign.start, style: bodyMedium),
+                        textAlign: TextAlign.start, style: headline6),
                   ],
                 ),
               ),
@@ -269,11 +304,11 @@ class _DetailPerformenceState extends State<DetailPerformence> {
                   children: [
                     Text('Ponctualité :',
                         textAlign: TextAlign.start,
-                        style: bodyMedium.copyWith(
+                        style: headline6.copyWith(
                             fontWeight: FontWeight.bold,
                             color: Colors.green.shade700)),
                     SelectableText("$ponctualiteTotal",
-                        textAlign: TextAlign.start, style: bodyMedium),
+                        textAlign: TextAlign.start, style: headline6),
                   ],
                 ),
               ),
@@ -283,11 +318,11 @@ class _DetailPerformenceState extends State<DetailPerformence> {
                   children: [
                     Text('Travaille :',
                         textAlign: TextAlign.start,
-                        style: bodyMedium.copyWith(
+                        style: headline6.copyWith(
                             fontWeight: FontWeight.bold,
                             color: Colors.purple.shade700)),
                     SelectableText("$travailleTotal",
-                        textAlign: TextAlign.start, style: bodyMedium),
+                        textAlign: TextAlign.start, style: headline6),
                   ],
                 ),
               )
@@ -315,7 +350,7 @@ class _DetailPerformenceState extends State<DetailPerformence> {
                         children: [
                           Center(
                             child: Text(
-                              "Votre rapport apparait ici.",
+                              "Pas encore de note.",
                               style: bodyLarge,
                             ),
                           ),
@@ -345,17 +380,16 @@ class _DetailPerformenceState extends State<DetailPerformence> {
         child: Column(
           children: [
             ListTile(
-              visualDensity: VisualDensity.comfortable,
               dense: true,
-              leading: Icon(Icons.person, color: color, size: 50),
+              leading: Icon(Icons.person, color: color),
               title: SelectableText(
                 rapport.signature,
                 style: bodySmall,
               ),
-              subtitle: SelectableText(
-                rapport.departement,
-                style: bodySmall,
-              ),
+              // subtitle: SelectableText(
+              //   rapport.departement,
+              //   style: bodySmall,
+              // ),
               trailing: SelectableText(
                   timeago.format(rapport.created, locale: 'fr_short'),
                   textAlign: TextAlign.start,
@@ -407,8 +441,13 @@ class _DetailPerformenceState extends State<DetailPerformence> {
                 )
               ],
             ),
-            SelectableText(rapport.note,
-                style: bodyMedium, textAlign: TextAlign.justify),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                SelectableText(rapport.note,
+                    style: bodyMedium, textAlign: TextAlign.justify),
+              ],
+            ),
           ],
         ),
       ),

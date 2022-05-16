@@ -281,7 +281,7 @@ class _NewMailState extends State<NewMail> {
           ),
           keyboardType: TextInputType.multiline,
           minLines: 5,
-          maxLines: 10,
+          maxLines: 20,
           style: const TextStyle(),
           validator: (value) {
             if (value != null && value.isEmpty) {

@@ -69,6 +69,7 @@ class _TableDevisBudgetDDState extends State<TableDevisBudgetDD> {
         onLoaded: (PlutoGridOnLoadedEvent event) {
           stateManager = event.stateManager;
           stateManager!.setShowColumnFilter(true);
+          stateManager!.notifyListeners();
         },
         createHeader: (PlutoGridStateManager header) {
           return Row(
@@ -205,8 +206,7 @@ class _TableDevisBudgetDDState extends State<TableDevisBudgetDD> {
                 element.approbationDG == '-' ||
             element.departement == 'Finances' &&
                 element.approbationDG == 'Approved' ||
-            element.departement == 'Budgets' &&
-                element.approbationDG == '-')
+            element.departement == 'Budgets' && element.approbationDG == '-')
         .toList();
 
     if (mounted) {

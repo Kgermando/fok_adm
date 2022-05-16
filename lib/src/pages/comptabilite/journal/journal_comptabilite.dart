@@ -47,7 +47,6 @@ class _JournalComptabiliteState extends State<JournalComptabilite> {
                           title: 'Journal',
                           controllerMenu: () =>
                               _key.currentState!.openDrawer()),
-                      const SizedBox(height: p30),
                       const SizedBox(
                         height: 400,
                         child: AddJournalComptabilite()),

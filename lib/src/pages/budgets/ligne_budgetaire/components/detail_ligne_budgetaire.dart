@@ -83,7 +83,6 @@ class _DetailLigneBudgetaireState extends State<DetailLigneBudgetaire> {
 
   LigneBudgetaireModel? ligneBudgetaireModel;
 
-
   UserModel user = UserModel(
       nom: '-',
       prenom: '-',
@@ -98,7 +97,7 @@ class _DetailLigneBudgetaireState extends State<DetailLigneBudgetaire> {
       createdAt: DateTime.now(),
       passwordHash: '-',
       succursale: '-');
-      
+
   Future<void> getData() async {
     UserModel userModel = await AuthApi().getUserId();
     var budgets = await LIgneBudgetaireApi().getAllData();
@@ -309,9 +308,11 @@ class _DetailLigneBudgetaireState extends State<DetailLigneBudgetaire> {
                     style: bodyMedium.copyWith(fontWeight: FontWeight.bold)),
               ),
               Expanded(
-                child: SelectableText(DateFormat("dd-MM-yyyy")
-              .format(DateTime.parse(data.periodeBudget)),
-                    textAlign: TextAlign.start, style: bodyMedium),
+                child: SelectableText(
+                    DateFormat("dd-MM-yyyy")
+                        .format(DateTime.parse(data.periodeBudget)),
+                    textAlign: TextAlign.start,
+                    style: bodyMedium),
               )
             ],
           ),
@@ -474,8 +475,6 @@ class _DetailLigneBudgetaireState extends State<DetailLigneBudgetaire> {
     double banqueProjet = 0.0;
     double finPropreProjet = 0.0;
     double finExterieurProjet = 0.0;
-
-
 
     var etatBesionCaisseList = dataDevisList
         .where((element) =>
@@ -686,12 +685,11 @@ class _DetailLigneBudgetaireState extends State<DetailLigneBudgetaire> {
         finExterieursalaire +
         finExterieurCampaign +
         finExterieurProjet;
-    
+
     double caisseSolde = double.parse(data.caisse) - caisse;
     double banqueSolde = double.parse(data.banque) - banque;
     double finPropreSolde = double.parse(data.finPropre) - finPropre;
     double finExterieurSolde = double.parse(data.finExterieur) - finExterieur;
-
 
     return Row(children: [
       Expanded(
@@ -936,6 +934,7 @@ class _DetailLigneBudgetaireState extends State<DetailLigneBudgetaire> {
         onLoaded: (PlutoGridOnLoadedEvent event) {
           stateManager = event.stateManager;
           stateManager!.setShowColumnFilter(true);
+          stateManager!.notifyListeners();
         },
         createHeader: (PlutoGridStateManager header) {
           return Row(
@@ -979,6 +978,7 @@ class _DetailLigneBudgetaireState extends State<DetailLigneBudgetaire> {
         onLoaded: (PlutoGridOnLoadedEvent event) {
           stateManager = event.stateManager;
           stateManager!.setShowColumnFilter(true);
+          stateManager!.notifyListeners();
         },
         createHeader: (PlutoGridStateManager header) {
           return Row(
@@ -1022,6 +1022,7 @@ class _DetailLigneBudgetaireState extends State<DetailLigneBudgetaire> {
         onLoaded: (PlutoGridOnLoadedEvent event) {
           stateManager = event.stateManager;
           stateManager!.setShowColumnFilter(true);
+          stateManager!.notifyListeners();
         },
         createHeader: (PlutoGridStateManager header) {
           return Row(
@@ -1065,6 +1066,7 @@ class _DetailLigneBudgetaireState extends State<DetailLigneBudgetaire> {
         onLoaded: (PlutoGridOnLoadedEvent event) {
           stateManager = event.stateManager;
           stateManager!.setShowColumnFilter(true);
+          stateManager!.notifyListeners();
         },
         createHeader: (PlutoGridStateManager header) {
           return Row(

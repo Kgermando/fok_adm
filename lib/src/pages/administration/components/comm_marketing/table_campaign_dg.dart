@@ -46,6 +46,7 @@ class _TableCampaignDGState extends State<TableCampaignDG> {
         onLoaded: (PlutoGridOnLoadedEvent event) {
           stateManager = event.stateManager;
           stateManager!.setShowColumnFilter(true);
+          stateManager!.notifyListeners();
         },
         createHeader: (PlutoGridStateManager header) {
           return Row(
@@ -189,9 +190,8 @@ class _TableCampaignDGState extends State<TableCampaignDG> {
 
   Future agentsRow() async {
     List<CampaignModel?> dataList = await CampaignApi().getAllData();
-    var data =
-        dataList.where((element) => element!.approbationDD == 'Approved' && 
-        element.approbationDG == '-');
+    var data = dataList.where((element) =>
+        element!.approbationDD == 'Approved' && element.approbationDG == '-');
 
     if (mounted) {
       setState(() {
@@ -214,4 +214,3 @@ class _TableCampaignDGState extends State<TableCampaignDG> {
     }
   }
 }
-

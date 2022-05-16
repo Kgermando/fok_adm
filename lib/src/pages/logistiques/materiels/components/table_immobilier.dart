@@ -44,6 +44,7 @@ class _TableImmobilierState extends State<TableImmobilier> {
       onLoaded: (PlutoGridOnLoadedEvent event) {
         stateManager = event.stateManager;
         stateManager!.setShowColumnFilter(true);
+        stateManager!.notifyListeners();
       },
       createHeader: (PlutoGridStateManager header) {
         return Row(

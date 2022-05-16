@@ -12,7 +12,7 @@ import 'package:intl/intl.dart';
 import 'package:pluto_grid/pluto_grid.dart';
 
 class TableBilanAdmin extends StatefulWidget {
-  const TableBilanAdmin({ Key? key }) : super(key: key);
+  const TableBilanAdmin({Key? key}) : super(key: key);
 
   @override
   State<TableBilanAdmin> createState() => _TableBilanAdminState();
@@ -54,13 +54,12 @@ class _TableBilanAdminState extends State<TableBilanAdmin> {
       onLoaded: (PlutoGridOnLoadedEvent event) {
         stateManager = event.stateManager;
         stateManager!.setShowColumnFilter(true);
+        stateManager!.notifyListeners();
       },
       createHeader: (PlutoGridStateManager header) {
         return Row(
           mainAxisAlignment: MainAxisAlignment.end,
-          children: [
-            PrintWidget(onPressed: () {})
-          ],
+          children: [PrintWidget(onPressed: () {})],
         );
       },
       configuration: PlutoGridConfiguration(
@@ -143,8 +142,9 @@ class _TableBilanAdminState extends State<TableBilanAdmin> {
   Future agentsRow() async {
     UserModel userModel = await AuthApi().getUserId();
     List<BilanModel?> dataList = await BilanApi().getAllData();
-    var data = dataList
-        .where((element) => element!.approbationDG == "-" &&  element.approbationDD == "Approved" || element.signature == userModel.matricule);
+    var data = dataList.where((element) =>
+        element!.approbationDG == "-" && element.approbationDD == "Approved" ||
+        element.signature == userModel.matricule);
 
     if (mounted) {
       setState(() {

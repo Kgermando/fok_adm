@@ -46,6 +46,7 @@ class _TableProduitModelDDState extends State<TableProduitModelDD> {
         onLoaded: (PlutoGridOnLoadedEvent event) {
           stateManager = event.stateManager;
           stateManager!.setShowColumnFilter(true);
+          stateManager!.notifyListeners();
         },
         createHeader: (PlutoGridStateManager header) {
           return Row(
@@ -190,9 +191,8 @@ class _TableProduitModelDDState extends State<TableProduitModelDD> {
 
   Future agentsRow() async {
     List<ProductModel?> dataList = await ProduitModelApi().getAllData();
-    var data = dataList
-        .where((element) => element!.approbationDD == "-")
-        .toList();
+    var data =
+        dataList.where((element) => element!.approbationDD == "-").toList();
 
     if (mounted) {
       setState(() {

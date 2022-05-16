@@ -134,6 +134,7 @@ class _TableCarburantDGState extends State<TableCarburantDG> {
           onLoaded: (PlutoGridOnLoadedEvent event) {
             stateManager = event.stateManager;
             stateManager!.setShowColumnFilter(true);
+            stateManager!.notifyListeners();
           },
           createHeader: (PlutoGridStateManager header) {
             return Row(
@@ -272,7 +273,6 @@ class _TableCarburantDGState extends State<TableCarburantDG> {
     );
   }
 
-
   void agentsColumn() {
     columns = [
       PlutoColumn(
@@ -400,9 +400,11 @@ class _TableCarburantDGState extends State<TableCarburantDG> {
 
   Future agentsRow() async {
     List<CarburantModel?> dataList = await CarburantApi().getAllData();
-    var data =
-        dataList.where((element) =>
-            element!.approbationDG == "-" && element.approbationDD == "Approved").toList();
+    var data = dataList
+        .where((element) =>
+            element!.approbationDG == "-" &&
+            element.approbationDD == "Approved")
+        .toList();
 
     if (mounted) {
       setState(() {

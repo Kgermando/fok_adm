@@ -13,7 +13,6 @@ import 'package:fokad_admin/src/widgets/title_widget.dart';
 import 'package:intl/intl.dart';
 import 'package:pluto_grid/pluto_grid.dart';
 
-
 class DetailEntretien extends StatefulWidget {
   const DetailEntretien({Key? key, this.id}) : super(key: key);
   final int? id;
@@ -308,6 +307,7 @@ class _DetailEntretienState extends State<DetailEntretien> {
       onLoaded: (PlutoGridOnLoadedEvent event) {
         stateManager = event.stateManager;
         stateManager!.setShowColumnFilter(true);
+        stateManager!.notifyListeners();
       },
       createHeader: (PlutoGridStateManager header) {
         return Row(

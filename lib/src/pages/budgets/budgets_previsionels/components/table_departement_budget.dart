@@ -47,6 +47,7 @@ class _TableDepartementBudgetState extends State<TableDepartementBudget> {
       onLoaded: (PlutoGridOnLoadedEvent event) {
         stateManager = event.stateManager;
         stateManager!.setShowColumnFilter(true);
+        stateManager!.notifyListeners();
       },
       createHeader: (PlutoGridStateManager header) {
         return Row(
@@ -64,7 +65,8 @@ class _TableDepartementBudgetState extends State<TableDepartementBudget> {
           resolveDefaultColumnFilter: (column, resolver) {
             if (column.field == 'id') {
               return resolver<ClassFilterImplemented>() as PlutoFilterType;
-            } if (column.field == 'departement') {
+            }
+            if (column.field == 'departement') {
               return resolver<ClassFilterImplemented>() as PlutoFilterType;
             } else if (column.field == 'periodeBudget') {
               return resolver<ClassFilterImplemented>() as PlutoFilterType;
@@ -136,20 +138,23 @@ class _TableDepartementBudgetState extends State<TableDepartementBudget> {
     List<DepartementBudgetModel?> dataList =
         await DepeartementBudgetApi().getAllData();
     var data = dataList
-      .where((element) => element!.signature == userModel.matricule  &&
-                DateTime.now().isBefore(element.periodeFin) 
-        || element.approbationDG == "Approved" && 
-      element.approbationDD == "Approved" && DateTime.now().isBefore(element.periodeFin))
-      .toList();
+        .where((element) =>
+            element!.signature == userModel.matricule &&
+                DateTime.now().isBefore(element.periodeFin) ||
+            element.approbationDG == "Approved" &&
+                element.approbationDD == "Approved" &&
+                DateTime.now().isBefore(element.periodeFin))
+        .toList();
 
     if (mounted) {
       setState(() {
         for (var item in data) {
-
           rows.add(PlutoRow(cells: {
             'id': PlutoCell(value: item!.id),
             'departement': PlutoCell(value: item.departement),
-            'periodeBudget': PlutoCell(value: "${DateFormat("dd-MM-yyyy").format(item.periodeDebut)} - ${DateFormat("dd-MM-yyyy").format(item.periodeFin)}" ),
+            'periodeBudget': PlutoCell(
+                value:
+                    "${DateFormat("dd-MM-yyyy").format(item.periodeDebut)} - ${DateFormat("dd-MM-yyyy").format(item.periodeFin)}"),
             'created': PlutoCell(
                 value: DateFormat("dd-MM-yyyy HH:mm").format(item.created))
           }));

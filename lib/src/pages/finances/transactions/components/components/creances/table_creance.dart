@@ -72,6 +72,7 @@ class _TableCreanceState extends State<TableCreance> {
             onLoaded: (PlutoGridOnLoadedEvent event) {
               stateManager = event.stateManager;
               stateManager!.setShowColumnFilter(true);
+              stateManager!.notifyListeners();
             },
             createHeader: (PlutoGridStateManager header) {
               return Row(
@@ -87,7 +88,10 @@ class _TableCreanceState extends State<TableCreance> {
                   ClassFilterImplemented(),
                 ],
                 resolveDefaultColumnFilter: (column, resolver) {
-                  if (column.field == 'nomComplet') {
+                  if (column.field == 'id') {
+                    return resolver<ClassFilterImplemented>()
+                        as PlutoFilterType;
+                  } else if (column.field == 'nomComplet') {
                     return resolver<ClassFilterImplemented>()
                         as PlutoFilterType;
                   } else if (column.field == 'pieceJustificative') {
@@ -282,8 +286,9 @@ class _TableCreanceState extends State<TableCreance> {
     UserModel userModel = await AuthApi().getUserId();
     List<CreanceModel?> dataList = await CreanceApi().getAllData();
     var data = dataList
-        .where((element) => element!.statutPaie == true ||
-          element.approbationDG == 'Approved' || 
+        .where((element) =>
+            element!.statutPaie == true ||
+            element.approbationDG == 'Approved' ||
             element.signature == userModel.matricule)
         .toList();
 

@@ -94,6 +94,7 @@ class _StatsSuccursaleState extends State<StatsSuccursale> {
           onLoaded: (PlutoGridOnLoadedEvent event) {
             stateManager = event.stateManager;
             stateManager!.setShowColumnFilter(true);
+            stateManager!.notifyListeners();
           },
           createHeader: (PlutoGridStateManager header) {
             return Row(
@@ -231,8 +232,6 @@ class _StatsSuccursaleState extends State<StatsSuccursale> {
     ];
   }
 
-
-  
   Widget dataRangeFilter() {
     return Container(
       constraints: BoxConstraints(maxWidth: MediaQuery.of(context).size.width),

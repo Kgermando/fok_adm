@@ -46,6 +46,7 @@ class _TableMobilierDGState extends State<TableMobilierDG> {
         onLoaded: (PlutoGridOnLoadedEvent event) {
           stateManager = event.stateManager;
           stateManager!.setShowColumnFilter(true);
+          stateManager!.notifyListeners();
         },
         createHeader: (PlutoGridStateManager header) {
           return Row(
@@ -159,8 +160,11 @@ class _TableMobilierDGState extends State<TableMobilierDG> {
 
   Future agentsRow() async {
     List<MobilierModel?> dataList = await MobilierApi().getAllData();
-    var data =
-        dataList.where((element) => element!.approbationDG == "-" && element.approbationDD == "Approved").toList();
+    var data = dataList
+        .where((element) =>
+            element!.approbationDG == "-" &&
+            element.approbationDD == "Approved")
+        .toList();
 
     if (mounted) {
       setState(() {

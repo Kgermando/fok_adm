@@ -11,10 +11,12 @@ class HistoriqueTableDepartementBudget extends StatefulWidget {
   const HistoriqueTableDepartementBudget({Key? key}) : super(key: key);
 
   @override
-  State<HistoriqueTableDepartementBudget> createState() => _HistoriqueTableDepartementBudgetState();
+  State<HistoriqueTableDepartementBudget> createState() =>
+      _HistoriqueTableDepartementBudgetState();
 }
 
-class _HistoriqueTableDepartementBudgetState extends State<HistoriqueTableDepartementBudget> {
+class _HistoriqueTableDepartementBudgetState
+    extends State<HistoriqueTableDepartementBudget> {
   List<PlutoColumn> columns = [];
   List<PlutoRow> rows = [];
   PlutoGridStateManager? stateManager;
@@ -45,6 +47,7 @@ class _HistoriqueTableDepartementBudgetState extends State<HistoriqueTableDepart
       onLoaded: (PlutoGridOnLoadedEvent event) {
         stateManager = event.stateManager;
         stateManager!.setShowColumnFilter(true);
+        stateManager!.notifyListeners();
       },
       createHeader: (PlutoGridStateManager header) {
         return Row(
@@ -62,7 +65,8 @@ class _HistoriqueTableDepartementBudgetState extends State<HistoriqueTableDepart
           resolveDefaultColumnFilter: (column, resolver) {
             if (column.field == 'id') {
               return resolver<ClassFilterImplemented>() as PlutoFilterType;
-            } if (column.field == 'departement') {
+            }
+            if (column.field == 'departement') {
               return resolver<ClassFilterImplemented>() as PlutoFilterType;
             } else if (column.field == 'periodeBudget') {
               return resolver<ClassFilterImplemented>() as PlutoFilterType;
@@ -133,9 +137,11 @@ class _HistoriqueTableDepartementBudgetState extends State<HistoriqueTableDepart
     List<DepartementBudgetModel?> dataList =
         await DepeartementBudgetApi().getAllData();
     var data = dataList
-      .where((element) => element!.approbationDG == "Approved" && 
-      element.approbationDD == "Approved" && DateTime.now().isAfter(element.periodeFin))
-      .toList();
+        .where((element) =>
+            element!.approbationDG == "Approved" &&
+            element.approbationDD == "Approved" &&
+            DateTime.now().isAfter(element.periodeFin))
+        .toList();
 
     if (mounted) {
       setState(() {
@@ -144,7 +150,9 @@ class _HistoriqueTableDepartementBudgetState extends State<HistoriqueTableDepart
           rows.add(PlutoRow(cells: {
             'id': PlutoCell(value: item.id),
             'departement': PlutoCell(value: item.departement),
-            'periodeBudget': PlutoCell(value: "${DateFormat("DD-MM-yyyy HH:mm").format(item.periodeDebut)} - ${DateFormat("DD-MM-yyyy HH:mm").format(item.periodeFin)}" ),
+            'periodeBudget': PlutoCell(
+                value:
+                    "${DateFormat("DD-MM-yyyy HH:mm").format(item.periodeDebut)} - ${DateFormat("DD-MM-yyyy HH:mm").format(item.periodeFin)}"),
             'created': PlutoCell(
                 value: DateFormat("DD-MM-yyyy HH:mm").format(item.created))
           }));

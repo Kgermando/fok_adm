@@ -12,13 +12,15 @@ import 'package:intl/intl.dart';
 import 'package:pluto_grid/pluto_grid.dart';
 
 class TableBilanComptabiliteAdmin extends StatefulWidget {
-  const TableBilanComptabiliteAdmin({ Key? key }) : super(key: key);
+  const TableBilanComptabiliteAdmin({Key? key}) : super(key: key);
 
   @override
-  State<TableBilanComptabiliteAdmin> createState() => _TableBilanComptabiliteAdminState();
+  State<TableBilanComptabiliteAdmin> createState() =>
+      _TableBilanComptabiliteAdminState();
 }
 
-class _TableBilanComptabiliteAdminState extends State<TableBilanComptabiliteAdmin> {
+class _TableBilanComptabiliteAdminState
+    extends State<TableBilanComptabiliteAdmin> {
   List<PlutoColumn> columns = [];
   List<PlutoRow> rows = [];
   PlutoGridStateManager? stateManager;
@@ -52,6 +54,7 @@ class _TableBilanComptabiliteAdminState extends State<TableBilanComptabiliteAdmi
       onLoaded: (PlutoGridOnLoadedEvent event) {
         stateManager = event.stateManager;
         stateManager!.setShowColumnFilter(true);
+        stateManager!.notifyListeners();
       },
       createHeader: (PlutoGridStateManager header) {
         return Row(
@@ -140,8 +143,7 @@ class _TableBilanComptabiliteAdminState extends State<TableBilanComptabiliteAdmi
     UserModel userModel = await AuthApi().getUserId();
     List<BalanceCompteModel?> dataList = await BalanceCompteApi().getAllData();
     var data = dataList.where((element) =>
-        element!.approbationDG == "-" &&
-            element.approbationDD == "Approved" ||
+        element!.approbationDG == "-" && element.approbationDD == "Approved" ||
         element.signature == userModel.matricule);
 
     if (mounted) {

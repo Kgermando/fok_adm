@@ -331,26 +331,27 @@ class _BanqueTransactionsState extends State<BanqueTransactions> {
                             //   ],
                             // ),
                             if (count == 0)
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.end,
-                                children: [
-                                  IconButton(
-                                      icon: const Icon(Icons.add),
-                                      onPressed: () {
-                                        setState(() {
-                                          final coupureBillet =
-                                              TextEditingController();
-                                          final nombreBillet =
-                                              TextEditingController();
-                                          nombreBilletControllerList
-                                              .add(nombreBillet);
-                                          coupureBilletControllerList
-                                              .add(coupureBillet);
-                                          count++;
-                                        });
-                                      })
-                                ],
-                              ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              children: [
+                                IconButton(
+                                  icon: const Icon(Icons.add),
+                                  onPressed: () {
+                                    setState(() {
+                                      final coupureBillet =
+                                          TextEditingController();
+                                      final nombreBillet =
+                                          TextEditingController();
+                                      nombreBilletControllerList
+                                          .add(nombreBillet);
+                                      coupureBilletControllerList
+                                          .add(coupureBillet);
+                                      count++;
+                                    });
+                                  }
+                                )
+                              ],
+                            ),
                             SizedBox(
                                 height: 400,
                                 width: double.infinity,

@@ -72,6 +72,7 @@ class _TableDetteState extends State<TableDette> {
             onLoaded: (PlutoGridOnLoadedEvent event) {
               stateManager = event.stateManager;
               stateManager!.setShowColumnFilter(true);
+              stateManager!.notifyListeners();
             },
             createHeader: (PlutoGridStateManager header) {
               return Row(
@@ -87,7 +88,10 @@ class _TableDetteState extends State<TableDette> {
                   ClassFilterImplemented(),
                 ],
                 resolveDefaultColumnFilter: (column, resolver) {
-                  if (column.field == 'nomComplet') {
+                  if (column.field == 'id') {
+                    return resolver<ClassFilterImplemented>()
+                        as PlutoFilterType;
+                  } else if (column.field == 'nomComplet') {
                     return resolver<ClassFilterImplemented>()
                         as PlutoFilterType;
                   } else if (column.field == 'pieceJustificative') {
@@ -283,7 +287,7 @@ class _TableDetteState extends State<TableDette> {
     List<DetteModel?> dataList = await DetteApi().getAllData();
     var data = dataList
         .where((element) =>
-          element!.statutPaie == true ||
+            element!.statutPaie == true ||
             element.approbationDG == 'Approved' ||
             element.signature == userModel.matricule)
         .toList();
@@ -300,7 +304,7 @@ class _TableDetteState extends State<TableDette> {
             'numeroOperation': PlutoCell(value: item.numeroOperation),
             'approbation': PlutoCell(value: item.approbationDG),
             'created': PlutoCell(
-                value: DateFormat("DD-MM-yy H:mm").format(item.created))
+                value: DateFormat("DD-MM-yyyy HH:mm").format(item.created))
           }));
         }
         stateManager!.resetCurrentState();

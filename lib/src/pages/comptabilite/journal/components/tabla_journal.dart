@@ -56,6 +56,7 @@ class _TableJournalState extends State<TableJournal> {
         stateManager = event.stateManager;
         stateManager!.notifyListeners();
         stateManager!.setShowColumnFilter(true);
+        stateManager!.notifyListeners();
       },
       createHeader: (PlutoGridStateManager header) {
         return Row(

@@ -53,7 +53,20 @@ class _DetailDetteState extends State<DetailDette> {
     super.initState();
   }
 
-  UserModel? user;
+    UserModel? user = UserModel(
+      nom: '-',
+      prenom: '-',
+      email: '-',
+      telephone: '-',
+      matricule: '-',
+      departement: '-',
+      servicesAffectation: '-',
+      fonctionOccupe: '-',
+      role: '5',
+      isOnline: false,
+      createdAt: DateTime.now(),
+      passwordHash: '-',
+      succursale: '-');
   Future<void> getData() async {
     final dataUser = await UserApi().getAllData();
     UserModel userModel = await AuthApi().getUserId();
@@ -101,7 +114,7 @@ class _DetailDetteState extends State<DetailDette> {
                                     const SizedBox(width: p10),
                                     Expanded(
                                       child: CustomAppbar(
-                                          title: detteModel!.nomComplet,
+                                          title: "Dette",
                                           controllerMenu: () =>
                                               _key.currentState!.openDrawer()),
                                     ),
@@ -111,7 +124,7 @@ class _DetailDetteState extends State<DetailDette> {
                                     child: Scrollbar(
                                         controller: _controllerScroll,
                                         isAlwaysShown: true,
-                                        child: pageDetail(detteModel)))
+                                        child: pageDetail(detteModel!)))
                               ],
                             );
                           } else {
@@ -331,7 +344,7 @@ class _DetailDetteState extends State<DetailDette> {
   Widget infosEditeurWidget(DetteModel data) {
     final bodyMedium = Theme.of(context).textTheme.bodyMedium;
     final bodySmall = Theme.of(context).textTheme.bodySmall;
-    List<String> dataList = ['Approved', 'Unapproved'];
+    List<String> dataList = ['Approved', 'Unapproved', '-'];
     return Container(
       padding: const EdgeInsets.only(top: p16, bottom: p16),
       decoration: const BoxDecoration(

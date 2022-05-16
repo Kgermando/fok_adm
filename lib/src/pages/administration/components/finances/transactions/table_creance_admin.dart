@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:fokad_admin/src/api/finances/creance_api.dart';
 import 'package:fokad_admin/src/models/finances/creances_model.dart';
-import 'package:fokad_admin/src/pages/administration/components/finances/transactions/detail_creance_admin.dart';
+import 'package:fokad_admin/src/pages/finances/transactions/components/components/creances/detail_creance.dart';
 import 'package:fokad_admin/src/widgets/print_widget.dart';
 import 'package:fokad_admin/src/utils/class_implemented.dart';
 import 'package:intl/intl.dart';
@@ -67,12 +67,12 @@ class _TableCreanceAdminState extends State<TableCreanceAdmin> {
                 final idPlutoRow = dataList.elementAt(0);
 
                 Navigator.of(context).push(MaterialPageRoute(
-                    builder: (context) =>
-                        DetailCreanceAdmin(id: idPlutoRow.value)));
+                    builder: (context) => DetailCreance(id: idPlutoRow.value)));
               },
               onLoaded: (PlutoGridOnLoadedEvent event) {
                 stateManager = event.stateManager;
                 stateManager!.setShowColumnFilter(true);
+                stateManager!.notifyListeners();
               },
               createHeader: (PlutoGridStateManager header) {
                 return Row(

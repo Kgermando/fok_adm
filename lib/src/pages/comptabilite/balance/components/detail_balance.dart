@@ -36,7 +36,6 @@ class _DetailBalanceState extends State<DetailBalance> {
   TextEditingController signatureJustificationDDController =
       TextEditingController();
 
-  bool statutCorbeille = false;
 
   @override
   initState() {
@@ -104,7 +103,7 @@ class _DetailBalanceState extends State<DetailBalance> {
                                     const SizedBox(width: p10),
                                     Expanded(
                                       child: CustomAppbar(
-                                          title: data!.title,
+                                          title: "Balance",
                                           controllerMenu: () =>
                                               _key.currentState!.openDrawer()),
                                     ),
@@ -112,7 +111,7 @@ class _DetailBalanceState extends State<DetailBalance> {
                                 ),
                                 Expanded(
                                     child: SingleChildScrollView(
-                                        child: pageDetail(data)))
+                                        child: pageDetail(data!)))
                               ],
                             );
                           } else {
@@ -159,13 +158,17 @@ class _DetailBalanceState extends State<DetailBalance> {
                         ],
                       ),
                       SelectableText(
-                          DateFormat("dd-MM-yy HH:mm").format(data.created),
+                          DateFormat("dd-MM-yyyy HH:mm").format(data.created),
                           textAlign: TextAlign.start),
                     ],
                   )
                 ],
               ),
               dataWidget(data),
+              Divider(
+                color: Colors.amber.shade700,
+              ),
+              totalMontant(data),
               Divider(
                 color: Colors.amber.shade700,
               ),
@@ -177,9 +180,96 @@ class _DetailBalanceState extends State<DetailBalance> {
     ]);
   }
 
+  Widget totalMontant(BalanceCompteModel data) {
+    final headline6 = Theme.of(context).textTheme.headline6;
+    double totalDebit = 0.0;
+    double totalCredit = 0.0;
+    double totalSolde = 0.0;
+
+    List<CompteBalance> dataList = [];
+    var comptesList = data.comptes.toList();
+    for (var item in comptesList) {
+      dataList.add(CompteBalance.fromJson(item));
+    }
+
+    for (var item in dataList) {
+      totalDebit += double.parse(item.debit);
+    }
+    for (var item in dataList) {
+      totalCredit += double.parse(item.credit);
+    }
+    for (var item in dataList) {
+      totalSolde += item.solde;
+    }
+
+    return Padding(
+      padding: const EdgeInsets.all(p10),
+      child: Column(
+        children: [
+          Row(
+            children: [
+              Expanded(
+                flex: 3,
+                child:
+                    Text("TOTAL :", textAlign: TextAlign.start, style: headline6!.copyWith(fontWeight: FontWeight.bold)),
+              ),
+              Expanded(
+                flex: 1,
+                child: Container(
+                  decoration: BoxDecoration(
+                      border: Border(
+                    left: BorderSide(
+                      color: Colors.amber.shade700,
+                      width: 2,
+                    ),
+                  )),
+                  child: SelectableText(
+                      "${NumberFormat.decimalPattern('fr').format(totalDebit)} \$",
+                      textAlign: TextAlign.center,
+                      style: headline6.copyWith(fontWeight: FontWeight.bold)),
+                ),
+              ),
+              Expanded(
+                flex: 1,
+                child: Container(
+                  decoration: BoxDecoration(
+                      border: Border(
+                    left: BorderSide(
+                      color: Colors.amber.shade700,
+                      width: 2,
+                    ),
+                  )),
+                  child: SelectableText(
+                      "${NumberFormat.decimalPattern('fr').format(totalCredit)} \$",
+                      textAlign: TextAlign.center,
+                      style: headline6.copyWith(fontWeight: FontWeight.bold)),
+                ),
+              ),
+              Expanded(
+                flex: 1,
+                child: Container(
+                  decoration: BoxDecoration(
+                      border: Border(
+                    left: BorderSide(
+                      color: Colors.amber.shade700,
+                      width: 2,
+                    ),
+                  )),
+                  child: SelectableText(
+                      "${NumberFormat.decimalPattern('fr').format(totalSolde)} \$",
+                      textAlign: TextAlign.center,
+                      style: headline6.copyWith(fontWeight: FontWeight.bold)),
+                ),
+              )
+            ],
+          ),
+          
+        ],
+      ),
+    );
+  }
 
   Widget dataWidget(BalanceCompteModel data) {
-    final headline6 = Theme.of(context).textTheme.headline6;
     final bodyLarge = Theme.of(context).textTheme.bodyLarge;
     return Padding(
       padding: const EdgeInsets.all(p10),
@@ -190,10 +280,6 @@ class _DetailBalanceState extends State<DetailBalance> {
               Expanded(
                 child: Column(
                   children: [
-                    Text('ACTIF',
-                        textAlign: TextAlign.start,
-                        style:
-                            headline6!.copyWith(fontWeight: FontWeight.bold)),
                     const SizedBox(height: p20),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.start,
@@ -201,60 +287,82 @@ class _DetailBalanceState extends State<DetailBalance> {
                       children: [
                         Expanded(
                           flex: 3,
-                          child: SelectableText("Comptes",
-                              textAlign: TextAlign.start,
-                              style: bodyLarge!
-                                  .copyWith(fontWeight: FontWeight.bold)),
+                          child: Container(
+                            decoration: BoxDecoration(
+                                border: Border(
+                              left: BorderSide(
+                                color: Colors.amber.shade700,
+                                width: 2,
+                              ),
+                            )),
+                            child: SelectableText("Comptes",
+                                textAlign: TextAlign.start,
+                                style: bodyLarge!
+                                    .copyWith(fontWeight: FontWeight.bold)),
+                          ),
                         ),
-                        Container(
-                            color: Colors.amber.shade700,
-                            width: 2,
-                            height: MediaQuery.of(context).size.height / 1.5),
                         Expanded(
                           flex: 1,
-                          child: SelectableText("Débit",
-                              textAlign: TextAlign.center,
-                              style: bodyLarge.copyWith(
-                                  fontWeight: FontWeight.bold)),
+                          child: Container(
+                            decoration: BoxDecoration(
+                                border: Border(
+                              left: BorderSide(
+                                color: Colors.amber.shade700,
+                                width: 2,
+                              ),
+                            )),
+                            child: SelectableText("Débit",
+                                textAlign: TextAlign.center,
+                                style: bodyLarge.copyWith(
+                                    fontWeight: FontWeight.bold)),
+                          ),
                         ),
-                        Container(
-                            color: Colors.amber.shade700,
-                            width: 2,
-                            height: MediaQuery.of(context).size.height / 1.5),
                         Expanded(
                           flex: 1,
-                          child: SelectableText("Crédit",
-                              textAlign: TextAlign.center,
-                              style: bodyLarge.copyWith(
-                                  fontWeight: FontWeight.bold)),
+                          child: Container(
+                            decoration: BoxDecoration(
+                                border: Border(
+                              left: BorderSide(
+                                color: Colors.amber.shade700,
+                                width: 2,
+                              ),
+                            )),
+                            child: SelectableText("Crédit",
+                                textAlign: TextAlign.center,
+                                style: bodyLarge.copyWith(
+                                    fontWeight: FontWeight.bold)),
+                          ),
                         ),
-                        Container(
-                            color: Colors.amber.shade700,
-                            width: 2,
-                            height: MediaQuery.of(context).size.height / 1.5),
                         Expanded(
                           flex: 1,
-                          child: SelectableText("Solde",
-                              textAlign: TextAlign.center,
-                              style: bodyLarge.copyWith(
-                                  fontWeight: FontWeight.bold)),
+                          child: Container(
+                            decoration: BoxDecoration(
+                                border: Border(
+                              left: BorderSide(
+                                color: Colors.amber.shade700,
+                                width: 2,
+                              ),
+                            )),
+                            child: SelectableText("Solde débit/crédit",
+                                textAlign: TextAlign.center,
+                                style: bodyLarge.copyWith(
+                                    fontWeight: FontWeight.bold)),
+                          ),
                         )
                       ],
                     ),
+                    Divider(color: Colors.amber.shade700),
                     const SizedBox(height: p30),
                     compteWidget(data)
                   ],
                 ),
               ),
-             
-              
             ],
           ),
         ],
       ),
     );
   }
-
 
   Widget compteWidget(BalanceCompteModel data) {
     final bodyMedium = Theme.of(context).textTheme.bodyMedium;
@@ -277,7 +385,7 @@ class _DetailBalanceState extends State<DetailBalance> {
                 children: [
                   Expanded(
                     flex: 3,
-                    child: SelectableText(compte.comptes,
+                    child: SelectableText(compte.compte,
                         textAlign: TextAlign.start, style: bodyMedium),
                   ),
                   Expanded(
@@ -323,7 +431,7 @@ class _DetailBalanceState extends State<DetailBalance> {
                         ),
                       )),
                       child: SelectableText(
-                          "${NumberFormat.decimalPattern('fr').format(double.parse(compte.solde))} \$",
+                          "${NumberFormat.decimalPattern('fr').format(compte.solde)} \$",
                           textAlign: TextAlign.center,
                           style: bodyMedium),
                     ),
@@ -339,10 +447,6 @@ class _DetailBalanceState extends State<DetailBalance> {
       ),
     );
   }
-
- 
-
-
 
   Widget infosEditeurWidget(BalanceCompteModel data) {
     final bodyMedium = Theme.of(context).textTheme.bodyLarge;
@@ -615,17 +719,17 @@ class _DetailBalanceState extends State<DetailBalance> {
 
   Future<void> submitUpdateDG(BalanceCompteModel data) async {
     final balanceCompteModel = BalanceCompteModel(
-      title: data.title,
-      comptes: data.comptes,
-      statut: statutCorbeille,
-      approbationDG: approbationDGController.toString(),
-      signatureDG: user!.matricule.toString(),
-      signatureJustificationDG: signatureJustificationDGController.text,
-      approbationDD: data.approbationDD.toString(),
-      signatureDD: data.signatureDD.toString(),
-      signatureJustificationDD: data.signatureJustificationDD.toString(),
-      signature: data.signature,
-      created: data.created);
+        title: data.title,
+        comptes: data.comptes,
+        statut: data.statut,
+        approbationDG: approbationDGController.toString(),
+        signatureDG: user!.matricule.toString(),
+        signatureJustificationDG: signatureJustificationDGController.text,
+        approbationDD: data.approbationDD.toString(),
+        signatureDD: data.signatureDD.toString(),
+        signatureJustificationDD: data.signatureJustificationDD.toString(),
+        signature: data.signature,
+        created: data.created);
     await BalanceCompteApi().updateData(data.id!, balanceCompteModel);
     Navigator.of(context).pop();
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
@@ -638,7 +742,7 @@ class _DetailBalanceState extends State<DetailBalance> {
     final balanceCompteModel = BalanceCompteModel(
         title: data.title,
         comptes: data.comptes,
-        statut: statutCorbeille,
+        statut: data.statut,
         approbationDG: data.approbationDG.toString(),
         signatureDG: data.signatureDG.toString(),
         signatureJustificationDG: data.signatureJustificationDG.toString(),
@@ -654,11 +758,6 @@ class _DetailBalanceState extends State<DetailBalance> {
       backgroundColor: Colors.green[700],
     ));
   }
-
-
-
-
-
 
   Widget deleteButton(BalanceCompteModel data) {
     return IconButton(
@@ -676,9 +775,9 @@ class _DetailBalanceState extends State<DetailBalance> {
               child: const Text('Annuler'),
             ),
             TextButton(
-              onPressed: () async {
+              onPressed: () {
                 submitCorbeille(data);
-                Navigator.of(context).pop();
+                // Navigator.of(context).pop();
               },
               child: const Text('OK'),
             ),
@@ -692,7 +791,7 @@ class _DetailBalanceState extends State<DetailBalance> {
     final balanceCompteModel = BalanceCompteModel(
         title: data.title,
         comptes: data.comptes,
-        statut: statutCorbeille,
+        statut: true,
         approbationDG: data.approbationDG,
         signatureDG: data.signatureDG,
         signatureJustificationDG: data.signatureJustificationDG,

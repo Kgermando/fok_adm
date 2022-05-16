@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:fokad_admin/src/api/auth/auth_api.dart';
 import 'package:fokad_admin/src/api/rh/performence_api.dart';
 import 'package:fokad_admin/src/models/rh/perfomence_model.dart';
+import 'package:fokad_admin/src/models/users/user_model.dart';
 import 'package:fokad_admin/src/pages/rh/performences/components/detail_perfomence.dart';
 import 'package:fokad_admin/src/utils/class_implemented.dart';
 import 'package:fokad_admin/src/widgets/print_widget.dart';
@@ -44,6 +46,7 @@ class _TablePerformenceState extends State<TablePerformence> {
       onLoaded: (PlutoGridOnLoadedEvent event) {
         stateManager = event.stateManager;
         stateManager!.setShowColumnFilter(true);
+        stateManager!.notifyListeners();
       },
       createHeader: (PlutoGridStateManager header) {
         return Row(
@@ -63,7 +66,7 @@ class _TablePerformenceState extends State<TablePerformence> {
               return resolver<ClassFilterImplemented>() as PlutoFilterType;
             } else if (column.field == 'agent') {
               return resolver<ClassFilterImplemented>() as PlutoFilterType;
-            }  else if (column.field == 'departement') {
+            } else if (column.field == 'departement') {
               return resolver<ClassFilterImplemented>() as PlutoFilterType;
             } else if (column.field == 'hospitalite') {
               return resolver<ClassFilterImplemented>() as PlutoFilterType;
@@ -185,8 +188,10 @@ class _TablePerformenceState extends State<TablePerformence> {
   }
 
   Future agentsRow() async {
+    UserModel user = await AuthApi().getUserId();
     List<PerformenceModel?> dataList = await PerformenceApi().getAllData();
-    var data = dataList;
+    var data =
+        dataList.where((element) => element!.departement == user.departement);
 
     if (mounted) {
       setState(() {
@@ -201,7 +206,7 @@ class _TablePerformenceState extends State<TablePerformence> {
             'travaille': PlutoCell(value: item.travaille),
             'signature': PlutoCell(value: item.signature),
             'created': PlutoCell(
-                value: DateFormat("dd-MM-yy HH:mm").format(item.created))
+                value: DateFormat("dd-MM-yyyy HH:mm").format(item.created))
           }));
         }
         stateManager!.resetCurrentState();

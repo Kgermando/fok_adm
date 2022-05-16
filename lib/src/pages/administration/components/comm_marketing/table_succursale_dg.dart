@@ -46,6 +46,7 @@ class _TableSuccursaleDGState extends State<TableSuccursaleDG> {
         onLoaded: (PlutoGridOnLoadedEvent event) {
           stateManager = event.stateManager;
           stateManager!.setShowColumnFilter(true);
+          stateManager!.notifyListeners();
         },
         createHeader: (PlutoGridStateManager header) {
           return Row(
@@ -161,8 +162,8 @@ class _TableSuccursaleDGState extends State<TableSuccursaleDG> {
 
   Future agentsRow() async {
     List<SuccursaleModel?> dataList = await SuccursaleApi().getAllData();
-    var data = dataList.where((element) => element!.approbationDD == 'Approved' 
-        && element.approbationDG == '-');
+    var data = dataList.where((element) =>
+        element!.approbationDD == 'Approved' && element.approbationDG == '-');
 
     if (mounted) {
       setState(() {

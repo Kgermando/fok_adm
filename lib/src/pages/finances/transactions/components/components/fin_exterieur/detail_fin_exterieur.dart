@@ -15,7 +15,6 @@ import 'package:fokad_admin/src/widgets/title_widget.dart';
 import 'package:intl/intl.dart';
 import 'package:pluto_grid/pluto_grid.dart';
 
-
 class DetailFinExterieur extends StatefulWidget {
   const DetailFinExterieur({Key? key, required this.id}) : super(key: key);
   final int id;
@@ -116,8 +115,7 @@ class _DetailFinExterieurState extends State<DetailFinExterieur> {
                                     const SizedBox(width: p10),
                                     Expanded(
                                       child: CustomAppbar(
-                                          title:
-                                              financeExterieurModel!.nomComplet,
+                                          title: "Autres financements",
                                           controllerMenu: () =>
                                               _key.currentState!.openDrawer()),
                                     ),
@@ -128,7 +126,7 @@ class _DetailFinExterieurState extends State<DetailFinExterieur> {
                                         controller: _controllerScroll,
                                         isAlwaysShown: true,
                                         child:
-                                            pageDetail(financeExterieurModel)))
+                                            pageDetail(financeExterieurModel!)))
                               ],
                             );
                           } else {
@@ -260,8 +258,8 @@ class _DetailFinExterieurState extends State<DetailFinExterieur> {
               )
             ],
           ),
-           if (data.typeOperation != 'Depot de fond')
-          Divider(color: Colors.amber.shade700),
+          if (data.typeOperation != 'Depot de fond')
+            Divider(color: Colors.amber.shade700),
           if (data.typeOperation != 'Depot de fond')
             Row(
               children: [
@@ -344,6 +342,7 @@ class _DetailFinExterieurState extends State<DetailFinExterieur> {
       onLoaded: (PlutoGridOnLoadedEvent event) {
         stateManager = event.stateManager;
         stateManager!.setShowColumnFilter(true);
+        stateManager!.notifyListeners();
       },
     );
   }

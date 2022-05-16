@@ -11,7 +11,8 @@ class TableDepartementBudgetDD extends StatefulWidget {
   const TableDepartementBudgetDD({Key? key}) : super(key: key);
 
   @override
-  State<TableDepartementBudgetDD> createState() => _TableDepartementBudgetDDState();
+  State<TableDepartementBudgetDD> createState() =>
+      _TableDepartementBudgetDDState();
 }
 
 class _TableDepartementBudgetDDState extends State<TableDepartementBudgetDD> {
@@ -47,13 +48,16 @@ class _TableDepartementBudgetDDState extends State<TableDepartementBudgetDD> {
         onLoaded: (PlutoGridOnLoadedEvent event) {
           stateManager = event.stateManager;
           stateManager!.setShowColumnFilter(true);
+          stateManager!.notifyListeners();
         },
         createHeader: (PlutoGridStateManager header) {
           return Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text("Liste des budgets", style: Theme.of(context).textTheme.headline6),
-              PrintWidget(onPressed: () {})],
+              Text("Liste des budgets",
+                  style: Theme.of(context).textTheme.headline6),
+              PrintWidget(onPressed: () {})
+            ],
           );
         },
         configuration: PlutoGridConfiguration(
@@ -66,7 +70,8 @@ class _TableDepartementBudgetDDState extends State<TableDepartementBudgetDD> {
             resolveDefaultColumnFilter: (column, resolver) {
               if (column.field == 'id') {
                 return resolver<ClassFilterImplemented>() as PlutoFilterType;
-              } if (column.field == 'departement') {
+              }
+              if (column.field == 'departement') {
                 return resolver<ClassFilterImplemented>() as PlutoFilterType;
               } else if (column.field == 'periodeBudget') {
                 return resolver<ClassFilterImplemented>() as PlutoFilterType;
@@ -138,9 +143,11 @@ class _TableDepartementBudgetDDState extends State<TableDepartementBudgetDD> {
     List<DepartementBudgetModel?> dataList =
         await DepeartementBudgetApi().getAllData();
     var data = dataList
-      .where((element) => element!.approbationBudget == "-" && 
-      DateTime.now().millisecondsSinceEpoch <= element.periodeFin.millisecondsSinceEpoch )
-      .toList();
+        .where((element) =>
+            element!.approbationBudget == "-" &&
+            DateTime.now().millisecondsSinceEpoch <=
+                element.periodeFin.millisecondsSinceEpoch)
+        .toList();
 
     if (mounted) {
       setState(() {
@@ -149,7 +156,9 @@ class _TableDepartementBudgetDDState extends State<TableDepartementBudgetDD> {
           rows.add(PlutoRow(cells: {
             'id': PlutoCell(value: item.id),
             'departement': PlutoCell(value: item.departement),
-            'periodeBudget': PlutoCell(value: "${DateFormat("dd-MM-yyyy").format(item.periodeDebut)} - ${DateFormat("dd-MM-yyyy").format(item.periodeFin)}" ),
+            'periodeBudget': PlutoCell(
+                value:
+                    "${DateFormat("dd-MM-yyyy").format(item.periodeDebut)} - ${DateFormat("dd-MM-yyyy").format(item.periodeFin)}"),
             'created': PlutoCell(
                 value: DateFormat("dd-MM-yyyy HH:mm").format(item.created))
           }));

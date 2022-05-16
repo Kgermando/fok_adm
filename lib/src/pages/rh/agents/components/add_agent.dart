@@ -40,9 +40,10 @@ class _AddAgentState extends State<AddAgent> {
   final List<String> sexeList = Dropdown().sexe;
   final List<String> roleList = Dropdown().role;
   final List<String> world = Country().world;
+
   final List<String> fonctionOccupeAdminList = FonctionOccupee().adminDropdown;
-  final List<String> fonctionOccupeList =
-      FonctionOccupee().fonctionOccupeDropdown;
+  final List<String> fonctionOccupeList = FonctionOccupee().fonctionOccupeDropdown;
+
 
   final List<String> serviceAffectation =
       ServiceAffectation().serviceAffectationDropdown;
@@ -50,6 +51,8 @@ class _AddAgentState extends State<AddAgent> {
       ServiceAffectation().adminDropdown;
   final List<String> serviceAffectationRH = ServiceAffectation().rhDropdown;
   final List<String> serviceAffectationFin = ServiceAffectation().finDropdown;
+  final List<String> serviceAffectationBud = ServiceAffectation().budgetDropdown;
+  final List<String> serviceAffectationCompt = ServiceAffectation().comptableDropdown;
   final List<String> serviceAffectationEXp = ServiceAffectation().expDropdown;
   final List<String> serviceAffectationComm = ServiceAffectation().commDropdown;
   final List<String> serviceAffectationLog = ServiceAffectation().logDropdown;
@@ -687,10 +690,18 @@ class _AddAgentState extends State<AddAgent> {
               matricule = "${fokad}ADM$date-${agentCount!.count + 1}";
               fonctionList = fonctionOccupeAdminList;
               servAffectList = serviceAffectationAdmin;
-            } else if (departement == 'Comptabilité et Finance') {
+            } else if (departement == 'Finances') {
               matricule = "${fokad}FIN$date-${agentCount!.count + 1}";
               fonctionList = fonctionOccupeList;
               servAffectList = serviceAffectationFin;
+            } else if (departement == 'Comptabilites') {
+              matricule = "${fokad}CPT$date-${agentCount!.count + 1}";
+              fonctionList = fonctionOccupeList;
+              servAffectList = serviceAffectationCompt;
+            } else if (departement == 'Budgets') {
+              matricule = "${fokad}BUD$date-${agentCount!.count + 1}";
+              fonctionList = fonctionOccupeList;
+              servAffectList = serviceAffectationBud;
             } else if (departement == 'Ressources Humaines') {
               matricule = "${fokad}RH$date-${agentCount!.count + 1}";
               fonctionList = fonctionOccupeList;

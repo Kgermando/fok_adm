@@ -21,8 +21,6 @@ import 'package:fokad_admin/src/api/logistiques/immobiler_api.dart';
 import 'package:fokad_admin/src/api/logistiques/mobilier_api.dart';
 import 'package:fokad_admin/src/api/rh/agents_api.dart';
 import 'package:fokad_admin/src/api/rh/paiement_salaire_api.dart';
-import 'package:fokad_admin/src/models/budgets/ligne_budgetaire_model.dart';
-import 'package:fokad_admin/src/models/rh/agent_model.dart';
 import 'package:fokad_admin/src/navigation/drawer/drawer_widget.dart';
 import 'package:fokad_admin/src/routes/routes.dart';
 import 'package:routemaster/routemaster.dart';
@@ -387,23 +385,25 @@ class _AdministrationNavState extends State<AdministrationNav> {
               Routemaster.of(context).replace(AdminRoutes.adminLogistique);
               // Navigator.of(context).pop();
             }),
-        DrawerWidget(
+          DrawerWidget(
             selected: widget.pageCurrente == DevisRoutes.devis,
             icon: Icons.note_alt,
             sizeIcon: 20.0,
             title: 'Etat de besoin',
             style: bodyText1,
-            badge: Badge(
-              showBadge: (etatBesoinCount >= 1) ? true : false,
-              badgeColor: Colors.teal,
-              badgeContent: Text('$etatBesoinCount',
-                  style: const TextStyle(fontSize: 10.0, color: Colors.white)),
-              child: const Icon(Icons.notifications),
-            ),
             onTap: () {
               Routemaster.of(context).replace(DevisRoutes.devis);
-              // Navigator.of(context).pop();
             }),
+        DrawerWidget(
+            selected: widget.pageCurrente == RhRoutes.rhPerformence,
+            icon: Icons.multiline_chart_sharp,
+            sizeIcon: 20.0,
+            title: 'Performences',
+            style: bodyText1,
+            onTap: () {
+              Routemaster.of(context).replace(RhRoutes.rhPerformence);
+            }),
+        
       ],
     );
   }

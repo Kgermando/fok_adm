@@ -50,6 +50,7 @@ class _TableTrajetAnguinDGState extends State<TableTrajetAnguinDG> {
         onLoaded: (PlutoGridOnLoadedEvent event) {
           stateManager = event.stateManager;
           stateManager!.setShowColumnFilter(true);
+          stateManager!.notifyListeners();
         },
         createHeader: (PlutoGridStateManager header) {
           return Row(
@@ -194,8 +195,11 @@ class _TableTrajetAnguinDGState extends State<TableTrajetAnguinDG> {
 
   Future agentsRow() async {
     List<TrajetModel?> dataList = await TrajetApi().getAllData();
-    var data =
-        dataList.where((element) => element!.approbationDG == "-" && element.approbationDD == "Approved").toList();
+    var data = dataList
+        .where((element) =>
+            element!.approbationDG == "-" &&
+            element.approbationDD == "Approved")
+        .toList();
 
     if (mounted) {
       setState(() {

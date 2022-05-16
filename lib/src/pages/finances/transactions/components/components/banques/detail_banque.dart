@@ -135,7 +135,7 @@ class _DetailBanqueState extends State<DetailBanque> {
                                     const SizedBox(width: p10),
                                     Expanded(
                                       child: CustomAppbar(
-                                          title: banqueModel.nomComplet,
+                                          title: "Banque",
                                           controllerMenu: () =>
                                               _key.currentState!.openDrawer()),
                                     ),
@@ -187,7 +187,8 @@ class _DetailBanqueState extends State<DetailBanque> {
                       PrintWidget(
                           tooltip: 'Imprimer le document', onPressed: () {}),
                       SelectableText(
-                          DateFormat("dd-MM-yyyy HH:mm").format(banqueModel.created),
+                          DateFormat("dd-MM-yyyy HH:mm")
+                              .format(banqueModel.created),
                           textAlign: TextAlign.start),
                     ],
                   )
@@ -274,7 +275,7 @@ class _DetailBanqueState extends State<DetailBanque> {
             Row(
               children: [
                 Expanded(
-                  child: Text('departement :',
+                  child: Text('Département :',
                       textAlign: TextAlign.start,
                       style: bodyMedium.copyWith(fontWeight: FontWeight.bold)),
                 ),
@@ -284,24 +285,8 @@ class _DetailBanqueState extends State<DetailBanque> {
                 )
               ],
             ),
-            if (banqueModel.typeOperation != 'Depot')
-          Divider(color: Colors.amber.shade700),
           if (banqueModel.typeOperation != 'Depot')
-            Row(
-              children: [
-                Expanded(
-                  child: Text('Ligne budgtaire :',
-                      textAlign: TextAlign.start,
-                      style: bodyMedium.copyWith(fontWeight: FontWeight.bold)),
-                ),
-                Expanded(
-                  child: SelectableText(banqueModel.ligneBudgtaire,
-                      textAlign: TextAlign.start, style: bodyMedium),
-                )
-              ],
-            ),
-          if (banqueModel.typeOperation != 'Depot')
-          Divider(color: Colors.amber.shade700),
+            Divider(color: Colors.amber.shade700),
           if (banqueModel.typeOperation != 'Depot')
             Row(
               children: [
@@ -348,7 +333,7 @@ class _DetailBanqueState extends State<DetailBanque> {
           Row(
             children: [
               Expanded(
-                child: Text('signature :',
+                child: Text('Signature :',
                     textAlign: TextAlign.start,
                     style: bodyMedium.copyWith(fontWeight: FontWeight.bold)),
               ),
@@ -370,6 +355,7 @@ class _DetailBanqueState extends State<DetailBanque> {
       onLoaded: (PlutoGridOnLoadedEvent event) {
         stateManager = event.stateManager;
         stateManager!.setShowColumnFilter(true);
+        stateManager!.notifyListeners();
       },
     );
   }
@@ -438,7 +424,7 @@ class _DetailBanqueState extends State<DetailBanque> {
   Widget infosEditeurWidget(BanqueModel data) {
     final bodyMedium = Theme.of(context).textTheme.bodyMedium;
     final bodySmall = Theme.of(context).textTheme.bodySmall;
-    List<String> dataList = ['Approved', 'Unapproved'];
+    List<String> dataList = ['Approved', 'Unapproved', '-'];
     return Container(
       padding: const EdgeInsets.only(top: p16, bottom: p16),
       decoration: const BoxDecoration(

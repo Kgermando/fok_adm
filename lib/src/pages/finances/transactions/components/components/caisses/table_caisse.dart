@@ -45,6 +45,7 @@ class _TableCaisseState extends State<TableCaisse> {
     agentsColumn();
     super.initState();
   }
+
   Future<void> getData() async {
     List<CaisseModel?> dataList = await CaisseApi().getAllData();
     setState(() {
@@ -81,6 +82,7 @@ class _TableCaisseState extends State<TableCaisse> {
             onLoaded: (PlutoGridOnLoadedEvent event) {
               stateManager = event.stateManager;
               stateManager!.setShowColumnFilter(true);
+              stateManager!.notifyListeners();
             },
             createHeader: (PlutoGridStateManager header) {
               return Row(
@@ -96,7 +98,10 @@ class _TableCaisseState extends State<TableCaisse> {
                   ClassFilterImplemented(),
                 ],
                 resolveDefaultColumnFilter: (column, resolver) {
-                  if (column.field == 'nomComplet') {
+                  if (column.field == 'id') {
+                    return resolver<ClassFilterImplemented>()
+                        as PlutoFilterType;
+                  } else if (column.field == 'nomComplet') {
                     return resolver<ClassFilterImplemented>()
                         as PlutoFilterType;
                   } else if (column.field == 'pieceJustificative') {
@@ -106,9 +111,6 @@ class _TableCaisseState extends State<TableCaisse> {
                     return resolver<ClassFilterImplemented>()
                         as PlutoFilterType;
                   } else if (column.field == 'montant') {
-                    return resolver<ClassFilterImplemented>()
-                        as PlutoFilterType;
-                  } else if (column.field == 'ligneBudgtaire') {
                     return resolver<ClassFilterImplemented>()
                         as PlutoFilterType;
                   } else if (column.field == 'departement') {
@@ -327,7 +329,6 @@ class _TableCaisseState extends State<TableCaisse> {
             'montant': PlutoCell(
                 value: NumberFormat.decimalPattern('fr')
                     .format(double.parse(item.montant))),
-            'ligneBudgtaire': PlutoCell(value: item.ligneBudgtaire),
             'departement': PlutoCell(value: item.departement),
             'typeOperation': PlutoCell(value: item.typeOperation),
             'numeroOperation': PlutoCell(value: item.numeroOperation),

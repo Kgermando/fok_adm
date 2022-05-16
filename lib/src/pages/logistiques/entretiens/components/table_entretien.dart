@@ -44,6 +44,7 @@ class _TableEntretienState extends State<TableEntretien> {
       onLoaded: (PlutoGridOnLoadedEvent event) {
         stateManager = event.stateManager;
         stateManager!.setShowColumnFilter(true);
+        stateManager!.notifyListeners();
       },
       createHeader: (PlutoGridStateManager header) {
         return Row(
@@ -192,4 +193,3 @@ class _TableEntretienState extends State<TableEntretien> {
     }
   }
 }
-

@@ -10,14 +10,16 @@ import 'package:intl/intl.dart';
 import 'package:pluto_grid/pluto_grid.dart';
 
 class TableJournalComptabiliteDD extends StatefulWidget {
-  const TableJournalComptabiliteDD({ Key? key }) : super(key: key);
+  const TableJournalComptabiliteDD({Key? key}) : super(key: key);
 
   @override
-  State<TableJournalComptabiliteDD> createState() => _TableJournalComptabiliteDDState();
+  State<TableJournalComptabiliteDD> createState() =>
+      _TableJournalComptabiliteDDState();
 }
 
-class _TableJournalComptabiliteDDState extends State<TableJournalComptabiliteDD> {
- Timer? timer;
+class _TableJournalComptabiliteDDState
+    extends State<TableJournalComptabiliteDD> {
+  Timer? timer;
   List<PlutoColumn> columns = [];
   List<PlutoRow> rows = [];
   PlutoGridStateManager? stateManager;
@@ -56,6 +58,7 @@ class _TableJournalComptabiliteDDState extends State<TableJournalComptabiliteDD>
           stateManager = event.stateManager;
           stateManager!.notifyListeners();
           stateManager!.setShowColumnFilter(true);
+          stateManager!.notifyListeners();
         },
         createHeader: (PlutoGridStateManager header) {
           return Row(
@@ -227,7 +230,7 @@ class _TableJournalComptabiliteDDState extends State<TableJournalComptabiliteDD>
 
   Future agentsRow() async {
     List<JournalModel?> dataList = await JournalApi().getAllData();
-     var data = dataList.where((element) => element!.approbationDD == "-");
+    var data = dataList.where((element) => element!.approbationDD == "-");
 
     if (mounted) {
       setState(() {

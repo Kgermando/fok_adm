@@ -27,13 +27,7 @@ class _TableAgentsState extends State<TableAgents> {
   @override
   initState() {
     agentsColumn();
-    Timer.periodic(const Duration(milliseconds: 500), ((timer) {
-      setState(() {
-        agentsRow();
-      });
-      
-      timer.cancel();
-    }));
+    agentsRow();
     super.initState();
   }
 
@@ -51,6 +45,7 @@ class _TableAgentsState extends State<TableAgents> {
       onLoaded: (PlutoGridOnLoadedEvent event) {
         stateManager = event.stateManager;
         stateManager!.setShowColumnFilter(true);
+        stateManager!.notifyListeners();
       },
       createHeader: (PlutoGridStateManager header) {
         return Row(

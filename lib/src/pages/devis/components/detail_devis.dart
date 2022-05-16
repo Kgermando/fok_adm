@@ -64,7 +64,20 @@ class _DetailDevisState extends State<DetailDevis> {
   }
 
   List<LigneBudgetaireModel> ligneBudgetaireList = [];
-  UserModel? user;
+  UserModel? user = UserModel(
+      nom: '-',
+      prenom: '-',
+      email: '-',
+      telephone: '-',
+      matricule: '-',
+      departement: '-',
+      servicesAffectation: '-',
+      fonctionOccupe: '-',
+      role: '5',
+      isOnline: false,
+      createdAt: DateTime.now(),
+      passwordHash: '-',
+      succursale: '-');
   Future<void> getData() async {
     final dataUser = await UserApi().getAllData();
     UserModel userModel = await AuthApi().getUserId();
@@ -314,6 +327,7 @@ class _DetailDevisState extends State<DetailDevis> {
       rows: rows,
       onLoaded: (PlutoGridOnLoadedEvent event) {
         stateManager = event.stateManager;
+        stateManager!.notifyListeners();
       },
     );
   }
@@ -385,8 +399,8 @@ class _DetailDevisState extends State<DetailDevis> {
             'description': PlutoCell(value: item.description),
             'frais': PlutoCell(value: item.frais)
           }));
+          stateManager!.resetCurrentState();
         }
-        stateManager!.resetCurrentState();
       });
     }
   }
@@ -966,7 +980,6 @@ class _DetailDevisState extends State<DetailDevis> {
       ),
     );
   }
-
 
   Future<void> submitUpdateDG(DevisModel data) async {
     final devisModel = DevisModel(

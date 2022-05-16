@@ -53,7 +53,21 @@ class _DetailCreanceState extends State<DetailCreance> {
     super.initState();
   }
 
-  UserModel? user;
+  UserModel? user = UserModel(
+      nom: '-',
+      prenom: '-',
+      email: '-',
+      telephone: '-',
+      matricule: '-',
+      departement: '-',
+      servicesAffectation: '-',
+      fonctionOccupe: '-',
+      role: '5',
+      isOnline: false,
+      createdAt: DateTime.now(),
+      passwordHash: '-',
+      succursale: '-');
+
   Future<void> getData() async {
     final dataUser = await UserApi().getAllData();
     UserModel userModel = await AuthApi().getUserId();
@@ -102,7 +116,7 @@ class _DetailCreanceState extends State<DetailCreance> {
                                     const SizedBox(width: p10),
                                     Expanded(
                                       child: CustomAppbar(
-                                          title: creanceModel!.nomComplet,
+                                          title: "Créance",
                                           controllerMenu: () =>
                                               _key.currentState!.openDrawer()),
                                     ),
@@ -112,7 +126,7 @@ class _DetailCreanceState extends State<DetailCreance> {
                                     child: Scrollbar(
                                         controller: _controllerScroll,
                                         isAlwaysShown: true,
-                                        child: pageDetail(creanceModel)))
+                                        child: pageDetail(creanceModel!)))
                               ],
                             );
                           } else {
@@ -249,7 +263,7 @@ class _DetailCreanceState extends State<DetailCreance> {
           Row(
             children: [
               Expanded(
-                child: Text('signature :',
+                child: Text('Signature :',
                     textAlign: TextAlign.start,
                     style: bodyMedium.copyWith(fontWeight: FontWeight.bold)),
               ),
@@ -287,6 +301,7 @@ class _DetailCreanceState extends State<DetailCreance> {
                     )
             ],
           ),
+          Divider(color: Colors.amber.shade700),
         ],
       ),
     );
@@ -331,7 +346,7 @@ class _DetailCreanceState extends State<DetailCreance> {
   Widget infosEditeurWidget(CreanceModel data) {
     final bodyMedium = Theme.of(context).textTheme.bodyMedium;
     final bodySmall = Theme.of(context).textTheme.bodySmall;
-    List<String> dataList = ['Approved', 'Unapproved'];
+    List<String> dataList = ['Approved', 'Unapproved', '-'];
     return Container(
       padding: const EdgeInsets.only(top: p16, bottom: p16),
       decoration: const BoxDecoration(

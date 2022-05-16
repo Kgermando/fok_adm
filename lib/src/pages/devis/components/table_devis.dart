@@ -67,6 +67,7 @@ class _TableDevisState extends State<TableDevis> {
       onLoaded: (PlutoGridOnLoadedEvent event) {
         stateManager = event.stateManager;
         stateManager!.setShowColumnFilter(true);
+        stateManager!.notifyListeners();
       },
       createHeader: (PlutoGridStateManager header) {
         return Row(
@@ -196,13 +197,12 @@ class _TableDevisState extends State<TableDevis> {
     List<DevisModel?> dataList = await DevisAPi().getAllData();
     var data = dataList
         .where((element) =>
-          element!.departement == userModel.departement &&
-          element.approbationDG == 'Approuved' || 
-          element.departement == 'Administration' 
-                && element.approbationDG == '-' ||
+            element!.departement == 'Administration' ||
+            element.departement == userModel.departement &&
+                element.approbationDG == 'Approuved' ||
             element.departement == 'Finances' &&
-                element.approbationDG == 'Approved' || 
-            element.departement == 'Budgets' && 
+                element.approbationDG == 'Approved' ||
+            element.departement == 'Budgets' &&
                 element.approbationDG == 'Approved')
         .toList();
 
@@ -217,7 +217,7 @@ class _TableDevisState extends State<TableDevis> {
             'approbation': PlutoCell(value: item.approbationDG),
             'observation': PlutoCell(value: item.approbationFin),
             'created': PlutoCell(
-                value: DateFormat("dd-MM-yy HH:mm").format(item.created))
+                value: DateFormat("dd-MM-yyyy HH:mm").format(item.created))
           }));
           stateManager!.resetCurrentState();
         }

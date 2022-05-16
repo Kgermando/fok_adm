@@ -12,14 +12,14 @@ import 'package:intl/intl.dart';
 import 'package:pluto_grid/pluto_grid.dart';
 
 class TableCompteResultat extends StatefulWidget {
-  const TableCompteResultat({ Key? key }) : super(key: key);
+  const TableCompteResultat({Key? key}) : super(key: key);
 
   @override
   State<TableCompteResultat> createState() => _TableCompteResultatState();
 }
 
 class _TableCompteResultatState extends State<TableCompteResultat> {
- List<PlutoColumn> columns = [];
+  List<PlutoColumn> columns = [];
   List<PlutoRow> rows = [];
   PlutoGridStateManager? stateManager;
   PlutoGridSelectingMode gridSelectingMode = PlutoGridSelectingMode.row;
@@ -52,13 +52,12 @@ class _TableCompteResultatState extends State<TableCompteResultat> {
       onLoaded: (PlutoGridOnLoadedEvent event) {
         stateManager = event.stateManager;
         stateManager!.setShowColumnFilter(true);
+        stateManager!.notifyListeners();
       },
       createHeader: (PlutoGridStateManager header) {
         return Row(
           mainAxisAlignment: MainAxisAlignment.end,
-          children: [
-            PrintWidget(onPressed: () {})
-          ],
+          children: [PrintWidget(onPressed: () {})],
         );
       },
       configuration: PlutoGridConfiguration(
@@ -140,9 +139,12 @@ class _TableCompteResultatState extends State<TableCompteResultat> {
 
   Future agentsRow() async {
     UserModel userModel = await AuthApi().getUserId();
-    List<CompteResulatsModel?> dataList = await CompteResultatApi().getAllData();
-    var data = dataList
-        .where((element) => element!.approbationDG == "Approved" &&  element.approbationDD == "Approved" || element.signature == userModel.matricule);
+    List<CompteResulatsModel?> dataList =
+        await CompteResultatApi().getAllData();
+    var data = dataList.where((element) =>
+        element!.approbationDG == "Approved" &&
+            element.approbationDD == "Approved" ||
+        element.signature == userModel.matricule);
 
     if (mounted) {
       setState(() {

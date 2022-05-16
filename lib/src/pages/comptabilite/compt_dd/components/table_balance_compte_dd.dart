@@ -1,21 +1,21 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
-import 'package:fokad_admin/src/api/budgets/departement_budget_api.dart';
-import 'package:fokad_admin/src/models/budgets/departement_budget_model.dart';
-import 'package:fokad_admin/src/pages/budgets/budgets_previsionels/components/detail_departement_budget.dart';
-import 'package:fokad_admin/src/widgets/print_widget.dart';
+import 'package:fokad_admin/src/api/comptabilite/balance_compte_api.dart';
+import 'package:fokad_admin/src/models/comptabilites/balance_comptes_model.dart';
+import 'package:fokad_admin/src/pages/comptabilite/balance/components/detail_balance.dart';
 import 'package:fokad_admin/src/utils/class_implemented.dart';
 import 'package:intl/intl.dart';
 import 'package:pluto_grid/pluto_grid.dart';
 
-class TableDepartementBudgetDG extends StatefulWidget {
-  const TableDepartementBudgetDG({Key? key}) : super(key: key);
+class TableBalanceCompteDD extends StatefulWidget {
+  const TableBalanceCompteDD({Key? key}) : super(key: key);
 
   @override
-  State<TableDepartementBudgetDG> createState() =>
-      _TableDepartementBudgetDGState();
+  State<TableBalanceCompteDD> createState() => _TableBalanceCompteDDState();
 }
 
-class _TableDepartementBudgetDGState extends State<TableDepartementBudgetDG> {
+class _TableBalanceCompteDDState extends State<TableBalanceCompteDD> {
   List<PlutoColumn> columns = [];
   List<PlutoRow> rows = [];
   PlutoGridStateManager? stateManager;
@@ -24,9 +24,13 @@ class _TableDepartementBudgetDGState extends State<TableDepartementBudgetDG> {
   int? id;
 
   @override
-  initState() {
+  void initState() {
     agentsColumn();
-    agentsRow();
+    Timer.periodic(const Duration(milliseconds: 500), ((timer) {
+      agentsRow();
+      timer.cancel();
+    }));
+
     super.initState();
   }
 
@@ -42,23 +46,12 @@ class _TableDepartementBudgetDGState extends State<TableDepartementBudgetDG> {
           final idPlutoRow = dataList.elementAt(0);
 
           Navigator.of(context).push(MaterialPageRoute(
-              builder: (context) =>
-                  DetailDepartmentBudget(id: idPlutoRow.value)));
+              builder: (context) => DetailBalance(id: idPlutoRow.value)));
         },
         onLoaded: (PlutoGridOnLoadedEvent event) {
           stateManager = event.stateManager;
           stateManager!.setShowColumnFilter(true);
           stateManager!.notifyListeners();
-        },
-        createHeader: (PlutoGridStateManager header) {
-          return Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text("Liste des budgets",
-                  style: Theme.of(context).textTheme.headline6),
-              PrintWidget(onPressed: () {})
-            ],
-          );
         },
         configuration: PlutoGridConfiguration(
           columnFilterConfig: PlutoGridColumnFilterConfig(
@@ -70,10 +63,9 @@ class _TableDepartementBudgetDGState extends State<TableDepartementBudgetDG> {
             resolveDefaultColumnFilter: (column, resolver) {
               if (column.field == 'id') {
                 return resolver<ClassFilterImplemented>() as PlutoFilterType;
-              }
-              if (column.field == 'departement') {
+              } else if (column.field == 'title') {
                 return resolver<ClassFilterImplemented>() as PlutoFilterType;
-              } else if (column.field == 'periodeBudget') {
+              } else if (column.field == 'signature') {
                 return resolver<ClassFilterImplemented>() as PlutoFilterType;
               } else if (column.field == 'created') {
                 return resolver<ClassFilterImplemented>() as PlutoFilterType;
@@ -102,20 +94,20 @@ class _TableDepartementBudgetDGState extends State<TableDepartementBudgetDG> {
       ),
       PlutoColumn(
         readOnly: true,
-        title: 'Département',
-        field: 'departement',
+        title: 'Titre du Bilan',
+        field: 'title',
         type: PlutoColumnType.text(),
         enableRowDrag: true,
         enableContextMenu: false,
         enableDropToResize: true,
         titleTextAlign: PlutoColumnTextAlign.left,
-        width: 200,
+        width: 300,
         minWidth: 150,
       ),
       PlutoColumn(
         readOnly: true,
-        title: 'Periode Budget',
-        field: 'periodeBudget',
+        title: 'Signature',
+        field: 'signature',
         type: PlutoColumnType.text(),
         enableRowDrag: true,
         enableContextMenu: false,
@@ -128,7 +120,7 @@ class _TableDepartementBudgetDGState extends State<TableDepartementBudgetDG> {
         readOnly: true,
         title: 'Date',
         field: 'created',
-        type: PlutoColumnType.date(),
+        type: PlutoColumnType.text(),
         enableRowDrag: true,
         enableContextMenu: false,
         enableDropToResize: true,
@@ -140,15 +132,8 @@ class _TableDepartementBudgetDGState extends State<TableDepartementBudgetDG> {
   }
 
   Future agentsRow() async {
-    List<DepartementBudgetModel?> dataList =
-        await DepeartementBudgetApi().getAllData();
-    var data = dataList
-        .where((element) =>
-            element!.approbationBudget == "Approved" &&
-            element.approbationDG == "-" &&
-            DateTime.now().millisecondsSinceEpoch <=
-                element.periodeFin.millisecondsSinceEpoch)
-        .toList();
+    List<BalanceCompteModel?> dataList = await BalanceCompteApi().getAllData();
+    var data = dataList.where((element) => element!.approbationDD == "-");
 
     if (mounted) {
       setState(() {
@@ -156,10 +141,8 @@ class _TableDepartementBudgetDGState extends State<TableDepartementBudgetDG> {
           id = item!.id;
           rows.add(PlutoRow(cells: {
             'id': PlutoCell(value: item.id),
-            'departement': PlutoCell(value: item.departement),
-            'periodeBudget': PlutoCell(
-                value:
-                    "${DateFormat("dd-MM-yyyy").format(item.periodeDebut)} - ${DateFormat("dd-MM-yyyy").format(item.periodeFin)}"),
+            'title': PlutoCell(value: item.title),
+            'signature': PlutoCell(value: item.signature),
             'created': PlutoCell(
                 value: DateFormat("dd-MM-yyyy HH:mm").format(item.created))
           }));

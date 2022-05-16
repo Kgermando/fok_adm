@@ -56,6 +56,7 @@ class _TableJournalAdminState extends State<TableJournalAdmin> {
         stateManager = event.stateManager;
         stateManager!.notifyListeners();
         stateManager!.setShowColumnFilter(true);
+        stateManager!.notifyListeners();
       },
       createHeader: (PlutoGridStateManager header) {
         return Row(
@@ -228,8 +229,7 @@ class _TableJournalAdminState extends State<TableJournalAdmin> {
     UserModel userModel = await AuthApi().getUserId();
     List<JournalModel?> dataList = await JournalApi().getAllData();
     var data = dataList.where((element) =>
-        element!.approbationDG == "-" &&
-            element.approbationDD == "Approved" ||
+        element!.approbationDG == "-" && element.approbationDD == "Approved" ||
         element.signature == userModel.matricule);
 
     if (mounted) {

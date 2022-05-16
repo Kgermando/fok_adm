@@ -9,10 +9,12 @@ import 'package:fokad_admin/src/constants/app_theme.dart';
 import 'package:fokad_admin/src/constants/responsive.dart';
 import 'package:fokad_admin/src/navigation/drawer/drawer_menu.dart';
 import 'package:fokad_admin/src/navigation/header/custom_appbar.dart';
-import 'package:fokad_admin/src/pages/comptabilite/compt_bb/components/table_balance_compte_dd.dart';
-import 'package:fokad_admin/src/pages/comptabilite/compt_bb/components/table_compte_bilan_dd.dart';
-import 'package:fokad_admin/src/pages/comptabilite/compt_bb/components/table_compte_resultat_dd.dart';
-import 'package:fokad_admin/src/pages/comptabilite/compt_bb/components/table_journal_comptabilite_dd.dart';
+import 'package:fokad_admin/src/pages/comptabilite/compt_dd/components/table_balance_compte_dd.dart';
+import 'package:fokad_admin/src/pages/comptabilite/compt_dd/corbeille/table_balance_corbeille.dart';
+import 'package:fokad_admin/src/pages/comptabilite/compt_dd/corbeille/table_bilan_corbeille.dart';
+import 'package:fokad_admin/src/pages/comptabilite/compt_dd/components/table_compte_bilan_dd.dart';
+import 'package:fokad_admin/src/pages/comptabilite/compt_dd/components/table_compte_resultat_dd.dart';
+import 'package:fokad_admin/src/pages/comptabilite/compt_dd/components/table_journal_comptabilite_dd.dart';
 
 class ComptabiliteDD extends StatefulWidget {
   const ComptabiliteDD({Key? key}) : super(key: key);
@@ -28,6 +30,7 @@ class _ComptabiliteDDState extends State<ComptabiliteDD> {
   bool isOpen2 = false;
   bool isOpen3 = false;
   bool isOpen4 = false;
+  bool isOpen5 = false;
 
   int bilanCount = 0;
   int compteResultatCount = 0;
@@ -198,6 +201,30 @@ class _ComptabiliteDDState extends State<ComptabiliteDD> {
                                   color: Colors.white,
                                 ),
                                 children: const [TableBalanceCompteDD()],
+                              ),
+                            ),
+                            Card(
+                              color: Colors.brown.shade700,
+                              child: ExpansionTile(
+                                leading: const Icon(
+                                  Icons.delete,
+                                  color: Colors.white,
+                                ),
+                                title: Text('Corbeille',
+                                    style: headline6.copyWith(
+                                        color: Colors.white)),
+                                initiallyExpanded: false,
+                                onExpansionChanged: (val) {
+                                  setState(() {
+                                    isOpen5 = !val;
+                                  });
+                                },
+                                trailing: const Icon(
+                                  Icons.arrow_drop_down,
+                                  color: Colors.white,
+                                ),
+                                children: const [
+                                  TableBalanceCorbeille(), TableBilanCorbeille()],
                               ),
                             ),
                           ],

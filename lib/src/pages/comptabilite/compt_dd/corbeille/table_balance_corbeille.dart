@@ -1,21 +1,22 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:fokad_admin/src/api/comptabilite/bilan_api.dart';
-import 'package:fokad_admin/src/models/comptabilites/bilan_model.dart';
-import 'package:fokad_admin/src/pages/comptabilite/bilan/components/detail_bilan.dart';
+import 'package:fokad_admin/src/api/comptabilite/balance_compte_api.dart';
+import 'package:fokad_admin/src/models/comptabilites/balance_comptes_model.dart';
+import 'package:fokad_admin/src/pages/comptabilite/balance/components/detail_balance.dart';
 import 'package:fokad_admin/src/utils/class_implemented.dart';
+import 'package:fokad_admin/src/widgets/title_widget.dart';
 import 'package:intl/intl.dart';
 import 'package:pluto_grid/pluto_grid.dart';
 
-class TableCompteBilanDD extends StatefulWidget {
-  const TableCompteBilanDD({ Key? key }) : super(key: key);
+class TableBalanceCorbeille extends StatefulWidget {
+  const TableBalanceCorbeille({Key? key}) : super(key: key);
 
   @override
-  State<TableCompteBilanDD> createState() => _TableCompteDDState();
+  State<TableBalanceCorbeille> createState() => _TableBalanceCorbeilleState();
 }
 
-class _TableCompteDDState extends State<TableCompteBilanDD> {
+class _TableBalanceCorbeilleState extends State<TableBalanceCorbeille> {
   List<PlutoColumn> columns = [];
   List<PlutoRow> rows = [];
   PlutoGridStateManager? stateManager;
@@ -37,7 +38,7 @@ class _TableCompteDDState extends State<TableCompteBilanDD> {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: MediaQuery.of(context).size.height,
+      height: MediaQuery.of(context).size.height / 4,
       child: PlutoGrid(
         columns: columns,
         rows: rows,
@@ -46,11 +47,18 @@ class _TableCompteDDState extends State<TableCompteBilanDD> {
           final idPlutoRow = dataList.elementAt(0);
 
           Navigator.of(context).push(MaterialPageRoute(
-              builder: (context) => DetailBilan(id: idPlutoRow.value)));
+              builder: (context) => DetailBalance(id: idPlutoRow.value)));
         },
         onLoaded: (PlutoGridOnLoadedEvent event) {
           stateManager = event.stateManager;
           stateManager!.setShowColumnFilter(true);
+          stateManager!.notifyListeners();
+        },
+        createHeader: (PlutoGridStateManager header) {
+          return Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: const [TitleWidget(title: 'Balance')],
+          );
         },
         configuration: PlutoGridConfiguration(
           columnFilterConfig: PlutoGridColumnFilterConfig(
@@ -62,7 +70,7 @@ class _TableCompteDDState extends State<TableCompteBilanDD> {
             resolveDefaultColumnFilter: (column, resolver) {
               if (column.field == 'id') {
                 return resolver<ClassFilterImplemented>() as PlutoFilterType;
-              } else if (column.field == 'titleBilan') {
+              } else if (column.field == 'title') {
                 return resolver<ClassFilterImplemented>() as PlutoFilterType;
               } else if (column.field == 'signature') {
                 return resolver<ClassFilterImplemented>() as PlutoFilterType;
@@ -94,7 +102,7 @@ class _TableCompteDDState extends State<TableCompteBilanDD> {
       PlutoColumn(
         readOnly: true,
         title: 'Titre du Bilan',
-        field: 'titleBilan',
+        field: 'title',
         type: PlutoColumnType.text(),
         enableRowDrag: true,
         enableContextMenu: false,
@@ -131,9 +139,8 @@ class _TableCompteDDState extends State<TableCompteBilanDD> {
   }
 
   Future agentsRow() async {
-    List<BilanModel?> dataList = await BilanApi().getAllData();
-    var data = dataList.where((element) =>
-        element!.approbationDD == "-");
+    List<BalanceCompteModel?> dataList = await BalanceCompteApi().getAllData();
+    var data = dataList.where((element) => element!.statut == true);
 
     if (mounted) {
       setState(() {
@@ -141,7 +148,7 @@ class _TableCompteDDState extends State<TableCompteBilanDD> {
           id = item!.id;
           rows.add(PlutoRow(cells: {
             'id': PlutoCell(value: item.id),
-            'titleBilan': PlutoCell(value: item.titleBilan),
+            'title': PlutoCell(value: item.title),
             'signature': PlutoCell(value: item.signature),
             'created': PlutoCell(
                 value: DateFormat("dd-MM-yyyy HH:mm").format(item.created))

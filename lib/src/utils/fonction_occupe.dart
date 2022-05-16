@@ -25,9 +25,21 @@ class FonctionOccupee {
     'Agent'
   ];
 
-   List<String> finDropdown = [
+  List<String> finDropdown = [
     'Directeur de departement',
     'Directeur de budget',
+    'Chef de service',
+    'Agent'
+  ];
+
+  List<String> budDropdown = [
+    'Directeur de departement',
+    'Chef de service',
+    'Agent'
+  ];
+
+  List<String> compteDropdown = [
+    'Directeur de departement',
     'Chef de service',
     'Agent'
   ];

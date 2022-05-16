@@ -47,6 +47,7 @@ class _TableSalaireAdminState extends State<TableSalaireAdmin> {
         onLoaded: (PlutoGridOnLoadedEvent event) {
           stateManager = event.stateManager;
           stateManager!.setShowColumnFilter(true);
+          stateManager!.notifyListeners();
         },
         createHeader: (PlutoGridStateManager header) {
           return Row(
@@ -194,9 +195,11 @@ class _TableSalaireAdminState extends State<TableSalaireAdmin> {
     List<PaiementSalaireModel?> dataList =
         await PaiementSalaireApi().getAllData();
     var data = dataList
-        .where((element) => element!.approbationBudget == "Approved" &&
-          element.observation == false &&
-            element.approbationDG == "-" && element.approbationFin != "-")
+        .where((element) =>
+            element!.approbationBudget == "Approved" &&
+            element.observation == false &&
+            element.approbationDG == "-" &&
+            element.approbationFin != "-")
         .toList();
 
     if (mounted) {

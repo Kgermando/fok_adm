@@ -41,13 +41,14 @@ import 'package:fokad_admin/src/pages/comptabilite/balance/balance_comptabilite.
 import 'package:fokad_admin/src/pages/comptabilite/balance/components/add_balance_comptabilite.dart';
 import 'package:fokad_admin/src/pages/comptabilite/bilan/bilan_comptabilite.dart';
 import 'package:fokad_admin/src/pages/comptabilite/bilan/components/add_bilan.dart';
-import 'package:fokad_admin/src/pages/comptabilite/compt_bb/comptabilite_dd.dart';
+import 'package:fokad_admin/src/pages/comptabilite/compt_dd/comptabilite_dd.dart';
 import 'package:fokad_admin/src/pages/comptabilite/compte_resultat/components/add_compte_resultat.dart';
 import 'package:fokad_admin/src/pages/comptabilite/compte_resultat/compte_resultat.dart';
 import 'package:fokad_admin/src/pages/comptabilite/dashboard/dashboard_comptabilite.dart';
 import 'package:fokad_admin/src/pages/comptabilite/grand_livre/grand_livre_comptabilite.dart';
 import 'package:fokad_admin/src/pages/comptabilite/journal/components/add_journal_comptabilite.dart';
 import 'package:fokad_admin/src/pages/comptabilite/journal/journal_comptabilite.dart';
+import 'package:fokad_admin/src/pages/devis/components/add_devis.dart';
 import 'package:fokad_admin/src/pages/devis/devis_page.dart';
 import 'package:fokad_admin/src/pages/exploitations/dashboard/dashboard_exp.dart';
 import 'package:fokad_admin/src/pages/exploitations/expl_dd/exploitaion_dd.dart';
@@ -111,6 +112,7 @@ class UserRoutes {
 
 class DevisRoutes {
   static const devis = "/devis";
+  static const devisAdd= "/devis-add";
 }
 
 class AdminRoutes {
@@ -340,6 +342,7 @@ class Routing {
 
         // DEVIS
         DevisRoutes.devis: (_) => const MaterialPage(child: DevisPage()),
+        DevisRoutes.devisAdd: (_) => const MaterialPage(child: AddDevis()),
 
         // LOGISTIQUES
         LogistiqueRoutes.logDD: (_) => const MaterialPage(child: LogDD()),

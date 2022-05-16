@@ -1,5 +1,6 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:fokad_admin/src/api/auth/auth_api.dart';
 import 'package:fokad_admin/src/api/rh/performence_note_api.dart';
 import 'package:fokad_admin/src/constants/app_theme.dart';
@@ -89,7 +90,7 @@ class _AddPerformenceNoteState extends State<AddPerformenceNote> {
                           Expanded(
                               flex: 5,
                               child: CustomAppbar(
-                                  title: 'Ajout Agent performence',
+                                  title: 'Agent performence',
                                   controllerMenu: () =>
                                       _key.currentState!.openDrawer())),
                         ],
@@ -109,7 +110,7 @@ class _AddPerformenceNoteState extends State<AddPerformenceNote> {
   }
 
   Widget addAgentWidget() {
-    final headlineMedium = Theme.of(context).textTheme.headlineMedium;
+    final bodyMedium = Theme.of(context).textTheme.bodyMedium;
     return Form(
       key: _formKey,
       child: Row(
@@ -126,31 +127,108 @@ class _AddPerformenceNoteState extends State<AddPerformenceNote> {
                 child: ListView(
                   controller: _controllerScroll,
                   children: [
-                    TitleWidget(title: widget.performenceModel.agent),
+                    const TitleWidget(title: "Ajout performence"),
                     const SizedBox(
                       height: p20,
                     ),
                     Row(
                       children: [
                         Expanded(
-                            child: AutoSizeText(
-                                widget.performenceModel.hospitalite,
-                                style: headlineMedium)),
-                        const SizedBox(
-                          width: p10,
+                          flex: 1,
+                          child: Text('Nom :',
+                              textAlign: TextAlign.start,
+                              style: bodyMedium!
+                                  .copyWith(fontWeight: FontWeight.bold)),
                         ),
                         Expanded(
-                            child: AutoSizeText(
-                                widget.performenceModel.ponctualite,
-                                style: headlineMedium)),
-                        const SizedBox(
-                          width: p10,
-                        ),
-                        Expanded(
-                            child: AutoSizeText(
-                                widget.performenceModel.travaille,
-                                style: headlineMedium)),
+                          flex: 3,
+                          child: SelectableText(
+                              widget.performenceModel.hospitalite,
+                              textAlign: TextAlign.start, style: bodyMedium),
+                        )
                       ],
+                    ),
+                    Divider(
+                      color: Colors.amber.shade700,
+                    ),
+                    Row(
+                      children: [
+                        Expanded(
+                          flex: 1,
+                          child: Text('Post-Nom :',
+                              textAlign: TextAlign.start,
+                              style: bodyMedium.copyWith(
+                                  fontWeight: FontWeight.bold)),
+                        ),
+                        Expanded(
+                          flex: 3,
+                          child: SelectableText(
+                              widget.performenceModel.ponctualite,
+                              textAlign: TextAlign.start, style: bodyMedium),
+                        )
+                      ],
+                    ),
+                    Divider(
+                      color: Colors.amber.shade700,
+                    ),
+                    Row(
+                      children: [
+                        Expanded(
+                          flex: 1,
+                          child: Text('Prénom:',
+                              textAlign: TextAlign.start,
+                              style: bodyMedium.copyWith(
+                                  fontWeight: FontWeight.bold)),
+                        ),
+                        Expanded(
+                          flex: 3,
+                          child: SelectableText(
+                              widget.performenceModel.travaille,
+                              textAlign: TextAlign.start, style: bodyMedium),
+                        )
+                      ],
+                    ),
+                    Divider(
+                      color: Colors.amber.shade700,
+                    ),
+                    Row(
+                      children: [
+                        Expanded(
+                          flex: 1,
+                          child: Text('Agent :',
+                              textAlign: TextAlign.start,
+                              style: bodyMedium.copyWith(
+                                  fontWeight: FontWeight.bold)),
+                        ),
+                        Expanded(
+                          flex: 3,
+                          child: SelectableText(widget.performenceModel.agent,
+                              textAlign: TextAlign.start, style: bodyMedium),
+                        )
+                      ],
+                    ),
+                    Divider(
+                      color: Colors.amber.shade700,
+                    ),
+                    Row(
+                      children: [
+                        Expanded(
+                          flex: 1,
+                          child: Text('Départemznt :',
+                              textAlign: TextAlign.start,
+                              style: bodyMedium.copyWith(
+                                  fontWeight: FontWeight.bold)),
+                        ),
+                        Expanded(
+                          flex: 3,
+                          child: SelectableText(
+                              widget.performenceModel.departement,
+                              textAlign: TextAlign.start, style: bodyMedium),
+                        )
+                      ],
+                    ),
+                    Divider(
+                      color: Colors.amber.shade700,
                     ),
                     Row(
                       children: [
@@ -204,7 +282,10 @@ class _AddPerformenceNoteState extends State<AddPerformenceNote> {
                       borderRadius: BorderRadius.circular(10.0)),
                   labelText: 'Hospitalite',
                 ),
-                keyboardType: TextInputType.text,
+                keyboardType: TextInputType.number,
+                inputFormatters: <TextInputFormatter>[
+                  FilteringTextInputFormatter.digitsOnly
+                ],
                 style: const TextStyle(),
                 validator: (value) {
                   if (value != null && value.isEmpty) {
@@ -235,7 +316,10 @@ class _AddPerformenceNoteState extends State<AddPerformenceNote> {
                       borderRadius: BorderRadius.circular(10.0)),
                   labelText: 'Ponctualite',
                 ),
-                keyboardType: TextInputType.text,
+                keyboardType: TextInputType.number,
+                inputFormatters: <TextInputFormatter>[
+                  FilteringTextInputFormatter.digitsOnly
+                ],
                 style: const TextStyle(),
                 validator: (value) {
                   if (value != null && value.isEmpty) {
@@ -266,7 +350,10 @@ class _AddPerformenceNoteState extends State<AddPerformenceNote> {
                       borderRadius: BorderRadius.circular(10.0)),
                   labelText: 'Travaille',
                 ),
-                keyboardType: TextInputType.text,
+                keyboardType: TextInputType.number,
+                inputFormatters: <TextInputFormatter>[
+                  FilteringTextInputFormatter.digitsOnly
+                ],
                 style: const TextStyle(),
                 validator: (value) {
                   if (value != null && value.isEmpty) {

@@ -12,7 +12,7 @@ import 'package:intl/intl.dart';
 import 'package:pluto_grid/pluto_grid.dart';
 
 class TableBilanComptabilite extends StatefulWidget {
-  const TableBilanComptabilite({ Key? key }) : super(key: key);
+  const TableBilanComptabilite({Key? key}) : super(key: key);
 
   @override
   State<TableBilanComptabilite> createState() => _TableBilanComptabiliteState();
@@ -52,6 +52,7 @@ class _TableBilanComptabiliteState extends State<TableBilanComptabilite> {
       onLoaded: (PlutoGridOnLoadedEvent event) {
         stateManager = event.stateManager;
         stateManager!.setShowColumnFilter(true);
+        stateManager!.notifyListeners();
       },
       createHeader: (PlutoGridStateManager header) {
         return Row(
@@ -140,9 +141,10 @@ class _TableBilanComptabiliteState extends State<TableBilanComptabilite> {
     UserModel userModel = await AuthApi().getUserId();
     List<BalanceCompteModel?> dataList = await BalanceCompteApi().getAllData();
     var data = dataList.where((element) =>
-        element!.approbationDG == "Approved" &&
+        element!.statut == false &&
+            element.approbationDG == "Approved" &&
             element.approbationDD == "Approved" ||
-        element.signature == userModel.matricule);
+        element.statut == false && element.signature == userModel.matricule);
 
     if (mounted) {
       setState(() {

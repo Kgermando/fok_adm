@@ -96,7 +96,7 @@ class BalanceCompteApi {
     var data = balanceCompteModel.toJson();
     var body = jsonEncode(data);
     var updateUrl = Uri.parse(
-        "$mainUrl/comptabilite/comptes_resultat/update-balance-compte/$id");
+        "$mainUrl/comptabilite/balance_comptes/update-balance-compte/$id");
 
     var res = await client.put(updateUrl,
         headers: <String, String>{
@@ -115,7 +115,7 @@ class BalanceCompteApi {
     final accessToken = await storage.read(key: 'accessToken');
 
     var deleteUrl = Uri.parse(
-        "$mainUrl/comptabilite/comptes_resultat/delete-balance-compte/$id");
+        "$mainUrl/comptabilite/balance_comptes/delete-balance-compte/$id");
 
     var res = await client.delete(deleteUrl, headers: <String, String>{
       'Content-Type': 'application/json; charset=UTF-8',

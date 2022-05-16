@@ -76,7 +76,7 @@ class _AddJournalComptabiliteState extends State<AddJournalComptabilite> {
 
   @override
   Widget build(BuildContext context) {
-    return addDataWidget();
+    return SingleChildScrollView(child: addDataWidget());
   }
 
   Widget addDataWidget() {
@@ -144,7 +144,6 @@ class _AddJournalComptabiliteState extends State<AddJournalComptabilite> {
               child: Row(
                 children: [
                   SizedBox(
-                      height: 50.0,
                       width: 100.0,
                       child: numeroOperationWidget()),
                   const SizedBox(
@@ -161,9 +160,9 @@ class _AddJournalComptabiliteState extends State<AddJournalComptabilite> {
                         Expanded(
                             child: Column(
                           children: [
-                            SizedBox(height: 50.0, child: classDebitWidget()),
-                            SizedBox(height: 50.0, child: compteDebitWidget()),
-                            SizedBox(height: 50.0, child: montantDebitWidget())
+                            classDebitWidget(),
+                            compteDebitWidget(),
+                            montantDebitWidget()
                           ],
                         )),
                         const SizedBox(
@@ -342,7 +341,7 @@ class _AddJournalComptabiliteState extends State<AddJournalComptabilite> {
             })
             .toSet()
             .toList(),
-        validator: (value) => value == null ? "Select compte" : null,
+        // validator: (value) => value == null ? "Select compte" : null,
         onChanged: (value) {
           setState(() {
             comptesDebitController = value!;
@@ -426,7 +425,7 @@ class _AddJournalComptabiliteState extends State<AddJournalComptabilite> {
             })
             .toSet()
             .toList(),
-        validator: (value) => value == null ? "Select compte" : null,
+        // validator: (value) => value == null ? "Select compte" : null,
         onChanged: (value) {
           setState(() {
             comptesCreditController = value!;
@@ -453,13 +452,13 @@ class _AddJournalComptabiliteState extends State<AddJournalComptabilite> {
                 const EdgeInsets.symmetric(vertical: 2, horizontal: 10),
           ),
           style: const TextStyle(),
-          validator: (value) {
-            if (value != null && value.isEmpty) {
-              return 'Ce champs est obligatoire';
-            } else {
-              return null;
-            }
-          },
+          // validator: (value) {
+          //   if (value != null && value.isEmpty) {
+          //     return 'Ce champs est obligatoire';
+          //   } else {
+          //     return null;
+          //   }
+          // },
         ));
   }
 
@@ -480,13 +479,13 @@ class _AddJournalComptabiliteState extends State<AddJournalComptabilite> {
                 const EdgeInsets.symmetric(vertical: 2, horizontal: 10),
           ),
           style: const TextStyle(),
-          validator: (value) {
-            if (value != null && value.isEmpty) {
-              return 'Ce champs est obligatoire';
-            } else {
-              return null;
-            }
-          },
+          // validator: (value) {
+          //   if (value != null && value.isEmpty) {
+          //     return 'Ce champs est obligatoire';
+          //   } else {
+          //     return null;
+          //   }
+          // },
         ));
   }
 
@@ -507,13 +506,13 @@ class _AddJournalComptabiliteState extends State<AddJournalComptabilite> {
                 const EdgeInsets.symmetric(vertical: 2, horizontal: 10),
           ),
           style: const TextStyle(),
-          validator: (value) {
-            if (value != null && value.isEmpty) {
-              return 'Ce champs est obligatoire';
-            } else {
-              return null;
-            }
-          },
+          // validator: (value) {
+          //   if (value != null && value.isEmpty) {
+          //     return 'Ce champs est obligatoire';
+          //   } else {
+          //     return null;
+          //   }
+          // },
         ));
   }
 

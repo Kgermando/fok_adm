@@ -50,6 +50,7 @@ class _LigneBudgetaireState extends State<LigneBudgetaire> {
         onLoaded: (PlutoGridOnLoadedEvent event) {
           stateManager = event.stateManager;
           stateManager!.setShowColumnFilter(true);
+          stateManager!.notifyListeners();
         },
         createHeader: (PlutoGridStateManager header) {
           return Row(
@@ -266,13 +267,11 @@ class _LigneBudgetaireState extends State<LigneBudgetaire> {
         await LIgneBudgetaireApi().getAllData();
     var data = dataList
         .where((element) =>
-                element!.departement ==
-                    widget.departementBudgetModel.departement &&
+            element!.departement == widget.departementBudgetModel.departement &&
+            DateFormat("dd-MM-yyyy")
+                    .format(DateTime.parse(element.periodeBudget)) ==
                 DateFormat("dd-MM-yyyy")
-                        .format(DateTime.parse(element.periodeBudget)) ==
-                    DateFormat("dd-MM-yyyy")
-                        .format(widget.departementBudgetModel.periodeFin)
-            )
+                    .format(widget.departementBudgetModel.periodeFin))
         .toList();
 
     if (mounted) {

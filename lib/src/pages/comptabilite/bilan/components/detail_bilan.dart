@@ -37,8 +37,6 @@ class _DetailBilanState extends State<DetailBilan> {
   TextEditingController signatureJustificationDDController =
       TextEditingController();
 
-  bool statutCorbeille = false;
-
   @override
   initState() {
     getData();
@@ -104,7 +102,7 @@ class _DetailBilanState extends State<DetailBilan> {
                                     const SizedBox(width: p10),
                                     Expanded(
                                       child: CustomAppbar(
-                                          title: data!.titleBilan,
+                                          title: "Bilan",
                                           controllerMenu: () =>
                                               _key.currentState!.openDrawer()),
                                     ),
@@ -112,7 +110,7 @@ class _DetailBilanState extends State<DetailBilan> {
                                 ),
                                 Expanded(
                                     child: SingleChildScrollView(
-                                        child: pageDetail(data)))
+                                        child: pageDetail(data!)))
                               ],
                             );
                           } else {
@@ -159,7 +157,7 @@ class _DetailBilanState extends State<DetailBilan> {
                         ],
                       ),
                       SelectableText(
-                          DateFormat("dd-MM-yy HH:mm").format(data.created),
+                          DateFormat("dd-MM-yyyy HH:mm").format(data.created),
                           textAlign: TextAlign.start),
                     ],
                   )
@@ -264,9 +262,8 @@ class _DetailBilanState extends State<DetailBilan> {
               child: const Text('Annuler'),
             ),
             TextButton(
-              onPressed: () async {
+              onPressed: () {
                 submitCorbeille(data);
-                Navigator.of(context).pop();
               },
               child: const Text('OK'),
             ),
@@ -788,7 +785,7 @@ class _DetailBilanState extends State<DetailBilan> {
         titleBilan: data.titleBilan,
         comptesActif: data.comptesActif,
         comptesPactif: data.comptesPactif,
-        statut: statutCorbeille,
+        statut: true,
         approbationDG: data.approbationDG,
         signatureDG: data.signatureDG,
         signatureJustificationDG: data.signatureJustificationDG,

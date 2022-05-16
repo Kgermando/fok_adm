@@ -44,6 +44,7 @@ class _TableBonLivraisonState extends State<TableBonLivraison> {
       onLoaded: (PlutoGridOnLoadedEvent event) {
         stateManager = event.stateManager;
         stateManager!.setShowColumnFilter(true);
+        stateManager!.notifyListeners();
       },
       createHeader: (PlutoGridStateManager header) {
         return Row(
@@ -225,9 +226,14 @@ class _TableBonLivraisonState extends State<TableBonLivraison> {
           rows.add(PlutoRow(cells: {
             'id': PlutoCell(value: item.id),
             'idProduct': PlutoCell(value: item.idProduct),
-            'quantityAchat': PlutoCell(value: "${item.quantityAchat} ${item.unite}"),
-            'priceAchatUnit': PlutoCell(value: '${NumberFormat.decimalPattern('fr').format(double.parse(item.priceAchatUnit))} \$'),
-            'prixVenteUnit': PlutoCell(value: '${NumberFormat.decimalPattern('fr').format(double.parse(item.prixVenteUnit))} \$'),
+            'quantityAchat':
+                PlutoCell(value: "${item.quantityAchat} ${item.unite}"),
+            'priceAchatUnit': PlutoCell(
+                value:
+                    '${NumberFormat.decimalPattern('fr').format(double.parse(item.priceAchatUnit))} \$'),
+            'prixVenteUnit': PlutoCell(
+                value:
+                    '${NumberFormat.decimalPattern('fr').format(double.parse(item.prixVenteUnit))} \$'),
             'tva': PlutoCell(value: "${item.tva} %"),
             'remise': PlutoCell(value: item.remise),
             'qtyRemise': PlutoCell(value: item.qtyRemise),

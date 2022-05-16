@@ -1,21 +1,21 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:fokad_admin/src/api/comptabilite/balance_compte_api.dart';
-import 'package:fokad_admin/src/models/comptabilites/balance_comptes_model.dart';
-import 'package:fokad_admin/src/pages/comptabilite/balance/components/detail_balance.dart';
+import 'package:fokad_admin/src/api/comptabilite/bilan_api.dart';
+import 'package:fokad_admin/src/models/comptabilites/bilan_model.dart';
+import 'package:fokad_admin/src/pages/comptabilite/bilan/components/detail_bilan.dart';
 import 'package:fokad_admin/src/utils/class_implemented.dart';
 import 'package:intl/intl.dart';
 import 'package:pluto_grid/pluto_grid.dart';
 
-class TableBalanceCompteDD extends StatefulWidget {
-  const TableBalanceCompteDD({ Key? key }) : super(key: key);
+class TableCompteBilanDD extends StatefulWidget {
+  const TableCompteBilanDD({Key? key}) : super(key: key);
 
   @override
-  State<TableBalanceCompteDD> createState() => _TableBalanceCompteDDState();
+  State<TableCompteBilanDD> createState() => _TableCompteDDState();
 }
 
-class _TableBalanceCompteDDState extends State<TableBalanceCompteDD> {
+class _TableCompteDDState extends State<TableCompteBilanDD> {
   List<PlutoColumn> columns = [];
   List<PlutoRow> rows = [];
   PlutoGridStateManager? stateManager;
@@ -46,11 +46,12 @@ class _TableBalanceCompteDDState extends State<TableBalanceCompteDD> {
           final idPlutoRow = dataList.elementAt(0);
 
           Navigator.of(context).push(MaterialPageRoute(
-              builder: (context) => DetailBalance(id: idPlutoRow.value)));
+              builder: (context) => DetailBilan(id: idPlutoRow.value)));
         },
         onLoaded: (PlutoGridOnLoadedEvent event) {
           stateManager = event.stateManager;
           stateManager!.setShowColumnFilter(true);
+          stateManager!.notifyListeners();
         },
         configuration: PlutoGridConfiguration(
           columnFilterConfig: PlutoGridColumnFilterConfig(
@@ -62,7 +63,7 @@ class _TableBalanceCompteDDState extends State<TableBalanceCompteDD> {
             resolveDefaultColumnFilter: (column, resolver) {
               if (column.field == 'id') {
                 return resolver<ClassFilterImplemented>() as PlutoFilterType;
-              } else if (column.field == 'title') {
+              } else if (column.field == 'titleBilan') {
                 return resolver<ClassFilterImplemented>() as PlutoFilterType;
               } else if (column.field == 'signature') {
                 return resolver<ClassFilterImplemented>() as PlutoFilterType;
@@ -131,7 +132,7 @@ class _TableBalanceCompteDDState extends State<TableBalanceCompteDD> {
   }
 
   Future agentsRow() async {
-    List<BalanceCompteModel?> dataList = await BalanceCompteApi().getAllData();
+    List<BilanModel?> dataList = await BilanApi().getAllData();
     var data = dataList.where((element) => element!.approbationDD == "-");
 
     if (mounted) {
@@ -140,7 +141,7 @@ class _TableBalanceCompteDDState extends State<TableBalanceCompteDD> {
           id = item!.id;
           rows.add(PlutoRow(cells: {
             'id': PlutoCell(value: item.id),
-            'title': PlutoCell(value: item.title),
+            'titleBilan': PlutoCell(value: item.titleBilan),
             'signature': PlutoCell(value: item.signature),
             'created': PlutoCell(
                 value: DateFormat("dd-MM-yyyy HH:mm").format(item.created))

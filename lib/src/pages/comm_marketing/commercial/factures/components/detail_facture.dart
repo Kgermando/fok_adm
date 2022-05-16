@@ -240,6 +240,7 @@ class _DetailFactureState extends State<DetailFacture> {
           onLoaded: (PlutoGridOnLoadedEvent event) {
             stateManager = event.stateManager;
             stateManager!.setShowColumnFilter(true);
+            stateManager!.notifyListeners();
           },
           createHeader: (PlutoGridStateManager header) {
             return Row(

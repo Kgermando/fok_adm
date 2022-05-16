@@ -45,6 +45,7 @@ class _TableCarburantState extends State<TableCarburant> {
         onLoaded: (PlutoGridOnLoadedEvent event) {
           stateManager = event.stateManager;
           stateManager!.setShowColumnFilter(true);
+          stateManager!.notifyListeners();
         },
         createHeader: (PlutoGridStateManager header) {
           return Row(
@@ -61,34 +62,25 @@ class _TableCarburantState extends State<TableCarburant> {
             ],
             resolveDefaultColumnFilter: (column, resolver) {
               if (column.field == 'id') {
-                return resolver<ClassFilterImplemented>()
-                    as PlutoFilterType;
+                return resolver<ClassFilterImplemented>() as PlutoFilterType;
               } else if (column.field == 'qtyEntreSortie') {
-                return resolver<ClassFilterImplemented>()
-                    as PlutoFilterType;
+                return resolver<ClassFilterImplemented>() as PlutoFilterType;
               } else if (column.field == 'typeCaburant') {
                 return resolver<ClassFilterImplemented>() as PlutoFilterType;
               } else if (column.field == 'fournisseur') {
-                return resolver<ClassFilterImplemented>()
-                    as PlutoFilterType;
+                return resolver<ClassFilterImplemented>() as PlutoFilterType;
               } else if (column.field == 'nomeroFactureAchat') {
-                return resolver<ClassFilterImplemented>()
-                    as PlutoFilterType;
+                return resolver<ClassFilterImplemented>() as PlutoFilterType;
               } else if (column.field == 'prixAchatParLitre') {
-                return resolver<ClassFilterImplemented>()
-                    as PlutoFilterType;
+                return resolver<ClassFilterImplemented>() as PlutoFilterType;
               } else if (column.field == 'nomReceptioniste') {
-                return resolver<ClassFilterImplemented>()
-                    as PlutoFilterType;
+                return resolver<ClassFilterImplemented>() as PlutoFilterType;
               } else if (column.field == 'numeroPlaque') {
-                return resolver<ClassFilterImplemented>()
-                    as PlutoFilterType;
+                return resolver<ClassFilterImplemented>() as PlutoFilterType;
               } else if (column.field == 'dateHeureSortieAnguin') {
-                return resolver<ClassFilterImplemented>()
-                    as PlutoFilterType;
+                return resolver<ClassFilterImplemented>() as PlutoFilterType;
               } else if (column.field == 'created') {
-                return resolver<ClassFilterImplemented>()
-                    as PlutoFilterType;
+                return resolver<ClassFilterImplemented>() as PlutoFilterType;
               }
               return resolver<PlutoFilterTypeContains>() as PlutoFilterType;
             },

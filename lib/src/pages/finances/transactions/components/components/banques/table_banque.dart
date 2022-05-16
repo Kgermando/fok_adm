@@ -78,6 +78,7 @@ class _TableBanqueState extends State<TableBanque> {
             onLoaded: (PlutoGridOnLoadedEvent event) {
               stateManager = event.stateManager;
               stateManager!.setShowColumnFilter(true);
+              stateManager!.notifyListeners();
             },
             createHeader: (PlutoGridStateManager header) {
               return Row(
@@ -93,7 +94,10 @@ class _TableBanqueState extends State<TableBanque> {
                   ClassFilterImplemented(),
                 ],
                 resolveDefaultColumnFilter: (column, resolver) {
-                  if (column.field == 'nomComplet') {
+                  if (column.field == 'id') {
+                    return resolver<ClassFilterImplemented>()
+                        as PlutoFilterType;
+                  } else if (column.field == 'nomComplet') {
                     return resolver<ClassFilterImplemented>()
                         as PlutoFilterType;
                   } else if (column.field == 'pieceJustificative') {
@@ -103,12 +107,6 @@ class _TableBanqueState extends State<TableBanque> {
                     return resolver<ClassFilterImplemented>()
                         as PlutoFilterType;
                   } else if (column.field == 'montant') {
-                    return resolver<ClassFilterImplemented>()
-                        as PlutoFilterType;
-                  } else if (column.field == 'ligneBudgtaire') {
-                    return resolver<ClassFilterImplemented>()
-                        as PlutoFilterType;
-                  } else if (column.field == 'resources') {
                     return resolver<ClassFilterImplemented>()
                         as PlutoFilterType;
                   } else if (column.field == 'departement') {
@@ -250,30 +248,6 @@ class _TableBanqueState extends State<TableBanque> {
       ),
       PlutoColumn(
         readOnly: true,
-        title: 'Ligne budgtaire',
-        field: 'ligneBudgtaire',
-        type: PlutoColumnType.text(),
-        enableRowDrag: true,
-        enableContextMenu: false,
-        enableDropToResize: true,
-        titleTextAlign: PlutoColumnTextAlign.left,
-        width: 150,
-        minWidth: 150,
-      ),
-      PlutoColumn(
-        readOnly: true,
-        title: 'resources',
-        field: 'resources',
-        type: PlutoColumnType.text(),
-        enableRowDrag: true,
-        enableContextMenu: false,
-        enableDropToResize: true,
-        titleTextAlign: PlutoColumnTextAlign.left,
-        width: 150,
-        minWidth: 150,
-      ),
-      PlutoColumn(
-        readOnly: true,
         title: 'departement',
         field: 'departement',
         type: PlutoColumnType.text(),
@@ -339,8 +313,6 @@ class _TableBanqueState extends State<TableBanque> {
             'montant': PlutoCell(
                 value: NumberFormat.decimalPattern('fr')
                     .format(double.parse(item.montant))),
-            'ligneBudgtaire': PlutoCell(value: item.ligneBudgtaire),
-            'resources': PlutoCell(value: item.resources),
             'departement': PlutoCell(value: item.departement),
             'typeOperation': PlutoCell(value: item.typeOperation),
             'numeroOperation': PlutoCell(value: item.numeroOperation),

@@ -15,7 +15,8 @@ import 'package:intl/intl.dart';
 import 'package:pluto_grid/pluto_grid.dart';
 
 class TableGrandLivre extends StatefulWidget {
-  const TableGrandLivre({Key? key, required this.grandLivreModel}) : super(key: key);
+  const TableGrandLivre({Key? key, required this.grandLivreModel})
+      : super(key: key);
   final GrandLivreModel grandLivreModel;
 
   @override
@@ -56,9 +57,9 @@ class _TableGrandLivreState extends State<TableGrandLivre> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             if (Responsive.isDesktop(context))
-            const Expanded(
-              child: DrawerMenu(),
-            ),
+              const Expanded(
+                child: DrawerMenu(),
+              ),
             Expanded(
               flex: 5,
               child: Padding(
@@ -87,17 +88,20 @@ class _TableGrandLivreState extends State<TableGrandLivre> {
                       child: PlutoGrid(
                         columns: columns,
                         rows: rows,
-                        onRowDoubleTap: (PlutoGridOnRowDoubleTapEvent tapEvent) {
+                        onRowDoubleTap:
+                            (PlutoGridOnRowDoubleTapEvent tapEvent) {
                           final dataList = tapEvent.row!.cells.values;
                           final idPlutoRow = dataList.elementAt(0);
-                        
+
                           Navigator.of(context).push(MaterialPageRoute(
-                              builder: (context) => DetailJournal(id: idPlutoRow.value)));
+                              builder: (context) =>
+                                  DetailJournal(id: idPlutoRow.value)));
                         },
                         onLoaded: (PlutoGridOnLoadedEvent event) {
                           stateManager = event.stateManager;
                           stateManager!.notifyListeners();
                           stateManager!.setShowColumnFilter(true);
+                          stateManager!.notifyListeners();
                         },
                         createHeader: (PlutoGridStateManager header) {
                           return Row(
@@ -114,27 +118,38 @@ class _TableGrandLivreState extends State<TableGrandLivre> {
                             ],
                             resolveDefaultColumnFilter: (column, resolver) {
                               if (column.field == 'id') {
-                                return resolver<ClassFilterImplemented>() as PlutoFilterType;
+                                return resolver<ClassFilterImplemented>()
+                                    as PlutoFilterType;
                               } else if (column.field == 'numeroOperation') {
-                                return resolver<ClassFilterImplemented>() as PlutoFilterType;
+                                return resolver<ClassFilterImplemented>()
+                                    as PlutoFilterType;
                               } else if (column.field == 'libele') {
-                                return resolver<ClassFilterImplemented>() as PlutoFilterType;
+                                return resolver<ClassFilterImplemented>()
+                                    as PlutoFilterType;
                               } else if (column.field == 'compteDebit') {
-                                return resolver<ClassFilterImplemented>() as PlutoFilterType;
+                                return resolver<ClassFilterImplemented>()
+                                    as PlutoFilterType;
                               } else if (column.field == 'montantDebit') {
-                                return resolver<ClassFilterImplemented>() as PlutoFilterType;
+                                return resolver<ClassFilterImplemented>()
+                                    as PlutoFilterType;
                               } else if (column.field == 'compteCredit') {
-                                return resolver<ClassFilterImplemented>() as PlutoFilterType;
+                                return resolver<ClassFilterImplemented>()
+                                    as PlutoFilterType;
                               } else if (column.field == 'montantCredit') {
-                                return resolver<ClassFilterImplemented>() as PlutoFilterType;
+                                return resolver<ClassFilterImplemented>()
+                                    as PlutoFilterType;
                               } else if (column.field == 'remarque') {
-                                return resolver<ClassFilterImplemented>() as PlutoFilterType;
+                                return resolver<ClassFilterImplemented>()
+                                    as PlutoFilterType;
                               } else if (column.field == 'signature') {
-                                return resolver<ClassFilterImplemented>() as PlutoFilterType;
+                                return resolver<ClassFilterImplemented>()
+                                    as PlutoFilterType;
                               } else if (column.field == 'created') {
-                                return resolver<ClassFilterImplemented>() as PlutoFilterType;
+                                return resolver<ClassFilterImplemented>()
+                                    as PlutoFilterType;
                               }
-                              return resolver<PlutoFilterTypeContains>() as PlutoFilterType;
+                              return resolver<PlutoFilterTypeContains>()
+                                  as PlutoFilterType;
                             },
                           ),
                         ),
@@ -277,12 +292,13 @@ class _TableGrandLivreState extends State<TableGrandLivre> {
 
   Future agentsRow() async {
     List<JournalModel?> dataList = await JournalApi().getAllData();
-    var data = dataList.where((element) => element!.compteDebit == widget.grandLivreModel.comptedebit || 
-      element.compteCredit == widget.grandLivreModel.comptecredit || 
-      element.created.millisecondsSinceEpoch >= widget.grandLivreModel.dateStart.millisecondsSinceEpoch && 
-      element.created.millisecondsSinceEpoch <=
-                widget.grandLivreModel.dateEnd.millisecondsSinceEpoch
-    );
+    var data = dataList.where((element) =>
+        element!.compteDebit == widget.grandLivreModel.comptedebit ||
+        element.compteCredit == widget.grandLivreModel.comptecredit ||
+        element.created.millisecondsSinceEpoch >=
+                widget.grandLivreModel.dateStart.millisecondsSinceEpoch &&
+            element.created.millisecondsSinceEpoch <=
+                widget.grandLivreModel.dateEnd.millisecondsSinceEpoch);
 
     if (mounted) {
       setState(() {

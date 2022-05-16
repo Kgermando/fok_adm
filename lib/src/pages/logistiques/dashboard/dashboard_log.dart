@@ -203,7 +203,7 @@ class _DashboardLogState extends State<DashboardLog> {
                                   color: Colors.pink.shade700),
                                 DashNumberWidget(
                                   number: '$etatMaterielDeclaser',
-                                  title: 'Materiels déclaser ',
+                                  title: 'Materiels déclassés',
                                   icon: Icons.not_interested,
                                   color: Colors.red.shade700),
                               ],

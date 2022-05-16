@@ -10,7 +10,9 @@ import 'package:intl/intl.dart';
 import 'package:pluto_grid/pluto_grid.dart';
 
 class TableHistoryRavitaillementProduit extends StatefulWidget {
-  const TableHistoryRavitaillementProduit({Key? key, required this.stocksGlobalMOdel}) : super(key: key);
+  const TableHistoryRavitaillementProduit(
+      {Key? key, required this.stocksGlobalMOdel})
+      : super(key: key);
   final StocksGlobalMOdel stocksGlobalMOdel;
 
   @override
@@ -53,6 +55,7 @@ class _TableHistoryRavitaillementProduitState
         onLoaded: (PlutoGridOnLoadedEvent event) {
           stateManager = event.stateManager;
           stateManager!.setShowColumnFilter(true);
+          stateManager!.notifyListeners();
         },
         createHeader: (PlutoGridStateManager header) {
           return Row(
@@ -231,8 +234,9 @@ class _TableHistoryRavitaillementProduitState
     List<HistoryRavitaillementModel?> dataList =
         await HistoryRavitaillementApi().getAllData();
     var data = dataList
-        .where((element) => element!.succursale == user!.succursale && 
-          element.idProduct == widget.stocksGlobalMOdel.idProduct)
+        .where((element) =>
+            element!.succursale == user!.succursale &&
+            element.idProduct == widget.stocksGlobalMOdel.idProduct)
         .toSet()
         .toList();
 

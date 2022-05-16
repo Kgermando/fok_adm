@@ -32,7 +32,6 @@ class _TableCreanceFactState extends State<TableCreanceFact> {
     super.initState();
   }
 
-
   UserModel user = UserModel(
       nom: '-',
       prenom: '-',
@@ -69,6 +68,7 @@ class _TableCreanceFactState extends State<TableCreanceFact> {
       onLoaded: (PlutoGridOnLoadedEvent event) {
         stateManager = event.stateManager;
         stateManager!.setShowColumnFilter(true);
+        stateManager!.notifyListeners();
       },
       createHeader: (PlutoGridStateManager header) {
         return Row(
