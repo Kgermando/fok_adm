@@ -116,7 +116,7 @@ class _DetailMailState extends State<DetailMail> {
   Widget pageDetail(MailModel data) {
     return Row(mainAxisAlignment: MainAxisAlignment.center, children: [
       Card(
-        elevation: 10,
+        // elevation: 10,
         child: Container(
           margin: const EdgeInsets.all(p16),
           width: (Responsive.isDesktop(context))
@@ -132,13 +132,16 @@ class _DetailMailState extends State<DetailMail> {
           child: Column(
             children: [
               const SizedBox(height: p20),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  SelectableText(
-                      timeago.format(data.dateSend, locale: 'fr_short'),
-                      textAlign: TextAlign.start),
-                ],
+              Padding(
+                padding: const EdgeInsets.all(p8),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    SelectableText(
+                        timeago.format(data.dateSend, locale: 'fr_short'),
+                        textAlign: TextAlign.start),
+                  ],
+                ),
               ),
               dataWidget(data)
             ],
@@ -173,31 +176,45 @@ class _DetailMailState extends State<DetailMail> {
             title: AutoSizeText(data.objet,
                 style: bodyMedium!.copyWith(fontWeight: FontWeight.bold)),
             subtitle: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text((data.email == user.email) ? "Ä moi." : ""),
+                if(data.email == user.email)
+                Row(
+                  children: [
+                    AutoSizeText("à:".toUpperCase()),
+                    const AutoSizeText("moi."),
+                  ],
+                ),
                 SizedBox(
-                  width: 150,
+                  width: 500,
                   child: ExpansionTile(
-                    title: const Text("Voir plus"),
+                    title: const Text("Voir plus", textAlign: TextAlign.end),
                     children: [
                       Row(
                         children: [
                           const AutoSizeText("De:"),
+                          const SizedBox(width: p10),
                           AutoSizeText(data.emailDest, style: bodySmall),
-                          AutoSizeText(data.fullNameDest, style: bodySmall!.copyWith(fontWeight: FontWeight.w500)),
+                          const SizedBox(width: p10),
+                          AutoSizeText(data.fullNameDest, style: bodySmall!.copyWith(fontWeight: FontWeight.w600)),
                         ],
                       ),
+                      
                       Row(
                         children: [
                           AutoSizeText("à:".toUpperCase()),
+                          const SizedBox(width: p10),
                           AutoSizeText(data.email, style: bodySmall),
+                          const SizedBox(width: p10),
                           AutoSizeText(data.fullName,
-                            style: bodySmall.copyWith(fontWeight: FontWeight.w500)),
+                            style: bodySmall.copyWith(fontWeight: FontWeight.w600)),
                         ],
                       ),
+                      const SizedBox(width: p10),
                       Row(
                         children: [
                           const Text("Date:"),
+                          const SizedBox(width: p10),
                           SelectableText(
                             DateFormat("dd-MM-yyyy HH:mm")
                                 .format(data.dateSend),
@@ -207,7 +224,8 @@ class _DetailMailState extends State<DetailMail> {
                       ),
                       Row(
                         children: [
-                          Icon(Icons.lock, color: Colors.green.shade700),
+                          Icon(Icons.lock, size: 15.0, color: Colors.green.shade700),
+                          const SizedBox(width: p10),
                           Text("Chiffrement Standard (TLS).", style:bodySmall.copyWith(color: Colors.green.shade700))
                         ],
                       )
@@ -217,9 +235,15 @@ class _DetailMailState extends State<DetailMail> {
               ],
             ),
           ),
+          Divider(color: Colors.amber.shade700),
           const SizedBox(height: p20),
-          SelectableText(data.message,
-              textAlign: TextAlign.start, style: bodyMedium)
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              SelectableText(data.message,
+                  textAlign: TextAlign.start, style: bodyMedium),
+            ],
+          )
         ],
       ),
     );

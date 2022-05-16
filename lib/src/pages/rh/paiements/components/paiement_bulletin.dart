@@ -1246,7 +1246,7 @@ class _PaiementBulletinState extends State<PaiementBulletin> {
     );
   }
 
-   Widget infosEditeurWidget(PaiementSalaireModel data) {
+  Widget infosEditeurWidget(PaiementSalaireModel data) {
     final bodyMedium = Theme.of(context).textTheme.bodyLarge;
     final bodySmall = Theme.of(context).textTheme.bodyMedium;
     List<String> dataList = ['Approved', 'Unapproved', '-'];
@@ -1285,12 +1285,12 @@ class _PaiementBulletinState extends State<PaiementBulletin> {
                                 style: bodySmall!
                                     .copyWith(color: Colors.red.shade700),
                               ),
-                              if (data.approbationDG != '-')
-                                SelectableText(
-                                  data.approbationDG.toString(),
-                                  style: bodyMedium.copyWith(
-                                      color: Colors.red.shade700),
-                                ),
+                              if(user!.fonctionOccupe != 'Directeur générale')  // Permet aux non dg de voir l'approbation
+                              SelectableText(
+                                data.approbationDG.toString(),
+                                style: bodyMedium.copyWith(
+                                    color: Colors.red.shade700),
+                              ), 
                               if (data.approbationDG == '-' &&
                                   user!.fonctionOccupe == 'Directeur générale')
                                 Container(
@@ -1381,6 +1381,16 @@ class _PaiementBulletinState extends State<PaiementBulletin> {
                 ),
               ],
             ),
+
+
+
+
+
+
+
+
+
+
             Divider(
               color: Colors.amber.shade700,
             ),
