@@ -9,10 +9,23 @@ import 'package:fokad_admin/src/models/mail/mail_model.dart';
 import 'package:fokad_admin/src/models/users/user_model.dart';
 import 'package:fokad_admin/src/navigation/drawer/drawer_menu.dart';
 import 'package:fokad_admin/src/navigation/header/custom_appbar.dart';
+import 'package:fokad_admin/src/pages/mails/components/detail_mail.dart';
 import 'package:fokad_admin/src/pages/mails/components/list_mails.dart';
-import 'package:fokad_admin/src/pages/mails/components/new_mail.dart';
 import 'package:fokad_admin/src/routes/routes.dart';
 import 'package:routemaster/routemaster.dart';
+
+final _lightColors = [
+  Colors.pinkAccent.shade700,
+  Colors.tealAccent.shade700,
+  Colors.amber.shade700,
+  Colors.lightGreen.shade700,
+  Colors.lightBlue.shade700,
+  Colors.orange.shade700,
+  Colors.brown.shade700,
+  Colors.grey.shade700,
+  Colors.blueGrey.shade700,
+];
+
 
 class MailPages extends StatefulWidget {
   const MailPages({Key? key}) : super(key: key);
@@ -35,7 +48,10 @@ class _MailPagesState extends State<MailPages> {
     UserModel userModel = await AuthApi().getUserId();
     var mails = await MailApi().getAllData();
     setState(() {
-      mailsList = mails.where((element) => element.email == userModel.email).toList();
+      mailsList =
+        mails.where((element) => 
+          element.email == userModel.email || 
+          element.cc.contains(userModel.email)).toList();
     });
   }
 
@@ -45,12 +61,7 @@ class _MailPagesState extends State<MailPages> {
         key: _key,
         drawer: const DrawerMenu(),
         floatingActionButton: FloatingActionButton(
-            child: Row(
-              children: const [
-                Icon(Icons.add),
-                Icon(Icons.car_rental),
-              ],
-            ),
+            child: const Icon(Icons.send),
             onPressed: () {
               Routemaster.of(context).push(MailRoutes.addMail);
             }),
@@ -74,14 +85,15 @@ class _MailPagesState extends State<MailPages> {
                           controllerMenu: () =>
                               _key.currentState!.openDrawer()),
                       Expanded(
-                          child: (mailsList.isEmpty)
-                              ? alertWidget()
-                              : ListView.builder(
-                                  itemCount: mailsList.length,
-                                  itemBuilder: (context, index) {
-                                    final mail = mailsList[index];
-                                    return pageWidget(mail);
-                                  }))
+                        child: ListView.builder(
+                          itemCount: mailsList.length,
+                          itemBuilder: (context, index) {
+                            final mail = mailsList[index];
+                            final color = _lightColors[index];
+                            return pageWidget(mail, color);
+                          }
+                        )
+                      )
                     ],
                   ),
                 ),
@@ -91,11 +103,12 @@ class _MailPagesState extends State<MailPages> {
         ));
   }
 
-  Widget pageWidget(MailModel mail) {
+  Widget pageWidget(MailModel mail, Color color) {
     return InkWell(
-      onTap: () {
-        Navigator.of(context).push(
-            MaterialPageRoute(builder: (context) => NewMail(mailModel: mail)));
+      onTap: () async {
+        await readMail(mail);
+        Navigator.of(context).push(MaterialPageRoute(
+            builder: (context) => DetailMail(mailModel: mail, color: color)));
       },
       child: Padding(
         padding: const EdgeInsets.all(p10),
@@ -105,7 +118,8 @@ class _MailPagesState extends State<MailPages> {
             cc: mail.cc,
             objet: mail.objet,
             read: mail.read,
-            dateSend: mail.dateSend),
+            dateSend: mail.dateSend,
+            color: color),
       ),
     );
   }
@@ -120,9 +134,24 @@ class _MailPagesState extends State<MailPages> {
           Text("En attente d'une connexion API sécurisée ...",
               style: headline6),
           // const CircularProgressIndicator(),
-
         ],
       ),
     );
+  }
+
+  Future<void> readMail(MailModel mail) async {
+    final mailModel = MailModel(
+        fullName: mail.fullName,
+        email: mail.email,
+        cc: mail.cc,
+        objet: mail.objet,
+        message: mail.message,
+        pieceJointe: mail.pieceJointe,
+        read: true,
+        fullNameDest: mail.fullNameDest,
+        emailDest: mail.emailDest,
+        dateSend: mail.dateSend,
+        dateRead: DateTime.now());
+    await MailApi().updateData(mail.id!, mailModel);
   }
 }

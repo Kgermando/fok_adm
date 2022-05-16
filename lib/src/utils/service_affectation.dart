@@ -11,7 +11,7 @@ class ServiceAffectation {
     'Administration',
     'Membre de FOKAD',
     'Consultant(e)',
-    'Sans pste occupé',
+    'Aucun poste occupé',
   ];
 
   List<String> rhDropdown = [

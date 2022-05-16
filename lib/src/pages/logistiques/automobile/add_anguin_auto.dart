@@ -79,7 +79,7 @@ class _AddAnguinAutoState extends State<AddAnguinAuto> {
     typeCaburantController.dispose();
     typeMoteurController.dispose();
 
-    super.dispose();
+    super.dispose(); 
   }
 
   @override
@@ -361,6 +361,7 @@ class _AddAnguinAutoState extends State<AddAnguinAuto> {
         ),
         value: genre,
         isExpanded: true,
+        validator: (value) => value == null ? "Select Genre" : null,
         items: genreDrop.map((String value) {
           return DropdownMenuItem<String>(
             value: value,

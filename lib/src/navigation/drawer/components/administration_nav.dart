@@ -20,6 +20,7 @@ import 'package:fokad_admin/src/api/logistiques/carburant_api.dart';
 import 'package:fokad_admin/src/api/logistiques/immobiler_api.dart';
 import 'package:fokad_admin/src/api/logistiques/mobilier_api.dart';
 import 'package:fokad_admin/src/api/rh/agents_api.dart';
+import 'package:fokad_admin/src/api/rh/paiement_salaire_api.dart';
 import 'package:fokad_admin/src/models/budgets/ligne_budgetaire_model.dart';
 import 'package:fokad_admin/src/models/rh/agent_model.dart';
 import 'package:fokad_admin/src/navigation/drawer/drawer_widget.dart';
@@ -39,13 +40,17 @@ class _AdministrationNavState extends State<AdministrationNav> {
   bool isOpenAdmin = false;
 
   int budgetCount = 0;
-  int financeCount = 0; // Rien à notifier
+  int financeCount = 0;
   int comptabiliteCount = 0;
-  int agentInactifs = 0;
+  int rhCount = 0;
   int exploitationCount = 0;
   int commMarketingCount = 0;
   int logistiqueCount = 0;
   int etatBesoinCount = 0;
+
+  // RH
+  int agentInactifs = 0;
+  int salaireCount = 0;
 
   // Finances
   int creanceCount = 0;
@@ -74,17 +79,17 @@ class _AdministrationNavState extends State<AdministrationNav> {
 
   @override
   void initState() {
-     getData();
+    getData();
     super.initState();
   }
 
   Future<void> getData() async {
     // Budgets
-    List<LigneBudgetaireModel?> dataLigneBudgetaireList =
-        await LIgneBudgetaireApi().getAllData();
+    var dataLigneBudgetaireList = await LIgneBudgetaireApi().getAllData();
 
     // RH
-    List<AgentModel> agents = await AgentsApi().getAllData();
+    var agents = await AgentsApi().getAllData();
+    var salaires = await PaiementSalaireApi().getAllData();
 
     // Finances
     var creances = await CreanceApi().getAllData();
@@ -117,21 +122,29 @@ class _AdministrationNavState extends State<AdministrationNav> {
       // Budgets
       budgetCount = dataLigneBudgetaireList
           .where((element) =>
-              element!.approbationBudget == "Approved" &&
+              element.approbationBudget == "Approved" &&
               element.approbationDG == "-")
           .length;
 
       // RH
       agentInactifs =
           agents.where((element) => element.statutAgent == false).length;
+      salaireCount = salaires
+          .where((element) =>
+              element.approbationBudget == "Approved" &&
+              element.observation == false &&
+              element.approbationDG == "-")
+          .length;
 
       // Finances
       creanceCount = creances
-          .where((element) => element.statutPaie == false &&  element.approbationDG == '-')
+          .where((element) =>
+              element.statutPaie == false && element.approbationDG == '-')
           .toList()
           .length;
       detteCount = dettes
-          .where((element) => element.statutPaie == false &&  element.approbationDG == '-')
+          .where((element) =>
+              element.statutPaie == false && element.approbationDG == '-')
           .toList()
           .length;
 
@@ -167,7 +180,8 @@ class _AdministrationNavState extends State<AdministrationNav> {
 
       // Comm & Marketing
       campaignCount = campaigns
-          .where((element) =>
+        .where((element) =>
+          element.approbationBudget == "Approved" &&
               element.approbationDD == "Approved" &&
               element.approbationDG == "-")
           .length;
@@ -219,6 +233,8 @@ class _AdministrationNavState extends State<AdministrationNav> {
     final bodyLarge = Theme.of(context).textTheme.bodyLarge;
     final bodyText1 = Theme.of(context).textTheme.bodyText1;
 
+    rhCount = agentInactifs + salaireCount;
+
     financeCount = creanceCount + detteCount;
 
     comptabiliteCount =
@@ -226,10 +242,8 @@ class _AdministrationNavState extends State<AdministrationNav> {
 
     commMarketingCount = campaignCount + succursaleCount + prodModelCount;
 
-    logistiqueCount = anguinsCount +
-        carburantCount +
-        immobiliersCount +
-        mobiliersCount;
+    logistiqueCount =
+        anguinsCount + carburantCount + immobiliersCount + mobiliersCount;
 
     return ExpansionTile(
       leading: const Icon(
@@ -313,15 +327,14 @@ class _AdministrationNavState extends State<AdministrationNav> {
             title: 'RH',
             style: bodyText1,
             badge: Badge(
-              showBadge: (agentInactifs >= 1) ? true : false,
+              showBadge: (rhCount >= 1) ? true : false,
               badgeColor: Colors.teal,
-              badgeContent: Text('$agentInactifs',
+              badgeContent: Text('$rhCount',
                   style: const TextStyle(fontSize: 10.0, color: Colors.white)),
               child: const Icon(Icons.notifications),
             ),
             onTap: () {
               Routemaster.of(context).replace(AdminRoutes.adminRH);
-              // Navigator.of(context).pop();
             }),
         DrawerWidget(
             selected: widget.pageCurrente == AdminRoutes.adminExploitation,

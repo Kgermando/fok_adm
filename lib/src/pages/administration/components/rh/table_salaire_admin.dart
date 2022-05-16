@@ -62,7 +62,9 @@ class _TableSalaireAdminState extends State<TableSalaireAdmin> {
               ClassFilterImplemented(),
             ],
             resolveDefaultColumnFilter: (column, resolver) {
-              if (column.field == 'prenom') {
+              if (column.field == 'id') {
+                return resolver<ClassFilterImplemented>() as PlutoFilterType;
+              } else if (column.field == 'prenom') {
                 return resolver<ClassFilterImplemented>() as PlutoFilterType;
               } else if (column.field == 'nom') {
                 return resolver<ClassFilterImplemented>() as PlutoFilterType;
@@ -192,8 +194,9 @@ class _TableSalaireAdminState extends State<TableSalaireAdmin> {
     List<PaiementSalaireModel?> dataList =
         await PaiementSalaireApi().getAllData();
     var data = dataList
-        .where((element) =>
-            element!.approbationDG == "-" && element.approbationFin != "-")
+        .where((element) => element!.approbationBudget == "Approved" &&
+          element.observation == false &&
+            element.approbationDG == "-" && element.approbationFin != "-")
         .toList();
 
     if (mounted) {

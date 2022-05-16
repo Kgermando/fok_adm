@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:fokad_admin/src/api/auth/auth_api.dart';
 import 'package:fokad_admin/src/api/comm_marketing/commerciale/cart_api.dart';
 import 'package:fokad_admin/src/api/exploitations/taches_api.dart';
+import 'package:fokad_admin/src/api/mails/mail_api.dart';
 import 'package:fokad_admin/src/constants/app_theme.dart';
 import 'package:fokad_admin/src/constants/responsive.dart';
 import 'package:fokad_admin/src/models/menu_item.dart';
@@ -33,6 +34,7 @@ class _CustomAppbarState extends State<CustomAppbar> {
 
   int tacheCount = 0;
   int cartCount = 0;
+  int mailsCount = 0;
 
   @override
   void initState() {
@@ -47,16 +49,23 @@ class _CustomAppbarState extends State<CustomAppbar> {
     UserModel userModel = await AuthApi().getUserId();
     var taches = await TachesApi().getAllData();
     var cartList = await CartApi().getAllData(userModel.matricule);
-
-    if(mounted) {
+    var mails = await MailApi().getAllData();
+    if (mounted) {
       setState(() {
-      tacheCount = taches
-          .where((element) =>
-              element.signatureResp == userModel.matricule &&
-              element.read == false) 
-          .length;
-      cartCount = cartList.length;
-    });
+        tacheCount = taches
+            .where((element) =>
+                element.signatureResp == userModel.matricule &&
+                element.read == false)
+            .length;
+        cartCount = cartList.length;
+
+        mailsCount = mails
+            .where((element) => element.read == false &&
+                element.email == userModel.email ||
+                element.read == false &&
+                element.cc.contains(userModel.email))
+            .length;
+      });
     }
   }
 
@@ -85,28 +94,29 @@ class _CustomAppbarState extends State<CustomAppbar> {
                     // print('photo ${userModel!.photo}');
                     final String firstLettter = userModel!.nom[0];
                     final String firstLettter2 = userModel.prenom[0];
-                    
+
                     return Row(
                       children: [
-                        if(userModel.departement == "Commercial et Marketing")
-                        IconButton(
-                            onPressed: () {
-                              Routemaster.of(context).replace(
+                        if (userModel.departement == "Commercial et Marketing")
+                          IconButton(
+                              onPressed: () {
+                                Routemaster.of(context).replace(
                                     ComMarketingRoutes.comMarketingcart);
-                            },
-                            icon: Badge(
-                              badgeContent: Text('$cartCount',
-                                  style: const TextStyle(
-                                      fontSize: 10.0, color: Colors.white)),
-                              child: const Icon(Icons.shopping_cart),
-                            )),
+                              },
+                              icon: Badge(
+                                badgeContent: Text('$cartCount',
+                                    style: const TextStyle(
+                                        fontSize: 10.0, color: Colors.white)),
+                                child: const Icon(Icons.shopping_cart),
+                              )),
                         IconButton(
                             onPressed: () {
                               Routemaster.of(context).replace(MailRoutes.mails);
                             },
                             icon: Badge(
-                              badgeContent: const Text('33',
-                                  style: TextStyle(
+                              showBadge: (mailsCount >= 1),
+                              badgeContent: Text('$mailsCount',
+                                  style: const TextStyle(
                                       fontSize: 10.0, color: Colors.white)),
                               child: const Icon(Icons.mail),
                             )),

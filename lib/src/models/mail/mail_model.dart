@@ -7,6 +7,8 @@ class MailModel {
   late String message;
   late String pieceJointe;
   late bool read;
+  late String fullNameDest;
+  late String emailDest;
   late DateTime dateSend;
   late DateTime dateRead;
 
@@ -19,6 +21,8 @@ class MailModel {
       required this.message,
       required this.pieceJointe,
       required this.read,
+      required this.fullNameDest,
+      required this.emailDest,
       required this.dateSend,
       required this.dateRead
   });
@@ -33,8 +37,10 @@ class MailModel {
         message: row[5],
         pieceJointe: row[6],
         read: row[7],
-        dateSend: row[8],
-        dateRead: row[9]
+        fullNameDest: row[8],
+        emailDest: row[9],
+        dateSend: row[10],
+        dateRead: row[11]
     );
   }
 
@@ -48,6 +54,8 @@ class MailModel {
       message: json['message'],
       pieceJointe: json['pieceJointe'],
       read: json['read'],
+      fullNameDest: json['fullNameDest'],
+      emailDest: json['emailDest'],
       dateSend: DateTime.parse(json['dateSend']),
       dateRead: DateTime.parse(json['dateRead'])
     );
@@ -63,6 +71,8 @@ class MailModel {
       'message': message,
       'pieceJointe': pieceJointe,
       'read': read,
+      'fullNameDest': fullNameDest,
+      'emailDest': emailDest,
       'dateSend': dateSend.toIso8601String(),
       'dateRead': dateRead.toIso8601String()
     };
