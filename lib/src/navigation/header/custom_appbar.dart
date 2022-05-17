@@ -38,10 +38,7 @@ class _CustomAppbarState extends State<CustomAppbar> {
 
   @override
   void initState() {
-    Timer.periodic(const Duration(milliseconds: 500), ((timer) {
-      getData();
-      timer.cancel();
-    }));
+    getData();
     super.initState();
   }
 
@@ -65,6 +62,8 @@ class _CustomAppbarState extends State<CustomAppbar> {
                 element.read == false &&
                 element.cc.contains(userModel.email))
             .length;
+
+            
       });
     }
   }

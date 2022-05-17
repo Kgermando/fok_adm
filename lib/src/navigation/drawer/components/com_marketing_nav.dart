@@ -23,7 +23,7 @@ class _ComMarketingState extends State<ComMarketing> {
     final bodyText2 = Theme.of(context).textTheme.bodyText2;
 
     return ExpansionTile(
-      leading: const Icon(Icons.fact_check, size: 30.0),
+      leading: const Icon(Icons.store, size: 30.0),
       title: AutoSizeText('Comm. & Marketing', maxLines: 1, style: bodyLarge),
       initiallyExpanded: false,
       onExpansionChanged: (val) {

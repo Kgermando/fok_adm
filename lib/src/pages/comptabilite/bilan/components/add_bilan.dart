@@ -56,11 +56,16 @@ class _AddBilanState extends State<AddBilan> {
   late int countActif;
   late int countPassif;
 
+  late String resultActif;
+  late String resultPassif;
+
   @override
   initState() {
     getData();
     countActif = 0;
     countPassif = 0;
+    resultActif = '';
+    resultPassif = '';
     _valuesActif = [];
     _valuesPassif = [];
     super.initState();
@@ -472,6 +477,29 @@ class _AddBilanState extends State<AddBilan> {
                         ))
                   ],
                 ),
+                if (countActif >= 1)
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      SizedBox(
+                        height: 50,
+                        // width: double.infinity,
+                        child: Card(
+                            elevation: 10,
+                            color: Colors.red.shade700,
+                            child: const Padding(
+                              padding: EdgeInsets.all(8.0),
+                              child: SelectableText(
+                                "Note: Ajoutez un champ en plus (+1) pour enregistrer le precedent",
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                  color: Colors.white,
+                                ),
+                              ),
+                            )),
+                      ),
+                    ],
+                  )
               ],
             );
           }),
@@ -645,6 +673,29 @@ class _AddBilanState extends State<AddBilan> {
                         ))
                   ],
                 ),
+                if (countPassif >= 1)
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      SizedBox(
+                        height: 50,
+                        // width: double.infinity,
+                        child: Card(
+                            elevation: 10,
+                            color: Colors.red.shade700,
+                            child: const Padding(
+                              padding: EdgeInsets.all(8.0),
+                              child: SelectableText(
+                                "Note: Ajoutez un champ en plus (+1) pour enregistrer le precedent",
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                  color: Colors.white,
+                                ),
+                              ),
+                            )),
+                      ),
+                    ],
+                  )
               ],
             );
           }),
@@ -672,6 +723,14 @@ class _AddBilanState extends State<AddBilan> {
       'montant': montant
     };
     _valuesActif.add(json);
+    setState(() {
+      resultActif = _prettyPrintActif(_valuesActif);
+    });
+  }
+
+  String _prettyPrintActif(jsonObject) {
+    var encoder = const JsonEncoder.withIndent('  ');
+    return encoder.convert(jsonObject);
   }
 
   onUpdatePassif(int key, String compte, String montant) {
@@ -695,6 +754,14 @@ class _AddBilanState extends State<AddBilan> {
       'montant': montant
     };
     _valuesPassif.add(json);
+    setState(() {
+      resultPassif = _prettyPrintPassif(_valuesPassif);
+    });
+  }
+
+  String _prettyPrintPassif(jsonObject) {
+    var encoder = const JsonEncoder.withIndent('  ');
+    return encoder.convert(jsonObject);
   }
 
   Future<void> submit() async {

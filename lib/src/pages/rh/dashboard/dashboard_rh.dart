@@ -2,11 +2,13 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:fokad_admin/src/api/rh/agents_api.dart';
+import 'package:fokad_admin/src/api/rh/paiement_salaire_api.dart';
 import 'package:fokad_admin/src/constants/app_theme.dart';
 import 'package:fokad_admin/src/constants/responsive.dart';
 import 'package:fokad_admin/src/navigation/drawer/drawer_menu.dart';
 import 'package:fokad_admin/src/navigation/header/custom_appbar.dart';
 import 'package:fokad_admin/src/pages/rh/dashboard/components/calendar_widget.dart';
+import 'package:fokad_admin/src/widgets/dash_number_budget_widget.dart';
 import 'package:fokad_admin/src/widgets/dash_number_widget.dart';
 import 'package:fokad_admin/src/pages/rh/dashboard/components/dash_pie_wdget.dart';
 
@@ -27,13 +29,11 @@ class _DashboardRhState extends State<DashboardRh> {
   int agentInactifCount = 0;
   int agentFemmeCount = 0;
   int agentHommeCount = 0;
+  int agentNonPaye = 0;
 
   @override
   void initState() {
-    timer = Timer.periodic(const Duration(milliseconds: 500), ((timer) {
-      getData();
-      timer.cancel();
-    }));
+    getData();
 
     super.initState();
   }
@@ -46,6 +46,8 @@ class _DashboardRhState extends State<DashboardRh> {
 
   Future<void> getData() async {
     var agents = await AgentsApi().getAllData();
+    var salaires = await PaiementSalaireApi().getAllData();
+
     setState(() {
       agentsCount = agents.length;
       agentActifCount =
@@ -56,11 +58,44 @@ class _DashboardRhState extends State<DashboardRh> {
           agents.where((element) => element.sexe == 'Femme').length;
       agentHommeCount =
           agents.where((element) => element.sexe == 'Homme').length;
+      agentNonPaye =
+          salaires.where((element) => element.observation == false && 
+            element.createdAt.month == DateTime.now().month &&
+              element.createdAt.year == DateTime.now().year).length;
     });
   }
 
   @override
   Widget build(BuildContext context) {
+    var isMonth = '';
+    final month = DateTime.now().month;
+
+    if (month == 1) {
+      isMonth = 'Janvier';
+    } else if(month == 2) {
+      isMonth = 'Fevrier';
+    } else if (month == 3) {
+      isMonth = 'Mars';
+    } else if (month == 4) {
+      isMonth = 'Avril';
+    } else if (month == 5) {
+      isMonth = 'Mai';
+    } else if (month == 6) {
+      isMonth = 'Juin';
+    } else if (month == 7) {
+      isMonth = 'Juillet';
+    } else if (month == 8) {
+      isMonth = 'Août';
+    } else if (month == 9) {
+      isMonth = 'Septembre';
+    } else if (month == 10) {
+      isMonth = 'Octobre';
+    } else if (month == 11) {
+      isMonth = 'Novembre';
+    } else if (month == 12) {
+      isMonth = 'Décembre';
+    }
+
     return Scaffold(
         // key: _key,
         drawer: const DrawerMenu(),
@@ -92,31 +127,36 @@ class _DashboardRhState extends State<DashboardRh> {
                             Wrap(
                               alignment: WrapAlignment.spaceEvenly,
                               children: [
-                                DashNumberWidget(
+                                DashNumberBudgetWidget(
                                     number: '$agentsCount',
                                     title: 'Total agents',
                                     icon: Icons.group,
                                     color: Colors.blue.shade700),
-                                DashNumberWidget(
+                                DashNumberBudgetWidget(
                                     number: '$agentActifCount',
-                                    title: 'Agent Actifs',
+                                    title: 'Agents Actifs',
                                     icon: Icons.person,
                                     color: Colors.green.shade700),
-                                DashNumberWidget(
+                                DashNumberBudgetWidget(
                                     number: '$agentInactifCount',
-                                    title: 'Agent inactifs',
+                                    title: 'Agents inactifs',
                                     icon: Icons.person_off,
                                     color: Colors.red.shade700),
-                                DashNumberWidget(
+                                DashNumberBudgetWidget(
                                     number: '$agentFemmeCount',
                                     title: 'Femmes',
                                     icon: Icons.female,
-                                    color: Colors.pink.shade700),
-                                DashNumberWidget(
+                                    color: Colors.purple.shade700),
+                                DashNumberBudgetWidget(
                                     number: '$agentHommeCount',
                                     title: 'Hommes',
                                     icon: Icons.male,
                                     color: Colors.grey.shade700),
+                                DashNumberBudgetWidget(
+                                    number: '$agentNonPaye',
+                                    title: 'Agents Non payés en $isMonth',
+                                    icon: Icons.monetization_on,
+                                    color: Colors.pink.shade700),
                               ],
                             ),
                             const SizedBox(height: p20),

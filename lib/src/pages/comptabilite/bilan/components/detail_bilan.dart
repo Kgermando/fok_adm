@@ -782,18 +782,19 @@ class _DetailBilanState extends State<DetailBilan> {
 
   Future<void> submitCorbeille(BilanModel data) async {
     final bilanModel = BilanModel(
-        titleBilan: data.titleBilan,
-        comptesActif: data.comptesActif,
-        comptesPactif: data.comptesPactif,
-        statut: true,
-        approbationDG: data.approbationDG,
-        signatureDG: data.signatureDG,
-        signatureJustificationDG: data.signatureJustificationDG,
-        approbationDD: data.approbationDD,
-        signatureDD: data.signatureDD,
-        signatureJustificationDD: data.signatureJustificationDD,
-        signature: data.signature,
-        created: data.created);
+      titleBilan: data.titleBilan,
+      comptesActif: data.comptesActif,
+      comptesPactif: data.comptesPactif,
+      statut: true,
+      approbationDG: data.approbationDG,
+      signatureDG: data.signatureDG,
+      signatureJustificationDG: data.signatureJustificationDG,
+      approbationDD: data.approbationDD,
+      signatureDD: data.signatureDD,
+      signatureJustificationDD: data.signatureJustificationDD,
+      signature: data.signature,
+      created: data.created
+    );
     await BilanApi().updateData(data.id!, bilanModel);
     Navigator.of(context).pop();
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(

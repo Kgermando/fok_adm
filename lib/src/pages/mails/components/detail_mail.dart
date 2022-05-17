@@ -181,7 +181,7 @@ class _DetailMailState extends State<DetailMail> {
                 if(data.email == user.email)
                 Row(
                   children: [
-                    AutoSizeText("à:".toUpperCase()),
+                    AutoSizeText("à".toUpperCase()),
                     const AutoSizeText("moi."),
                   ],
                 ),

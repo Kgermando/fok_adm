@@ -27,10 +27,7 @@ class _TableSalairesDDState extends State<TableSalairesDD> {
   @override
   initState() {
     agentsColumn();
-    Timer.periodic(const Duration(milliseconds: 500), ((timer) {
-      agentsRow();
-      timer.cancel();
-    }));
+    agentsRow();
     super.initState();
   }
 
@@ -67,7 +64,9 @@ class _TableSalairesDDState extends State<TableSalairesDD> {
               ClassFilterImplemented(),
             ],
             resolveDefaultColumnFilter: (column, resolver) {
-              if (column.field == 'prenom') {
+              if (column.field == 'id') {
+                return resolver<ClassFilterImplemented>() as PlutoFilterType;
+              } else if (column.field == 'prenom') {
                 return resolver<ClassFilterImplemented>() as PlutoFilterType;
               } else if (column.field == 'nom') {
                 return resolver<ClassFilterImplemented>() as PlutoFilterType;
@@ -117,7 +116,7 @@ class _TableSalairesDDState extends State<TableSalairesDD> {
         enableContextMenu: false,
         enableDropToResize: true,
         titleTextAlign: PlutoColumnTextAlign.left,
-        width: 150,
+        width: 200,
         minWidth: 150,
       ),
       PlutoColumn(
@@ -129,7 +128,7 @@ class _TableSalairesDDState extends State<TableSalairesDD> {
         enableContextMenu: false,
         enableDropToResize: true,
         titleTextAlign: PlutoColumnTextAlign.left,
-        width: 150,
+        width: 200,
         minWidth: 150,
       ),
       PlutoColumn(
@@ -141,7 +140,7 @@ class _TableSalairesDDState extends State<TableSalairesDD> {
         enableContextMenu: false,
         enableDropToResize: true,
         titleTextAlign: PlutoColumnTextAlign.left,
-        width: 150,
+        width: 200,
         minWidth: 150,
       ),
       PlutoColumn(
@@ -153,7 +152,7 @@ class _TableSalairesDDState extends State<TableSalairesDD> {
         enableContextMenu: false,
         enableDropToResize: true,
         titleTextAlign: PlutoColumnTextAlign.left,
-        width: 150,
+        width: 200,
         minWidth: 150,
       ),
       PlutoColumn(
@@ -165,7 +164,7 @@ class _TableSalairesDDState extends State<TableSalairesDD> {
         enableContextMenu: false,
         enableDropToResize: true,
         titleTextAlign: PlutoColumnTextAlign.left,
-        width: 150,
+        width: 200,
         minWidth: 150,
       ),
       PlutoColumn(
@@ -177,7 +176,7 @@ class _TableSalairesDDState extends State<TableSalairesDD> {
         enableContextMenu: false,
         enableDropToResize: true,
         titleTextAlign: PlutoColumnTextAlign.left,
-        width: 150,
+        width: 200,
         minWidth: 150,
       ),
       PlutoColumn(
@@ -189,19 +188,19 @@ class _TableSalairesDDState extends State<TableSalairesDD> {
         enableContextMenu: false,
         enableDropToResize: true,
         titleTextAlign: PlutoColumnTextAlign.left,
-        width: 150,
+        width: 200,
         minWidth: 150,
       ),
       PlutoColumn(
         readOnly: true,
-        title: 'created',
+        title: 'Date',
         field: 'createdAt',
         type: PlutoColumnType.date(),
         enableRowDrag: true,
         enableContextMenu: false,
         enableDropToResize: true,
         titleTextAlign: PlutoColumnTextAlign.left,
-        width: 150,
+        width: 200,
         minWidth: 150,
       ),
     ];
@@ -210,15 +209,20 @@ class _TableSalairesDDState extends State<TableSalairesDD> {
   Future agentsRow() async {
     List<PaiementSalaireModel?> dataList =
         await PaiementSalaireApi().getAllData();
-    var data =
-        dataList.where((element) => element!.approbationDD == "-").toList();
+    // var data =
+    //     dataList.where((element) => element!.approbationDG == "Approved" && element.observation == true).toList();
+
+    var data = dataList
+        .where((element) =>
+            element!.createdAt.month == DateTime.now().month &&
+            element.createdAt.year == DateTime.now().year)
+        .toList();
 
     if (mounted) {
       setState(() {
         for (var item in data) {
-          id = item!.id;
           rows.add(PlutoRow(cells: {
-            'id': PlutoCell(value: item.id),
+            'id': PlutoCell(value: item!.id),
             'prenom': PlutoCell(value: item.prenom),
             'nom': PlutoCell(value: item.nom),
             'matricule': PlutoCell(value: item.matricule),
@@ -231,10 +235,10 @@ class _TableSalairesDDState extends State<TableSalairesDD> {
                 value: (item.observation == true) ? "Payé" : "Non payé"),
             'modePaiement': PlutoCell(value: item.modePaiement),
             'createdAt': PlutoCell(
-                value: DateFormat("DD-MM-yy HH:mm").format(item.createdAt))
+                value: DateFormat("dd-MM-yyyy HH:mm").format(item.createdAt))
           }));
+          stateManager!.resetCurrentState();
         }
-        stateManager!.resetCurrentState();
       });
     }
   }

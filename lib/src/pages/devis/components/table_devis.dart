@@ -83,7 +83,9 @@ class _TableDevisState extends State<TableDevis> {
             ClassFilterImplemented(),
           ],
           resolveDefaultColumnFilter: (column, resolver) {
-            if (column.field == 'title') {
+            if (column.field == 'id') {
+              return resolver<ClassFilterImplemented>() as PlutoFilterType;
+            } else if (column.field == 'title') {
               return resolver<ClassFilterImplemented>() as PlutoFilterType;
             } else if (column.field == 'priority') {
               return resolver<ClassFilterImplemented>() as PlutoFilterType;

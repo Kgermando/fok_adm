@@ -1,13 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:fokad_admin/src/api/auth/auth_api.dart';
 import 'package:fokad_admin/src/api/finances/creance_api.dart';
+import 'package:fokad_admin/src/api/finances/creance_dette_api.dart';
 import 'package:fokad_admin/src/api/user/user_api.dart';
 import 'package:fokad_admin/src/constants/app_theme.dart';
 import 'package:fokad_admin/src/constants/responsive.dart';
+import 'package:fokad_admin/src/models/finances/creance_dette_model.dart';
 import 'package:fokad_admin/src/models/finances/creances_model.dart';
 import 'package:fokad_admin/src/models/users/user_model.dart';
 import 'package:fokad_admin/src/navigation/drawer/drawer_menu.dart';
 import 'package:fokad_admin/src/navigation/header/custom_appbar.dart';
+import 'package:fokad_admin/src/pages/finances/transactions/components/components/creance_dette/table_creance_dette.dart';
 import 'package:fokad_admin/src/widgets/print_widget.dart';
 import 'package:fokad_admin/src/widgets/title_widget.dart';
 import 'package:intl/intl.dart';
@@ -47,12 +51,28 @@ class _DetailCreanceState extends State<DetailCreance> {
   TextEditingController signatureJustificationDDController =
       TextEditingController();
 
+  final TextEditingController nomCompletController = TextEditingController();
+  final TextEditingController pieceJustificativeController =
+      TextEditingController();
+  final TextEditingController libelleController = TextEditingController();
+  final TextEditingController montantController = TextEditingController();
+
   @override
   initState() {
     getData();
     super.initState();
   }
 
+  @override
+  void dispose() {
+    nomCompletController.dispose();
+    pieceJustificativeController.dispose();
+    libelleController.dispose();
+    montantController.dispose();
+    super.dispose();
+  }
+
+  List<CreanceDetteModel> creanceDetteList = [];
   UserModel? user = UserModel(
       nom: '-',
       prenom: '-',
@@ -71,10 +91,13 @@ class _DetailCreanceState extends State<DetailCreance> {
   Future<void> getData() async {
     final dataUser = await UserApi().getAllData();
     UserModel userModel = await AuthApi().getUserId();
-    // CreanceModel data = await CreanceApi().getOneData(widget.id!);
+    var creanceDette = await CreanceDetteApi().getAllData();
     setState(() {
       userList = dataUser;
       user = userModel;
+      creanceDetteList = creanceDette
+          .where((element) => element.creanceDette == 'creances')
+          .toList();
     });
   }
 
@@ -83,6 +106,11 @@ class _DetailCreanceState extends State<DetailCreance> {
     return Scaffold(
         key: _key,
         drawer: const DrawerMenu(),
+        floatingActionButton: FloatingActionButton(
+            child: const Icon(Icons.add),
+            onPressed: () {
+              creanceButton();
+            }),
         body: SafeArea(
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -176,12 +204,64 @@ class _DetailCreanceState extends State<DetailCreance> {
                 ],
               ),
               dataWidget(creanceModel),
+              totalMontant(creanceModel),
+              const SizedBox(
+                  height: 300,
+                  child: TableCreanceDette(creanceDette: 'creances')),
               infosEditeurWidget(creanceModel)
             ],
           ),
         ),
       ),
     ]);
+  }
+
+  Widget totalMontant(CreanceModel data) {
+    final headline6 = Theme.of(context).textTheme.headline6;
+    double total = 0.0;
+    double totalCreanceDette = 0.0;
+
+    for (var item in creanceDetteList) {
+      totalCreanceDette += double.parse(item.montant);
+    }
+
+    total = double.parse(data.montant) - totalCreanceDette;
+
+    return Padding(
+      padding: const EdgeInsets.all(p10),
+      child: Column(
+        children: [
+          Row(
+            children: [
+              Expanded(
+                flex: 3,
+                child: Text("TOTAL RESTANT :",
+                    textAlign: TextAlign.start,
+                    style: headline6!.copyWith(fontWeight: FontWeight.bold)),
+              ),
+              Expanded(
+                flex: 1,
+                child: Container(
+                  decoration: BoxDecoration(
+                      border: Border(
+                    left: BorderSide(
+                      color: Colors.amber.shade700,
+                      width: 2,
+                    ),
+                  )),
+                  child: SelectableText(
+                      "${NumberFormat.decimalPattern('fr').format(total)} \$",
+                      textAlign: TextAlign.center,
+                      style: headline6.copyWith(
+                          fontWeight: FontWeight.bold,
+                          color: Colors.red.shade700)),
+                ),
+              )
+            ],
+          ),
+        ],
+      ),
+    );
   }
 
   Widget dataWidget(CreanceModel creanceModel) {
@@ -240,8 +320,10 @@ class _DetailCreanceState extends State<DetailCreance> {
                     style: bodyMedium.copyWith(fontWeight: FontWeight.bold)),
               ),
               Expanded(
-                child: SelectableText(creanceModel.montant,
-                    textAlign: TextAlign.start, style: bodyMedium),
+                child: SelectableText(
+                    "${NumberFormat.decimalPattern('fr').format(double.parse(creanceModel.montant))} \$",
+                    textAlign: TextAlign.start,
+                    style: bodyMedium),
               )
             ],
           ),
@@ -973,6 +1055,155 @@ class _DetailCreanceState extends State<DetailCreance> {
     Navigator.of(context).pop();
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
       content: const Text("Soumis avec succès!"),
+      backgroundColor: Colors.green[700],
+    ));
+  }
+
+  Widget creanceButton() {
+    return IconButton(
+      icon: Icon(Icons.monetization_on, color: Colors.blue.shade700),
+      tooltip: "Payement",
+      onPressed: () => showDialog<String>(
+        context: context,
+        builder: (BuildContext context) => AlertDialog(
+          title: const Text('Payement'),
+          content: Column(
+            children: [
+              Row(
+                children: [
+                  Expanded(child: nomCompletWidget()),
+                  Expanded(child: libelleWidget()),
+                ],
+              ),
+              Row(
+                children: [
+                  Expanded(child: pieceJustificativeWidget()),
+                  Expanded(child: montantWidget()),
+                ],
+              ),
+            ],
+          ),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(),
+              child: const Text('Annuler'),
+            ),
+            TextButton(
+              onPressed: () {
+                creanceDette();
+              },
+              child: const Text('OK'),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget nomCompletWidget() {
+    return Container(
+        margin: const EdgeInsets.only(bottom: p20),
+        child: TextFormField(
+          controller: nomCompletController,
+          decoration: InputDecoration(
+            border:
+                OutlineInputBorder(borderRadius: BorderRadius.circular(10.0)),
+            labelText: 'Nom complet',
+          ),
+          keyboardType: TextInputType.text,
+          validator: (value) => value != null && value.isEmpty
+              ? 'Ce champs est obligatoire.'
+              : null,
+          style: const TextStyle(),
+        ));
+  }
+
+  Widget pieceJustificativeWidget() {
+    return Container(
+        margin: const EdgeInsets.only(bottom: p20),
+        child: TextFormField(
+          controller: pieceJustificativeController,
+          decoration: InputDecoration(
+            border:
+                OutlineInputBorder(borderRadius: BorderRadius.circular(10.0)),
+            labelText: 'N° de la pièce justificative',
+          ),
+          keyboardType: TextInputType.text,
+          validator: (value) => value != null && value.isEmpty
+              ? 'Ce champs est obligatoire.'
+              : null,
+          style: const TextStyle(),
+        ));
+  }
+
+  Widget libelleWidget() {
+    return Container(
+        margin: const EdgeInsets.only(bottom: p20),
+        child: TextFormField(
+          controller: libelleController,
+          decoration: InputDecoration(
+            border:
+                OutlineInputBorder(borderRadius: BorderRadius.circular(10.0)),
+            labelText: 'Libellé',
+          ),
+          keyboardType: TextInputType.text,
+          validator: (value) => value != null && value.isEmpty
+              ? 'Ce champs est obligatoire.'
+              : null,
+          style: const TextStyle(),
+        ));
+  }
+
+  Widget montantWidget() {
+    final headline6 = Theme.of(context).textTheme.headline6;
+    return Container(
+        margin: const EdgeInsets.only(bottom: p20),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Expanded(
+              flex: 5,
+              child: TextFormField(
+                controller: montantController,
+                keyboardType: TextInputType.number,
+                inputFormatters: <TextInputFormatter>[
+                  FilteringTextInputFormatter.digitsOnly
+                ],
+                decoration: InputDecoration(
+                  border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10.0)),
+                  labelText: 'Montant',
+                ),
+                validator: (value) => value != null && value.isEmpty
+                    ? 'Ce champs est obligatoire.'
+                    : null,
+                style: const TextStyle(),
+              ),
+            ),
+            const SizedBox(width: p20),
+            Expanded(
+                flex: 1,
+                child: Text(
+                  "\$",
+                  style: headline6!,
+                ))
+          ],
+        ));
+  }
+
+  Future<void> creanceDette() async {
+    final creanceDetteModel = CreanceDetteModel(
+        nomComplet: nomCompletController.text,
+        pieceJustificative: pieceJustificativeController.text,
+        libelle: libelleController.text,
+        montant: montantController.text,
+        creanceDette: "creances",
+        signature: user!.matricule,
+        created: DateTime.now());
+    await CreanceDetteApi().insertData(creanceDetteModel);
+    Navigator.of(context).pop();
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      content: const Text("Payement effectué!"),
       backgroundColor: Colors.green[700],
     ));
   }

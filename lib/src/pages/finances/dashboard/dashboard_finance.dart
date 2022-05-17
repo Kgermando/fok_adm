@@ -5,6 +5,7 @@ import 'package:fokad_admin/src/api/devis/devis_api.dart';
 import 'package:fokad_admin/src/api/finances/banque_api.dart';
 import 'package:fokad_admin/src/api/finances/caisse_api.dart';
 import 'package:fokad_admin/src/api/finances/creance_api.dart';
+import 'package:fokad_admin/src/api/finances/creance_dette_api.dart';
 import 'package:fokad_admin/src/api/finances/dette_api.dart';
 import 'package:fokad_admin/src/api/finances/fin_exterieur_api.dart';
 import 'package:fokad_admin/src/constants/app_theme.dart';
@@ -47,13 +48,13 @@ class _DashboardFinanceState extends State<DashboardFinance> {
   double soldeCaisse = 0.0;
 
   // Creance
-  double payeCreance = 0.0;
   double nonPayesCreance = 0.0;
+  double creancePayement = 0.0;
   double soldeCreance = 0.0;
 
   // Dette
-  double payeDette = 0.0;
   double nonPayesDette = 0.0;
+  double detteRemboursement = 0.0;
   double soldeDette = 0.0;
 
   // FinanceExterieur
@@ -67,16 +68,16 @@ class _DashboardFinanceState extends State<DashboardFinance> {
 
   @override
   void initState() {
-   getData();
+    getData();
     super.initState();
   }
-
 
   Future<void> getData() async {
     List<BanqueModel?> dataBanqueList = await BanqueApi().getAllData();
     List<CaisseModel?> dataCaisseList = await CaisseApi().getAllData();
     List<CreanceModel?> dataCreanceList = await CreanceApi().getAllData();
     List<DetteModel?> dataDetteList = await DetteApi().getAllData();
+    var creanceDettes = await CreanceDetteApi().getAllData();
     var dataFinanceExterieurList = await FinExterieurApi().getAllData();
     var dataDevisList = await DevisAPi().getAllData();
 
@@ -109,31 +110,31 @@ class _DashboardFinanceState extends State<DashboardFinance> {
       }
 
       // Creance
-      List<CreanceModel?> payeCreanceList = dataCreanceList
-          .where((element) => element!.statutPaie == true)
-          .toList();
+      var creancePayementList =
+          creanceDettes.where((element) => element.creanceDette == 'creances');
+
       List<CreanceModel?> nonPayeCreanceList = dataCreanceList
-          .where((element) => element!.statutPaie == false)
+          .where((element) => element!.statutPaie == false &&
+              element.approbationDG == 'Approved')
           .toList();
-      for (var item in payeCreanceList) {
-        payeCreance += double.parse(item!.montant);
-      }
       for (var item in nonPayeCreanceList) {
         nonPayesCreance += double.parse(item!.montant);
       }
+      for (var item in creancePayementList) {
+        creancePayement += double.parse(item.montant);
+      }
 
       // Dette
-      List<DetteModel?> payeDetteList = dataDetteList
-          .where((element) => element!.statutPaie == true)
-          .toList();
+    var detteRemboursementList =
+          creanceDettes.where((element) => element.creanceDette == 'dettes');
       List<DetteModel?> nonPayeDetteList = dataDetteList
-          .where((element) => element!.statutPaie == false)
+          .where((element) => element!.statutPaie == false && element.approbationDG == 'Approved')
           .toList();
-      for (var item in payeDetteList) {
-        payeDette += double.parse(item!.montant);
-      }
       for (var item in nonPayeDetteList) {
         nonPayesDette += double.parse(item!.montant);
+      }
+      for (var item in detteRemboursementList) {
+        detteRemboursement += double.parse(item.montant);
       }
 
       // FinanceExterieur
@@ -152,8 +153,8 @@ class _DashboardFinanceState extends State<DashboardFinance> {
 
       soldeBanque = recetteBanque - depensesBanque;
       soldeCaisse = recetteCaisse - depensesCaisse;
-      soldeCreance = payeCreance - nonPayesCreance;
-      soldeDette = payeDette - nonPayesDette;
+      soldeCreance = nonPayesCreance - creancePayement;
+      soldeDette = nonPayesDette - detteRemboursement;
 
       disponible = soldeBanque + soldeCaisse + cumulFinanceExterieur;
     });
@@ -161,7 +162,6 @@ class _DashboardFinanceState extends State<DashboardFinance> {
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
         key: _key,
         drawer: const DrawerMenu(),
@@ -252,10 +252,8 @@ class _DashboardFinanceState extends State<DashboardFinance> {
                           Responsive.isDesktop(context)
                               ? Row(
                                   children: const [
-                                    Expanded(
-                                        child:  CourbeCaisseMounth()),
-                                    Expanded(
-                                        child: CourbeCaisseYear()),
+                                    Expanded(child: CourbeCaisseMounth()),
+                                    Expanded(child: CourbeCaisseYear()),
                                   ],
                                 )
                               : Column(
@@ -292,10 +290,8 @@ class _DashboardFinanceState extends State<DashboardFinance> {
                           Responsive.isDesktop(context)
                               ? Row(
                                   children: const [
-                                    Expanded(
-                                        child: DeviePieDepMounth()),
-                                    Expanded(
-                                        child: DeviePieDepYear()),
+                                    Expanded(child: DeviePieDepMounth()),
+                                    Expanded(child: DeviePieDepYear()),
                                   ],
                                 )
                               : Column(
@@ -307,7 +303,6 @@ class _DashboardFinanceState extends State<DashboardFinance> {
                                     DeviePieDepYear(),
                                   ],
                                 ),
-                         
                         ],
                       ))
                     ],
@@ -318,4 +313,4 @@ class _DashboardFinanceState extends State<DashboardFinance> {
           ),
         ));
   }
-} 
+}

@@ -62,6 +62,10 @@ var finExterieurUrl = Uri.parse("$mainUrl/finances/transactions/financements-ext
 var addfinExterieurUrl = Uri.parse(
     "$mainUrl/finances/transactions/financements-exterieur/insert-new-transaction-finExterieur");
 
+  
+var creacneDetteUrl = Uri.parse("$mainUrl/finances/creance-dettes/");
+var creacneDetteAddUrl = Uri.parse("$mainUrl/finances/creance-dettes/insert-new-creance-dette");
+
 
 // Comptabilité
 var bilansUrl = Uri.parse("$mainUrl/comptabilite/bilans/");

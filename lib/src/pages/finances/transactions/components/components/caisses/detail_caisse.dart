@@ -1063,4 +1063,5 @@ class _DetailCaisseState extends State<DetailCaisse> {
       backgroundColor: Colors.green[700],
     ));
   }
+  
 }

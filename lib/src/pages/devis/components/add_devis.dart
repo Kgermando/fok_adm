@@ -369,13 +369,6 @@ class _AddDevisState extends State<AddDevis> {
                                 labelText: '${index + 1}. Nombre',
                               ),
                               keyboardType: TextInputType.text,
-                              validator: (value) {
-                                if (value != null && value.isEmpty) {
-                                  return 'Ce champs est obligatoire';
-                                } else {
-                                  return null;
-                                }
-                              },
                               style: const TextStyle(),
                             ))),
                     const SizedBox(width: p10),
@@ -391,13 +384,6 @@ class _AddDevisState extends State<AddDevis> {
                                 labelText: '${index + 1}. Désignation',
                               ),
                               keyboardType: TextInputType.text,
-                              validator: (value) {
-                                if (value != null && value.isEmpty) {
-                                  return 'Ce champs est obligatoire';
-                                } else {
-                                  return null;
-                                }
-                              },
                             ))),
                     const SizedBox(width: p10),
                     Expanded(
@@ -415,17 +401,33 @@ class _AddDevisState extends State<AddDevis> {
                               inputFormatters: <TextInputFormatter>[
                                 FilteringTextInputFormatter.digitsOnly
                               ],
-                              validator: (value) {
-                                if (value != null && value.isEmpty) {
-                                  return 'Ce champs est obligatoire';
-                                } else {
-                                  return null;
-                                }
-                              },
                               style: const TextStyle(),
                             )))
                   ],
                 ),
+                if(count >= 1)
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    SizedBox(
+                      height: 50,
+                      // width: double.infinity,
+                      child: Card(
+                        elevation: 10,
+                        color: Colors.red.shade700,
+                        child: const Padding(
+                          padding: EdgeInsets.all(8.0),
+                          child: SelectableText(
+                            "Note: Ajoutez un champ en plus (+1) pour enregistrer le precedent",
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                              color: Colors.white,
+                          ),
+                      ),
+                        )),
+                    ),
+                  ],
+                )
               ],
             );
           }),

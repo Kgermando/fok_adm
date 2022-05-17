@@ -536,6 +536,29 @@ class _CaisseTransactionsState extends State<CaisseTransactions> {
                             )))
                   ],
                 ),
+                if (count >= 1)
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      SizedBox(
+                        height: 50,
+                        // width: double.infinity,
+                        child: Card(
+                            elevation: 10,
+                            color: Colors.red.shade700,
+                            child: const Padding(
+                              padding: EdgeInsets.all(8.0),
+                              child: SelectableText(
+                                "Note: Ajoutez un champ en plus (+1) pour enregistrer le precedent",
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                  color: Colors.white,
+                                ),
+                              ),
+                            )),
+                      ),
+                    ],
+                  )
               ],
             );
           }),

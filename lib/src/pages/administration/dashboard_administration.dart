@@ -12,6 +12,7 @@ import 'package:fokad_admin/src/api/exploitations/projets_api.dart';
 import 'package:fokad_admin/src/api/finances/banque_api.dart';
 import 'package:fokad_admin/src/api/finances/caisse_api.dart';
 import 'package:fokad_admin/src/api/finances/creance_api.dart';
+import 'package:fokad_admin/src/api/finances/creance_dette_api.dart';
 import 'package:fokad_admin/src/api/finances/dette_api.dart';
 import 'package:fokad_admin/src/api/finances/fin_exterieur_api.dart';
 import 'package:fokad_admin/src/api/rh/agents_api.dart';
@@ -74,11 +75,11 @@ class _DashboardAdministrationState extends State<DashboardAdministration> {
   double recetteCaisse = 0.0;
   double depensesCaisse = 0.0;
   double soldeCaisse = 0.0;
-  double payeCreance = 0.0;
   double nonPayesCreance = 0.0;
+  double creancePayement = 0.0;
   double soldeCreance = 0.0;
-  double payeDette = 0.0;
   double nonPayesDette = 0.0;
+  double detteRemboursement = 0.0;
   double soldeDette = 0.0;
   double cumulFinanceExterieur = 0.0;
 
@@ -122,6 +123,7 @@ class _DashboardAdministrationState extends State<DashboardAdministration> {
     var dataCaisseList = await CaisseApi().getAllData();
     var dataCreanceList = await CreanceApi().getAllData();
     var dataDetteList = await DetteApi().getAllData();
+    var creanceDettes = await CreanceDetteApi().getAllData();
     var dataFinanceExterieurList = await FinExterieurApi().getAllData();
     var dataDevisList = await DevisAPi().getAllData();
 
@@ -204,31 +206,35 @@ class _DashboardAdministrationState extends State<DashboardAdministration> {
         depensesCaisse += double.parse(item!.montant);
       }
 
-      // Creance
-      List<CreanceModel?> payeCreanceList = dataCreanceList
-          .where((element) => element.statutPaie == true)
-          .toList();
+       // Creance
+      var creancePayementList =
+          creanceDettes.where((element) => element.creanceDette == 'creances');
+
       List<CreanceModel?> nonPayeCreanceList = dataCreanceList
-          .where((element) => element.statutPaie == false)
+          .where((element) =>
+              element.statutPaie == false &&
+              element.approbationDG == 'Approved')
           .toList();
-      for (var item in payeCreanceList) {
-        payeCreance += double.parse(item!.montant);
-      }
       for (var item in nonPayeCreanceList) {
         nonPayesCreance += double.parse(item!.montant);
       }
+      for (var item in creancePayementList) {
+        creancePayement += double.parse(item.montant);
+      }
 
       // Dette
-      List<DetteModel?> payeDetteList =
-          dataDetteList.where((element) => element.statutPaie == true).toList();
+      var detteRemboursementList =
+          creanceDettes.where((element) => element.creanceDette == 'dettes');
       List<DetteModel?> nonPayeDetteList = dataDetteList
-          .where((element) => element.statutPaie == false)
+          .where((element) =>
+              element.statutPaie == false &&
+              element.approbationDG == 'Approved')
           .toList();
-      for (var item in payeDetteList) {
-        payeDette += double.parse(item!.montant);
-      }
       for (var item in nonPayeDetteList) {
         nonPayesDette += double.parse(item!.montant);
+      }
+      for (var item in detteRemboursementList) {
+        detteRemboursement += double.parse(item.montant);
       }
 
       // FinanceExterieur
@@ -247,8 +253,8 @@ class _DashboardAdministrationState extends State<DashboardAdministration> {
 
       soldeBanque = recetteBanque - depensesBanque;
       soldeCaisse = recetteCaisse - depensesCaisse;
-      soldeCreance = payeCreance - nonPayesCreance;
-      soldeDette = payeDette - nonPayesDette;
+      soldeCreance = nonPayesCreance - creancePayement;
+      soldeDette = nonPayesDette - detteRemboursement;
 
       disponible = soldeBanque + soldeCaisse + cumulFinanceExterieur;
     });

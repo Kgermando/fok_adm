@@ -1,25 +1,20 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
-import 'package:fokad_admin/src/api/exploitations/taches_api.dart';
-import 'package:fokad_admin/src/models/exploitations/projet_model.dart';
-import 'package:fokad_admin/src/models/exploitations/tache_model.dart';
-import 'package:fokad_admin/src/pages/exploitations/taches/components/detail_tache.dart';
-import 'package:fokad_admin/src/widgets/print_widget.dart';
-import 'package:fokad_admin/src/widgets/title_widget.dart';
+import 'package:fokad_admin/src/api/finances/creance_dette_api.dart';
+import 'package:fokad_admin/src/models/finances/creance_dette_model.dart';
 import 'package:fokad_admin/src/utils/class_implemented.dart';
+import 'package:fokad_admin/src/widgets/title_widget.dart';
 import 'package:intl/intl.dart';
 import 'package:pluto_grid/pluto_grid.dart';
 
-class TableTache extends StatefulWidget {
-  const TableTache({Key? key, required this.projetModel}) : super(key: key);
-  final ProjetModel projetModel;
+class TableCreanceDette extends StatefulWidget {
+  const TableCreanceDette({Key? key, required this.creanceDette}) : super(key: key);
+  final String creanceDette;
 
   @override
-  State<TableTache> createState() => _TableTacheState();
+  State<TableCreanceDette> createState() => _TableCreanceDetteState();
 }
 
-class _TableTacheState extends State<TableTache> {
+class _TableCreanceDetteState extends State<TableCreanceDette> {
   List<PlutoColumn> columns = [];
   List<PlutoRow> rows = [];
   PlutoGridStateManager? stateManager;
@@ -31,7 +26,6 @@ class _TableTacheState extends State<TableTache> {
   void initState() {
     agentsColumn();
     agentsRow();
-
     super.initState();
   }
 
@@ -40,13 +34,6 @@ class _TableTacheState extends State<TableTache> {
     return PlutoGrid(
       columns: columns,
       rows: rows,
-      onRowDoubleTap: (PlutoGridOnRowDoubleTapEvent tapEvent) {
-        final dataList = tapEvent.row!.cells.values;
-        final idPlutoRow = dataList.elementAt(0);
-
-        Navigator.of(context).push(MaterialPageRoute(
-            builder: (context) => DetailTache(id: idPlutoRow.value)));
-      },
       onLoaded: (PlutoGridOnLoadedEvent event) {
         stateManager = event.stateManager;
         stateManager!.setShowColumnFilter(true);
@@ -54,10 +41,10 @@ class _TableTacheState extends State<TableTache> {
       },
       createHeader: (PlutoGridStateManager header) {
         return Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            const TitleWidget(title: "Taches"),
-            PrintWidget(onPressed: () {})
+           TitleWidget(title: (widget.creanceDette == "creances") 
+            ? 'Payement' : "Remboursement"),
           ],
         );
       },
@@ -103,8 +90,8 @@ class _TableTacheState extends State<TableTache> {
       ),
       PlutoColumn(
         readOnly: true,
-        title: 'N° Tache',
-        field: 'numeroTache',
+        title: 'Nom Complet',
+        field: 'nomComplet',
         type: PlutoColumnType.text(),
         enableRowDrag: true,
         enableContextMenu: false,
@@ -115,8 +102,8 @@ class _TableTacheState extends State<TableTache> {
       ),
       PlutoColumn(
         readOnly: true,
-        title: 'Agent',
-        field: 'agent',
+        title: 'Pièce Justificative',
+        field: 'pieceJustificative',
         type: PlutoColumnType.text(),
         enableRowDrag: true,
         enableContextMenu: false,
@@ -127,8 +114,32 @@ class _TableTacheState extends State<TableTache> {
       ),
       PlutoColumn(
         readOnly: true,
-        title: 'Jalon',
-        field: 'jalon',
+        title: 'Libelle',
+        field: 'libelle',
+        type: PlutoColumnType.text(),
+        enableRowDrag: true,
+        enableContextMenu: false,
+        enableDropToResize: true,
+        titleTextAlign: PlutoColumnTextAlign.left,
+        width: 150,
+        minWidth: 150,
+      ),
+      PlutoColumn(
+        readOnly: true,
+        title: 'Montant',
+        field: 'montant',
+        type: PlutoColumnType.text(),
+        enableRowDrag: true,
+        enableContextMenu: false,
+        enableDropToResize: true,
+        titleTextAlign: PlutoColumnTextAlign.left,
+        width: 150,
+        minWidth: 150,
+      ),
+      PlutoColumn(
+        readOnly: true,
+        title: 'Signature',
+        field: 'signature',
         type: PlutoColumnType.text(),
         enableRowDrag: true,
         enableContextMenu: false,
@@ -153,9 +164,9 @@ class _TableTacheState extends State<TableTache> {
   }
 
   Future agentsRow() async {
-    List<TacheModel?> dataList = await TachesApi().getAllData();
+    List<CreanceDetteModel?> dataList = await CreanceDetteApi().getAllData();
     var data = dataList
-        .where((element) => element!.nomProjet == widget.projetModel.nomProjet);
+      .where((element) => element!.creanceDette == widget.creanceDette);
 
     if (mounted) {
       setState(() {
@@ -163,11 +174,13 @@ class _TableTacheState extends State<TableTache> {
           id = item!.id;
           rows.add(PlutoRow(cells: {
             'id': PlutoCell(value: item.id),
-            'numeroTache': PlutoCell(value: item.numeroTache),
-            'agent': PlutoCell(value: item.agent),
-            'jalon': PlutoCell(value: item.jalon),
+            'nomComplet': PlutoCell(value: item.nomComplet),
+            'pieceJustificative': PlutoCell(value: item.pieceJustificative),
+            'libelle': PlutoCell(value: item.libelle),
+            'montant': PlutoCell(value: item.montant),
+            'signature': PlutoCell(value: item.signature),
             'created': PlutoCell(
-                value: DateFormat("dd-MM-yy H:mm").format(item.created))
+                value: DateFormat("dd-MM-yyy HH:mm").format(item.created))
           }));
         }
         stateManager!.resetCurrentState();
