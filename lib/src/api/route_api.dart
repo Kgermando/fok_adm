@@ -1,6 +1,7 @@
 
 
-const String mainUrl = "http://192.168.43.230/api";
+// const String mainUrl = "http://192.168.43.230/api";
+const String mainUrl = "http://167.71.4.13/api";
 
 
 var refreshTokenUrl = Uri.parse("$mainUrl/auth/reloadToken");

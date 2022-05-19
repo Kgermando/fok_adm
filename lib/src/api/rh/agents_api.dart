@@ -14,7 +14,7 @@ class AgentsApi {
   final storage = const FlutterSecureStorage();
 
   Future<String?> getToken() async {
-    final data = await storage.read(key: "accessToken");
+    var data = await storage.read(key: "accessToken");
     return data;
   }
 
