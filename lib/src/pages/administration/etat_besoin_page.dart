@@ -24,7 +24,6 @@ class _EtatBesoinAdminState extends State<EtatBesoinAdmin> {
   @override
   void initState() {
     getData();
-
     super.initState();
   }
 

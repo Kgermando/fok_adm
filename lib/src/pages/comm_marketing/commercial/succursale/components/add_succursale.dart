@@ -82,7 +82,7 @@ class _AddSurrsaleState extends State<AddSurrsale> {
                                 icon: const Icon(Icons.arrow_back)),
                           ),
                           const SizedBox(
-                            height: p10,
+                            width: p10,
                           ),
                           Expanded(
                               flex: 5,

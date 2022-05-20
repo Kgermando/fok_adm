@@ -262,7 +262,7 @@ class _AddBalanceComptabiliteState extends State<AddBalanceComptabilite> {
                       children: [
                         if (index == index)
                           IconButton(
-                              tooltip: "Ajout",
+                              tooltip: "Ajout compte",
                               onPressed: () {
                                 setState(() {
                                   var comptes = "";
@@ -412,13 +412,13 @@ class _AddBalanceComptabiliteState extends State<AddBalanceComptabilite> {
                                       labelText: '${index + 1}. Débit \$',
                                     ),
                                     style: const TextStyle(),
-                                    validator: (value) {
-                                      if (value != null && value.isEmpty) {
-                                        return 'Ce champs est obligatoire';
-                                      } else {
-                                        return null;
-                                      }
-                                    },
+                                    // validator: (value) {
+                                    //   if (value != null && value.isEmpty) {
+                                    //     return 'Ce champs est obligatoire';
+                                    //   } else {
+                                    //     return null;
+                                    //   }
+                                    // },
                                   )),
                             ),
                             const SizedBox(width: p20),
@@ -440,13 +440,13 @@ class _AddBalanceComptabiliteState extends State<AddBalanceComptabilite> {
                                       labelText: '${index + 1}. Crédit \$',
                                     ),
                                     style: const TextStyle(),
-                                    validator: (value) {
-                                      if (value != null && value.isEmpty) {
-                                        return 'Ce champs est obligatoire';
-                                      } else {
-                                        return null;
-                                      }
-                                    },
+                                    // validator: (value) {
+                                    //   if (value != null && value.isEmpty) {
+                                    //     return 'Ce champs est obligatoire';
+                                    //   } else {
+                                    //     return null;
+                                    //   }
+                                    // },
                                   )),
                             ),
                           ],

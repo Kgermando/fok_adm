@@ -329,6 +329,14 @@ class _DetailDevisState extends State<DetailDevis> {
         stateManager = event.stateManager;
         stateManager!.notifyListeners();
       },
+      createHeader: (PlutoGridStateManager header) {
+        return Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: const [
+            TitleWidget(title: "Devis"),
+          ],
+        );
+      },
     );
   }
 
@@ -355,7 +363,7 @@ class _DetailDevisState extends State<DetailDevis> {
         enableContextMenu: false,
         enableDropToResize: true,
         titleTextAlign: PlutoColumnTextAlign.left,
-        width: 150,
+        width: 200,
         minWidth: 150,
       ),
       PlutoColumn(
@@ -367,7 +375,7 @@ class _DetailDevisState extends State<DetailDevis> {
         enableContextMenu: false,
         enableDropToResize: true,
         titleTextAlign: PlutoColumnTextAlign.left,
-        width: 150,
+        width: 300,
         minWidth: 150,
       ),
       PlutoColumn(
@@ -379,7 +387,7 @@ class _DetailDevisState extends State<DetailDevis> {
         enableContextMenu: false,
         enableDropToResize: true,
         titleTextAlign: PlutoColumnTextAlign.left,
-        width: 150,
+        width: 200,
         minWidth: 150,
       ),
     ];
@@ -400,6 +408,7 @@ class _DetailDevisState extends State<DetailDevis> {
             'frais': PlutoCell(value: item.frais)
           }));
           stateManager!.resetCurrentState();
+          stateManager!.notifyListeners();
         }
       });
     }

@@ -86,6 +86,8 @@ class _TableJournalState extends State<TableJournal> {
               return resolver<ClassFilterImplemented>() as PlutoFilterType;
             } else if (column.field == 'montantCredit') {
               return resolver<ClassFilterImplemented>() as PlutoFilterType;
+            } else if (column.field == 'tva') {
+              return resolver<ClassFilterImplemented>() as PlutoFilterType;
             } else if (column.field == 'remarque') {
               return resolver<ClassFilterImplemented>() as PlutoFilterType;
             } else if (column.field == 'signature') {
@@ -135,37 +137,61 @@ class _TableJournalState extends State<TableJournal> {
         enableContextMenu: false,
         enableDropToResize: true,
         titleTextAlign: PlutoColumnTextAlign.left,
-        width: 200,
+        width: 300,
         minWidth: 150,
       ),
       PlutoColumn(
         readOnly: true,
-        title: 'Debit',
+        title: 'Compte Debit',
         field: 'compteDebit',
         type: PlutoColumnType.text(),
         enableRowDrag: true,
         enableContextMenu: false,
         enableDropToResize: true,
         titleTextAlign: PlutoColumnTextAlign.left,
-        width: 250,
+        width: 300,
         minWidth: 150,
       ),
       PlutoColumn(
         readOnly: true,
-        title: 'Credit',
+        title: 'Montant Debit',
+        field: 'montantDebit',
+        type: PlutoColumnType.text(),
+        enableRowDrag: true,
+        enableContextMenu: false,
+        enableDropToResize: true,
+        titleTextAlign: PlutoColumnTextAlign.left,
+        width: 300,
+        minWidth: 150,
+      ),
+      PlutoColumn(
+        readOnly: true,
+        title: 'Compte Credit',
         field: 'compteCredit',
         type: PlutoColumnType.text(),
         enableRowDrag: true,
         enableContextMenu: false,
         enableDropToResize: true,
         titleTextAlign: PlutoColumnTextAlign.left,
-        width: 250,
+        width: 300,
         minWidth: 150,
       ),
       PlutoColumn(
         readOnly: true,
-        title: 'TVA',
+        title: 'Montant Credit',
         field: 'montantCredit',
+        type: PlutoColumnType.text(),
+        enableRowDrag: true,
+        enableContextMenu: false,
+        enableDropToResize: true,
+        titleTextAlign: PlutoColumnTextAlign.left,
+        width: 300,
+        minWidth: 100,
+      ),
+      PlutoColumn(
+        readOnly: true,
+        title: 'TVA',
+        field: 'tva',
         type: PlutoColumnType.text(),
         enableRowDrag: true,
         enableContextMenu: false,
@@ -173,18 +199,6 @@ class _TableJournalState extends State<TableJournal> {
         titleTextAlign: PlutoColumnTextAlign.left,
         width: 100,
         minWidth: 100,
-      ),
-      PlutoColumn(
-        readOnly: true,
-        title: 'montant',
-        field: 'montantDebit',
-        type: PlutoColumnType.text(),
-        enableRowDrag: true,
-        enableContextMenu: false,
-        enableDropToResize: true,
-        titleTextAlign: PlutoColumnTextAlign.left,
-        width: 150,
-        minWidth: 150,
       ),
       PlutoColumn(
         readOnly: true,
@@ -241,11 +255,14 @@ class _TableJournalState extends State<TableJournal> {
             'numeroOperation': PlutoCell(value: item.numeroOperation),
             'libele': PlutoCell(value: item.libele),
             'compteDebit': PlutoCell(value: item.compteDebit),
-            'compteCredit': PlutoCell(value: item.compteCredit),
-            'montantCredit': PlutoCell(value: "${item.montantCredit} %"), // TVA
             'montantDebit': PlutoCell(
                 value:
-                    "${NumberFormat.decimalPattern('fr').format(double.parse(item.montantDebit))} \$"), // Montant
+                    "${NumberFormat.decimalPattern('fr').format(double.parse(item.montantDebit))} \$"),
+            'compteCredit': PlutoCell(value: item.compteCredit),
+            'montantCredit': PlutoCell(
+                value:
+                    "${NumberFormat.decimalPattern('fr').format(double.parse(item.montantCredit))} \$"),
+            'tva': PlutoCell(value: "${item.tva} %"),
             'remarque': PlutoCell(value: item.remarque),
             'signature': PlutoCell(value: item.signature),
             'created': PlutoCell(

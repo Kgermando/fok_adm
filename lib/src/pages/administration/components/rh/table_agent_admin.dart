@@ -257,9 +257,9 @@ class _TableAgentAdminState extends State<TableAgentAdmin> {
     ];
   }
 
-  Future agentsRow() async {
-    List<AgentModel?> data = await AgentsApi().getAllData();
-    // var dataList = data.where((element) => element!.statutAgent == false).toList();
+  Future<void> agentsRow() async {
+    List<AgentModel?> dataList = await AgentsApi().getAllData();
+    var data = dataList.where((element) => element!.statutAgent == false).toList();
     if (mounted) {
       setState(() {
         for (var item in data) {

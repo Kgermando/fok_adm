@@ -39,9 +39,11 @@ class _CommMarketingAdminState extends State<CommMarketingAdmin> {
     List<SuccursaleModel> succursale = await SuccursaleApi().getAllData();
     setState(() {
       campaignCount =
-          campaign.where((element) => element.approbationDG == '-').length;
+          campaign.where((element) => element.approbationDD == 'Approved' && 
+          element.approbationDG == '-').length;
       succursaleCount =
-          succursale.where((element) => element.approbationDG == '-').length;
+          succursale.where((element) => element.approbationDD == 'Approved' && 
+        element.approbationDG == '-').length;
     });
   } 
 

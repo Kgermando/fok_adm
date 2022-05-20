@@ -61,6 +61,11 @@ import 'package:fokad_admin/src/pages/finances/dashboard/dashboard_finance.dart'
 import 'package:fokad_admin/src/pages/finances/dd_finance/departement_fin.dart';
 import 'package:fokad_admin/src/pages/finances/transactions/components/banque_transactions.dart';
 import 'package:fokad_admin/src/pages/finances/transactions/components/caisses_transactions.dart';
+import 'package:fokad_admin/src/pages/finances/transactions/components/components/banques/add_depot_banque.dart';
+import 'package:fokad_admin/src/pages/finances/transactions/components/components/banques/add_retrait_banque.dart';
+import 'package:fokad_admin/src/pages/finances/transactions/components/components/caisses/add_decaissement.dart';
+import 'package:fokad_admin/src/pages/finances/transactions/components/components/caisses/add_encaissement.dart';
+import 'package:fokad_admin/src/pages/finances/transactions/components/components/fin_exterieur/add_autre_fin.dart';
 import 'package:fokad_admin/src/pages/finances/transactions/components/creance_transactions.dart';
 import 'package:fokad_admin/src/pages/finances/transactions/components/dette_transcations.dart';
 import 'package:fokad_admin/src/pages/finances/transactions/components/fin_externe_transactions.dart';
@@ -156,11 +161,17 @@ class FinanceRoutes {
   static const financeDashboard = "/finance-dashboard";
   static const financeTransactions = "/finance-transactions";
   static const transactionsCaisse = "/transactions-caisse";
+  static const transactionsCaisseEncaissement = "/transactions-caisse-encaissement";
+  static const transactionsCaisseDecaissement = "/transactions-caisse-decaissement";
   static const transactionsBanque = "/transactions-banque";
+  static const transactionsBanqueRetrait = "/transactions-banque-retrait";
+  static const transactionsBanqueDepot = "/transactions-banque-depot";
   static const transactionsDettes = "/transactions-dettes";
   static const transactionsCreances = "/transactions-creances";
   static const transactionsFinancementExterne =
       "/transactions-financement-externe";
+  static const transactionsFinancementExterneAdd =
+      "/transactions-financement-externe-add";
   static const transactionsDepenses = "/transactions-depenses";
   static const finDD = "/fin-dd";
 }
@@ -320,14 +331,24 @@ class Routing {
             const MaterialPage(child: TransactionsFinance()),
         FinanceRoutes.transactionsBanque: (_) =>
             const MaterialPage(child: BanqueTransactions()),
+        FinanceRoutes.transactionsBanqueDepot: (_) =>
+            const MaterialPage(child: AddDepotBanque()),
+        FinanceRoutes.transactionsBanqueRetrait: (_) =>
+            const MaterialPage(child: AddRetratBanque()),
         FinanceRoutes.transactionsCaisse: (_) =>
             const MaterialPage(child: CaisseTransactions()),
+        FinanceRoutes.transactionsCaisseEncaissement: (_) =>
+            const MaterialPage(child: AddEncaissement()),
+        FinanceRoutes.transactionsCaisseDecaissement: (_) =>
+            const MaterialPage(child: AddDecaissement()),
         FinanceRoutes.transactionsCreances: (_) =>
             const MaterialPage(child: CreanceTransactions()),
         FinanceRoutes.transactionsDettes: (_) =>
             const MaterialPage(child: DetteTransactions()),
         FinanceRoutes.transactionsFinancementExterne: (_) =>
             const MaterialPage(child: FinExterneTransactions()),
+        FinanceRoutes.transactionsFinancementExterneAdd: (_) =>
+            const MaterialPage(child: AddAutreFin()),
         FinanceRoutes.finDD: (_) => const MaterialPage(child: DepartementFin()),
 
         // Comptabilite

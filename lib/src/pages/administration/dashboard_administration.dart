@@ -127,6 +127,7 @@ class _DashboardAdministrationState extends State<DashboardAdministration> {
     var dataFinanceExterieurList = await FinExterieurApi().getAllData();
     var dataDevisList = await DevisAPi().getAllData();
 
+  if (mounted) {
     setState(() {
       agentsCount = agents.length;
       agentActifCount =
@@ -258,6 +259,7 @@ class _DashboardAdministrationState extends State<DashboardAdministration> {
 
       disponible = soldeBanque + soldeCaisse + cumulFinanceExterieur;
     });
+  }
   }
 
   @override

@@ -12,6 +12,7 @@ import 'package:fokad_admin/src/models/users/user_model.dart';
 import 'package:fokad_admin/src/navigation/drawer/drawer_menu.dart';
 import 'package:fokad_admin/src/navigation/header/custom_appbar.dart';
 import 'package:fokad_admin/src/pages/finances/transactions/components/components/creance_dette/table_creance_dette.dart';
+import 'package:fokad_admin/src/widgets/btn_widget.dart';
 import 'package:fokad_admin/src/widgets/print_widget.dart';
 import 'package:fokad_admin/src/widgets/title_widget.dart';
 import 'package:intl/intl.dart';
@@ -28,6 +29,7 @@ class DetailDette extends StatefulWidget {
 class _DetailDetteState extends State<DetailDette> {
   final GlobalKey<ScaffoldState> _key = GlobalKey();
   final ScrollController _controllerScroll = ScrollController();
+  final _formKey = GlobalKey<FormState>();
   bool isLoading = false;
   List<UserModel> userList = [];
 
@@ -95,7 +97,8 @@ class _DetailDetteState extends State<DetailDette> {
       userList = dataUser;
       user = userModel;
       creanceDetteList = creanceDette
-        .where((element) => element.creanceDette == 'dettes').toList();
+          .where((element) => element.creanceDette == 'dettes')
+          .toList();
     });
   }
 
@@ -105,11 +108,10 @@ class _DetailDetteState extends State<DetailDette> {
         key: _key,
         drawer: const DrawerMenu(),
         floatingActionButton: FloatingActionButton(
-          child: const Icon(Icons.add),
-          onPressed: () {
-            creanceButton();
-          }
-        ),
+            child: const Icon(Icons.add),
+            onPressed: () {
+              dialongDettePayement();
+            }),
         body: SafeArea(
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -251,8 +253,9 @@ class _DetailDetteState extends State<DetailDette> {
                   child: SelectableText(
                       "${NumberFormat.decimalPattern('fr').format(total)} \$",
                       textAlign: TextAlign.center,
-                      style: headline6.copyWith(fontWeight: FontWeight.bold, 
-                        color: Colors.red.shade700)),
+                      style: headline6.copyWith(
+                          fontWeight: FontWeight.bold,
+                          color: Colors.red.shade700)),
                 ),
               )
             ],
@@ -1057,45 +1060,67 @@ class _DetailDetteState extends State<DetailDette> {
     ));
   }
 
-  Widget creanceButton() {
-    return IconButton(
-      icon: Icon(Icons.monetization_on, color: Colors.blue.shade700),
-      tooltip: "Payement",
-      onPressed: () => showDialog<String>(
+  dialongDettePayement() {
+    return showDialog(
         context: context,
-        builder: (BuildContext context) => AlertDialog(
-          title: const Text('Payement'),
-          content: Column(
-            children: [
-              Row(
-                children: [
-                  Expanded(child: nomCompletWidget()),
-                  Expanded(child: libelleWidget()),
-                ],
-              ),
-              Row(
-                children: [
-                  Expanded(child: pieceJustificativeWidget()),
-                  Expanded(child: montantWidget()),
-                ],
-              ),
-            ],
-          ),
-          actions: <Widget>[
-            TextButton(
-              onPressed: () => Navigator.of(context).pop(),
-              child: const Text('Annuler'),
-            ),
-            TextButton(
-              onPressed: () {
-                creanceDette();
-              },
-              child: const Text('OK'),
-            ),
-          ],
-        ),
-      ),
-    );
+        // barrierDismissible: false,
+        builder: (context) {
+          return StatefulBuilder(builder: (context, StateSetter setState) {
+            return Dialog(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(p8),
+                ),
+                backgroundColor: Colors.transparent,
+                child: Form(
+                  key: _formKey,
+                  child: Card(
+                    child: Padding(
+                      padding: const EdgeInsets.all(p16),
+                      child: SizedBox(
+                        width: Responsive.isDesktop(context)
+                            ? MediaQuery.of(context).size.width / 2
+                            : MediaQuery.of(context).size.width,
+                        child: ListView(
+                          children: [
+                            const TitleWidget(title: 'Ajout une Créance'),
+                            const SizedBox(
+                              height: p20,
+                            ),
+                            Row(
+                              children: [
+                                Expanded(child: nomCompletWidget()),
+                                const SizedBox(width: p20),
+                                Expanded(child: libelleWidget()),
+                              ],
+                            ),
+                            Row(
+                              children: [
+                                Expanded(child: pieceJustificativeWidget()),
+                                const SizedBox(width: p20),
+                                Expanded(child: montantWidget()),
+                              ],
+                            ),
+                            const SizedBox(
+                              height: p20,
+                            ),
+                            BtnWidget(
+                                title: 'Soumettre',
+                                isLoading: isLoading,
+                                press: () {
+                                  final form = _formKey.currentState!;
+                                  if (form.validate()) {
+                                    creanceDette();
+                                    form.reset();
+                                  }
+                                })
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                ));
+          });
+        });
   }
 
   Widget nomCompletWidget() {

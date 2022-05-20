@@ -26,7 +26,6 @@ final _lightColors = [
   Colors.blueGrey.shade700,
 ];
 
-
 class MailPages extends StatefulWidget {
   const MailPages({Key? key}) : super(key: key);
 
@@ -48,15 +47,17 @@ class _MailPagesState extends State<MailPages> {
     UserModel userModel = await AuthApi().getUserId();
     var mails = await MailApi().getAllData();
     setState(() {
-      mailsList =
-        mails.where((element) => 
-          element.email == userModel.email || 
-          element.cc.contains(userModel.email)).toList();
+      mailsList = mails
+          .where((element) =>
+              element.email == userModel.email ||
+              element.cc.contains(userModel.email))
+          .toList();
     });
   }
 
   @override
   Widget build(BuildContext context) {
+    final headline6 = Theme.of(context).textTheme.headline6;
     return Scaffold(
         key: _key,
         drawer: const DrawerMenu(),
@@ -84,16 +85,23 @@ class _MailPagesState extends State<MailPages> {
                           title: 'Mails',
                           controllerMenu: () =>
                               _key.currentState!.openDrawer()),
+                      if (mailsList.isEmpty)
+                        Center(
+                            child: SizedBox(
+                              height: 300,
+                              child: Text(
+                          "Vous n'avez pas aucun mail",
+                          style: headline6
+                        ),
+                            )),
                       Expanded(
-                        child: ListView.builder(
-                          itemCount: mailsList.length,
-                          itemBuilder: (context, index) {
-                            final mail = mailsList[index];
-                            final color = _lightColors[index];
-                            return pageWidget(mail, color);
-                          }
-                        )
-                      )
+                          child: ListView.builder(
+                              itemCount: mailsList.length,
+                              itemBuilder: (context, index) {
+                                final mail = mailsList[index];
+                                final color = _lightColors[index];
+                                return pageWidget(mail, color);
+                              }))
                     ],
                   ),
                 ),

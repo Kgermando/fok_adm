@@ -15,7 +15,6 @@ import 'package:fokad_admin/src/utils/dropdown.dart';
 import 'package:fokad_admin/src/utils/regex.dart';
 import 'package:fokad_admin/src/widgets/btn_widget.dart';
 
-
 class AddStockGlobal extends StatefulWidget {
   const AddStockGlobal({Key? key}) : super(key: key);
 
@@ -57,11 +56,13 @@ class _AddStockGlobalState extends State<AddStockGlobal> {
   Future<void> getData() async {
     UserModel userModel = await AuthApi().getUserId();
     var produitModel = await ProduitModelApi().getAllData();
+    var stockGlobal = await StockGlobalApi().getAllData();
     setState(() {
       signature = userModel.matricule;
       idProductDropdown = produitModel
           .where((element) => element.approbationDD == "Approved")
           .toList();
+      stocksGlobalList = stockGlobal;
     });
   }
 

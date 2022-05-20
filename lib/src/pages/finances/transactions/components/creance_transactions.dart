@@ -72,9 +72,7 @@ class _CreanceTransactionsState extends State<CreanceTransactions> {
             backgroundColor: Colors.purple.shade700,
             child: const Icon(Icons.add),
             onPressed: () {
-              setState(() {
-                transactionsDialogCreance();
-              });
+              transactionsDialogCreance();
             }),
         body: SafeArea(
           child: Row(

@@ -37,7 +37,7 @@ class _StockGlobalPageState extends State<StockGlobalPage> {
       departement: '-',
       servicesAffectation: '-',
       fonctionOccupe: '-',
-      role: '-',
+      role: '5',
       isOnline: false,
       createdAt: DateTime.now(),
       passwordHash: '-',

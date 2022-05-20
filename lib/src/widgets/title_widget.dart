@@ -14,7 +14,7 @@ class TitleWidget extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.only(left: p8),
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.start,
         children: [
           AutoSizeText(
             title,

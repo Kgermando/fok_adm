@@ -34,13 +34,8 @@ class _TableCaisseState extends State<TableCaisse> {
 
   @override
   initState() {
-    Timer.periodic(const Duration(milliseconds: 500), ((timer) {
-      setState(() {
-        getData();
-        agentsRow();
-      });
-      timer.cancel();
-    }));
+    getData();
+    agentsRow();
 
     agentsColumn();
     super.initState();
@@ -308,9 +303,8 @@ class _TableCaisseState extends State<TableCaisse> {
     if (mounted) {
       setState(() {
         for (var item in data) {
-          id = item!.id;
           rows.add(PlutoRow(cells: {
-            'id': PlutoCell(value: item.id),
+            'id': PlutoCell(value: item!.id),
             'nomComplet': PlutoCell(value: item.nomComplet),
             'pieceJustificative': PlutoCell(value: item.pieceJustificative),
             'libelle': PlutoCell(value: item.libelle),
@@ -321,7 +315,7 @@ class _TableCaisseState extends State<TableCaisse> {
             'typeOperation': PlutoCell(value: item.typeOperation),
             'numeroOperation': PlutoCell(value: item.numeroOperation),
             'created': PlutoCell(
-                value: DateFormat("DD-MM-yy H:mm").format(item.created))
+                value: DateFormat("dd-MM-yy HH:mm").format(item.created))
           }));
         }
         stateManager!.resetCurrentState();

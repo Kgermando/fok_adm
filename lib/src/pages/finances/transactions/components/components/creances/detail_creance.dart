@@ -12,6 +12,7 @@ import 'package:fokad_admin/src/models/users/user_model.dart';
 import 'package:fokad_admin/src/navigation/drawer/drawer_menu.dart';
 import 'package:fokad_admin/src/navigation/header/custom_appbar.dart';
 import 'package:fokad_admin/src/pages/finances/transactions/components/components/creance_dette/table_creance_dette.dart';
+import 'package:fokad_admin/src/widgets/btn_widget.dart';
 import 'package:fokad_admin/src/widgets/print_widget.dart';
 import 'package:fokad_admin/src/widgets/title_widget.dart';
 import 'package:intl/intl.dart';
@@ -28,6 +29,7 @@ class DetailCreance extends StatefulWidget {
 class _DetailCreanceState extends State<DetailCreance> {
   final GlobalKey<ScaffoldState> _key = GlobalKey();
   final ScrollController _controllerScroll = ScrollController();
+  final _formKey = GlobalKey<FormState>();
   bool isLoading = false;
   List<UserModel> userList = [];
 
@@ -107,9 +109,10 @@ class _DetailCreanceState extends State<DetailCreance> {
         key: _key,
         drawer: const DrawerMenu(),
         floatingActionButton: FloatingActionButton(
+            tooltip: 'Payement',
             child: const Icon(Icons.add),
             onPressed: () {
-              creanceButton();
+              dialongCreancePayement();
             }),
         body: SafeArea(
           child: Row(
@@ -188,9 +191,9 @@ class _DetailCreanceState extends State<DetailCreance> {
             controller: _controllerScroll,
             children: [
               Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                mainAxisAlignment: MainAxisAlignment.end,
                 children: [
-                  TitleWidget(title: creanceModel.libelle),
+                  // TitleWidget(title: creanceModel.libelle),
                   Column(
                     children: [
                       PrintWidget(
@@ -423,6 +426,69 @@ class _DetailCreanceState extends State<DetailCreance> {
       ),
       title: const Text("Confirmation de payement"),
     );
+  }
+
+  dialongCreancePayement() {
+    return showDialog(
+        context: context,
+        // barrierDismissible: false,
+        builder: (context) {
+          return StatefulBuilder(builder: (context, StateSetter setState) {
+            return Dialog(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(p8),
+                ),
+                backgroundColor: Colors.transparent,
+                child: Form(
+                  key: _formKey,
+                  child: Card(
+                    child: Padding(
+                      padding: const EdgeInsets.all(p16),
+                      child: SizedBox(
+                        width: Responsive.isDesktop(context)
+                            ? MediaQuery.of(context).size.width / 2
+                            : MediaQuery.of(context).size.width,
+                        child: ListView(
+                          children: [
+                            const TitleWidget(title: 'Ajout une Créance'),
+                            const SizedBox(
+                              height: p20,
+                            ),
+                            Row(
+                              children: [
+                                Expanded(child: nomCompletWidget()),
+                                const SizedBox(width: p20),
+                                Expanded(child: libelleWidget()),
+                              ],
+                            ),
+                            Row(
+                              children: [
+                                Expanded(child: pieceJustificativeWidget()),
+                                const SizedBox(width: p20),
+                                Expanded(child: montantWidget()),
+                              ],
+                            ),
+                            const SizedBox(
+                              height: p20,
+                            ),
+                            BtnWidget(
+                                title: 'Soumettre',
+                                isLoading: isLoading,
+                                press: () {
+                                  final form = _formKey.currentState!;
+                                  if (form.validate()) {
+                                    creanceDette();
+                                    form.reset();
+                                  }
+                                })
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                ));
+          });
+        });
   }
 
   Widget infosEditeurWidget(CreanceModel data) {
@@ -1057,47 +1123,6 @@ class _DetailCreanceState extends State<DetailCreance> {
       content: const Text("Soumis avec succès!"),
       backgroundColor: Colors.green[700],
     ));
-  }
-
-  Widget creanceButton() {
-    return IconButton(
-      icon: Icon(Icons.monetization_on, color: Colors.blue.shade700),
-      tooltip: "Payement",
-      onPressed: () => showDialog<String>(
-        context: context,
-        builder: (BuildContext context) => AlertDialog(
-          title: const Text('Payement'),
-          content: Column(
-            children: [
-              Row(
-                children: [
-                  Expanded(child: nomCompletWidget()),
-                  Expanded(child: libelleWidget()),
-                ],
-              ),
-              Row(
-                children: [
-                  Expanded(child: pieceJustificativeWidget()),
-                  Expanded(child: montantWidget()),
-                ],
-              ),
-            ],
-          ),
-          actions: <Widget>[
-            TextButton(
-              onPressed: () => Navigator.of(context).pop(),
-              child: const Text('Annuler'),
-            ),
-            TextButton(
-              onPressed: () {
-                creanceDette();
-              },
-              child: const Text('OK'),
-            ),
-          ],
-        ),
-      ),
-    );
   }
 
   Widget nomCompletWidget() {
