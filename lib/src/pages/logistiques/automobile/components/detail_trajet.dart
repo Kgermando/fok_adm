@@ -313,7 +313,7 @@ class _DetailTrajetState extends State<DetailTrajet> {
               ),
               Expanded(
                 flex: 3,
-                child: SelectableText(data.kilometrageSorite,
+                child: SelectableText("${data.kilometrageSorite} km/h",
                     textAlign: TextAlign.start, style: bodyMedium),
               )
             ],
@@ -331,7 +331,7 @@ class _DetailTrajetState extends State<DetailTrajet> {
               ),
               Expanded(
                 flex: 3,
-                child: SelectableText(data.kilometrageRetour,
+                child: SelectableText("${data.kilometrageRetour} km/h",
                     textAlign: TextAlign.start, style: bodyMedium),
               )
             ],
@@ -343,7 +343,7 @@ class _DetailTrajetState extends State<DetailTrajet> {
             children: [
               Expanded(
                 flex: 1,
-                child: Text('signature :',
+                child: Text('Signature :',
                     textAlign: TextAlign.start,
                     style: bodyMedium.copyWith(fontWeight: FontWeight.bold)),
               ),

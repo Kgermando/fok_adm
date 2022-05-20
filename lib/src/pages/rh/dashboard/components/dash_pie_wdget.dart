@@ -17,25 +17,18 @@ class _DashRHPieWidgetState extends State<DashRHPieWidget> {
 
   @override
   void initState() {
-    timer = Timer.periodic(const Duration(milliseconds: 500), ((timer) {
-      getData();
-    }));
-
+    getData();
     super.initState();
-  }
-
-  @override
-  dispose() {
-    timer!.cancel();
-    super.dispose();
   }
 
   List<AgentPieChartModel> dataList = [];
   Future<void> getData() async {
     var data = await AgentsApi().getChartPieSexe();
-    setState(() {
+    if(mounted) {
+      setState(() {
       dataList = data;
     });
+    }
   }
 
   @override

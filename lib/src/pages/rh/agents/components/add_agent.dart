@@ -550,13 +550,13 @@ class _AddAgentState extends State<AddAgent> {
           ),
           keyboardType: TextInputType.text,
           style: const TextStyle(),
-          validator: (value) {
-            if (value != null && value.isEmpty) {
-              return 'Ce champs est obligatoire';
-            } else {
-              return null;
-            }
-          },
+          // validator: (value) {
+          //   if (value != null && value.isEmpty) {
+          //     return 'Ce champs est obligatoire';
+          //   } else {
+          //     return null;
+          //   }
+          // },
         ));
   }
 
@@ -564,6 +564,7 @@ class _AddAgentState extends State<AddAgent> {
     return Container(
         margin: const EdgeInsets.only(bottom: p20),
         child: DateTimePicker(
+          initialEntryMode: DatePickerEntryMode.input,
           decoration: InputDecoration(
             prefixIcon: const Icon(Icons.date_range),
             border:
@@ -757,6 +758,7 @@ class _AddAgentState extends State<AddAgent> {
     return Container(
         margin: const EdgeInsets.only(bottom: p20),
         child: DateTimePicker(
+          initialEntryMode: DatePickerEntryMode.input,
           decoration: InputDecoration(
             prefixIcon: const Icon(Icons.date_range),
             border:
@@ -780,6 +782,7 @@ class _AddAgentState extends State<AddAgent> {
     return Container(
         margin: const EdgeInsets.only(bottom: p20),
         child: DateTimePicker(
+          initialEntryMode: DatePickerEntryMode.input,
           decoration: InputDecoration(
             prefixIcon: const Icon(Icons.date_range),
             border:

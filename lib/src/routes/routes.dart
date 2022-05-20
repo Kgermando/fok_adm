@@ -3,6 +3,7 @@ import 'package:fokad_admin/src/pages/administration/budgets_admin.dart';
 import 'package:fokad_admin/src/pages/administration/comm_marketing_admin.dart';
 import 'package:fokad_admin/src/pages/administration/comptes_admin.dart';
 import 'package:fokad_admin/src/pages/administration/dashboard_administration.dart';
+import 'package:fokad_admin/src/pages/administration/etat_besoin_page.dart';
 import 'package:fokad_admin/src/pages/administration/exploitations_admin.dart';
 import 'package:fokad_admin/src/pages/administration/finances_admin.dart';
 import 'package:fokad_admin/src/pages/administration/logistique_admin.dart';
@@ -125,6 +126,7 @@ class AdminRoutes {
   static const adminExploitation = "/admin-exploitations";
   static const adminCommMarketing = "/admin-commercial-marketing";
   static const adminLogistique = "/admin-logistiques";
+  static const adminEtatBesoin = "/admin-etat-besoin";
 }
 
 class RhRoutes {
@@ -281,6 +283,7 @@ class Routing {
             const MaterialPage(child: CommMarketingAdmin()),
         AdminRoutes.adminLogistique: (_) =>
             const MaterialPage(child: LogistiquesAdmin()),
+        AdminRoutes.adminEtatBesoin : (_) => const MaterialPage(child: EtatBesoinAdmin()),
 
         // RH
         RhRoutes.rhDashboard: (_) => const MaterialPage(child: DashboardRh()),

@@ -34,7 +34,7 @@ class _TrajetAutoState extends State<TrajetAuto> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      CustomAppbar(title: 'Geston des trajets',
+                      CustomAppbar(title: 'Gestion des trajets',
                           controllerMenu: () =>
                               _key.currentState!.openDrawer()),
                       const Expanded(child: TableTrajet())

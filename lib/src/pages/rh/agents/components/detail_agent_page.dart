@@ -187,13 +187,14 @@ class _AgentPageState extends State<AgentPage> {
                 builder: (context) => UpdateAgent(agentModel: agentModel)));
           },
         ),
+        if(int.parse(user!.role) <= 2)
         SpeedDialChild(
           child: const Icon(Icons.safety_divider, size: 15.0),
           foregroundColor: Colors.white,
           backgroundColor: Colors.red.shade700,
-          label: 'Changer le statut agent',
+          label: 'Activer agent',
           onPressed: () {
-            statutAgentWidget(agentModel);
+            agentStatutDialog(agentModel);
           },
         ),
         SpeedDialChild(
@@ -208,14 +209,6 @@ class _AgentPageState extends State<AgentPage> {
             }),
       ],
     );
-  }
-
-  Widget statutAgentWidget(AgentModel agentModel) {
-    return IconButton(
-        tooltip: 'Changer le statut agent',
-        onPressed: () => agentStatutDialog(agentModel),
-        color: Colors.red.shade700,
-        icon: const Icon(Icons.person));
   }
 
   Widget identiteWidget(AgentModel agentModel) {

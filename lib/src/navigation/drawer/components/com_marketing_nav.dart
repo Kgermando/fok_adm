@@ -283,15 +283,6 @@ class _ComMarketingState extends State<ComMarketing> {
           ],
         ),
         DrawerWidget(
-            selected: widget.pageCurrente == DevisRoutes.devis,
-            icon: Icons.note_alt,
-            sizeIcon: 20.0,
-            title: 'Etat de besoin',
-            style: bodyText1,
-            onTap: () {
-              Routemaster.of(context).replace(DevisRoutes.devis);
-            }),
-        DrawerWidget(
             selected: widget.pageCurrente == RhRoutes.rhPerformence,
             icon: Icons.multiline_chart_sharp,
             sizeIcon: 20.0,

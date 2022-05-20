@@ -170,7 +170,7 @@ class _LoginPageState extends State<LoginPage> {
                         passwordBuild(),
                         const SizedBox(height: p10),
                         loginButtonBuild(),
-                        const SizedBox(height: p10),
+                        // const SizedBox(height: p10),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [

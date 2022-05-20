@@ -152,14 +152,14 @@ class _DetailDepartmentBudgetState extends State<DetailDepartmentBudget> {
                                     const SizedBox(width: p10),
                                     Expanded(
                                       child: CustomAppbar(
-                                          title: departementBudgetModel!.title,
+                                          title: "Budget",
                                           controllerMenu: () =>
                                               _key.currentState!.openDrawer()),
                                     ),
                                   ],
                                 ),
                                 Expanded(
-                                    child: pageDetail(departementBudgetModel))
+                                    child: pageDetail(departementBudgetModel!))
                               ],
                             );
                           } else {
@@ -585,7 +585,7 @@ class _DetailDepartmentBudgetState extends State<DetailDepartmentBudget> {
           )),
             child: Column(
         children: [
-            const Text("Solde Caisse",
+            const Text("Caisse",
                 style: TextStyle(fontWeight: FontWeight.bold)),
             SelectableText(
                 "${NumberFormat.decimalPattern('fr').format(caisseSolde)} \$",
@@ -605,7 +605,7 @@ class _DetailDepartmentBudgetState extends State<DetailDepartmentBudget> {
         )),
         child: Column(
           children: [
-            const Text("Solde Banque",
+            const Text("Banque",
                 style: TextStyle(fontWeight: FontWeight.bold)),
             SelectableText(
                 "${NumberFormat.decimalPattern('fr').format(banqueSolde)} \$",
@@ -625,7 +625,7 @@ class _DetailDepartmentBudgetState extends State<DetailDepartmentBudget> {
         )),
         child: Column(
           children: [
-            const Text("Solde Fonds Propres",
+            const Text("Fonds Propres",
                 style: TextStyle(fontWeight: FontWeight.bold)),
             SelectableText(
                 "${NumberFormat.decimalPattern('fr').format(finPropreSolde)} \$",
@@ -645,7 +645,7 @@ class _DetailDepartmentBudgetState extends State<DetailDepartmentBudget> {
         )),
         child: Column(
           children: [
-            const Text("Solde Reste à trouver",
+            const Text("Reste à trouver",
                 style: TextStyle(fontWeight: FontWeight.bold)),
             SelectableText(
                 "${NumberFormat.decimalPattern('fr').format(finExterieurSolde)} \$",

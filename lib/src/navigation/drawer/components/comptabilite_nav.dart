@@ -117,16 +117,6 @@ class _ComptabiliteNavState extends State<ComptabiliteNav> {
               // Navigator.of(context).pop();
             }),
         DrawerWidget(
-            selected: widget.pageCurrente == DevisRoutes.devis,
-            icon: Icons.note_alt,
-            sizeIcon: 20.0,
-            title: 'Etat de besoin',
-            style: bodyText1,
-            onTap: () {
-              Routemaster.of(context).replace(DevisRoutes.devis);
-              // Navigator.of(context).pop();
-            }),
-        DrawerWidget(
             selected: widget.pageCurrente == RhRoutes.rhPerformence,
             icon: Icons.multiline_chart_sharp,
             sizeIcon: 20.0,

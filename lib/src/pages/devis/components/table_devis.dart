@@ -11,7 +11,8 @@ import 'package:intl/intl.dart';
 import 'package:pluto_grid/pluto_grid.dart';
 
 class TableDevis extends StatefulWidget {
-  const TableDevis({Key? key}) : super(key: key);
+  const TableDevis({Key? key, required this.departement}) : super(key: key);
+  final String departement;
 
   @override
   State<TableDevis> createState() => _TableDevisState();
@@ -55,51 +56,54 @@ class _TableDevisState extends State<TableDevis> {
 
   @override
   Widget build(BuildContext context) {
-    return PlutoGrid(
-      columns: columns,
-      rows: rows,
-      onRowDoubleTap: (PlutoGridOnRowDoubleTapEvent tapEvent) {
-        final dataList = tapEvent.row!.cells.values;
-        final idPlutoRow = dataList.elementAt(0);
-        Navigator.of(context).push(MaterialPageRoute(
-            builder: (context) => DetailDevis(id: idPlutoRow.value)));
-      },
-      onLoaded: (PlutoGridOnLoadedEvent event) {
-        stateManager = event.stateManager;
-        stateManager!.setShowColumnFilter(true);
-        stateManager!.notifyListeners();
-      },
-      createHeader: (PlutoGridStateManager header) {
-        return Row(
-          mainAxisAlignment: MainAxisAlignment.end,
-          children: [PrintWidget(onPressed: () {})],
-        );
-      },
-      configuration: PlutoGridConfiguration(
-        columnFilterConfig: PlutoGridColumnFilterConfig(
-          filters: const [
-            ...FilterHelper.defaultFilters,
-            // custom filter
-            ClassFilterImplemented(),
-          ],
-          resolveDefaultColumnFilter: (column, resolver) {
-            if (column.field == 'id') {
-              return resolver<ClassFilterImplemented>() as PlutoFilterType;
-            } else if (column.field == 'title') {
-              return resolver<ClassFilterImplemented>() as PlutoFilterType;
-            } else if (column.field == 'priority') {
-              return resolver<ClassFilterImplemented>() as PlutoFilterType;
-            } else if (column.field == 'departement') {
-              return resolver<ClassFilterImplemented>() as PlutoFilterType;
-            } else if (column.field == 'approbation') {
-              return resolver<ClassFilterImplemented>() as PlutoFilterType;
-            } else if (column.field == 'observation') {
-              return resolver<ClassFilterImplemented>() as PlutoFilterType;
-            } else if (column.field == 'created') {
-              return resolver<ClassFilterImplemented>() as PlutoFilterType;
-            }
-            return resolver<PlutoFilterTypeContains>() as PlutoFilterType;
-          },
+    return SizedBox(
+      height: MediaQuery.of(context).size.height,
+      child: PlutoGrid(
+        columns: columns,
+        rows: rows,
+        onRowDoubleTap: (PlutoGridOnRowDoubleTapEvent tapEvent) {
+          final dataList = tapEvent.row!.cells.values;
+          final idPlutoRow = dataList.elementAt(0);
+          Navigator.of(context).push(MaterialPageRoute(
+              builder: (context) => DetailDevis(id: idPlutoRow.value)));
+        },
+        onLoaded: (PlutoGridOnLoadedEvent event) {
+          stateManager = event.stateManager;
+          stateManager!.setShowColumnFilter(true);
+          stateManager!.notifyListeners();
+        },
+        createHeader: (PlutoGridStateManager header) {
+          return Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [PrintWidget(onPressed: () {})],
+          );
+        },
+        configuration: PlutoGridConfiguration(
+          columnFilterConfig: PlutoGridColumnFilterConfig(
+            filters: const [
+              ...FilterHelper.defaultFilters,
+              // custom filter
+              ClassFilterImplemented(),
+            ],
+            resolveDefaultColumnFilter: (column, resolver) {
+              if (column.field == 'id') {
+                return resolver<ClassFilterImplemented>() as PlutoFilterType;
+              } else if (column.field == 'title') {
+                return resolver<ClassFilterImplemented>() as PlutoFilterType;
+              } else if (column.field == 'priority') {
+                return resolver<ClassFilterImplemented>() as PlutoFilterType;
+              } else if (column.field == 'departement') {
+                return resolver<ClassFilterImplemented>() as PlutoFilterType;
+              } else if (column.field == 'approbation') {
+                return resolver<ClassFilterImplemented>() as PlutoFilterType;
+              } else if (column.field == 'observation') {
+                return resolver<ClassFilterImplemented>() as PlutoFilterType;
+              } else if (column.field == 'created') {
+                return resolver<ClassFilterImplemented>() as PlutoFilterType;
+              }
+              return resolver<PlutoFilterTypeContains>() as PlutoFilterType;
+            },
+          ),
         ),
       ),
     );
@@ -197,16 +201,24 @@ class _TableDevisState extends State<TableDevis> {
   Future agentsRow() async {
     final userModel = await AuthApi().getUserId();
     List<DevisModel?> dataList = await DevisAPi().getAllData();
-    var data = dataList
-        .where((element) =>
-            element!.departement == 'Administration' ||
-            element.departement == userModel.departement &&
-                element.approbationDG == 'Approuved' ||
-            element.departement == 'Finances' &&
-                element.approbationDG == 'Approved' ||
-            element.departement == 'Budgets' &&
-                element.approbationDG == 'Approved')
-        .toList();
+    // var data = dataList
+    //     .where((element) =>
+    //         element!.departement == 'Administration' ||
+    //         element.departement == userModel.departement &&
+    //             element.approbationDG == 'Approuved' ||
+    //         element.departement == 'Finances' &&
+    //             element.approbationDG == 'Approved' ||
+    //         element.departement == 'Budgets' &&
+    //             element.approbationDG == 'Approved')
+    //     .toList();
+
+    var data =
+      dataList.where((element) => 
+        
+        element!.departement == widget.departement &&  
+        element.approbationDG == 'Approuved' ||
+        element.departement == userModel.departement
+    );
 
     if (mounted) {
       setState(() {

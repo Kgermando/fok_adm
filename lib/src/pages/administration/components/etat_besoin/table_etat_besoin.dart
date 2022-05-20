@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:fokad_admin/src/api/auth/auth_api.dart';
 import 'package:fokad_admin/src/api/devis/devis_api.dart';
 import 'package:fokad_admin/src/models/devis/devis_models.dart';
 import 'package:fokad_admin/src/pages/devis/components/detail_devis.dart';
@@ -9,14 +10,14 @@ import 'package:fokad_admin/src/utils/class_implemented.dart';
 import 'package:intl/intl.dart';
 import 'package:pluto_grid/pluto_grid.dart';
 
-class TableDevisBudgetDD extends StatefulWidget {
-  const TableDevisBudgetDD({Key? key}) : super(key: key);
+class TableEtatBesoin extends StatefulWidget {
+  const TableEtatBesoin({Key? key}) : super(key: key);
 
   @override
-  State<TableDevisBudgetDD> createState() => _TableDevisBudgetDDState();
+  State<TableEtatBesoin> createState() => _TableEtatBesoinState();
 }
 
-class _TableDevisBudgetDDState extends State<TableDevisBudgetDD> {
+class _TableEtatBesoinState extends State<TableEtatBesoin> {
   List<PlutoColumn> columns = [];
   List<PlutoRow> rows = [];
   PlutoGridStateManager? stateManager;
@@ -27,8 +28,29 @@ class _TableDevisBudgetDDState extends State<TableDevisBudgetDD> {
   @override
   initState() {
     agentsColumn();
+    getData();
     agentsRow();
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+  }
+
+  String? matricule;
+  String? departement;
+  String? servicesAffectation;
+  String? fonctionOccupe;
+
+  Future<void> getData() async {
+    final userModel = await AuthApi().getUserId();
+    setState(() {
+      matricule = userModel.matricule;
+      departement = userModel.departement;
+      servicesAffectation = userModel.servicesAffectation;
+      fonctionOccupe = userModel.fonctionOccupe;
+    });
   }
 
   @override
@@ -73,9 +95,7 @@ class _TableDevisBudgetDDState extends State<TableDevisBudgetDD> {
                 return resolver<ClassFilterImplemented>() as PlutoFilterType;
               } else if (column.field == 'approbation') {
                 return resolver<ClassFilterImplemented>() as PlutoFilterType;
-              } else if (column.field == 'approbationDG') {
-                return resolver<ClassFilterImplemented>() as PlutoFilterType;
-              } else if (column.field == 'approbationBudget') {
+              } else if (column.field == 'observation') {
                 return resolver<ClassFilterImplemented>() as PlutoFilterType;
               } else if (column.field == 'created') {
                 return resolver<ClassFilterImplemented>() as PlutoFilterType;
@@ -140,8 +160,8 @@ class _TableDevisBudgetDDState extends State<TableDevisBudgetDD> {
       ),
       PlutoColumn(
         readOnly: true,
-        title: 'Approbation DG',
-        field: 'approbationDG',
+        title: 'Approbation',
+        field: 'approbation',
         type: PlutoColumnType.text(),
         enableRowDrag: true,
         enableContextMenu: false,
@@ -152,8 +172,8 @@ class _TableDevisBudgetDDState extends State<TableDevisBudgetDD> {
       ),
       PlutoColumn(
         readOnly: true,
-        title: 'Approbation Budget',
-        field: 'approbationBudget',
+        title: 'Observation',
+        field: 'observation',
         type: PlutoColumnType.text(),
         enableRowDrag: true,
         enableContextMenu: false,
@@ -179,9 +199,7 @@ class _TableDevisBudgetDDState extends State<TableDevisBudgetDD> {
 
   Future agentsRow() async {
     List<DevisModel?> dataList = await DevisAPi().getAllData();
-    var data = dataList
-        .where((element) => element!.approbationDG == '-')
-        .toList();
+    var data = dataList.where((element) => element!.approbationDG == '-');
 
     if (mounted) {
       setState(() {
@@ -191,10 +209,10 @@ class _TableDevisBudgetDDState extends State<TableDevisBudgetDD> {
             'title': PlutoCell(value: item.title),
             'priority': PlutoCell(value: item.priority),
             'departement': PlutoCell(value: item.departement),
-            'approbationDG': PlutoCell(value: item.approbationDG),
-            'approbationBudget': PlutoCell(value: item.approbationBudget),
+            'approbation': PlutoCell(value: item.approbationDG),
+            'observation': PlutoCell(value: item.approbationFin),
             'created': PlutoCell(
-                value: DateFormat("dd-MM-yy HH:mm").format(item.created))
+                value: DateFormat("dd-MM-yyyy HH:mm").format(item.created))
           }));
           stateManager!.resetCurrentState();
         }

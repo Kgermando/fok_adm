@@ -277,6 +277,7 @@ class _AddImmobilierMaterielState extends State<AddImmobilierMateriel> {
     return Container(
         margin: const EdgeInsets.only(bottom: p20),
         child: DateTimePicker(
+          initialEntryMode: DatePickerEntryMode.input,
           decoration: InputDecoration(
             prefixIcon: const Icon(Icons.date_range),
             border:

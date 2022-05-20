@@ -147,7 +147,7 @@ class _UpdateAgendaState extends State<UpdateAgenda> {
     return Container(
       margin: const EdgeInsets.only(bottom: p20),
       child: DateTimePicker(
-        type: DateTimePickerType.dateTime,
+        initialEntryMode: DatePickerEntryMode.input,
         decoration: InputDecoration(
           prefixIcon: const Icon(Icons.date_range),
           border:

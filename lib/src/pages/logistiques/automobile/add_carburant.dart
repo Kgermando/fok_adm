@@ -417,7 +417,7 @@ class _AddCarburantAutoState extends State<AddCarburantAuto> {
     return Container(
         margin: const EdgeInsets.only(bottom: p20),
         child: DateTimePicker(
-          type: DateTimePickerType.dateTime,
+          initialEntryMode: DatePickerEntryMode.input,
           decoration: InputDecoration(
             prefixIcon: const Icon(Icons.date_range),
             border:
@@ -459,7 +459,7 @@ class _AddCarburantAutoState extends State<AddCarburantAuto> {
             : numeroPlaqueController.text,
         dateHeureSortieAnguin: DateTime.parse(
             (dateHeureSortieAnguinController.text == '')
-                ? '0000-00-00 00:00:00.000'
+                ? "2099-12-31 00:00:00"       
                 : dateHeureSortieAnguinController.text),
         qtyAchat: qtyAchatController.text,
         approbationDG: '-',

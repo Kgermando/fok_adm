@@ -4,6 +4,7 @@ import 'package:fokad_admin/src/navigation/drawer/components/archive_nav.dart';
 import 'package:fokad_admin/src/navigation/drawer/components/budget_nav.dart';
 import 'package:fokad_admin/src/navigation/drawer/components/com_marketing_nav.dart';
 import 'package:fokad_admin/src/navigation/drawer/components/comptabilite_nav.dart';
+import 'package:fokad_admin/src/navigation/drawer/components/etat_besoin_nav.dart';
 import 'package:fokad_admin/src/navigation/drawer/components/exploitation_nav.dart';
 import 'package:fokad_admin/src/navigation/drawer/components/finances_nav.dart';
 import 'package:fokad_admin/src/navigation/drawer/components/logistique_nav.dart';
@@ -43,12 +44,14 @@ class _DrawerMenuState extends State<DrawerMenu> {
             AdministrationNav(pageCurrente: pageCurrente),
             RhNav(pageCurrente: pageCurrente),
             BudgetNav(pageCurrente: pageCurrente),
-            ComptabiliteNav(pageCurrente: pageCurrente),
             FinancesNav(pageCurrente: pageCurrente),
+            ComptabiliteNav(pageCurrente: pageCurrente),
             ExploitationNav(pageCurrente: pageCurrente),
             ComMarketing(pageCurrente: pageCurrente),
             LogistiqueNav(pageCurrente: pageCurrente),
+            EtatBesoinNav(pageCurrente: pageCurrente),
             ArchiveNav(pageCurrente: pageCurrente),
+            
             // MailsNAv(pageCurrente: pageCurrente)
           ],
         ),

@@ -412,7 +412,7 @@ class _DetailCaisseState extends State<DetailCaisse> {
   Widget infosEditeurWidget(CaisseModel data) {
     final bodyMedium = Theme.of(context).textTheme.bodyMedium;
     final bodySmall = Theme.of(context).textTheme.bodySmall;
-    List<String> dataList = ['Approved', 'Unapproved'];
+    List<String> dataList = ['Approved', 'Unapproved', '-'];
     return Container(
       padding: const EdgeInsets.only(top: p16, bottom: p16),
       decoration: const BoxDecoration(

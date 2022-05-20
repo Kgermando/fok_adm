@@ -293,6 +293,7 @@ class _SearchGrandLivreState extends State<SearchGrandLivre> {
     return Container(
         margin: const EdgeInsets.only(bottom: p20),
         child: DateTimePicker(
+          initialEntryMode: DatePickerEntryMode.input,
           decoration: InputDecoration(
             prefixIcon: const Icon(Icons.date_range),
             border:

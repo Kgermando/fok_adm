@@ -587,6 +587,7 @@ class _UpdateAgentState extends State<UpdateAgent> {
     return Container(
         margin: const EdgeInsets.only(bottom: p20),
         child: DateTimePicker(
+          initialEntryMode: DatePickerEntryMode.input,
           decoration: InputDecoration(
             prefixIcon: const Icon(Icons.date_range),
             border:
@@ -768,6 +769,7 @@ class _UpdateAgentState extends State<UpdateAgent> {
     return Container(
         margin: const EdgeInsets.only(bottom: p20),
         child: DateTimePicker(
+          initialEntryMode: DatePickerEntryMode.input,
           decoration: InputDecoration(
             prefixIcon: const Icon(Icons.date_range),
             border:
@@ -791,6 +793,7 @@ class _UpdateAgentState extends State<UpdateAgent> {
     return Container(
         margin: const EdgeInsets.only(bottom: p20),
         child: DateTimePicker(
+          initialEntryMode: DatePickerEntryMode.input,
           decoration: InputDecoration(
             prefixIcon: const Icon(Icons.date_range),
             border:

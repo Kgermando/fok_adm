@@ -218,10 +218,7 @@ class _AdministrationNavState extends State<AdministrationNav> {
 
       // Etaat de Besoins
       etatBesoinCount = etatBesions
-          .where((element) =>
-              element.approbationDD == "Approved" &&
-              element.approbationBudget == "Approved" &&
-              element.approbationDG == "-")
+          .where((element) => element.approbationBudget == "Approved" &&  element.approbationDG == "-")
           .length;
     });
   }
@@ -300,6 +297,23 @@ class _AdministrationNavState extends State<AdministrationNav> {
             ),
             onTap: () {
               Routemaster.of(context).replace(AdminRoutes.adminFinance);
+              // Navigator.of(context).pop();
+            }),
+        DrawerWidget(
+            selected: widget.pageCurrente == AdminRoutes.adminEtatBesoin,
+            icon: Icons.note_alt,
+            sizeIcon: 20.0,
+            title: 'Etat de besoin',
+            style: bodyText1,
+            badge: Badge(
+              showBadge: (etatBesoinCount >= 1) ? true : false,
+              badgeColor: Colors.teal,
+              badgeContent: Text('$financeCount',
+                  style: const TextStyle(fontSize: 10.0, color: Colors.white)),
+              child: const Icon(Icons.notifications),
+            ),
+            onTap: () {
+              Routemaster.of(context).replace(AdminRoutes.adminEtatBesoin);
               // Navigator.of(context).pop();
             }),
         DrawerWidget(
@@ -385,15 +399,6 @@ class _AdministrationNavState extends State<AdministrationNav> {
             onTap: () {
               Routemaster.of(context).replace(AdminRoutes.adminLogistique);
               // Navigator.of(context).pop();
-            }),
-          DrawerWidget(
-            selected: widget.pageCurrente == DevisRoutes.devis,
-            icon: Icons.note_alt,
-            sizeIcon: 20.0,
-            title: 'Etat de besoin',
-            style: bodyText1,
-            onTap: () {
-              Routemaster.of(context).replace(DevisRoutes.devis);
             }),
         DrawerWidget(
             selected: widget.pageCurrente == RhRoutes.rhPerformence,

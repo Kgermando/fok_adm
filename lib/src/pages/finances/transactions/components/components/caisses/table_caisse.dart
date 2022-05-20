@@ -252,18 +252,6 @@ class _TableCaisseState extends State<TableCaisse> {
       ),
       PlutoColumn(
         readOnly: true,
-        title: 'Ligne budgtaire',
-        field: 'ligneBudgtaire',
-        type: PlutoColumnType.text(),
-        enableRowDrag: true,
-        enableContextMenu: false,
-        enableDropToResize: true,
-        titleTextAlign: PlutoColumnTextAlign.left,
-        width: 150,
-        minWidth: 150,
-      ),
-      PlutoColumn(
-        readOnly: true,
         title: 'departement',
         field: 'departement',
         type: PlutoColumnType.text(),

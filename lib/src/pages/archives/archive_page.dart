@@ -3,6 +3,7 @@ import 'package:fokad_admin/src/constants/app_theme.dart';
 import 'package:fokad_admin/src/constants/responsive.dart';
 import 'package:fokad_admin/src/navigation/drawer/drawer_menu.dart';
 import 'package:fokad_admin/src/navigation/header/custom_appbar.dart';
+import 'package:fokad_admin/src/pages/archives/components/administration_archive.dart';
 import 'package:fokad_admin/src/pages/archives/components/budget_archive.dart';
 import 'package:fokad_admin/src/pages/archives/components/comm_marketing_archive.dart';
 import 'package:fokad_admin/src/pages/archives/components/comptabilite_archive.dart';
@@ -57,6 +58,7 @@ class _ArchivePageState extends State<ArchivePage> {
                       Expanded(
                         child: ListView(
                           children: const [
+                            AdministrationArchive(),
                             RHArchive(),
                             BudgetArchive(),
                             ComptabiliteArchive(),

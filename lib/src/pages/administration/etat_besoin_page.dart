@@ -1,29 +1,27 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
-import 'package:fokad_admin/src/api/exploitations/projets_api.dart';
+import 'package:fokad_admin/src/api/devis/devis_api.dart';
 import 'package:fokad_admin/src/constants/app_theme.dart';
 import 'package:fokad_admin/src/constants/responsive.dart';
 import 'package:fokad_admin/src/navigation/drawer/drawer_menu.dart';
 import 'package:fokad_admin/src/navigation/header/custom_appbar.dart';
-import 'package:fokad_admin/src/pages/administration/components/exploitations/table_project_dg.dart';
+import 'package:fokad_admin/src/pages/administration/components/etat_besoin/table_etat_besoin.dart';
 
-class ExploitationsAdmin extends StatefulWidget {
-  const ExploitationsAdmin({ Key? key }) : super(key: key);
+class EtatBesoinAdmin extends StatefulWidget {
+  const EtatBesoinAdmin({Key? key}) : super(key: key);
 
   @override
-  State<ExploitationsAdmin> createState() => _ExploitationsAdminState();
+  State<EtatBesoinAdmin> createState() => _EtatBesoinAdminState();
 }
 
-class _ExploitationsAdminState extends State<ExploitationsAdmin> {
-  final GlobalKey<ScaffoldState> _key = GlobalKey();
+class _EtatBesoinAdminState extends State<EtatBesoinAdmin> {
+ final GlobalKey<ScaffoldState> _key = GlobalKey();
   final ScrollController _controllerScroll = ScrollController();
 
-    bool isOpen1 = false;
+  bool isOpen1 = false;
 
-  int projetInactifs = 0;
+  int itemCount = 0;
 
-   @override
+  @override
   void initState() {
     getData();
 
@@ -31,15 +29,15 @@ class _ExploitationsAdminState extends State<ExploitationsAdmin> {
   }
 
   Future<void> getData() async {
-    var data = await ProjetsApi().getAllData();
+    var data = await DevisAPi().getAllData();
 
     setState(() {
-      projetInactifs =
-          data.where((element) => element.approbationDD == "Approved" && 
-          element.approbationDG == "-").length;
+      itemCount = data
+          .where((element) => element.approbationDG == "-")
+          .length;
     });
   }
-  
+
   @override
   Widget build(BuildContext context) {
     final headline6 = Theme.of(context).textTheme.headline6;
@@ -62,7 +60,8 @@ class _ExploitationsAdminState extends State<ExploitationsAdmin> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      CustomAppbar(title: 'Exploitations',
+                      CustomAppbar(
+                          title: 'Etat de besoin',
                           controllerMenu: () =>
                               _key.currentState!.openDrawer()),
                       Expanded(
@@ -76,11 +75,11 @@ class _ExploitationsAdminState extends State<ExploitationsAdmin> {
                               child: ExpansionTile(
                                 leading: const Icon(Icons.folder,
                                     color: Colors.white),
-                                title: Text('Dossier Projets',
+                                title: Text('Dossier Etat de besoin',
                                     style: headline6!
                                         .copyWith(color: Colors.white)),
                                 subtitle: Text(
-                                    "Vous avez $projetInactifs dossiers necessitent votre approbation",
+                                    "Vous avez $itemCount dossiers necessitent votre approbation",
                                     style: bodyMedium!
                                         .copyWith(color: Colors.white)),
                                 initiallyExpanded: false,
@@ -91,7 +90,7 @@ class _ExploitationsAdminState extends State<ExploitationsAdmin> {
                                 },
                                 trailing: const Icon(Icons.arrow_drop_down,
                                     color: Colors.white),
-                                children: const [TableProjetDG()],
+                                children: const [TableEtatBesoin()],
                               ),
                             ),
                           ],
