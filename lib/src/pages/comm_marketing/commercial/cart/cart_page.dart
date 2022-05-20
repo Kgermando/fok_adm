@@ -10,6 +10,7 @@ import 'package:fokad_admin/src/api/comm_marketing/commerciale/number_facture_ap
 import 'package:fokad_admin/src/api/comm_marketing/commerciale/vente_cart_api.dart';
 import 'package:fokad_admin/src/constants/app_theme.dart';
 import 'package:fokad_admin/src/constants/responsive.dart';
+import 'package:fokad_admin/src/helpers/pdf_api.dart';
 import 'package:fokad_admin/src/models/comm_maketing/cart_model.dart';
 import 'package:fokad_admin/src/models/comm_maketing/creance_cart_model.dart';
 import 'package:fokad_admin/src/models/comm_maketing/facture_cart_model.dart';
@@ -20,6 +21,8 @@ import 'package:fokad_admin/src/models/users/user_model.dart';
 import 'package:fokad_admin/src/navigation/drawer/drawer_menu.dart';
 import 'package:fokad_admin/src/navigation/header/custom_appbar.dart';
 import 'package:fokad_admin/src/pages/comm_marketing/commercial/cart/components/cart_item_widget.dart';
+import 'package:fokad_admin/src/pages/comm_marketing/commercial/factures/pdf/creance_cart_pdf.dart';
+import 'package:fokad_admin/src/pages/comm_marketing/commercial/factures/pdf/facture_cart_pdf.dart';
 import 'package:fokad_admin/src/routes/routes.dart';
 import 'package:fokad_admin/src/utils/loading.dart';
 import 'package:intl/intl.dart';
@@ -296,8 +299,8 @@ class _CartPageState extends State<CartPage> {
     for (var item in factureList) {
       facture = item;
     }
-    // final pdfFile = await FactureCartPDF.generate(facture!, '\$');
-    // PdfApi.openFile(pdfFile);
+    final pdfFile = await FactureCartPDF.generate(facture!, '\$');
+    PdfApi.openFile(pdfFile);
   }
 
   Future<void> creanceData() async {
@@ -346,8 +349,8 @@ class _CartPageState extends State<CartPage> {
       creance = item;
     }
 
-    // final pdfFile = await CreanceCartPDF.generate(creance!, '\$');
-    // PdfApi.openFile(pdfFile);
+    final pdfFile = await CreanceCartPDF.generate(creance!, '\$');
+    PdfApi.openFile(pdfFile);
 
     // PdfApi.openFile(pdfFile);
   }

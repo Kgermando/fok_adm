@@ -5,12 +5,14 @@ import 'package:fokad_admin/src/api/comm_marketing/commerciale/bon_livraison_api
 import 'package:fokad_admin/src/api/comm_marketing/commerciale/livraison_history_api.dart';
 import 'package:fokad_admin/src/constants/app_theme.dart';
 import 'package:fokad_admin/src/constants/responsive.dart';
+import 'package:fokad_admin/src/helpers/pdf_api.dart';
 import 'package:fokad_admin/src/models/comm_maketing/achat_model.dart';
 import 'package:fokad_admin/src/models/comm_maketing/bon_livraison.dart';
 import 'package:fokad_admin/src/models/comm_maketing/livraiason_history_model.dart';
 import 'package:fokad_admin/src/models/users/user_model.dart';
 import 'package:fokad_admin/src/navigation/drawer/drawer_menu.dart';
 import 'package:fokad_admin/src/navigation/header/custom_appbar.dart';
+import 'package:fokad_admin/src/pages/comm_marketing/commercial/bon_livraison/pdf/bon_livraison_pdf.dart';
 import 'package:fokad_admin/src/utils/loading.dart';
 import 'package:fokad_admin/src/widgets/print_widget.dart';
 import 'package:fokad_admin/src/widgets/title_widget.dart';
@@ -156,7 +158,12 @@ class _DetailBonLivraisonState extends State<DetailBonLivraison> {
                     children: [
                       PrintWidget(
                         tooltip: 'Imprimer le document',
-                        onPressed: () async {},
+                        onPressed: () async {
+                          final pdfFile = await BonLivraisonPDF.generate(
+                              data, "\$");
+
+                          PdfApi.openFile(pdfFile);
+                        },
                       ),
                       SelectableText(
                           DateFormat("dd-MM-yyyy HH:mm").format(data.created),
