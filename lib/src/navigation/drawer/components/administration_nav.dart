@@ -115,7 +115,7 @@ class _AdministrationNavState extends State<AdministrationNav> {
 
     // Etaat de Besoins
     var etatBesions = await DevisAPi().getAllData();
-
+  if(mounted) {
     setState(() {
       // Budgets
       budgetCount = dataLigneBudgetaireList
@@ -224,6 +224,7 @@ class _AdministrationNavState extends State<AdministrationNav> {
               element.approbationDG == "-")
           .length;
     });
+  }
   }
 
   @override

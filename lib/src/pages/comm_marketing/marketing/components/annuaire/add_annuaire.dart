@@ -220,7 +220,7 @@ class _AddAnnuaireState extends State<AddAnnuaire> {
   }
 
   Widget categorieField() {
-    List<String> categorieList = ['Fournisseur', 'Client'];
+    List<String> categorieList = ['Fournisseur', 'Client', 'Partenaire'];
     return Container(
       margin: const EdgeInsets.only(bottom: 20.0),
       child: DropdownButtonFormField<String>(

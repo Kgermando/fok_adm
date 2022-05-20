@@ -37,7 +37,7 @@ class _DashboardBudgetState extends State<DashboardBudget> {
   double sommeEnCours = 0.0; // cest la somme des 4 departements
   double sommeRestantes =
       0.0; // la somme restante apres la soustration entre coutTotal - sommeEnCours
-  double poursentExecution = 0.0;
+  double poursentExecution = 1;
 
   // Total par departements
   double totalCampaign = 0.0;
@@ -72,8 +72,6 @@ class _DashboardBudgetState extends State<DashboardBudget> {
     super.initState();
   }
 
-
-
   List<LigneBudgetaireModel> ligneBudgetaireList = [];
   List<CampaignModel> dataCampaignList = [];
   List<DevisModel> dataDevisList = [];
@@ -89,40 +87,41 @@ class _DashboardBudgetState extends State<DashboardBudget> {
     var projets = await ProjetsApi().getAllData();
     var salaires = await PaiementSalaireApi().getAllData();
 
-    if(mounted) {
+    if (mounted) {
       setState(() {
-      departementsList = departements
-          .where((element) => DateTime.now().isBefore(element.periodeFin))
-          .toList();
+        departementsList = departements
+            .where((element) => DateTime.now().isBefore(element.periodeFin))
+            .toList();
 
-      ligneBudgetaireList = budgets
-          .where((element) =>
-              DateTime.now().isBefore(DateTime.parse(element.periodeBudget)))
-          .toList();
+        ligneBudgetaireList = budgets
+            .where((element) =>
+                DateTime.now().isBefore(DateTime.parse(element.periodeBudget)))
+            .toList();
 
-      for (var item in ligneBudgetaireList) {
-        dataCampaignList = campaigns
-            .where((element) =>
-                element.approbationBudget == "Approved" &&
-                element.created.isBefore(DateTime.parse(item.periodeBudget)))
-            .toList();
-        dataDevisList = devis
-            .where((element) =>
-                element.approbationBudget == "Approved" &&
-                element.created.isBefore(DateTime.parse(item.periodeBudget)))
-            .toList();
-        dataProjetList = projets
-            .where((element) =>
-                element.approbationBudget == "Approved" &&
-                element.created.isBefore(DateTime.parse(item.periodeBudget)))
-            .toList();
-        dataSalaireList = salaires
-            .where((element) =>
-                element.approbationBudget == "Approved" &&
-                element.createdAt.isBefore(DateTime.parse(item.periodeBudget)))
-            .toList();
-      }
-    });
+        for (var item in ligneBudgetaireList) {
+          dataCampaignList = campaigns
+              .where((element) =>
+                  element.approbationBudget == "Approved" &&
+                  element.created.isBefore(DateTime.parse(item.periodeBudget)))
+              .toList();
+          dataDevisList = devis
+              .where((element) =>
+                  element.approbationBudget == "Approved" &&
+                  element.created.isBefore(DateTime.parse(item.periodeBudget)))
+              .toList();
+          dataProjetList = projets
+              .where((element) =>
+                  element.approbationBudget == "Approved" &&
+                  element.created.isBefore(DateTime.parse(item.periodeBudget)))
+              .toList();
+          dataSalaireList = salaires
+              .where((element) =>
+                  element.approbationBudget == "Approved" &&
+                  element.createdAt
+                      .isBefore(DateTime.parse(item.periodeBudget)))
+              .toList();
+        }
+      });
     }
   }
 
@@ -146,8 +145,7 @@ class _DashboardBudgetState extends State<DashboardBudget> {
     sommeEnCours = totalCampaign + totalDevis + totalProjet + totalSalaire;
     sommeRestantes = coutTotal - sommeEnCours;
     poursentExecution = sommeRestantes * 100 / coutTotal;
-
-
+    
 
     for (var item in dataCampaignList.where((e) => e.resources == "caisse")) {
       caisseCampaign += double.parse(item.resources);
@@ -175,7 +173,8 @@ class _DashboardBudgetState extends State<DashboardBudget> {
       banquesalaire += double.parse(item.resources);
     }
 
-    for (var item in dataCampaignList.where((e) => e.resources == "finPropre")) {
+    for (var item
+        in dataCampaignList.where((e) => e.resources == "finPropre")) {
       finPropreCampaign += double.parse(item.resources);
     }
     for (var item in dataDevisList.where((e) => e.resources == "finPropre")) {
@@ -188,19 +187,24 @@ class _DashboardBudgetState extends State<DashboardBudget> {
       finPropresalaire += double.parse(item.resources);
     }
 
-    for (var item in dataCampaignList.where((e) => e.resources == "finExterieur")) {
+    for (var item
+        in dataCampaignList.where((e) => e.resources == "finExterieur")) {
       finExterieurCampaign += double.parse(item.resources);
     }
-    for (var item in dataDevisList.where((e) => e.resources == "finExterieur")) {
+    for (var item
+        in dataDevisList.where((e) => e.resources == "finExterieur")) {
       finExterieuretatBesion += double.parse(item.resources);
     }
-    for (var item in dataProjetList.where((e) => e.resources == "finExterieur")) {
+    for (var item
+        in dataProjetList.where((e) => e.resources == "finExterieur")) {
       finExterieurProjet += double.parse(item.resources);
     }
-    for (var item in dataSalaireList.where((e) => e.resources == "finExterieur")) {
+    for (var item
+        in dataSalaireList.where((e) => e.resources == "finExterieur")) {
       finExterieursalaire += double.parse(item.resources);
     }
-    
+
+    print("poursentExecution $poursentExecution");
 
     return Scaffold(
         key: _key,

@@ -65,13 +65,67 @@ class _LoginPageState extends State<LoginPage> {
                                           ? Colors.white
                                           : Colors.black)),
                               TypewriterAnimatedText(
-                                  'Générez vos rapports instanement.',
+                                  'FOKAD ADMIN, vous donne le contrôle de votre business:',
                                   textStyle: TextStyle(
                                       color: ThemeProvider().isDarkMode
                                           ? Colors.white
                                           : Colors.black)),
                               TypewriterAnimatedText(
-                                  'Gerer votre reporting calls et projets.',
+                                  'Ce logiciel vous permet de:',
+                                  textStyle: TextStyle(
+                                      color: ThemeProvider().isDarkMode
+                                          ? Colors.white
+                                          : Colors.black)),
+                              TypewriterAnimatedText(
+                                  'Gerer vos rapports instanement.',
+                                  textStyle: TextStyle(
+                                      color: ThemeProvider().isDarkMode
+                                          ? Colors.white
+                                          : Colors.black)),
+                              TypewriterAnimatedText(
+                                  'Gerer votre budgets global ou par département.',
+                                  textStyle: TextStyle(
+                                      color: ThemeProvider().isDarkMode
+                                          ? Colors.white
+                                          : Colors.black)),
+                              TypewriterAnimatedText('Gerer vos finances.',
+                                  textStyle: TextStyle(
+                                      color: ThemeProvider().isDarkMode
+                                          ? Colors.white
+                                          : Colors.black)),
+                              TypewriterAnimatedText('Gerer votre comptabilité.',
+                                  textStyle: TextStyle(
+                                      color: ThemeProvider().isDarkMode
+                                          ? Colors.white
+                                          : Colors.black)),
+                              TypewriterAnimatedText(
+                                  'Gerer vos Projets au quotidien.',
+                                  textStyle: TextStyle(
+                                      color: ThemeProvider().isDarkMode
+                                          ? Colors.white
+                                          : Colors.black)),
+                              TypewriterAnimatedText(
+                                  'Gerer les ressources humaines.',
+                                  textStyle: TextStyle(
+                                      color: ThemeProvider().isDarkMode
+                                          ? Colors.white
+                                          : Colors.black)),
+                              TypewriterAnimatedText('Gerer la logistique.',
+                                  textStyle: TextStyle(
+                                      color: ThemeProvider().isDarkMode
+                                          ? Colors.white
+                                          : Colors.black)),
+                              TypewriterAnimatedText('Gerer vos campaignes sur terrain.',
+                                  textStyle: TextStyle(
+                                      color: ThemeProvider().isDarkMode
+                                          ? Colors.white
+                                          : Colors.black)),
+                              TypewriterAnimatedText('Gerer votre annuaire et partenaire.',
+                                  textStyle: TextStyle(
+                                      color: ThemeProvider().isDarkMode
+                                          ? Colors.white
+                                          : Colors.black)),
+                              TypewriterAnimatedText('Gerer votre agenda.',
                                   textStyle: TextStyle(
                                       color: ThemeProvider().isDarkMode
                                           ? Colors.white
@@ -101,7 +155,7 @@ class _LoginPageState extends State<LoginPage> {
                 child: Form(
                   key: _form,
                   child: SingleChildScrollView(
-                    padding: const EdgeInsets.all(16.0),
+                    padding: const EdgeInsets.all(p10),
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.center,
@@ -110,13 +164,13 @@ class _LoginPageState extends State<LoginPage> {
                             alignment: Alignment.topRight, child: helpWidget()),
                         logoWidget(),
                         // titleText(),
-                        const SizedBox(height: 20),
+                        const SizedBox(height: p10),
                         userNameBuild(),
-                        const SizedBox(height: 20),
+                        const SizedBox(height: p10),
                         passwordBuild(),
-                        const SizedBox(height: 20),
+                        const SizedBox(height: p10),
                         loginButtonBuild(),
-                        const SizedBox(height: 20),
+                        const SizedBox(height: p10),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
@@ -138,6 +192,7 @@ class _LoginPageState extends State<LoginPage> {
   Widget logoWidget() {
     var height = MediaQuery.of(context).size.height;
     final size = MediaQuery.of(context).size;
+    final headline6 = Theme.of(context).textTheme.headline6;
     return Column(
       children: [
         Image.asset(
@@ -145,8 +200,8 @@ class _LoginPageState extends State<LoginPage> {
           height: Responsive.isDesktop(context) ? 100 : height / 5,
           width: size.width,
         ),
-        const SizedBox(height: p20),
-        const Text('FOKAD ADMINISTRATION')
+        const SizedBox(height: p10),
+        Text('FOKAD ADMINISTRATION', style: headline6!.copyWith(fontWeight: FontWeight.bold))
       ],
     );
   }
@@ -207,8 +262,9 @@ class _LoginPageState extends State<LoginPage> {
               await AuthApi()
                   .login(matriculeController.text, passwordController.text)
                   .then((value) {
-                if (value) { 
-                Provider.of<AppState>(context, listen: false).isLoggedIn =true;
+                if (value) {
+                  Provider.of<AppState>(context, listen: false).isLoggedIn =
+                      true;
                   ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                     content: const Text("Login succès!"),
                     backgroundColor: Colors.green[700],
@@ -216,7 +272,8 @@ class _LoginPageState extends State<LoginPage> {
                   // setState(() => isloading = false);
                 } else {
                   ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                    content: const Text("Votre Matricule ou Mot de passe incorrect"),
+                    content:
+                        const Text("Votre Matricule ou Mot de passe incorrect"),
                     backgroundColor: Colors.red[700],
                   ));
                   setState(() => isloading = false);

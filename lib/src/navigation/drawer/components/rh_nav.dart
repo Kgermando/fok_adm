@@ -22,7 +22,7 @@ class _RhNavState extends State<RhNav> {
 
     return ExpansionTile(
       leading: const Icon(Icons.group, size: 30.0),
-      title: AutoSizeText('Ressources Humaines', maxLines: 1, style: bodyLarge),
+      title: AutoSizeText('RH', maxLines: 1, style: bodyLarge),
       initiallyExpanded: false,
       onExpansionChanged: (val) {
         setState(() {
