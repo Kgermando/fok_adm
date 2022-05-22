@@ -93,9 +93,9 @@ class _TableDevisDDState extends State<TableDevisDD> {
                 return resolver<ClassFilterImplemented>() as PlutoFilterType;
               } else if (column.field == 'departement') {
                 return resolver<ClassFilterImplemented>() as PlutoFilterType;
-              } else if (column.field == 'approbation') {
+              } else if (column.field == 'approbationDG') {
                 return resolver<ClassFilterImplemented>() as PlutoFilterType;
-              } else if (column.field == 'observation') {
+              } else if (column.field == 'approbationBudget') {
                 return resolver<ClassFilterImplemented>() as PlutoFilterType;
               } else if (column.field == 'created') {
                 return resolver<ClassFilterImplemented>() as PlutoFilterType;
@@ -161,7 +161,7 @@ class _TableDevisDDState extends State<TableDevisDD> {
       PlutoColumn(
         readOnly: true,
         title: 'Approbation DG',
-        field: 'approbation_DG',
+        field: 'approbationDG',
         type: PlutoColumnType.text(),
         enableRowDrag: true,
         enableContextMenu: false,
@@ -172,8 +172,8 @@ class _TableDevisDDState extends State<TableDevisDD> {
       ),
       PlutoColumn(
         readOnly: true,
-        title: 'Approbation Fin',
-        field: 'approbation_Fin',
+        title: 'Approbation Budget',
+        field: 'approbationBudget',
         type: PlutoColumnType.text(),
         enableRowDrag: true,
         enableContextMenu: false,
@@ -198,18 +198,12 @@ class _TableDevisDDState extends State<TableDevisDD> {
   }
 
   Future agentsRow() async {
-    final userModel = await AuthApi().getUserId();
     List<DevisModel?> dataList = await DevisAPi().getAllData();
     var data = dataList
         .where((element) =>
-            element!.departement == userModel.departement &&
-                element.approbationDG == 'Approuved' ||
-            element.departement == 'Administration' &&
-                element.approbationDG == '-' ||
-            element.departement == 'Finances' &&
-                element.approbationDG == 'Approved' ||
-            element.departement == 'Budgets' &&
-                element.approbationDG == 'Approved')
+            element!.approbationBudget == 'Approuved' && 
+            element.approbationDG == 'Approved' &&
+            element.approbationFin == '-')
         .toList();
 
     if (mounted) {
@@ -220,8 +214,8 @@ class _TableDevisDDState extends State<TableDevisDD> {
             'title': PlutoCell(value: item.title),
             'priority': PlutoCell(value: item.priority),
             'departement': PlutoCell(value: item.departement),
-            'approbation_DG': PlutoCell(value: item.approbationDG),
-            'approbation_Fin.': PlutoCell(value: item.approbationFin),
+            'approbationDG': PlutoCell(value: item.approbationDG),
+            'approbationBudget.': PlutoCell(value: item.approbationBudget),
             'created': PlutoCell(
                 value: DateFormat("dd-MM-yy HH:mm").format(item.created))
           }));

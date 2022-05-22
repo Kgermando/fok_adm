@@ -146,7 +146,7 @@ class _DashboardFinanceState extends State<DashboardFinance> {
       List<DevisModel?> devisList = dataDevisList;
 
       for (var item in devisList) {
-        for (var i in item!.list) {
+        for (var i in item!.list!) {
           depenses += double.parse(i['frais']);
         }
       }

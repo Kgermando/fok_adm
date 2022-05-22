@@ -167,7 +167,7 @@ class DevisAPi {
     }
   }
 
-  Future<DevisModel> deleteData(int id) async {
+  Future<void> deleteData(int id) async {
     final accessToken = await storage.read(key: 'accessToken');
 
     var deleteUrl = Uri.parse(
@@ -178,7 +178,7 @@ class DevisAPi {
       'Authorization': 'Bearer $accessToken'
     });
     if (res.statusCode == 200) {
-      return DevisModel.fromJson(json.decode(res.body)['data']);
+      // return DevisModel.fromJson(json.decode(res.body)['data']);
     } else {
       throw Exception(json.decode(res.body)['message']);
     }

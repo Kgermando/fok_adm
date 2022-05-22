@@ -1,7 +1,7 @@
 
 
-// const String mainUrl = "http://192.168.43.230/api";
-const String mainUrl = "http://167.71.4.13/api";
+const String mainUrl = "http://localhost/api";
+// const String mainUrl = "http://167.71.4.13/api";
 
 
 var refreshTokenUrl = Uri.parse("$mainUrl/auth/reloadToken");
@@ -11,7 +11,6 @@ var logoutUrl = Uri.parse("$mainUrl/auth/logout");
 var registerUrl = Uri.parse("$mainUrl/user/insert-new-user");
 var userAllUrl = Uri.parse("$mainUrl/user/users/");
 var userUrl = Uri.parse("$mainUrl/user/");
-
 
 
 // RH
@@ -204,8 +203,6 @@ var addAnnuairesUrl = Uri.parse("$mainUrl/annuaires/insert-new-annuaire");
 var campaignsUrl = Uri.parse("$mainUrl/campaigns/");
 var addCampaignsUrl = Uri.parse("$mainUrl/campaigns/insert-new-campaign");
 
-
-
 // ARCHIVES
 var archvesUrl = Uri.parse("$mainUrl/archves/");
 var addArchvesUrl = Uri.parse("$mainUrl/archves/insert-new-archve");
@@ -213,3 +210,7 @@ var addArchvesUrl = Uri.parse("$mainUrl/archves/insert-new-archve");
 // MAILS
 var mailsUrl = Uri.parse("$mainUrl/mails/");
 var addMailUrl = Uri.parse("$mainUrl/mails/insert-new-mail");
+
+// Approbation
+var approbationsUrl = Uri.parse("$mainUrl/approbations/");
+var addapprobationsUrl = Uri.parse("$mainUrl/approbations/insert-new-approbation");

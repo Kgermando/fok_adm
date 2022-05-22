@@ -633,10 +633,6 @@ class _AgentPageState extends State<AgentPage> {
                           isLoading == true;
                           statutAgent = val;
                           if (statutAgent) {
-                            deleteUser(agentModel);
-                            updateAgent(agentModel);
-                            // isLoading == false;
-                          } else {
                             createUser(
                                 agentModel.nom,
                                 agentModel.prenom,
@@ -647,6 +643,10 @@ class _AgentPageState extends State<AgentPage> {
                                 agentModel.servicesAffectation,
                                 agentModel.fonctionOccupe,
                                 agentModel.role);
+                            updateAgent(agentModel);
+                            // isLoading == false;
+                          } else {
+                            deleteUser(agentModel);
                             updateAgent(agentModel);
                             // isLoading == false;
                           }

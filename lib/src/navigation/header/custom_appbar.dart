@@ -133,6 +133,18 @@ class _CustomAppbarState extends State<CustomAppbar> {
                                   child: const Icon(Icons.notifications),
                                 )),
                         const SizedBox(width: 10.0),
+                        IconButton(
+                            onPressed: () {
+                              Routemaster.of(context)
+                                  .replace(ExploitationRoutes.expTache);
+                            },
+                            icon: Badge(
+                              badgeContent: Text('$tacheCount',
+                                  style: const TextStyle(
+                                      fontSize: 10.0, color: Colors.white)),
+                              child: const Icon(Icons.notifications),
+                            )),
+                        const SizedBox(width: 10.0),
                         SizedBox(
                           width: 30,
                           height: 30,

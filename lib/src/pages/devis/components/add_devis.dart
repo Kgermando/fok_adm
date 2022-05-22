@@ -2,10 +2,12 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:fokad_admin/src/api/approbation/approbation_api.dart';
 import 'package:fokad_admin/src/api/auth/auth_api.dart';
 import 'package:fokad_admin/src/api/devis/devis_api.dart';
 import 'package:fokad_admin/src/constants/app_theme.dart';
 import 'package:fokad_admin/src/constants/responsive.dart';
+import 'package:fokad_admin/src/models/approbation/approbation_model.dart';
 import 'package:fokad_admin/src/models/devis/devis_models.dart';
 import 'package:fokad_admin/src/navigation/drawer/drawer_menu.dart';
 import 'package:fokad_admin/src/navigation/header/custom_appbar.dart';
@@ -15,7 +17,7 @@ import 'package:fokad_admin/src/widgets/btn_widget.dart';
 import 'package:fokad_admin/src/widgets/title_widget.dart';
 
 class AddDevis extends StatefulWidget {
-  const AddDevis({ Key? key }) : super(key: key);
+  const AddDevis({Key? key}) : super(key: key);
 
   @override
   State<AddDevis> createState() => _AddDevisState();
@@ -26,7 +28,6 @@ class _AddDevisState extends State<AddDevis> {
   final _formKey = GlobalKey<FormState>();
   bool isLoading = false;
   final ScrollController _controllerScrollList = ScrollController();
-
 
   late List<Map<String, dynamic>> _values;
   late String result;
@@ -78,7 +79,7 @@ class _AddDevisState extends State<AddDevis> {
       matricule = userModel.matricule;
     });
   }
-   
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -226,7 +227,6 @@ class _AddDevisState extends State<AddDevis> {
       ),
     );
   }
-
 
   Widget titleWidget() {
     return Container(
@@ -405,29 +405,29 @@ class _AddDevisState extends State<AddDevis> {
                             )))
                   ],
                 ),
-                if(count >= 1)
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    SizedBox(
-                      height: 50,
-                      // width: double.infinity,
-                      child: Card(
-                        elevation: 10,
-                        color: Colors.red.shade700,
-                        child: const Padding(
-                          padding: EdgeInsets.all(8.0),
-                          child: SelectableText(
-                            "Note: Ajoutez un champ en plus (+1) pour enregistrer le precedent",
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                              color: Colors.white,
-                          ),
+                if (count >= 1)
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      SizedBox(
+                        height: 50,
+                        // width: double.infinity,
+                        child: Card(
+                            elevation: 10,
+                            color: Colors.red.shade700,
+                            child: const Padding(
+                              padding: EdgeInsets.all(8.0),
+                              child: SelectableText(
+                                "Note: Ajoutez un champ en plus (+1) pour enregistrer le precedent",
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                  color: Colors.white,
+                                ),
+                              ),
+                            )),
                       ),
-                        )),
-                    ),
-                  ],
-                )
+                    ],
+                  )
               ],
             );
           }),
@@ -498,5 +498,6 @@ class _AddDevisState extends State<AddDevis> {
       backgroundColor: Colors.green[700],
     ));
   }
+
 
 }

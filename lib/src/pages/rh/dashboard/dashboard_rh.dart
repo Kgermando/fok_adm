@@ -21,7 +21,6 @@ class DashboardRh extends StatefulWidget {
 class _DashboardRhState extends State<DashboardRh> {
   final GlobalKey<ScaffoldState> _key = GlobalKey();
   final ScrollController _controllerScroll = ScrollController();
-  Timer? timer;
 
   int agentsCount = 0;
   int agentActifCount = 0;
@@ -35,12 +34,6 @@ class _DashboardRhState extends State<DashboardRh> {
     getData();
 
     super.initState();
-  }
-
-  @override
-  dispose() {
-    timer!.cancel();
-    super.dispose();
   }
 
   Future<void> getData() async {

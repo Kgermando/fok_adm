@@ -3,7 +3,7 @@ class DevisModel {
   late String title;
   late String priority;
   late String departement;
-  late List list; // Choses a énumerer
+  late List? list; // Choses a énumerer
   late String ligneBudgtaire;
   late String resources;
   late bool observation;
@@ -32,7 +32,7 @@ class DevisModel {
       required this.title,
       required this.priority,
       required this.departement,
-      required this.list,
+      this.list,
       required this.ligneBudgtaire,
       required this.resources,
       required this.observation,

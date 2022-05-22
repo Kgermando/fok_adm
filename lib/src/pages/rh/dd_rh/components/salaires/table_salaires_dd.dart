@@ -215,7 +215,9 @@ class _TableSalairesDDState extends State<TableSalairesDD> {
     var data = dataList
         .where((element) =>
             element!.createdAt.month == DateTime.now().month &&
-            element.createdAt.year == DateTime.now().year)
+            element.createdAt.year == DateTime.now().year && 
+            element.approbationDD == "-"
+        )
         .toList();
 
     if (mounted) {

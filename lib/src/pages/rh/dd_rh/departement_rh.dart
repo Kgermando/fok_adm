@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:fokad_admin/src/api/rh/agents_api.dart';
+import 'package:fokad_admin/src/api/rh/paiement_salaire_api.dart';
 import 'package:fokad_admin/src/api/user/user_api.dart';
 import 'package:fokad_admin/src/constants/app_theme.dart';
 import 'package:fokad_admin/src/constants/responsive.dart';
@@ -25,7 +26,7 @@ class _DepartementRHState extends State<DepartementRH> {
   bool isOpen1 = false;
   bool isOpen2 = false;
 
-  int agentInactifs = 0;
+  int salairesCpunt = 0;
   int userAcount = 0;
 
   @override
@@ -40,12 +41,17 @@ class _DepartementRHState extends State<DepartementRH> {
 
   Future<void> getData() async {
     // RH
-    List<AgentModel> agents = await AgentsApi().getAllData();
+    var salaires = await PaiementSalaireApi().getAllData();
     List<UserModel> users = await UserApi().getAllData();
 
     setState(() {
-      agentInactifs =
-          agents.where((element) => element.statutAgent == false).length;
+      salairesCpunt =
+          salaires
+          .where((element) =>
+              element.createdAt.month == DateTime.now().month &&
+              element.createdAt.year == DateTime.now().year &&
+              element.approbationDD == "-")
+          .length;
       userAcount = users.length;
     });
   }
@@ -87,7 +93,7 @@ class _DepartementRHState extends State<DepartementRH> {
                                 title:
                                     Text('Dossier Salaires', style: headline6!.copyWith(color: Colors.white)),
                                 subtitle: Text(
-                                    "Vous $agentInactifs dossiers necessitent votre approbation",
+                                    "Vous $salairesCpunt dossiers necessitent votre approbation",
                                     style: bodyMedium!.copyWith(
                                         color: Colors.white)),
                                 initiallyExpanded: false,
@@ -108,10 +114,10 @@ class _DepartementRHState extends State<DepartementRH> {
                                 title: Text('Dossier utilisateurs actifs',
                                     style: headline6.copyWith(
                                         color: Colors.white)),
-                                subtitle: Text(
-                                    "Vous $userAcount dossiers necessitent votre approbation",
-                                    style: bodyMedium.copyWith(
-                                        color: Colors.white)),
+                                // subtitle: Text(
+                                //     "Vous $userAcount dossiers necessitent votre approbation",
+                                //     style: bodyMedium.copyWith(
+                                //         color: Colors.white)),
                                 initiallyExpanded: false,
                                 onExpansionChanged: (val) {
                                   setState(() {

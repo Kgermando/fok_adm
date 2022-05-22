@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:fokad_admin/src/api/approbation/approbation_api.dart';
 import 'package:fokad_admin/src/api/devis/devis_api.dart';
 import 'package:fokad_admin/src/models/devis/devis_models.dart';
 import 'package:fokad_admin/src/pages/devis/components/detail_devis.dart';
@@ -29,7 +30,7 @@ class _TableDevisBudgetDDState extends State<TableDevisBudgetDD> {
     agentsColumn();
     agentsRow();
     super.initState();
-  }
+  } 
 
   @override
   Widget build(BuildContext context) {
@@ -70,8 +71,6 @@ class _TableDevisBudgetDDState extends State<TableDevisBudgetDD> {
               } else if (column.field == 'priority') {
                 return resolver<ClassFilterImplemented>() as PlutoFilterType;
               } else if (column.field == 'departement') {
-                return resolver<ClassFilterImplemented>() as PlutoFilterType;
-              } else if (column.field == 'approbation') {
                 return resolver<ClassFilterImplemented>() as PlutoFilterType;
               } else if (column.field == 'approbationDG') {
                 return resolver<ClassFilterImplemented>() as PlutoFilterType;
@@ -179,9 +178,18 @@ class _TableDevisBudgetDDState extends State<TableDevisBudgetDD> {
 
   Future agentsRow() async {
     List<DevisModel?> dataList = await DevisAPi().getAllData();
-    var data = dataList
-        .where((element) => element!.approbationDG == '-')
-        .toList();
+    List<DevisModel?> data = [];
+    var approbations = await ApprobationApi().getAllData();
+    for (var item in approbations) {
+      data = dataList
+          .where((element) =>
+              element!.id == item.reference && item.approbation == 'Approved' && 
+           item.fontctionOccupee == ''     
+    
+    )
+          .toList();
+    }
+    
 
     if (mounted) {
       setState(() {

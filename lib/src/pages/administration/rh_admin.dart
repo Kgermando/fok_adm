@@ -84,7 +84,7 @@ class _RhAdminState extends State<RhAdmin> {
                               child: ExpansionTile(
                                 leading: const Icon(Icons.folder,
                                     color: Colors.white),
-                                title: Text('Dossier Agents',
+                                title: Text('Dossier Agents inactifs',
                                     style: headline6!
                                         .copyWith(color: Colors.white)),
                                 subtitle: Text(

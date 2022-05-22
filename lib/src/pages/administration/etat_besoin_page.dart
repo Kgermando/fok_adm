@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fokad_admin/src/api/approbation/approbation_api.dart';
 import 'package:fokad_admin/src/api/devis/devis_api.dart';
 import 'package:fokad_admin/src/constants/app_theme.dart';
 import 'package:fokad_admin/src/constants/responsive.dart';
@@ -29,11 +30,15 @@ class _EtatBesoinAdminState extends State<EtatBesoinAdmin> {
 
   Future<void> getData() async {
     var data = await DevisAPi().getAllData();
+    var approbations = await ApprobationApi().getAllData();
 
     setState(() {
-      itemCount = data
-          .where((element) => element.approbationDG == "-")
-          .length;
+      for (var item in approbations) {
+        itemCount = data
+            .where((element) =>
+                element.id == item.reference && item.approbation == '-')
+            .length;
+      }
     });
   }
 

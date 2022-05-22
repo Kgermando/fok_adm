@@ -196,7 +196,7 @@ class _AddSurrsaleState extends State<AddSurrsale> {
           decoration: InputDecoration(
             border:
                 OutlineInputBorder(borderRadius: BorderRadius.circular(10.0)),
-            labelText: 'Numero Sécurité Sociale',
+            labelText: 'Adresse',
           ),
           keyboardType: TextInputType.text,
           style: const TextStyle(),

@@ -161,7 +161,7 @@ class _TableJournalState extends State<TableJournal> {
         enableContextMenu: false,
         enableDropToResize: true,
         titleTextAlign: PlutoColumnTextAlign.left,
-        width: 300,
+        width: 200,
         minWidth: 150,
       ),
       PlutoColumn(
@@ -185,7 +185,7 @@ class _TableJournalState extends State<TableJournal> {
         enableContextMenu: false,
         enableDropToResize: true,
         titleTextAlign: PlutoColumnTextAlign.left,
-        width: 300,
+        width: 200,
         minWidth: 100,
       ),
       PlutoColumn(
