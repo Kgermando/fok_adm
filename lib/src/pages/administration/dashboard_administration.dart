@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flash_card/flash_card.dart';
 import 'package:flutter/material.dart';
+import 'package:fokad_admin/src/api/approbation/approbation_api.dart';
 import 'package:fokad_admin/src/api/budgets/departement_budget_api.dart';
 import 'package:fokad_admin/src/api/budgets/ligne_budgetaire_api.dart';
 import 'package:fokad_admin/src/api/comm_marketing/marketing/campaign_api.dart';
@@ -126,6 +127,8 @@ class _DashboardAdministrationState extends State<DashboardAdministration> {
     var creanceDettes = await CreanceDetteApi().getAllData();
     var dataFinanceExterieurList = await FinExterieurApi().getAllData();
     var dataDevisList = await DevisAPi().getAllData();
+    var approbations = await ApprobationApi().getAllData();
+
 
   if (mounted) {
     setState(() {
@@ -134,18 +137,32 @@ class _DashboardAdministrationState extends State<DashboardAdministration> {
           agents.where((element) => element.statutAgent == true).length;
 
       // Exploitations
-      projetsApprouveCount = projets
-          .where((element) => element.approbationDG == "Approved")
-          .length;
+      for (var item in approbations) {
+          projetsApprouveCount = projets
+              .where((element) =>
+                  element.id == item.reference &&
+                  item.fontctionOccupee == 'Directeur générale')
+              .length;
+        }
+
       // Comm & Marketing
-      campaignCount = campaigns
-          .where((element) => element.approbationDG == "Approved")
-          .length;
+      for (var item in approbations) {
+        campaignCount = campaigns
+            .where((element) =>
+                element.id == item.reference &&
+                item.fontctionOccupee == 'Directeur générale')
+            .length;
+      }
 
       // Budgets
-      departementsList = departements
-          .where((element) => DateTime.now().isBefore(element.periodeFin))
-          .toList();
+      for (var item in approbations) {
+          departementsList = departements
+              .where((element) =>
+                  element.id == item.reference &&
+                  item.fontctionOccupee == 'Directeur générale' &&
+                  DateTime.now().isBefore(element.periodeFin))
+              .toList();
+        }
 
       ligneBudgetaireList = budgets
           .where((element) =>
@@ -153,26 +170,32 @@ class _DashboardAdministrationState extends State<DashboardAdministration> {
           .toList();
 
       for (var item in ligneBudgetaireList) {
-        dataCampaignList = campaigns
-            .where((element) =>
-                element.approbationBudget == "Approved" &&
+        for (var i in approbations) {
+            dataCampaignList = campaigns
+              .where((element) =>
+                element.id == i.reference &&
+                i.fontctionOccupee == 'Directeur générale' &&
                 element.created.isBefore(DateTime.parse(item.periodeBudget)))
-            .toList();
-        dataDevisList = devis
-            .where((element) =>
-                element.approbationBudget == "Approved" &&
+              .toList();
+          dataDevisList = devis
+              .where((element) =>
+              element.id == i.reference &&
+                    i.fontctionOccupee == 'Directeur générale' &&
                 element.created.isBefore(DateTime.parse(item.periodeBudget)))
-            .toList();
-        dataProjetList = projets
-            .where((element) =>
-                element.approbationBudget == "Approved" &&
-                element.created.isBefore(DateTime.parse(item.periodeBudget)))
-            .toList();
-        dataSalaireList = salaires
-            .where((element) =>
-                element.approbationBudget == "Approved" &&
+              .toList();
+          dataProjetList = projets
+              .where((element) =>
+              element.id == i.reference &&
+                    i.fontctionOccupee == 'Directeur générale' &&
+              element.created.isBefore(DateTime.parse(item.periodeBudget)))
+              .toList();
+          dataSalaireList = salaires
+              .where((element) =>
+              element.id == i.reference &&
+                    i.fontctionOccupee == 'Directeur générale' &&
                 element.createdAt.isBefore(DateTime.parse(item.periodeBudget)))
-            .toList();
+              .toList();
+        }
       }
 
        // Comptabilite

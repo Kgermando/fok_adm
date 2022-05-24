@@ -69,7 +69,6 @@ import 'package:fokad_admin/src/pages/finances/transactions/components/component
 import 'package:fokad_admin/src/pages/finances/transactions/components/creance_transactions.dart';
 import 'package:fokad_admin/src/pages/finances/transactions/components/dette_transcations.dart';
 import 'package:fokad_admin/src/pages/finances/transactions/components/fin_externe_transactions.dart';
-import 'package:fokad_admin/src/pages/finances/transactions/transactions_fincance.dart';
 import 'package:fokad_admin/src/pages/logistiques/automobile/add_anguin_auto.dart';
 import 'package:fokad_admin/src/pages/logistiques/automobile/add_carburant.dart';
 import 'package:fokad_admin/src/pages/logistiques/automobile/add_trajet_auto.dart';
@@ -327,8 +326,6 @@ class Routing {
         // Finance
         FinanceRoutes.financeDashboard: (_) =>
             const MaterialPage(child: DashboardFinance()),
-        FinanceRoutes.financeTransactions: (_) =>
-            const MaterialPage(child: TransactionsFinance()),
         FinanceRoutes.transactionsBanque: (_) =>
             const MaterialPage(child: BanqueTransactions()),
         FinanceRoutes.transactionsBanqueDepot: (_) =>

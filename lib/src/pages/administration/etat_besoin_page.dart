@@ -30,15 +30,9 @@ class _EtatBesoinAdminState extends State<EtatBesoinAdmin> {
 
   Future<void> getData() async {
     var data = await DevisAPi().getAllData();
-    var approbations = await ApprobationApi().getAllData();
-
+    
     setState(() {
-      for (var item in approbations) {
-        itemCount = data
-            .where((element) =>
-                element.id == item.reference && item.approbation == '-')
-              .toList().length;
-      }
+      itemCount = data.toList().length;
     });
   }
 

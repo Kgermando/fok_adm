@@ -32,9 +32,7 @@ class _BudgetsAdminState extends State<BudgetsAdmin> {
     List<LigneBudgetaireModel?> dataLigneBudgetaireList =
         await LIgneBudgetaireApi().getAllData();
     setState(() {
-      budgetCount = dataLigneBudgetaireList
-        .where((element) => element!.approbationBudget == "Approved" && element.approbationDG == "-")
-        .length;
+      budgetCount = dataLigneBudgetaireList.length;
     });
   }
 

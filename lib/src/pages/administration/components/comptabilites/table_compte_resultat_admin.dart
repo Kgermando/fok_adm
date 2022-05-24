@@ -139,12 +139,10 @@ class _TableCompteResultatAdminState extends State<TableCompteResultatAdmin> {
   }
 
   Future agentsRow() async {
-    UserModel userModel = await AuthApi().getUserId();
+    // UserModel userModel = await AuthApi().getUserId();
     List<CompteResulatsModel?> dataList =
         await CompteResultatApi().getAllData();
-    var data = dataList.where((element) =>
-        element!.approbationDG == "-" && element.approbationDD == "Approved" ||
-        element.signature == userModel.matricule);
+    var data = dataList;
 
     if (mounted) {
       setState(() {

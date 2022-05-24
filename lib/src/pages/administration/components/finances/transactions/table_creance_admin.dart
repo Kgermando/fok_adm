@@ -285,6 +285,8 @@ class _TableCreanceAdminState extends State<TableCreanceAdmin> {
     List<CreanceModel?> dataList = await CreanceApi().getAllData();
     var data = dataList;
 
+    
+
     if (mounted) {
       setState(() {
         for (var item in data) {

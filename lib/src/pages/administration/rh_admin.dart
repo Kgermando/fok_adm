@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fokad_admin/src/api/approbation/approbation_api.dart';
 import 'package:fokad_admin/src/api/rh/agents_api.dart';
 import 'package:fokad_admin/src/api/rh/paiement_salaire_api.dart';
 import 'package:fokad_admin/src/constants/app_theme.dart';
@@ -36,14 +37,19 @@ class _RhAdminState extends State<RhAdmin> {
     // RH
     List<AgentModel> agents = await AgentsApi().getAllData();
     var salaires = await PaiementSalaireApi().getAllData();
+    var approbations = await ApprobationApi().getAllData();
 
     setState(() {
       agentInactifs =
           agents.where((element) => element.statutAgent == false).length;
-      salaireCount = salaires
-          .where((element) => element.approbationBudget == "Approved" &&
-          element.observation == false &&
-            element.approbationDG == "-").length;
+      for (var item in approbations) {
+        salaireCount = salaires
+            .where((element) =>
+                element.id == item.reference &&
+                item.approbation == 'Directeur de departement' && 
+              element.observation == false)
+            .length;
+      }
     });
   }
 

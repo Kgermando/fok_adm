@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fokad_admin/src/api/approbation/approbation_api.dart';
 import 'package:fokad_admin/src/api/comm_marketing/commerciale/succursale_api.dart';
 import 'package:fokad_admin/src/api/comm_marketing/marketing/campaign_api.dart';
 import 'package:fokad_admin/src/constants/app_theme.dart';
@@ -37,13 +38,21 @@ class _CommMarketingAdminState extends State<CommMarketingAdmin> {
     // RH
     List<CampaignModel> campaign = await CampaignApi().getAllData();
     List<SuccursaleModel> succursale = await SuccursaleApi().getAllData();
+    var approbations = await ApprobationApi().getAllData();
+    
     setState(() {
-      campaignCount =
-          campaign.where((element) => element.approbationDD == 'Approved' && 
-          element.approbationDG == '-').length;
-      succursaleCount =
-          succursale.where((element) => element.approbationDD == 'Approved' && 
-        element.approbationDG == '-').length;
+      for (var item in approbations) {
+        campaignCount = campaign
+            .where((element) =>
+                element.id == item.reference &&
+                item.approbation == 'Directeur de departement')
+            .length;
+        succursaleCount = succursale
+            .where((element) =>
+                element.id == item.reference &&
+                item.approbation == 'Directeur de departement')
+            .length;
+      }
     });
   } 
 

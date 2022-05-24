@@ -1,4 +1,6 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
+import 'package:fokad_admin/src/api/approbation/approbation_api.dart';
 import 'package:fokad_admin/src/api/auth/auth_api.dart';
 import 'package:fokad_admin/src/api/budgets/departement_budget_api.dart';
 import 'package:fokad_admin/src/api/budgets/ligne_budgetaire_api.dart';
@@ -8,6 +10,7 @@ import 'package:fokad_admin/src/api/exploitations/projets_api.dart';
 import 'package:fokad_admin/src/api/rh/paiement_salaire_api.dart';
 import 'package:fokad_admin/src/constants/app_theme.dart';
 import 'package:fokad_admin/src/constants/responsive.dart';
+import 'package:fokad_admin/src/models/approbation/approbation_model.dart';
 import 'package:fokad_admin/src/models/budgets/departement_budget_model.dart';
 import 'package:fokad_admin/src/models/budgets/ligne_budgetaire_model.dart';
 import 'package:fokad_admin/src/models/comm_maketing/campaign_model.dart';
@@ -61,9 +64,21 @@ class _DetailDepartmentBudgetState extends State<DetailDepartmentBudget> {
   List<DevisModel> dataDevisList = [];
   List<ProjetModel> dataProjetList = [];
   List<PaiementSalaireModel> dataSalaireList = [];
-
+  List<ApprobationModel> approbList = [];
+  List<ApprobationModel> approbationData = [];
   DepartementBudgetModel? departementBudget;
-
+    ApprobationModel approb = ApprobationModel(
+      reference: 1,
+      title: '-',
+      departement: '-',
+      fontctionOccupee: '-',
+      ligneBudgtaire: '-',
+      resources: '-',
+      approbation: '-',
+      signatureApprobation: '-',
+      justification: '-',
+      signature: '-',
+      created: DateTime.now());
   UserModel user = UserModel(
       nom: '-',
       prenom: '-',
@@ -86,23 +101,40 @@ class _DetailDepartmentBudgetState extends State<DetailDepartmentBudget> {
     var devis = await DevisAPi().getAllData();
     var projets = await ProjetsApi().getAllData();
     var salaires = await PaiementSalaireApi().getAllData();
+    var approbations = await ApprobationApi().getAllData();
+
     setState(() {
       user = userModel;
       departementBudget = dataList;
       ligneBudgetaireList = budgets;
 
-      dataCampaignList = campaigns
-          .where((element) => element.approbationBudget == "Approved")
-          .toList();
-      dataDevisList = devis
-          .where((element) => element.approbationBudget == "Approved")
-          .toList();
-      dataProjetList = projets
-          .where((element) => element.approbationBudget == "Approved")
-          .toList();
-      dataSalaireList = salaires
-          .where((element) => element.approbationBudget == "Approved")
-          .toList();
+      for (var i in approbations) {
+        dataCampaignList = campaigns
+            .where((element) =>
+                element.id == i.reference &&
+                i.fontctionOccupee == 'Directeur générale')
+            .toList();
+        dataDevisList = devis
+            .where((element) =>
+                element.id == i.reference &&
+                i.fontctionOccupee == 'Directeur générale')
+            .toList();
+        dataProjetList = projets
+            .where((element) =>
+                element.id == i.reference &&
+                i.fontctionOccupee == 'Directeur générale')
+            .toList();
+        dataSalaireList = salaires
+            .where((element) =>
+                element.id == i.reference &&
+                i.fontctionOccupee == 'Directeur générale')
+            .toList();
+      }
+
+      // dataCampaignList = campaigns.toList();
+      // dataDevisList = devis.toList();
+      // dataProjetList = projets.toList();
+      // dataSalaireList = salaires.toList();
     });
   }
 
@@ -137,6 +169,14 @@ class _DetailDepartmentBudgetState extends State<DetailDepartmentBudget> {
                           if (snapshot.hasData) {
                             DepartementBudgetModel? departementBudgetModel =
                                 snapshot.data;
+                            approbationData = approbList
+                                .where(
+                                    (element) => element.reference == departementBudgetModel!.id!)
+                                .toList();
+
+                            if (approbationData.isNotEmpty) {
+                              approb = approbationData.first;
+                            }
                             return Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
@@ -159,7 +199,22 @@ class _DetailDepartmentBudgetState extends State<DetailDepartmentBudget> {
                                   ],
                                 ),
                                 Expanded(
-                                    child: pageDetail(departementBudgetModel!))
+                                    child: SingleChildScrollView(
+                                      child: Column(
+                                        children: [
+                                          pageDetail(departementBudgetModel!),
+                                          const SizedBox(height: p10),
+                                      infosEditeurWidget(),
+                                      const SizedBox(height: p10),
+                                      if (int.parse(user.role) == 1 ||
+                                          int.parse(user.role) < 2)
+                                        if (approb.fontctionOccupee !=
+                                            user.fonctionOccupe)
+                                          approbationForm(
+                                              departementBudgetModel),
+                                        ],
+                                      ),
+                                    ))
                               ],
                             );
                           } else {
@@ -269,8 +324,6 @@ class _DetailDepartmentBudgetState extends State<DetailDepartmentBudget> {
               Divider(color: Colors.red.shade700),
               const SizedBox(height: p20),
               LigneBudgetaire(departementBudgetModel: data),
-              const SizedBox(height: p20),
-              infosEditeurWidget(data),
               const SizedBox(
                 height: p20,
               ),
@@ -658,278 +711,453 @@ class _DetailDepartmentBudgetState extends State<DetailDepartmentBudget> {
   }
 
 
+  
+  Widget infosEditeurWidget() {
+    final bodyLarge = Theme.of(context).textTheme.bodyLarge;
 
-
-
-
-
-  Widget infosEditeurWidget(DepartementBudgetModel data) {
-    final bodyMedium = Theme.of(context).textTheme.bodyLarge;
-    final bodySmall = Theme.of(context).textTheme.bodyMedium;
-    List<String> dataList = ['Approved', 'Unapproved', '-'];
-    return Container(
-      padding: const EdgeInsets.only(top: p16, bottom: p16),
-      decoration: const BoxDecoration(
-        border: Border(
-          // top: BorderSide(width: 1.0),
-          bottom: BorderSide(width: 1.0),
-        ),
+    return SizedBox(
+      height: 500,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Card(
+            elevation: 10,
+            child: Container(
+                margin: const EdgeInsets.all(p16),
+                width: (Responsive.isDesktop(context))
+                    ? MediaQuery.of(context).size.width / 2
+                    : MediaQuery.of(context).size.width,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(p10),
+                  border: Border.all(
+                    color: Colors.red.shade700,
+                    width: 2.0,
+                  ),
+                ),
+                child: Column(
+                  children: [
+                    const TitleWidget(title: 'Approbation'),
+                    Expanded(
+                      child: FutureBuilder<List<ApprobationModel>>(
+                          future: ApprobationApi().getAllData(),
+                          builder: (BuildContext context,
+                              AsyncSnapshot<List<ApprobationModel>> snapshot) {
+                            if (snapshot.hasData) {
+                              List<ApprobationModel>? dataList = snapshot.data;
+                              return dataList!.isEmpty
+                                  ? Center(
+                                      child: Text(
+                                      "Pas encore d'approbation",
+                                      style: Responsive.isDesktop(context)
+                                          ? const TextStyle(fontSize: 24)
+                                          : const TextStyle(fontSize: 16),
+                                    ))
+                                  : ListView.builder(
+                                      itemCount: dataList.length,
+                                      itemBuilder: (context, index) {
+                                        final item = dataList[index];
+                                        return Padding(
+                                            padding: const EdgeInsets.all(p10),
+                                            child: Table(
+                                              children: [
+                                                TableRow(children: [
+                                                  TableCell(
+                                                      child: Padding(
+                                                    padding:
+                                                        const EdgeInsets.only(
+                                                            bottom: p20),
+                                                    child: Text(
+                                                        "Responsable"
+                                                            .toUpperCase(),
+                                                        textAlign:
+                                                            TextAlign.center,
+                                                        style: bodyLarge!
+                                                            .copyWith(
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .bold)),
+                                                  )),
+                                                  TableCell(
+                                                      child: Padding(
+                                                    padding:
+                                                        const EdgeInsets.only(
+                                                            bottom: p20),
+                                                    child: Text(
+                                                        "Approbation"
+                                                            .toUpperCase(),
+                                                        textAlign:
+                                                            TextAlign.center,
+                                                        style:
+                                                            bodyLarge.copyWith(
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .bold)),
+                                                  )),
+                                                  TableCell(
+                                                      child: Padding(
+                                                    padding:
+                                                        const EdgeInsets.only(
+                                                            bottom: p20),
+                                                    child: Text(
+                                                        "Motif".toUpperCase(),
+                                                        textAlign:
+                                                            TextAlign.center,
+                                                        style:
+                                                            bodyLarge.copyWith(
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .bold)),
+                                                  )),
+                                                  TableCell(
+                                                      child: Padding(
+                                                    padding:
+                                                        const EdgeInsets.only(
+                                                            bottom: p20),
+                                                    child: Text(
+                                                        "Signature"
+                                                            .toUpperCase(),
+                                                        textAlign:
+                                                            TextAlign.center,
+                                                        style:
+                                                            bodyLarge.copyWith(
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .bold)),
+                                                  )),
+                                                ]),
+                                                TableRow(children: [
+                                                  TableCell(
+                                                      child: Padding(
+                                                    padding:
+                                                        const EdgeInsets.only(
+                                                            bottom: p10),
+                                                    child: Text(
+                                                        item.fontctionOccupee,
+                                                        textAlign:
+                                                            TextAlign.center,
+                                                        style:
+                                                            bodyLarge.copyWith(
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .bold)),
+                                                  )),
+                                                  TableCell(
+                                                      child: Padding(
+                                                    padding:
+                                                        const EdgeInsets.only(
+                                                            bottom: p10),
+                                                    child: Text(
+                                                        item.approbation,
+                                                        textAlign:
+                                                            TextAlign.center,
+                                                        style: bodyLarge.copyWith(
+                                                            color: (item.approbation ==
+                                                                    'Approuved')
+                                                                ? Colors.green
+                                                                    .shade700
+                                                                : Colors.red
+                                                                    .shade700)),
+                                                  )),
+                                                  TableCell(
+                                                      child: Padding(
+                                                    padding:
+                                                        const EdgeInsets.only(
+                                                            bottom: p10),
+                                                    child: AutoSizeText(
+                                                        item.justification,
+                                                        maxLines: 10,
+                                                        textAlign:
+                                                            TextAlign.center,
+                                                        style: bodyLarge),
+                                                  )),
+                                                  TableCell(
+                                                      child: Text(
+                                                          item.signature,
+                                                          textAlign:
+                                                              TextAlign.center,
+                                                          style: bodyLarge)),
+                                                ]),
+                                                if (item.fontctionOccupee ==
+                                                    'Directeur de budget')
+                                                  TableRow(children: [
+                                                    TableCell(
+                                                        child: Padding(
+                                                            padding:
+                                                                const EdgeInsets
+                                                                        .only(
+                                                                    bottom:
+                                                                        p20),
+                                                            child:
+                                                                Container())),
+                                                    TableCell(
+                                                        child: Padding(
+                                                      padding:
+                                                          const EdgeInsets.only(
+                                                              bottom: p20),
+                                                      child: Text(
+                                                          "Ligne budgetaire"
+                                                              .toUpperCase(),
+                                                          textAlign:
+                                                              TextAlign.center,
+                                                          style: bodyLarge
+                                                              .copyWith(
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .bold)),
+                                                    )),
+                                                    TableCell(
+                                                        child: Padding(
+                                                      padding:
+                                                          const EdgeInsets.only(
+                                                              bottom: p20),
+                                                      child: Text(
+                                                          "Ressources"
+                                                              .toUpperCase(),
+                                                          textAlign:
+                                                              TextAlign.center,
+                                                          style: bodyLarge
+                                                              .copyWith(
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .bold)),
+                                                    )),
+                                                    TableCell(
+                                                        child: Padding(
+                                                      padding:
+                                                          const EdgeInsets.only(
+                                                              bottom: p20),
+                                                      child: Container(),
+                                                    )),
+                                                  ]),
+                                                if (item.fontctionOccupee ==
+                                                    'Directeur de budget')
+                                                  TableRow(children: [
+                                                    TableCell(
+                                                        child: Container()),
+                                                    TableCell(
+                                                        child: Text(
+                                                            item.ligneBudgtaire,
+                                                            textAlign: TextAlign
+                                                                .center,
+                                                            style: bodyLarge)),
+                                                    TableCell(
+                                                        child: Text(
+                                                            item.resources,
+                                                            textAlign: TextAlign
+                                                                .center,
+                                                            style: bodyLarge)),
+                                                    TableCell(
+                                                        child: Container()),
+                                                  ])
+                                              ],
+                                            ));
+                                      });
+                            } else {
+                              return const Center(
+                                  child: CircularProgressIndicator());
+                            }
+                          }),
+                    ),
+                  ],
+                )),
+          ),
+        ],
       ),
-      child: Padding(
-        padding: const EdgeInsets.all(p10),
-        child: Column(
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Expanded(
-                    flex: 1,
-                    child: Text('Directeur Générale',
-                        style: bodyMedium!.copyWith(
-                            fontWeight: FontWeight.bold,
-                            color: Colors.red.shade700))),
-                Expanded(
-                  flex: 3,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Expanded(
-                          flex: 3,
-                          child: Column(
-                            children: [
-                              Text(
-                                'Approbation',
-                                style: bodySmall!
-                                    .copyWith(color: Colors.red.shade700),
-                              ),
-                              if (data.approbationDG != '-')
-                                SelectableText(
-                                  data.approbationDG.toString(),
-                                  style: bodyMedium.copyWith(
-                                      color: Colors.red.shade700),
-                                ),
-                              if (data.approbationDG == '-' &&
-                                  user.fonctionOccupe == 'Directeur générale')
-                                Container(
-                                  margin: const EdgeInsets.only(
-                                      bottom: p10, left: p5),
-                                  child: DropdownButtonFormField<String>(
-                                    decoration: InputDecoration(
-                                      labelText: 'Approbation',
-                                      border: OutlineInputBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(5.0)),
-                                    ),
-                                    value: approbationDGController,
-                                    isExpanded: true,
-                                    items: dataList.map((String value) {
-                                      return DropdownMenuItem<String>(
-                                        value: value,
-                                        child: Text(value),
-                                      );
-                                    }).toList(),
-                                    onChanged: (value) {
-                                      setState(() {
-                                        approbationDGController = value!;
-                                      });
-                                    },
-                                  ),
-                                )
-                            ],
-                          )),
-                      Expanded(
-                          flex: 2,
-                          child: Column(
-                            children: [
-                              Text(
-                                'Signature',
-                                style: bodySmall.copyWith(
-                                    color: Colors.red.shade700),
-                              ),
-                              SelectableText(
-                                data.signatureDG.toString(),
-                                style: bodyMedium,
-                              ),
-                            ],
-                          )),
-                      Expanded(
-                          flex: 2,
-                          child: Column(
-                            children: [
-                              Text(
-                                'Justification',
-                                style: bodySmall.copyWith(
-                                    color: Colors.red.shade700),
-                              ),
-                              if (data.approbationDG == 'Unapproved' &&
-                                  data.signatureDG != '-')
-                                SelectableText(
-                                  data.signatureJustificationDG.toString(),
-                                  style: bodyMedium,
-                                ),
-                              if (data.approbationDG == 'Unapproved' &&
-                                  user.fonctionOccupe == 'Directeur générale')
-                                Container(
-                                    margin: const EdgeInsets.only(
-                                        bottom: p10, left: p5),
-                                    child: TextFormField(
-                                      controller:
-                                          signatureJustificationDGController,
-                                      decoration: InputDecoration(
-                                        border: OutlineInputBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(10.0)),
-                                        labelText: 'Quelque chose à dire',
-                                        hintText: 'Quelque chose à dire',
-                                      ),
-                                      keyboardType: TextInputType.text,
-                                      style: const TextStyle(),
-                                    )),
-                              if (data.approbationDG == 'Unapproved')
-                                IconButton(
-                                    onPressed: () {
-                                      submitUpdateDG(data);
-                                    },
-                                    icon: const Icon(Icons.send))
-                            ],
-                          ))
-                    ],
-                  ),
-                ),
-              ],
+    );
+  }
+
+  Widget approbationForm(DepartementBudgetModel data) {
+    final bodyLarge = Theme.of(context).textTheme.bodyLarge;
+    List<String> approbationList = ['Approved', 'Unapproved', '-'];
+    return SizedBox(
+      height: 200,
+      child: Card(
+        elevation: 10,
+        child: Container(
+          margin: const EdgeInsets.all(p16),
+          width: (Responsive.isDesktop(context))
+              ? MediaQuery.of(context).size.width / 2
+              : MediaQuery.of(context).size.width,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(p10),
+            border: Border.all(
+              color: Colors.blueGrey.shade700,
+              width: 2.0,
             ),
-            Divider(
-              color: Colors.amber.shade700,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Expanded(
-                    flex: 1,
-                    child: Text('Budget',
-                        style: bodyMedium.copyWith(
-                            fontWeight: FontWeight.bold,
-                            color: Colors.orange.shade700))),
-                Expanded(
-                  flex: 3,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Expanded(
-                          flex: 3,
-                          child: Column(
-                            children: [
-                              Text(
-                                'Approbation',
-                                style: bodySmall.copyWith(
-                                    color: Colors.orange.shade700),
-                              ),
-                              if (data.approbationBudget != '-')
-                                SelectableText(
-                                  data.approbationBudget.toString(),
-                                  style: bodyMedium.copyWith(
-                                      color: Colors.orange.shade700),
-                                ),
-                              if (data.approbationBudget == '-' &&
-                                  user.fonctionOccupe == 'Directeur de budget')
-                                Container(
-                                  margin: const EdgeInsets.only(
-                                      bottom: p10, left: p5),
-                                  child: DropdownButtonFormField<String>(
-                                    decoration: InputDecoration(
-                                      labelText: 'Approbation',
-                                      border: OutlineInputBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(5.0)),
-                                    ),
-                                    value: approbationBudgetController,
-                                    isExpanded: true,
-                                    items: dataList.map((String value) {
-                                      return DropdownMenuItem<String>(
-                                        value: value,
-                                        child: Text(value),
-                                      );
-                                    }).toList(),
-                                    onChanged: (value) {
-                                      setState(() {
-                                        approbationBudgetController = value!;
-                                      });
-                                    },
-                                  ),
-                                ),
-                              if (data.approbationBudget == '-' &&
-                                  user.fonctionOccupe == 'Directeur de budget')
-                                Row(
+          ),
+          child: SingleChildScrollView(
+            padding: const EdgeInsets.all(p10),
+            child: Form(
+              // key: _approbationKey,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Expanded(
+                      flex: 1,
+                      child: Text(user.fonctionOccupe,
+                          style: bodyLarge!.copyWith(
+                              fontWeight: FontWeight.bold,
+                              color: Colors.blue.shade700))),
+                  Expanded(
+                    flex: 3,
+                    child: Column(
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Expanded(
+                                flex: 3,
+                                child: Column(
                                   children: [
-                                    Expanded(child: ligneBudgtaireWidget()),
-                                    Expanded(child: resourcesWidget())
-                                  ],
-                                )
-                            ],
-                          )),
-                      Expanded(
-                          flex: 2,
-                          child: Column(
-                            children: [
-                              Text(
-                                'Signature',
-                                style: bodySmall.copyWith(
-                                    color: Colors.orange.shade700),
-                              ),
-                              SelectableText(
-                                data.signatureBudget.toString(),
-                                style: bodyMedium,
-                              ),
-                            ],
-                          )),
-                      Expanded(
-                          flex: 2,
-                          child: Column(
-                            children: [
-                              Text(
-                                'Justification',
-                                style: bodySmall.copyWith(
-                                    color: Colors.orange.shade700),
-                              ),
-                              if (data.approbationBudget == 'Unapproved' &&
-                                  data.signatureBudget != '-')
-                                SelectableText(
-                                  data.signatureJustificationBudget.toString(),
-                                  style: bodyMedium,
-                                ),
-                              if (data.approbationBudget == 'Unapproved' &&
-                                  user.fonctionOccupe == 'Directeur de budget')
-                                Container(
-                                    margin: const EdgeInsets.only(
-                                        bottom: p10, left: p5),
-                                    child: TextFormField(
-                                      controller:
-                                          signatureJustificationBudgetController,
-                                      decoration: InputDecoration(
-                                        border: OutlineInputBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(10.0)),
-                                        labelText: 'Quelque chose à dire',
-                                        hintText: 'Quelque chose à dire',
+                                    Text(
+                                      'Approbation',
+                                      style: bodyLarge.copyWith(
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                    const SizedBox(height: p20),
+                                    Container(
+                                      margin: const EdgeInsets.only(
+                                          bottom: p10, left: p5),
+                                      child: Row(
+                                        children: [
+                                          Expanded(
+                                            flex: 1,
+                                            child:
+                                                DropdownButtonFormField<String>(
+                                              decoration: InputDecoration(
+                                                labelText: 'Approbation',
+                                                border: OutlineInputBorder(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            5.0)),
+                                              ),
+                                              value: approbationDGController,
+                                              isExpanded: true,
+                                              items: approbationList
+                                                  .map((String value) {
+                                                return DropdownMenuItem<String>(
+                                                  value: value,
+                                                  child: Text(value),
+                                                );
+                                              }).toList(),
+                                              onChanged: (value) {
+                                                setState(() {
+                                                  approbationDGController =
+                                                      value!;
+                                                });
+                                              },
+                                            ),
+                                          ),
+                                          if (approbationDGController ==
+                                              'Approved')
+                                            Expanded(
+                                              flex: 1,
+                                              child: IconButton(
+                                                  tooltip: 'Approuvé',
+                                                  onPressed: () {
+                                                    submitApprobation(data);
+                                                  },
+                                                  icon: Icon(Icons.send,
+                                                      color:
+                                                          Colors.red.shade700)),
+                                            )
+                                        ],
                                       ),
-                                      keyboardType: TextInputType.text,
-                                      style: const TextStyle(),
-                                    )),
-                              if (data.approbationBudget == 'Unapproved')
-                                IconButton(
+                                    )
+                                  ],
+                                )),
+                            if (approbationDGController == 'Unapproved')
+                              Expanded(
+                                  flex: 3,
+                                  child: Column(
+                                    children: [
+                                      Text(
+                                        'Motif',
+                                        style: bodyLarge.copyWith(
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                      const SizedBox(height: p20),
+                                      Container(
+                                          margin: const EdgeInsets.only(
+                                              bottom: p10, left: p5),
+                                          child: Row(
+                                            children: [
+                                              Expanded(
+                                                flex: 3,
+                                                child: TextFormField(
+                                                  controller:
+                                                      signatureJustificationDGController,
+                                                  decoration: InputDecoration(
+                                                    border: OutlineInputBorder(
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(
+                                                                    10.0)),
+                                                    labelText:
+                                                        'Ecrivez votre motif...',
+                                                  ),
+                                                  keyboardType:
+                                                      TextInputType.multiline,
+                                                  minLines: 2,
+                                                  maxLines: 3,
+                                                  style: const TextStyle(),
+                                                ),
+                                              ),
+                                              Expanded(
+                                                flex: 1,
+                                                child: IconButton(
+                                                    tooltip: 'Approuvé',
+                                                    onPressed: () {
+                                                      // final form =
+                                                      //     _approbationKey
+                                                      //         .currentState!;
+                                                      // if (form.validate()) {
+                                                        
+                                                      //   form.reset();
+                                                      // }
+                                                      submitApprobation(data);
+                                                    },
+                                                    icon: Icon(Icons.send,
+                                                        color: Colors
+                                                            .red.shade700)),
+                                              )
+                                            ],
+                                          )),
+                                    ],
+                                  ))
+                          ],
+                        ),
+                        if (data.departement == 'Budgets')
+                          Row(
+                            children: [
+                              Expanded(flex: 3, child: ligneBudgtaireWidget()),
+                              const SizedBox(width: p20),
+                              Expanded(flex: 1, child: resourcesWidget()),
+                              Expanded(
+                                flex: 1,
+                                child: IconButton(
+                                    tooltip: 'Approuvé',
                                     onPressed: () {
-                                      submitUpdateBudget(data);
+                                      // final form =
+                                      //     _approbationKey.currentState!;
+                                      // if (form.validate()) {
+                                      //   submitApprobation(data);
+                                      //   form.reset();
+                                      // }
+                                      submitApprobation(data);
                                     },
-                                    icon: const Icon(Icons.send))
+                                    icon: Icon(Icons.send,
+                                        color: Colors.red.shade700)),
+                              )
                             ],
-                          ))
-                    ],
+                          )
+                      ],
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
-            
-          ],
+          ),
         ),
       ),
     );
@@ -992,64 +1220,22 @@ class _DetailDepartmentBudgetState extends State<DetailDepartmentBudget> {
     );
   }
 
-
-  Future<void> submitUpdateDG(DepartementBudgetModel data) async {
-    final departementBudgetModel = DepartementBudgetModel(
+  Future submitApprobation(DepartementBudgetModel data) async {
+    final approbation = ApprobationModel(
+        reference: data.id!,
         title: data.title,
         departement: data.departement,
-        periodeDebut: data.periodeDebut,
-        periodeFin: data.periodeFin,
-        approbationDG: approbationDGController.toString(),
-        signatureDG: user.matricule.toString(),
-        signatureJustificationDG: signatureJustificationDGController.text,
-        approbationFin: data.approbationFin.toString(),
-        signatureFin: data.signatureFin.toString(),
-        signatureJustificationFin: data.signatureJustificationFin.toString(),
-        approbationBudget: data.approbationBudget.toString(),
-        signatureBudget: data.signatureBudget.toString(),
-        signatureJustificationBudget:
-            data.signatureJustificationBudget.toString(),
-        approbationDD: data.approbationDD.toString(),
-        signatureDD: data.signatureDD.toString(),
-        signatureJustificationDD: data.signatureJustificationDD.toString(),
-        signature: data.signature,
-        created: data.created);
-
-    await DepeartementBudgetApi().updateData(data.id!, departementBudgetModel);
+        fontctionOccupee: user.fonctionOccupe,
+        ligneBudgtaire:
+            (ligneBudgtaire == null) ? '-' : ligneBudgtaire.toString(),
+        resources: (resource == null) ? '-' : resource.toString(),
+        approbation: approbationDGController,
+        signatureApprobation: user.matricule,
+        justification: signatureJustificationDGController.text,
+        signature: user.matricule,
+        created: DateTime.now());
+    await ApprobationApi().insertData(approbation);
     Navigator.of(context).pop();
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-      content: const Text("Mises à jour avec succès!"),
-      backgroundColor: Colors.green[700],
-    ));
-  }
-
-  Future<void> submitUpdateBudget(DepartementBudgetModel data) async {
-    final departementBudgetModel = DepartementBudgetModel(
-        title: data.title,
-        departement: data.departement,
-        periodeDebut: data.periodeDebut,
-        periodeFin: data.periodeFin,
-        approbationDG: data.approbationDG.toString(),
-        signatureDG: data.signatureDG.toString(),
-        signatureJustificationDG: data.signatureJustificationDG.toString(),
-        approbationFin: data.approbationFin.toString(),
-        signatureFin: data.signatureFin.toString(),
-        signatureJustificationFin: data.signatureJustificationFin.toString(),
-        approbationBudget: approbationBudgetController.toString(),
-        signatureBudget: user.matricule.toString(),
-        signatureJustificationBudget:
-            signatureJustificationBudgetController.text,
-        approbationDD: data.approbationDD.toString(),
-        signatureDD: data.signatureDD.toString(),
-        signatureJustificationDD: data.signatureJustificationDD.toString(),
-        signature: data.signature,
-        created: data.created);
-    await DepeartementBudgetApi().updateData(data.id!, departementBudgetModel);
-    Navigator.of(context).pop();
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-      content: const Text("Mises à jour avec succès!"),
-      backgroundColor: Colors.green[700],
-    ));
   }
 
 }

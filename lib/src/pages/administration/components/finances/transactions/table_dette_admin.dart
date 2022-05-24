@@ -283,7 +283,9 @@ class _TableDetteAdminState extends State<TableDetteAdmin> {
 
   Future agentsRow() async {
     List<DetteModel?> dataList = await DetteApi().getAllData();
-    var data = dataList;
+    var data = dataList;  // PAs de filtre parce le fichier approbation n'est pas encore crée
+    
+
     if (mounted) {
       setState(() {
         for (var item in data) {
@@ -297,7 +299,7 @@ class _TableDetteAdminState extends State<TableDetteAdmin> {
             'numeroOperation': PlutoCell(value: item.numeroOperation),
             'approbation': PlutoCell(value: item.approbationDG),
             'created': PlutoCell(
-                value: DateFormat("DD-MM-yy H:mm").format(item.created))
+                value: DateFormat("dd-MM-yy HH:mm").format(item.created))
           }));
         }
         stateManager!.resetCurrentState();

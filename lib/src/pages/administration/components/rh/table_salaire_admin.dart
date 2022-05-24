@@ -195,11 +195,7 @@ class _TableSalaireAdminState extends State<TableSalaireAdmin> {
     List<PaiementSalaireModel?> dataList =
         await PaiementSalaireApi().getAllData();
     var data = dataList
-        .where((element) =>
-            element!.approbationBudget == "Approved" &&
-            element.observation == false &&
-            element.approbationDG == "-" &&
-            element.approbationFin != "-")
+        .where((element) => element!.observation == false)
         .toList();
 
     if (mounted) {

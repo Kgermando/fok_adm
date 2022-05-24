@@ -12,7 +12,7 @@ import 'package:fokad_admin/src/constants/responsive.dart';
 import 'package:fokad_admin/src/models/comm_maketing/campaign_model.dart';
 import 'package:fokad_admin/src/navigation/drawer/drawer_menu.dart';
 import 'package:fokad_admin/src/navigation/header/custom_appbar.dart';
-import 'package:fokad_admin/src/pages/budgets/budget_dd/components/table_campaign_fin.dart';
+import 'package:fokad_admin/src/pages/budgets/budget_dd/components/table_campaign_buget.dart';
 import 'package:fokad_admin/src/pages/budgets/budget_dd/components/table_departement_budget_dd.dart';
 import 'package:fokad_admin/src/pages/budgets/budget_dd/components/table_devis_budget_dd.dart';
 import 'package:fokad_admin/src/pages/budgets/budget_dd/components/table_projet_budget_dd.dart';

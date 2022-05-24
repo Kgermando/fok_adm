@@ -140,11 +140,9 @@ class _TableBilanAdminState extends State<TableBilanAdmin> {
   }
 
   Future agentsRow() async {
-    UserModel userModel = await AuthApi().getUserId();
+    // UserModel userModel = await AuthApi().getUserId();
     List<BilanModel?> dataList = await BilanApi().getAllData();
-    var data = dataList.where((element) =>
-        element!.approbationDG == "-" && element.approbationDD == "Approved" ||
-        element.signature == userModel.matricule);
+    var data = dataList;
 
     if (mounted) {
       setState(() {

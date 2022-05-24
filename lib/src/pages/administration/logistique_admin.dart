@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:fokad_admin/src/api/approbation/approbation_api.dart';
 import 'package:fokad_admin/src/api/logistiques/anguin_api.dart';
 import 'package:fokad_admin/src/api/logistiques/carburant_api.dart';
 import 'package:fokad_admin/src/api/logistiques/immobiler_api.dart';
@@ -41,10 +42,7 @@ class _LogistiquesAdminState extends State<LogistiquesAdmin> {
 
    @override
   void initState() {
-    Timer.periodic(const Duration(milliseconds: 500), ((timer) {
-      getData();
-      timer.cancel();
-    }));
+    getData();
 
     super.initState();
   }
@@ -54,24 +52,25 @@ class _LogistiquesAdminState extends State<LogistiquesAdmin> {
     var carburants = await CarburantApi().getAllData();
     var immobiliers = await ImmobilierApi().getAllData();
     var mobiliers = await MobilierApi().getAllData();
+    var approbations = await ApprobationApi().getAllData();
 
     setState(() {
-      anguinsapprobationDD =
-          anguins.where((element) => element.approbationDG == "-" && 
-          element.approbationDD == "Approved").length;
-      carburantCount =
-          carburants.where((element) => element.approbationDG == "-" && 
-          element.approbationDD == "Approved").length;
-      immobiliersCount =
-          immobiliers.where((element) => element.approbationDG == "-" && 
-          element.approbationDD == "Approved").length;
-      mobiliersCount =
-          mobiliers.where((element) => element.approbationDG == "-" && 
-          element.approbationDD == "Approved").length;
+      for (var item in approbations) {
+        anguinsapprobationDD =
+            anguins.where((element) => element.id == item.reference &&
+                item.approbation == 'Directeur de departement').length;
+        carburantCount =
+            carburants.where((element) => element.id == item.reference &&
+                item.approbation == 'Directeur de departement').length;
+        immobiliersCount =
+            immobiliers.where((element) => element.id == item.reference &&
+                item.approbation == 'Directeur de departement').length;
+        mobiliersCount =
+            mobiliers.where((element) => element.id == item.reference &&
+                item.approbation == 'Directeur de departement').length;
+      }
     });
   }
-
-  
 
   @override
   Widget build(BuildContext context) {

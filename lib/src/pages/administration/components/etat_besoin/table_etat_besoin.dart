@@ -200,15 +200,8 @@ class _TableEtatBesoinState extends State<TableEtatBesoin> {
 
   Future agentsRow() async {
     List<DevisModel?> dataList = await DevisAPi().getAllData();
-    List<DevisModel?> data = [];
-    var approbations = await ApprobationApi().getAllData();
 
-    for (var item in approbations) {
-      data =
-        dataList.where((element) => 
-        element!.id == item.reference && item.approbation == '-'
-      ).toList();
-    }
+   var data = dataList.toList();
     
 
     if (mounted) {
