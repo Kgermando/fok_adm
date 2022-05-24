@@ -2,28 +2,28 @@ import 'package:flutter/material.dart';
 import 'package:fokad_admin/src/models/menu_item.dart';
 
 class MenuItems {
-  static const List<MenuItem> itemsFirst = [
+  static const List<MenuItemModel> itemsFirst = [
     itemProfile,
     itemHelp,
     itemSettings,
   ];
 
-  static const List<MenuItem> itemsSecond = [
+  static const List<MenuItemModel> itemsSecond = [
     itemLogout,
   ];
 
-  static const itemProfile = MenuItem(
+  static const itemProfile = MenuItemModel(
     text: 'Profil',
     icon: Icons.person,
   );
 
-  static const itemHelp = MenuItem(text: 'Aide', icon: Icons.help);
+  static const itemHelp = MenuItemModel(text: 'Aide', icon: Icons.help);
 
-  static const itemSettings = MenuItem(
+  static const itemSettings = MenuItemModel(
     text: 'Settings',
     icon: Icons.settings,
   );
 
-  static const itemLogout = MenuItem(text: 'Déconnexion', icon: Icons.logout);
+  static const itemLogout = MenuItemModel(text: 'Déconnexion', icon: Icons.logout);
 }
 

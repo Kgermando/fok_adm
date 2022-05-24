@@ -169,7 +169,7 @@ class _CustomAppbarState extends State<CustomAppbar> {
                     return const Center(child: CircularProgressIndicator());
                   }
                 }),
-            PopupMenuButton<MenuItem>(
+            PopupMenuButton<MenuItemModel>(
               onSelected: (item) => MenuOptions().onSelected(context, item),
               itemBuilder: (context) => [
                 ...MenuItems.itemsFirst.map(MenuOptions().buildItem).toList(),

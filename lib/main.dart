@@ -50,7 +50,7 @@ class MyApp extends StatelessWidget {
         final themeProvider = Provider.of<ThemeProvider>(context);
         return MaterialApp.router(
           title: 'FOKAD ADMINISTRATION',
-          themeMode: themeProvider.themeMode,
+          themeMode: themeProvider.themeMode, 
           routerDelegate: RoutemasterDelegate(
             observers: [TitleObserver()],
             routesBuilder: (context) {

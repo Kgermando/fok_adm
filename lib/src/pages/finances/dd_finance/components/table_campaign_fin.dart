@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fokad_admin/src/api/approbation/approbation_api.dart';
 import 'package:fokad_admin/src/api/comm_marketing/marketing/campaign_api.dart';
 import 'package:fokad_admin/src/models/comm_maketing/campaign_model.dart';
 import 'package:fokad_admin/src/pages/comm_marketing/marketing/components/campaign/detail_campaign.dart';
@@ -190,11 +191,15 @@ class _TableCampaignFinState extends State<TableCampaignFin> {
 
   Future agentsRow() async {
     List<CampaignModel?> dataList = await CampaignApi().getAllData();
-    var data = dataList
-        .where((element) =>
-            element!.approbationDD == "Approved" &&
-            element.approbationBudget == "Approved")
-        .toList();
+   List<CampaignModel?> data = [];
+    var approbations = await ApprobationApi().getAllData();
+    for (var item in approbations) {
+      data = dataList
+          .where((element) =>
+              element!.id == item.reference &&
+              item.fontctionOccupee == 'Directeur budget')
+          .toList();
+    }
 
     if (mounted) {
       setState(() {

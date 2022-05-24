@@ -33,6 +33,7 @@ class ServiceAffectation {
   List<String> budgetDropdown = [
     'Supervision',
     'Verification',
+    'Création',
   ];
 
   List<String> comptableDropdown = [

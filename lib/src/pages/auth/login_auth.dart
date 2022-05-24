@@ -260,11 +260,10 @@ class _LoginPageState extends State<LoginPage> {
             if (form.validate()) {
               setState(() => isloading = true);
               await AuthApi()
-                  .login(matriculeController.text, passwordController.text)
+                  .login(matriculeController.text.toLowerCase(), passwordController.text)
                   .then((value) {
                 if (value) {
-                  Provider.of<AppState>(context, listen: false).isLoggedIn =
-                      true;
+                Provider.of<AppState>(context, listen: false).isLoggedIn = true;
                   ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                     content: const Text("Login succès!"),
                     backgroundColor: Colors.green[700],

@@ -1,4 +1,5 @@
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:badges/badges.dart';
 import 'package:flutter/material.dart';
 import 'package:fokad_admin/src/navigation/drawer/drawer_widget.dart';
 import 'package:fokad_admin/src/routes/routes.dart';
@@ -15,6 +16,7 @@ class ComptabiliteNav extends StatefulWidget {
 
 class _ComptabiliteNavState extends State<ComptabiliteNav> {
   bool isOpenComptabilite = false;
+  int itemCount = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -51,6 +53,13 @@ class _ComptabiliteNavState extends State<ComptabiliteNav> {
             sizeIcon: 15.0,
             title: 'Directeur departement',
             style: bodyText2!,
+            badge: Badge(
+              showBadge: (itemCount >= 1) ? true : false,
+              badgeColor: Colors.teal,
+              badgeContent: Text('$itemCount',
+                  style: const TextStyle(fontSize: 10.0, color: Colors.white)),
+              child: const Icon(Icons.notifications),
+            ),
             onTap: () {
               Routemaster.of(context)
                   .replace(ComptabiliteRoutes.comptabiliteDD);

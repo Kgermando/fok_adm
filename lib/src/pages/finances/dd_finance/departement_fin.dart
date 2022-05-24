@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fokad_admin/src/api/approbation/approbation_api.dart';
 import 'package:fokad_admin/src/api/comm_marketing/marketing/campaign_api.dart';
 import 'package:fokad_admin/src/api/devis/devis_api.dart';
 import 'package:fokad_admin/src/api/exploitations/projets_api.dart';
@@ -10,7 +11,7 @@ import 'package:fokad_admin/src/constants/responsive.dart';
 import 'package:fokad_admin/src/navigation/drawer/drawer_menu.dart';
 import 'package:fokad_admin/src/navigation/header/custom_appbar.dart';
 import 'package:fokad_admin/src/pages/finances/dd_finance/components/table_campaign_fin.dart';
-import 'package:fokad_admin/src/pages/finances/dd_finance/components/table_devis_dd.dart';
+import 'package:fokad_admin/src/pages/finances/dd_finance/components/table_devis_fin.dart';
 import 'package:fokad_admin/src/pages/finances/dd_finance/components/table_projet_fin.dart';
 import 'package:fokad_admin/src/pages/finances/dd_finance/components/table_salaire_fin.dart';
 
@@ -51,42 +52,60 @@ class _DepartementFinState extends State<DepartementFin> {
     var campaigns = await CampaignApi().getAllData();
     var devis = await DevisAPi().getAllData();
     var projets = await ProjetsApi().getAllData();
+    var approbations = await ApprobationApi().getAllData();
 
     setState(() {
-      creanceCount = creances
-          .where((element) => element.statutPaie == false && 
-              element.approbationDG == 'Approved')
-          .toList()
-          .length;
-      detteCount = dettes
-          .where((element) => element.statutPaie == false &&  element.approbationDG == 'Approved')
-          .toList()
-          .length;
+      for (var item in approbations) {
+        creanceCount = creances
+            .where((element) =>
+                element.statutPaie == false &&
+                element.id == item.reference &&
+                item.fontctionOccupee == 'Directeur budget')
+            .toList()
+            .length;
+      }
 
-      salaireCount = salaires
-          .where((element) =>
-              element.approbationFin == '-' &&
-              element.approbationDG == 'Approved')
-          .toList()
-          .length;
-      campaignCount = campaigns
-          .where((element) =>
-              element.approbationFin == '-' &&
-              element.approbationDG == 'Approved')
-          .toList()
-          .length;
-      devisCount = devis
-          .where((element) =>
-              element.approbationFin == '-' &&
-              element.approbationDG == 'Approved')
-          .toList()
-          .length;
-      projetCount = projets
-          .where((element) =>
-              element.approbationFin == '-' &&
-              element.approbationDG == 'Approved')
-          .toList()
-          .length;
+      for (var item in approbations) {
+        detteCount = dettes
+            .where((element) => element.statutPaie == false &&
+                element.id == item.reference &&
+                item.fontctionOccupee == 'Directeur budget')
+            .toList()
+            .length;
+      }
+          
+      for (var item in approbations) {
+        salaireCount = salaires
+            .where((element) =>
+                element.id == item.reference &&
+                item.fontctionOccupee == 'Directeur budget')
+            .toList()
+            .length;
+      }
+      for (var item in approbations) {
+        campaignCount = campaigns
+            .where((element) =>
+                element.id == item.reference &&
+                item.fontctionOccupee == 'Directeur budget')
+            .toList()
+            .length;
+      }
+      for (var item in approbations) {
+        devisCount = devis
+            .where((element) =>
+                element.id == item.reference &&
+                item.fontctionOccupee == 'Directeur budget')
+            .toList()
+            .length;
+      }
+      for (var item in approbations) {
+        projetCount = projets
+            .where((element) =>
+                element.id == item.reference &&
+                item.fontctionOccupee == 'Directeur finance')
+            .toList()
+            .length;
+      }
     });
   }
 
@@ -194,7 +213,7 @@ class _DepartementFinState extends State<DepartementFin> {
                                   Icons.arrow_drop_down,
                                   color: Colors.white,
                                 ),
-                                children: const [TableDevisDD()],
+                                children: const [TableDevisFin()],
                               ),
                             ),
                             Card(

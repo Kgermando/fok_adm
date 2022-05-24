@@ -202,23 +202,13 @@ class _TableDevisState extends State<TableDevis> {
   Future agentsRow() async {
     final userModel = await AuthApi().getUserId();
     List<DevisModel?> dataList = await DevisAPi().getAllData();
-    // var data = dataList
-    //     .where((element) =>
-    //         element!.departement == 'Administration' ||
-    //         element.departement == userModel.departement &&
-    //             element.approbationDG == 'Approuved' ||
-    //         element.departement == 'Finances' &&
-    //             element.approbationDG == 'Approved' ||
-    //         element.departement == 'Budgets' &&
-    //             element.approbationDG == 'Approved')
-    //     .toList();
-
     var data =
       dataList.where((element) => 
-        
-        element!.departement == widget.departement &&  
-        element.approbationDG == 'Approuved' ||
-        element.departement == userModel.departement
+        element!.departement == userModel.departement && 
+        userModel.fonctionOccupe == 'Directeur de departement' ||
+        userModel.fonctionOccupe == 'Directeur de budget' ||
+        userModel.fonctionOccupe == 'Directeur de finance' ||
+        userModel.fonctionOccupe == 'Directeur de générale'
     );
 
     if (mounted) {

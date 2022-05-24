@@ -37,7 +37,7 @@ class _EtatBesoinAdminState extends State<EtatBesoinAdmin> {
         itemCount = data
             .where((element) =>
                 element.id == item.reference && item.approbation == '-')
-            .length;
+              .toList().length;
       }
     });
   }

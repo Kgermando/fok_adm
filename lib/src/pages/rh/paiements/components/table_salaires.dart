@@ -207,11 +207,13 @@ class _TableSalairesState extends State<TableSalaires> {
     List<PaiementSalaireModel?> dataList =
         await PaiementSalaireApi().getAllData();
     // var data =
-    //     dataList.where((element) => element!.approbationDG == "Approved" && element.observation == true).toList();
+    //     dataList.where((element) => element!.approbationDG == "Approved" && 
+    // element.observation == true).toList();
 
     var data = dataList
         .where((element) =>
-            element!.createdAt.month == DateTime.now().month && element.createdAt.year == DateTime.now().year)
+            element!.createdAt.month == DateTime.now().month && 
+            element.createdAt.year == DateTime.now().year)
         .toList();
 
 

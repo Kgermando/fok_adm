@@ -409,7 +409,7 @@ class _AddAgentState extends State<AddAgent> {
                 OutlineInputBorder(borderRadius: BorderRadius.circular(10.0)),
             labelText: 'Email',
           ),
-          keyboardType: TextInputType.text,
+          keyboardType: TextInputType.emailAddress,
           style: const TextStyle(),
           validator: (value) {
             if (value != null && value.isEmpty) {
@@ -881,22 +881,34 @@ class _AddAgentState extends State<AddAgent> {
   Widget salaireWidget() {
     return Container(
         margin: const EdgeInsets.only(bottom: p20),
-        child: TextFormField(
-          controller: salaireController,
-          decoration: InputDecoration(
-            border:
-                OutlineInputBorder(borderRadius: BorderRadius.circular(10.0)),
-            labelText: 'Salaire',
-          ),
-          keyboardType: TextInputType.text,
-          style: const TextStyle(),
-          validator: (value) {
-            if (value != null && value.isEmpty) {
-              return 'Ce champs est obligatoire';
-            } else {
-              return null;
-            }
-          },
+        child: Row(
+          children: [
+            Expanded(
+              flex: 3,
+              child: TextFormField(
+                controller: salaireController,
+                decoration: InputDecoration(
+                  border:
+                      OutlineInputBorder(borderRadius: BorderRadius.circular(10.0)),
+                  labelText: 'Salaire',
+                ),
+                keyboardType: TextInputType.text,
+                style: const TextStyle(),
+                validator: (value) {
+                  if (value != null && value.isEmpty) {
+                    return 'Ce champs est obligatoire';
+                  } else {
+                    return null;
+                  }
+                },
+              ),
+            ),
+            const SizedBox(width: p20),
+            Expanded(
+              flex: 1,
+              child: Text("\$", 
+              style: Theme.of(context).textTheme.headline6))
+          ],
         ));
   }
 
@@ -945,7 +957,7 @@ class _AddAgentState extends State<AddAgent> {
             (experienceController.text == '') ? '-' : experienceController.text,
         statutAgent: false,
         createdAt: DateTime.now(),
-        photo: '',
+        photo: '-',
         salaire: (salaireController.text == '') ? '-' : salaireController.text,
         signature: user!.matricule.toString(),
         created: DateTime.now());

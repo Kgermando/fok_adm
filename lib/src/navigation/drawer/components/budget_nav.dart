@@ -1,5 +1,12 @@
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:badges/badges.dart';
 import 'package:flutter/material.dart';
+import 'package:fokad_admin/src/api/approbation/approbation_api.dart';
+import 'package:fokad_admin/src/api/budgets/departement_budget_api.dart';
+import 'package:fokad_admin/src/api/comm_marketing/marketing/campaign_api.dart';
+import 'package:fokad_admin/src/api/devis/devis_api.dart';
+import 'package:fokad_admin/src/api/exploitations/projets_api.dart';
+import 'package:fokad_admin/src/api/rh/paiement_salaire_api.dart';
 import 'package:fokad_admin/src/navigation/drawer/drawer_widget.dart';
 import 'package:fokad_admin/src/routes/routes.dart';
 import 'package:routemaster/routemaster.dart';
@@ -15,10 +22,81 @@ class BudgetNav extends StatefulWidget {
 class _BudgetNavState extends State<BudgetNav> {
   bool isOpenBudget = false;
 
+  int itemCount = 0;
+  
+  int salaireCount = 0;
+  int campaignCount = 0;
+  int devisCount = 0;
+  int projetCount = 0;
+  int budgetDepCount = 0;
+
+  @override
+  void initState() {
+    getData();
+
+    super.initState();
+  }
+
+  Future<void> getData() async {
+    var salaires = await PaiementSalaireApi().getAllData();
+    var campaigns = await CampaignApi().getAllData();
+    var devis = await DevisAPi().getAllData();
+    var projets = await ProjetsApi().getAllData();
+    var budgetDep = await DepeartementBudgetApi().getAllData();
+    var approbations = await ApprobationApi().getAllData();
+
+    setState(() {
+      for (var item in approbations) {
+        salaireCount = salaires
+            .where((element) =>
+                element.id == item.reference &&
+                item.fontctionOccupee == 'Directeur générale')
+            .toList()
+            .length;
+      }
+      for (var item in approbations) {
+        campaignCount = campaigns
+            .where((element) =>
+                element.id == item.reference &&
+                item.fontctionOccupee == 'Directeur générale')
+            .toList()
+            .length;
+      }
+      for (var item in approbations) {
+        devisCount = devis
+            .where((element) =>
+                element.id == item.reference &&
+                item.fontctionOccupee == 'Directeur générale')
+            .toList()
+            .length;
+      }
+      for (var item in approbations) {
+        projetCount = projets
+            .where((element) =>
+                element.id == item.reference &&
+                item.fontctionOccupee == 'Directeur générale')
+            .toList()
+            .length;
+      }
+      for (var item in approbations) {
+        budgetDepCount = budgetDep
+            .where((element) =>
+                element.id == item.reference &&
+                item.fontctionOccupee == 'Directeur générale')
+            .toList()
+            .length;
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     final bodyLarge = Theme.of(context).textTheme.bodyLarge;
     final bodyText1 = Theme.of(context).textTheme.bodyText1;
+
+    itemCount = salaireCount + campaignCount + devisCount + 
+      projetCount + budgetDepCount;
+
 
     return ExpansionTile(
       leading: const Icon(Icons.fact_check, size: 30.0),
@@ -49,6 +127,13 @@ class _BudgetNavState extends State<BudgetNav> {
             sizeIcon: 20.0,
             title: 'Directeur de departement',
             style: bodyText1,
+            badge: Badge(
+              showBadge: (itemCount >= 1) ? true : false,
+              badgeColor: Colors.teal,
+              badgeContent: Text('$itemCount',
+                  style: const TextStyle(fontSize: 10.0, color: Colors.white)),
+              child: const Icon(Icons.notifications),
+            ),
             onTap: () {
               Routemaster.of(context).replace(
                 BudgetRoutes.budgetDD,
@@ -56,7 +141,8 @@ class _BudgetNavState extends State<BudgetNav> {
               // Navigator.of(context).pop();
             }),
         DrawerWidget(
-            selected: widget.pageCurrente == BudgetRoutes.budgetBudgetPrevisionel,
+            selected:
+                widget.pageCurrente == BudgetRoutes.budgetBudgetPrevisionel,
             icon: Icons.wallet_giftcard,
             sizeIcon: 20.0,
             title: 'Budgets previsonels',
@@ -68,8 +154,8 @@ class _BudgetNavState extends State<BudgetNav> {
               // Navigator.of(context).pop();
             }),
         DrawerWidget(
-            selected:
-                widget.pageCurrente == BudgetRoutes.historiqueBudgetBudgetPrevisionel,
+            selected: widget.pageCurrente ==
+                BudgetRoutes.historiqueBudgetBudgetPrevisionel,
             icon: Icons.history_sharp,
             sizeIcon: 20.0,
             title: 'Historique Budgetaires',
@@ -90,7 +176,6 @@ class _BudgetNavState extends State<BudgetNav> {
               Routemaster.of(context).replace(RhRoutes.rhPerformence);
               // Navigator.of(context).pop();
             }),
-        
       ],
     );
   }

@@ -196,10 +196,7 @@ class _UpdateAgentState extends State<UpdateAgent> {
                         ],
                       ),
                       Expanded(
-                          child: Scrollbar(
-                              controller: _controllerScroll,
-                              isAlwaysShown: true,
-                              child: updateAgentWidget()))
+                          child: updateAgentWidget())
                     ],
                   ),
                 ),
@@ -434,7 +431,7 @@ class _UpdateAgentState extends State<UpdateAgent> {
                 OutlineInputBorder(borderRadius: BorderRadius.circular(10.0)),
             labelText: 'Email',
           ),
-          keyboardType: TextInputType.text,
+          keyboardType: TextInputType.emailAddress,
           style: const TextStyle(),
           validator: (value) {
             if (value != null && value.isEmpty) {
@@ -863,17 +860,6 @@ class _UpdateAgentState extends State<UpdateAgent> {
           },
         )
 
-        //     HtmlEditor(
-        //     controller: competanceController, //required
-        //     htmlEditorOptions: const HtmlEditorOptions(
-        //       hint: "Your text here...",
-        //       //initalText: "text content initial, if any",
-        //     ),
-        //     otherOptions: const OtherOptions(
-        //       height: 400,
-        //     ),
-        // )
-
         );
   }
 
@@ -904,24 +890,33 @@ class _UpdateAgentState extends State<UpdateAgent> {
   Widget salaireWidget() {
     return Container(
         margin: const EdgeInsets.only(bottom: p20),
-        child: TextFormField(
-          minLines: 5,
-          maxLines: 100,
-          controller: salaireController,
-          decoration: InputDecoration(
-            border:
-                OutlineInputBorder(borderRadius: BorderRadius.circular(10.0)),
-            labelText: 'Salaire',
-          ),
-          keyboardType: TextInputType.text,
-          style: const TextStyle(),
-          validator: (value) {
-            if (value != null && value.isEmpty) {
-              return 'Ce champs est obligatoire';
-            } else {
-              return null;
-            }
-          },
+        child: Row(
+          children: [
+            Expanded(
+              flex: 3,
+              child: TextFormField(
+                controller: salaireController,
+                decoration: InputDecoration(
+                  border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10.0)),
+                  labelText: 'Salaire',
+                ),
+                keyboardType: TextInputType.text,
+                style: const TextStyle(),
+                validator: (value) {
+                  if (value != null && value.isEmpty) {
+                    return 'Ce champs est obligatoire';
+                  } else {
+                    return null;
+                  }
+                },
+              ),
+            ),
+            const SizedBox(width: p20),
+            Expanded(
+                flex: 1,
+                child: Text("\$", style: Theme.of(context).textTheme.headline6))
+          ],
         ));
   }
 
@@ -950,8 +945,8 @@ class _UpdateAgentState extends State<UpdateAgent> {
         competance: competanceController.toString(),
         experience: experienceController.text,
         statutAgent: false,
-        createdAt: DateTime.now(),
-        photo: '',
+        createdAt: widget.agentModel.createdAt,
+        photo: '-',
         salaire: salaireController.text,
         signature: user!.matricule.toString(),
         created: DateTime.now());

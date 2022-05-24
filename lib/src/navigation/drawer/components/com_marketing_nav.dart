@@ -1,4 +1,5 @@
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:badges/badges.dart';
 import 'package:flutter/material.dart';
 import 'package:fokad_admin/src/navigation/drawer/drawer_widget.dart';
 import 'package:fokad_admin/src/routes/routes.dart';
@@ -15,6 +16,8 @@ class ComMarketing extends StatefulWidget {
 class _ComMarketingState extends State<ComMarketing> {
   bool isOpenComMarketing1 = false;
   bool isOpenComMarketing2 = false;
+
+  int itemCount = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -52,6 +55,13 @@ class _ComMarketingState extends State<ComMarketing> {
             sizeIcon: 20.0,
             title: 'Directeur de departement',
             style: bodyText1,
+            badge: Badge(
+              showBadge: (itemCount >= 1) ? true : false,
+              badgeColor: Colors.teal,
+              badgeContent: Text('$itemCount',
+                  style: const TextStyle(fontSize: 10.0, color: Colors.white)),
+              child: const Icon(Icons.notifications),
+            ),
             onTap: () {
               Routemaster.of(context).replace(
                 ComMarketingRoutes.comMarketingDD,
@@ -291,7 +301,6 @@ class _ComMarketingState extends State<ComMarketing> {
             onTap: () {
               Routemaster.of(context).replace(RhRoutes.rhPerformence);
             }),
-        
       ],
     );
   }

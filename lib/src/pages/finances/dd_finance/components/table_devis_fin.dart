@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:fokad_admin/src/api/approbation/approbation_api.dart';
 import 'package:fokad_admin/src/api/auth/auth_api.dart';
 import 'package:fokad_admin/src/api/devis/devis_api.dart';
 import 'package:fokad_admin/src/models/devis/devis_models.dart';
@@ -10,14 +11,14 @@ import 'package:fokad_admin/src/utils/class_implemented.dart';
 import 'package:intl/intl.dart';
 import 'package:pluto_grid/pluto_grid.dart';
 
-class TableDevisDD extends StatefulWidget {
-  const TableDevisDD({Key? key}) : super(key: key);
+class TableDevisFin extends StatefulWidget {
+  const TableDevisFin({Key? key}) : super(key: key);
 
   @override
-  State<TableDevisDD> createState() => _TableDevisDDState();
+  State<TableDevisFin> createState() => _TableDevisFinState();
 }
 
-class _TableDevisDDState extends State<TableDevisDD> {
+class _TableDevisFinState extends State<TableDevisFin> {
   List<PlutoColumn> columns = [];
   List<PlutoRow> rows = [];
   PlutoGridStateManager? stateManager;
@@ -199,12 +200,16 @@ class _TableDevisDDState extends State<TableDevisDD> {
 
   Future agentsRow() async {
     List<DevisModel?> dataList = await DevisAPi().getAllData();
-    var data = dataList
-        .where((element) =>
-            element!.approbationBudget == 'Approuved' && 
-            element.approbationDG == 'Approved' &&
-            element.approbationFin == '-')
-        .toList();
+    List<DevisModel?> data = [];
+    var approbations = await ApprobationApi().getAllData();
+    for (var item in approbations) {
+      data = dataList
+          .where((element) =>
+              element!.id == item.reference &&
+              item.fontctionOccupee == 'Directeur budget')
+          .toList();
+    }
+
 
     if (mounted) {
       setState(() {

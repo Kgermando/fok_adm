@@ -1,4 +1,5 @@
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:badges/badges.dart';
 import 'package:flutter/material.dart';
 import 'package:fokad_admin/src/navigation/drawer/drawer_widget.dart';
 import 'package:fokad_admin/src/routes/routes.dart';
@@ -14,6 +15,7 @@ class RhNav extends StatefulWidget {
 
 class _RhNavState extends State<RhNav> {
   bool isOpenRh = false;
+  int itemCount = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -47,6 +49,13 @@ class _RhNavState extends State<RhNav> {
             sizeIcon: 20.0,
             title: 'Directeur de département',
             style: bodyText1,
+            badge: Badge(
+              showBadge: (itemCount >= 1) ? true : false,
+              badgeColor: Colors.teal,
+              badgeContent: Text('$itemCount',
+                  style: const TextStyle(fontSize: 10.0, color: Colors.white)),
+              child: const Icon(Icons.notifications),
+            ),
             onTap: () {
               Routemaster.of(context).replace(RhRoutes.rhDD);
               // Navigator.of(context).pop();

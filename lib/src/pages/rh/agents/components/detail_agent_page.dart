@@ -101,10 +101,7 @@ class _AgentPageState extends State<AgentPage> {
                                   ],
                                 ),
                                 Expanded(
-                                    child: Scrollbar(
-                                        controller: _controllerScroll,
-                                        isAlwaysShown: true,
-                                        child: pageDetail(agentModel)))
+                                    child: pageDetail(agentModel))
                               ],
                             );
                           } else {
@@ -260,6 +257,10 @@ class _AgentPageState extends State<AgentPage> {
                   ),
                   Text(
                       "Créé le. ${DateFormat("dd-MM-yyyy HH:mm").format(agentModel.createdAt)}",
+                      textAlign: TextAlign.start,
+                      style: bodyMedium),
+                  Text(
+                      "Mise à jour le. ${DateFormat("dd-MM-yyyy HH:mm").format(agentModel.created)}",
                       textAlign: TextAlign.start,
                       style: bodyMedium),
                 ],

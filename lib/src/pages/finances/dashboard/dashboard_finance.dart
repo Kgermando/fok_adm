@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:fokad_admin/src/api/approbation/approbation_api.dart';
 import 'package:fokad_admin/src/api/devis/devis_api.dart';
 import 'package:fokad_admin/src/api/finances/banque_api.dart';
 import 'package:fokad_admin/src/api/finances/caisse_api.dart';
@@ -80,6 +81,7 @@ class _DashboardFinanceState extends State<DashboardFinance> {
     var creanceDettes = await CreanceDetteApi().getAllData();
     var dataFinanceExterieurList = await FinExterieurApi().getAllData();
     var dataDevisList = await DevisAPi().getAllData();
+    var approbations = await ApprobationApi().getAllData();
 
     setState(() {
       // Banque
@@ -109,14 +111,15 @@ class _DashboardFinanceState extends State<DashboardFinance> {
         depensesCaisse += double.parse(item!.montant);
       }
 
-      // Creance
+      // Creance remboursement
       var creancePayementList =
           creanceDettes.where((element) => element.creanceDette == 'creances');
-
+    
       List<CreanceModel?> nonPayeCreanceList = dataCreanceList
           .where((element) => element!.statutPaie == false &&
               element.approbationDG == 'Approved')
           .toList();
+          
       for (var item in nonPayeCreanceList) {
         nonPayesCreance += double.parse(item!.montant);
       }
@@ -124,11 +127,12 @@ class _DashboardFinanceState extends State<DashboardFinance> {
         creancePayement += double.parse(item.montant);
       }
 
-      // Dette
+      // Dette remboursement
     var detteRemboursementList =
           creanceDettes.where((element) => element.creanceDette == 'dettes');
       List<DetteModel?> nonPayeDetteList = dataDetteList
-          .where((element) => element!.statutPaie == false && element.approbationDG == 'Approved')
+          .where((element) => element!.statutPaie == false && 
+          element.approbationDG == 'Approved')
           .toList();
       for (var item in nonPayeDetteList) {
         nonPayesDette += double.parse(item!.montant);

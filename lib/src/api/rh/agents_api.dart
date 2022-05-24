@@ -164,12 +164,11 @@ class AgentsApi {
 
   Future<AgentModel> insertData(AgentModel agentModel) async {
     final accessToken = await storage.read(key: 'accessToken');
-
     var data = agentModel.toJson();
     var body = jsonEncode(data);
 
     var resp = await client.post(addAgentsUrl,
-        headers: <String, String>{
+        headers: <String, String> {
           'Content-Type': 'application/json; charset=UTF-8',
           'Authorization': 'Bearer $accessToken'
         },

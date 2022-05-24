@@ -9,7 +9,7 @@ import 'package:routemaster/routemaster.dart';
 import '../app_state/app_state.dart';
 
 class MenuOptions with ChangeNotifier {
-  PopupMenuItem<MenuItem> buildItem(MenuItem item) => PopupMenuItem(
+  PopupMenuItem<MenuItemModel> buildItem(MenuItemModel item) => PopupMenuItem(
       value: item,
       child: Row(
         children: [
@@ -19,7 +19,7 @@ class MenuOptions with ChangeNotifier {
         ],
       ));
 
-  void onSelected(BuildContext context, MenuItem item) {
+  void onSelected(BuildContext context, MenuItemModel item) {
     switch (item) {
       case MenuItems.itemProfile:
         Routemaster.of(context).replace(UserRoutes.profile);

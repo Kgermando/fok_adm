@@ -183,10 +183,8 @@ class _TableDevisBudgetDDState extends State<TableDevisBudgetDD> {
     for (var item in approbations) {
       data = dataList
           .where((element) =>
-              element!.id == item.reference && item.approbation == 'Approved' && 
-           item.fontctionOccupee == ''     
-    
-    )
+              element!.id == item.reference && 
+              item.fontctionOccupee == 'Directeur générale')
           .toList();
     }
     
