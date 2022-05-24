@@ -30,12 +30,7 @@ class _TableJournalComptabiliteDDState
   @override
   void initState() {
     agentsColumn();
-    setState(() {
-      timer = Timer.periodic(const Duration(milliseconds: 500), ((timer) {
-        agentsRow();
-        timer.cancel();
-      }));
-    });
+    agentsRow();
 
     super.initState();
   }
@@ -230,7 +225,7 @@ class _TableJournalComptabiliteDDState
 
   Future agentsRow() async {
     List<JournalModel?> dataList = await JournalApi().getAllData();
-    var data = dataList.where((element) => element!.approbationDD == "-");
+    var data = dataList.toList();
 
     if (mounted) {
       setState(() {

@@ -26,10 +26,7 @@ class _TableCompteDDState extends State<TableCompteBilanDD> {
   @override
   void initState() {
     agentsColumn();
-    Timer.periodic(const Duration(milliseconds: 500), ((timer) {
-      agentsRow();
-      timer.cancel();
-    }));
+    agentsRow();
 
     super.initState();
   }
@@ -133,7 +130,7 @@ class _TableCompteDDState extends State<TableCompteBilanDD> {
 
   Future agentsRow() async {
     List<BilanModel?> dataList = await BilanApi().getAllData();
-    var data = dataList.where((element) => element!.approbationDD == "-");
+    var data = dataList.toList();
 
     if (mounted) {
       setState(() {

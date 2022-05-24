@@ -2,11 +2,13 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:badges/badges.dart';
 import 'package:flutter/material.dart';
 import 'package:fokad_admin/src/api/approbation/approbation_api.dart';
+import 'package:fokad_admin/src/api/auth/auth_api.dart';
 import 'package:fokad_admin/src/api/budgets/departement_budget_api.dart';
 import 'package:fokad_admin/src/api/comm_marketing/marketing/campaign_api.dart';
 import 'package:fokad_admin/src/api/devis/devis_api.dart';
 import 'package:fokad_admin/src/api/exploitations/projets_api.dart';
 import 'package:fokad_admin/src/api/rh/paiement_salaire_api.dart';
+import 'package:fokad_admin/src/models/users/user_model.dart';
 import 'package:fokad_admin/src/navigation/drawer/drawer_widget.dart';
 import 'package:fokad_admin/src/routes/routes.dart';
 import 'package:routemaster/routemaster.dart';
@@ -30,6 +32,21 @@ class _BudgetNavState extends State<BudgetNav> {
   int projetCount = 0;
   int budgetDepCount = 0;
 
+   UserModel user = UserModel(
+      nom: '-',
+      prenom: '-',
+      email: '-',
+      telephone: '-',
+      matricule: '-',
+      departement: '-',
+      servicesAffectation: '-',
+      fonctionOccupe: '-',
+      role: '5',
+      isOnline: false,
+      createdAt: DateTime.now(),
+      passwordHash: '-',
+      succursale: '-');
+
   @override
   void initState() {
     getData();
@@ -38,6 +55,7 @@ class _BudgetNavState extends State<BudgetNav> {
   }
 
   Future<void> getData() async {
+    var userModel = await AuthApi().getUserId();
     var salaires = await PaiementSalaireApi().getAllData();
     var campaigns = await CampaignApi().getAllData();
     var devis = await DevisAPi().getAllData();
@@ -46,6 +64,7 @@ class _BudgetNavState extends State<BudgetNav> {
     var approbations = await ApprobationApi().getAllData();
 
     setState(() {
+      user = userModel;
       for (var item in approbations) {
         salaireCount = salaires
             .where((element) =>
@@ -94,6 +113,8 @@ class _BudgetNavState extends State<BudgetNav> {
     final bodyLarge = Theme.of(context).textTheme.bodyLarge;
     final bodyText1 = Theme.of(context).textTheme.bodyText1;
 
+    double userRole = double.parse(user.role);
+
     itemCount = salaireCount + campaignCount + devisCount + 
       projetCount + budgetDepCount;
 
@@ -109,6 +130,7 @@ class _BudgetNavState extends State<BudgetNav> {
       },
       trailing: const Icon(Icons.arrow_drop_down),
       children: [
+        if (userRole <= 2)
         DrawerWidget(
             selected: widget.pageCurrente == BudgetRoutes.budgetDashboard,
             icon: Icons.dashboard,
@@ -121,12 +143,13 @@ class _BudgetNavState extends State<BudgetNav> {
               );
               // Navigator.of(context).pop();
             }),
+        if(userRole <= 2)
         DrawerWidget(
             selected: widget.pageCurrente == BudgetRoutes.budgetDD,
             icon: Icons.manage_accounts,
             sizeIcon: 20.0,
             title: 'Directeur de departement',
-            style: bodyText1,
+            style: bodyText1!,
             badge: Badge(
               showBadge: (itemCount >= 1) ? true : false,
               badgeColor: Colors.teal,
@@ -146,7 +169,7 @@ class _BudgetNavState extends State<BudgetNav> {
             icon: Icons.wallet_giftcard,
             sizeIcon: 20.0,
             title: 'Budgets previsonels',
-            style: bodyText1,
+            style: bodyText1!,
             onTap: () {
               Routemaster.of(context).replace(
                 BudgetRoutes.budgetBudgetPrevisionel,

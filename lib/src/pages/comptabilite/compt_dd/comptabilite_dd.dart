@@ -39,10 +39,7 @@ class _ComptabiliteDDState extends State<ComptabiliteDD> {
 
   @override
   void initState() {
-    Timer.periodic(const Duration(milliseconds: 500), ((timer) {
-      getData();
-      timer.cancel();
-    }));
+    getData();
 
     super.initState();
   }
@@ -55,13 +52,10 @@ class _ComptabiliteDDState extends State<ComptabiliteDD> {
 
     setState(() {
       bilanCount =
-          bilans.where((element) => element.approbationDD == "-").length;
-      journalCount = journal
-          .where((element) => element.approbationDD == "-").length;
-      compteResultatCount = compteReultats
-          .where((element) => element.approbationDD == "-").length;
-      balanceCount = balances
-          .where((element) => element.approbationDD == "-").length;
+      bilans.length;
+      journalCount = journal.length;
+      compteResultatCount = compteReultats.length;
+      balanceCount = balances.length;
     });
   }
 

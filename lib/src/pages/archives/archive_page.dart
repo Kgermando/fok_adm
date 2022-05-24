@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:fokad_admin/src/api/auth/auth_api.dart';
 import 'package:fokad_admin/src/constants/app_theme.dart';
 import 'package:fokad_admin/src/constants/responsive.dart';
+import 'package:fokad_admin/src/models/users/user_model.dart';
 import 'package:fokad_admin/src/navigation/drawer/drawer_menu.dart';
 import 'package:fokad_admin/src/navigation/header/custom_appbar.dart';
 import 'package:fokad_admin/src/pages/archives/components/administration_archive.dart';
@@ -23,6 +25,35 @@ class ArchivePage extends StatefulWidget {
 
 class _ArchivePageState extends State<ArchivePage> {
   final GlobalKey<ScaffoldState> _key = GlobalKey();
+
+   @override
+  void initState() {
+    getData();
+    super.initState();
+  }
+
+  UserModel user = UserModel(
+      nom: '-',
+      prenom: '-',
+      email: '-',
+      telephone: '-',
+      matricule: '-',
+      departement: '-',
+      servicesAffectation: '-',
+      fonctionOccupe: '-',
+      role: '0',
+      isOnline: false,
+      createdAt: DateTime.now(),
+      passwordHash: '-',
+      succursale: '-');
+  Future<void> getData() async {
+    var userModel = await AuthApi().getUserId();
+    if (mounted) {
+      setState(() {
+      user = userModel;
+    });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -57,15 +88,30 @@ class _ArchivePageState extends State<ArchivePage> {
                               _key.currentState!.openDrawer()),
                       Expanded(
                         child: ListView(
-                          children: const [
-                            AdministrationArchive(),
-                            RHArchive(),
-                            BudgetArchive(),
-                            ComptabiliteArchive(),
-                            FinanceArchive(),
-                            ExploitationArchive(),
-                            CommMarketingArchive(),
-                            LogistiqueArchive(),
+                          children: [
+                            if (user.departement == 'Administration')
+                            const AdministrationArchive(),
+                            if (user.departement == 'Ressources Humaines' ||
+                              user.departement == 'Administration')
+                            const RHArchive(),
+                            if (user.departement == 'Budgets' ||
+                              user.departement == 'Administration')
+                            const BudgetArchive(),
+                            if (user.departement == 'Finances' ||
+                              user.departement == 'Administration')
+                            const FinanceArchive(),
+                            if (user.departement == 'Comptabilites' ||
+                              user.departement == 'Administration')
+                            const ComptabiliteArchive(),
+                            if (user.departement == 'Exploitations' ||
+                              user.departement == 'Administration')
+                            const ExploitationArchive(),
+                            if (user.departement == 'Commercial et Marketing' ||
+                              user.departement == 'Administration')
+                            const CommMarketingArchive(),
+                            if (user.departement == 'Logistique' ||
+                              user.departement == 'Administration')
+                            const LogistiqueArchive(),
                           ],
                         )
                       )

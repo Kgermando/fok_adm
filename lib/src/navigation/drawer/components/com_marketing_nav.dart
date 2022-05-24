@@ -1,6 +1,11 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:badges/badges.dart';
 import 'package:flutter/material.dart';
+import 'package:fokad_admin/src/api/auth/auth_api.dart';
+import 'package:fokad_admin/src/api/comm_marketing/commerciale/produit_model_api.dart';
+import 'package:fokad_admin/src/api/comm_marketing/commerciale/succursale_api.dart';
+import 'package:fokad_admin/src/api/comm_marketing/marketing/campaign_api.dart';
+import 'package:fokad_admin/src/models/users/user_model.dart';
 import 'package:fokad_admin/src/navigation/drawer/drawer_widget.dart';
 import 'package:fokad_admin/src/routes/routes.dart';
 import 'package:routemaster/routemaster.dart';
@@ -18,12 +23,53 @@ class _ComMarketingState extends State<ComMarketing> {
   bool isOpenComMarketing2 = false;
 
   int itemCount = 0;
+  int campaignCount = 0;
+  int succursaleCount = 0;
+  int prodModelCount = 0;
+
+  @override
+  void initState() {
+    getData();
+    super.initState();
+  }
+
+  UserModel user = UserModel(
+      nom: '-',
+      prenom: '-',
+      email: '-',
+      telephone: '-',
+      matricule: '-',
+      departement: '-',
+      servicesAffectation: '-',
+      fonctionOccupe: '-',
+      role: '5',
+      isOnline: false,
+      createdAt: DateTime.now(),
+      passwordHash: '-',
+      succursale: '-');
+
+  Future<void> getData() async {
+    var userModel = await AuthApi().getUserId();
+    var campaign = await CampaignApi().getAllData();
+    var succursale = await SuccursaleApi().getAllData();
+    var prodModel = await ProduitModelApi().getAllData();
+    setState(() {
+      user = userModel;
+      campaignCount = campaign.length;
+      succursaleCount = succursale.length;
+      prodModelCount = prodModel.length;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     final bodyLarge = Theme.of(context).textTheme.bodyLarge;
     final bodyText1 = Theme.of(context).textTheme.bodyText1;
     final bodyText2 = Theme.of(context).textTheme.bodyText2;
+
+    double userRole = double.parse(user.role);
+
+    itemCount = campaignCount + succursaleCount + prodModelCount;
 
     return ExpansionTile(
       leading: const Icon(Icons.store, size: 30.0),
@@ -36,6 +82,7 @@ class _ComMarketingState extends State<ComMarketing> {
       },
       trailing: const Icon(Icons.arrow_drop_down),
       children: [
+        if (userRole <= 2)
         DrawerWidget(
             selected:
                 widget.pageCurrente == ComMarketingRoutes.comMarketingDashboard,
@@ -49,12 +96,13 @@ class _ComMarketingState extends State<ComMarketing> {
               );
               // Navigator.of(context).pop();
             }),
+            if (userRole <= 2)
         DrawerWidget(
             selected: widget.pageCurrente == ComMarketingRoutes.comMarketingDD,
             icon: Icons.manage_accounts,
             sizeIcon: 20.0,
             title: 'Directeur de departement',
-            style: bodyText1,
+            style: bodyText1!,
             badge: Badge(
               showBadge: (itemCount >= 1) ? true : false,
               badgeColor: Colors.teal,
@@ -270,26 +318,6 @@ class _ComMarketingState extends State<ComMarketing> {
                       .replace(ComMarketingRoutes.comMarketingHistoryLivraison);
                   // Navigator.of(context).pop();
                 }),
-            DrawerWidget(
-                selected: widget.pageCurrente == DevisRoutes.devis,
-                icon: Icons.note_alt,
-                sizeIcon: 20.0,
-                title: 'Etat de besoin',
-                style: bodyText1,
-                onTap: () {
-                  Routemaster.of(context).replace(DevisRoutes.devis);
-                  // Navigator.of(context).pop();
-                }),
-            DrawerWidget(
-                selected: widget.pageCurrente == RhRoutes.rhPerformence,
-                icon: Icons.multiline_chart_sharp,
-                sizeIcon: 20.0,
-                title: 'Performences',
-                style: bodyText1,
-                onTap: () {
-                  Routemaster.of(context).replace(RhRoutes.rhPerformence);
-                  // Navigator.of(context).pop();
-                }),
           ],
         ),
         DrawerWidget(
@@ -297,7 +325,7 @@ class _ComMarketingState extends State<ComMarketing> {
             icon: Icons.multiline_chart_sharp,
             sizeIcon: 20.0,
             title: 'Performences',
-            style: bodyText1,
+            style: bodyText1!,
             onTap: () {
               Routemaster.of(context).replace(RhRoutes.rhPerformence);
             }),

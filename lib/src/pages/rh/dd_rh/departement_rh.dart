@@ -1,12 +1,10 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:fokad_admin/src/api/rh/agents_api.dart';
 import 'package:fokad_admin/src/api/rh/paiement_salaire_api.dart';
 import 'package:fokad_admin/src/api/user/user_api.dart';
 import 'package:fokad_admin/src/constants/app_theme.dart';
 import 'package:fokad_admin/src/constants/responsive.dart';
-import 'package:fokad_admin/src/models/rh/agent_model.dart';
 import 'package:fokad_admin/src/models/users/user_model.dart';
 import 'package:fokad_admin/src/navigation/drawer/drawer_menu.dart';
 import 'package:fokad_admin/src/navigation/header/custom_appbar.dart';
@@ -26,15 +24,12 @@ class _DepartementRHState extends State<DepartementRH> {
   bool isOpen1 = false;
   bool isOpen2 = false;
 
-  int salairesCpunt = 0;
-  int userAcount = 0;
+  int salairesCount = 0;
+  // int userAcount = 0;
 
   @override
   void initState() {
-    Timer.periodic(const Duration(milliseconds: 500), ((timer) {
-      getData();
-      timer.cancel();
-    }));
+    getData();
 
     super.initState();
   }
@@ -42,24 +37,22 @@ class _DepartementRHState extends State<DepartementRH> {
   Future<void> getData() async {
     // RH
     var salaires = await PaiementSalaireApi().getAllData();
-    List<UserModel> users = await UserApi().getAllData();
+    // List<UserModel> users = await UserApi().getAllData();
 
     setState(() {
-      salairesCpunt =
+      salairesCount =
           salaires
           .where((element) =>
               element.createdAt.month == DateTime.now().month &&
-              element.createdAt.year == DateTime.now().year &&
-              element.approbationDD == "-")
+              element.createdAt.year == DateTime.now().year )
           .length;
-      userAcount = users.length;
+      // userAcount = users.length;
     });
   }
 
   @override
   Widget build(BuildContext context) {
     final headline6 = Theme.of(context).textTheme.headline6;
-    final bodyMedium = Theme.of(context).textTheme.bodyMedium;
     return Scaffold(
         key: _key,
         drawer: const DrawerMenu(),
@@ -92,10 +85,6 @@ class _DepartementRHState extends State<DepartementRH> {
                                 leading: const Icon(Icons.folder, color: Colors.white),
                                 title:
                                     Text('Dossier Salaires', style: headline6!.copyWith(color: Colors.white)),
-                                subtitle: Text(
-                                    "Vous $salairesCpunt dossiers necessitent votre approbation",
-                                    style: bodyMedium!.copyWith(
-                                        color: Colors.white)),
                                 initiallyExpanded: false,
                                 onExpansionChanged: (val) {
                                   setState(() {

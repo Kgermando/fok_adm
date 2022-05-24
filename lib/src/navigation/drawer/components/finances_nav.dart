@@ -2,12 +2,14 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:badges/badges.dart';
 import 'package:flutter/material.dart';
 import 'package:fokad_admin/src/api/approbation/approbation_api.dart';
+import 'package:fokad_admin/src/api/auth/auth_api.dart';
 import 'package:fokad_admin/src/api/comm_marketing/marketing/campaign_api.dart';
 import 'package:fokad_admin/src/api/devis/devis_api.dart';
 import 'package:fokad_admin/src/api/exploitations/projets_api.dart';
 import 'package:fokad_admin/src/api/finances/creance_api.dart';
 import 'package:fokad_admin/src/api/finances/dette_api.dart';
 import 'package:fokad_admin/src/api/rh/paiement_salaire_api.dart';
+import 'package:fokad_admin/src/models/users/user_model.dart';
 import 'package:fokad_admin/src/navigation/drawer/drawer_widget.dart';
 import 'package:fokad_admin/src/routes/routes.dart';
 import 'package:routemaster/routemaster.dart';
@@ -39,7 +41,23 @@ class _FinancesNavState extends State<FinancesNav> {
     super.initState();
   }
 
+  UserModel user = UserModel(
+      nom: '-',
+      prenom: '-',
+      email: '-',
+      telephone: '-',
+      matricule: '-',
+      departement: '-',
+      servicesAffectation: '-',
+      fonctionOccupe: '-',
+      role: '5',
+      isOnline: false,
+      createdAt: DateTime.now(),
+      passwordHash: '-',
+      succursale: '-');
+
   Future<void> getData() async {
+    var userModel = await AuthApi().getUserId();
     var creances = await CreanceApi().getAllData();
     var dettes = await DetteApi().getAllData();
     var salaires = await PaiementSalaireApi().getAllData();
@@ -49,6 +67,7 @@ class _FinancesNavState extends State<FinancesNav> {
     var approbations = await ApprobationApi().getAllData();
 
     setState(() {
+      user = userModel;
       for (var item in approbations) {
         creanceCount = creances
             .where((element) =>
@@ -111,6 +130,8 @@ class _FinancesNavState extends State<FinancesNav> {
     final bodyText1 = Theme.of(context).textTheme.bodyText1;
     final bodyText2 = Theme.of(context).textTheme.bodyText2;
 
+    double userRole = double.parse(user.role);
+
     itemCount =  creanceCount + detteCount + salaireCount + campaignCount +
        devisCount + projetCount;
 
@@ -125,6 +146,7 @@ class _FinancesNavState extends State<FinancesNav> {
       },
       trailing: const Icon(Icons.arrow_drop_down),
       children: [
+        if (userRole <= 2)
         DrawerWidget(
             selected: widget.pageCurrente == FinanceRoutes.financeDashboard,
             icon: Icons.dashboard,
@@ -135,12 +157,13 @@ class _FinancesNavState extends State<FinancesNav> {
               Routemaster.of(context).replace(FinanceRoutes.financeDashboard);
               // Navigator.of(context).pop();
             }),
+        if (userRole <= 2)
         DrawerWidget(
             selected: widget.pageCurrente == FinanceRoutes.finDD,
             icon: Icons.manage_accounts,
             sizeIcon: 20.0,
             title: 'Directeur de departement',
-            style: bodyText1,
+            style: bodyText1!,
             badge: Badge(
               showBadge: (itemCount >= 1) ? true : false,
               badgeColor: Colors.teal,
@@ -186,6 +209,7 @@ class _FinancesNavState extends State<FinancesNav> {
                       .replace(FinanceRoutes.transactionsCaisse);
                   // Navigator.of(context).pop();
                 }),
+            if (userRole <= 2)
             DrawerWidget(
                 selected:
                     widget.pageCurrente == FinanceRoutes.transactionsCreances,
@@ -198,6 +222,7 @@ class _FinancesNavState extends State<FinancesNav> {
                       .replace(FinanceRoutes.transactionsCreances);
                   // Navigator.of(context).pop();
                 }),
+            if (userRole <= 2)
             DrawerWidget(
                 selected:
                     widget.pageCurrente == FinanceRoutes.transactionsDettes,
@@ -229,7 +254,7 @@ class _FinancesNavState extends State<FinancesNav> {
             icon: Icons.multiline_chart_sharp,
             sizeIcon: 20.0,
             title: 'Performences',
-            style: bodyText1,
+            style: bodyText1!,
             onTap: () {
               Routemaster.of(context).replace(RhRoutes.rhPerformence);
               // Navigator.of(context).pop();
