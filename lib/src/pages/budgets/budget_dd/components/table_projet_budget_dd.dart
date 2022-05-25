@@ -200,7 +200,8 @@ class _TableProjeBudgetState extends State<TableProjeBudget> {
       data = dataList
           .where((element) =>
               element!.id == item.reference &&
-              item.fontctionOccupee == 'Directeur générale')
+              item.fontctionOccupee == 'Directeur générale' &&
+              item.approbation == "Approved")
           .toList();
     }
         

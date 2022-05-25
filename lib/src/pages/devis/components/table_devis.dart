@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:fokad_admin/src/api/approbation/approbation_api.dart';
 import 'package:fokad_admin/src/api/auth/auth_api.dart';
 import 'package:fokad_admin/src/api/devis/devis_api.dart';
 import 'package:fokad_admin/src/models/devis/devis_models.dart';
@@ -202,14 +203,18 @@ class _TableDevisState extends State<TableDevis> {
   Future agentsRow() async {
     final userModel = await AuthApi().getUserId();
     List<DevisModel?> dataList = await DevisAPi().getAllData();
-    var data =
-      dataList.where((element) => 
-        element!.departement == userModel.departement && 
-        userModel.fonctionOccupe == 'Directeur de departement' ||
-        userModel.fonctionOccupe == 'Directeur de budget' ||
-        userModel.fonctionOccupe == 'Directeur de finance' ||
-        userModel.fonctionOccupe == 'Directeur de générale'
-    );
+     List<DevisModel?> data = [];
+    var approbations = await ApprobationApi().getAllData();
+    for (var item in approbations) {
+      data = dataList
+          .where((element) =>
+              element!.departement == userModel.departement &&
+              userModel.fonctionOccupe == 'Directeur de departement' ||
+              userModel.fonctionOccupe == 'Directeur de budget' ||
+              userModel.fonctionOccupe == 'Directeur de finance' ||
+              userModel.fonctionOccupe == 'Directeur de générale')
+          .toList();
+    }
 
     if (mounted) {
       setState(() {

@@ -201,13 +201,9 @@ class _AddAgentState extends State<AddAgent> {
                   controller: _controllerScroll,
                   children: [
                     Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        const TitleWidget(title: 'Nouveau profile'),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: [PrintWidget(onPressed: () {})],
-                        ),
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: const [
+                        TitleWidget(title: 'Nouveau profile'),
                       ],
                     ),
                     const SizedBox(

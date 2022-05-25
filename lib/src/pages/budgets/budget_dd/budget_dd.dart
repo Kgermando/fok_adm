@@ -9,7 +9,6 @@ import 'package:fokad_admin/src/api/exploitations/projets_api.dart';
 import 'package:fokad_admin/src/api/rh/paiement_salaire_api.dart';
 import 'package:fokad_admin/src/constants/app_theme.dart';
 import 'package:fokad_admin/src/constants/responsive.dart';
-import 'package:fokad_admin/src/models/comm_maketing/campaign_model.dart';
 import 'package:fokad_admin/src/navigation/drawer/drawer_menu.dart';
 import 'package:fokad_admin/src/navigation/header/custom_appbar.dart';
 import 'package:fokad_admin/src/pages/budgets/budget_dd/components/table_campaign_buget.dart';
@@ -62,7 +61,8 @@ class _BudgetDDState extends State<BudgetDD> {
         salaireCount = salaires
             .where((element) =>
                 element.id == item.reference &&
-                item.fontctionOccupee == 'Directeur générale')
+                item.fontctionOccupee == 'Directeur générale' &&
+                item.approbation == "Approved")
             .toList()
             .length;
       }
@@ -70,7 +70,8 @@ class _BudgetDDState extends State<BudgetDD> {
         campaignCount = campaigns
             .where((element) =>
                 element.id == item.reference &&
-                item.fontctionOccupee == 'Directeur générale')
+                item.fontctionOccupee == 'Directeur générale' &&
+                item.approbation == "Approved")
             .toList()
             .length;
       }
@@ -78,7 +79,8 @@ class _BudgetDDState extends State<BudgetDD> {
         devisCount = devis
             .where((element) =>
                 element.id == item.reference && 
-                item.fontctionOccupee == 'Directeur générale')
+                item.fontctionOccupee == 'Directeur générale' &&
+                item.approbation == "Approved")
             .toList()
             .length;
       }
@@ -86,7 +88,8 @@ class _BudgetDDState extends State<BudgetDD> {
         projetCount = projets
             .where((element) =>
                 element.id == item.reference &&
-                item.fontctionOccupee == 'Directeur générale')
+                item.fontctionOccupee == 'Directeur générale' &&
+                item.approbation == "Approved")
             .toList()
             .length;
       }
@@ -94,7 +97,8 @@ class _BudgetDDState extends State<BudgetDD> {
         budgetDepCount = budgetDep
             .where((element) =>
                 element.id == item.reference &&
-                item.fontctionOccupee == 'Directeur générale')
+                item.fontctionOccupee == 'Directeur générale' &&
+                item.approbation == "Approved")
             .toList()
             .length;
       }

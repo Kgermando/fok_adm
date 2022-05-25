@@ -50,7 +50,11 @@ class _TableAgentsState extends State<TableAgents> {
       createHeader: (PlutoGridStateManager header) {
         return Row(
           mainAxisAlignment: MainAxisAlignment.end,
-          children: [PrintWidget(onPressed: () {})],
+          children: [
+            PrintWidget(onPressed: () {
+              // exportToExcel();
+            })
+          ],
         );
       },
       configuration: PlutoGridConfiguration(
@@ -290,4 +294,53 @@ class _TableAgentsState extends State<TableAgents> {
       });
     }
   }
+
+  // Future<void> exportToExcel() async {
+  //   var excel = Excel.createExcel();
+  //   Sheet sheetObject = excel['Historique de ravitailement'];
+  //   sheetObject.insertRowIterables([
+  //     'Date',
+  //     'ID Produit',
+  //     'Prix d\'achat unitaire',
+  //     'Quantité d\'entrer',
+  //     'Quantité restante',
+  //     'Unité',
+  //     'Prix de vente unitaire',
+  //     'TVA',
+  //     'Succursale',
+  //     'Societé'
+  //   ], 0);
+
+  //   for (int i = 0; i < historyRavitaillementList.length; i++) {
+  //     List<String> dataList = [
+  //       DateFormat("dd/MM/yy HH-mm").format(historyRavitaillementList[i].date),
+  //       historyRavitaillementList[i].idProduct,
+  //       historyRavitaillementList[i].priceAchatUnit,
+  //       historyRavitaillementList[i].quantityAchat,
+  //       historyRavitaillementList[i].quantity,
+  //       historyRavitaillementList[i].unite,
+  //       historyRavitaillementList[i].prixVenteUnit,
+  //       historyRavitaillementList[i].tva,
+  //       historyRavitaillementList[i].succursale,
+  //       historyRavitaillementList[i].nameBusiness
+  //     ];
+
+  //     sheetObject.insertRowIterables(dataList, i + 1);
+  //   }
+  //   excel.setDefaultSheet('Historique de ravitailement');
+  //   final dir = await getApplicationDocumentsDirectory();
+  //   final dateTime = DateTime.now();
+  //   final date = DateFormat("dd-MM-yy_HH-mm").format(dateTime);
+
+  //   var onValue = excel.encode();
+  //   File('${dir.path}/historique_ravitailement$date.xlsx')
+  //     ..createSync(recursive: true)
+  //     ..writeAsBytesSync(onValue!);
+
+  //   if (!mounted) return;
+  //   ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+  //     content: const Text("Exportation effectué!"),
+  //     backgroundColor: Colors.green[700],
+  //   ));
+  // }
 }

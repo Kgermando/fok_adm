@@ -224,13 +224,9 @@ class _UpdateAgentState extends State<UpdateAgent> {
                   controller: _controllerScroll,
                   children: [
                     Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      mainAxisAlignment: MainAxisAlignment.start,
                       children: [
                         TitleWidget(title: matricule),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: [PrintWidget(onPressed: () {})],
-                        ),
                       ],
                     ),
                     const SizedBox(
