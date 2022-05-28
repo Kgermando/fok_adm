@@ -67,7 +67,7 @@ class _DetailDepartmentBudgetState extends State<DetailDepartmentBudget> {
   List<ApprobationModel> approbList = [];
   List<ApprobationModel> approbationData = [];
   DepartementBudgetModel? departementBudget;
-    ApprobationModel approb = ApprobationModel(
+  ApprobationModel approb = ApprobationModel(
       reference: 1,
       title: '-',
       departement: '-',
@@ -170,8 +170,9 @@ class _DetailDepartmentBudgetState extends State<DetailDepartmentBudget> {
                             DepartementBudgetModel? departementBudgetModel =
                                 snapshot.data;
                             approbationData = approbList
-                                .where(
-                                    (element) => element.reference == departementBudgetModel!.id!)
+                                .where((element) =>
+                                    element.reference ==
+                                    departementBudgetModel!.id!)
                                 .toList();
 
                             if (approbationData.isNotEmpty) {
@@ -200,10 +201,10 @@ class _DetailDepartmentBudgetState extends State<DetailDepartmentBudget> {
                                 ),
                                 Expanded(
                                     child: SingleChildScrollView(
-                                      child: Column(
-                                        children: [
-                                          pageDetail(departementBudgetModel!),
-                                          const SizedBox(height: p10),
+                                  child: Column(
+                                    children: [
+                                      pageDetail(departementBudgetModel!),
+                                      const SizedBox(height: p10),
                                       infosEditeurWidget(),
                                       const SizedBox(height: p10),
                                       if (int.parse(user.role) == 1 ||
@@ -212,9 +213,9 @@ class _DetailDepartmentBudgetState extends State<DetailDepartmentBudget> {
                                             user.fonctionOccupe)
                                           approbationForm(
                                               departementBudgetModel),
-                                        ],
-                                      ),
-                                    ))
+                                    ],
+                                  ),
+                                ))
                               ],
                             );
                           } else {
@@ -385,12 +386,10 @@ class _DetailDepartmentBudgetState extends State<DetailDepartmentBudget> {
               )
             ],
           ),
-          
         ],
       ),
     );
   }
-
 
   Widget soldeBudgets(DepartementBudgetModel data) {
     final headline6 = Theme.of(context).textTheme.headline6;
@@ -581,17 +580,32 @@ class _DetailDepartmentBudgetState extends State<DetailDepartmentBudget> {
         finExterieursalaire +
         finExterieurCampaign +
         finExterieurProjet;
-    
-    var coutTotalLigne = ligneBudgetaireList.where((element) => element.departement == data.departement && 
-      element.created.isBefore(data.periodeFin)).toList();
-    var caisseLigne = ligneBudgetaireList.where((element) => element.departement == data.departement && 
-      element.created.isBefore(data.periodeFin)).toList();
-    var banqueLigne = ligneBudgetaireList.where((element) => element.departement == data.departement && 
-      element.created.isBefore(data.periodeFin)).toList();
-    var finPropreLigne = ligneBudgetaireList.where((element) => element.departement == data.departement && 
-      element.created.isBefore(data.periodeFin)).toList();
-    var finExterieurLigne = ligneBudgetaireList.where((element) => element.departement == data.departement && 
-      element.created.isBefore(data.periodeFin)).toList();
+
+    var coutTotalLigne = ligneBudgetaireList
+        .where((element) =>
+            element.departement == data.departement &&
+            element.created.isBefore(data.periodeFin))
+        .toList();
+    var caisseLigne = ligneBudgetaireList
+        .where((element) =>
+            element.departement == data.departement &&
+            element.created.isBefore(data.periodeFin))
+        .toList();
+    var banqueLigne = ligneBudgetaireList
+        .where((element) =>
+            element.departement == data.departement &&
+            element.created.isBefore(data.periodeFin))
+        .toList();
+    var finPropreLigne = ligneBudgetaireList
+        .where((element) =>
+            element.departement == data.departement &&
+            element.created.isBefore(data.periodeFin))
+        .toList();
+    var finExterieurLigne = ligneBudgetaireList
+        .where((element) =>
+            element.departement == data.departement &&
+            element.created.isBefore(data.periodeFin))
+        .toList();
 
     double coutTotalSolde = 0.0;
     double caisseSolde = 0.0;
@@ -629,24 +643,23 @@ class _DetailDepartmentBudgetState extends State<DetailDepartmentBudget> {
       )),
       Expanded(
           child: Container(
-            decoration: BoxDecoration(
-              border: Border(
-            left: BorderSide(
-              color: Colors.amber.shade700,
-              width: 2,
-            ),
-          )),
-            child: Column(
-        children: [
-            const Text("Caisse",
-                style: TextStyle(fontWeight: FontWeight.bold)),
+        decoration: BoxDecoration(
+            border: Border(
+          left: BorderSide(
+            color: Colors.amber.shade700,
+            width: 2,
+          ),
+        )),
+        child: Column(
+          children: [
+            const Text("Caisse", style: TextStyle(fontWeight: FontWeight.bold)),
             SelectableText(
                 "${NumberFormat.decimalPattern('fr').format(caisseSolde)} \$",
                 textAlign: TextAlign.center,
                 style: headline6),
-        ],
-      ),
-          )),
+          ],
+        ),
+      )),
       Expanded(
           child: Container(
         decoration: BoxDecoration(
@@ -658,8 +671,7 @@ class _DetailDepartmentBudgetState extends State<DetailDepartmentBudget> {
         )),
         child: Column(
           children: [
-            const Text("Banque",
-                style: TextStyle(fontWeight: FontWeight.bold)),
+            const Text("Banque", style: TextStyle(fontWeight: FontWeight.bold)),
             SelectableText(
                 "${NumberFormat.decimalPattern('fr').format(banqueSolde)} \$",
                 textAlign: TextAlign.center,
@@ -710,8 +722,6 @@ class _DetailDepartmentBudgetState extends State<DetailDepartmentBudget> {
     ]);
   }
 
-
-  
   Widget infosEditeurWidget() {
     final bodyLarge = Theme.of(context).textTheme.bodyLarge;
 
@@ -1112,7 +1122,7 @@ class _DetailDepartmentBudgetState extends State<DetailDepartmentBudget> {
                                                       //     _approbationKey
                                                       //         .currentState!;
                                                       // if (form.validate()) {
-                                                        
+
                                                       //   form.reset();
                                                       // }
                                                       submitApprobation(data);
@@ -1127,7 +1137,7 @@ class _DetailDepartmentBudgetState extends State<DetailDepartmentBudget> {
                                   ))
                           ],
                         ),
-                        if (data.departement == 'Budgets')
+                        if (user.departement == 'Budgets')
                           Row(
                             children: [
                               Expanded(flex: 3, child: ligneBudgtaireWidget()),
@@ -1237,5 +1247,4 @@ class _DetailDepartmentBudgetState extends State<DetailDepartmentBudget> {
     await ApprobationApi().insertData(approbation);
     Navigator.of(context).pop();
   }
-
 }

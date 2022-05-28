@@ -3,9 +3,8 @@ import 'package:fokad_admin/src/constants/app_theme.dart';
 import 'package:fokad_admin/src/constants/responsive.dart';
 import 'package:fokad_admin/src/navigation/drawer/drawer_menu.dart';
 import 'package:fokad_admin/src/navigation/header/custom_appbar.dart';
+import 'package:fokad_admin/src/pages/budgets/budgets_previsionels/components/add_budget_previsionel.dart';
 import 'package:fokad_admin/src/pages/budgets/budgets_previsionels/components/table_departement_budget.dart';
-import 'package:fokad_admin/src/routes/routes.dart';
-import 'package:routemaster/routemaster.dart';
 
 class BudgetsPrevisionnels extends StatefulWidget {
   const BudgetsPrevisionnels({Key? key}) : super(key: key);
@@ -24,8 +23,10 @@ class _BudgetsPrevisionnelsState extends State<BudgetsPrevisionnels> {
         floatingActionButton: FloatingActionButton(
           child: const Icon(Icons.add),
           onPressed: () {
-            Routemaster.of(context)
-              .replace(BudgetRoutes.budgetBudgetPrevisionelAdd);
+            // Routemaster.of(context)
+            //   .replace(BudgetRoutes.budgetBudgetPrevisionelAdd);
+            Navigator.of(context).push(
+                  MaterialPageRoute(builder: (context) => const AddBudgetPrevionel()));
           }),
         body: SafeArea(
           child: Row(

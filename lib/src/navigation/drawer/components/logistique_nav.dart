@@ -67,7 +67,7 @@ class _LogistiqueNavState extends State<LogistiqueNav> {
     var mobiliers = await MobilierApi().getAllData();
     var entretiens = await EntretienApi().getAllData();
     var etatmateriels = await EtatMaterielApi().getAllData();
-
+  if(mounted) {
     setState(() {
       user = userModel;
       anguinsapprobationDD = anguins.length;
@@ -78,6 +78,7 @@ class _LogistiqueNavState extends State<LogistiqueNav> {
       entretiensCount = entretiens.length;
       etatmaterielsCount = etatmateriels.length;
     });
+  }
   }
 
   @override

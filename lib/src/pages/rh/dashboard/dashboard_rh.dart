@@ -154,9 +154,15 @@ class _DashboardRhState extends State<DashboardRh> {
                             const SizedBox(height: p20),
                             Wrap(
                               alignment: WrapAlignment.spaceEvenly,
-                              children: const [
-                                DashRHPieWidget(),
-                                CalendarWidget()
+                              children: [
+                                SizedBox(
+                                  width: MediaQuery.of(context).size.width / 4,
+                                  height: 400,
+                                  child: const DashRHPieWidget()),
+                                SizedBox(
+                                width: MediaQuery.of(context).size.width / 3,
+                                height: 400,
+                                child: const CalendarWidget())
                               ],
                             )
                           ],

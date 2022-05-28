@@ -3,6 +3,7 @@ import 'package:fokad_admin/src/constants/app_theme.dart';
 import 'package:fokad_admin/src/constants/responsive.dart';
 import 'package:fokad_admin/src/navigation/drawer/drawer_menu.dart';
 import 'package:fokad_admin/src/navigation/header/custom_appbar.dart';
+import 'package:fokad_admin/src/pages/comptabilite/bilan/components/add_bilan.dart';
 import 'package:fokad_admin/src/pages/comptabilite/bilan/components/table_bilan.dart';
 import 'package:fokad_admin/src/routes/routes.dart';
 import 'package:routemaster/routemaster.dart';
@@ -24,8 +25,10 @@ class _BilanComptabiliteState extends State<BilanComptabilite> {
         drawer: const DrawerMenu(),
         floatingActionButton: FloatingActionButton(
             child: const Icon(Icons.add),
-            onPressed: () {
-              Routemaster.of(context).push(ComptabiliteRoutes.comptabiliteBilanAdd);
+            onPressed: () { 
+              Navigator.of(context).push(MaterialPageRoute(
+                  builder: (context) => const AddBilan()));
+              // Routemaster.of(context).push(ComptabiliteRoutes.comptabiliteBilanAdd);
             }),
         body: SafeArea(
           child: Row(

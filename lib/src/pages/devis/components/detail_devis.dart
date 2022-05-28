@@ -173,9 +173,9 @@ class _DetailDevisState extends State<DetailDevis> {
                                     const SizedBox(height: p10),
                                     if (int.parse(user.role) == 1 ||
                                         int.parse(user.role) < 2)
-
-                                    if(approb.fontctionOccupee != user.fonctionOccupe)
-                                    approbationForm(data),
+                                      if (approb.fontctionOccupee !=
+                                          user.fonctionOccupe)
+                                        approbationForm(data),
                                   ],
                                 )))
                               ],
@@ -894,7 +894,7 @@ class _DetailDevisState extends State<DetailDevis> {
                                   ))
                           ],
                         ),
-                        if (data.departement == 'Budgets')
+                        if (user.departement == 'Budgets')
                           Row(
                             children: [
                               Expanded(flex: 3, child: ligneBudgtaireWidget()),

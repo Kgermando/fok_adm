@@ -2,10 +2,8 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:fokad_admin/src/api/rh/paiement_salaire_api.dart';
-import 'package:fokad_admin/src/api/user/user_api.dart';
 import 'package:fokad_admin/src/constants/app_theme.dart';
 import 'package:fokad_admin/src/constants/responsive.dart';
-import 'package:fokad_admin/src/models/users/user_model.dart';
 import 'package:fokad_admin/src/navigation/drawer/drawer_menu.dart';
 import 'package:fokad_admin/src/navigation/header/custom_appbar.dart';
 import 'package:fokad_admin/src/pages/rh/dd_rh/components/salaires/table_salaires_dd.dart';
@@ -53,6 +51,7 @@ class _DepartementRHState extends State<DepartementRH> {
   @override
   Widget build(BuildContext context) {
     final headline6 = Theme.of(context).textTheme.headline6;
+    final bodyMedium = Theme.of(context).textTheme.bodyMedium;
     return Scaffold(
         key: _key,
         drawer: const DrawerMenu(),
@@ -85,12 +84,16 @@ class _DepartementRHState extends State<DepartementRH> {
                                 leading: const Icon(Icons.folder, color: Colors.white),
                                 title:
                                     Text('Dossier Salaires', style: headline6!.copyWith(color: Colors.white)),
+                                  subtitle: Text(
+                                    "Vous $salairesCount dossiers necessitent votre approbation",
+                                    style: bodyMedium!.copyWith(
+                                        color: Colors.white)),
                                 initiallyExpanded: false,
                                 onExpansionChanged: (val) {
                                   setState(() {
                                     isOpen1 = !val;
                                   });
-                                },
+                                }, 
                                 trailing: const Icon(Icons.arrow_drop_down,
                                     color: Colors.white),
                                 children: const [TableSalairesDD()],

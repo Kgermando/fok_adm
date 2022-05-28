@@ -11,16 +11,13 @@ import 'package:fokad_admin/src/models/rh/perfomence_model.dart';
 import 'package:fokad_admin/src/models/users/user_model.dart';
 import 'package:fokad_admin/src/navigation/drawer/drawer_menu.dart';
 import 'package:fokad_admin/src/navigation/header/custom_appbar.dart';
-import 'package:fokad_admin/src/routes/routes.dart';
 import 'package:fokad_admin/src/utils/country.dart';
 import 'package:fokad_admin/src/utils/dropdown.dart';
 import 'package:fokad_admin/src/utils/fonction_occupe.dart';
 import 'package:fokad_admin/src/utils/service_affectation.dart';
 import 'package:fokad_admin/src/widgets/btn_widget.dart';
-import 'package:fokad_admin/src/widgets/print_widget.dart';
 import 'package:fokad_admin/src/widgets/title_widget.dart';
 import 'package:intl/intl.dart';
-import 'package:routemaster/routemaster.dart';
 
 class AddAgent extends StatefulWidget {
   const AddAgent({Key? key}) : super(key: key);
@@ -41,18 +38,26 @@ class _AddAgentState extends State<AddAgent> {
   final List<String> roleList = Dropdown().role;
   final List<String> world = Country().world;
 
-  final List<String> fonctionOccupeAdminList = FonctionOccupee().adminDropdown;
-  final List<String> fonctionOccupeList = FonctionOccupee().fonctionOccupeDropdown;
+  // Fontion occupée
+  final List<String> fonctionAdminList = FonctionOccupee().adminDropdown;
+  final List<String> fonctionrhList = FonctionOccupee().rhDropdown;
+  final List<String> fonctionfinList = FonctionOccupee().finDropdown;
+  final List<String> fonctionbudList = FonctionOccupee().budDropdown;
+  final List<String> fonctioncompteList = FonctionOccupee().compteDropdown;
+  final List<String> fonctionexpList = FonctionOccupee().expDropdown;
+  final List<String> fonctioncommList = FonctionOccupee().commDropdown;
+  final List<String> fonctionlogList = FonctionOccupee().logDropdown;
 
-
-  final List<String> serviceAffectation =
-      ServiceAffectation().serviceAffectationDropdown;
+  // Service d'affectation
+  // final List<String> serviceAffectation =ServiceAffectation().serviceAffectationDropdown;
   final List<String> serviceAffectationAdmin =
       ServiceAffectation().adminDropdown;
   final List<String> serviceAffectationRH = ServiceAffectation().rhDropdown;
   final List<String> serviceAffectationFin = ServiceAffectation().finDropdown;
-  final List<String> serviceAffectationBud = ServiceAffectation().budgetDropdown;
-  final List<String> serviceAffectationCompt = ServiceAffectation().comptableDropdown;
+  final List<String> serviceAffectationBud =
+      ServiceAffectation().budgetDropdown;
+  final List<String> serviceAffectationCompt =
+      ServiceAffectation().comptableDropdown;
   final List<String> serviceAffectationEXp = ServiceAffectation().expDropdown;
   final List<String> serviceAffectationComm = ServiceAffectation().commDropdown;
   final List<String> serviceAffectationLog = ServiceAffectation().logDropdown;
@@ -265,20 +270,11 @@ class _AddAgentState extends State<AddAgent> {
                     ),
                     Row(
                       children: [
-                        Expanded(child: roleWidget()),
+                        Expanded(child: matriculeWidget()),
                         const SizedBox(
                           width: p10,
                         ),
-                        Expanded(child: matriculeWidget())
-                      ],
-                    ),
-                    Row(
-                      children: [
-                        Expanded(child: numeroSecuriteSocialeWidget()),
-                        const SizedBox(
-                          width: p10,
-                        ),
-                        Expanded(child: salaireWidget())
+                        Expanded(child: numeroSecuriteSocialeWidget())
                       ],
                     ),
                     Row(
@@ -287,7 +283,16 @@ class _AddAgentState extends State<AddAgent> {
                         const SizedBox(
                           width: p10,
                         ),
-                        Expanded(child: typeContratWidget())
+                        Expanded(child: roleWidget())
+                      ],
+                    ),
+                    Row(
+                      children: [
+                        Expanded(child: typeContratWidget()),
+                        const SizedBox(
+                          width: p10,
+                        ),
+                        Expanded(child: salaireWidget())
                       ],
                     ),
                     Row(
@@ -685,36 +690,41 @@ class _AddAgentState extends State<AddAgent> {
 
             if (departement == 'Administration') {
               matricule = "${fokad}ADM$date-${agentCount!.count + 1}";
-              fonctionList = fonctionOccupeAdminList;
+              fonctionList = fonctionAdminList;
               servAffectList = serviceAffectationAdmin;
             } else if (departement == 'Finances') {
               matricule = "${fokad}FIN$date-${agentCount!.count + 1}";
-              fonctionList = fonctionOccupeList;
+              fonctionList = fonctionfinList;
               servAffectList = serviceAffectationFin;
             } else if (departement == 'Comptabilites') {
               matricule = "${fokad}CPT$date-${agentCount!.count + 1}";
-              fonctionList = fonctionOccupeList;
+              fonctionList = fonctioncompteList;
               servAffectList = serviceAffectationCompt;
             } else if (departement == 'Budgets') {
               matricule = "${fokad}BUD$date-${agentCount!.count + 1}";
-              fonctionList = fonctionOccupeList;
+              fonctionList = fonctionbudList;
               servAffectList = serviceAffectationBud;
             } else if (departement == 'Ressources Humaines') {
               matricule = "${fokad}RH$date-${agentCount!.count + 1}";
-              fonctionList = fonctionOccupeList;
+              fonctionList = fonctionrhList;
               servAffectList = serviceAffectationRH;
             } else if (departement == 'Exploitations') {
               matricule = "${fokad}EXP$date-${agentCount!.count + 1}";
-              fonctionList = fonctionOccupeList;
+              fonctionList = fonctionexpList;
               servAffectList = serviceAffectationEXp;
             } else if (departement == 'Commercial et Marketing') {
               matricule = "${fokad}COM$date-${agentCount!.count + 1}";
-              fonctionList = fonctionOccupeList;
+              fonctionList = fonctioncommList;
               servAffectList = serviceAffectationComm;
             } else if (departement == 'Logistique') {
               matricule = "${fokad}LOG$date-${agentCount!.count + 1}";
-              fonctionList = fonctionOccupeList;
+              fonctionList = fonctionlogList;
               servAffectList = serviceAffectationLog;
+            } else {
+              setState(() {
+                fonctionList = [];
+                servAffectList = [];
+              });
             }
           });
         },
@@ -740,7 +750,7 @@ class _AddAgentState extends State<AddAgent> {
               value: value,
               child: Text(value),
             );
-          }).toList(),
+          }).toSet().toList(),
           validator: (value) => value == null ? "Select Service" : null,
           onChanged: (value) {
             setState(() {
@@ -816,7 +826,8 @@ class _AddAgentState extends State<AddAgent> {
               value: value,
               child: Text(value),
             );
-          }).toList(),
+          }).toSet()
+              .toList(),
           validator: (value) => value == null ? "Select Fonction" : null,
           onChanged: (value) {
             setState(() {
@@ -884,8 +895,8 @@ class _AddAgentState extends State<AddAgent> {
               child: TextFormField(
                 controller: salaireController,
                 decoration: InputDecoration(
-                  border:
-                      OutlineInputBorder(borderRadius: BorderRadius.circular(10.0)),
+                  border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10.0)),
                   labelText: 'Salaire',
                 ),
                 keyboardType: TextInputType.text,
@@ -901,9 +912,8 @@ class _AddAgentState extends State<AddAgent> {
             ),
             const SizedBox(width: p20),
             Expanded(
-              flex: 1,
-              child: Text("\$", 
-              style: Theme.of(context).textTheme.headline6))
+                flex: 1,
+                child: Text("\$", style: Theme.of(context).textTheme.headline6))
           ],
         ));
   }
@@ -959,7 +969,7 @@ class _AddAgentState extends State<AddAgent> {
         created: DateTime.now());
 
     await AgentsApi().insertData(agentModel);
-    Routemaster.of(context).replace(RhRoutes.rhAgent);
+    Navigator.of(context).pop();
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
       content: const Text("Enregistrer agent avec succès!"),
       backgroundColor: Colors.green[700],

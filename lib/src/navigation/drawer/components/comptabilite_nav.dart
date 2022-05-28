@@ -57,7 +57,7 @@ class _ComptabiliteNavState extends State<ComptabiliteNav> {
     var journal = await JournalApi().getAllData();
     var compteReultats = await CompteResultatApi().getAllData();
     var balances = await BalanceCompteApi().getAllData();
-
+  if(mounted) {
     setState(() {
       user = userModel;
       bilanCount = bilans.length;
@@ -65,6 +65,7 @@ class _ComptabiliteNavState extends State<ComptabiliteNav> {
       compteResultatCount = compteReultats.length;
       balanceCount = balances.length;
     });
+  }
   }
 
   @override

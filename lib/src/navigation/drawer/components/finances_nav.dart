@@ -66,7 +66,8 @@ class _FinancesNavState extends State<FinancesNav> {
     var projets = await ProjetsApi().getAllData();
     var approbations = await ApprobationApi().getAllData();
 
-    setState(() {
+    if (mounted) {
+      setState(() {
       user = userModel;
       for (var item in approbations) {
         creanceCount = creances
@@ -121,6 +122,7 @@ class _FinancesNavState extends State<FinancesNav> {
             .length;
       }
     });
+    }
   }
 
 

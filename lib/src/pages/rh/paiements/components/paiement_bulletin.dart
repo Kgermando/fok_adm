@@ -84,7 +84,7 @@ class _PaiementBulletinState extends State<PaiementBulletin> {
       departement: '-',
       servicesAffectation: '-',
       fonctionOccupe: '-',
-      role: '-',
+      role: '5',
       isOnline: false,
       createdAt: DateTime.now(),
       passwordHash: '-',
@@ -1683,7 +1683,7 @@ class _PaiementBulletinState extends State<PaiementBulletin> {
                                   ))
                           ],
                         ),
-                        if (data.departement == 'Budgets')
+                        if (user.departement == 'Budgets')
                           Row(
                             children: [
                               Expanded(flex: 3, child: ligneBudgtaireWidget()),

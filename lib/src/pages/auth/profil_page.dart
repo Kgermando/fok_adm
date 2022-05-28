@@ -67,7 +67,7 @@ class _ProfilPageState extends State<ProfilPage> {
                                 ],
                               ),
                               Expanded(
-                                  child: SingleChildScrollView(
+                                  child: SingleChildScrollView( 
                                       child: profileBody(userData))),
                             ],
                           );
@@ -205,7 +205,7 @@ class _ProfilPageState extends State<ProfilPage> {
             child: Row(
               children: [
                 Expanded(
-                    child: AutoSizeText('departement',
+                    child: AutoSizeText('Département',
                         maxLines: 1,
                         style:
                             bodyLarge.copyWith(fontWeight: FontWeight.bold))),

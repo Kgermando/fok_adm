@@ -2,14 +2,15 @@
 
 import 'dart:convert';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:fokad_admin/src/api/auth/auth_api.dart';
 import 'package:fokad_admin/src/api/route_api.dart';
 import 'package:fokad_admin/src/models/rh/agent_count_model.dart';
 import 'package:fokad_admin/src/models/rh/agent_model.dart';
-import 'package:http/http.dart' as http; 
+import 'package:http/http.dart' as http;
 
-class AgentsApi {
+class AgentsApi extends ChangeNotifier {
   var client = http.Client();
   final storage = const FlutterSecureStorage();
 
@@ -17,7 +18,6 @@ class AgentsApi {
     var data = await storage.read(key: "accessToken");
     return data;
   }
-
 
   Future<AgentCountModel> getCount() async {
     String? token = await getToken();
@@ -69,6 +69,7 @@ class AgentsApi {
       for (var u in bodyList) {
         data.add(AgentModel.fromJson(u));
       }
+      notifyListeners();
       return data;
     } else {
       throw Exception(jsonDecode(resp.body)['message']);
@@ -133,7 +134,6 @@ class AgentsApi {
     }
   }
 
-
   Future<List<AgentPieChartModel>> getChartPieSexe() async {
     String? token = await getToken();
 
@@ -161,14 +161,13 @@ class AgentsApi {
     }
   }
 
-
   Future<AgentModel> insertData(AgentModel agentModel) async {
     final accessToken = await storage.read(key: 'accessToken');
     var data = agentModel.toJson();
     var body = jsonEncode(data);
 
     var resp = await client.post(addAgentsUrl,
-        headers: <String, String> {
+        headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
           'Authorization': 'Bearer $accessToken'
         },
@@ -190,8 +189,7 @@ class AgentsApi {
     var body = jsonEncode(data);
     var updateUrl = Uri.parse("$mainUrl/rh/agents/update-agent/$id");
 
-    var res = await client.put(
-      updateUrl,
+    var res = await client.put(updateUrl,
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
           'Authorization': 'Bearer $accessToken'

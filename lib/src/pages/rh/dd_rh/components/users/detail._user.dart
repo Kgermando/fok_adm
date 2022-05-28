@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:fokad_admin/src/api/rh/agents_api.dart';
 import 'package:fokad_admin/src/api/user/user_api.dart';
 import 'package:fokad_admin/src/constants/app_theme.dart';
 import 'package:fokad_admin/src/constants/responsive.dart';
+import 'package:fokad_admin/src/models/rh/agent_model.dart';
 import 'package:fokad_admin/src/models/users/user_model.dart';
 import 'package:fokad_admin/src/navigation/drawer/drawer_menu.dart';
 import 'package:fokad_admin/src/navigation/header/custom_appbar.dart';
@@ -24,7 +26,6 @@ class _DetailUserState extends State<DetailUser> {
   final GlobalKey<ScaffoldState> _key = GlobalKey();
   final ScrollController _controllerScroll = ScrollController();
   bool isLoading = false;
-  List<UserModel> userList = [];
 
   bool statutAgent = false;
 
@@ -39,11 +40,28 @@ class _DetailUserState extends State<DetailUser> {
     super.initState();
   }
 
-  UserModel? user;
+  UserModel user = UserModel(
+      nom: '-',
+      prenom: '-',
+      email: '-',
+      telephone: '-',
+      matricule: '-',
+      departement: '-',
+      servicesAffectation: '-',
+      fonctionOccupe: '-',
+      role: '5',
+      isOnline: false,
+      createdAt: DateTime.now(),
+      passwordHash: '-',
+      succursale: '-');
+  List<AgentModel> agentList = [];
   Future<void> getData() async {
     var userModel = await UserApi().getOneData(widget.id);
+    var agents = await AgentsApi().getAllData();
+
     setState(() {
       user = userModel;
+      agentList = agents;
     });
   }
 
@@ -60,7 +78,12 @@ class _DetailUserState extends State<DetailUser> {
       child: Scaffold(
           key: _key,
           drawer: const DrawerMenu(),
-          floatingActionButton: speedialWidget(),
+          floatingActionButton: FloatingActionButton(
+              child: const Icon(Icons.edit),
+              onPressed: () {
+                Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context) => UpdateUser(userModel: user)));
+              }),
           body: SafeArea(
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -105,7 +128,6 @@ class _DetailUserState extends State<DetailUser> {
                                   Expanded(
                                       child: Scrollbar(
                                           controller: _controllerScroll,
-                                          isAlwaysShown: true,
                                           child: pageDetail(data)))
                                 ],
                               );
@@ -148,14 +170,24 @@ class _DetailUserState extends State<DetailUser> {
                       TitleWidget(title: "Matricule ${data.matricule}"),
                     ],
                   ),
-                  Column(
-                    children: [
-                      PrintWidget(
-                          tooltip: 'Imprimer le document', onPressed: () {}),
-                      SelectableText(
-                          DateFormat("dd-MM-yy").format(data.createdAt),
-                          textAlign: TextAlign.start),
-                    ],
+                  Padding(
+                    padding: const EdgeInsets.all(p8),
+                    child: Column(
+                      children: [
+                        Row(
+                          children: [
+                            deleteAccesUser(data),
+                            PrintWidget(
+                                tooltip: 'Imprimer le document',
+                                onPressed: () {}),
+                          ],
+                        ),
+                        SelectableText(
+                            DateFormat("dd-MM-yyyy HH:mm")
+                                .format(data.createdAt),
+                            textAlign: TextAlign.start),
+                      ],
+                    ),
                   )
                 ],
               ),
@@ -299,39 +331,7 @@ class _DetailUserState extends State<DetailUser> {
     );
   }
 
-  SpeedDial speedialWidget() {
-    return SpeedDial(
-      child: const Icon(
-        Icons.menu,
-        color: Colors.white,
-      ),
-      closedForegroundColor: themeColor,
-      openForegroundColor: Colors.white,
-      closedBackgroundColor: themeColor,
-      openBackgroundColor: themeColor,
-      speedDialChildren: <SpeedDialChild>[
-        SpeedDialChild(
-          child: const Icon(Icons.check_box_outline_blank),
-          foregroundColor: Colors.black,
-          backgroundColor: Colors.green.shade700,
-          label: 'Supprimer l\'accès',
-          onPressed: () => deletteAccesUser(),
-        ),
-        SpeedDialChild(
-          child: const Icon(Icons.check_box),
-          foregroundColor: Colors.white,
-          backgroundColor: Colors.orange.shade700,
-          label: 'Mettre à jour',
-          onPressed: () {
-            Navigator.of(context).push(MaterialPageRoute(
-                builder: (context) => UpdateUser(userModel: user!)));
-          },
-        )
-      ],
-    );
-  }
-
-  Widget deletteAccesUser() {
+  Widget deleteAccesUser(UserModel data) {
     return IconButton(
       color: Colors.red,
       icon: const Icon(Icons.person_off),
@@ -349,7 +349,7 @@ class _DetailUserState extends State<DetailUser> {
             ),
             TextButton(
               onPressed: () async {
-                await UserApi().deleteData(user!.id!);
+                await deleteUser(data);
                 Navigator.of(context).pop();
                 ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                   content: const Text("Compte supprimé avec succès!"),
@@ -363,5 +363,46 @@ class _DetailUserState extends State<DetailUser> {
         ),
       ),
     );
+  }
+
+  // Delete user login accès
+  Future<void> deleteUser(UserModel data) async {
+    final agentModel = agentList
+        .where((element) => element.matricule == data.matricule).first;
+
+    final agent = AgentModel(
+      id: agentModel.id,
+      nom: agentModel.nom,
+      postNom: agentModel.postNom,
+      prenom: agentModel.prenom,
+      email: agentModel.email,
+      telephone: agentModel.telephone,
+      adresse: agentModel.adresse,
+      sexe: agentModel.sexe,
+      role: agentModel.role,
+      matricule: agentModel.matricule,
+      numeroSecuriteSociale: agentModel.numeroSecuriteSociale,
+      dateNaissance: agentModel.dateNaissance,
+      lieuNaissance: agentModel.lieuNaissance,
+      nationalite: agentModel.nationalite,
+      typeContrat: agentModel.typeContrat,
+      departement: agentModel.departement,
+      servicesAffectation: agentModel.servicesAffectation,
+      dateDebutContrat: agentModel.dateDebutContrat,
+      dateFinContrat: agentModel.dateFinContrat,
+      fonctionOccupe: agentModel.fonctionOccupe,
+      statutAgent: statutAgent,
+      createdAt: DateTime.now(),
+      photo: agentModel.photo,
+      salaire: agentModel.salaire,
+      signature: agentModel.matricule,
+      created: DateTime.now());
+    await AgentsApi().updateData(agentModel.id!, agent);
+
+    await UserApi().deleteData(data.id!);
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      content: const Text("Suppression avec succès!"),
+      backgroundColor: Colors.red[700],
+    ));
   }
 }

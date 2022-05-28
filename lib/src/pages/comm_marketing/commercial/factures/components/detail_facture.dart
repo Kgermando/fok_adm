@@ -110,9 +110,7 @@ class _DetailFactureState extends State<DetailFacture> {
                                   ],
                                 ),
                                 Expanded(
-                                    child: Scrollbar(
-                                        controller: _controllerScroll,
-                                        isAlwaysShown: true,
+                                    child: SingleChildScrollView(
                                         child: pageDetail(data)))
                               ],
                             );

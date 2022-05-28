@@ -73,11 +73,13 @@ class _TableSalaireAdminState extends State<TableSalaireAdmin> {
                 return resolver<ClassFilterImplemented>() as PlutoFilterType;
               } else if (column.field == 'departement') {
                 return resolver<ClassFilterImplemented>() as PlutoFilterType;
+              } else if (column.field == 'salaire') {
+                return resolver<ClassFilterImplemented>() as PlutoFilterType;
               } else if (column.field == 'approbation') {
                 return resolver<ClassFilterImplemented>() as PlutoFilterType;
-              } else if (column.field == 'modePaiement') {
+              }  else if (column.field == 'observation') {
                 return resolver<ClassFilterImplemented>() as PlutoFilterType;
-              } else if (column.field == 'salaire') {
+              } else if (column.field == 'modePaiement') {
                 return resolver<ClassFilterImplemented>() as PlutoFilterType;
               } else if (column.field == 'created') {
                 return resolver<ClassFilterImplemented>() as PlutoFilterType;
@@ -142,7 +144,7 @@ class _TableSalaireAdminState extends State<TableSalaireAdmin> {
       ),
       PlutoColumn(
         readOnly: true,
-        title: 'departement',
+        title: 'Departement',
         field: 'departement',
         type: PlutoColumnType.text(),
         enableRowDrag: true,
@@ -168,6 +170,30 @@ class _TableSalaireAdminState extends State<TableSalaireAdmin> {
         readOnly: true,
         title: 'Approbation',
         field: 'approbation',
+        type: PlutoColumnType.text(),
+        enableRowDrag: true,
+        enableContextMenu: false,
+        enableDropToResize: true,
+        titleTextAlign: PlutoColumnTextAlign.left,
+        width: 150,
+        minWidth: 150,
+      ),
+      PlutoColumn(
+        readOnly: true,
+        title: 'Observation',
+        field: 'observation',
+        type: PlutoColumnType.text(),
+        enableRowDrag: true,
+        enableContextMenu: false,
+        enableDropToResize: true,
+        titleTextAlign: PlutoColumnTextAlign.left,
+        width: 150,
+        minWidth: 150,
+      ),
+      PlutoColumn(
+        readOnly: true,
+        title: 'Mode de Paiement',
+        field: 'modePaiement',
         type: PlutoColumnType.text(),
         enableRowDrag: true,
         enableContextMenu: false,
@@ -208,6 +234,7 @@ class _TableSalaireAdminState extends State<TableSalaireAdmin> {
             'nom': PlutoCell(value: item.nom),
             'matricule': PlutoCell(value: item.matricule),
             'departement': PlutoCell(value: item.departement),
+            'salaire': PlutoCell(value: item.salaire),
             'approbation': PlutoCell(
                 value: (item.approbationDG == "Approved")
                     ? "Approuvé"

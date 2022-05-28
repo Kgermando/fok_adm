@@ -53,12 +53,14 @@ class _ComMarketingState extends State<ComMarketing> {
     var campaign = await CampaignApi().getAllData();
     var succursale = await SuccursaleApi().getAllData();
     var prodModel = await ProduitModelApi().getAllData();
-    setState(() {
+    if(mounted) {
+      setState(() {
       user = userModel;
       campaignCount = campaign.length;
       succursaleCount = succursale.length;
       prodModelCount = prodModel.length;
     });
+    }
   }
 
   @override

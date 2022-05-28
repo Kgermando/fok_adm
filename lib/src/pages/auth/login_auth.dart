@@ -260,7 +260,7 @@ class _LoginPageState extends State<LoginPage> {
             if (form.validate()) {
               setState(() => isloading = true);
               await AuthApi()
-                  .login(matriculeController.text.toLowerCase(), passwordController.text)
+                  .login(matriculeController.text, passwordController.text)
                   .then((value) {
                 if (value) {
                 Provider.of<AppState>(context, listen: false).isLoggedIn = true;

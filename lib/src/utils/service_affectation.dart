@@ -1,17 +1,17 @@
 class ServiceAffectation {
 
-    List<String> serviceAffectationDropdown = [
-    'Administration',
-    'Membre',
-    'Consultant(e)',
-    'Sans pste occupé',
-  ];
+  //   List<String> serviceAffectationDropdown = [
+  //   'Administration',
+  //   'Membre',
+  //   'Consultant(e)',
+  //   'Sans pste occupé'
+  // ];
 
   List<String> adminDropdown = [
     'Administration',
     'Membre de FOKAD',
     'Consultant(e)',
-    'Aucun poste occupé',
+    'Aucun poste occupé'
   ];
 
   List<String> rhDropdown = [
@@ -27,27 +27,31 @@ class ServiceAffectation {
     'Caisse',
     'Banque',
     'Créances',
-    'Dettes',
+    'Dettes'
   ];
 
   List<String> budgetDropdown = [
     'Supervision',
     'Verification',
-    'Création',
+    'Création budget'
   ];
 
   List<String> comptableDropdown = [
     'Supervision',
-    'Verification',
+    'Ecriture des comptes bilan',
+    'Ecriture des comptes journal',
+    'Ecriture des comptes résultats',
+    'Ecriture des balances',
+    'Verification'
   ];
 
   List<String> expDropdown = [
     'Supervision',
-    'Exploitation',
+    // 'Exploitation',
     'Gestion des projets',
     'Suivi des projets',
     'Gestion des ressources des projets',
-    'Agent'
+    'Gestion de la Rentabilité'
   ];
 
   List<String> commDropdown = [

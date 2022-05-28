@@ -39,15 +39,27 @@ class _UpdateAgentState extends State<UpdateAgent> {
   final List<String> sexeList = Dropdown().sexe;
   final List<String> roleList = Dropdown().role;
   final List<String> world = Country().world;
-  final List<String> fonctionOccupeAdminList = FonctionOccupee().adminDropdown;
-  final List<String> fonctionOccupeList =
-      FonctionOccupee().fonctionOccupeDropdown;
-  final List<String> serviceAffectation =
-      ServiceAffectation().serviceAffectationDropdown;
+
+  // Fontion occupée
+  final List<String> fonctionAdminList = FonctionOccupee().adminDropdown;
+  final List<String> fonctionrhList = FonctionOccupee().rhDropdown;
+  final List<String> fonctionfinList = FonctionOccupee().finDropdown;
+  final List<String> fonctionbudList = FonctionOccupee().budDropdown;
+  final List<String> fonctioncompteList = FonctionOccupee().compteDropdown;
+  final List<String> fonctionexpList = FonctionOccupee().expDropdown;
+  final List<String> fonctioncommList = FonctionOccupee().commDropdown;
+  final List<String> fonctionlogList = FonctionOccupee().logDropdown;
+
+  // Service d'affectation
+  // final List<String> serviceAffectation = ServiceAffectation().serviceAffectationDropdown;
   final List<String> serviceAffectationAdmin =
       ServiceAffectation().adminDropdown;
   final List<String> serviceAffectationRH = ServiceAffectation().rhDropdown;
   final List<String> serviceAffectationFin = ServiceAffectation().finDropdown;
+  final List<String> serviceAffectationBud =
+      ServiceAffectation().budgetDropdown;
+  final List<String> serviceAffectationCompt =
+      ServiceAffectation().comptableDropdown;
   final List<String> serviceAffectationEXp = ServiceAffectation().expDropdown;
   final List<String> serviceAffectationComm = ServiceAffectation().commDropdown;
   final List<String> serviceAffectationLog = ServiceAffectation().logDropdown;
@@ -147,7 +159,20 @@ class _UpdateAgentState extends State<UpdateAgent> {
     super.dispose();
   }
 
-  UserModel? user;
+  UserModel user = UserModel(
+      nom: '-',
+      prenom: '-',
+      email: '-',
+      telephone: '-',
+      matricule: '-',
+      departement: '-',
+      servicesAffectation: '-',
+      fonctionOccupe: '-',
+      role: '5',
+      isOnline: false,
+      createdAt: DateTime.now(),
+      passwordHash: '-',
+      succursale: '-');
   AgentCountModel? agentCount;
   Future<void> getData() async {
     UserModel userModel = await AuthApi().getUserId();
@@ -195,8 +220,7 @@ class _UpdateAgentState extends State<UpdateAgent> {
                           ),
                         ],
                       ),
-                      Expanded(
-                          child: updateAgentWidget())
+                      Expanded(child: updateAgentWidget())
                     ],
                   ),
                 ),
@@ -288,20 +312,11 @@ class _UpdateAgentState extends State<UpdateAgent> {
                     ),
                     Row(
                       children: [
-                        Expanded(child: roleWidget()),
+                        Expanded(child: matriculeWidget()),
                         const SizedBox(
                           width: p10,
                         ),
-                        Expanded(child: matriculeWidget())
-                      ],
-                    ),
-                    Row(
-                      children: [
-                        Expanded(child: numeroSecuriteSocialeWidget()),
-                        const SizedBox(
-                          width: p10,
-                        ),
-                        Expanded(child: salaireWidget())
+                        Expanded(child: numeroSecuriteSocialeWidget())
                       ],
                     ),
                     Row(
@@ -310,7 +325,16 @@ class _UpdateAgentState extends State<UpdateAgent> {
                         const SizedBox(
                           width: p10,
                         ),
-                        Expanded(child: typeContratWidget())
+                        Expanded(child: roleWidget())
+                      ],
+                    ),
+                    Row(
+                      children: [
+                        Expanded(child: typeContratWidget()),
+                        const SizedBox(
+                          width: p10,
+                        ),
+                        Expanded(child: salaireWidget())
                       ],
                     ),
                     Row(
@@ -566,13 +590,13 @@ class _UpdateAgentState extends State<UpdateAgent> {
           ),
           keyboardType: TextInputType.text,
           style: const TextStyle(),
-          validator: (value) {
-            if (value != null && value.isEmpty) {
-              return 'Ce champs est obligatoire';
-            } else {
-              return null;
-            }
-          },
+          // validator: (value) {
+          //   if (value != null && value.isEmpty) {
+          //     return 'Ce champs est obligatoire';
+          //   } else {
+          //     return null;
+          //   }
+          // },
         ));
   }
 
@@ -702,28 +726,41 @@ class _UpdateAgentState extends State<UpdateAgent> {
 
             if (departement == 'Administration') {
               matricule = "${fokad}ADM$date-${agentCount!.count + 1}";
-              fonctionList = fonctionOccupeAdminList;
+              fonctionList = fonctionAdminList;
               servAffectList = serviceAffectationAdmin;
-            } else if (departement == 'Comptabilité et Finance') {
+            } else if (departement == 'Finances') {
               matricule = "${fokad}FIN$date-${agentCount!.count + 1}";
-              fonctionList = fonctionOccupeList;
+              fonctionList = fonctionfinList;
               servAffectList = serviceAffectationFin;
+            } else if (departement == 'Comptabilites') {
+              matricule = "${fokad}CPT$date-${agentCount!.count + 1}";
+              fonctionList = fonctioncompteList;
+              servAffectList = serviceAffectationCompt;
+            } else if (departement == 'Budgets') {
+              matricule = "${fokad}BUD$date-${agentCount!.count + 1}";
+              fonctionList = fonctionbudList;
+              servAffectList = serviceAffectationBud;
             } else if (departement == 'Ressources Humaines') {
               matricule = "${fokad}RH$date-${agentCount!.count + 1}";
-              fonctionList = fonctionOccupeList;
+              fonctionList = fonctionrhList;
               servAffectList = serviceAffectationRH;
             } else if (departement == 'Exploitations') {
               matricule = "${fokad}EXP$date-${agentCount!.count + 1}";
-              fonctionList = fonctionOccupeList;
+              fonctionList = fonctionexpList;
               servAffectList = serviceAffectationEXp;
             } else if (departement == 'Commercial et Marketing') {
               matricule = "${fokad}COM$date-${agentCount!.count + 1}";
-              fonctionList = fonctionOccupeList;
+              fonctionList = fonctioncommList;
               servAffectList = serviceAffectationComm;
             } else if (departement == 'Logistique') {
               matricule = "${fokad}LOG$date-${agentCount!.count + 1}";
-              fonctionList = fonctionOccupeList;
+              fonctionList = fonctionlogList;
               servAffectList = serviceAffectationLog;
+            } else {
+              setState(() {
+                fonctionList = [];
+                servAffectList = [];
+              });
             }
           });
         },
@@ -744,12 +781,15 @@ class _UpdateAgentState extends State<UpdateAgent> {
           ),
           value: servicesAffectation,
           isExpanded: true,
-          items: servAffectList.map((String value) {
-            return DropdownMenuItem<String>(
-              value: value,
-              child: Text(value),
-            );
-          }).toList(),
+          items: servAffectList
+              .map((String value) {
+                return DropdownMenuItem<String>(
+                  value: value,
+                  child: Text(value),
+                );
+              })
+              .toSet()
+              .toList(),
           onChanged: (value) {
             setState(() {
               servicesAffectation = value!;
@@ -819,12 +859,15 @@ class _UpdateAgentState extends State<UpdateAgent> {
           ),
           value: fonctionOccupe,
           isExpanded: true,
-          items: fonctionList.map((String value) {
-            return DropdownMenuItem<String>(
-              value: value,
-              child: Text(value),
-            );
-          }).toList(),
+          items: fonctionList
+              .map((String value) {
+                return DropdownMenuItem<String>(
+                  value: value,
+                  child: Text(value),
+                );
+              })
+              .toSet()
+              .toList(),
           onChanged: (value) {
             setState(() {
               fonctionOccupe = value!;
@@ -854,9 +897,7 @@ class _UpdateAgentState extends State<UpdateAgent> {
               return null;
             }
           },
-        )
-
-        );
+        ));
   }
 
   Widget experienceWidget() {
@@ -944,11 +985,12 @@ class _UpdateAgentState extends State<UpdateAgent> {
         createdAt: widget.agentModel.createdAt,
         photo: '-',
         salaire: salaireController.text,
-        signature: user!.matricule.toString(),
+        signature: user.matricule.toString(),
         created: DateTime.now());
 
     await AgentsApi().updateData(widget.agentModel.id!, agentModel);
     Routemaster.of(context).replace(RhRoutes.rhAgent);
+    Navigator.of(context).pop();
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
       content: const Text("Mis a jour agent avec succès!"),
       backgroundColor: Colors.green[700],

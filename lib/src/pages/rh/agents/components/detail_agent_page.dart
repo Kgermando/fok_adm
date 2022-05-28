@@ -9,6 +9,7 @@ import 'package:fokad_admin/src/models/rh/agent_model.dart';
 import 'package:fokad_admin/src/models/users/user_model.dart';
 import 'package:fokad_admin/src/navigation/drawer/drawer_menu.dart';
 import 'package:fokad_admin/src/navigation/header/custom_appbar.dart';
+import 'package:fokad_admin/src/pages/rh/agents/components/agent_pdf.dart';
 import 'package:fokad_admin/src/pages/rh/agents/components/update_agent.dart';
 import 'package:fokad_admin/src/pages/rh/paiements/components/add_paiement_salaire.dart';
 import 'package:fokad_admin/src/utils/loading.dart';
@@ -17,6 +18,7 @@ import 'package:fokad_admin/src/widgets/title_widget.dart';
 import 'package:intl/intl.dart';
 import 'package:routemaster/routemaster.dart';
 import 'package:simple_speed_dial/simple_speed_dial.dart';
+import 'package:syncfusion_flutter_barcodes/barcodes.dart';
 
 class AgentPage extends StatefulWidget {
   const AgentPage({Key? key, this.id}) : super(key: key);
@@ -41,7 +43,20 @@ class _AgentPageState extends State<AgentPage> {
   }
 
   AgentModel? agentModel;
-  UserModel? user;
+  UserModel user = UserModel(
+    nom: '-',
+    prenom: '-',
+    email: '-',
+    telephone: '-',
+    matricule: '-',
+    departement: '-',
+    servicesAffectation: '-',
+    fonctionOccupe: '-',
+    role: '5',
+    isOnline: false,
+    createdAt: DateTime.now(),
+    passwordHash: '-',
+    succursale: '-');
   Future<void> getData() async {
     UserModel userModel = await AuthApi().getUserId();
     final data = await UserApi().getAllData();
@@ -100,8 +115,7 @@ class _AgentPageState extends State<AgentPage> {
                                     ),
                                   ],
                                 ),
-                                Expanded(
-                                    child: pageDetail(agentModel))
+                                Expanded(child: pageDetail(agentModel))
                               ],
                             );
                           } else {
@@ -140,10 +154,13 @@ class _AgentPageState extends State<AgentPage> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     const TitleWidget(title: 'Curriculum vitæ'),
-                    Row(
+                    Column(
                       children: [
                         PrintWidget(
-                            tooltip: 'Imprimer le document', onPressed: () {})
+                            tooltip: 'Imprimer le document',
+                            onPressed: () async {
+                              await AgentPdf.generate(agentModel);
+                            }),
                       ],
                     )
                   ],
@@ -184,16 +201,16 @@ class _AgentPageState extends State<AgentPage> {
                 builder: (context) => UpdateAgent(agentModel: agentModel)));
           },
         ),
-        if(int.parse(user!.role) <= 2)
-        SpeedDialChild(
-          child: const Icon(Icons.safety_divider, size: 15.0),
-          foregroundColor: Colors.white,
-          backgroundColor: Colors.red.shade700,
-          label: 'Activer agent',
-          onPressed: () {
-            agentStatutDialog(agentModel);
-          },
-        ),
+        if (int.parse(user.role) <= 2)
+          SpeedDialChild(
+            child: const Icon(Icons.safety_divider, size: 15.0),
+            foregroundColor: Colors.white,
+            backgroundColor: Colors.red.shade700,
+            label: 'Activer agent',
+            onPressed: () {
+              agentStatutDialog(agentModel);
+            },
+          ),
         SpeedDialChild(
             child: const Icon(Icons.monetization_on),
             foregroundColor: Colors.white,
@@ -221,24 +238,38 @@ class _AgentPageState extends State<AgentPage> {
                 radius: 55,
                 backgroundColor: Colors.deepOrangeAccent,
                 child: ClipOval(
-                  child: (agentModel.photo == '' || agentModel.photo == null) 
-                    ? Image.asset(
-                        'assets/images/avatar.jpg',
-                        fit: BoxFit.cover,
-                        width: 100,
-                        height: 100,
-                      )
-                    : Image.network(
-                        agentModel.photo!,
-                        fit: BoxFit.cover,
-                        width: 150,
-                        height: 150,
-                      )
-                ),
+                    child: (agentModel.photo == '' || agentModel.photo == null)
+                        ? Image.asset(
+                            'assets/images/avatar.jpg',
+                            fit: BoxFit.cover,
+                            width: 100,
+                            height: 100,
+                          )
+                        : Image.network(
+                            agentModel.photo!,
+                            fit: BoxFit.cover,
+                            width: 150,
+                            height: 150,
+                          )),
               ),
               Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      SizedBox(
+                        height: 80,
+                        width: 80,
+                        child: SfBarcodeGenerator(
+                          value: agentModel.matricule,
+                          symbology: QRCode(),
+                        ),
+                      ),
+                    ],
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
                     children: [
                       Text('Statut agent : ',
                           textAlign: TextAlign.start,
@@ -411,7 +442,7 @@ class _AgentPageState extends State<AgentPage> {
               ),
               Expanded(
                 child: Text(
-                    DateFormat("dd-MM-yy").format(agentModel.dateNaissance),
+                    DateFormat("dd-MM-yyyy").format(agentModel.dateNaissance),
                     textAlign: TextAlign.start,
                     style: bodyMedium),
               )
@@ -694,7 +725,7 @@ class _AgentPageState extends State<AgentPage> {
         createdAt: DateTime.now(),
         photo: agentModel.photo,
         salaire: agentModel.salaire,
-        signature: user!.matricule,
+        signature: user.matricule,
         created: DateTime.now());
     await AgentsApi().updateData(agentModel.id!, agent);
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
@@ -740,7 +771,7 @@ class _AgentPageState extends State<AgentPage> {
         role: role,
         isOnline: true,
         createdAt: DateTime.now(),
-        passwordHash: "12345678",
+        passwordHash: '12345678',
         succursale: '-');
     await UserApi().insertData(userModel);
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(

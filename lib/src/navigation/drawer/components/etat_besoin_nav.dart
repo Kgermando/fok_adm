@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:fokad_admin/src/api/auth/auth_api.dart';
 import 'package:fokad_admin/src/models/users/user_model.dart';
@@ -51,20 +52,31 @@ class _EtatBesoinNavState extends State<EtatBesoinNav> {
   Widget build(BuildContext context) {
     final bodyLarge = Theme.of(context).textTheme.bodyLarge;
     double userRole = double.parse(user.role);
-    
-    return Column(
+
+    return ExpansionTile(
+      leading: const Icon(Icons.note_alt, size: 30.0),
+      title: AutoSizeText('Etat de besoins', maxLines: 1, style: bodyLarge),
+      initiallyExpanded: false,
+      onExpansionChanged: (val) {
+        setState(() {
+          isOpen = !val;
+        });
+      },
+      trailing: const Icon(Icons.arrow_drop_down),
       children: [
         if (userRole <= 2)
         DrawerWidget(
-            selected: widget.pageCurrente == DevisRoutes.devis,
-            icon: Icons.note_alt,
-            sizeIcon: 20.0,
-            title: 'Etat de besoins',
-            style: bodyLarge!,
-            onTap: () {
-              Routemaster.of(context).replace(DevisRoutes.devis);
-              // Navigator.of(context).pop();
-            }),
+          selected: widget.pageCurrente == DevisRoutes.devis,
+          icon: Icons.note_alt,
+          sizeIcon: 20.0,
+          title: 'Etat de besoins',
+          style: bodyLarge!,
+          onTap: () {
+            Routemaster.of(context).replace(DevisRoutes.devis);
+            // Navigator.of(context).pop();
+          }
+        ),
+        
       ],
     );
   }

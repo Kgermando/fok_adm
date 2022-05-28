@@ -46,12 +46,14 @@ class _TableEtatBesoinState extends State<TableEtatBesoin> {
 
   Future<void> getData() async {
     final userModel = await AuthApi().getUserId();
-    setState(() {
+    if(mounted) {
+      setState(() {
       matricule = userModel.matricule;
       departement = userModel.departement;
       servicesAffectation = userModel.servicesAffectation;
       fonctionOccupe = userModel.fonctionOccupe;
     });
+    }
   }
 
   @override

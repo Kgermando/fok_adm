@@ -3,11 +3,13 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:fokad_admin/src/api/rh/agents_api.dart';
 import 'package:fokad_admin/src/models/rh/agent_model.dart';
+import 'package:fokad_admin/src/pages/rh/agents/components/agents_xlsx.dart';
 import 'package:fokad_admin/src/pages/rh/agents/components/detail_agent_page.dart';
 import 'package:fokad_admin/src/utils/class_implemented.dart';
 import 'package:fokad_admin/src/widgets/print_widget.dart';
 import 'package:intl/intl.dart';
 import 'package:pluto_grid/pluto_grid.dart';
+
 
 class TableAgents extends StatefulWidget {
   const TableAgents({Key? key}) : super(key: key);
@@ -17,12 +19,11 @@ class TableAgents extends StatefulWidget {
 }
 
 class _TableAgentsState extends State<TableAgents> {
+  int? id;
   List<PlutoColumn> columns = [];
   List<PlutoRow> rows = [];
   PlutoGridStateManager? stateManager;
   PlutoGridSelectingMode gridSelectingMode = PlutoGridSelectingMode.row;
-
-  int? id;
 
   @override
   initState() {
@@ -52,7 +53,8 @@ class _TableAgentsState extends State<TableAgents> {
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
             PrintWidget(onPressed: () {
-              // exportToExcel();
+              Navigator.of(context).push(MaterialPageRoute(
+                  builder: (context) => const AgentXlsx()));
             })
           ],
         );
@@ -282,12 +284,13 @@ class _TableAgentsState extends State<TableAgents> {
                 PlutoCell(value: DateFormat("dd-MM-yy").format(item.createdAt)),
             'departement': PlutoCell(value: item.departement),
             'servicesAffectation': PlutoCell(value: item.servicesAffectation),
-            'statutAgent': PlutoCell(
-                value: (item.statutAgent)
-                    ? Text('Actif',
-                        style: TextStyle(color: Colors.green.shade700))
-                    : Text('Inactif',
-                        style: TextStyle(color: Colors.red.shade700)))
+            'statutAgent': PlutoCell(value: item.statutAgent)
+            // 'statutAgent': PlutoCell(
+            //     value: (item.statutAgent)
+            //         ? Text('Actif',
+            //             style: TextStyle(color: Colors.green.shade700))
+            //         : Text('Inactif',
+            //             style: TextStyle(color: Colors.red.shade700)))
           }));
         }
         stateManager!.resetCurrentState();
@@ -295,52 +298,5 @@ class _TableAgentsState extends State<TableAgents> {
     }
   }
 
-  // Future<void> exportToExcel() async {
-  //   var excel = Excel.createExcel();
-  //   Sheet sheetObject = excel['Historique de ravitailement'];
-  //   sheetObject.insertRowIterables([
-  //     'Date',
-  //     'ID Produit',
-  //     'Prix d\'achat unitaire',
-  //     'Quantité d\'entrer',
-  //     'Quantité restante',
-  //     'Unité',
-  //     'Prix de vente unitaire',
-  //     'TVA',
-  //     'Succursale',
-  //     'Societé'
-  //   ], 0);
 
-  //   for (int i = 0; i < historyRavitaillementList.length; i++) {
-  //     List<String> dataList = [
-  //       DateFormat("dd/MM/yy HH-mm").format(historyRavitaillementList[i].date),
-  //       historyRavitaillementList[i].idProduct,
-  //       historyRavitaillementList[i].priceAchatUnit,
-  //       historyRavitaillementList[i].quantityAchat,
-  //       historyRavitaillementList[i].quantity,
-  //       historyRavitaillementList[i].unite,
-  //       historyRavitaillementList[i].prixVenteUnit,
-  //       historyRavitaillementList[i].tva,
-  //       historyRavitaillementList[i].succursale,
-  //       historyRavitaillementList[i].nameBusiness
-  //     ];
-
-  //     sheetObject.insertRowIterables(dataList, i + 1);
-  //   }
-  //   excel.setDefaultSheet('Historique de ravitailement');
-  //   final dir = await getApplicationDocumentsDirectory();
-  //   final dateTime = DateTime.now();
-  //   final date = DateFormat("dd-MM-yy_HH-mm").format(dateTime);
-
-  //   var onValue = excel.encode();
-  //   File('${dir.path}/historique_ravitailement$date.xlsx')
-  //     ..createSync(recursive: true)
-  //     ..writeAsBytesSync(onValue!);
-
-  //   if (!mounted) return;
-  //   ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-  //     content: const Text("Exportation effectué!"),
-  //     backgroundColor: Colors.green[700],
-  //   ));
-  // }
 }

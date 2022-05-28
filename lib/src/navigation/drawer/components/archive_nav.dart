@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:fokad_admin/src/navigation/drawer/drawer_widget.dart';
 import 'package:fokad_admin/src/routes/routes.dart';
@@ -18,30 +19,28 @@ class _ArchiveNavState extends State<ArchiveNav> {
   Widget build(BuildContext context) {
     final bodyLarge = Theme.of(context).textTheme.bodyLarge;
 
-    return DrawerWidget(
-        selected: widget.pageCurrente == ArchiveRoutes.arcihves,
-        icon: Icons.archive,
-        sizeIcon: 20.0,
-        title: 'Archives',
-        style: bodyLarge!,
-        onTap: () {
-          Routemaster.of(context).replace(
-            ArchiveRoutes.arcihves,
-          );
-          // Navigator.of(context).pop();
+    return ExpansionTile(
+      leading: const Icon(Icons.archive, size: 30.0),
+      title: AutoSizeText('Archives', maxLines: 1, style: bodyLarge),
+      initiallyExpanded: false,
+      onExpansionChanged: (val) {
+        setState(() {
+          isOpen = !val;
         });
-
-    // ExpansionTile(
-    //   leading: const Icon(Icons.archive, size: 30.0),
-    //   title: AutoSizeText('Archive', maxLines: 1, style: bodyLarge),
-    //   initiallyExpanded: false,
-    //   onExpansionChanged: (val) {
-    //     setState(() {
-    //       isOpen = !val;
-    //     });
-    //   },
-    //   trailing: const Icon(Icons.arrow_drop_down),
-    //   children: [],
-    // );
+      },
+      trailing: const Icon(Icons.arrow_drop_down),
+      children: [
+        DrawerWidget(
+            selected: widget.pageCurrente == ArchiveRoutes.arcihves,
+            icon: Icons.archive,
+            sizeIcon: 20.0,
+            title: 'Archives',
+            style: bodyLarge!,
+            onTap: () {
+              Routemaster.of(context).replace(ArchiveRoutes.arcihves);
+              // Navigator.of(context).pop();
+            }),
+      ],
+    );
   }
 }

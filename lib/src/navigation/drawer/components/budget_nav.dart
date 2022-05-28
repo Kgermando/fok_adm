@@ -62,8 +62,8 @@ class _BudgetNavState extends State<BudgetNav> {
     var projets = await ProjetsApi().getAllData();
     var budgetDep = await DepeartementBudgetApi().getAllData();
     var approbations = await ApprobationApi().getAllData();
-
-    setState(() {
+  if (mounted) {
+  setState(() {
       user = userModel;
       for (var item in approbations) {
         salaireCount = salaires
@@ -106,6 +106,7 @@ class _BudgetNavState extends State<BudgetNav> {
             .length;
       }
     });
+}
   }
 
   @override

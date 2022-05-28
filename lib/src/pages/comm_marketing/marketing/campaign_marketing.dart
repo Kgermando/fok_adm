@@ -3,6 +3,7 @@ import 'package:fokad_admin/src/constants/app_theme.dart';
 import 'package:fokad_admin/src/constants/responsive.dart';
 import 'package:fokad_admin/src/navigation/drawer/drawer_menu.dart';
 import 'package:fokad_admin/src/navigation/header/custom_appbar.dart';
+import 'package:fokad_admin/src/pages/comm_marketing/marketing/components/campaign/add_campaign.dart';
 import 'package:fokad_admin/src/pages/comm_marketing/marketing/components/campaign/table_campaign.dart';
 import 'package:fokad_admin/src/routes/routes.dart';
 import 'package:routemaster/routemaster.dart';
@@ -30,7 +31,9 @@ class _CampaignMarketingState extends State<CampaignMarketing> {
               ],
             ),
             onPressed: () {
-              Routemaster.of(context).replace(ComMarketingRoutes.comMarketingCampaignAdd);
+              Navigator.of(context).push(MaterialPageRoute(
+                  builder: (context) => const AddCampaign()));
+              // Routemaster.of(context).replace(ComMarketingRoutes.comMarketingCampaignAdd);
             }),
         body: SafeArea(
           child: Row(

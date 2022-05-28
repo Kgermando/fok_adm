@@ -2,6 +2,7 @@
 
 import 'dart:convert';
 import 'dart:io';
+import 'dart:typed_data';
 import 'package:fokad_admin/src/api/auth/auth_api.dart';
 import 'package:fokad_admin/src/helpers/pdf_api.dart';
 import 'package:fokad_admin/src/models/comm_maketing/creance_cart_model.dart';
@@ -10,6 +11,11 @@ import 'package:intl/intl.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
 import 'package:pdf/widgets.dart';
+
+// Local import
+import '/src/helpers/save_file_mobile_pdf.dart'
+    if (dart.library.html) 'src/helpers/save_file_web.dart' as helper;
+
 
 class CreanceCartPDF {
   static Future<File> generate(
@@ -29,7 +35,7 @@ class CreanceCartPDF {
       ],
       footer: (context) => buildFooter(user),
     ));
-    return PdfApi.saveDocument(name: 'creance', pdf: pdf);
+    return  PdfApi.saveDocument(name: 'creance', pdf: pdf);
   }
 
   static Widget buildHeader(
