@@ -16,7 +16,6 @@ import 'package:fokad_admin/src/utils/loading.dart';
 import 'package:fokad_admin/src/widgets/print_widget.dart';
 import 'package:fokad_admin/src/widgets/title_widget.dart';
 import 'package:intl/intl.dart';
-import 'package:routemaster/routemaster.dart';
 import 'package:simple_speed_dial/simple_speed_dial.dart';
 import 'package:syncfusion_flutter_barcodes/barcodes.dart';
 
@@ -102,7 +101,7 @@ class _AgentPageState extends State<AgentPage> {
                                       width: p20,
                                       child: IconButton(
                                           onPressed: () =>
-                                              Navigator.of(context).pop(),
+                                              Navigator.pop(context),
                                           icon: const Icon(Icons.arrow_back)),
                                     ),
                                     const SizedBox(width: p10),
@@ -687,8 +686,7 @@ class _AgentPageState extends State<AgentPage> {
                     ),
                     actions: <Widget>[
                       TextButton(
-                        onPressed: () => Routemaster.of(context)
-                            .pop(), // Navigator.pop(context, 'OK'),
+                        onPressed: () => Navigator.pop(context, 'OK'),
                         child: const Text('OK'),
                       ),
                     ],

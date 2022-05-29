@@ -188,7 +188,7 @@ class _UpdatePaiementSalaireState extends State<UpdatePaiementSalaire> {
                       SizedBox(
                         width: p20,
                         child: IconButton(
-                            onPressed: () => Navigator.of(context).pop(),
+                            onPressed: () => Navigator.pop(context),
                             icon: const Icon(Icons.arrow_back)),
                       ),
                       const SizedBox(width: p10),
@@ -1365,18 +1365,6 @@ class _UpdatePaiementSalaireState extends State<UpdatePaiementSalaire> {
       montantPrisConsiderationCalculCotisationsINSS:
           montantPrisConsiderationCalculCotisationsINSS.toString(),
       totalDuBrut: totalDuBrut.toString(),
-      approbationDG: approbationDG.toString(),
-      signatureDG: signatureDG.toString(),
-      signatureJustificationDG: signatureJustificationDG.toString(),
-      approbationFin: approbationFin.toString(),
-      signatureFin: signatureFin.toString(),
-      signatureJustificationFin: signatureJustificationFin.toString(),
-      approbationBudget: approbationBudget.toString(),
-      signatureBudget: signatureBudget.toString(),
-      signatureJustificationBudget: signatureJustificationBudget.toString(),
-      approbationDD: approbationDD.toString(),
-      signatureDD: signatureDD.toString(),
-      signatureJustificationDD: signatureJustificationDD.toString(),
       signature: signature.toString(),
     );
     await PaiementSalaireApi().updateData(widget.id, paiementSalaireModel);

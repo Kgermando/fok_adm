@@ -474,18 +474,6 @@ class _AddEntretienPageState extends State<AddEntretienPage> {
         etatObjet: etatObjetController.text,
         objetRemplace: jsonList,
         dureeTravaux: dureeTravauxController.text,
-        approbationDG: '-',
-        signatureDG: '-',
-        signatureJustificationDG: '-',
-        approbationFin: '-',
-        signatureFin: '-',
-        signatureJustificationFin: '-',
-        approbationBudget: '-',
-        signatureBudget: '-',
-        signatureJustificationBudget: '-',
-        approbationDD: '-',
-        signatureDD: '-',
-        signatureJustificationDD: '-',
         signature: signature.toString(),
         created: DateTime.now());
     await EntretienApi().insertData(entretienModel);

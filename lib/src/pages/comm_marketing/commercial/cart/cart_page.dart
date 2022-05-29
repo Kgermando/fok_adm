@@ -26,7 +26,6 @@ import 'package:fokad_admin/src/pages/comm_marketing/commercial/factures/pdf/fac
 import 'package:fokad_admin/src/routes/routes.dart';
 import 'package:fokad_admin/src/utils/loading.dart';
 import 'package:intl/intl.dart';
-import 'package:routemaster/routemaster.dart';
 import 'package:simple_speed_dial/simple_speed_dial.dart';
 
 class CartPage extends StatefulWidget {
@@ -52,7 +51,6 @@ class _CartPageState extends State<CartPage> {
     super.initState();
   }
 
-
   UserModel user = UserModel(
       nom: '-',
       prenom: '-',
@@ -62,7 +60,7 @@ class _CartPageState extends State<CartPage> {
       departement: '-',
       servicesAffectation: '-',
       fonctionOccupe: '-',
-      role: '-',
+      role: '5',
       isOnline: false,
       createdAt: DateTime.now(),
       passwordHash: '-',
@@ -120,7 +118,7 @@ class _CartPageState extends State<CartPage> {
                                       width: p20,
                                       child: IconButton(
                                           onPressed: () =>
-                                              Navigator.of(context).pop(),
+                                              Navigator.pop(context),
                                           icon: const Icon(Icons.arrow_back)),
                                     ),
                                     const SizedBox(width: p10),
@@ -152,11 +150,15 @@ class _CartPageState extends State<CartPage> {
                                               children: [
                                                 Expanded(
                                                   child: ListView.builder(
-                                                      controller: _controllerScroll,
+                                                      controller:
+                                                          _controllerScroll,
                                                       itemCount: data.length,
-                                                      itemBuilder: (context, index) {
-                                                        final cart = data[index];
-                                                        return CartItemWidget(cart: cart);
+                                                      itemBuilder:
+                                                          (context, index) {
+                                                        final cart =
+                                                            data[index];
+                                                        return CartItemWidget(
+                                                            cart: cart);
                                                       }),
                                                 ),
                                                 isloading
@@ -272,7 +274,7 @@ class _CartPageState extends State<CartPage> {
     // Suppressions total de la table cart
     cleanCart();
 
-    Routemaster.of(context).replace(ComMarketingRoutes.comMarketingVente);
+    Navigator.pushNamed(context, ComMarketingRoutes.comMarketingVente);
     if (!mounted) return;
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
       content: Text("Facture $numberFacture ajouté."),
@@ -321,7 +323,7 @@ class _CartPageState extends State<CartPage> {
     gainVentes();
     // suppressions total de la table cart
     cleanCart();
-    Routemaster.of(context).replace(ComMarketingRoutes.comMarketingVente);
+    Navigator.pushNamed(context, ComMarketingRoutes.comMarketingVente);
     if (!mounted) return;
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
       content: Text("Créance $numberFacture ajouté."),
@@ -359,7 +361,8 @@ class _CartPageState extends State<CartPage> {
     await CartApi().deleteAllData(user.matricule);
   }
 
-  Future<void> numberFactureField(String number, String succursale, String signature) async {
+  Future<void> numberFactureField(
+      String number, String succursale, String signature) async {
     final numberFactureModel = NumberFactureModel(
         number: number,
         succursale: succursale,

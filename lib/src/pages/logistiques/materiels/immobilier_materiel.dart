@@ -5,7 +5,6 @@ import 'package:fokad_admin/src/navigation/drawer/drawer_menu.dart';
 import 'package:fokad_admin/src/navigation/header/custom_appbar.dart';
 import 'package:fokad_admin/src/pages/logistiques/materiels/components/table_immobilier.dart';
 import 'package:fokad_admin/src/routes/routes.dart';
-import 'package:routemaster/routemaster.dart';
 
 class ImmobilierMateriel extends StatefulWidget {
   const ImmobilierMateriel({Key? key}) : super(key: key);
@@ -25,8 +24,7 @@ class _ImmobilierMaterielState extends State<ImmobilierMateriel> {
         floatingActionButton: FloatingActionButton(
             child: const Icon(Icons.add),
             onPressed: () {
-              Routemaster.of(context)
-                  .push(LogistiqueRoutes.logAddImmobilerMateriel);
+              Navigator.pushNamed(context, LogistiqueRoutes.logAddImmobilerMateriel);
             }),
         body: SafeArea(
           child: Row(

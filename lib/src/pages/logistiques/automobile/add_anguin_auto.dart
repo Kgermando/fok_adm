@@ -8,12 +8,11 @@ import 'package:fokad_admin/src/models/logistiques/anguin_model.dart';
 import 'package:fokad_admin/src/models/users/user_model.dart';
 import 'package:fokad_admin/src/navigation/drawer/drawer_menu.dart';
 import 'package:fokad_admin/src/navigation/header/custom_appbar.dart';
-import 'package:fokad_admin/src/routes/routes.dart';
 import 'package:fokad_admin/src/utils/enguins_dropdown.dart';
 import 'package:fokad_admin/src/widgets/btn_widget.dart';
 import 'package:fokad_admin/src/widgets/print_widget.dart';
 import 'package:fokad_admin/src/widgets/title_widget.dart';
-import 'package:routemaster/routemaster.dart';
+
 
 class AddAnguinAuto extends StatefulWidget {
   const AddAnguinAuto({Key? key}) : super(key: key);
@@ -528,23 +527,11 @@ class _AddAnguinAutoState extends State<AddAnguinAuto> {
         provenance: provenanceController.text,
         typeCaburant: typeCaburantController.text,
         typeMoteur: typeMoteurController.text,
-        approbationDG: '-',
-        signatureDG: '-',
-        signatureJustificationDG: '-',
-        approbationFin: '-',
-        signatureFin: '-',
-        signatureJustificationFin: '-',
-        approbationBudget: '-',
-        signatureBudget: '-',
-        signatureJustificationBudget: '-',
-        approbationDD: '-',
-        signatureDD: '-',
-        signatureJustificationDD: '-',
         signature: signature.toString(),
         created: DateTime.now());
 
     await AnguinApi().insertData(anguinModel);
-    Routemaster.of(context).replace(LogistiqueRoutes.logAnguinAuto);
+    Navigator.pop(context);
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
       content: const Text("Enregistrer avec succès!"),
       backgroundColor: Colors.green[700],

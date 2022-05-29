@@ -3,7 +3,6 @@ import 'dart:convert';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:fokad_admin/src/models/users/user_model.dart';
 
-
 class UserSecureStorage {
   static const _keyUser = 'userModel';
   // static const _keyAuth = 'authJWT';
@@ -20,7 +19,6 @@ class UserSecureStorage {
       UserModel user = UserModel.fromJson(jsonDecode(prefs));
       return user;
     } else {
-      
       UserModel user = UserModel(
           nom: '-',
           prenom: '-',
@@ -30,7 +28,7 @@ class UserSecureStorage {
           departement: '-',
           servicesAffectation: '-',
           fonctionOccupe: '-',
-          role: '-',
+          role: '5',
           isOnline: false,
           createdAt: DateTime.now(),
           passwordHash: '-',
@@ -88,8 +86,4 @@ class UserSecureStorage {
   removeRefreshToken() async {
     await storage.delete(key: _keyRefreshToken);
   }
-
-
-
-  
 }

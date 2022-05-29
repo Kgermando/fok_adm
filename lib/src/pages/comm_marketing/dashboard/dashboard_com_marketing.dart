@@ -1,8 +1,10 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:fokad_admin/src/api/approbation/approbation_api.dart';
 import 'package:fokad_admin/src/api/comm_marketing/commerciale/creance_facture_api.dart';
 import 'package:fokad_admin/src/api/comm_marketing/commerciale/gain_api.dart';
+import 'package:fokad_admin/src/api/comm_marketing/commerciale/succursale_api.dart';
 import 'package:fokad_admin/src/api/comm_marketing/commerciale/vente_cart_api.dart';
 import 'package:fokad_admin/src/api/comm_marketing/marketing/agenda_api.dart';
 import 'package:fokad_admin/src/api/comm_marketing/marketing/annuaire_api.dart';
@@ -11,6 +13,7 @@ import 'package:fokad_admin/src/constants/app_theme.dart';
 import 'package:fokad_admin/src/constants/responsive.dart';
 import 'package:fokad_admin/src/models/comm_maketing/creance_cart_model.dart';
 import 'package:fokad_admin/src/models/comm_maketing/gain_model.dart';
+import 'package:fokad_admin/src/models/comm_maketing/succursale_model.dart';
 import 'package:fokad_admin/src/models/comm_maketing/vente_cart_model.dart';
 import 'package:fokad_admin/src/navigation/drawer/drawer_menu.dart';
 import 'package:fokad_admin/src/navigation/header/custom_appbar.dart';
@@ -34,6 +37,7 @@ class _ComMarketingState extends State<ComMarketing> {
   int campaignCount = 0;
   int annuaireCount = 0;
   int agendaCount = 0;
+  int succursaleCount = 0;
   double venteCount = 0.0;
   double gainCount = 0.0;
 
@@ -57,14 +61,28 @@ class _ComMarketingState extends State<ComMarketing> {
     var campaigns = await CampaignApi().getAllData();
     var annuaires = await AnnuaireApi().getAllData();
     var agendas = await AgendaApi().getAllData();
+    var succursales = await SuccursaleApi().getAllData();
+    var approbations = await ApprobationApi().getAllData();
 
     setState(() {
       ventesList = ventes;
       gainsList = gains;
       creanceFactureList = creanceFacture;
-      campaignCount = campaigns
-          .where((element) => element.approbationDG == "Approved")
-          .length;
+      for (var item in approbations) {
+        campaignCount = campaigns
+            .where((element) =>
+                element.id == item.reference &&
+                item.fontctionOccupee == 'Directeur générale' &&
+                item.approbation == "Approved")
+            .length;
+         succursaleCount = succursales
+            .where((element) =>
+                element.id == item.reference &&
+                item.fontctionOccupee == 'Directeur générale' &&
+                item.approbation == "Approved")
+            .length;
+      }
+
       annuaireCount = annuaires.length;
       agendaCount = agendas.length;
     });
@@ -155,6 +173,11 @@ class _ComMarketingState extends State<ComMarketing> {
                                     icon: Icons.money_off_outlined,
                                     color: Colors.pink.shade700),
                                 DashNumberWidget(
+                                    number: '$succursaleCount',
+                                    title: 'Succursale',
+                                    icon: Icons.house,
+                                    color: Colors.brown.shade700),
+                                DashNumberWidget(
                                     number: '$campaignCount',
                                     title: 'Campaignes',
                                     icon: Icons.campaign,
@@ -177,10 +200,8 @@ class _ComMarketingState extends State<ComMarketing> {
                             Responsive.isDesktop(context)
                                 ? Row(
                                     children: const [
-                                      Expanded(
-                                          child: CourbeVenteGainMounth()),
-                                      Expanded(
-                                          child: CourbeVenteGainYear()),
+                                      Expanded(child: CourbeVenteGainMounth()),
+                                      Expanded(child: CourbeVenteGainYear()),
                                     ],
                                   )
                                 : Column(

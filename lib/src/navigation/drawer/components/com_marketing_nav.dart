@@ -8,7 +8,7 @@ import 'package:fokad_admin/src/api/comm_marketing/marketing/campaign_api.dart';
 import 'package:fokad_admin/src/models/users/user_model.dart';
 import 'package:fokad_admin/src/navigation/drawer/drawer_widget.dart';
 import 'package:fokad_admin/src/routes/routes.dart';
-import 'package:routemaster/routemaster.dart';
+
 
 class ComMarketing extends StatefulWidget {
   const ComMarketing({Key? key, required this.pageCurrente}) : super(key: key);
@@ -93,9 +93,8 @@ class _ComMarketingState extends State<ComMarketing> {
             title: 'Dashboard',
             style: bodyText1!,
             onTap: () {
-              Routemaster.of(context).replace(
-                ComMarketingRoutes.comMarketingDashboard,
-              );
+              Navigator.pushNamed(
+                    context, ComMarketingRoutes.comMarketingDashboard);
               // Navigator.of(context).pop();
             }),
             if (userRole <= 2)
@@ -113,9 +112,8 @@ class _ComMarketingState extends State<ComMarketing> {
               child: const Icon(Icons.notifications),
             ),
             onTap: () {
-              Routemaster.of(context).replace(
-                ComMarketingRoutes.comMarketingDD,
-              );
+              Navigator.pushNamed(
+                    context, ComMarketingRoutes.comMarketingDD);
               // Navigator.of(context).pop();
             }),
         ExpansionTile(
@@ -136,8 +134,8 @@ class _ComMarketingState extends State<ComMarketing> {
                 title: 'Annuaire',
                 style: bodyText2!,
                 onTap: () {
-                  Routemaster.of(context)
-                      .replace(ComMarketingRoutes.comMarketingAnnuaire);
+                  Navigator.pushNamed(
+                      context, ComMarketingRoutes.comMarketingAnnuaire);
                   // Navigator.of(context).pop();
                 }),
             DrawerWidget(
@@ -148,8 +146,8 @@ class _ComMarketingState extends State<ComMarketing> {
                 title: 'Agenda',
                 style: bodyText2,
                 onTap: () {
-                  Routemaster.of(context)
-                      .replace(ComMarketingRoutes.comMarketingAgenda);
+                  Navigator.pushNamed(
+                      context, ComMarketingRoutes.comMarketingAgenda);
                   // Navigator.of(context).pop();
                 }),
             DrawerWidget(
@@ -160,8 +158,8 @@ class _ComMarketingState extends State<ComMarketing> {
                 title: 'Campaigns',
                 style: bodyText2,
                 onTap: () {
-                  Routemaster.of(context)
-                      .replace(ComMarketingRoutes.comMarketingCampaign);
+                   Navigator.pushNamed(
+                      context, ComMarketingRoutes.comMarketingCampaign);
                   // Navigator.of(context).pop();
                 }),
           ],
@@ -184,8 +182,8 @@ class _ComMarketingState extends State<ComMarketing> {
                 title: 'Produit modèle',
                 style: bodyText2,
                 onTap: () {
-                  Routemaster.of(context)
-                      .replace(ComMarketingRoutes.comMarketingProduitModel);
+                  Navigator.pushNamed(
+                      context, ComMarketingRoutes.comMarketingProduitModel);
                   // Navigator.of(context).pop();
                 }),
             DrawerWidget(
@@ -196,8 +194,8 @@ class _ComMarketingState extends State<ComMarketing> {
                 title: 'Stocks global',
                 style: bodyText2,
                 onTap: () {
-                  Routemaster.of(context)
-                      .replace(ComMarketingRoutes.comMarketingStockGlobal);
+                  Navigator.pushNamed(
+                      context, ComMarketingRoutes.comMarketingStockGlobal);
                   // Navigator.of(context).pop();
                 }),
             DrawerWidget(
@@ -208,8 +206,8 @@ class _ComMarketingState extends State<ComMarketing> {
                 title: 'Succursale',
                 style: bodyText2,
                 onTap: () {
-                  Routemaster.of(context)
-                      .replace(ComMarketingRoutes.comMarketingSuccursale);
+                  Navigator.pushNamed(
+                      context, ComMarketingRoutes.comMarketingSuccursale);
                   // Navigator.of(context).pop();
                 }),
             DrawerWidget(
@@ -220,8 +218,8 @@ class _ComMarketingState extends State<ComMarketing> {
                 title: 'Achats',
                 style: bodyText2,
                 onTap: () {
-                  Routemaster.of(context)
-                      .replace(ComMarketingRoutes.comMarketingAchat);
+                  Navigator.pushNamed(
+                      context, ComMarketingRoutes.comMarketingAchat);
                   // Navigator.of(context).pop();
                 }),
             DrawerWidget(
@@ -232,8 +230,8 @@ class _ComMarketingState extends State<ComMarketing> {
                 title: 'Bon de livraison',
                 style: bodyText2,
                 onTap: () {
-                  Routemaster.of(context)
-                      .replace(ComMarketingRoutes.comMarketingBonLivraison);
+                  Navigator.pushNamed(
+                      context, ComMarketingRoutes.comMarketingBonLivraison);
                   // Navigator.of(context).pop();
                 }),
             DrawerWidget(
@@ -244,8 +242,8 @@ class _ComMarketingState extends State<ComMarketing> {
                 title: 'Restitution du produit',
                 style: bodyText2,
                 onTap: () {
-                  Routemaster.of(context)
-                      .replace(ComMarketingRoutes.comMarketingRestitution);
+                  Navigator.pushNamed(
+                      context, ComMarketingRoutes.comMarketingRestitution);
                   // Navigator.of(context).pop();
                 }),
             DrawerWidget(
@@ -256,8 +254,8 @@ class _ComMarketingState extends State<ComMarketing> {
                 title: 'Factures',
                 style: bodyText2,
                 onTap: () {
-                  Routemaster.of(context)
-                      .replace(ComMarketingRoutes.comMarketingFacture);
+                  Navigator.pushNamed(
+                      context, ComMarketingRoutes.comMarketingFacture);
                   // Navigator.of(context).pop();
                 }),
             DrawerWidget(
@@ -268,8 +266,8 @@ class _ComMarketingState extends State<ComMarketing> {
                 title: 'Factures créance',
                 style: bodyText2,
                 onTap: () {
-                  Routemaster.of(context)
-                      .replace(ComMarketingRoutes.comMarketingCreance);
+                  Navigator.pushNamed(
+                      context, ComMarketingRoutes.comMarketingCreance);
                   // Navigator.of(context).pop();
                 }),
             DrawerWidget(
@@ -280,8 +278,8 @@ class _ComMarketingState extends State<ComMarketing> {
                 title: 'Ventes',
                 style: bodyText2,
                 onTap: () {
-                  Routemaster.of(context)
-                      .replace(ComMarketingRoutes.comMarketingVente);
+                  Navigator.pushNamed(
+                      context, ComMarketingRoutes.comMarketingVente);
                   // Navigator.of(context).pop();
                 }),
             DrawerWidget(
@@ -292,8 +290,8 @@ class _ComMarketingState extends State<ComMarketing> {
                 title: 'Panier',
                 style: bodyText2,
                 onTap: () {
-                  Routemaster.of(context)
-                      .replace(ComMarketingRoutes.comMarketingcart);
+                  Navigator.pushNamed(context,
+                      ComMarketingRoutes.comMarketingcart);
                   // Navigator.of(context).pop();
                 }),
             DrawerWidget(
@@ -304,8 +302,8 @@ class _ComMarketingState extends State<ComMarketing> {
                 title: 'Historique de ravitaillement',
                 style: bodyText2,
                 onTap: () {
-                  Routemaster.of(context).replace(
-                      ComMarketingRoutes.comMarketingHistoryRavitaillement);
+                  Navigator.pushNamed(
+                      context, ComMarketingRoutes.comMarketingHistoryRavitaillement);
                   // Navigator.of(context).pop();
                 }),
             DrawerWidget(
@@ -316,8 +314,7 @@ class _ComMarketingState extends State<ComMarketing> {
                 title: 'Historique de livraison',
                 style: bodyText2,
                 onTap: () {
-                  Routemaster.of(context)
-                      .replace(ComMarketingRoutes.comMarketingHistoryLivraison);
+                  Navigator.pushNamed(context, ComMarketingRoutes.comMarketingHistoryLivraison);
                   // Navigator.of(context).pop();
                 }),
           ],
@@ -329,7 +326,7 @@ class _ComMarketingState extends State<ComMarketing> {
             title: 'Performences',
             style: bodyText1!,
             onTap: () {
-              Routemaster.of(context).replace(RhRoutes.rhPerformence);
+              Navigator.pushNamed(context, RhRoutes.rhPerformence);
             }),
       ],
     );

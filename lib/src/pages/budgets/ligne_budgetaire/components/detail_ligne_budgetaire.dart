@@ -92,7 +92,7 @@ class _DetailLigneBudgetaireState extends State<DetailLigneBudgetaire> {
       departement: '-',
       servicesAffectation: '-',
       fonctionOccupe: '-',
-      role: '-',
+      role: '5',
       isOnline: false,
       createdAt: DateTime.now(),
       passwordHash: '-',
@@ -108,18 +108,10 @@ class _DetailLigneBudgetaireState extends State<DetailLigneBudgetaire> {
     setState(() {
       user = userModel;
       ligneBudgetaireList = budgets;
-      dataCampaignList = campaigns
-          .where((element) => element.approbationBudget == "Approved")
-          .toList();
-      dataDevisList = devis
-          .where((element) => element.approbationBudget == "Approved")
-          .toList();
-      dataProjetList = projets
-          .where((element) => element.approbationBudget == "Approved")
-          .toList();
-      dataSalaireList = salaires
-          .where((element) => element.approbationBudget == "Approved")
-          .toList();
+      dataCampaignList = campaigns.toList();
+      dataDevisList = devis.toList();
+      dataProjetList = projets.toList();
+      dataSalaireList = salaires.toList();
     });
   }
 
@@ -156,7 +148,7 @@ class _DetailLigneBudgetaireState extends State<DetailLigneBudgetaire> {
                                       width: p20,
                                       child: IconButton(
                                           onPressed: () =>
-                                              Navigator.of(context).pop(),
+                                              Navigator.pop(context),
                                           icon: const Icon(Icons.arrow_back)),
                                     ),
                                     const SizedBox(width: p10),

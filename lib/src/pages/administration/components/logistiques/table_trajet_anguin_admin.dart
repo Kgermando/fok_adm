@@ -195,11 +195,7 @@ class _TableTrajetAnguinDGState extends State<TableTrajetAnguinDG> {
 
   Future agentsRow() async {
     List<TrajetModel?> dataList = await TrajetApi().getAllData();
-    var data = dataList
-        .where((element) =>
-            element!.approbationDG == "-" &&
-            element.approbationDD == "Approved")
-        .toList();
+    var data = dataList.toList();
 
     if (mounted) {
       setState(() {

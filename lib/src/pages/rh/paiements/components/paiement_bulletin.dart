@@ -70,7 +70,6 @@ class _PaiementBulletinState extends State<PaiementBulletin> {
       ligneBudgtaire: '-',
       resources: '-',
       approbation: '-',
-      signatureApprobation: '-',
       justification: '-',
       signature: '-',
       created: DateTime.now());
@@ -124,6 +123,13 @@ class _PaiementBulletinState extends State<PaiementBulletin> {
                       AsyncSnapshot<PaiementSalaireModel> snapshot) {
                     if (snapshot.hasData) {
                       PaiementSalaireModel? data = snapshot.data;
+                      approbationData = approbList
+                          .where((element) => element.reference == data!.id!)
+                          .toList();
+
+                      if (approbationData.isNotEmpty) {
+                        approb = approbationData.first;
+                      }
                       return Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
@@ -133,7 +139,7 @@ class _PaiementBulletinState extends State<PaiementBulletin> {
                                 width: p20,
                                 child: IconButton(
                                     onPressed: () =>
-                                        Navigator.of(context).pop(),
+                                        Navigator.pop(context),
                                     icon: const Icon(Icons.arrow_back)),
                               ),
                               const SizedBox(width: p10),
@@ -150,10 +156,10 @@ class _PaiementBulletinState extends State<PaiementBulletin> {
                                     children: [
                                       bulletinPaieWidget(data!),
                                       const SizedBox(height: p10),
+                                      if (approbationData.isNotEmpty)
                                       infosEditeurWidget(),
                                       const SizedBox(height: p10),
-                                      if (int.parse(user.role) == 1 ||
-                                          int.parse(user.role) < 2)
+                                      if (int.parse(user.role) <= 2)
                                         if (approb.fontctionOccupee !=
                                             user.fonctionOccupe)
                                           approbationForm(data),
@@ -1786,92 +1792,12 @@ class _PaiementBulletinState extends State<PaiementBulletin> {
             (ligneBudgtaire == null) ? '-' : ligneBudgtaire.toString(),
         resources: (resource == null) ? '-' : resource.toString(),
         approbation: approbationDGController,
-        signatureApprobation: user.matricule,
         justification: signatureJustificationDGController.text,
         signature: user.matricule,
         created: DateTime.now());
     await ApprobationApi().insertData(approbation);
     Navigator.of(context).pop();
   }
-
-  Future<void> submitUpdateDG(PaiementSalaireModel data) async {
-    final paiementSalaireModel = PaiementSalaireModel(
-        id: data.id,
-        nom: data.nom.toString(),
-        postNom: data.postNom.toString(),
-        prenom: data.prenom.toString(),
-        telephone: data.telephone.toString(),
-        adresse: data.adresse.toString(),
-        departement: data.departement.toString(),
-        numeroSecuriteSociale: data.numeroSecuriteSociale.toString(),
-        matricule: data.matricule.toString(),
-        servicesAffectation: data.servicesAffectation.toString(),
-        salaire: data.salaire.toString(),
-        observation: data.observation,
-        modePaiement: data.modePaiement.toString(),
-        createdAt: data.createdAt,
-        ligneBudgtaire: data.ligneBudgtaire.toString(),
-        resources: data.resources.toString(),
-        tauxJourHeureMoisSalaire: data.tauxJourHeureMoisSalaire.toString(),
-        joursHeuresPayeA100PourecentSalaire:
-            data.joursHeuresPayeA100PourecentSalaire.toString(),
-        totalDuSalaire: data.totalDuSalaire.toString(),
-        nombreHeureSupplementaires: data.nombreHeureSupplementaires.toString(),
-        tauxHeureSupplementaires: data.tauxHeureSupplementaires.toString(),
-        totalDuHeureSupplementaires:
-            data.totalDuHeureSupplementaires.toString(),
-        supplementTravailSamediDimancheJoursFerie:
-            data.supplementTravailSamediDimancheJoursFerie.toString(),
-        prime: data.prime.toString(),
-        divers: data.divers.toString(),
-        joursCongesPaye: data.joursCongesPaye.toString(),
-        tauxCongesPaye: data.tauxCongesPaye.toString(),
-        totalDuCongePaye: data.totalDuCongePaye.toString(),
-        jourPayeMaladieAccident: data.jourPayeMaladieAccident.toString(),
-        tauxJournalierMaladieAccident:
-            data.tauxJournalierMaladieAccident.toString(),
-        totalDuMaladieAccident: data.totalDuMaladieAccident.toString(),
-        pensionDeduction: data.pensionDeduction.toString(),
-        indemniteCompensatricesDeduction:
-            data.indemniteCompensatricesDeduction.toString(),
-        avancesDeduction: data.avancesDeduction.toString(),
-        diversDeduction: data.diversDeduction.toString(),
-        retenuesFiscalesDeduction: data.retenuesFiscalesDeduction.toString(),
-        nombreEnfantBeneficaireAllocationsFamiliales:
-            data.nombreEnfantBeneficaireAllocationsFamiliales.toString(),
-        nombreDeJoursAllocationsFamiliales:
-            data.nombreDeJoursAllocationsFamiliales.toString(),
-        tauxJoursAllocationsFamiliales:
-            data.tauxJoursAllocationsFamiliales.toString(),
-        totalAPayerAllocationsFamiliales:
-            data.totalAPayerAllocationsFamiliales.toString(),
-        netAPayer: data.netAPayer.toString(),
-        montantPrisConsiderationCalculCotisationsINSS:
-            data.montantPrisConsiderationCalculCotisationsINSS.toString(),
-        totalDuBrut: data.totalDuBrut.toString(),
-        approbationDG: approbationDGController.toString(),
-        signatureDG: user.matricule.toString(),
-        signatureJustificationDG: signatureJustificationDGController.text,
-        approbationFin: data.approbationFin.toString(),
-        signatureFin: data.signatureFin.toString(),
-        signatureJustificationFin: data.signatureJustificationFin.toString(),
-        approbationBudget: data.approbationBudget.toString(),
-        signatureBudget: data.signatureBudget.toString(),
-        signatureJustificationBudget:
-            data.signatureJustificationBudget.toString(),
-        approbationDD: data.approbationDD.toString(),
-        signatureDD: data.signatureDD.toString(),
-        signatureJustificationDD: data.signatureJustificationDD.toString(),
-        signature: data.signature.toString());
-    await PaiementSalaireApi().updateData(data.id!, paiementSalaireModel);
-    Navigator.of(context).pop();
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-      content: const Text("Mise à jour avec succès!"),
-      backgroundColor: Colors.green[700],
-    ));
-  }
-
- 
 
   Future<void> submitObservation(PaiementSalaireModel data) async {
     final paiementSalaireModel = PaiementSalaireModel(
@@ -1921,18 +1847,6 @@ class _PaiementBulletinState extends State<PaiementBulletin> {
         montantPrisConsiderationCalculCotisationsINSS:
             data.montantPrisConsiderationCalculCotisationsINSS,
         totalDuBrut: data.totalDuBrut,
-        approbationDG: data.approbationDG,
-        signatureDG: data.signatureDG,
-        signatureJustificationDG: data.signatureJustificationDG,
-        approbationFin: data.approbationFin,
-        signatureFin: data.signatureFin,
-        signatureJustificationFin: data.signatureJustificationFin,
-        approbationBudget: data.approbationBudget,
-        signatureBudget: data.signatureBudget,
-        signatureJustificationBudget: data.signatureJustificationBudget,
-        approbationDD: data.approbationDD,
-        signatureDD: data.signatureDD,
-        signatureJustificationDD: data.signatureJustificationDD,
         signature: data.signature);
     await PaiementSalaireApi().updateData(widget.id!, paiementSalaireModel);
     Navigator.of(context).pop();

@@ -412,18 +412,6 @@ class _UpdateCampaignState extends State<UpdateCampaign> {
         ligneBudgtaire: '-',
         resources: '-',
         observation: false,
-        approbationDG: '-',
-        signatureDG: '-',
-        signatureJustificationDG: '-',
-        approbationFin: '-',
-        signatureFin: '-',
-        signatureJustificationFin: '-',
-        approbationBudget: '-',
-        signatureBudget: '-',
-        signatureJustificationBudget: '-',
-        approbationDD: '-',
-        signatureDD: '-',
-        signatureJustificationDD: '-',
         signature: user!.matricule.toString(),
         created: DateTime.now());
 

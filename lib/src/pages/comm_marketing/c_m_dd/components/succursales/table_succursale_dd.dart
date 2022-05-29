@@ -121,30 +121,6 @@ class _TableSuccursaleDDState extends State<TableSuccursaleDD> {
       ),
       PlutoColumn(
         readOnly: true,
-        title: 'Approbation DG',
-        field: 'approbationDG',
-        type: PlutoColumnType.text(),
-        enableRowDrag: true,
-        enableContextMenu: false,
-        enableDropToResize: true,
-        titleTextAlign: PlutoColumnTextAlign.left,
-        width: 150,
-        minWidth: 150,
-      ),
-      PlutoColumn(
-        readOnly: true,
-        title: 'Approbation DD',
-        field: 'approbationDD',
-        type: PlutoColumnType.text(),
-        enableRowDrag: true,
-        enableContextMenu: false,
-        enableDropToResize: true,
-        titleTextAlign: PlutoColumnTextAlign.left,
-        width: 150,
-        minWidth: 150,
-      ),
-      PlutoColumn(
-        readOnly: true,
         title: 'Date',
         field: 'created',
         type: PlutoColumnType.text(),
@@ -159,8 +135,9 @@ class _TableSuccursaleDDState extends State<TableSuccursaleDD> {
   }
 
   Future agentsRow() async {
+
     List<SuccursaleModel?> dataList = await SuccursaleApi().getAllData();
-    var data = dataList.where((element) => element!.approbationDD == '-');
+    var data = dataList.toList();
 
     if (mounted) {
       setState(() {
@@ -170,8 +147,6 @@ class _TableSuccursaleDDState extends State<TableSuccursaleDD> {
             'id': PlutoCell(value: item.id),
             'name': PlutoCell(value: item.name),
             'province': PlutoCell(value: item.province),
-            'approbationDG': PlutoCell(value: item.approbationDG),
-            'approbationDD': PlutoCell(value: item.approbationDD),
             'created': PlutoCell(
                 value: DateFormat("dd-MM-yy H:mm").format(item.created))
           }));

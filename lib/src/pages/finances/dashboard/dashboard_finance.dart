@@ -111,35 +111,41 @@ class _DashboardFinanceState extends State<DashboardFinance> {
         depensesCaisse += double.parse(item!.montant);
       }
 
-      // Creance remboursement
-      var creancePayementList =
-          creanceDettes.where((element) => element.creanceDette == 'creances');
-    
-      List<CreanceModel?> nonPayeCreanceList = dataCreanceList
-          .where((element) => element!.statutPaie == false &&
-              element.approbationDG == 'Approved')
-          .toList();
-          
-      for (var item in nonPayeCreanceList) {
-        nonPayesCreance += double.parse(item!.montant);
-      }
-      for (var item in creancePayementList) {
-        creancePayement += double.parse(item.montant);
-      }
 
-      // Dette remboursement
-    var detteRemboursementList =
-          creanceDettes.where((element) => element.creanceDette == 'dettes');
-      List<DetteModel?> nonPayeDetteList = dataDetteList
-          .where((element) => element!.statutPaie == false && 
-          element.approbationDG == 'Approved')
-          .toList();
-      for (var item in nonPayeDetteList) {
-        nonPayesDette += double.parse(item!.montant);
+      for (var item in approbations) {
+        // Creance remboursement
+        var creancePayementList =
+            creanceDettes.where((element) => element.creanceDette == 'creances');
+      
+        List<CreanceModel?> nonPayeCreanceList = dataCreanceList
+            .where((element) => element!.statutPaie == false &&
+                element.id == item.reference &&
+                item.fontctionOccupee == 'Directeur générale')
+            .toList();
+            
+        for (var item in nonPayeCreanceList) {
+          nonPayesCreance += double.parse(item!.montant);
+        }
+        for (var item in creancePayementList) {
+          creancePayement += double.parse(item.montant);
+        }
+
+        // Dette remboursement
+      var detteRemboursementList =
+            creanceDettes.where((element) => element.creanceDette == 'dettes');
+        List<DetteModel?> nonPayeDetteList = dataDetteList
+            .where((element) => element!.statutPaie == false && 
+            element.id == item.reference &&
+                item.fontctionOccupee == 'Directeur générale')
+            .toList();
+        for (var item in nonPayeDetteList) {
+          nonPayesDette += double.parse(item!.montant);
+        }
+        for (var item in detteRemboursementList) {
+          detteRemboursement += double.parse(item.montant);
+        }
       }
-      for (var item in detteRemboursementList) {
-        detteRemboursement += double.parse(item.montant);
-      }
+      
 
       // FinanceExterieur
       List<FinanceExterieurModel?> recetteList = dataFinanceExterieurList;
@@ -150,7 +156,7 @@ class _DashboardFinanceState extends State<DashboardFinance> {
       List<DevisModel?> devisList = dataDevisList;
 
       for (var item in devisList) {
-        for (var i in item!.list!) {
+        for (var i in item!.list) {
           depenses += double.parse(i['frais']);
         }
       }

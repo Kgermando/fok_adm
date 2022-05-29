@@ -473,18 +473,6 @@ class _AddDevisState extends State<AddDevis> {
         ligneBudgtaire: '-',
         resources: '-',
         observation: false,
-        approbationDG: '-',
-        signatureDG: '-',
-        signatureJustificationDG: '-',
-        approbationFin: '-',
-        signatureFin: '-',
-        signatureJustificationFin: '-',
-        approbationBudget: '-',
-        signatureBudget: '-',
-        signatureJustificationBudget: '-',
-        approbationDD: '-',
-        signatureDD: '-',
-        signatureJustificationDD: '-',
         signature: matricule.toString(),
         created: DateTime.now());
     await DevisAPi().insertData(devisModel);

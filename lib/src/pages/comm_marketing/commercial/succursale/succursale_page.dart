@@ -1,15 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:fokad_admin/src/api/approbation/approbation_api.dart';
 import 'package:fokad_admin/src/api/auth/auth_api.dart';
 import 'package:fokad_admin/src/api/comm_marketing/commerciale/succursale_api.dart';
 import 'package:fokad_admin/src/constants/app_theme.dart';
 import 'package:fokad_admin/src/constants/responsive.dart';
+import 'package:fokad_admin/src/models/approbation/approbation_model.dart';
 import 'package:fokad_admin/src/models/comm_maketing/succursale_model.dart';
 import 'package:fokad_admin/src/models/users/user_model.dart';
 import 'package:fokad_admin/src/navigation/drawer/drawer_menu.dart';
 import 'package:fokad_admin/src/navigation/header/custom_appbar.dart';
 import 'package:fokad_admin/src/pages/comm_marketing/commercial/succursale/components/detail_succurssale.dart';
 import 'package:fokad_admin/src/routes/routes.dart';
-import 'package:routemaster/routemaster.dart';
 
 class SuccursalePage extends StatefulWidget {
   const SuccursalePage({Key? key}) : super(key: key);
@@ -36,16 +37,18 @@ class _SuccursalePageState extends State<SuccursalePage> {
       departement: '-',
       servicesAffectation: '-',
       fonctionOccupe: '-',
-      role: '-',
+      role: '5',
       isOnline: false,
       createdAt: DateTime.now(),
       passwordHash: '-',
       succursale: '-');
-
+  List<ApprobationModel> approbationList = [];
   Future<void> getData() async {
     UserModel data = await AuthApi().getUserId();
+    var approbations = await ApprobationApi().getAllData();
     setState(() {
       user = data;
+      approbationList = approbations;
     });
   }
 
@@ -59,7 +62,8 @@ class _SuccursalePageState extends State<SuccursalePage> {
           foregroundColor: Colors.white,
           child: const Icon(Icons.house),
           onPressed: () {
-            Routemaster.of(context).push(ComMarketingRoutes.comMarketingSuccursaleAdd);
+            Navigator.pushNamed(
+                context, ComMarketingRoutes.comMarketingSuccursaleAdd);
           },
         ),
         body: SafeArea(
@@ -86,13 +90,21 @@ class _SuccursalePageState extends State<SuccursalePage> {
                             future: SuccursaleApi().getAllData(),
                             builder: (BuildContext context,
                                 AsyncSnapshot<List<SuccursaleModel>> snapshot) {
+                              List<SuccursaleModel> succursaleModels = [];
                               if (snapshot.hasData) {
-                                List<SuccursaleModel>? succursaleModels =
-                                    snapshot.data!.where((element) => element.approbationDG == 'Approved' && element.approbationDD == 'Approved').toList();
+                                for (var item in approbationList) {
+                                  succursaleModels = snapshot.data!
+                                      .where((element) =>
+                                          element.id == item.reference &&
+                                          item.fontctionOccupee ==
+                                              'Directeur générale' &&
+                                          item.approbation == "Approved")
+                                      .toList();
+                                }
                                 return succursaleModels.isEmpty
                                     ? Center(
                                         child: Text(
-                                          'Créé un nouveau Succursales.',
+                                          'Ajoutez une Succursale.',
                                           style: Responsive.isDesktop(context)
                                               ? const TextStyle(fontSize: 24)
                                               : const TextStyle(fontSize: 16),

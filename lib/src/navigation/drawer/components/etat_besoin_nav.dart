@@ -4,7 +4,7 @@ import 'package:fokad_admin/src/api/auth/auth_api.dart';
 import 'package:fokad_admin/src/models/users/user_model.dart';
 import 'package:fokad_admin/src/navigation/drawer/drawer_widget.dart';
 import 'package:fokad_admin/src/routes/routes.dart';
-import 'package:routemaster/routemaster.dart';
+
 
 class EtatBesoinNav extends StatefulWidget {
   const EtatBesoinNav({Key? key, required this.pageCurrente}) : super(key: key);
@@ -72,7 +72,7 @@ class _EtatBesoinNavState extends State<EtatBesoinNav> {
           title: 'Etat de besoins',
           style: bodyLarge!,
           onTap: () {
-            Routemaster.of(context).replace(DevisRoutes.devis);
+            Navigator.pushNamed(context, DevisRoutes.devis);
             // Navigator.of(context).pop();
           }
         ),

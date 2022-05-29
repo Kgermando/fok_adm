@@ -14,7 +14,6 @@ import 'package:fokad_admin/src/widgets/print_widget.dart';
 import 'package:fokad_admin/src/widgets/title_widget.dart';
 import 'package:intl/intl.dart';
 
-
 class DetailCaburant extends StatefulWidget {
   const DetailCaburant({Key? key, this.id}) : super(key: key);
   final int? id;
@@ -29,21 +28,10 @@ class _DetailCaburantState extends State<DetailCaburant> {
   bool isLoading = false;
 
   String approbationDGController = '-';
-  String approbationFinController = '-';
-  String approbationBudgetController = '-';
-  String approbationDDController = '-';
   TextEditingController signatureJustificationDGController =
       TextEditingController();
-  TextEditingController signatureJustificationFinController =
-      TextEditingController();
-  TextEditingController signatureJustificationBudgetController =
-      TextEditingController();
-  TextEditingController signatureJustificationDDController =
-      TextEditingController();
 
-
-
-  String? ligneBudgtaire;  
+  String? ligneBudgtaire;
   String? resource;
 
   @override
@@ -62,7 +50,6 @@ class _DetailCaburantState extends State<DetailCaburant> {
       ligneBudgtaire: '-',
       resources: '-',
       approbation: '-',
-      signatureApprobation: '-',
       justification: '-',
       signature: '-',
       created: DateTime.now());
@@ -75,7 +62,7 @@ class _DetailCaburantState extends State<DetailCaburant> {
       departement: '-',
       servicesAffectation: '-',
       fonctionOccupe: '-',
-      role: '-',
+      role: '5',
       isOnline: false,
       createdAt: DateTime.now(),
       passwordHash: '-',
@@ -130,7 +117,7 @@ class _DetailCaburantState extends State<DetailCaburant> {
                                       width: p20,
                                       child: IconButton(
                                           onPressed: () =>
-                                              Navigator.of(context).pop(),
+                                              Navigator.pop(context),
                                           icon: const Icon(Icons.arrow_back)),
                                     ),
                                     const SizedBox(width: p10),
@@ -145,18 +132,18 @@ class _DetailCaburantState extends State<DetailCaburant> {
                                 Expanded(
                                     child: SingleChildScrollView(
                                         child: Column(
-                                          children: [
-                                            pageDetail(data),
-                                            const SizedBox(height: p10),
-                                          infosEditeurWidget(),
-                                          const SizedBox(height: p10),
-                                          if (int.parse(user.role) == 1 ||
-                                              int.parse(user.role) < 2)
-                                            if (approb.fontctionOccupee !=
-                                                user.fonctionOccupe)
-                                              approbationForm(data),
-                                          ],
-                                        )))
+                                  children: [
+                                    pageDetail(data),
+                                    const SizedBox(height: p10),
+                                    if (approbationData.isNotEmpty)
+                                      infosEditeurWidget(),
+                                    const SizedBox(height: p10),
+                                    if (int.parse(user.role) <= 2)
+                                      if (approb.fontctionOccupee !=
+                                          user.fonctionOccupe)
+                                        approbationForm(data),
+                                  ],
+                                )))
                               ],
                             );
                           } else {
@@ -408,7 +395,8 @@ class _DetailCaburantState extends State<DetailCaburant> {
       ),
     );
   }
-Widget infosEditeurWidget() {
+
+  Widget infosEditeurWidget() {
     final bodyLarge = Theme.of(context).textTheme.bodyLarge;
 
     return SizedBox(
@@ -839,13 +827,11 @@ Widget infosEditeurWidget() {
     final approbation = ApprobationModel(
         reference: data.id!,
         title: data.nomReceptioniste,
-        departement: data.operationEntreSortie,
+        departement: 'Logistique',
         fontctionOccupee: user.fonctionOccupe,
-        ligneBudgtaire:
-            (ligneBudgtaire == null) ? '-' : ligneBudgtaire.toString(),
-        resources: (resource == null) ? '-' : resource.toString(),
+        ligneBudgtaire: '-',
+        resources: '-',
         approbation: approbationDGController,
-        signatureApprobation: user.matricule,
         justification: signatureJustificationDGController.text,
         signature: user.matricule,
         created: DateTime.now());

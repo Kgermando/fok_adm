@@ -188,7 +188,7 @@ class _TableCampaignDDState extends State<TableCampaignDD> {
 
   Future agentsRow() async {
     List<CampaignModel?> dataList = await CampaignApi().getAllData();
-    var data = dataList.where((element) => element!.approbationDD == '-');
+    var data = dataList.toList();
 
     if (mounted) {
       setState(() {

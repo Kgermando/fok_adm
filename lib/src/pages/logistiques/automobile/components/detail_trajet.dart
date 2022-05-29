@@ -15,7 +15,6 @@ import 'package:fokad_admin/src/widgets/print_widget.dart';
 import 'package:fokad_admin/src/widgets/title_widget.dart';
 import 'package:intl/intl.dart';
 
-
 class DetailTrajet extends StatefulWidget {
   const DetailTrajet({Key? key, this.id}) : super(key: key);
   final int? id;
@@ -30,21 +29,11 @@ class _DetailTrajetState extends State<DetailTrajet> {
   bool isLoading = false;
 
   String approbationDGController = '-';
-  String approbationFinController = '-';
-  String approbationBudgetController = '-';
-  String approbationDDController = '-';
   TextEditingController signatureJustificationDGController =
-      TextEditingController();
-  TextEditingController signatureJustificationFinController =
-      TextEditingController();
-  TextEditingController signatureJustificationBudgetController =
-      TextEditingController();
-  TextEditingController signatureJustificationDDController =
       TextEditingController();
 
   String? ligneBudgtaire;
   String? resource;
-
 
   @override
   initState() {
@@ -62,7 +51,6 @@ class _DetailTrajetState extends State<DetailTrajet> {
       ligneBudgtaire: '-',
       resources: '-',
       approbation: '-',
-      signatureApprobation: '-',
       justification: '-',
       signature: '-',
       created: DateTime.now());
@@ -75,7 +63,7 @@ class _DetailTrajetState extends State<DetailTrajet> {
       departement: '-',
       servicesAffectation: '-',
       fonctionOccupe: '-',
-      role: '-',
+      role: '5',
       isOnline: false,
       createdAt: DateTime.now(),
       passwordHash: '-',
@@ -112,7 +100,7 @@ class _DetailTrajetState extends State<DetailTrajet> {
                             AsyncSnapshot<TrajetModel> snapshot) {
                           if (snapshot.hasData) {
                             TrajetModel? data = snapshot.data;
-                             approbationData = approbList
+                            approbationData = approbList
                                 .where(
                                     (element) => element.reference == data!.id!)
                                 .toList();
@@ -129,7 +117,7 @@ class _DetailTrajetState extends State<DetailTrajet> {
                                       width: p20,
                                       child: IconButton(
                                           onPressed: () =>
-                                              Navigator.of(context).pop(),
+                                              Navigator.pop(context),
                                           icon: const Icon(Icons.arrow_back)),
                                     ),
                                     const SizedBox(width: p10),
@@ -144,18 +132,17 @@ class _DetailTrajetState extends State<DetailTrajet> {
                                 Expanded(
                                     child: SingleChildScrollView(
                                         child: Column(
-                                          children: [
-                                            pageDetail(data),
-                                            const SizedBox(height: p10),
+                                  children: [
+                                    pageDetail(data),
+                                    const SizedBox(height: p10),
                                     infosEditeurWidget(),
                                     const SizedBox(height: p10),
-                                    if (int.parse(user.role) == 1 ||
-                                        int.parse(user.role) < 2)
+                                    if (int.parse(user.role) <= 2)
                                       if (approb.fontctionOccupee !=
                                           user.fonctionOccupe)
                                         approbationForm(data),
-                                          ],
-                                        )))
+                                  ],
+                                )))
                               ],
                             );
                           } else {
@@ -810,13 +797,11 @@ class _DetailTrajetState extends State<DetailTrajet> {
     final approbation = ApprobationModel(
         reference: data.id!,
         title: data.mission,
-        departement: data.nomeroEntreprise,
+        departement: 'Logistique',
         fontctionOccupee: user.fonctionOccupe,
-        ligneBudgtaire:
-            (ligneBudgtaire == null) ? '-' : ligneBudgtaire.toString(),
-        resources: (resource == null) ? '-' : resource.toString(),
+        ligneBudgtaire: '-',
+        resources: '-',
         approbation: approbationDGController,
-        signatureApprobation: user.matricule,
         justification: signatureJustificationDGController.text,
         signature: user.matricule,
         created: DateTime.now());

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fokad_admin/src/api/approbation/approbation_api.dart';
 import 'package:fokad_admin/src/api/budgets/departement_budget_api.dart';
 import 'package:fokad_admin/src/models/budgets/departement_budget_model.dart';
 import 'package:fokad_admin/src/pages/budgets/budgets_previsionels/components/detail_departement_budget.dart';
@@ -142,13 +143,18 @@ class _TableDepartementBudgetDGState extends State<TableDepartementBudgetDG> {
   Future agentsRow() async {
     List<DepartementBudgetModel?> dataList =
         await DepeartementBudgetApi().getAllData();
-    var data = dataList
+    var approbations = await ApprobationApi().getAllData();
+    List<DepartementBudgetModel?> data = [];
+    for (var item in approbations) {
+      data = dataList
         .where((element) =>
-            element!.approbationBudget == "Approved" &&
-            element.approbationDG == "-" &&
             DateTime.now().millisecondsSinceEpoch <=
-                element.periodeFin.millisecondsSinceEpoch)
+                element!.periodeFin.millisecondsSinceEpoch &&
+            element.id == item.reference &&
+            item.fontctionOccupee == 'Directeur de budget' &&
+            item.approbation == "Approved")
         .toList();
+    }
 
     if (mounted) {
       setState(() {

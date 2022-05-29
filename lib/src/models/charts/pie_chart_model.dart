@@ -12,8 +12,7 @@ class PieChartModel {
   }
 
   factory PieChartModel.fromJson(Map<String, dynamic> json) {
-    return PieChartModel(
-        departement: json['departement'], count: json['count']);
+    return PieChartModel(departement: json['departement'], count: json['count']);
   }
 
   Map<String, dynamic> toJson() {
@@ -35,7 +34,8 @@ class PieChartMaterielModel {
   }
 
   factory PieChartMaterielModel.fromJson(Map<String, dynamic> json) {
-    return PieChartMaterielModel(statut: json['statut'], count: json['count']);
+    return PieChartMaterielModel(
+        statut: json['statut'], count: json['count']);
   }
 
   Map<String, dynamic> toJson() {
@@ -64,3 +64,4 @@ class PieChartEnguinModel {
     return {'genre': genre, 'count': count};
   }
 }
+

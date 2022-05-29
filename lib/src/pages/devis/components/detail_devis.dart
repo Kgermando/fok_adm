@@ -11,6 +11,7 @@ import 'package:fokad_admin/src/constants/app_theme.dart';
 import 'package:fokad_admin/src/constants/responsive.dart';
 import 'package:fokad_admin/src/models/approbation/approbation_model.dart';
 import 'package:fokad_admin/src/models/budgets/ligne_budgetaire_model.dart';
+import 'package:fokad_admin/src/models/devis/devis_list_objets_model.dart';
 import 'package:fokad_admin/src/models/devis/devis_models.dart';
 import 'package:fokad_admin/src/models/users/user_model.dart';
 import 'package:fokad_admin/src/navigation/drawer/drawer_menu.dart';
@@ -42,16 +43,7 @@ class _DetailDevisState extends State<DetailDevis> {
   PlutoGridSelectingMode gridSelectingMode = PlutoGridSelectingMode.row;
 
   String approbationDGController = '-';
-  String approbationFinController = '-';
-  String approbationBudgetController = '-';
-  String approbationDDController = '-';
   TextEditingController signatureJustificationDGController =
-      TextEditingController();
-  TextEditingController signatureJustificationFinController =
-      TextEditingController();
-  TextEditingController signatureJustificationBudgetController =
-      TextEditingController();
-  TextEditingController signatureJustificationDDController =
       TextEditingController();
 
   String? ligneBudgtaire;
@@ -77,7 +69,6 @@ class _DetailDevisState extends State<DetailDevis> {
       ligneBudgtaire: '-',
       resources: '-',
       approbation: '-',
-      signatureApprobation: '-',
       justification: '-',
       signature: '-',
       created: DateTime.now());
@@ -133,7 +124,7 @@ class _DetailDevisState extends State<DetailDevis> {
                             AsyncSnapshot<DevisModel> snapshot) {
                           if (snapshot.hasData) {
                             DevisModel? data = snapshot.data;
-                            listObjets = data!.list!;
+                            listObjets = data!.list;
                             approbationData = approbList
                                 .where(
                                     (element) => element.reference == data.id!)
@@ -151,7 +142,7 @@ class _DetailDevisState extends State<DetailDevis> {
                                       width: p20,
                                       child: IconButton(
                                           onPressed: () =>
-                                              Navigator.of(context).pop(),
+                                              Navigator.pop(context),
                                           icon: const Icon(Icons.arrow_back)),
                                     ),
                                     const SizedBox(width: p10),
@@ -169,10 +160,10 @@ class _DetailDevisState extends State<DetailDevis> {
                                   children: [
                                     pageDetail(data),
                                     const SizedBox(height: p10),
-                                    infosEditeurWidget(),
+                                    if (approbationData.isNotEmpty)
+                                      infosEditeurWidget(),
                                     const SizedBox(height: p10),
-                                    if (int.parse(user.role) == 1 ||
-                                        int.parse(user.role) < 2)
+                                    if (int.parse(user.role) <= 2)
                                       if (approb.fontctionOccupee !=
                                           user.fonctionOccupe)
                                         approbationForm(data),
@@ -371,7 +362,7 @@ class _DetailDevisState extends State<DetailDevis> {
               'Cette action permet de permet de mettre ce fichier en corbeille.'),
           actions: <Widget>[
             TextButton(
-              onPressed: () => Navigator.of(context).pop(),
+              onPressed: () => Navigator.pop(context),
               child: const Text('Annuler'),
             ),
             TextButton(
@@ -460,9 +451,9 @@ class _DetailDevisState extends State<DetailDevis> {
   }
 
   Future agentsRow() async {
-    List<DevisListObjetModel> dataList = [];
+    List<DevisListObjetsModel> dataList = [];
     for (var item in listObjets) {
-      dataList.add(DevisListObjetModel.fromJson(item));
+      dataList.add(DevisListObjetsModel.fromJson(item));
     }
     if (mounted) {
       setState(() {
@@ -996,7 +987,6 @@ class _DetailDevisState extends State<DetailDevis> {
             (ligneBudgtaire == null) ? '-' : ligneBudgtaire.toString(),
         resources: (resource == null) ? '-' : resource.toString(),
         approbation: approbationDGController,
-        signatureApprobation: user.matricule,
         justification: signatureJustificationDGController.text,
         signature: user.matricule,
         created: DateTime.now());
@@ -1009,22 +999,10 @@ class _DetailDevisState extends State<DetailDevis> {
         title: data.title,
         priority: data.priority,
         departement: data.departement,
-        // list: data.list,
+        list: data.list,
         ligneBudgtaire: data.ligneBudgtaire,
         resources: data.resources,
         observation: isChecked,
-        approbationDG: data.approbationDG,
-        signatureDG: data.signatureDG,
-        signatureJustificationDG: data.signatureJustificationDG,
-        approbationFin: data.approbationFin,
-        signatureFin: data.signatureFin,
-        signatureJustificationFin: data.signatureJustificationFin,
-        approbationBudget: data.approbationBudget,
-        signatureBudget: data.signatureBudget,
-        signatureJustificationBudget: data.signatureJustificationBudget,
-        approbationDD: data.approbationDD,
-        signatureDD: data.signatureDD,
-        signatureJustificationDD: data.signatureJustificationDD,
         signature: data.signature,
         created: DateTime.now());
     await DevisAPi().updateData(data.id!, devisModel);

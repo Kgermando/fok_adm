@@ -158,7 +158,7 @@ class _AddPaiementSalaireState extends State<AddPaiementSalaire> {
                           SizedBox(
                             width: p20,
                             child: IconButton(
-                                onPressed: () => Navigator.of(context).pop(),
+                                onPressed: () => Navigator.pop(context),
                                 icon: const Icon(Icons.arrow_back)),
                           ),
                           const SizedBox(width: p10),
@@ -1402,22 +1402,6 @@ class _AddPaiementSalaireState extends State<AddPaiementSalaire> {
               : montantPrisConsiderationCalculCotisationsINSSController.text,
       totalDuBrut:
           (totalDuBrutController.text == '') ? '-' : totalDuBrutController.text,
-
-      approbationDG: '-',
-      signatureDG: '-',
-      signatureJustificationDG: '-',
-
-      approbationFin: '-',
-      signatureFin: '-',
-      signatureJustificationFin: '-',
-
-      approbationBudget: '-',
-      signatureBudget: '-',
-      signatureJustificationBudget: '-',
-
-      approbationDD: '-',
-      signatureDD: '-',
-      signatureJustificationDD: '-',
 
       signature: signature.toString(),
     );

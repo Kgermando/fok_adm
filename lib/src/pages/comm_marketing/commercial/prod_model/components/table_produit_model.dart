@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fokad_admin/src/api/approbation/approbation_api.dart';
 import 'package:fokad_admin/src/api/comm_marketing/commerciale/produit_model_api.dart';
 import 'package:fokad_admin/src/models/comm_maketing/prod_model.dart';
 import 'package:fokad_admin/src/pages/comm_marketing/commercial/prod_model/components/detail_prod_model.dart';
@@ -187,10 +188,15 @@ class _TableProduitModelState extends State<TableProduitModel> {
   }
 
   Future agentsRow() async {
-    List<ProductModel?> dataList = await ProduitModelApi().getAllData();
-    var data = dataList
-        .where((element) => element!.approbationDD == "Approved")
-        .toList();
+    var approbations = await ApprobationApi().getAllData();
+    List<ProductModel> dataList = await ProduitModelApi().getAllData();
+    List<ProductModel?> data = [];
+    for (var item in approbations) {
+      data = dataList
+          .where((element) =>
+              element.id == item.reference && item.approbation == 'Approved')
+          .toList();
+    }
 
     if (mounted) {
       setState(() {

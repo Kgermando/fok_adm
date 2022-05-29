@@ -41,7 +41,7 @@ class _TableCreanceFactState extends State<TableCreanceFact> {
       departement: '-',
       servicesAffectation: '-',
       fonctionOccupe: '-',
-      role: '-',
+      role: '5',
       isOnline: false,
       createdAt: DateTime.now(),
       passwordHash: '-',

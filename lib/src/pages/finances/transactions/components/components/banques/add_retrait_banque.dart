@@ -573,18 +573,6 @@ class _AddRetratBanqueState extends State<AddRetratBanque> {
         departement: departement.toString(),
         typeOperation: 'Retrait',
         numeroOperation: 'Transaction-Banque-${numberItem + 1}',
-        approbationDG: '-',
-        signatureDG: '-',
-        signatureJustificationDG: '-',
-        approbationFin: '-',
-        signatureFin: '-',
-        signatureJustificationFin: '-',
-        approbationBudget: '-',
-        signatureBudget: '-',
-        signatureJustificationBudget: '-',
-        approbationDD: '-',
-        signatureDD: '-',
-        signatureJustificationDD: '-',
         signature: matricule.toString(),
         created: DateTime.now());
     await BanqueApi().insertData(banqueModel);

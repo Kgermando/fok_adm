@@ -64,13 +64,13 @@ class _DashboardLogState extends State<DashboardLog> {
       mobilierCount = mobiliers.length;
       immobilierCount = immobliers.length;
       etatMaterielActif = etatMaterielList
-          .where((element) => element.approbationDG == "Actif")
+          .where((element) => element.statut == "Actif")
           .length;
       etatMaterielInActif = etatMaterielList
-          .where((element) => element.approbationDG == "Inactif")
+          .where((element) => element.statut == "Inactif")
           .length;
       etatMaterielDeclaser = etatMaterielList
-          .where((element) => element.approbationDG == "Declaser")
+          .where((element) => element.statut == "Declaser")
           .length;
 
       List<CarburantModel?> entreListEssence = dataList

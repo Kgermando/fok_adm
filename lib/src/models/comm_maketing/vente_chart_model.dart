@@ -18,8 +18,16 @@ class VenteChartModel {
     return VenteChartModel(
         idProductCart: json['idProductCart'],
         count: json['count'],
-        sum: json['sum']
-    );
+        sum: json['sum'],
+      );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'idProductCart': idProductCart,
+      'count': count,
+      'sum': sum
+    };
   }
 }
-  
+   

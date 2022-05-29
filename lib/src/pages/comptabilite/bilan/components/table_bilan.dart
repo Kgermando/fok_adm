@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:fokad_admin/src/api/approbation/approbation_api.dart';
 import 'package:fokad_admin/src/api/auth/auth_api.dart';
 import 'package:fokad_admin/src/api/comptabilite/bilan_api.dart';
 import 'package:fokad_admin/src/models/comptabilites/bilan_model.dart';
@@ -136,12 +137,19 @@ class _TableBilanState extends State<TableBilan> {
   Future agentsRow() async {
     UserModel userModel = await AuthApi().getUserId();
     List<BilanModel?> dataList = await BilanApi().getAllData();
-    var data = dataList.where((element) =>
-        element!.statut == false &&
-            element.approbationDG == "Approved" &&
-            element.approbationDD == "Approved" ||
-        element.statut == false && element.signature == userModel.matricule);
-
+    List<BilanModel?> data = [];
+    var approbations = await ApprobationApi().getAllData();
+    for (var item in approbations) {
+      data = dataList
+          .where((element) =>
+              element!.id == item.reference &&
+                  item.fontctionOccupee == 'Directeur générale' &&
+                  item.approbation == "Approved" ||
+              element.statut == false &&
+                  element.signature == userModel.matricule)
+          .toList();
+    }
+    
     if (mounted) {
       setState(() {
         for (var item in data) {

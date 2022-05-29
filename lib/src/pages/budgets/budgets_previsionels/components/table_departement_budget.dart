@@ -143,8 +143,12 @@ class _TableDepartementBudgetState extends State<TableDepartementBudget> {
      for (var item in approbations) {
       data = dataList
           .where((element) =>
-            element!.id == item.reference &&
-            item.fontctionOccupee == 'Directeur générale')
+            DateTime.now().millisecondsSinceEpoch <=
+                element!.periodeFin.millisecondsSinceEpoch &&
+            element.id == item.reference &&
+            item.fontctionOccupee == 'Directeur générale' && 
+            item.approbation == "Approved" ||
+            element.signature == userModel.matricule)
           .toList();
     }
 

@@ -1,10 +1,10 @@
 class Comptes {
-  late String compte;
+  late String comptes;
   late String montant;
 
-  Comptes({required this.compte, required this.montant});
+  Comptes({required this.comptes, required this.montant});
 
   factory Comptes.fromJson(Map<String, dynamic> json) {
-    return Comptes(compte: json['compte'], montant: json['montant']);
+    return Comptes(comptes: json['comptes'], montant: json['montant']);
   }
 }

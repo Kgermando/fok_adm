@@ -12,7 +12,6 @@ import 'package:fokad_admin/src/navigation/header/custom_appbar.dart';
 import 'package:fokad_admin/src/pages/mails/components/detail_mail.dart';
 import 'package:fokad_admin/src/pages/mails/components/list_mails.dart';
 import 'package:fokad_admin/src/routes/routes.dart';
-import 'package:routemaster/routemaster.dart';
 
 final _lightColors = [
   Colors.pinkAccent.shade700,
@@ -64,7 +63,7 @@ class _MailPagesState extends State<MailPages> {
         floatingActionButton: FloatingActionButton(
             child: const Icon(Icons.send),
             onPressed: () {
-              Routemaster.of(context).push(MailRoutes.addMail);
+              Navigator.pushNamed(context, MailRoutes.addMail);
             }),
         body: SafeArea(
           child: Row(

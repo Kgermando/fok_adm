@@ -4,6 +4,7 @@ import 'package:fokad_admin/src/api/auth/auth_api.dart';
 import 'package:fokad_admin/src/constants/app_theme.dart';
 import 'package:fokad_admin/src/constants/responsive.dart';
 import 'package:fokad_admin/src/provider/theme_provider.dart';
+import 'package:fokad_admin/src/routes/routes.dart';
 import 'package:fokad_admin/src/widgets/btn_widget.dart';
 import 'package:provider/provider.dart';
 
@@ -261,9 +262,74 @@ class _LoginPageState extends State<LoginPage> {
               setState(() => isloading = true);
               await AuthApi()
                   .login(matriculeController.text, passwordController.text)
-                  .then((value) {
+                  .then((value) async {
                 if (value) {
-                Provider.of<AppState>(context, listen: false).isLoggedIn = true;
+                  final user = await AuthApi().getUserId(); 
+                  if (user.departement == "Administration") {
+                     if (double.parse(user.role) <= 2) {
+                       Navigator.pushNamed(context, AdminRoutes.adminDashboard);
+                    } else {
+                      Navigator.pushNamed(context, AdminRoutes.adminLogistique);
+                    }
+                  } else if (user.departement == "Finances") {
+                    if(double.parse(user.role) <=2) {
+                      Navigator.pushNamed(
+                          context, FinanceRoutes.financeDashboard);
+                    } else {
+                      Navigator.pushNamed(
+                          context, FinanceRoutes.transactionsDettes);
+                    }
+                    
+                  } else if (user.departement == "Comptabilites") {
+                     if (double.parse(user.role) <= 2) {
+                       Navigator.pushNamed(
+                          context, ComptabiliteRoutes.comptabiliteDashboard);
+                    } else {
+                      Navigator.pushNamed(
+                          context, ComptabiliteRoutes.comptabiliteJournal);
+                    }
+                    
+                  } else if (user.departement == "Budgets") {
+                     if (double.parse(user.role) <= 2) {
+                       Navigator.pushNamed(
+                          context, BudgetRoutes.budgetDashboard);
+                    } else {
+                      Navigator.pushNamed(
+                          context, BudgetRoutes.budgetBudgetPrevisionel);
+                    }
+                    
+                  } else if (user.departement == "Ressources Humaines") {
+                     if (double.parse(user.role) <= 2) {
+                       Navigator.pushNamed(context, RhRoutes.rhDashboard);
+                    } else {
+                      Navigator.pushNamed(context, RhRoutes.rhPresence);
+                    }
+                    
+                  } else if (user.departement == "Exploitations") {
+                    if (double.parse(user.role) <= 2) {
+                      Navigator.pushNamed(context, ExploitationRoutes.expDashboard);
+                    } else {
+                      Navigator.pushNamed(
+                          context, ExploitationRoutes.expTache);
+                    }
+                    
+                  } else if (user.departement == "Commercial et Marketing") {
+                     if (double.parse(user.role) <= 2) {
+                       Navigator.pushNamed(
+                          context, ComMarketingRoutes.comMarketingDashboard);
+                    } else {
+                      Navigator.pushNamed(
+                          context, ComMarketingRoutes.comMarketingAnnuaire);
+                    }
+                    
+                  } else if (user.departement == "Logistique") {
+                     if (double.parse(user.role) <= 2) {
+                       Navigator.pushNamed(context, ArchiveRoutes.arcihves);
+                    } else {
+                      Navigator.pushNamed(context, ArchiveRoutes.arcihves);
+                    }
+                  }
+
                   ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                     content: const Text("Login succès!"),
                     backgroundColor: Colors.green[700],

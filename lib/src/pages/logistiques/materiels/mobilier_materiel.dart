@@ -5,7 +5,7 @@ import 'package:fokad_admin/src/navigation/drawer/drawer_menu.dart';
 import 'package:fokad_admin/src/navigation/header/custom_appbar.dart';
 import 'package:fokad_admin/src/pages/logistiques/materiels/components/table_mobilier.dart';
 import 'package:fokad_admin/src/routes/routes.dart';
-import 'package:routemaster/routemaster.dart';
+
 
 class MobilierMateriel extends StatefulWidget {
   const MobilierMateriel({Key? key}) : super(key: key);
@@ -25,8 +25,8 @@ class _MobilierMaterielState extends State<MobilierMateriel> {
         floatingActionButton: FloatingActionButton(
             child: const Icon(Icons.add),
             onPressed: () {
-              Routemaster.of(context)
-                  .push(LogistiqueRoutes.logAddMobilierMateriel);
+              Navigator.pushNamed(
+                  context, LogistiqueRoutes.logAddMobilierMateriel);
             }),
         body: SafeArea(
           child: Row(

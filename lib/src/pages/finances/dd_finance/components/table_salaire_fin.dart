@@ -75,8 +75,6 @@ class _TableSalairesFINState extends State<TableSalairesFIN> {
                 return resolver<ClassFilterImplemented>() as PlutoFilterType;
               } else if (column.field == 'departement') {
                 return resolver<ClassFilterImplemented>() as PlutoFilterType;
-              } else if (column.field == 'Approbation') {
-                return resolver<ClassFilterImplemented>() as PlutoFilterType;
               } else if (column.field == 'observation') {
                 return resolver<ClassFilterImplemented>() as PlutoFilterType;
               } else if (column.field == 'modePaiement') {
@@ -158,18 +156,6 @@ class _TableSalairesFINState extends State<TableSalairesFIN> {
       ),
       PlutoColumn(
         readOnly: true,
-        title: 'Approbation',
-        field: 'approbation',
-        type: PlutoColumnType.text(),
-        enableRowDrag: true,
-        enableContextMenu: false,
-        enableDropToResize: true,
-        titleTextAlign: PlutoColumnTextAlign.left,
-        width: 150,
-        minWidth: 150,
-      ),
-      PlutoColumn(
-        readOnly: true,
         title: 'Observation',
         field: 'observation',
         type: PlutoColumnType.text(),
@@ -230,10 +216,6 @@ class _TableSalairesFINState extends State<TableSalairesFIN> {
             'nom': PlutoCell(value: item.nom),
             'matricule': PlutoCell(value: item.matricule),
             'departement': PlutoCell(value: item.departement),
-            'approbation': PlutoCell(
-                value: (item.approbationDG == "Approved")
-                    ? "Approuvé"
-                    : "Non Approuvé"),
             'observation': PlutoCell(
                 value: (item.observation == true) ? "Payé" : "Non payé"),
             'modePaiement': PlutoCell(value: item.modePaiement),

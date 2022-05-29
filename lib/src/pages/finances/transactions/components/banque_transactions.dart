@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:fokad_admin/src/constants/app_theme.dart';
 import 'package:fokad_admin/src/constants/responsive.dart';
@@ -7,7 +5,6 @@ import 'package:fokad_admin/src/navigation/drawer/drawer_menu.dart';
 import 'package:fokad_admin/src/navigation/header/custom_appbar.dart';
 import 'package:fokad_admin/src/pages/finances/transactions/components/components/banques/table_banque.dart';
 import 'package:fokad_admin/src/routes/routes.dart';
-import 'package:routemaster/routemaster.dart';
 import 'package:simple_speed_dial/simple_speed_dial.dart';
 
 class BanqueTransactions extends StatefulWidget {
@@ -72,8 +69,8 @@ class _BanqueTransactionsState extends State<BanqueTransactions> {
           backgroundColor: Colors.yellow.shade700,
           label: 'Retrait',
           onPressed: () {
-            Routemaster.of(context)
-                .replace(FinanceRoutes.transactionsBanqueRetrait);
+            Navigator.pushNamed(
+                context, FinanceRoutes.transactionsBanqueRetrait);
           },
         ),
         SpeedDialChild(
@@ -82,8 +79,8 @@ class _BanqueTransactionsState extends State<BanqueTransactions> {
           backgroundColor: Colors.green.shade700,
           label: 'Dépôt',
           onPressed: () {
-            Routemaster.of(context)
-                .replace(FinanceRoutes.transactionsBanqueDepot);
+            Navigator.pushNamed(
+                context, FinanceRoutes.transactionsBanqueDepot);
           },
         ),
       ],

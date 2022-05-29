@@ -167,18 +167,6 @@ class _TableProjeBudgetState extends State<TableProjeBudget> {
       ),
       PlutoColumn(
         readOnly: true,
-        title: 'Approbation DG',
-        field: 'approbation',
-        type: PlutoColumnType.text(),
-        enableRowDrag: true,
-        enableContextMenu: false,
-        enableDropToResize: true,
-        titleTextAlign: PlutoColumnTextAlign.left,
-        width: 150,
-        minWidth: 150,
-      ),
-      PlutoColumn(
-        readOnly: true,
         title: 'Date',
         field: 'created',
         type: PlutoColumnType.text(),
@@ -217,7 +205,6 @@ class _TableProjeBudgetState extends State<TableProjeBudget> {
             'objectifs': PlutoCell(value: item.objectifs),
             'dateDebutEtFin': PlutoCell(value: item.dateDebutEtFin),
             'typeFinancement': PlutoCell(value: item.typeFinancement),
-            'approbation': PlutoCell(value: item.approbationDG),
             'created': PlutoCell(
                 value: DateFormat("dd-MM-yy H:mm").format(item.created))
           }));

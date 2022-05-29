@@ -4,22 +4,18 @@ class GrandLivreModel {
   late DateTime dateStart;
   late DateTime dateEnd;
 
-
-   GrandLivreModel(
-    {
-      required this.comptedebit,
+  GrandLivreModel(
+      {required this.comptedebit,
       required this.comptecredit,
       required this.dateStart,
-      required this.dateEnd
-    });
+      required this.dateEnd});
 
   factory GrandLivreModel.fromJson(Map<String, dynamic> json) {
     return GrandLivreModel(
         comptedebit: json['comptedebit'],
         comptecredit: json['comptecredit'],
         dateStart: DateTime.parse(json['dateStart']),
-        dateEnd: DateTime.parse(json['dateEnd'])
-      );
+        dateEnd: DateTime.parse(json['dateEnd']));
   }
 
   Map<String, dynamic> toJson() {

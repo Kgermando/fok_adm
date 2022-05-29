@@ -23,7 +23,6 @@ import 'package:fokad_admin/src/api/rh/agents_api.dart';
 import 'package:fokad_admin/src/api/rh/paiement_salaire_api.dart';
 import 'package:fokad_admin/src/navigation/drawer/drawer_widget.dart';
 import 'package:fokad_admin/src/routes/routes.dart';
-import 'package:routemaster/routemaster.dart';
 
 class AdministrationNav extends StatefulWidget {
   const AdministrationNav({Key? key, required this.pageCurrente})
@@ -115,113 +114,54 @@ class _AdministrationNavState extends State<AdministrationNav> {
 
     // Etaat de Besoins
     var etatBesions = await DevisAPi().getAllData();
-  if(mounted) {
-    setState(() {
-      // Budgets
-      budgetCount = dataLigneBudgetaireList
-          .where((element) =>
-              element.approbationBudget == "Approved" &&
-              element.approbationDG == "-")
-          .length;
+    if (mounted) {
+      setState(() {
+        // Budgets
+        budgetCount = dataLigneBudgetaireList.length;
 
-      // RH
-      agentInactifs =
-          agents.where((element) => element.statutAgent == false).length;
-      salaireCount = salaires
-          .where((element) =>
-              element.approbationBudget == "Approved" &&
-              element.observation == false &&
-              element.approbationDG == "-")
-          .length;
+        // RH
+        agentInactifs =
+            agents.where((element) => element.statutAgent == false).length;
+        salaireCount = salaires
+            .where((element) =>element.observation == false)
+            .length;
 
-      // Finances
-      creanceCount = creances
-          .where((element) =>
-              element.statutPaie == false && element.approbationDG == '-')
-          .toList()
-          .length;
-      detteCount = dettes
-          .where((element) =>
-              element.statutPaie == false && element.approbationDG == '-')
-          .toList()
-          .length;
+        // Finances
+        creanceCount = creances
+            .where((element) =>
+                element.statutPaie == false)
+            .toList()
+            .length;
+        detteCount = dettes
+            .where((element) =>
+                element.statutPaie == false)
+            .toList()
+            .length;
 
-      // Comptabilites
-      bilanCount = bilans
-          .where((element) =>
-              element.approbationDD == "Approved" &&
-              element.approbationDG == "-")
-          .length;
-      journalCount = journal
-          .where((element) =>
-              element.approbationDD == "Approved" &&
-              element.approbationDG == "-")
-          .length;
-      compteResultatCount = compteReultats
-          .where((element) =>
-              element.approbationDD == "Approved" &&
-              element.approbationDG == "-")
-          .length;
-      balanceCount = balances
-          .where((element) =>
-              element.approbationDD == "Approved" &&
-              element.approbationDG == "-")
-          .length;
+        // Comptabilites
+        bilanCount = bilans.length;
+        journalCount = journal.length;
+        compteResultatCount = compteReultats.length;
+        balanceCount = balances.length;
 
-      // Exploitations
-      exploitationCount = exploitations
-          .where((element) =>
-              element.approbationDD == "Approved" &&
-              element.approbationBudget == "Approved" &&
-              element.approbationDG == "-")
-          .length;
+        // Exploitations
+        exploitationCount = exploitations.length;
 
-      // Comm & Marketing
-      campaignCount = campaigns
-        .where((element) =>
-          element.approbationBudget == "Approved" &&
-              element.approbationDD == "Approved" &&
-              element.approbationDG == "-")
-          .length;
-      succursaleCount = succursale
-          .where((element) =>
-              element.approbationDD == "Approved" &&
-              element.approbationDG == "-")
-          .length;
-      prodModelCount = prodModels
-          .where((element) =>
-              element.approbationDD == "Approved" &&
-              element.approbationDG == "-")
-          .length;
+        // Comm & Marketing
+        campaignCount = campaigns.length;
+        succursaleCount = succursale.length;
+        prodModelCount = prodModels.length;
 
-      // Logistique
-      anguinsCount = anguins
-          .where((element) =>
-              element.approbationDD == "Approved" &&
-              element.approbationDG == "-")
-          .length;
-      carburantCount = carburants
-          .where((element) =>
-              element.approbationDD == "Approved" &&
-              element.approbationDG == "-")
-          .length;
-      immobiliersCount = immobiliers
-          .where((element) =>
-              element.approbationDD == "Approved" &&
-              element.approbationDG == "-")
-          .length;
-      mobiliersCount = mobiliers
-          .where((element) =>
-              element.approbationDD == "Approved" &&
-              element.approbationDG == "-")
-          .length;
+        // Logistique
+        anguinsCount = anguins.length;
+        carburantCount = carburants.length;
+        immobiliersCount = immobiliers.length;
+        mobiliersCount = mobiliers.length;
 
-      // Etaat de Besoins
-      etatBesoinCount = etatBesions
-          .where((element) => element.approbationBudget == "Approved" &&  element.approbationDG == "-")
-          .length;
-    });
-  }
+        // Etaat de Besoins
+        etatBesoinCount = etatBesions.length;
+      });
+    }
   }
 
   @override
@@ -262,7 +202,7 @@ class _AdministrationNavState extends State<AdministrationNav> {
             title: 'Dashboard',
             style: bodyText1!,
             onTap: () {
-              Routemaster.of(context).replace(AdminRoutes.adminDashboard);
+              Navigator.pushNamed(context, AdminRoutes.adminDashboard);
               // Navigator.of(context).pop();
             }),
         DrawerWidget(
@@ -279,7 +219,7 @@ class _AdministrationNavState extends State<AdministrationNav> {
               child: const Icon(Icons.notifications),
             ),
             onTap: () {
-              Routemaster.of(context).replace(AdminRoutes.adminBudget);
+              Navigator.pushNamed(context, AdminRoutes.adminBudget);
               // Navigator.of(context).pop();
             }),
         DrawerWidget(
@@ -296,7 +236,7 @@ class _AdministrationNavState extends State<AdministrationNav> {
               child: const Icon(Icons.notifications),
             ),
             onTap: () {
-              Routemaster.of(context).replace(AdminRoutes.adminFinance);
+              Navigator.pushNamed(context, AdminRoutes.adminFinance);
               // Navigator.of(context).pop();
             }),
         DrawerWidget(
@@ -313,7 +253,7 @@ class _AdministrationNavState extends State<AdministrationNav> {
               child: const Icon(Icons.notifications),
             ),
             onTap: () {
-              Routemaster.of(context).replace(AdminRoutes.adminEtatBesoin);
+              Navigator.pushNamed(context, AdminRoutes.adminEtatBesoin);
               // Navigator.of(context).pop();
             }),
         DrawerWidget(
@@ -330,7 +270,7 @@ class _AdministrationNavState extends State<AdministrationNav> {
               child: const Icon(Icons.notifications),
             ),
             onTap: () {
-              Routemaster.of(context).replace(AdminRoutes.adminComptabilite);
+              Navigator.pushNamed(context, AdminRoutes.adminComptabilite);
               // Navigator.of(context).pop();
             }),
         DrawerWidget(
@@ -347,7 +287,7 @@ class _AdministrationNavState extends State<AdministrationNav> {
               child: const Icon(Icons.notifications),
             ),
             onTap: () {
-              Routemaster.of(context).replace(AdminRoutes.adminRH);
+              Navigator.pushNamed(context, AdminRoutes.adminRH);
             }),
         DrawerWidget(
             selected: widget.pageCurrente == AdminRoutes.adminExploitation,
@@ -363,7 +303,7 @@ class _AdministrationNavState extends State<AdministrationNav> {
               child: const Icon(Icons.notifications),
             ),
             onTap: () {
-              Routemaster.of(context).replace(AdminRoutes.adminExploitation);
+              Navigator.pushNamed(context, AdminRoutes.adminExploitation);
               // Navigator.of(context).pop();
             }),
         DrawerWidget(
@@ -380,7 +320,7 @@ class _AdministrationNavState extends State<AdministrationNav> {
               child: const Icon(Icons.notifications),
             ),
             onTap: () {
-              Routemaster.of(context).replace(AdminRoutes.adminCommMarketing);
+              Navigator.pushNamed(context, AdminRoutes.adminCommMarketing);
               // Navigator.of(context).pop();
             }),
         DrawerWidget(
@@ -397,7 +337,7 @@ class _AdministrationNavState extends State<AdministrationNav> {
               child: const Icon(Icons.notifications),
             ),
             onTap: () {
-              Routemaster.of(context).replace(AdminRoutes.adminLogistique);
+              Navigator.pushNamed(context, AdminRoutes.adminLogistique);
               // Navigator.of(context).pop();
             }),
         DrawerWidget(
@@ -407,9 +347,8 @@ class _AdministrationNavState extends State<AdministrationNav> {
             title: 'Performences',
             style: bodyText1,
             onTap: () {
-              Routemaster.of(context).replace(RhRoutes.rhPerformence);
+              Navigator.pushNamed(context, RhRoutes.rhPerformence);
             }),
-        
       ],
     );
   }

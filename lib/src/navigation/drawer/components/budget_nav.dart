@@ -11,7 +11,7 @@ import 'package:fokad_admin/src/api/rh/paiement_salaire_api.dart';
 import 'package:fokad_admin/src/models/users/user_model.dart';
 import 'package:fokad_admin/src/navigation/drawer/drawer_widget.dart';
 import 'package:fokad_admin/src/routes/routes.dart';
-import 'package:routemaster/routemaster.dart';
+
 
 class BudgetNav extends StatefulWidget {
   const BudgetNav({Key? key, required this.pageCurrente}) : super(key: key);
@@ -139,9 +139,7 @@ class _BudgetNavState extends State<BudgetNav> {
             title: 'Dashboard',
             style: bodyText1!,
             onTap: () {
-              Routemaster.of(context).replace(
-                BudgetRoutes.budgetDashboard,
-              );
+              Navigator.pushNamed(context, BudgetRoutes.budgetDashboard);
               // Navigator.of(context).pop();
             }),
         if(userRole <= 2)
@@ -159,9 +157,7 @@ class _BudgetNavState extends State<BudgetNav> {
               child: const Icon(Icons.notifications),
             ),
             onTap: () {
-              Routemaster.of(context).replace(
-                BudgetRoutes.budgetDD,
-              );
+              Navigator.pushNamed(context, BudgetRoutes.budgetDD);
               // Navigator.of(context).pop();
             }),
         DrawerWidget(
@@ -172,9 +168,7 @@ class _BudgetNavState extends State<BudgetNav> {
             title: 'Budgets previsonels',
             style: bodyText1!,
             onTap: () {
-              Routemaster.of(context).replace(
-                BudgetRoutes.budgetBudgetPrevisionel,
-              );
+              Navigator.pushNamed(context, BudgetRoutes.budgetBudgetPrevisionel);
               // Navigator.of(context).pop();
             }),
         DrawerWidget(
@@ -185,9 +179,8 @@ class _BudgetNavState extends State<BudgetNav> {
             title: 'Historique Budgetaires',
             style: bodyText1,
             onTap: () {
-              Routemaster.of(context).replace(
-                BudgetRoutes.historiqueBudgetBudgetPrevisionel,
-              );
+              Navigator.pushNamed(
+                  context, BudgetRoutes.historiqueBudgetBudgetPrevisionel);
               // Navigator.of(context).pop();
             }),
         DrawerWidget(
@@ -197,7 +190,7 @@ class _BudgetNavState extends State<BudgetNav> {
             title: 'Performences',
             style: bodyText1,
             onTap: () {
-              Routemaster.of(context).replace(RhRoutes.rhPerformence);
+              Navigator.pushNamed(context, RhRoutes.rhPerformence);
               // Navigator.of(context).pop();
             }),
       ],

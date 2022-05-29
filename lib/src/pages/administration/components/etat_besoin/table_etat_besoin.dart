@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:fokad_admin/src/api/approbation/approbation_api.dart';
 import 'package:fokad_admin/src/api/auth/auth_api.dart';
 import 'package:fokad_admin/src/api/devis/devis_api.dart';
 import 'package:fokad_admin/src/models/devis/devis_models.dart';
@@ -163,30 +162,6 @@ class _TableEtatBesoinState extends State<TableEtatBesoin> {
       ),
       PlutoColumn(
         readOnly: true,
-        title: 'Approbation',
-        field: 'approbation',
-        type: PlutoColumnType.text(),
-        enableRowDrag: true,
-        enableContextMenu: false,
-        enableDropToResize: true,
-        titleTextAlign: PlutoColumnTextAlign.left,
-        width: 200,
-        minWidth: 150,
-      ),
-      PlutoColumn(
-        readOnly: true,
-        title: 'Observation',
-        field: 'observation',
-        type: PlutoColumnType.text(),
-        enableRowDrag: true,
-        enableContextMenu: false,
-        enableDropToResize: true,
-        titleTextAlign: PlutoColumnTextAlign.left,
-        width: 150,
-        minWidth: 150,
-      ),
-      PlutoColumn(
-        readOnly: true,
         title: 'Date',
         field: 'created',
         type: PlutoColumnType.text(),
@@ -214,8 +189,6 @@ class _TableEtatBesoinState extends State<TableEtatBesoin> {
             'title': PlutoCell(value: item.title),
             'priority': PlutoCell(value: item.priority),
             'departement': PlutoCell(value: item.departement),
-            'approbation': PlutoCell(value: item.approbationDG),
-            'observation': PlutoCell(value: item.approbationFin),
             'created': PlutoCell(
                 value: DateFormat("dd-MM-yyyy HH:mm").format(item.created))
           }));

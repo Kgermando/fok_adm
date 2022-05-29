@@ -5,8 +5,6 @@ import 'package:fokad_admin/src/navigation/drawer/drawer_menu.dart';
 import 'package:fokad_admin/src/navigation/header/custom_appbar.dart';
 import 'package:fokad_admin/src/pages/comm_marketing/marketing/components/campaign/add_campaign.dart';
 import 'package:fokad_admin/src/pages/comm_marketing/marketing/components/campaign/table_campaign.dart';
-import 'package:fokad_admin/src/routes/routes.dart';
-import 'package:routemaster/routemaster.dart';
 
 class CampaignMarketing extends StatefulWidget {
   const CampaignMarketing({ Key? key }) : super(key: key);

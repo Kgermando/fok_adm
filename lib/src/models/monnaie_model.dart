@@ -12,7 +12,6 @@ class MonnaieModel {
       required this.signature,
       required this.created});
 
-
   factory MonnaieModel.fromSQL(List<dynamic> row) {
     return MonnaieModel(
         id: row[0],
@@ -22,7 +21,7 @@ class MonnaieModel {
         created: row[4]);
   }
 
-   factory MonnaieModel.fromJson(Map<String, dynamic> json) {
+  factory MonnaieModel.fromJson(Map<String, dynamic> json) {
     return MonnaieModel(
         id: json['id'],
         monnaie: json['monnaie'],

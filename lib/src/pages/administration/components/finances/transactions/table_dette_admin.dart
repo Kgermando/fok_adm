@@ -256,18 +256,6 @@ class _TableDetteAdminState extends State<TableDetteAdmin> {
       ),
       PlutoColumn(
         readOnly: true,
-        title: 'Approbation',
-        field: 'approbation',
-        type: PlutoColumnType.text(),
-        enableRowDrag: true,
-        enableContextMenu: false,
-        enableDropToResize: true,
-        titleTextAlign: PlutoColumnTextAlign.left,
-        width: 150,
-        minWidth: 150,
-      ),
-      PlutoColumn(
-        readOnly: true,
         title: 'Date',
         field: 'created',
         type: PlutoColumnType.text(),
@@ -283,7 +271,7 @@ class _TableDetteAdminState extends State<TableDetteAdmin> {
 
   Future agentsRow() async {
     List<DetteModel?> dataList = await DetteApi().getAllData();
-    var data = dataList;  // PAs de filtre parce le fichier approbation n'est pas encore crée
+    var data = dataList.toList();  // PAs de filtre parce le fichier approbation n'est pas encore crée
     
 
     if (mounted) {
@@ -297,7 +285,6 @@ class _TableDetteAdminState extends State<TableDetteAdmin> {
             'libelle': PlutoCell(value: item.libelle),
             'montant': PlutoCell(value: item.montant),
             'numeroOperation': PlutoCell(value: item.numeroOperation),
-            'approbation': PlutoCell(value: item.approbationDG),
             'created': PlutoCell(
                 value: DateFormat("dd-MM-yy HH:mm").format(item.created))
           }));

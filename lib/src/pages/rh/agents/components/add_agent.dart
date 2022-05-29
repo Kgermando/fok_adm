@@ -983,18 +983,6 @@ class _AddAgentState extends State<AddAgent> {
         hospitalite: nomController.text,
         ponctualite: postNomController.text,
         travaille: prenomController.text,
-        approbationDG: '-',
-        signatureDG: '-',
-        signatureJustificationDG: '-',
-        approbationFin: '-',
-        signatureFin: '-',
-        signatureJustificationFin: '-',
-        approbationBudget: '-',
-        signatureBudget: '-',
-        signatureJustificationBudget: '-',
-        approbationDD: '-',
-        signatureDD: '-',
-        signatureJustificationDD: '-',
         signature: user!.matricule.toString(),
         created: DateTime.now());
     await PerformenceApi().insertData(performenceModel);

@@ -363,18 +363,6 @@ class _AddTrajetAutoState extends State<AddTrajetAuto> {
         mission: missionController.text,
         kilometrageSorite: kilometrageSoriteController.text,
         kilometrageRetour: '-',
-        approbationDG: '-',
-        signatureDG: '-',
-        signatureJustificationDG: '-',
-        approbationFin: '-',
-        signatureFin: '-',
-        signatureJustificationFin: '-',
-        approbationBudget: '-',
-        signatureBudget: '-',
-        signatureJustificationBudget: '-',
-        approbationDD: '-',
-        signatureDD: '-',
-        signatureJustificationDD: '-',
         signature: signature.toString(),
         created: DateTime.now());
     await TrajetApi().insertData(trajetModel);

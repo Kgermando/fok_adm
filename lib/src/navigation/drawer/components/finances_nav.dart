@@ -12,7 +12,7 @@ import 'package:fokad_admin/src/api/rh/paiement_salaire_api.dart';
 import 'package:fokad_admin/src/models/users/user_model.dart';
 import 'package:fokad_admin/src/navigation/drawer/drawer_widget.dart';
 import 'package:fokad_admin/src/routes/routes.dart';
-import 'package:routemaster/routemaster.dart';
+
 
 class FinancesNav extends StatefulWidget {
   const FinancesNav({Key? key, required this.pageCurrente}) : super(key: key);
@@ -156,7 +156,8 @@ class _FinancesNavState extends State<FinancesNav> {
             title: 'Dashboard',
             style: bodyText1!,
             onTap: () {
-              Routemaster.of(context).replace(FinanceRoutes.financeDashboard);
+              Navigator.pushNamed(
+                    context, FinanceRoutes.financeDashboard);
               // Navigator.of(context).pop();
             }),
         if (userRole <= 2)
@@ -174,7 +175,7 @@ class _FinancesNavState extends State<FinancesNav> {
               child: const Icon(Icons.notifications),
             ),
             onTap: () {
-              Routemaster.of(context).replace(FinanceRoutes.finDD);
+              Navigator.pushNamed(context, FinanceRoutes.finDD);
               // Navigator.of(context).pop();
             }),
         ExpansionTile(
@@ -195,8 +196,7 @@ class _FinancesNavState extends State<FinancesNav> {
                 title: 'Banque',
                 style: bodyText2!,
                 onTap: () {
-                  Routemaster.of(context)
-                      .replace(FinanceRoutes.transactionsBanque);
+                  Navigator.pushNamed(context, FinanceRoutes.transactionsBanque);
                   // Navigator.of(context).pop();
                 }),
             DrawerWidget(
@@ -207,8 +207,8 @@ class _FinancesNavState extends State<FinancesNav> {
                 title: 'Caisse',
                 style: bodyText2,
                 onTap: () {
-                  Routemaster.of(context)
-                      .replace(FinanceRoutes.transactionsCaisse);
+                  Navigator.pushNamed(
+                      context, FinanceRoutes.transactionsCaisse);
                   // Navigator.of(context).pop();
                 }),
             if (userRole <= 2)
@@ -220,8 +220,8 @@ class _FinancesNavState extends State<FinancesNav> {
                 title: 'Creances',
                 style: bodyText2,
                 onTap: () {
-                  Routemaster.of(context)
-                      .replace(FinanceRoutes.transactionsCreances);
+                  Navigator.pushNamed(
+                        context, FinanceRoutes.transactionsCreances);
                   // Navigator.of(context).pop();
                 }),
             if (userRole <= 2)
@@ -233,8 +233,8 @@ class _FinancesNavState extends State<FinancesNav> {
                 title: 'Dettes',
                 style: bodyText2,
                 onTap: () {
-                  Routemaster.of(context)
-                      .replace(FinanceRoutes.transactionsDettes);
+                  Navigator.pushNamed(
+                        context, FinanceRoutes.transactionsDettes);
                   // Navigator.of(context).pop();
                 }),
             DrawerWidget(
@@ -245,8 +245,8 @@ class _FinancesNavState extends State<FinancesNav> {
                 title: 'Autres Fin.',
                 style: bodyText2,
                 onTap: () {
-                  Routemaster.of(context)
-                      .replace(FinanceRoutes.transactionsFinancementExterne);
+                  Navigator.pushNamed(
+                      context, FinanceRoutes.transactionsFinancementExterne);
                   // Navigator.of(context).pop();
                 }),
           ],
@@ -258,7 +258,8 @@ class _FinancesNavState extends State<FinancesNav> {
             title: 'Performences',
             style: bodyText1!,
             onTap: () {
-              Routemaster.of(context).replace(RhRoutes.rhPerformence);
+              Navigator.pushNamed(
+                  context, RhRoutes.rhPerformence);
               // Navigator.of(context).pop();
             }),
       ],

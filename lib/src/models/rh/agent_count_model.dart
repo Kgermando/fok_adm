@@ -16,7 +16,6 @@ class AgentCountModel {
   }
 }
 
-
 class AgentPieChartModel {
   final String sexe;
   final int count;
@@ -30,8 +29,11 @@ class AgentPieChartModel {
     );
   }
 
-  factory AgentPieChartModel.fromJson(Map<String, dynamic> json) {
-    return AgentPieChartModel(sexe: json['sexe'], count: json['count']);
+   factory AgentPieChartModel.fromJson(Map<String, dynamic> json) {
+    return AgentPieChartModel(
+      sexe: json['sexe'],
+      count: json['count']
+    );
   }
 
   Map<String, dynamic> toJson() {

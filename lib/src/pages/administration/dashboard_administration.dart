@@ -236,8 +236,7 @@ class _DashboardAdministrationState extends State<DashboardAdministration> {
 
       List<CreanceModel?> nonPayeCreanceList = dataCreanceList
           .where((element) =>
-              element.statutPaie == false &&
-              element.approbationDG == 'Approved')
+              element.statutPaie == false)
           .toList();
       for (var item in nonPayeCreanceList) {
         nonPayesCreance += double.parse(item!.montant);
@@ -251,8 +250,7 @@ class _DashboardAdministrationState extends State<DashboardAdministration> {
           creanceDettes.where((element) => element.creanceDette == 'dettes');
       List<DetteModel?> nonPayeDetteList = dataDetteList
           .where((element) =>
-              element.statutPaie == false &&
-              element.approbationDG == 'Approved')
+              element.statutPaie == false)
           .toList();
       for (var item in nonPayeDetteList) {
         nonPayesDette += double.parse(item!.montant);
@@ -270,7 +268,7 @@ class _DashboardAdministrationState extends State<DashboardAdministration> {
       List<DevisModel?> devisList = dataDevisList;
 
       for (var item in devisList) {
-        for (var i in item!.list!) {
+        for (var i in item!.list) {
           depenses += double.parse(i['frais']);
         }
       }

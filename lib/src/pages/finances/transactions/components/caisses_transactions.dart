@@ -1,23 +1,10 @@
-import 'dart:async';
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:fokad_admin/src/api/auth/auth_api.dart';
-import 'package:fokad_admin/src/api/finances/caisse_api.dart';
 import 'package:fokad_admin/src/constants/app_theme.dart';
 import 'package:fokad_admin/src/constants/responsive.dart';
-import 'package:fokad_admin/src/models/finances/caisse_model.dart';
 import 'package:fokad_admin/src/navigation/drawer/drawer_menu.dart';
 import 'package:fokad_admin/src/navigation/header/custom_appbar.dart';
 import 'package:fokad_admin/src/pages/finances/transactions/components/components/caisses/table_caisse.dart';
 import 'package:fokad_admin/src/routes/routes.dart';
-import 'package:fokad_admin/src/utils/dropdown.dart';
-import 'package:fokad_admin/src/utils/type_operation.dart';
-import 'package:fokad_admin/src/widgets/btn_widget.dart';
-import 'package:fokad_admin/src/widgets/print_widget.dart';
-import 'package:fokad_admin/src/widgets/title_widget.dart';
-import 'package:routemaster/routemaster.dart';
 import 'package:simple_speed_dial/simple_speed_dial.dart';
 
 class CaisseTransactions extends StatefulWidget {
@@ -83,8 +70,8 @@ class _CaisseTransactionsState extends State<CaisseTransactions> {
           backgroundColor: Colors.yellow.shade700,
           label: 'Décaissement',
           onPressed: () {
-            Routemaster.of(context)
-                .replace(FinanceRoutes.transactionsCaisseDecaissement);
+            Navigator.pushNamed(
+                context, FinanceRoutes.transactionsCaisseDecaissement);
           },
         ),
         SpeedDialChild(
@@ -93,8 +80,8 @@ class _CaisseTransactionsState extends State<CaisseTransactions> {
           backgroundColor: Colors.green.shade700,
           label: 'Encaissement',
           onPressed: () {
-            Routemaster.of(context)
-                .replace(FinanceRoutes.transactionsCaisseEncaissement);
+            Navigator.pushNamed(
+                context, FinanceRoutes.transactionsCaisseEncaissement);
           },
         ),
       ],

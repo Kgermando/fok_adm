@@ -168,18 +168,6 @@ class _TableSalaireAdminState extends State<TableSalaireAdmin> {
       ),
       PlutoColumn(
         readOnly: true,
-        title: 'Approbation',
-        field: 'approbation',
-        type: PlutoColumnType.text(),
-        enableRowDrag: true,
-        enableContextMenu: false,
-        enableDropToResize: true,
-        titleTextAlign: PlutoColumnTextAlign.left,
-        width: 150,
-        minWidth: 150,
-      ),
-      PlutoColumn(
-        readOnly: true,
         title: 'Observation',
         field: 'observation',
         type: PlutoColumnType.text(),
@@ -235,10 +223,6 @@ class _TableSalaireAdminState extends State<TableSalaireAdmin> {
             'matricule': PlutoCell(value: item.matricule),
             'departement': PlutoCell(value: item.departement),
             'salaire': PlutoCell(value: item.salaire),
-            'approbation': PlutoCell(
-                value: (item.approbationDG == "Approved")
-                    ? "Approuvé"
-                    : "Non Approuvé"),
             'observation': PlutoCell(
                 value: (item.observation == true) ? "Payé" : "Non payé"),
             'modePaiement': PlutoCell(value: item.modePaiement),

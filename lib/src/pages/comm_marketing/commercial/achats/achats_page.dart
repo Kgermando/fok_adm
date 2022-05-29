@@ -10,7 +10,7 @@ import 'package:fokad_admin/src/navigation/header/custom_appbar.dart';
 import 'package:fokad_admin/src/pages/comm_marketing/commercial/achats/components/list_stock.dart';
 
 class AchatsPage extends StatefulWidget {
-  const AchatsPage({ Key? key }) : super(key: key);
+  const AchatsPage({Key? key}) : super(key: key);
 
   @override
   State<AchatsPage> createState() => _AchatsPageState();
@@ -26,7 +26,6 @@ class _AchatsPageState extends State<AchatsPage> {
     super.initState();
   }
 
-
   UserModel user = UserModel(
       nom: '-',
       prenom: '-',
@@ -36,7 +35,7 @@ class _AchatsPageState extends State<AchatsPage> {
       departement: '-',
       servicesAffectation: '-',
       fonctionOccupe: '-',
-      role: '-',
+      role: '5',
       isOnline: false,
       createdAt: DateTime.now(),
       passwordHash: '-',
@@ -50,7 +49,7 @@ class _AchatsPageState extends State<AchatsPage> {
 
   @override
   Widget build(BuildContext context) {
-   return Scaffold(
+    return Scaffold(
         key: _key,
         drawer: const DrawerMenu(),
         body: SafeArea(
@@ -76,11 +75,9 @@ class _AchatsPageState extends State<AchatsPage> {
                           child: FutureBuilder<List<AchatModel>>(
                               future: AchatApi().getAllData(),
                               builder: (BuildContext context,
-                                  AsyncSnapshot<List<AchatModel>>
-                                      snapshot) {
+                                  AsyncSnapshot<List<AchatModel>> snapshot) {
                                 if (snapshot.hasData) {
-                                  List<AchatModel>? dataList =
-                                      snapshot.data;
+                                  List<AchatModel>? dataList = snapshot.data;
                                   return dataList!.isEmpty
                                       ? Center(
                                           child: Text(

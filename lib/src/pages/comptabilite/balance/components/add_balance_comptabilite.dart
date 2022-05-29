@@ -517,12 +517,6 @@ class _AddBalanceComptabiliteState extends State<AddBalanceComptabilite> {
         title: titleController.text,
         comptes: jsonList,
         statut: statut,
-        approbationDG: '-',
-        signatureDG: '-',
-        signatureJustificationDG: '-',
-        approbationDD: '-',
-        signatureDD: '-',
-        signatureJustificationDD: '-',
         signature: user!.matricule.toString(),
         created: DateTime.now());
     await BalanceCompteApi().insertData(balance);

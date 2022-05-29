@@ -8,11 +8,9 @@ import 'package:fokad_admin/src/models/logistiques/carburant_model.dart';
 import 'package:fokad_admin/src/models/users/user_model.dart';
 import 'package:fokad_admin/src/navigation/drawer/drawer_menu.dart';
 import 'package:fokad_admin/src/navigation/header/custom_appbar.dart';
-import 'package:fokad_admin/src/routes/routes.dart';
 import 'package:fokad_admin/src/utils/carburant_dropdown.dart';
 import 'package:fokad_admin/src/widgets/btn_widget.dart';
 import 'package:fokad_admin/src/widgets/print_widget.dart';
-import 'package:routemaster/routemaster.dart';
 
 class AddCarburantAuto extends StatefulWidget {
   const AddCarburantAuto({Key? key}) : super(key: key);
@@ -462,22 +460,10 @@ class _AddCarburantAutoState extends State<AddCarburantAuto> {
                 ? "2099-12-31 00:00:00"       
                 : dateHeureSortieAnguinController.text),
         qtyAchat: qtyAchatController.text,
-        approbationDG: '-',
-        signatureDG: '-',
-        signatureJustificationDG: '-',
-        approbationFin: '-',
-        signatureFin: '-',
-        signatureJustificationFin: '-',
-        approbationBudget: '-',
-        signatureBudget: '-',
-        signatureJustificationBudget: '-',
-        approbationDD: '-',
-        signatureDD: '-',
-        signatureJustificationDD: '-',
         signature: signature.toString(),
         created: DateTime.now());
     await CarburantApi().insertData(carburantModel);
-    Routemaster.of(context).replace(LogistiqueRoutes.logCarburantAuto);
+    Navigator.pop(context);
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
       content: const Text("Enregistrer avec succès!"),
       backgroundColor: Colors.green[700],

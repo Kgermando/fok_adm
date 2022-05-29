@@ -401,25 +401,13 @@ class _AddCampaignState extends State<AddCampaign> {
         ligneBudgtaire: '-',
         resources: '-',
         observation: false,
-        approbationDG: '-',
-        signatureDG: '-',
-        signatureJustificationDG: '-',
-        approbationFin: '-',
-        signatureFin: '-',
-        signatureJustificationFin: '-',
-        approbationBudget: '-',
-        signatureBudget: '-',
-        signatureJustificationBudget: '-',
-        approbationDD: '-',
-        signatureDD: '-',
-        signatureJustificationDD: '-',
         signature: user!.matricule.toString(),
         created: DateTime.now());
 
     await CampaignApi().insertData(campaignModel);
     Navigator.of(context).pop();
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-      content: const Text("Soumis avec succès!"),
+      content: const Text("Document soumis chez le DG avec succès!"),
       backgroundColor: Colors.green[700],
     ));
   }

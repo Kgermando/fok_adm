@@ -1,7 +1,7 @@
 class PresenceModel {
   late int? id;
   late DateTime arrive;
-  late List  arriveAgent;
+  late List arriveAgent;
   late DateTime sortie;
   late List sortieAgent;
   late String remarque;

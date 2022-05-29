@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:fokad_admin/src/api/approbation/approbation_api.dart';
 import 'package:fokad_admin/src/api/auth/auth_api.dart';
 import 'package:fokad_admin/src/api/comptabilite/compte_resultat_api.dart';
 import 'package:fokad_admin/src/models/comptabilites/compte_resultat_model.dart';
@@ -141,10 +142,17 @@ class _TableCompteResultatState extends State<TableCompteResultat> {
     UserModel userModel = await AuthApi().getUserId();
     List<CompteResulatsModel?> dataList =
         await CompteResultatApi().getAllData();
-    var data = dataList.where((element) =>
-        element!.approbationDG == "Approved" &&
-            element.approbationDD == "Approved" ||
-        element.signature == userModel.matricule);
+    List<CompteResulatsModel?> data = [];
+    var approbations = await ApprobationApi().getAllData();
+    for (var item in approbations) {
+      data = dataList
+          .where((element) =>
+              element!.id == item.reference &&
+                  item.fontctionOccupee == 'Directeur générale' &&
+                  item.approbation == "Approved" ||
+                  element.signature == userModel.matricule)
+          .toList();
+    }
 
     if (mounted) {
       setState(() {

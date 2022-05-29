@@ -12,7 +12,6 @@ import 'package:fokad_admin/src/widgets/print_widget.dart';
 import 'package:fokad_admin/src/widgets/title_widget.dart';
 import 'package:intl/intl.dart';
 import 'package:pluto_grid/pluto_grid.dart';
-import 'package:simple_speed_dial/simple_speed_dial.dart';
 
 class DetailUser extends StatefulWidget {
   const DetailUser({Key? key, required this.id}) : super(key: key);
@@ -111,7 +110,7 @@ class _DetailUserState extends State<DetailUser> {
                                         width: p20,
                                         child: IconButton(
                                             onPressed: () =>
-                                                Navigator.of(context).pop(),
+                                                Navigator.pop(context),
                                             icon: const Icon(Icons.arrow_back)),
                                       ),
                                       const SizedBox(width: p10),

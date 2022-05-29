@@ -46,7 +46,7 @@ class _DetailAchatState extends State<DetailAchat> {
       departement: '-',
       servicesAffectation: '-',
       fonctionOccupe: '-',
-      role: '-',
+      role: '5',
       isOnline: false,
       createdAt: DateTime.now(),
       passwordHash: '-',
@@ -94,7 +94,7 @@ class _DetailAchatState extends State<DetailAchat> {
                                       width: p20,
                                       child: IconButton(
                                           onPressed: () =>
-                                              Navigator.of(context).pop(),
+                                              Navigator.pop(context),
                                           icon: const Icon(Icons.arrow_back)),
                                     ),
                                     const SizedBox(width: p10),
@@ -696,7 +696,7 @@ class _DetailAchatState extends State<DetailAchat> {
               'Cette action permet de restitutuer la quantité chez l\'expediteur.'),
           actions: <Widget>[
             TextButton(
-              onPressed: () => Navigator.of(context).pop(),
+              onPressed: () => Navigator.pop(context),
               child: const Text('Annuler'),
             ),
             TextButton(

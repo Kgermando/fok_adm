@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:fokad_admin/src/api/approbation/approbation_api.dart';
 import 'package:fokad_admin/src/api/auth/auth_api.dart';
 import 'package:fokad_admin/src/api/comptabilite/balance_compte_api.dart';
 import 'package:fokad_admin/src/models/comptabilites/balance_comptes_model.dart';
@@ -140,12 +141,18 @@ class _TableBilanComptabiliteState extends State<TableBilanComptabilite> {
   Future agentsRow() async {
     UserModel userModel = await AuthApi().getUserId();
     List<BalanceCompteModel?> dataList = await BalanceCompteApi().getAllData();
-    var data = dataList.where((element) =>
-        element!.statut == false &&
-            element.approbationDG == "Approved" &&
-            element.approbationDD == "Approved" ||
-        element.statut == false && element.signature == userModel.matricule);
-
+    List<BalanceCompteModel?> data = [];
+    var approbations = await ApprobationApi().getAllData();
+    for (var item in approbations) {
+      data = dataList
+          .where((element) =>
+              element!.id == item.reference &&
+              item.fontctionOccupee == 'Directeur générale' &&
+              item.approbation == "Approved" ||
+              element.statut == false &&
+                  element.signature == userModel.matricule)
+          .toList();
+    }
     if (mounted) {
       setState(() {
         for (var item in data) {

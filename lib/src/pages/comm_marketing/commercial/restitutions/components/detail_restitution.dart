@@ -37,7 +37,6 @@ class _DetailRestitutionState extends State<DetailRestitution> {
     super.initState();
   }
 
-
   UserModel user = UserModel(
       nom: '-',
       prenom: '-',
@@ -47,7 +46,7 @@ class _DetailRestitutionState extends State<DetailRestitution> {
       departement: '-',
       servicesAffectation: '-',
       fonctionOccupe: '-',
-      role: '-',
+      role: '5',
       isOnline: false,
       createdAt: DateTime.now(),
       passwordHash: '-',
@@ -97,7 +96,7 @@ class _DetailRestitutionState extends State<DetailRestitution> {
                                       width: p20,
                                       child: IconButton(
                                           onPressed: () =>
-                                            Navigator.of(context).pop(),
+                                              Navigator.pop(context),
                                           icon: const Icon(Icons.arrow_back)),
                                     ),
                                     const SizedBox(width: p10),
@@ -152,7 +151,7 @@ class _DetailRestitutionState extends State<DetailRestitution> {
                   const TitleWidget(title: "Bon de restitution"),
                   Column(
                     children: [
-                     PrintWidget(
+                      PrintWidget(
                         tooltip: 'Imprimer le document',
                         onPressed: () async {},
                       ),

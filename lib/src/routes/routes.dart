@@ -58,7 +58,6 @@ import 'package:fokad_admin/src/pages/exploitations/projets/projets_expo.dart';
 import 'package:fokad_admin/src/pages/exploitations/taches/tache_exp.dart';
 import 'package:fokad_admin/src/pages/exploitations/versements/versement_projet.dart';
 import 'package:fokad_admin/src/pages/finances/dashboard/dashboard_finance.dart';
-import 'package:fokad_admin/src/pages/finances/dd_finance/departement_fin.dart';
 import 'package:fokad_admin/src/pages/finances/transactions/components/banque_transactions.dart';
 import 'package:fokad_admin/src/pages/finances/transactions/components/caisses_transactions.dart';
 import 'package:fokad_admin/src/pages/finances/transactions/components/components/banques/add_depot_banque.dart';
@@ -89,20 +88,16 @@ import 'package:fokad_admin/src/pages/mails/components/new_mail.dart';
 import 'package:fokad_admin/src/pages/mails/mails_page.dart';
 import 'package:fokad_admin/src/pages/rh/agents/agents_rh.dart';
 import 'package:fokad_admin/src/pages/rh/agents/components/add_agent.dart';
-import 'package:fokad_admin/src/pages/rh/agents/components/detail_agent_page.dart';
 import 'package:fokad_admin/src/pages/rh/dashboard/dashboard_rh.dart';
 import 'package:fokad_admin/src/pages/rh/dd_rh/departement_rh.dart';
 import 'package:fokad_admin/src/pages/rh/paiements/components/add_paiement_salaire.dart';
-import 'package:fokad_admin/src/pages/rh/paiements/components/paiement_bulletin.dart';
 import 'package:fokad_admin/src/pages/rh/paiements/paiements_rh.dart';
 import 'package:fokad_admin/src/pages/rh/performences/performences_rh.dart';
 import 'package:fokad_admin/src/pages/rh/presences/components/add_presence.dart';
 import 'package:fokad_admin/src/pages/rh/presences/presences_rh.dart';
 import 'package:fokad_admin/src/pages/screens/help_screen.dart';
 import 'package:fokad_admin/src/pages/screens/settings_screen.dart';
-import 'package:routemaster/routemaster.dart';
 
-import '../app_state/app_state.dart';
 
 class UserRoutes {
   static const login = "/";
@@ -117,11 +112,10 @@ class UserRoutes {
 
 class DevisRoutes {
   static const devis = "/devis";
-  static const devisAdd= "/devis-add";
+  static const devisAdd = "/devis-add";
 }
 
 class AdminRoutes {
-  static const home = "/";
   static const adminDashboard = "/admin-dashboard";
   static const adminRH = "/admin-rh";
   static const adminBudget = "/admin-budget";
@@ -153,15 +147,18 @@ class BudgetRoutes {
   static const budgetDD = "/budget-dd";
   static const budgetBudgetPrevisionel = "/budgets-previsionels";
   static const budgetBudgetPrevisionelAdd = "/budgets-previsionels-add";
-  static const historiqueBudgetBudgetPrevisionel = "/historique-budgets-previsionels";
+  static const historiqueBudgetBudgetPrevisionel =
+      "/historique-budgets-previsionels";
 }
 
 class FinanceRoutes {
   static const financeDashboard = "/finance-dashboard";
   static const financeTransactions = "/finance-transactions";
   static const transactionsCaisse = "/transactions-caisse";
-  static const transactionsCaisseEncaissement = "/transactions-caisse-encaissement";
-  static const transactionsCaisseDecaissement = "/transactions-caisse-decaissement";
+  static const transactionsCaisseEncaissement =
+      "/transactions-caisse-encaissement";
+  static const transactionsCaisseDecaissement =
+      "/transactions-caisse-decaissement";
   static const transactionsBanque = "/transactions-banque";
   static const transactionsBanqueRetrait = "/transactions-banque-retrait";
   static const transactionsBanqueDepot = "/transactions-banque-depot";
@@ -182,7 +179,8 @@ class ComptabiliteRoutes {
   static const comptabiliteJournal = "/comptabilite-journal";
   static const comptabiliteJournalAdd = "/comptabilite-journal-add";
   static const comptabiliteCompteResultat = "/comptabilite-compte-resultat";
-  static const comptabiliteCompteResultatAdd = "/comptabilite-compte-resultat-add";
+  static const comptabiliteCompteResultatAdd =
+      "/comptabilite-compte-resultat-add";
   static const comptabiliteBalance = "/comptabilite-balance";
   static const comptabiliteBalanceAdd = "/comptabilite-balance-add";
   static const comptabiliteGrandLivre = "/comptabilite-grand-livre";
@@ -240,8 +238,10 @@ class ComMarketingRoutes {
   static const comMarketingCreance = "/com-marketing-creance";
   static const comMarketingFacture = "/com-marketing-facture";
   static const comMarketingGain = "/com-marketing-gain";
-  static const comMarketingHistoryRavitaillement = "/com-marketing-history-ravitaillement";
-  static const comMarketingHistoryLivraison = "/com-marketing-history-livraison";
+  static const comMarketingHistoryRavitaillement =
+      "/com-marketing-history-ravitaillement";
+  static const comMarketingHistoryLivraison =
+      "/com-marketing-history-livraison";
   static const comMarketingnumberFact = "/com-marketing-number-fact";
   static const comMarketingRestitution = "/com-marketing-restitution";
   static const comMarketingVente = "/com-marketing-vente";
@@ -257,204 +257,130 @@ class MailRoutes {
   static const addMail = "/mail-add";
 }
 
-class Routing {
-  final loggedOutRouteMap = RouteMap(
-    onUnknownRoute: (route) => const Redirect(UserRoutes.login),
-    routes: {
-      UserRoutes.login: (_) => const MaterialPage(child: LoginPage()),
-      UserRoutes.logout: (_) => const MaterialPage(child: LoginPage()),
-    },
-  );
+final routes = <String, WidgetBuilder>{
+  // User
+  UserRoutes.login : (context) => const LoginPage(),
+  UserRoutes.logout: (context) => const LoginPage(),
+  UserRoutes.profile : (context) => const ProfilPage(),
+  UserRoutes.helps: (context) => const HelpScreen(),
+  UserRoutes.settings: (context) => const SettingsScreen(),
 
-  RouteMap buildRouteMap(AppState appState) {
-    return RouteMap(
-      routes: {
-        UserRoutes.profile: (_) => const MaterialPage(child: ProfilPage()),
-        UserRoutes.helps: (_) => const MaterialPage(child: HelpScreen()),
-        UserRoutes.settings: (_) => const MaterialPage(child: SettingsScreen()),
-        // UserRoutes.forgotPassword: (_) => const MaterialPage(child: ForgotPassword()),
-        // UserRoutes.changePassword: (_) => const MaterialPage(child: ChangePassword()),
+  // Administration
+  AdminRoutes.adminDashboard: (context) => const DashboardAdministration(),
+  AdminRoutes.adminRH: (context) => const RhAdmin(),
+  AdminRoutes.adminBudget: (context) => const BudgetsAdmin(),
+  AdminRoutes.adminFinance: (context) => const FinancesAdmin(),
+  AdminRoutes.adminComptabilite: (context) => const CompteAdmin(),
+  AdminRoutes.adminExploitation: (context) => const ExploitationsAdmin(),
+  AdminRoutes.adminCommMarketing: (context) => const CommMarketingAdmin(),
+  AdminRoutes.adminLogistique: (context) => const LogistiquesAdmin(),
+  AdminRoutes.adminEtatBesoin: (context) => const EtatBesoinAdmin(),
 
-        // Administration
-        AdminRoutes.home: (_) =>
-            const MaterialPage(child: DashboardAdministration()),
-        AdminRoutes.adminDashboard: (_) =>
-            const MaterialPage(child: DashboardAdministration()),
-        AdminRoutes.adminRH: (_) => const MaterialPage(child: RhAdmin()),
-        AdminRoutes.adminBudget: (_) =>
-            const MaterialPage(child: BudgetsAdmin()),
-        AdminRoutes.adminFinance: (_) =>
-            const MaterialPage(child: FinancesAdmin()),
-        AdminRoutes.adminComptabilite: (_) =>
-            const MaterialPage(child: CompteAdmin()),
-        AdminRoutes.adminExploitation: (_) =>
-            const MaterialPage(child: ExploitationsAdmin()),
-        AdminRoutes.adminCommMarketing: (_) =>
-            const MaterialPage(child: CommMarketingAdmin()),
-        AdminRoutes.adminLogistique: (_) =>
-            const MaterialPage(child: LogistiquesAdmin()),
-        AdminRoutes.adminEtatBesoin : (_) => const MaterialPage(child: EtatBesoinAdmin()),
+  // RH
+  RhRoutes.rhDashboard: (context) => const DashboardRh(),
+  RhRoutes.rhAgent: (context) => const AgentsRh(),
+  RhRoutes.rhAgentAdd: (context) => const AddAgent(),
+  RhRoutes.rhPaiement: (context) => const PaiementRh(),
+  RhRoutes.rhPaiementAdd: (context) => const AddPaiementSalaire(),
+  RhRoutes.rhPresence: (context) => const PresenceRh(),
+  RhRoutes.rhPresenceAdd: (context) => const AddPresence(),
+  RhRoutes.rhPerformence: (context) => const PerformenceRH(),
+  RhRoutes.rhDD: (context) => const DepartementRH(),
 
-        // RH
-        RhRoutes.rhDashboard: (_) => const MaterialPage(child: DashboardRh()),
-        RhRoutes.rhAgent: (_) => const MaterialPage(child: AgentsRh()),
-        RhRoutes.rhAgentPage: (info) => MaterialPage(
-            child: AgentPage(id: info.queryParameters['id'] as int)),
-        RhRoutes.rhAgentAdd: (_) => const MaterialPage(child: AddAgent()),
-        RhRoutes.rhPaiement: (_) => const MaterialPage(child: PaiementRh()),
-        "${RhRoutes.rhPaiementAdd}/:id": (info) =>
-            const MaterialPage(child: AddPaiementSalaire()),
-        RhRoutes.rhPaiementBulletin: (info) => MaterialPage(
-            child: PaiementBulletin(id: info.queryParameters['id'] as int)),
-        RhRoutes.rhPresence: (_) => const MaterialPage(child: PresenceRh()),
-        RhRoutes.rhPresenceAdd: (_) => const MaterialPage(child: AddPresence()),
-        RhRoutes.rhPerformence: (_) =>
-            const MaterialPage(child: PerformenceRH()),
-        RhRoutes.rhDD: (_) => const MaterialPage(child: DepartementRH()),
+  // Budgets
+  BudgetRoutes.budgetDashboard: (context) => const DashboardBudget(),
+  BudgetRoutes.budgetDD: (context) => const BudgetDD(),
+  BudgetRoutes.budgetBudgetPrevisionel: (context) => const BudgetsPrevisionnels(),
+  BudgetRoutes.budgetBudgetPrevisionelAdd: (context) => const AddBudgetPrevionel(),
+  BudgetRoutes.historiqueBudgetBudgetPrevisionel: (context) => const HistoriqueBudgetsPrevisionnels(),
 
-        // Budget
-        BudgetRoutes.budgetDashboard: (_) =>
-            const MaterialPage(child: DashboardBudget()),
-        BudgetRoutes.budgetDD: (_) =>
-            const MaterialPage(child: BudgetDD()),
-        BudgetRoutes.budgetBudgetPrevisionel: (_) => const MaterialPage(child: BudgetsPrevisionnels()),
-        BudgetRoutes.budgetBudgetPrevisionelAdd: (_) =>
-            const MaterialPage(child: AddBudgetPrevionel()),
-        BudgetRoutes.historiqueBudgetBudgetPrevisionel: (_) =>
-            const MaterialPage(child: HistoriqueBudgetsPrevisionnels()),
+  // FInance
+  FinanceRoutes.financeDashboard: (context) => const DashboardFinance(),
+  FinanceRoutes.transactionsBanque: (context) => const BanqueTransactions(),
+  FinanceRoutes.transactionsBanqueDepot: (context) => const AddDepotBanque(),
+  FinanceRoutes.transactionsBanqueRetrait: (context) => const AddRetratBanque(),
+  FinanceRoutes.transactionsCaisse: (context) => const CaisseTransactions(),
+  FinanceRoutes.transactionsCaisseEncaissement: (context) => const AddEncaissement(),
+  FinanceRoutes.transactionsCaisseDecaissement: (context) => const AddDecaissement(),
+  FinanceRoutes.transactionsCreances: (context) => const CreanceTransactions(),
+  FinanceRoutes.transactionsDettes: (context) => const DetteTransactions(),
+  FinanceRoutes.transactionsFinancementExterne: (context) => const FinExterneTransactions(),
+  FinanceRoutes.transactionsFinancementExterneAdd: (context) => const AddAutreFin(),
 
-        // Finance
-        FinanceRoutes.financeDashboard: (_) =>
-            const MaterialPage(child: DashboardFinance()),
-        FinanceRoutes.transactionsBanque: (_) =>
-            const MaterialPage(child: BanqueTransactions()),
-        FinanceRoutes.transactionsBanqueDepot: (_) =>
-            const MaterialPage(child: AddDepotBanque()),
-        FinanceRoutes.transactionsBanqueRetrait: (_) =>
-            const MaterialPage(child: AddRetratBanque()),
-        FinanceRoutes.transactionsCaisse: (_) =>
-            const MaterialPage(child: CaisseTransactions()),
-        FinanceRoutes.transactionsCaisseEncaissement: (_) =>
-            const MaterialPage(child: AddEncaissement()),
-        FinanceRoutes.transactionsCaisseDecaissement: (_) =>
-            const MaterialPage(child: AddDecaissement()),
-        FinanceRoutes.transactionsCreances: (_) =>
-            const MaterialPage(child: CreanceTransactions()),
-        FinanceRoutes.transactionsDettes: (_) =>
-            const MaterialPage(child: DetteTransactions()),
-        FinanceRoutes.transactionsFinancementExterne: (_) =>
-            const MaterialPage(child: FinExterneTransactions()),
-        FinanceRoutes.transactionsFinancementExterneAdd: (_) =>
-            const MaterialPage(child: AddAutreFin()),
-        FinanceRoutes.finDD: (_) => const MaterialPage(child: DepartementFin()),
+  // Comptabilite
+  ComptabiliteRoutes.comptabiliteDD: (context) => const ComptabiliteDD(),
+  ComptabiliteRoutes.comptabiliteDashboard: (context) => const DashboardComptabilite(),
+  ComptabiliteRoutes.comptabiliteBilan: (context) =>const BilanComptabilite(),
+  ComptabiliteRoutes.comptabiliteBilanAdd: (context) => const AddBilan(),
+  ComptabiliteRoutes.comptabiliteJournal: (context) => const JournalComptabilite(),
+  ComptabiliteRoutes.comptabiliteJournalAdd: (context) => const AddJournalComptabilite(),
+  ComptabiliteRoutes.comptabiliteCompteResultat: (context) =>const CompteResultat(),
+  ComptabiliteRoutes.comptabiliteCompteResultatAdd: (context) => const AddCompteResultat(),
+  ComptabiliteRoutes.comptabiliteBalance: (context) => const BalanceComptabilite(),
+  ComptabiliteRoutes.comptabiliteBalanceAdd: (context) => const AddBalanceComptabilite(),
+  ComptabiliteRoutes.comptabiliteGrandLivre: (context) => const GrandLivreComptabilite(),
 
-        // Comptabilite
-        ComptabiliteRoutes.comptabiliteDD: (_) => const MaterialPage(child: ComptabiliteDD()),
-        ComptabiliteRoutes.comptabiliteDashboard: (_) => const MaterialPage(child: DashboardComptabilite()),
-        ComptabiliteRoutes.comptabiliteBilan: (_) => const MaterialPage(child: BilanComptabilite()),
-        ComptabiliteRoutes.comptabiliteBilanAdd: (_) => const MaterialPage(child: AddBilan()),
-        ComptabiliteRoutes.comptabiliteJournal: (_) => const MaterialPage(child: JournalComptabilite()),
-        ComptabiliteRoutes.comptabiliteJournalAdd: (_) => const MaterialPage(child: AddJournalComptabilite()),
-        ComptabiliteRoutes.comptabiliteCompteResultat: (_) => const MaterialPage(child: CompteResultat()),
-        ComptabiliteRoutes.comptabiliteCompteResultatAdd: (_) => const MaterialPage(child: AddCompteResultat()),
-        ComptabiliteRoutes.comptabiliteBalance: (_) => const MaterialPage(child: BalanceComptabilite()),
-        ComptabiliteRoutes.comptabiliteBalanceAdd: (_) => const MaterialPage(child: AddBalanceComptabilite()),
-        ComptabiliteRoutes.comptabiliteGrandLivre: (_) => const MaterialPage(child: GrandLivreComptabilite()),
+  // DEVIS
+  DevisRoutes.devis: (context) => const DevisPage(),
+  DevisRoutes.devisAdd: (context) => const AddDevis(),
 
-        // DEVIS
-        DevisRoutes.devis: (_) => const MaterialPage(child: DevisPage()),
-        DevisRoutes.devisAdd: (_) => const MaterialPage(child: AddDevis()),
+  // LOGISTIQUES
+  LogistiqueRoutes.logDD: (context) => const LogDD(),
+  LogistiqueRoutes.logDashboard: (context) => const DashboardLog(),
+  LogistiqueRoutes.logAddAnguinAuto: (context) => const AddAnguinAuto(),
+  LogistiqueRoutes.logAnguinAuto: (context) =>const AnguinAuto(),
+  LogistiqueRoutes.logAddCarburantAuto: (context) => const AddCarburantAuto(),
+  LogistiqueRoutes.logCarburantAuto: (context) => const CarburantAuto(),
+  LogistiqueRoutes.logAddTrajetAuto: (context) => const AddTrajetAuto(),
+  LogistiqueRoutes.logTrajetAuto: (context) => const TrajetAuto(),
+  LogistiqueRoutes.logAddEntretien: (context) => const AddEntretienPage(),
+  LogistiqueRoutes.logEntretien: (context) => const EntretienPage(),
+  LogistiqueRoutes.logAddEtatMateriel: (context) => const AddEtatMateriel(),
+  LogistiqueRoutes.logEtatMateriel: (context) => const EtatMateriel(),
+  LogistiqueRoutes.logAddImmobilerMateriel: (context) => const AddImmobilierMateriel(),
+  LogistiqueRoutes.logImmobilierMateriel: (context) =>const ImmobilierMateriel(),
+  LogistiqueRoutes.logAddMobilierMateriel: (context) =>const AddMobilerMateriel(),
+  LogistiqueRoutes.logMobilierMateriel: (context) =>const MobilierMateriel(),
 
-        // LOGISTIQUES
-        LogistiqueRoutes.logDD: (_) => const MaterialPage(child: LogDD()),
-        LogistiqueRoutes.logDashboard: (_) =>
-            const MaterialPage(child: DashboardLog()),
-        LogistiqueRoutes.logAddAnguinAuto: (_) =>
-            const MaterialPage(child: AddAnguinAuto()),
-        LogistiqueRoutes.logAnguinAuto: (_) =>
-            const MaterialPage(child: AnguinAuto()),
-        LogistiqueRoutes.logAddCarburantAuto: (_) =>
-            const MaterialPage(child: AddCarburantAuto()),
-        LogistiqueRoutes.logCarburantAuto: (_) =>
-            const MaterialPage(child: CarburantAuto()),
-        LogistiqueRoutes.logAddTrajetAuto: (_) =>
-            const MaterialPage(child: AddTrajetAuto()),
-        LogistiqueRoutes.logTrajetAuto: (_) =>
-            const MaterialPage(child: TrajetAuto()),
-        LogistiqueRoutes.logAddEntretien: (_) =>
-            const MaterialPage(child: AddEntretienPage()),
-        LogistiqueRoutes.logEntretien: (_) =>
-            const MaterialPage(child: EntretienPage()),
-        LogistiqueRoutes.logAddEtatMateriel: (_) =>
-            const MaterialPage(child: AddEtatMateriel()),
-        LogistiqueRoutes.logEtatMateriel: (_) =>
-            const MaterialPage(child: EtatMateriel()),
-        LogistiqueRoutes.logAddImmobilerMateriel: (_) =>
-            const MaterialPage(child: AddImmobilierMateriel()),
-        LogistiqueRoutes.logImmobilierMateriel: (_) =>
-            const MaterialPage(child: ImmobilierMateriel()),
-        LogistiqueRoutes.logAddMobilierMateriel: (_) =>
-            const MaterialPage(child: AddMobilerMateriel()),
-        LogistiqueRoutes.logMobilierMateriel: (_) =>
-            const MaterialPage(child: MobilierMateriel()),
+  // Exploitations
+  ExploitationRoutes.expDD: (context) => const ExploitationDD(),
+  ExploitationRoutes.expDashboard: (context) => const DashboardExp(),
+  ExploitationRoutes.expProjetAdd: (context) => const AddProjetExp(),
+  ExploitationRoutes.expProjet: (context) => const ProjetsExp(),
+  ExploitationRoutes.expVirement: (context) => const VersementProjet(),
+  ExploitationRoutes.expTache: (context) => const TacheExp(),
 
-        // Exploitations
-        ExploitationRoutes.expDD: (_) =>
-            const MaterialPage(child: ExploitationDD()),
-        ExploitationRoutes.expDashboard: (_) =>
-            const MaterialPage(child: DashboardExp()),
-        ExploitationRoutes.expProjetAdd: (_) =>
-            const MaterialPage(child: AddProjetExp()),
-        ExploitationRoutes.expProjet: (_) =>
-            const MaterialPage(child: ProjetsExp()),
-        ExploitationRoutes.expVirement: (_) =>
-            const MaterialPage(child: VersementProjet()),
-        ExploitationRoutes.expTache: (_) =>
-            const MaterialPage(child: TacheExp()),
+  // Marketing
+  ComMarketingRoutes.comMarketingDD: (context) => const CMDD(),
+  ComMarketingRoutes.comMarketingDashboard: (context) =>const ComMarketing(),
+  ComMarketingRoutes.comMarketingAnnuaire: (context) =>const AnnuaireMarketing(),
+  ComMarketingRoutes.comMarketingAgenda: (context) => const AgendaMarketing(),
+  ComMarketingRoutes.comMarketingCampaign: (context) =>const CampaignMarketing(),
+  ComMarketingRoutes.comMarketingCampaignAdd: (context) =>const AddCampaign(),
 
-        // Marketing
-        ComMarketingRoutes.comMarketingDD: (_) =>
-            const MaterialPage(child: CMDD()),
-        ComMarketingRoutes.comMarketingDashboard: (_) =>
-            const MaterialPage(child: ComMarketing()),
-        ComMarketingRoutes.comMarketingAnnuaire: (_) =>
-            const MaterialPage(child: AnnuaireMarketing()),
-        ComMarketingRoutes.comMarketingAgenda: (_) =>
-            const MaterialPage(child: AgendaMarketing()),
-        ComMarketingRoutes.comMarketingCampaign: (_) =>
-            const MaterialPage(child: CampaignMarketing()),
-        ComMarketingRoutes.comMarketingCampaignAdd: (_) =>
-            const MaterialPage(child: AddCampaign()),
+  // Commercial
+  ComMarketingRoutes.comMarketingProduitModel: (context) =>const ProduitModelPage(),
+  ComMarketingRoutes.comMarketingProduitModelAdd: (context) =>const AddProModel(),
+  ComMarketingRoutes.comMarketingStockGlobal: (context) =>const StockGlobalPage(),
+  ComMarketingRoutes.comMarketingStockGlobalAdd: (context) =>const AddStockGlobal(),
+  ComMarketingRoutes.comMarketingSuccursale: (context) =>const SuccursalePage(),
+  ComMarketingRoutes.comMarketingSuccursaleAdd: (context) =>const AddSurrsale(),
+  ComMarketingRoutes.comMarketingAchat: (context) =>const AchatsPage(),
+  ComMarketingRoutes.comMarketingBonLivraison: (context) =>const BonLivraisonPage(),
+  ComMarketingRoutes.comMarketingRestitution: (context) =>const RestitutionPage(),
+  ComMarketingRoutes.comMarketingFacture: (context) =>const FacturePage(),
+  ComMarketingRoutes.comMarketingCreance: (context) =>const CreanceFactPage(),
+  ComMarketingRoutes.comMarketingVente: (context) =>const VentesPage(),
+  ComMarketingRoutes.comMarketingcart: (context) =>const CartPage(),
+  ComMarketingRoutes.comMarketingHistoryRavitaillement: (context) =>const HistoryRavitaillement(),
+  ComMarketingRoutes.comMarketingHistoryLivraison: (context) =>const HistoryLivraison(),
 
-        // Commercial
-        ComMarketingRoutes.comMarketingProduitModel: (_) =>
-            const MaterialPage(child: ProduitModelPage()),
-        ComMarketingRoutes.comMarketingProduitModelAdd: (_) =>
-            const MaterialPage(child: AddProModel()),
-        ComMarketingRoutes.comMarketingStockGlobal: (_) =>
-            const MaterialPage(child: StockGlobalPage()),
-        ComMarketingRoutes.comMarketingStockGlobalAdd: (_) =>
-            const MaterialPage(child: AddStockGlobal()),
-        ComMarketingRoutes.comMarketingSuccursale: (_) =>
-            const MaterialPage(child: SuccursalePage()),
-        ComMarketingRoutes.comMarketingSuccursaleAdd: (_) =>
-            const MaterialPage(child: AddSurrsale()),
-        ComMarketingRoutes.comMarketingAchat: (_) => const MaterialPage(child: AchatsPage()),
-        ComMarketingRoutes.comMarketingBonLivraison: (_) => const MaterialPage(child: BonLivraisonPage()),
-        ComMarketingRoutes.comMarketingRestitution: (_) => const MaterialPage(child: RestitutionPage()),
-        ComMarketingRoutes.comMarketingFacture: (_) => const MaterialPage(child: FacturePage()),
-        ComMarketingRoutes.comMarketingCreance: (_) => const MaterialPage(child: CreanceFactPage()),
-        ComMarketingRoutes.comMarketingVente: (_) => const MaterialPage(child: VentesPage()),
-        ComMarketingRoutes.comMarketingcart: (_) => const MaterialPage(child: CartPage()),
-        ComMarketingRoutes.comMarketingHistoryRavitaillement: (_) => const MaterialPage(child: HistoryRavitaillement()),
-        ComMarketingRoutes.comMarketingHistoryLivraison: (_) => const MaterialPage(child: HistoryLivraison()),
 
-        MailRoutes.mails: (_) => const MaterialPage(child: MailPages()),
-        MailRoutes.addMail: (_) => const MaterialPage(child: NewMail()),
+  // Mails
+  MailRoutes.mails: (context) => const MailPages(),
+  MailRoutes.addMail: (context) => const NewMail(),
 
-        ArchiveRoutes.arcihves: (_) => const MaterialPage(child: ArchivePage()),
-        ArchiveRoutes.addArcihves: (_) => const MaterialPage(child: AddArchive()),
-      },
-    );
-  }
-}
+  // Archives
+  ArchiveRoutes.arcihves: (context) => const ArchivePage(),
+  ArchiveRoutes.addArcihves: (context) => const AddArchive(),
+};

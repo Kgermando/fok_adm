@@ -26,18 +26,11 @@ class CompteResulatsModel {
   late String productionImmobilisee;
   late String subventionExploitation;
   late String autreProduits;
-  late String montantExportation; // dont à l'exportation
+  late String montantExportation;
   late String produitfinancieres;
 
   late String produitExceptionnels;
   late String soldeDebiteur; // Perte
-
-  late String approbationDG; // button radio OUi et NON if non text field
-  late String signatureDG;
-  late String signatureJustificationDG;
-  late String approbationDD;
-  late String signatureDD; // directeur de departement
-  late String signatureJustificationDD;
   late String signature;
   late DateTime created;
 
@@ -68,12 +61,6 @@ class CompteResulatsModel {
       required this.produitfinancieres,
       required this.produitExceptionnels,
       required this.soldeDebiteur,
-      required this.approbationDG,
-      required this.signatureDG,
-      required this.signatureJustificationDG,
-      required this.approbationDD,
-      required this.signatureDD,
-      required this.signatureJustificationDD,
       required this.signature,
       required this.created});
 
@@ -101,18 +88,12 @@ class CompteResulatsModel {
         productionImmobilisee: row[19],
         subventionExploitation: row[20],
         autreProduits: row[21],
-        montantExportation: row[21],
-        produitfinancieres: row[22],
-        produitExceptionnels: row[23],
-        soldeDebiteur: row[24],
-        approbationDG: row[25],
-        signatureDG: row[26],
-        signatureJustificationDG: row[27],
-        approbationDD: row[28],
-        signatureDD: row[29],
-        signatureJustificationDD: row[30],
-        signature: row[31],
-        created: row[32]);
+        montantExportation: row[22],
+        produitfinancieres: row[23],
+        produitExceptionnels: row[24],
+        soldeDebiteur: row[25],
+        signature: row[26],
+        created: row[27]);
   }
 
   factory CompteResulatsModel.fromJson(Map<String, dynamic> json) {
@@ -143,12 +124,6 @@ class CompteResulatsModel {
         produitfinancieres: json['produitfinancieres'],
         produitExceptionnels: json['produitExceptionnels'],
         soldeDebiteur: json['soldeDebiteur'],
-        approbationDG: json['approbationDG'],
-        signatureDG: json['signatureDG'],
-        signatureJustificationDG: json['signatureJustificationDG'],
-        approbationDD: json['approbationDD'],
-        signatureDD: json['signatureDD'],
-        signatureJustificationDD: json['signatureJustificationDD'],
         signature: json['signature'],
         created: DateTime.parse(json['created']));
   }
@@ -181,12 +156,6 @@ class CompteResulatsModel {
       'produitExceptionnels': produitExceptionnels,
       'produitfinancieres': produitfinancieres,
       'soldeDebiteur': soldeDebiteur,
-      'approbationDG': approbationDG,
-      'signatureDG': signatureDG,
-      'signatureJustificationDG': signatureJustificationDG,
-      'approbationDD': approbationDD,
-      'signatureDD': signatureDD,
-      'signatureJustificationDD': signatureJustificationDD,
       'signature': signature,
       'created': created.toIso8601String()
     };

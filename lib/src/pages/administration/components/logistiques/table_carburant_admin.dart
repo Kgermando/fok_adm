@@ -400,11 +400,7 @@ class _TableCarburantDGState extends State<TableCarburantDG> {
 
   Future agentsRow() async {
     List<CarburantModel?> dataList = await CarburantApi().getAllData();
-    var data = dataList
-        .where((element) =>
-            element!.approbationDG == "-" &&
-            element.approbationDD == "Approved")
-        .toList();
+    var data = dataList.toList();
 
     if (mounted) {
       setState(() {

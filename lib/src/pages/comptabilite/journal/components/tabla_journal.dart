@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:fokad_admin/src/api/approbation/approbation_api.dart';
 import 'package:fokad_admin/src/api/auth/auth_api.dart';
 import 'package:fokad_admin/src/api/comptabilite/journal_api.dart';
 import 'package:fokad_admin/src/models/comptabilites/journal_model.dart';
@@ -242,11 +243,17 @@ class _TableJournalState extends State<TableJournal> {
   Future agentsRow() async {
     UserModel userModel = await AuthApi().getUserId();
     List<JournalModel?> dataList = await JournalApi().getAllData();
-    var data = dataList.where((element) =>
-        element!.approbationDG == "Approved" &&
-            element.approbationDD == "Approved" ||
-        element.signature == userModel.matricule);
-
+    List<JournalModel?> data = [];
+    var approbations = await ApprobationApi().getAllData();
+    for (var item in approbations) {
+      data = dataList
+          .where((element) =>
+              element!.id == item.reference &&
+                  item.fontctionOccupee == 'Directeur générale' &&
+                  item.approbation == "Approved" ||
+                  element.signature == userModel.matricule)
+          .toList();
+    }
     if (mounted) {
       setState(() {
         for (var item in data) {

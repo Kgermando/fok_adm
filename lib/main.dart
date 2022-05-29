@@ -1,77 +1,111 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:fokad_admin/src/api/auth/auth_api.dart';
 import 'package:fokad_admin/src/app_state/app_state.dart';
+import 'package:fokad_admin/src/models/users/user_model.dart';
 import 'package:fokad_admin/src/provider/controller.dart';
 import 'package:fokad_admin/src/provider/theme_provider.dart';
 import 'package:fokad_admin/src/routes/routes.dart';
-import 'package:routemaster/routemaster.dart';
 import 'package:provider/provider.dart';
 import 'package:timeago/timeago.dart' as timeago;
+import 'package:url_strategy/url_strategy.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  Routemaster.setPathUrlStrategy();
-  // setPathUrlStrategy();
+  setPathUrlStrategy();
   timeago.setLocaleMessages('fr_short', timeago.FrShortMessages());
   await Future<void>.delayed(Duration.zero);
-  runApp(const MyApp());
+
+  final user = await AuthApi().getUserId();
+  runApp(MyApp(user: user));
 }
 
-class TitleObserver extends RoutemasterObserver {
-  @override
-  void didChangeRoute(RouteData routeData, Page page) {
-    if (page.name != null) {
-      SystemChrome.setApplicationSwitcherDescription(
-        ApplicationSwitcherDescription(
-          label: page.name,
-          primaryColor: 0xFF00FF00,
-        ),
-      );
-    }
-  }
-}
- 
 class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+  const MyApp({Key? key, required this.user}) : super(key: key);
+  final UserModel user;
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MultiProvider(
-      providers: [
-        ChangeNotifierProvider(create: (context) => Controller()),
-        ChangeNotifierProvider(create: (context) => ThemeProvider()),
-        ChangeNotifierProvider(create: (context) => AuthApi()),
-        ChangeNotifierProvider(create: (_) => AppState()),
-      ],
-      builder: (context, _) {
-        final themeProvider = Provider.of<ThemeProvider>(context);
-        return MaterialApp.router(
-          title: 'FOKAD ADMINISTRATION',
-          themeMode: themeProvider.themeMode, 
-          routerDelegate: RoutemasterDelegate(
-            observers: [TitleObserver()],
-            routesBuilder: (context) {
-              final appState = Provider.of<AppState>(context);
-              final isLoggedIn = appState.isLoggedIn;
-              print('isLoggedIn $isLoggedIn');
-              return isLoggedIn
-                  ? Routing().buildRouteMap(appState)
-                  : Routing().loggedOutRouteMap;
-            },
-          ),
-          routeInformationParser: const RoutemasterParser(),
-          theme: MyThemes.lightTheme,
-          darkTheme: MyThemes.darkTheme,
-          localizationsDelegates: GlobalMaterialLocalizations.delegates,
-          supportedLocales: const [
-            Locale('fr', 'FR'),
-            Locale('en', 'EN')
-          ],
-        );
+    String homeRoute = UserRoutes.login;
+
+    if (user.departement == "Administration") {
+      if (double.parse(user.role) <= 2) {
+        homeRoute = AdminRoutes.adminDashboard;
+      } else {
+        homeRoute = AdminRoutes.adminLogistique;
       }
-    );
+      
+    } else if (user.departement == "Finances") {
+      if (double.parse(user.role) <= 2) {
+        homeRoute = FinanceRoutes.financeDashboard;
+      } else {
+        homeRoute = FinanceRoutes.transactionsDettes;
+      }
+      
+    } else if (user.departement == "Comptabilites") {
+      if (double.parse(user.role) <= 2) {
+        homeRoute = ComptabiliteRoutes.comptabiliteDashboard;
+      } else {
+        homeRoute = ComptabiliteRoutes.comptabiliteJournal;
+      }
+      
+    } else if (user.departement == "Budgets") {
+      if (double.parse(user.role) <= 2) {
+        homeRoute = BudgetRoutes.budgetDashboard;
+      } else {
+        homeRoute = BudgetRoutes.budgetBudgetPrevisionel;
+      }
+      
+    } else if (user.departement == "Ressources Humaines") {
+      if (double.parse(user.role) <= 2) {
+        homeRoute = RhRoutes.rhDashboard;
+      } else {
+        homeRoute = RhRoutes.rhPresence;
+      }
+      
+    } else if (user.departement == "Exploitations") {
+      if (double.parse(user.role) <= 2) {
+        homeRoute = ExploitationRoutes.expDashboard;
+      } else {
+        homeRoute = ExploitationRoutes.expTache;
+      }
+      
+    } else if (user.departement == "Commercial et Marketing") {
+      if (double.parse(user.role) <= 2) {
+        homeRoute = ComMarketingRoutes.comMarketingDashboard;
+      } else {
+        homeRoute = ComMarketingRoutes.comMarketingAnnuaire;
+      }
+      
+    } else if (user.departement == "Logistique") {
+      if (double.parse(user.role) <= 2) {
+        homeRoute = ArchiveRoutes.arcihves;
+      } else {
+        homeRoute = ArchiveRoutes.arcihves;
+      }
+    } else {
+      homeRoute = UserRoutes.login;
+    }
+
+    return MultiProvider(
+        providers: [
+          ChangeNotifierProvider(create: (context) => Controller()),
+          ChangeNotifierProvider(create: (context) => ThemeProvider()),
+          ChangeNotifierProvider(create: (context) => AuthApi()),
+          ChangeNotifierProvider(create: (_) => AppState()),
+        ],
+        builder: (context, _) {
+          final themeProvider = Provider.of<ThemeProvider>(context);
+          return MaterialApp(
+            title: 'FOKAD ADMINISTRATION',
+            themeMode: themeProvider.themeMode,
+            theme: MyThemes.lightTheme,
+            darkTheme: MyThemes.darkTheme,
+            initialRoute: homeRoute,
+            routes: routes,
+            localizationsDelegates: GlobalMaterialLocalizations.delegates,
+            supportedLocales: const [Locale('fr', 'FR'), Locale('en', 'EN')],
+          );
+        });
   }
 }

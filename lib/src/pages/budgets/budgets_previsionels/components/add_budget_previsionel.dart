@@ -269,18 +269,6 @@ class _AddBudgetPrevionelState extends State<AddBudgetPrevionel> {
         departement: departement.toString(),
         periodeDebut: dateRange!.start,
         periodeFin: dateRange!.end,
-        approbationDG: '-',
-        signatureDG: '-',
-        signatureJustificationDG: '-',
-        approbationFin: '-',
-        signatureFin: '-',
-        signatureJustificationFin: '-',
-        approbationBudget: '-',
-        signatureBudget: '-',
-        signatureJustificationBudget: '-',
-        approbationDD: '-',
-        signatureDD: '-',
-        signatureJustificationDD: '-',
         signature: signature.toString(),
         created: DateTime.now());
 

@@ -10,7 +10,6 @@ import 'package:fokad_admin/src/pages/comm_marketing/commercial/cart/components/
 import 'package:fokad_admin/src/routes/routes.dart';
 import 'package:fokad_admin/src/utils/loading.dart';
 import 'package:intl/intl.dart';
-import 'package:routemaster/routemaster.dart';
 
 class CartItemWidget extends StatefulWidget {
   const CartItemWidget({Key? key, required this.cart}) : super(key: key);
@@ -42,7 +41,7 @@ class _CartItemWidgetState extends State<CartItemWidget> {
       departement: '-',
       servicesAffectation: '-',
       fonctionOccupe: '-',
-      role: '-',
+      role: '5',
       isOnline: false,
       createdAt: DateTime.now(),
       passwordHash: '-',
@@ -241,7 +240,6 @@ class _CartItemWidgetState extends State<CartItemWidget> {
 
     await AchatApi().updateData(achatId!, achatModel);
     await CartApi().deleteData(widget.cart.id!);
-    // Navigator.of(context).pop();
-    Routemaster.of(context).replace(ComMarketingRoutes.comMarketingcart);
+    Navigator.pop(context);
   }
 }

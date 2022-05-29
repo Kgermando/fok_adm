@@ -9,7 +9,7 @@ import 'package:fokad_admin/src/navigation/drawer/drawer_menu.dart';
 import 'package:fokad_admin/src/navigation/header/custom_appbar.dart';
 import 'package:fokad_admin/src/pages/comm_marketing/commercial/stocks_global/components/list_stock_global.dart';
 import 'package:fokad_admin/src/routes/routes.dart';
-import 'package:routemaster/routemaster.dart';
+
 
 class StockGlobalPage extends StatefulWidget {
   const StockGlobalPage({Key? key}) : super(key: key);
@@ -58,8 +58,8 @@ class _StockGlobalPageState extends State<StockGlobalPage> {
         floatingActionButton: FloatingActionButton(
             child: const Icon(Icons.add),
             onPressed: () {
-              Routemaster.of(context)
-                  .push(ComMarketingRoutes.comMarketingStockGlobalAdd);
+              Navigator.pushNamed(
+                  context, ComMarketingRoutes.comMarketingStockGlobalAdd);
             }),
         body: SafeArea(
           child: Row(

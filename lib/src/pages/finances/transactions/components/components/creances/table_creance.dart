@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:fokad_admin/src/api/approbation/approbation_api.dart';
 import 'package:fokad_admin/src/api/auth/auth_api.dart';
 import 'package:fokad_admin/src/api/finances/creance_api.dart';
 import 'package:fokad_admin/src/models/finances/creances_model.dart';
@@ -257,18 +258,6 @@ class _TableCreanceState extends State<TableCreance> {
       ),
       PlutoColumn(
         readOnly: true,
-        title: 'Approbation',
-        field: 'approbation',
-        type: PlutoColumnType.text(),
-        enableRowDrag: true,
-        enableContextMenu: false,
-        enableDropToResize: true,
-        titleTextAlign: PlutoColumnTextAlign.left,
-        width: 150,
-        minWidth: 150,
-      ),
-      PlutoColumn(
-        readOnly: true,
         title: 'Date',
         field: 'created',
         type: PlutoColumnType.text(),
@@ -285,12 +274,17 @@ class _TableCreanceState extends State<TableCreance> {
   Future agentsRow() async {
     UserModel userModel = await AuthApi().getUserId();
     List<CreanceModel?> dataList = await CreanceApi().getAllData();
-    var data = dataList
-        .where((element) =>
-            element!.statutPaie == true ||
-            element.approbationDG == 'Approved' ||
-            element.signature == userModel.matricule)
-        .toList();
+    List<CreanceModel?> data = [];
+    var approbations = await ApprobationApi().getAllData();
+    for (var item in approbations) {
+      data = dataList
+          .where((element) =>
+              element!.id == item.reference &&
+                  item.fontctionOccupee == 'Directeur générale' &&
+                  item.approbation == "Approved" ||
+                  element.signature == userModel.matricule)
+          .toList();
+    } 
 
     if (mounted) {
       setState(() {
@@ -303,9 +297,8 @@ class _TableCreanceState extends State<TableCreance> {
             'libelle': PlutoCell(value: item.libelle),
             'montant': PlutoCell(value: item.montant),
             'numeroOperation': PlutoCell(value: item.numeroOperation),
-            'approbation': PlutoCell(value: item.approbationDG),
             'created': PlutoCell(
-                value: DateFormat("DD-MM-yy H:mm").format(item.created))
+                value: DateFormat("dd-MM-yy HH:mm").format(item.created))
           }));
         }
         stateManager!.resetCurrentState();

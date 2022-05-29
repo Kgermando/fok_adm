@@ -275,18 +275,6 @@ class _CreanceTransactionsState extends State<CreanceTransactions> {
         montant: montantController.text,
         numeroOperation: 'Transaction-Creance-${numberItem + 1}',
         statutPaie: false,
-        approbationDG: '-',
-        signatureDG: '-',
-        signatureJustificationDG: '-',
-        approbationFin: '-',
-        signatureFin: '-',
-        signatureJustificationFin: '-',
-        approbationBudget: '-',
-        signatureBudget: '-',
-        signatureJustificationBudget: '-',
-        approbationDD: '-',
-        signatureDD: '-',
-        signatureJustificationDD: '-',
         signature: matricule.toString(),
         created: DateTime.now());
     await CreanceApi().insertData(creanceModel);

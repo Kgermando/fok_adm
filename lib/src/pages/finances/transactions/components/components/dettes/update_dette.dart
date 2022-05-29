@@ -242,18 +242,6 @@ class _UpdateDetteState extends State<UpdateDette> {
         montant: montantController.text,
         numeroOperation: 'Transaction-Dette-${numberItem + 1}',
         statutPaie: true,
-        approbationDG: '-',
-        signatureDG: '-',
-        signatureJustificationDG: '-',
-        approbationFin: '-',
-        signatureFin: '-',
-        signatureJustificationFin: '-',
-        approbationBudget: '-',
-        signatureBudget: '-',
-        signatureJustificationBudget: '-',
-        approbationDD: '-',
-        signatureDD: '-',
-        signatureJustificationDD: '-',
         signature: matricule.toString(),
         created: DateTime.now());
 

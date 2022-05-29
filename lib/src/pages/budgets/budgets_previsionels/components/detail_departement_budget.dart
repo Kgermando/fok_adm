@@ -59,6 +59,7 @@ class _DetailDepartmentBudgetState extends State<DetailDepartmentBudget> {
 
   String? ligneBudgtaire;
   String? resource;
+  DepartementBudgetModel? departementBudget;
   List<LigneBudgetaireModel> ligneBudgetaireList = [];
   List<CampaignModel> dataCampaignList = [];
   List<DevisModel> dataDevisList = [];
@@ -66,7 +67,6 @@ class _DetailDepartmentBudgetState extends State<DetailDepartmentBudget> {
   List<PaiementSalaireModel> dataSalaireList = [];
   List<ApprobationModel> approbList = [];
   List<ApprobationModel> approbationData = [];
-  DepartementBudgetModel? departementBudget;
   ApprobationModel approb = ApprobationModel(
       reference: 1,
       title: '-',
@@ -75,7 +75,6 @@ class _DetailDepartmentBudgetState extends State<DetailDepartmentBudget> {
       ligneBudgtaire: '-',
       resources: '-',
       approbation: '-',
-      signatureApprobation: '-',
       justification: '-',
       signature: '-',
       created: DateTime.now());
@@ -88,7 +87,7 @@ class _DetailDepartmentBudgetState extends State<DetailDepartmentBudget> {
       departement: '-',
       servicesAffectation: '-',
       fonctionOccupe: '-',
-      role: '-',
+      role: '5',
       isOnline: false,
       createdAt: DateTime.now(),
       passwordHash: '-',
@@ -107,6 +106,7 @@ class _DetailDepartmentBudgetState extends State<DetailDepartmentBudget> {
       user = userModel;
       departementBudget = dataList;
       ligneBudgetaireList = budgets;
+      approbList = approbations;
 
       for (var i in approbations) {
         dataCampaignList = campaigns
@@ -167,12 +167,10 @@ class _DetailDepartmentBudgetState extends State<DetailDepartmentBudget> {
                         builder: (BuildContext context,
                             AsyncSnapshot<DepartementBudgetModel> snapshot) {
                           if (snapshot.hasData) {
-                            DepartementBudgetModel? departementBudgetModel =
-                                snapshot.data;
+                            DepartementBudgetModel? data = snapshot.data;
                             approbationData = approbList
-                                .where((element) =>
-                                    element.reference ==
-                                    departementBudgetModel!.id!)
+                                .where(
+                                    (element) => element.reference == data!.id!)
                                 .toList();
 
                             if (approbationData.isNotEmpty) {
@@ -187,7 +185,7 @@ class _DetailDepartmentBudgetState extends State<DetailDepartmentBudget> {
                                       width: p20,
                                       child: IconButton(
                                           onPressed: () =>
-                                              Navigator.of(context).pop(),
+                                              Navigator.pop(context),
                                           icon: const Icon(Icons.arrow_back)),
                                     ),
                                     const SizedBox(width: p10),
@@ -203,16 +201,16 @@ class _DetailDepartmentBudgetState extends State<DetailDepartmentBudget> {
                                     child: SingleChildScrollView(
                                   child: Column(
                                     children: [
-                                      pageDetail(departementBudgetModel!),
+                                      pageDetail(data!),
                                       const SizedBox(height: p10),
-                                      infosEditeurWidget(),
+                                      if (approbationData.isNotEmpty)
+                                        infosEditeurWidget(),
                                       const SizedBox(height: p10),
                                       if (int.parse(user.role) == 1 ||
                                           int.parse(user.role) < 2)
                                         if (approb.fontctionOccupee !=
                                             user.fonctionOccupe)
-                                          approbationForm(
-                                              departementBudgetModel),
+                                          approbationForm(data),
                                     ],
                                   ),
                                 ))
@@ -1240,7 +1238,6 @@ class _DetailDepartmentBudgetState extends State<DetailDepartmentBudget> {
             (ligneBudgtaire == null) ? '-' : ligneBudgtaire.toString(),
         resources: (resource == null) ? '-' : resource.toString(),
         approbation: approbationDGController,
-        signatureApprobation: user.matricule,
         justification: signatureJustificationDGController.text,
         signature: user.matricule,
         created: DateTime.now());

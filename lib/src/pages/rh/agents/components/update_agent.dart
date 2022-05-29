@@ -15,10 +15,8 @@ import 'package:fokad_admin/src/utils/dropdown.dart';
 import 'package:fokad_admin/src/utils/fonction_occupe.dart';
 import 'package:fokad_admin/src/utils/service_affectation.dart';
 import 'package:fokad_admin/src/widgets/btn_widget.dart';
-import 'package:fokad_admin/src/widgets/print_widget.dart';
 import 'package:fokad_admin/src/widgets/title_widget.dart';
 import 'package:intl/intl.dart';
-import 'package:routemaster/routemaster.dart';
 
 class UpdateAgent extends StatefulWidget {
   const UpdateAgent({Key? key, required this.agentModel}) : super(key: key);
@@ -208,7 +206,7 @@ class _UpdateAgentState extends State<UpdateAgent> {
                           SizedBox(
                             width: p20,
                             child: IconButton(
-                                onPressed: () => Navigator.of(context).pop(),
+                                onPressed: () => Navigator.pop(context),
                                 icon: const Icon(Icons.arrow_back)),
                           ),
                           const SizedBox(width: p10),
@@ -989,7 +987,6 @@ class _UpdateAgentState extends State<UpdateAgent> {
         created: DateTime.now());
 
     await AgentsApi().updateData(widget.agentModel.id!, agentModel);
-    Routemaster.of(context).replace(RhRoutes.rhAgent);
     Navigator.of(context).pop();
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
       content: const Text("Mis a jour agent avec succès!"),

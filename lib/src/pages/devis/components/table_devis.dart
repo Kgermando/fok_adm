@@ -98,10 +98,6 @@ class _TableDevisState extends State<TableDevis> {
                 return resolver<ClassFilterImplemented>() as PlutoFilterType;
               } else if (column.field == 'departement') {
                 return resolver<ClassFilterImplemented>() as PlutoFilterType;
-              } else if (column.field == 'approbation') {
-                return resolver<ClassFilterImplemented>() as PlutoFilterType;
-              } else if (column.field == 'observation') {
-                return resolver<ClassFilterImplemented>() as PlutoFilterType;
               } else if (column.field == 'created') {
                 return resolver<ClassFilterImplemented>() as PlutoFilterType;
               }
@@ -165,30 +161,6 @@ class _TableDevisState extends State<TableDevis> {
       ),
       PlutoColumn(
         readOnly: true,
-        title: 'Approbation',
-        field: 'approbation',
-        type: PlutoColumnType.text(),
-        enableRowDrag: true,
-        enableContextMenu: false,
-        enableDropToResize: true,
-        titleTextAlign: PlutoColumnTextAlign.left,
-        width: 150,
-        minWidth: 150,
-      ),
-      PlutoColumn(
-        readOnly: true,
-        title: 'Observation',
-        field: 'observation',
-        type: PlutoColumnType.text(),
-        enableRowDrag: true,
-        enableContextMenu: false,
-        enableDropToResize: true,
-        titleTextAlign: PlutoColumnTextAlign.left,
-        width: 150,
-        minWidth: 150,
-      ),
-      PlutoColumn(
-        readOnly: true,
         title: 'Date',
         field: 'created',
         type: PlutoColumnType.text(),
@@ -226,8 +198,6 @@ class _TableDevisState extends State<TableDevis> {
             'title': PlutoCell(value: item.title),
             'priority': PlutoCell(value: item.priority),
             'departement': PlutoCell(value: item.departement),
-            'approbation': PlutoCell(value: item.approbationDG),
-            'observation': PlutoCell(value: item.approbationFin),
             'created': PlutoCell(
                 value: DateFormat("dd-MM-yyyy HH:mm").format(item.created))
           }));

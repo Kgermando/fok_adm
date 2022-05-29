@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:fokad_admin/src/api/approbation/approbation_api.dart';
+import 'package:fokad_admin/src/api/budgets/departement_budget_api.dart';
 import 'package:fokad_admin/src/api/budgets/ligne_budgetaire_api.dart';
 import 'package:fokad_admin/src/constants/app_theme.dart';
 import 'package:fokad_admin/src/constants/responsive.dart';
+import 'package:fokad_admin/src/models/budgets/departement_budget_model.dart';
 import 'package:fokad_admin/src/models/budgets/ligne_budgetaire_model.dart';
 import 'package:fokad_admin/src/navigation/drawer/drawer_menu.dart';
 import 'package:fokad_admin/src/navigation/header/custom_appbar.dart';
-import 'package:fokad_admin/src/pages/administration/components/budgets/table_departement_budget_dd.dart';
+import 'package:fokad_admin/src/pages/administration/components/budgets/table_departement_budget_admin.dart';
 
 class BudgetsAdmin extends StatefulWidget {
   const BudgetsAdmin({Key? key}) : super(key: key);
@@ -29,10 +32,22 @@ class _BudgetsAdminState extends State<BudgetsAdmin> {
   }
 
   Future<void> getData() async {
-    List<LigneBudgetaireModel?> dataLigneBudgetaireList =
-        await LIgneBudgetaireApi().getAllData();
+    List<DepartementBudgetModel?> departementBudget =
+        await DepeartementBudgetApi().getAllData();
+  var approbations = await ApprobationApi().getAllData();
+    // List<LigneBudgetaireModel?> dataLigneBudgetaireList =
+    //     await LIgneBudgetaireApi().getAllData();
     setState(() {
-      budgetCount = dataLigneBudgetaireList.length;
+      for (var item in approbations) {
+        budgetCount = departementBudget
+            .where((element) =>
+             DateTime.now().millisecondsSinceEpoch <=
+                    element!.periodeFin.millisecondsSinceEpoch &&
+                element.id == item.reference &&
+                    item.fontctionOccupee == 'Directeur de budget' &&
+                    item.approbation == "Approved")
+            .length;
+      }
     });
   }
 

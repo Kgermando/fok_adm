@@ -371,18 +371,6 @@ class _UpdateTrajetState extends State<UpdateTrajet> {
         mission: widget.trajetModel.mission,
         kilometrageSorite: widget.trajetModel.kilometrageSorite,
         kilometrageRetour: kilometrageRetourController.text,
-        approbationDG: '-',
-        signatureDG: '-',
-        signatureJustificationDG: '-',
-        approbationFin: '-',
-        signatureFin: '-',
-        signatureJustificationFin: '-',
-        approbationBudget: '-',
-        signatureBudget: '-',
-        signatureJustificationBudget: '-',
-        approbationDD: '-',
-        signatureDD: '-',
-        signatureJustificationDD: '-',
         signature: signature.toString(),
         created: DateTime.now());
     await TrajetApi().updateData(widget.trajetModel.id!, trajetModel);

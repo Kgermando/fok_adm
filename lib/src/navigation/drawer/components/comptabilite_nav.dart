@@ -9,7 +9,7 @@ import 'package:fokad_admin/src/api/comptabilite/journal_api.dart';
 import 'package:fokad_admin/src/models/users/user_model.dart';
 import 'package:fokad_admin/src/navigation/drawer/drawer_widget.dart';
 import 'package:fokad_admin/src/routes/routes.dart';
-import 'package:routemaster/routemaster.dart';
+
 
 class ComptabiliteNav extends StatefulWidget {
   const ComptabiliteNav({Key? key, required this.pageCurrente})
@@ -98,8 +98,7 @@ class _ComptabiliteNavState extends State<ComptabiliteNav> {
               title: 'Dashboard',
               style: bodyText1!,
               onTap: () {
-                Routemaster.of(context)
-                    .replace(ComptabiliteRoutes.comptabiliteDashboard);
+                Navigator.pushNamed(context, ComptabiliteRoutes.comptabiliteDashboard);
                 // Navigator.of(context).pop();
               }),
         if (userRole <= 2)
@@ -119,8 +118,7 @@ class _ComptabiliteNavState extends State<ComptabiliteNav> {
                 child: const Icon(Icons.notifications),
               ),
               onTap: () {
-                Routemaster.of(context)
-                    .replace(ComptabiliteRoutes.comptabiliteDD);
+                Navigator.pushNamed(context, ComptabiliteRoutes.comptabiliteDD);
                 // Navigator.of(context).pop();
               }),
         DrawerWidget(
@@ -131,8 +129,7 @@ class _ComptabiliteNavState extends State<ComptabiliteNav> {
             title: 'Bilan',
             style: bodyText2!,
             onTap: () {
-              Routemaster.of(context)
-                  .replace(ComptabiliteRoutes.comptabiliteBilan);
+              Navigator.pushNamed(context, ComptabiliteRoutes.comptabiliteBilan);
               // Navigator.of(context).pop();
             }),
         DrawerWidget(
@@ -143,8 +140,7 @@ class _ComptabiliteNavState extends State<ComptabiliteNav> {
             title: 'Journal',
             style: bodyText2,
             onTap: () {
-              Routemaster.of(context)
-                  .replace(ComptabiliteRoutes.comptabiliteJournal);
+              Navigator.pushNamed(context, ComptabiliteRoutes.comptabiliteJournal);
               // Navigator.of(context).pop();
             }),
         DrawerWidget(
@@ -155,8 +151,7 @@ class _ComptabiliteNavState extends State<ComptabiliteNav> {
             title: 'Compte resultats',
             style: bodyText2,
             onTap: () {
-              Routemaster.of(context)
-                  .replace(ComptabiliteRoutes.comptabiliteCompteResultat);
+              Navigator.pushNamed(context, ComptabiliteRoutes.comptabiliteCompteResultat);
               // Navigator.of(context).pop();
             }),
         DrawerWidget(
@@ -167,8 +162,7 @@ class _ComptabiliteNavState extends State<ComptabiliteNav> {
             title: 'Balance',
             style: bodyText2,
             onTap: () {
-              Routemaster.of(context)
-                  .replace(ComptabiliteRoutes.comptabiliteBalance);
+              Navigator.pushNamed(context, ComptabiliteRoutes.comptabiliteBalance);
               // Navigator.of(context).pop();
             }),
         DrawerWidget(
@@ -179,8 +173,7 @@ class _ComptabiliteNavState extends State<ComptabiliteNav> {
             title: 'Grand livre',
             style: bodyText2,
             onTap: () {
-              Routemaster.of(context)
-                  .replace(ComptabiliteRoutes.comptabiliteGrandLivre);
+              Navigator.pushNamed(context, ComptabiliteRoutes.comptabiliteGrandLivre);
               // Navigator.of(context).pop();
             }),
         DrawerWidget(
@@ -190,7 +183,7 @@ class _ComptabiliteNavState extends State<ComptabiliteNav> {
             title: 'Performences',
             style: bodyText1!,
             onTap: () {
-              Routemaster.of(context).replace(RhRoutes.rhPerformence);
+              Navigator.pushNamed(context, RhRoutes.rhPerformence);
               // Navigator.of(context).pop();
             }),
       ],

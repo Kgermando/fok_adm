@@ -2,7 +2,7 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:fokad_admin/src/navigation/drawer/drawer_widget.dart';
 import 'package:fokad_admin/src/routes/routes.dart';
-import 'package:routemaster/routemaster.dart';
+
 
 class MailsNAv extends StatefulWidget {
   const MailsNAv({ Key? key, required this.pageCurrente }) : super(key: key);
@@ -38,7 +38,7 @@ class _MailsNAvState extends State<MailsNAv> {
           title: 'Mails',
           style: bodyText1!,
           onTap: () {
-            Routemaster.of(context).replace(MailRoutes.mails);
+            Navigator.pushNamed(context, MailRoutes.mails);
             // Navigator.of(context).pop();
           }
         )

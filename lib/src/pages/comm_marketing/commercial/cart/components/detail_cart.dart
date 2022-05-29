@@ -11,7 +11,7 @@ import 'package:fokad_admin/src/routes/routes.dart';
 import 'package:fokad_admin/src/widgets/print_widget.dart';
 import 'package:fokad_admin/src/widgets/title_widget.dart';
 import 'package:intl/intl.dart';
-import 'package:routemaster/routemaster.dart';
+
 
 class DetailCart extends StatefulWidget {
   const DetailCart({Key? key, required this.cart}) : super(key: key);
@@ -65,7 +65,7 @@ class _DetailCartState extends State<DetailCart> {
                             SizedBox(
                               width: p20,
                               child: IconButton(
-                                  onPressed: () => Navigator.of(context).pop(),
+                                  onPressed: () => Navigator.pop(context),
                                   icon: const Icon(Icons.arrow_back)),
                             ),
                             const SizedBox(width: p10),
@@ -288,7 +288,6 @@ class _DetailCartState extends State<DetailCart> {
 
     await AchatApi().updateData(achatId!, achatModel);
     await CartApi().deleteData(widget.cart.id!);
-    // Navigator.of(context).pop();
-    Routemaster.of(context).replace(ComMarketingRoutes.comMarketingcart);
+    Navigator.pop(context);
   }
 }

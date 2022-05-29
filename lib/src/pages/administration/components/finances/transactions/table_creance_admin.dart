@@ -256,18 +256,6 @@ class _TableCreanceAdminState extends State<TableCreanceAdmin> {
       ),
       PlutoColumn(
         readOnly: true,
-        title: 'Approbation',
-        field: 'approbation',
-        type: PlutoColumnType.text(),
-        enableRowDrag: true,
-        enableContextMenu: false,
-        enableDropToResize: true,
-        titleTextAlign: PlutoColumnTextAlign.left,
-        width: 150,
-        minWidth: 150,
-      ),
-      PlutoColumn(
-        readOnly: true,
         title: 'Date',
         field: 'created',
         type: PlutoColumnType.text(),
@@ -283,9 +271,7 @@ class _TableCreanceAdminState extends State<TableCreanceAdmin> {
 
   Future agentsRow() async {
     List<CreanceModel?> dataList = await CreanceApi().getAllData();
-    var data = dataList;
-
-    
+    var data = dataList.toList();
 
     if (mounted) {
       setState(() {
@@ -298,9 +284,8 @@ class _TableCreanceAdminState extends State<TableCreanceAdmin> {
             'libelle': PlutoCell(value: item.libelle),
             'montant': PlutoCell(value: item.montant),
             'numeroOperation': PlutoCell(value: item.numeroOperation),
-            'approbation': PlutoCell(value: item.approbationDG),
             'created': PlutoCell(
-                value: DateFormat("DD-MM-yy H:mm").format(item.created))
+                value: DateFormat("dd-MM-yy HH:mm").format(item.created))
           }));
         }
         stateManager!.resetCurrentState();

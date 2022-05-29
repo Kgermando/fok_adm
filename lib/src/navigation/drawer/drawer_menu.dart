@@ -11,7 +11,6 @@ import 'package:fokad_admin/src/navigation/drawer/components/exploitation_nav.da
 import 'package:fokad_admin/src/navigation/drawer/components/finances_nav.dart';
 import 'package:fokad_admin/src/navigation/drawer/components/logistique_nav.dart';
 import 'package:fokad_admin/src/navigation/drawer/components/rh_nav.dart';
-import 'package:routemaster/routemaster.dart';
 
 class DrawerMenu extends StatefulWidget {
   const DrawerMenu({Key? key, this.controller}) : super(key: key);
@@ -48,14 +47,15 @@ class _DrawerMenuState extends State<DrawerMenu> {
     var userModel = await AuthApi().getUserId();
     if (mounted) {
       setState(() {
-      user = userModel;
-    });
+        user = userModel;
+      });
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    String pageCurrente = Routemaster.of(context).currentRoute.fullPath;
+    // String pageCurrente = Routemaster.of(context).currentRoute.fullPath;
+    String? pageCurrente = ModalRoute.of(context)!.settings.name;
     // print('pageCurrente $pageCurrente');
 
     return Drawer(
@@ -71,23 +71,31 @@ class _DrawerMenuState extends State<DrawerMenu> {
               width: 100,
               height: 100,
             )),
-            if(user.departement == 'Administration')
-            AdministrationNav(pageCurrente: pageCurrente),
-            if (user.departement == 'Ressources Humaines' || user.departement == 'Administration')
-            RhNav(pageCurrente: pageCurrente),
-            if (user.departement == 'Budgets' || user.departement == 'Administration')
-            BudgetNav(pageCurrente: pageCurrente),
-            if (user.departement == 'Finances' || user.departement == 'Administration')
-            FinancesNav(pageCurrente: pageCurrente),
-            if (user.departement == 'Comptabilites' || user.departement == 'Administration')
-            ComptabiliteNav(pageCurrente: pageCurrente),
-            if (user.departement == 'Exploitations' || user.departement == 'Administration')
-            ExploitationNav(pageCurrente: pageCurrente),
-            if (user.departement == 'Commercial et Marketing' || user.departement == 'Administration')
-            ComMarketing(pageCurrente: pageCurrente),
-            if (user.departement == 'Logistique' || user.departement == 'Administration')
-            LogistiqueNav(pageCurrente: pageCurrente),
-            EtatBesoinNav(pageCurrente: pageCurrente),
+            if (user.departement == 'Administration')
+              AdministrationNav(pageCurrente: pageCurrente!),
+            if (user.departement == 'Ressources Humaines' ||
+                user.departement == 'Administration')
+              RhNav(pageCurrente: pageCurrente!),
+            if (user.departement == 'Budgets' ||
+                user.departement == 'Administration')
+              BudgetNav(pageCurrente: pageCurrente!),
+            if (user.departement == 'Finances' ||
+                user.departement == 'Administration')
+              FinancesNav(pageCurrente: pageCurrente!),
+            if (user.departement == 'Comptabilites' ||
+                user.departement == 'Administration')
+              ComptabiliteNav(pageCurrente: pageCurrente!),
+            if (user.departement == 'Exploitations' ||
+                user.departement == 'Administration')
+              ExploitationNav(pageCurrente: pageCurrente!),
+            if (user.departement == 'Commercial et Marketing' ||
+                user.departement == 'Administration')
+              ComMarketing(pageCurrente: pageCurrente!),
+            if (user.departement == 'Logistique' ||
+                user.departement == 'Administration')
+              LogistiqueNav(pageCurrente: pageCurrente!),
+              
+            EtatBesoinNav(pageCurrente: pageCurrente!),
             ArchiveNav(pageCurrente: pageCurrente),
 
             // MailsNAv(pageCurrente: pageCurrente)

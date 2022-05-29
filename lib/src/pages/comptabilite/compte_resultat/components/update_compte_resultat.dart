@@ -189,7 +189,7 @@ class _UpdateCompteResultatState extends State<UpdateCompteResultat> {
                           SizedBox(
                             width: p20,
                             child: IconButton(
-                                onPressed: () => Navigator.of(context).pop(),
+                                onPressed: () => Navigator.pop(context),
                                 icon: const Icon(Icons.arrow_back)),
                           ),
                           const SizedBox(width: p10),
@@ -879,12 +879,6 @@ class _UpdateCompteResultatState extends State<UpdateCompteResultat> {
         produitfinancieres: produitfinancieresController.text,
         produitExceptionnels: produitExceptionnelsController.text,
         soldeDebiteur: soldeDebiteurController.text,
-        approbationDG: '-',
-        signatureDG: '-',
-        signatureJustificationDG: '-',
-        approbationDD: '-',
-        signatureDD: '-',
-        signatureJustificationDD: '-',
         signature: user!.matricule.toString(),
         created: DateTime.now());
     await CompteResultatApi().insertData(compteResulatsModel);

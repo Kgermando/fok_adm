@@ -11,7 +11,6 @@ import 'package:fokad_admin/src/models/users/user_model.dart';
 import 'package:fokad_admin/src/navigation/drawer/drawer_menu.dart';
 import 'package:fokad_admin/src/navigation/header/custom_appbar.dart';
 import 'package:fokad_admin/src/pages/logistiques/automobile/add_trajet_auto.dart';
-import 'package:fokad_admin/src/pages/logistiques/automobile/components/table_trajet_anguin.dart';
 import 'package:fokad_admin/src/widgets/print_widget.dart';
 import 'package:fokad_admin/src/widgets/title_widget.dart';
 import 'package:intl/intl.dart';
@@ -30,16 +29,7 @@ class _DetailAnguinState extends State<DetailAnguin> {
   bool isLoading = false;
 
   String approbationDGController = '-';
-  String approbationFinController = '-';
-  String approbationBudgetController = '-';
-  String approbationDDController = '-';
   TextEditingController signatureJustificationDGController =
-      TextEditingController();
-  TextEditingController signatureJustificationFinController =
-      TextEditingController();
-  TextEditingController signatureJustificationBudgetController =
-      TextEditingController();
-  TextEditingController signatureJustificationDDController =
       TextEditingController();
 
   String? nomeroEntreprise;
@@ -63,7 +53,6 @@ class _DetailAnguinState extends State<DetailAnguin> {
       ligneBudgtaire: '-',
       resources: '-',
       approbation: '-',
-      signatureApprobation: '-',
       justification: '-',
       signature: '-',
       created: DateTime.now());
@@ -76,7 +65,7 @@ class _DetailAnguinState extends State<DetailAnguin> {
       departement: '-',
       servicesAffectation: '-',
       fonctionOccupe: '-',
-      role: '-',
+      role: '5',
       isOnline: false,
       createdAt: DateTime.now(),
       passwordHash: '-',
@@ -146,7 +135,7 @@ class _DetailAnguinState extends State<DetailAnguin> {
                                       width: p20,
                                       child: IconButton(
                                           onPressed: () =>
-                                              Navigator.of(context).pop(),
+                                              Navigator.pop(context),
                                           icon: const Icon(Icons.arrow_back)),
                                     ),
                                     const SizedBox(width: p10),
@@ -164,10 +153,10 @@ class _DetailAnguinState extends State<DetailAnguin> {
                                   children: [
                                     pageDetail(data),
                                     const SizedBox(height: p10),
-                                    infosEditeurWidget(),
+                                    if (approbationData.isNotEmpty)
+                                      infosEditeurWidget(),
                                     const SizedBox(height: p10),
-                                    if (int.parse(user.role) == 1 ||
-                                        int.parse(user.role) < 2)
+                                    if (int.parse(user.role) <= 2)
                                       if (approb.fontctionOccupee !=
                                           user.fonctionOccupe)
                                         approbationForm(data),
@@ -903,13 +892,11 @@ class _DetailAnguinState extends State<DetailAnguin> {
     final approbation = ApprobationModel(
         reference: data.id!,
         title: data.nom,
-        departement: data.modele,
+        departement: 'Logistique',
         fontctionOccupee: user.fonctionOccupe,
-        ligneBudgtaire:
-            (ligneBudgtaire == null) ? '-' : ligneBudgtaire.toString(),
-        resources: (resource == null) ? '-' : resource.toString(),
+        ligneBudgtaire: '-',
+        resources: '-',
         approbation: approbationDGController,
-        signatureApprobation: user.matricule,
         justification: signatureJustificationDGController.text,
         signature: user.matricule,
         created: DateTime.now());

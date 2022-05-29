@@ -41,7 +41,6 @@ class _DetailBonLivraisonState extends State<DetailBonLivraison> {
     super.initState();
   }
 
-
   UserModel user = UserModel(
       nom: '-',
       prenom: '-',
@@ -51,7 +50,7 @@ class _DetailBonLivraisonState extends State<DetailBonLivraison> {
       departement: '-',
       servicesAffectation: '-',
       fonctionOccupe: '-',
-      role: '-',
+      role: '5',
       isOnline: false,
       createdAt: DateTime.now(),
       passwordHash: '-',
@@ -101,7 +100,7 @@ class _DetailBonLivraisonState extends State<DetailBonLivraison> {
                                       width: p20,
                                       child: IconButton(
                                           onPressed: () =>
-                                              Navigator.of(context).pop(),
+                                              Navigator.pop(context),
                                           icon: const Icon(Icons.arrow_back)),
                                     ),
                                     const SizedBox(width: p10),
@@ -159,8 +158,8 @@ class _DetailBonLivraisonState extends State<DetailBonLivraison> {
                       PrintWidget(
                         tooltip: 'Imprimer le document',
                         onPressed: () async {
-                          final pdfFile = await BonLivraisonPDF.generate(
-                              data, "\$");
+                          final pdfFile =
+                              await BonLivraisonPDF.generate(data, "\$");
 
                           PdfApi.openFile(pdfFile);
                         },

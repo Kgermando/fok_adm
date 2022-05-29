@@ -34,25 +34,24 @@ dependencies:
   animated_text_kit: ^4.2.1
   intl: ^0.17.0
   syncfusion_flutter_charts: ^20.1.56
-  # pluto_grid: ^2.9.2
+  syncfusion_flutter_datagrid_export: ^20.1.57-beta
+  syncfusion_flutter_barcodes: ^20.1.57
+  syncfusion_flutter_calendar: ^20.1.56
   pluto_grid: ^3.0.0-1.pre
   timeago: ^3.2.2
-  routemaster: ^1.0.0
+  # routemaster: ^1.0.0
   badges: ^2.0.2
   simple_speed_dial: ^0.1.3
   flutter_secure_storage: ^5.0.2
   date_time_picker: ^2.1.0
   flutter_switch: ^0.3.2
   flutter_staggered_grid_view: ^0.6.1
-  syncfusion_flutter_calendar: ^20.1.56
   flash_card: ^0.0.7
   pdf: ^3.8.0 
-  syncfusion_flutter_datagrid_export: ^20.1.57-beta
   open_file: ^3.2.1
   path_provider: ^2.0.10
   path_provider_platform_interface: ^2.0.4
-  syncfusion_flutter_barcodes: ^20.1.57
-  go_router: ^3.1.1
+  contextmenu: ^3.0.0
   
 
 

@@ -526,18 +526,6 @@ class _AjoutLigneBudgetaireState extends State<AjoutLigneBudgetaire> {
         banque: banqueController.toString(),
         finPropre: finPropreController.toString(),
         finExterieur: fondsAtrouver.toString(),
-        approbationDG: '-',
-        signatureDG: '-',
-        signatureJustificationDG: '-',
-        approbationFin: '-',
-        signatureFin: '-',
-        signatureJustificationFin: '-',
-        approbationBudget: '-',
-        signatureBudget: '-',
-        signatureJustificationBudget: '-',
-        approbationDD: '-',
-        signatureDD: '-',
-        signatureJustificationDD: '-',
         signature: signature.toString(),
         created: DateTime.now());
 

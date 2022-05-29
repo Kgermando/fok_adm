@@ -11,7 +11,7 @@ import 'package:fokad_admin/src/navigation/header/custom_appbar.dart';
 import 'package:fokad_admin/src/routes/routes.dart';
 import 'package:fokad_admin/src/widgets/btn_widget.dart';
 import 'package:fokad_admin/src/widgets/title_widget.dart';
-import 'package:routemaster/routemaster.dart';
+
 
 class NewMail extends StatefulWidget {
   const NewMail({Key? key}) : super(key: key);
@@ -310,7 +310,7 @@ class _NewMailState extends State<NewMail> {
         dateSend: DateTime.now(),
         dateRead: DateTime.now());
     await MailApi().insertData(mailModel);
-    Routemaster.of(context).replace(MailRoutes.mails);
+   Navigator.pop(context);
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
       content: const Text("Envoyer avec succès!"),
       backgroundColor: Colors.green[700],

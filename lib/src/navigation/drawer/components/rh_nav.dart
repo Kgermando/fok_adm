@@ -6,7 +6,7 @@ import 'package:fokad_admin/src/api/rh/paiement_salaire_api.dart';
 import 'package:fokad_admin/src/models/users/user_model.dart';
 import 'package:fokad_admin/src/navigation/drawer/drawer_widget.dart';
 import 'package:fokad_admin/src/routes/routes.dart';
-import 'package:routemaster/routemaster.dart';
+
 
 class RhNav extends StatefulWidget {
   const RhNav({Key? key, required this.pageCurrente}) : super(key: key);
@@ -89,7 +89,8 @@ class _RhNavState extends State<RhNav> {
               title: 'Dashboard',
               style: bodyText1!,
               onTap: () {
-                Routemaster.of(context).replace(RhRoutes.rhDashboard);
+                Navigator.pushNamed(
+                    context, RhRoutes.rhDashboard);
                 // Navigator.of(context).pop();
               }),
         if (userRole <= 2)
@@ -108,7 +109,7 @@ class _RhNavState extends State<RhNav> {
                 child: const Icon(Icons.notifications),
               ),
               onTap: () {
-                Routemaster.of(context).replace(RhRoutes.rhDD);
+                Navigator.pushNamed(context, RhRoutes.rhDD);
                 // Navigator.of(context).pop();
               }),
         if (userRole <= 3)
@@ -119,7 +120,7 @@ class _RhNavState extends State<RhNav> {
               title: 'Paiements',
               style: bodyText1!,
               onTap: () {
-                Routemaster.of(context).replace(RhRoutes.rhPaiement);
+                Navigator.pushNamed(context, RhRoutes.rhPaiement);
                 // Navigator.of(context).pop();
               }),
         DrawerWidget(
@@ -129,7 +130,7 @@ class _RhNavState extends State<RhNav> {
             title: 'Présences',
             style: bodyText1!,
             onTap: () {
-              Routemaster.of(context).replace(RhRoutes.rhPresence);
+              Navigator.pushNamed(context, RhRoutes.rhPresence);
               // Navigator.of(context).pop();
             }),
         if (userRole <= 3)
@@ -140,7 +141,7 @@ class _RhNavState extends State<RhNav> {
               title: 'Agents',
               style: bodyText1,
               onTap: () {
-                Routemaster.of(context).replace(RhRoutes.rhAgent);
+                Navigator.pushNamed(context, RhRoutes.rhAgent);
                 // Navigator.of(context).pop();
               }),
         if (userRole <= 3)
@@ -151,7 +152,7 @@ class _RhNavState extends State<RhNav> {
               title: 'Performences',
               style: bodyText1,
               onTap: () {
-                Routemaster.of(context).replace(RhRoutes.rhPerformence);
+                Navigator.pushNamed(context, RhRoutes.rhPerformence);
                 // Navigator.of(context).pop();
               }),
       ],

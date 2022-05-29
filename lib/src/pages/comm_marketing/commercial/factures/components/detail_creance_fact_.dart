@@ -52,7 +52,7 @@ class _DetailCreanceFactState extends State<DetailCreanceFact> {
       departement: '-',
       servicesAffectation: '-',
       fonctionOccupe: '-',
-      role: '-',
+      role: '5',
       isOnline: false,
       createdAt: DateTime.now(),
       passwordHash: '-',
@@ -99,7 +99,7 @@ class _DetailCreanceFactState extends State<DetailCreanceFact> {
                                       width: p20,
                                       child: IconButton(
                                           onPressed: () =>
-                                              Navigator.of(context).pop(),
+                                              Navigator.pop(context),
                                           icon: const Icon(Icons.arrow_back)),
                                     ),
                                     const SizedBox(width: p10),
@@ -156,13 +156,13 @@ class _DetailCreanceFactState extends State<DetailCreanceFact> {
                     children: [
                       Row(
                         children: [
-                         PrintWidget(
+                          PrintWidget(
                               tooltip: 'Imprimer le document',
                               onPressed: () async {
                                 final pdfFile =
                                     await CreanceCartPDF.generate(data, "\$");
                                 PdfApi.openFile(pdfFile);
-                              }) 
+                              })
                         ],
                       ),
                       SelectableText(

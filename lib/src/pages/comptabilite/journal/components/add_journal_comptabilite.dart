@@ -5,10 +5,8 @@ import 'package:fokad_admin/src/api/comptabilite/journal_api.dart';
 import 'package:fokad_admin/src/constants/app_theme.dart';
 import 'package:fokad_admin/src/models/comptabilites/journal_model.dart';
 import 'package:fokad_admin/src/models/users/user_model.dart';
-import 'package:fokad_admin/src/routes/routes.dart';
 import 'package:fokad_admin/src/utils/comptes_dropdown.dart';
 import 'package:fokad_admin/src/widgets/title_widget.dart';
-import 'package:routemaster/routemaster.dart';
 
 class AddJournalComptabilite extends StatefulWidget {
   const AddJournalComptabilite({Key? key}) : super(key: key);
@@ -550,16 +548,10 @@ class _AddJournalComptabiliteState extends State<AddJournalComptabilite> {
         montantCredit: montantCreditController.text,
         tva: tvaController.text,
         remarque: remarqueController.text,
-        approbationDG: '-',
-        signatureDG: '-',
-        signatureJustificationDG: '-',
-        approbationDD: '-',
-        signatureDD: '-',
-        signatureJustificationDD: '-',
         signature: signature.toString(),
         created: DateTime.now());
     await JournalApi().insertData(journalModel);
-    Routemaster.of(context).replace(ComptabiliteRoutes.comptabiliteJournal);
+    Navigator.pop(context);
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
       content: const Text("Soumis avec succès!"),
       backgroundColor: Colors.green[700],

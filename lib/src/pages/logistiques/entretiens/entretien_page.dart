@@ -5,7 +5,6 @@ import 'package:fokad_admin/src/navigation/drawer/drawer_menu.dart';
 import 'package:fokad_admin/src/navigation/header/custom_appbar.dart';
 import 'package:fokad_admin/src/pages/logistiques/entretiens/components/table_entretien.dart';
 import 'package:fokad_admin/src/routes/routes.dart';
-import 'package:routemaster/routemaster.dart';
 
 class EntretienPage extends StatefulWidget {
   const EntretienPage({Key? key}) : super(key: key);
@@ -24,7 +23,8 @@ class _EntretienPageState extends State<EntretienPage> {
         floatingActionButton: FloatingActionButton(
             child: const Icon(Icons.add),
             onPressed: () {
-              Routemaster.of(context).push(LogistiqueRoutes.logAddEntretien);
+              Navigator.pushNamed(
+                  context, LogistiqueRoutes.logAddEntretien);
             }),
         body: SafeArea(
           child: Row(

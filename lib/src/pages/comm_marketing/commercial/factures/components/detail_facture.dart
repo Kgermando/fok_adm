@@ -50,7 +50,7 @@ class _DetailFactureState extends State<DetailFacture> {
       departement: '-',
       servicesAffectation: '-',
       fonctionOccupe: '-',
-      role: '-',
+      role: '5',
       isOnline: false,
       createdAt: DateTime.now(),
       passwordHash: '-',
@@ -97,7 +97,7 @@ class _DetailFactureState extends State<DetailFacture> {
                                       width: p20,
                                       child: IconButton(
                                           onPressed: () =>
-                                              Navigator.of(context).pop(),
+                                              Navigator.pop(context),
                                           icon: const Icon(Icons.arrow_back)),
                                     ),
                                     const SizedBox(width: p10),
@@ -157,11 +157,12 @@ class _DetailFactureState extends State<DetailFacture> {
                           //     onPressed: () {},
                           //     icon: const Icon(Icons.edit)),
                           PrintWidget(
-                              tooltip: 'Imprimer le document', onPressed: () async {
-                                 final pdfFile = await FactureCartPDF.generate(
-                                    data, "\$");
+                              tooltip: 'Imprimer le document',
+                              onPressed: () async {
+                                final pdfFile =
+                                    await FactureCartPDF.generate(data, "\$");
                                 PdfApi.openFile(pdfFile);
-                              }) 
+                              })
                         ],
                       ),
                       SelectableText(

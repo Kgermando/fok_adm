@@ -38,7 +38,6 @@ class _RestitutionStockState extends State<RestitutionStock> {
     super.initState();
   }
 
-
   UserModel user = UserModel(
       nom: '-',
       prenom: '-',
@@ -48,7 +47,7 @@ class _RestitutionStockState extends State<RestitutionStock> {
       departement: '-',
       servicesAffectation: '-',
       fonctionOccupe: '-',
-      role: '-',
+      role: '5',
       isOnline: false,
       createdAt: DateTime.now(),
       passwordHash: '-',
@@ -89,7 +88,7 @@ class _RestitutionStockState extends State<RestitutionStock> {
                             SizedBox(
                               width: p20,
                               child: IconButton(
-                                  onPressed: () => Navigator.of(context).pop(),
+                                  onPressed: () => Navigator.pop(context),
                                   icon: const Icon(Icons.arrow_back)),
                             ),
                             const SizedBox(width: p10),
@@ -291,7 +290,7 @@ class _RestitutionStockState extends State<RestitutionStock> {
 
   Future<void> transfertProduit() async {
     qtyRestante = double.parse(widget.achat.quantity) - quantityStock;
-    
+
     final restitutionModel = RestitutionModel(
         idProduct: widget.achat.idProduct,
         quantity: quantityStock.toString(),

@@ -242,12 +242,6 @@ class _AddSurrsaleState extends State<AddSurrsale> {
         name: nameController.text,
         adresse: adresseController.text,
         province: province.toString(),
-        approbationDG: '-',
-        signatureDG: '-',
-        signatureJustificationDG: '-',
-        approbationDD: '-',
-        signatureDD: '-',
-        signatureJustificationDD: '-',
         signature: user!.matricule.toString(),
         created: DateTime.now());
 

@@ -512,18 +512,6 @@ class _AddEncaissementState extends State<AddEncaissement> {
         departement: '-',
         typeOperation: 'Encaissement',
         numeroOperation: 'Transaction-Caisse-${numberItem + 1}',
-        approbationDG: '-',
-        signatureDG: '-',
-        signatureJustificationDG: '-',
-        approbationFin: '-',
-        signatureFin: '-',
-        signatureJustificationFin: '-',
-        approbationBudget: '-',
-        signatureBudget: '-',
-        signatureJustificationBudget: '-',
-        approbationDD: '-',
-        signatureDD: '-',
-        signatureJustificationDD: '-',
         signature: matricule.toString(),
         created: DateTime.now());
     await CaisseApi().insertData(caisseModel);

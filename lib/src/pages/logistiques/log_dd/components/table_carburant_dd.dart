@@ -273,101 +273,6 @@ class _TableCarburantDDState extends State<TableCarburantDD> {
     );
   }
 
-  // Widget totalMazoute() {
-  //   return Wrap(
-  //     alignment: WrapAlignment.spaceEvenly,
-  //     spacing: 12.0,
-  //     runSpacing: 12.0,
-  //     direction: Axis.horizontal,
-  //     children: [
-  //       CardWidgetCarburant(
-  //         title: 'Mazoute',
-  //         icon: Icons.ev_station_sharp,
-  //         qty: '$entrerMazoute',
-  //         color: Colors.red.shade700,
-  //         colorText: Colors.white,
-  //       ),
-  //       CardWidgetCarburant(
-  //         title: 'Mazoute',
-  //         icon: Icons.ev_station_sharp,
-  //         qty: '$sortieMazoute',
-  //         color: Colors.red.shade700,
-  //         colorText: Colors.white,
-  //       ),
-  //       CardWidgetCarburant(
-  //         title: 'Mazoute',
-  //         icon: Icons.ev_station_sharp,
-  //         qty: '${entrerMazoute - sortieMazoute}',
-  //         color: Colors.red.shade700,
-  //         colorText: Colors.white,
-  //       )
-  //     ],
-  //   );
-  // }
-
-  // Widget totalPetrole() {
-  //   return Wrap(
-  //     alignment: WrapAlignment.spaceEvenly,
-  //     spacing: 12.0,
-  //     runSpacing: 12.0,
-  //     direction: Axis.horizontal,
-  //     children: [
-  //       CardWidgetCarburant(
-  //         title: 'Petrole',
-  //         icon: Icons.ev_station_sharp,
-  //         qty: '$entrerPetrole',
-  //         color: Colors.red.shade700,
-  //         colorText: Colors.white,
-  //       ),
-  //       CardWidgetCarburant(
-  //         title: 'Petrole',
-  //         icon: Icons.ev_station_sharp,
-  //         qty: '$sortiePetrole',
-  //         color: Colors.red.shade700,
-  //         colorText: Colors.white,
-  //       ),
-  //       CardWidgetCarburant(
-  //         title: 'Petrole',
-  //         icon: Icons.ev_station_sharp,
-  //         qty: '${entrerPetrole - sortiePetrole}',
-  //         color: Colors.red.shade700,
-  //         colorText: Colors.white,
-  //       )
-  //     ],
-  //   );
-  // }
-
-  // Widget totalHuileMoteur() {
-  //   return Wrap(
-  //     alignment: WrapAlignment.spaceEvenly,
-  //     spacing: 12.0,
-  //     runSpacing: 12.0,
-  //     direction: Axis.horizontal,
-  //     children: [
-  //       CardWidgetCarburant(
-  //         title: 'Huile Moteur',
-  //         icon: Icons.ev_station_sharp,
-  //         qty: '$entrerHuilleMoteur',
-  //         color: Colors.red.shade700,
-  //         colorText: Colors.white,
-  //       ),
-  //       CardWidgetCarburant(
-  //         title: 'Huile Moteur',
-  //         icon: Icons.ev_station_sharp,
-  //         qty: '$sortieHuilleMoteur',
-  //         color: Colors.red.shade700,
-  //         colorText: Colors.white,
-  //       ),
-  //       CardWidgetCarburant(
-  //         title: 'Huile Moteur',
-  //         icon: Icons.ev_station_sharp,
-  //         qty: '${entrerHuilleMoteur - sortieHuilleMoteur}',
-  //         color: Colors.red.shade700,
-  //         colorText: Colors.white,
-  //       )
-  //     ],
-  //   );
-  // }
 
   void agentsColumn() {
     columns = [
@@ -497,7 +402,7 @@ class _TableCarburantDDState extends State<TableCarburantDD> {
   Future agentsRow() async {
     List<CarburantModel?> dataList = await CarburantApi().getAllData();
     var data =
-        dataList.where((element) => element!.approbationDD == "-").toList();
+        dataList.toList();
 
     if (mounted) {
       setState(() {
@@ -512,10 +417,10 @@ class _TableCarburantDDState extends State<TableCarburantDD> {
             'nomReceptioniste': PlutoCell(value: item.nomReceptioniste),
             'numeroPlaque': PlutoCell(value: item.numeroPlaque),
             'dateHeureSortieAnguin': PlutoCell(
-                value: DateFormat("dd-MM-yy H:mm")
+                value: DateFormat("dd-MM-yyyy HH:mm")
                     .format(item.dateHeureSortieAnguin)),
             'created': PlutoCell(
-                value: DateFormat("dd-MM-yy H:mm").format(item.created))
+                value: DateFormat("dd-MM-yyyy HH:mm").format(item.created))
           }));
           stateManager!.resetCurrentState();
         }

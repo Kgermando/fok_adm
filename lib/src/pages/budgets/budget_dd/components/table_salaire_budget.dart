@@ -156,18 +156,6 @@ class _TableSalairesBudgetState extends State<TableSalairesBudget> {
       ),
       PlutoColumn(
         readOnly: true,
-        title: 'Approbation',
-        field: 'approbation',
-        type: PlutoColumnType.text(),
-        enableRowDrag: true,
-        enableContextMenu: false,
-        enableDropToResize: true,
-        titleTextAlign: PlutoColumnTextAlign.left,
-        width: 150,
-        minWidth: 150,
-      ),
-      PlutoColumn(
-        readOnly: true,
         title: 'Observation',
         field: 'observation',
         type: PlutoColumnType.text(),
@@ -229,10 +217,6 @@ class _TableSalairesBudgetState extends State<TableSalairesBudget> {
             'nom': PlutoCell(value: item.nom),
             'matricule': PlutoCell(value: item.matricule),
             'departement': PlutoCell(value: item.departement),
-            'approbation': PlutoCell(
-                value: (item.approbationDG == "Approved")
-                    ? "Approuvé"
-                    : "Non Approuvé"),
             'observation': PlutoCell(
                 value: (item.observation == true) ? "Payé" : "Non payé"),
             'modePaiement': PlutoCell(value: item.modePaiement),

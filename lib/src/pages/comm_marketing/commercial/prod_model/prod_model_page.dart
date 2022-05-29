@@ -5,7 +5,7 @@ import 'package:fokad_admin/src/navigation/drawer/drawer_menu.dart';
 import 'package:fokad_admin/src/navigation/header/custom_appbar.dart';
 import 'package:fokad_admin/src/pages/comm_marketing/commercial/prod_model/components/table_produit_model.dart';
 import 'package:fokad_admin/src/routes/routes.dart';
-import 'package:routemaster/routemaster.dart';
+
 
 class ProduitModelPage extends StatefulWidget {
   const ProduitModelPage({ Key? key }) : super(key: key);
@@ -26,7 +26,8 @@ class _ProduitModelPageState extends State<ProduitModelPage> {
           backgroundColor: Colors.amber.shade700,
             child: const Icon(Icons.add, color: Colors.white),
             onPressed: () {
-              Routemaster.of(context).push(ComMarketingRoutes.comMarketingProduitModelAdd);
+              Navigator.pushNamed(
+                  context, ComMarketingRoutes.comMarketingProduitModelAdd);
             }),
         body: SafeArea(
           child: Row(

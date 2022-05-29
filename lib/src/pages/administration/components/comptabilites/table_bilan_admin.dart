@@ -1,10 +1,8 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:fokad_admin/src/api/auth/auth_api.dart';
 import 'package:fokad_admin/src/api/comptabilite/bilan_api.dart';
 import 'package:fokad_admin/src/models/comptabilites/bilan_model.dart';
-import 'package:fokad_admin/src/models/users/user_model.dart';
 import 'package:fokad_admin/src/pages/comptabilite/bilan/components/detail_bilan.dart';
 import 'package:fokad_admin/src/utils/class_implemented.dart';
 import 'package:fokad_admin/src/widgets/print_widget.dart';
@@ -142,7 +140,7 @@ class _TableBilanAdminState extends State<TableBilanAdmin> {
   Future agentsRow() async {
     // UserModel userModel = await AuthApi().getUserId();
     List<BilanModel?> dataList = await BilanApi().getAllData();
-    var data = dataList;
+    var data = dataList.toList();
 
     if (mounted) {
       setState(() {

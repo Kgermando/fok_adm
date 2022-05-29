@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:fokad_admin/src/api/approbation/approbation_api.dart';
 import 'package:fokad_admin/src/api/auth/auth_api.dart';
 import 'package:fokad_admin/src/api/finances/dette_api.dart';
 import 'package:fokad_admin/src/models/finances/dette_model.dart';
@@ -257,18 +258,6 @@ class _TableDetteState extends State<TableDette> {
       ),
       PlutoColumn(
         readOnly: true,
-        title: 'Approbation',
-        field: 'approbation',
-        type: PlutoColumnType.text(),
-        enableRowDrag: true,
-        enableContextMenu: false,
-        enableDropToResize: true,
-        titleTextAlign: PlutoColumnTextAlign.left,
-        width: 150,
-        minWidth: 150,
-      ),
-      PlutoColumn(
-        readOnly: true,
         title: 'Date',
         field: 'created',
         type: PlutoColumnType.text(),
@@ -285,12 +274,18 @@ class _TableDetteState extends State<TableDette> {
   Future agentsRow() async {
     UserModel userModel = await AuthApi().getUserId();
     List<DetteModel?> dataList = await DetteApi().getAllData();
-    var data = dataList
-        .where((element) =>
-            element!.statutPaie == true ||
-            element.approbationDG == 'Approved' ||
-            element.signature == userModel.matricule)
-        .toList();
+    List<DetteModel?> data = [];
+    var approbations = await ApprobationApi().getAllData();
+    for (var item in approbations) {
+      data = dataList
+          .where((element) =>
+              element!.id == item.reference &&
+                  item.fontctionOccupee == 'Directeur générale' &&
+                  item.approbation == "Approved" ||
+              element.signature == userModel.matricule)
+          .toList();
+    } 
+    
     if (mounted) {
       setState(() {
         for (var item in data) {
@@ -302,7 +297,6 @@ class _TableDetteState extends State<TableDette> {
             'libelle': PlutoCell(value: item.libelle),
             'montant': PlutoCell(value: item.montant),
             'numeroOperation': PlutoCell(value: item.numeroOperation),
-            'approbation': PlutoCell(value: item.approbationDG),
             'created': PlutoCell(
                 value: DateFormat("DD-MM-yyyy HH:mm").format(item.created))
           }));

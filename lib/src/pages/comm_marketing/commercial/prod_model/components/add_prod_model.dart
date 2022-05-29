@@ -295,12 +295,6 @@ class _AddProModelState extends State<AddProModel> {
         sousCategorie3: sousCategorie3Controller.text,
         sousCategorie4: sousCategorie4Controller.text,
         idProduct: idProductform,
-        approbationDG: '-',
-        signatureDG: '-',
-        signatureJustificationDG: '-',
-        approbationDD: '-',
-        signatureDD: '-',
-        signatureJustificationDD: '-',
         signature: signature.toString(),
         created: DateTime.now());
     await ProduitModelApi().insertData(productModel);

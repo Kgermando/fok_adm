@@ -75,7 +75,7 @@ class _DetailStockGlobalState extends State<DetailStockGlobal> {
                                       width: p20,
                                       child: IconButton(
                                           onPressed: () =>
-                                              Navigator.of(context).pop(),
+                                              Navigator.pop(context),
                                           icon: const Icon(Icons.arrow_back)),
                                     ),
                                     const SizedBox(width: p10),
@@ -88,9 +88,8 @@ class _DetailStockGlobalState extends State<DetailStockGlobal> {
                                   ],
                                 ),
                                 Expanded(
-                                    child: Scrollbar(
+                                    child: SingleChildScrollView(
                                         controller: _controllerScroll,
-                                        isAlwaysShown: true,
                                         child: pageDetail(data)))
                               ],
                             );

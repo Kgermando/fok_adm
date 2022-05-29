@@ -9,7 +9,6 @@ import 'package:fokad_admin/src/navigation/drawer/drawer_menu.dart';
 import 'package:fokad_admin/src/navigation/header/custom_appbar.dart';
 import 'package:fokad_admin/src/pages/rh/presences/components/table_presence.dart';
 import 'package:fokad_admin/src/routes/routes.dart';
-import 'package:routemaster/routemaster.dart';
 
 class PresenceRh extends StatefulWidget {
   const PresenceRh({Key? key}) : super(key: key);
@@ -48,7 +47,7 @@ class _PresenceRhState extends State<PresenceRh> {
       floatingActionButton:  (p.isNotEmpty) ? Container() : FloatingActionButton(
         child: const Icon(Icons.add),
         onPressed: () {
-          Routemaster.of(context).replace(RhRoutes.rhPresenceAdd);
+          Navigator.pushNamed(context, RhRoutes.rhPresenceAdd);
         }
       ),
       body: SafeArea(

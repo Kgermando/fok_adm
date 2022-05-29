@@ -73,7 +73,7 @@ class _DetailAnnuaireState extends State<DetailAnnuaire> {
                           SizedBox(
                             width: p20,
                             child: IconButton(
-                                onPressed: () => Navigator.of(context).pop(),
+                                onPressed: () => Navigator.pop(context),
                                 icon: const Icon(Icons.arrow_back)),
                           ),
                           const SizedBox(width: p10),

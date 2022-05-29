@@ -14,7 +14,7 @@ import 'package:fokad_admin/src/pages/archives/components/finance_archive.dart';
 import 'package:fokad_admin/src/pages/archives/components/logistique_archive.dart';
 import 'package:fokad_admin/src/pages/archives/components/rh_archive.dart';
 import 'package:fokad_admin/src/routes/routes.dart';
-import 'package:routemaster/routemaster.dart';
+
 
 class ArchivePage extends StatefulWidget {
   const ArchivePage({ Key? key }) : super(key: key);
@@ -65,7 +65,8 @@ class _ArchivePageState extends State<ArchivePage> {
           backgroundColor: Colors.brown.shade700,
             child: const Icon(Icons.add),
             onPressed: () {
-              Routemaster.of(context).push(ArchiveRoutes.addArcihves);
+              Navigator.pushNamed(
+                  context, ArchiveRoutes.addArcihves);
             }),
         body: SafeArea(
           child: Row(

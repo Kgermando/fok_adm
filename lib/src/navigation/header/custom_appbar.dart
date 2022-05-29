@@ -15,7 +15,8 @@ import 'package:fokad_admin/src/routes/routes.dart';
 import 'package:fokad_admin/src/utils/menu_items.dart';
 import 'package:fokad_admin/src/utils/menu_options.dart';
 import 'package:badges/badges.dart';
-import 'package:routemaster/routemaster.dart';
+
+
 
 class CustomAppbar extends StatefulWidget {
   const CustomAppbar(
@@ -99,7 +100,8 @@ class _CustomAppbarState extends State<CustomAppbar> {
                         if (userModel.departement == "Commercial et Marketing")
                           IconButton(
                               onPressed: () {
-                                Routemaster.of(context).replace(
+                                Navigator.pushNamed(
+                                    context,
                                     ComMarketingRoutes.comMarketingcart);
                               },
                               icon: Badge(
@@ -110,7 +112,8 @@ class _CustomAppbarState extends State<CustomAppbar> {
                               )),
                         IconButton(
                             onPressed: () {
-                              Routemaster.of(context).replace(MailRoutes.mails);
+                              Navigator.pushNamed(context,
+                                  MailRoutes.mails);
                             },
                             icon: Badge(
                               showBadge: (mailsCount >= 1),
@@ -123,8 +126,9 @@ class _CustomAppbarState extends State<CustomAppbar> {
                           if (tacheCount >= 1)
                             IconButton(
                                 onPressed: () {
-                                  Routemaster.of(context)
-                                      .replace(ExploitationRoutes.expTache);
+                                  Navigator.pushNamed(
+                                      context,
+                                      ExploitationRoutes.expTache);
                                 },
                                 icon: Badge(
                                   badgeContent: Text('$tacheCount',

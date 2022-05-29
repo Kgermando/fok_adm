@@ -774,12 +774,6 @@ class _AddBilanState extends State<AddBilan> {
         comptesActif: jsonActifList,
         comptesPactif: jsonPassifList,
         statut: statut,
-        approbationDG: '-',
-        signatureDG: '-',
-        signatureJustificationDG: '-',
-        approbationDD: '-',
-        signatureDD: '-',
-        signatureJustificationDD: '-',
         signature: user!.matricule.toString(),
         created: DateTime.now());
     await BilanApi().insertData(bilanModel);

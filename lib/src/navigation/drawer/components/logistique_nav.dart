@@ -12,7 +12,6 @@ import 'package:fokad_admin/src/api/logistiques/trajet_api.dart';
 import 'package:fokad_admin/src/models/users/user_model.dart';
 import 'package:fokad_admin/src/navigation/drawer/drawer_widget.dart';
 import 'package:fokad_admin/src/routes/routes.dart';
-import 'package:routemaster/routemaster.dart';
 
 class LogistiqueNav extends StatefulWidget {
   const LogistiqueNav({Key? key, required this.pageCurrente}) : super(key: key);
@@ -111,7 +110,7 @@ class _LogistiqueNavState extends State<LogistiqueNav> {
             title: 'Dashboard',
             style: bodyText1!,
             onTap: () {
-              Routemaster.of(context).replace(LogistiqueRoutes.logDashboard);
+              Navigator.pushNamed(context, LogistiqueRoutes.logDashboard);
               // Navigator.of(context).pop();
             }),
         if (userRole <= 2)
@@ -129,7 +128,7 @@ class _LogistiqueNavState extends State<LogistiqueNav> {
               child: const Icon(Icons.notifications),
             ),
             onTap: () {
-              Routemaster.of(context).replace(LogistiqueRoutes.logDD);
+              Navigator.pushNamed(context, LogistiqueRoutes.logDD);
               // Navigator.of(context).pop();
             }),
         ExpansionTile(
@@ -149,8 +148,7 @@ class _LogistiqueNavState extends State<LogistiqueNav> {
                 title: 'Anguins',
                 style: bodyText2!,
                 onTap: () {
-                  Routemaster.of(context)
-                      .replace(LogistiqueRoutes.logAnguinAuto);
+                  Navigator.pushNamed(context, LogistiqueRoutes.logAnguinAuto);
                   // Navigator.of(context).pop();
                 }),
             DrawerWidget(
@@ -161,8 +159,7 @@ class _LogistiqueNavState extends State<LogistiqueNav> {
                 title: 'Carburant',
                 style: bodyText2,
                 onTap: () {
-                  Routemaster.of(context)
-                      .replace(LogistiqueRoutes.logCarburantAuto);
+                  Navigator.pushNamed(context, LogistiqueRoutes.logCarburantAuto);
                   // Navigator.of(context).pop();
                 }),
             DrawerWidget(
@@ -172,8 +169,8 @@ class _LogistiqueNavState extends State<LogistiqueNav> {
                 title: 'Trajets',
                 style: bodyText2,
                 onTap: () {
-                  Routemaster.of(context)
-                      .replace(LogistiqueRoutes.logTrajetAuto);
+                  Navigator.pushNamed(
+                      context, LogistiqueRoutes.logTrajetAuto);
                   // Navigator.of(context).pop();
                 }),
           ],
@@ -196,8 +193,7 @@ class _LogistiqueNavState extends State<LogistiqueNav> {
                 title: 'Etat materiels',
                 style: bodyText2,
                 onTap: () {
-                  Routemaster.of(context)
-                      .replace(LogistiqueRoutes.logEtatMateriel);
+                  Navigator.pushNamed(context, LogistiqueRoutes.logEtatMateriel);
                   // Navigator.of(context).pop();
                 }),
             DrawerWidget(
@@ -208,8 +204,8 @@ class _LogistiqueNavState extends State<LogistiqueNav> {
                 title: 'Mobiliers',
                 style: bodyText2,
                 onTap: () {
-                  Routemaster.of(context)
-                      .replace(LogistiqueRoutes.logMobilierMateriel);
+                  Navigator.pushNamed(
+                      context, LogistiqueRoutes.logMobilierMateriel);
                   // Navigator.of(context).pop();
                 }),
             DrawerWidget(
@@ -220,8 +216,8 @@ class _LogistiqueNavState extends State<LogistiqueNav> {
                 title: 'Immobiliers',
                 style: bodyText2,
                 onTap: () {
-                  Routemaster.of(context)
-                      .replace(LogistiqueRoutes.logImmobilierMateriel);
+                  Navigator.pushNamed(
+                      context, LogistiqueRoutes.logImmobilierMateriel);
                   // Navigator.of(context).pop();
                 }),
           ],
@@ -243,8 +239,8 @@ class _LogistiqueNavState extends State<LogistiqueNav> {
                 title: 'Entretiens',
                 style: bodyText2,
                 onTap: () {
-                  Routemaster.of(context)
-                      .replace(LogistiqueRoutes.logEntretien);
+                  Navigator.pushNamed(
+                      context, LogistiqueRoutes.logEntretien);
                   // Navigator.of(context).pop();
                 }),
           ],
@@ -256,7 +252,8 @@ class _LogistiqueNavState extends State<LogistiqueNav> {
             title: 'Performences',
             style: bodyText1!,
             onTap: () {
-              Routemaster.of(context).replace(RhRoutes.rhPerformence);
+              Navigator.pushNamed(
+                  context, RhRoutes.rhPerformence);
               // Navigator.of(context).pop();
             }),
       ],

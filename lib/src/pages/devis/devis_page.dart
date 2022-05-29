@@ -12,7 +12,7 @@ import 'package:fokad_admin/src/pages/devis/departements/finance_dep.dart';
 import 'package:fokad_admin/src/pages/devis/departements/logistique_dep.dart';
 import 'package:fokad_admin/src/pages/devis/departements/rh_dep.dart';
 import 'package:fokad_admin/src/routes/routes.dart';
-import 'package:routemaster/routemaster.dart';
+
 
 class DevisPage extends StatefulWidget {
   const DevisPage({Key? key}) : super(key: key);
@@ -33,7 +33,8 @@ class _DevisPageState extends State<DevisPage> {
         tooltip: 'Nouveau devis',
         child: const Icon(Icons.add),
         onPressed: () {
-          Routemaster.of(context).replace(DevisRoutes.devisAdd);
+          Navigator.pushNamed(
+                  context, DevisRoutes.devisAdd);
         }
       ),
       body: SafeArea(

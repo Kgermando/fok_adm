@@ -190,8 +190,7 @@ class _TableCampaignDGState extends State<TableCampaignDG> {
 
   Future agentsRow() async {
     List<CampaignModel?> dataList = await CampaignApi().getAllData();
-    var data = dataList.where((element) =>
-        element!.approbationDD == 'Approved' && element.approbationDG == '-');
+    var data = dataList.toList();
 
     if (mounted) {
       setState(() {

@@ -189,7 +189,7 @@ class _TableTrajetDDState extends State<TableTrajetDD> {
   Future agentsRow() async {
     List<TrajetModel?> dataList = await TrajetApi().getAllData();
     var data =
-        dataList.where((element) => element!.approbationDD == "-").toList();
+        dataList.toList();
 
     if (mounted) {
       setState(() {

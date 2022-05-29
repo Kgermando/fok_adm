@@ -5,7 +5,6 @@ import 'package:fokad_admin/src/navigation/drawer/drawer_menu.dart';
 import 'package:fokad_admin/src/navigation/header/custom_appbar.dart';
 import 'package:fokad_admin/src/pages/logistiques/materiels/components/table_etat_materiels.dart';
 import 'package:fokad_admin/src/routes/routes.dart';
-import 'package:routemaster/routemaster.dart';
 
 class EtatMateriel extends StatefulWidget {
   const EtatMateriel({Key? key}) : super(key: key);
@@ -25,7 +24,7 @@ class _EtatMaterielState extends State<EtatMateriel> {
         floatingActionButton: FloatingActionButton(
             child: const Icon(Icons.add),
             onPressed: () {
-              Routemaster.of(context).push(LogistiqueRoutes.logAddEtatMateriel);
+              Navigator.pushNamed(context, LogistiqueRoutes.logAddEtatMateriel);
             }),
         body: SafeArea(
           child: Row(

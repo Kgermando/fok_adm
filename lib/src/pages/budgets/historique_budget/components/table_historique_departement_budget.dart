@@ -137,10 +137,7 @@ class _HistoriqueTableDepartementBudgetState
     List<DepartementBudgetModel?> dataList =
         await DepeartementBudgetApi().getAllData();
     var data = dataList
-        .where((element) =>
-            element!.approbationDG == "Approved" &&
-            element.approbationDD == "Approved" &&
-            DateTime.now().isAfter(element.periodeFin))
+        .where((element) => DateTime.now().isAfter(element!.periodeFin))
         .toList();
 
     if (mounted) {

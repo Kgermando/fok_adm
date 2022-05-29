@@ -5,7 +5,6 @@ import 'package:fokad_admin/src/navigation/drawer/drawer_menu.dart';
 import 'package:fokad_admin/src/navigation/header/custom_appbar.dart';
 import 'package:fokad_admin/src/pages/finances/transactions/components/components/fin_exterieur/table_fin_exterieur.dart';
 import 'package:fokad_admin/src/routes/routes.dart';
-import 'package:routemaster/routemaster.dart';
 
 class FinExterneTransactions extends StatefulWidget {
   const FinExterneTransactions({Key? key}) : super(key: key);
@@ -29,8 +28,7 @@ class _FinExterneTransactionsState extends State<FinExterneTransactions> {
           backgroundColor: Colors.teal.shade700,
           child: const Icon(Icons.add),
           onPressed: () {
-            Routemaster.of(context)
-                .replace(FinanceRoutes.transactionsFinancementExterneAdd);
+            Navigator.pushNamed(context, FinanceRoutes.transactionsFinancementExterneAdd);
           }),
       body: SafeArea(
         child: Row(

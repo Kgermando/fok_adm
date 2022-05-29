@@ -139,30 +139,6 @@ class _TableDevisBudgetDDState extends State<TableDevisBudgetDD> {
       ),
       PlutoColumn(
         readOnly: true,
-        title: 'Approbation DG',
-        field: 'approbationDG',
-        type: PlutoColumnType.text(),
-        enableRowDrag: true,
-        enableContextMenu: false,
-        enableDropToResize: true,
-        titleTextAlign: PlutoColumnTextAlign.left,
-        width: 150,
-        minWidth: 150,
-      ),
-      PlutoColumn(
-        readOnly: true,
-        title: 'Approbation Budget',
-        field: 'approbationBudget',
-        type: PlutoColumnType.text(),
-        enableRowDrag: true,
-        enableContextMenu: false,
-        enableDropToResize: true,
-        titleTextAlign: PlutoColumnTextAlign.left,
-        width: 150,
-        minWidth: 150,
-      ),
-      PlutoColumn(
-        readOnly: true,
         title: 'Date',
         field: 'created',
         type: PlutoColumnType.text(),
@@ -197,8 +173,6 @@ class _TableDevisBudgetDDState extends State<TableDevisBudgetDD> {
             'title': PlutoCell(value: item.title),
             'priority': PlutoCell(value: item.priority),
             'departement': PlutoCell(value: item.departement),
-            'approbationDG': PlutoCell(value: item.approbationDG),
-            'approbationBudget': PlutoCell(value: item.approbationBudget),
             'created': PlutoCell(
                 value: DateFormat("dd-MM-yy HH:mm").format(item.created))
           }));

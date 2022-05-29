@@ -26,7 +26,6 @@ class _BonLivraisonPageState extends State<BonLivraisonPage> {
     super.initState();
   }
 
-
   UserModel user = UserModel(
       nom: '-',
       prenom: '-',
@@ -36,7 +35,7 @@ class _BonLivraisonPageState extends State<BonLivraisonPage> {
       departement: '-',
       servicesAffectation: '-',
       fonctionOccupe: '-',
-      role: '-',
+      role: '5',
       isOnline: false,
       createdAt: DateTime.now(),
       passwordHash: '-',
@@ -124,7 +123,8 @@ class _BonLivraisonPageState extends State<BonLivraisonPage> {
     return GestureDetector(
       onTap: () {
         Navigator.of(context).push(MaterialPageRoute(
-            builder: (context) => DetailBonLivraison(id: bonLivraisonModel.id!)));
+            builder: (context) =>
+                DetailBonLivraison(id: bonLivraisonModel.id!)));
       },
       child: Card(
         elevation: 10,

@@ -537,18 +537,6 @@ class _AddAutreFinState extends State<AddAutreFin> {
         typeOperation: typeOperation.toString(),
         numeroOperation: 'Transaction-Fin-$resourceFin-${numberItem + 1}',
         ressourceFin: resourceFin.toString(),
-        approbationDG: '-',
-        signatureDG: '-',
-        signatureJustificationDG: '-',
-        approbationFin: '-',
-        signatureFin: '-',
-        signatureJustificationFin: '-',
-        approbationBudget: '-',
-        signatureBudget: '-',
-        signatureJustificationBudget: '-',
-        approbationDD: '-',
-        signatureDD: '-',
-        signatureJustificationDD: '-',
         signature: matricule.toString(),
         created: DateTime.now());
 

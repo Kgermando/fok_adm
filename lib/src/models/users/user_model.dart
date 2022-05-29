@@ -35,21 +35,21 @@ class UserModel {
 
   factory UserModel.fromSQL(List<dynamic> row) {
     return UserModel(
-      id: row[0],
-      photo: row[1],
-      nom: row[2],
-      prenom: row[3],
-      email: row[4],
-      telephone: row[5],
-      matricule: row[6],
-      departement: row[7],
-      servicesAffectation: row[8],
-      fonctionOccupe: row[9],
-      role: row[10],
-      isOnline: row[11],
-      createdAt: row[12],
-      passwordHash: row[13],
-      succursale: row[14]
+        id: row[0],
+        photo: row[1],
+        nom: row[2],
+        prenom: row[3],
+        email: row[4],
+        telephone: row[5],
+        matricule: row[6],
+        departement: row[7],
+        servicesAffectation: row[8],
+        fonctionOccupe: row[9],
+        role: row[10],
+        isOnline: row[11],
+        createdAt: row[12],
+        passwordHash: row[13],
+        succursale: row[14]
     );
   }
 
