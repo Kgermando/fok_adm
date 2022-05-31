@@ -944,7 +944,7 @@ class _DetailBalanceState extends State<DetailBalance> {
 
   Future submitApprobation(BalanceCompteModel data) async {
     final approbation = ApprobationModel(
-        reference: data.id!,
+        reference: data.created.microsecondsSinceEpoch,
         title: data.title,
         departement: 'Comptabilites',
         fontctionOccupee: user.fonctionOccupe,

@@ -3,7 +3,7 @@
 import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:fokad_admin/src/helpers/user_shared_pref.dart';
 import 'package:fokad_admin/src/api/auth/auth_api.dart';
 import 'package:fokad_admin/src/api/route_api.dart';
 import 'package:fokad_admin/src/models/rh/agent_count_model.dart';
@@ -12,15 +12,9 @@ import 'package:http/http.dart' as http;
 
 class AgentsApi extends ChangeNotifier {
   var client = http.Client();
-  final storage = const FlutterSecureStorage();
-
-  Future<String?> getToken() async {
-    var data = await storage.read(key: "accessToken");
-    return data;
-  }
 
   Future<AgentCountModel> getCount() async {
-    String? token = await getToken();
+    String? token = await UserSharedPref().getAccessToken();
     if (token!.isNotEmpty) {
       var splittedJwt = token.split(".");
       var payload = json.decode(
@@ -45,7 +39,7 @@ class AgentsApi extends ChangeNotifier {
   }
 
   Future<List<AgentModel>> getAllData() async {
-    String? token = await getToken();
+    String? token = await UserSharedPref().getAccessToken();
 
     if (token!.isNotEmpty) {
       var splittedJwt = token.split(".");
@@ -77,7 +71,7 @@ class AgentsApi extends ChangeNotifier {
   }
 
   Future<List<AgentModel>> getAllSearch(String query) async {
-    String? token = await getToken();
+    String? token = await UserSharedPref().getAccessToken();
     if (token!.isNotEmpty) {
       var splittedJwt = token.split(".");
       var payload = json.decode(
@@ -112,7 +106,7 @@ class AgentsApi extends ChangeNotifier {
   }
 
   Future<AgentModel> getOneData(int id) async {
-    String? token = await getToken();
+    String? token = await UserSharedPref().getAccessToken();
 
     if (token!.isNotEmpty) {
       var splittedJwt = token.split(".");
@@ -135,7 +129,7 @@ class AgentsApi extends ChangeNotifier {
   }
 
   Future<List<AgentPieChartModel>> getChartPieSexe() async {
-    String? token = await getToken();
+    String? token = await UserSharedPref().getAccessToken();
 
     if (token!.isNotEmpty) {
       var splittedJwt = token.split(".");
@@ -162,14 +156,14 @@ class AgentsApi extends ChangeNotifier {
   }
 
   Future<AgentModel> insertData(AgentModel agentModel) async {
-    final accessToken = await storage.read(key: 'accessToken');
+    String? token = await UserSharedPref().getAccessToken();
     var data = agentModel.toJson();
     var body = jsonEncode(data);
 
     var resp = await client.post(addAgentsUrl,
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
-          'Authorization': 'Bearer $accessToken'
+          'Authorization': 'Bearer $token'
         },
         body: body);
     if (resp.statusCode == 200) {
@@ -178,12 +172,13 @@ class AgentsApi extends ChangeNotifier {
       await AuthApi().refreshAccessToken();
       return insertData(agentModel);
     } else {
+      
       throw Exception(json.decode(resp.body)['message']);
     }
   }
 
   Future<AgentModel> updateData(int id, AgentModel agentModel) async {
-    final accessToken = await storage.read(key: 'accessToken');
+    String? token = await UserSharedPref().getAccessToken();
 
     var data = agentModel.toJson();
     var body = jsonEncode(data);
@@ -192,7 +187,7 @@ class AgentsApi extends ChangeNotifier {
     var res = await client.put(updateUrl,
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
-          'Authorization': 'Bearer $accessToken'
+          'Authorization': 'Bearer $token'
         },
         body: body);
     if (res.statusCode == 200) {
@@ -203,13 +198,13 @@ class AgentsApi extends ChangeNotifier {
   }
 
   Future<AgentModel> deleteData(int id) async {
-    final accessToken = await storage.read(key: 'accessToken');
+    String? token = await UserSharedPref().getAccessToken();
 
     var deleteUrl = Uri.parse("$mainUrl/rh/agents/delete-agent/$id");
 
     var res = await client.delete(deleteUrl, headers: <String, String>{
       'Content-Type': 'application/json; charset=UTF-8',
-      'Authorization': 'Bearer $accessToken'
+      'Authorization': 'Bearer $token'
     });
     if (res.statusCode == 200) {
       return AgentModel.fromJson(json.decode(res.body)['agents']);

@@ -3,22 +3,21 @@
 import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:fokad_admin/src/api/auth/api_error.dart';
 import 'package:fokad_admin/src/api/auth/token.dart';
 import 'package:fokad_admin/src/api/route_api.dart';
-import 'package:fokad_admin/src/helpers/user_secure_storage.dart';
+import 'package:fokad_admin/src/helpers/user_shared_pref.dart';
 import 'package:fokad_admin/src/models/users/user_model.dart';
 import 'package:http/http.dart' as http;
 
 class AuthApi extends ChangeNotifier {
   var client = http.Client();
-  final storage = const FlutterSecureStorage();
+  // final storage = const FlutterSecureStorage();
 
-  Future<String?> getToken() async {
-    final data = await storage.read(key: "accessToken");
-    return data;
-  }
+  // Future<String?> getToken() async {
+  //   final data = await storage.read(key: "accessToken");
+  //   return data;
+  // }
 
   Future<bool> login(String matricule, String passwordHash) async {
     var data = {'matricule': matricule, 'passwordHash': passwordHash};
@@ -28,9 +27,9 @@ class AuthApi extends ChangeNotifier {
     if (resp.statusCode == 200) {
       Token token = Token.fromJson(json.decode(resp.body));
       // Store the tokens
-      UserSecureStorage().saveIdToken(token.id.toString()); // Id user
-      UserSecureStorage().saveAccessToken(token.accessToken);
-      UserSecureStorage().saveRefreshToken(token.refreshToken);
+      UserSharedPref().saveIdToken(token.id.toString()); // Id user
+      UserSharedPref().saveAccessToken(token.accessToken);
+      UserSharedPref().saveRefreshToken(token.refreshToken);
       return true;
     } else {
       // throw ApiError.fromJson(json.decode(resp.body));
@@ -40,7 +39,8 @@ class AuthApi extends ChangeNotifier {
 
   // Check if the user is logged in
   Future<bool> isLoggedIn() async {
-    final accessToken = await getToken();
+    // final accessToken = await getToken();
+    String? accessToken = await UserSharedPref().getAccessToken();
 
     if (accessToken != null && accessToken.isNotEmpty) {
       // try {
@@ -55,13 +55,15 @@ class AuthApi extends ChangeNotifier {
   }
 
   Future<void> refreshAccessToken() async {
-    String? token = await getToken();
+    // String? token = await UserSharedPref().getAccessToken();
+    String? token = await UserSharedPref().getAccessToken();
     if (token!.isNotEmpty) {
       var splittedJwt = token.split(".");
       var payload = json.decode(
           ascii.decode(base64.decode(base64.normalize(splittedJwt[1]))));
     }
-    final refreshToken = await storage.read(key: 'refreshToken');
+    // final refreshToken = await storage.read(key: 'refreshToken');
+    String? refreshToken = await UserSharedPref().getRefreshToken();
     if (refreshToken!.isNotEmpty) {
       var splittedJwt = refreshToken.split(".");
       var payload = json.decode(
@@ -78,11 +80,11 @@ class AuthApi extends ChangeNotifier {
     );
     if (resp.statusCode == 200) {
       Token token = Token.fromJson(json.decode(resp.body));
-      UserSecureStorage().saveAccessToken(token.accessToken);
-      UserSecureStorage().saveRefreshToken(token.refreshToken);
+      UserSharedPref().saveAccessToken(token.accessToken);
+      UserSharedPref().saveRefreshToken(token.refreshToken);
     } else {
-      UserSecureStorage().removeAccessToken();
-      UserSecureStorage().removeRefreshToken();
+      UserSharedPref().removeAccessToken();
+      UserSharedPref().removeRefreshToken();
       throw ApiError.fromJson(json.decode(resp.body));
     }
   }
@@ -102,7 +104,8 @@ class AuthApi extends ChangeNotifier {
   }
 
   Future<UserModel> getUserInfo() async {
-    String? token = await getToken();
+    // String? token = await UserSharedPref().getAccessToken();
+    String? token = await UserSharedPref().getAccessToken();
     if (token!.isNotEmpty) {
       var splittedJwt = token.split(".");
       var payload = json.decode(
@@ -115,7 +118,6 @@ class AuthApi extends ChangeNotifier {
         'Authorization': 'Bearer $token'
       },
     );
-
     if (resp.statusCode == 200) {
       return UserModel.fromJson(json.decode(resp.body));
     } else {
@@ -124,17 +126,19 @@ class AuthApi extends ChangeNotifier {
   }
 
   Future<UserModel> getUserId() async {
-    String? token = await getToken();
+    // String? token = await UserSharedPref().getAccessToken();
+    String? token = await UserSharedPref().getAccessToken();
+    // token ??= '0';
     if (token!.isNotEmpty) {
       var splittedJwt = token.split(".");
       var payload = json.decode(
           ascii.decode(base64.decode(base64.normalize(splittedJwt[1]))));
     }
 
-    var _keyIdToken = 'idToken';
-    final data = await storage.read(key: _keyIdToken);
+    // var _keyIdToken = 'idToken';
+    // final data = await storage.read(key: _keyIdToken);
+    String? data = await UserSharedPref().getIdToken();
     String idPrefs = jsonDecode(data!);
-    // print('idPrefs $idPrefs');
     int id = int.parse(idPrefs);
     var userIdUrl = Uri.parse("$mainUrl/user/$id");
     var resp = await client.get(
@@ -153,7 +157,8 @@ class AuthApi extends ChangeNotifier {
 
   Future<void> logout() async {
     try {
-      String? token = await getToken();
+      // String? token = await UserSharedPref().getAccessToken();
+      String? token = await UserSharedPref().getAccessToken();
       if (token!.isNotEmpty) {
         var splittedJwt = token.split(".");
         var payload = json.decode(
@@ -167,9 +172,9 @@ class AuthApi extends ChangeNotifier {
         },
       );
       if (resp.statusCode == 200) {
-        UserSecureStorage().removeIdToken();
-        UserSecureStorage().removeAccessToken();
-        UserSecureStorage().removeRefreshToken();
+        UserSharedPref().removeIdToken();
+        UserSharedPref().removeAccessToken();
+        UserSharedPref().removeRefreshToken();
       }
     } catch (e) {
       throw Exception(['message']);

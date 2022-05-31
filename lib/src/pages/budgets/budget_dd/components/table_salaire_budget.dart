@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:fokad_admin/src/api/approbation/approbation_api.dart';
 import 'package:fokad_admin/src/api/rh/paiement_salaire_api.dart';
 import 'package:fokad_admin/src/models/rh/paiement_salaire_model.dart';
-import 'package:fokad_admin/src/pages/rh/paiements/components/paiement_bulletin.dart';
+import 'package:fokad_admin/src/routes/routes.dart';
 import 'package:fokad_admin/src/widgets/print_widget.dart';
 import 'package:fokad_admin/src/utils/class_implemented.dart';
 import 'package:intl/intl.dart';
@@ -43,8 +43,8 @@ class _TableSalairesBudgetState extends State<TableSalairesBudget> {
           final dataList = tapEvent.row!.cells.values;
           final idPlutoRow = dataList.elementAt(0);
 
-          Navigator.of(context).push(MaterialPageRoute(
-              builder: (context) => PaiementBulletin(id: idPlutoRow.value)));
+          Navigator.pushNamed(context, RhRoutes.rhPaiementBulletin,
+              arguments: idPlutoRow.value);
         },
         onLoaded: (PlutoGridOnLoadedEvent event) {
           stateManager = event.stateManager;
@@ -201,9 +201,11 @@ class _TableSalairesBudgetState extends State<TableSalairesBudget> {
     for (var item in approbations) {
       data = dataList
           .where((element) =>
-              element!.id == item.reference &&
-              item.fontctionOccupee == 'Directeur générale' &&
-              item.approbation == "Approved")
+          element!.createdAt.month == DateTime.now().month &&
+            element.createdAt.year == DateTime.now().year &&
+            element.id == item.reference &&
+            item.fontctionOccupee == 'Directeur générale' &&
+            item.approbation == "Approved")
           .toList();
     }
 

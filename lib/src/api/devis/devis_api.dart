@@ -2,7 +2,7 @@
 
 import 'dart:convert';
 
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:fokad_admin/src/helpers/user_shared_pref.dart';
 import 'package:fokad_admin/src/api/auth/auth_api.dart';
 import 'package:fokad_admin/src/api/route_api.dart';
 import 'package:fokad_admin/src/models/charts/pie_chart_model.dart';
@@ -11,16 +11,15 @@ import 'package:http/http.dart' as http;
 
 class DevisAPi {
   var client = http.Client();
-  final storage = const FlutterSecureStorage();
+  // final storage = const FlutterSecureStorage();
 
-  Future<String?> getToken() async {
-    final data = await storage.read(key: "accessToken");
-    return data;
-  }
-
+  // Future<String?> getToken() async {
+  //   final data = await storage.read(key: "accessToken");
+  //   return data;
+  // }
 
   Future<List<DevisModel>> getAllData() async {
-    String? token = await getToken();
+    String? token = await UserSharedPref().getAccessToken();
 
     if (token!.isNotEmpty) {
       var splittedJwt = token.split(".");
@@ -48,7 +47,7 @@ class DevisAPi {
   }
 
   Future<List<PieChartModel>> getChartPieDepMounth() async {
-    String? token = await getToken();
+    String? token = await UserSharedPref().getAccessToken();
 
     if (token!.isNotEmpty) {
       var splittedJwt = token.split(".");
@@ -75,7 +74,7 @@ class DevisAPi {
   }
 
   Future<List<PieChartModel>> getChartPieDepYear() async {
-    String? token = await getToken();
+    String? token = await UserSharedPref().getAccessToken();
 
     if (token!.isNotEmpty) {
       var splittedJwt = token.split(".");
@@ -102,7 +101,7 @@ class DevisAPi {
   }
 
   Future<DevisModel> getOneData(int id) async {
-    String? token = await getToken();
+    String? token = await UserSharedPref().getAccessToken();
 
     if (token!.isNotEmpty) {
       var splittedJwt = token.split(".");
@@ -125,7 +124,7 @@ class DevisAPi {
   }
 
   Future<DevisModel> insertData(DevisModel devisModel) async {
-    final accessToken = await storage.read(key: 'accessToken');
+    String? token = await UserSharedPref().getAccessToken();
 
     var data = devisModel.toJson();
     var body = jsonEncode(data);
@@ -133,7 +132,7 @@ class DevisAPi {
     var resp = await client.post(addDevissUrl,
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
-          'Authorization': 'Bearer $accessToken'
+          'Authorization': 'Bearer $token'
         },
         body: body);
     if (resp.statusCode == 200) {
@@ -147,17 +146,16 @@ class DevisAPi {
   }
 
   Future<DevisModel> updateData(int id, DevisModel devisModel) async {
-    final accessToken = await storage.read(key: 'accessToken');
+    String? token = await UserSharedPref().getAccessToken();
 
     var data = devisModel.toJson();
     var body = jsonEncode(data);
-    var updateUrl = Uri.parse(
-        "$mainUrl/devis/update-devis/$id");
+    var updateUrl = Uri.parse("$mainUrl/devis/update-devis/$id");
 
     var res = await client.put(updateUrl,
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
-          'Authorization': 'Bearer $accessToken'
+          'Authorization': 'Bearer $token'
         },
         body: body);
     if (res.statusCode == 200) {
@@ -168,14 +166,13 @@ class DevisAPi {
   }
 
   Future<void> deleteData(int id) async {
-    final accessToken = await storage.read(key: 'accessToken');
+    String? token = await UserSharedPref().getAccessToken();
 
-    var deleteUrl = Uri.parse(
-        "$mainUrl/devis/delete-devis/$id");
+    var deleteUrl = Uri.parse("$mainUrl/devis/delete-devis/$id");
 
     var res = await client.delete(deleteUrl, headers: <String, String>{
       'Content-Type': 'application/json; charset=UTF-8',
-      'Authorization': 'Bearer $accessToken'
+      'Authorization': 'Bearer $token'
     });
     if (res.statusCode == 200) {
       // return DevisModel.fromJson(json.decode(res.body)['data']);

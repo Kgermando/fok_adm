@@ -12,7 +12,7 @@ import 'package:pdf/widgets.dart' as pw;
 import 'package:pdf/widgets.dart';
 
 // Local import
-import '/src/helpers/save_file_mobile_pdf.dart'
+import 'package:fokad_admin/src/helpers/save_file_mobile_pdf.dart'
     if (dart.library.html) 'src/helpers/save_file_web.dart' as helper;
 
 class AgentPdf {

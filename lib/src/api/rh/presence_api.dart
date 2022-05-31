@@ -2,24 +2,24 @@
 
 import 'dart:convert';
 
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:fokad_admin/src/api/auth/auth_api.dart';
 import 'package:fokad_admin/src/api/route_api.dart';
+import 'package:fokad_admin/src/helpers/user_shared_pref.dart';
 import 'package:fokad_admin/src/models/rh/presence_model.dart';
-import 'package:http/http.dart' as http; 
-
+import 'package:http/http.dart' as http;
 
 class PresenceApi {
-   var client = http.Client();
-  final storage = const FlutterSecureStorage();
+  var client = http.Client();
+  // final storage = const FlutterSecureStorage();
 
-  Future<String?> getToken() async {
-    final data = await storage.read(key: "accessToken");
-    return data;
-  }
+  // Future<String?> getToken() async {
+  //   final data = await storage.read(key: "accessToken");
+  //   return data;
+  // }
 
   Future<List<PresenceModel>> getAllData() async {
-    String? token = await getToken();
+    // String? token = await UserSharedPref().getAccessToken();
+    String? token = await UserSharedPref().getAccessToken();
 
     if (token!.isNotEmpty) {
       var splittedJwt = token.split(".");
@@ -43,14 +43,15 @@ class PresenceApi {
       for (var u in bodyList) {
         data.add(PresenceModel.fromJson(u));
       }
-      return data; 
+      return data;
     } else {
       throw Exception(jsonDecode(resp.body)['message']);
     }
   }
 
   Future<PresenceModel> getOneData(int id) async {
-    String? token = await getToken();
+    // String? token = await UserSharedPref().getAccessToken();
+    String? token = await UserSharedPref().getAccessToken();
 
     if (token!.isNotEmpty) {
       var splittedJwt = token.split(".");
@@ -72,9 +73,9 @@ class PresenceApi {
     }
   }
 
-  Future<PresenceModel> insertData(
-      PresenceModel presenceModel) async {
-    final accessToken = await storage.read(key: 'accessToken');
+  Future<PresenceModel> insertData(PresenceModel presenceModel) async {
+    // String? token = await UserSharedPref().getAccessToken();
+    String? token = await UserSharedPref().getAccessToken();
 
     var data = presenceModel.toJson();
     var body = jsonEncode(data);
@@ -82,7 +83,7 @@ class PresenceApi {
     var resp = await client.post(addPresenceUrl,
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
-          'Authorization': 'Bearer $accessToken'
+          'Authorization': 'Bearer $token'
         },
         body: body);
     if (resp.statusCode == 200) {
@@ -95,8 +96,9 @@ class PresenceApi {
     }
   }
 
-   Future<PresenceModel> updateData(int id, PresenceModel presenceModel) async {
-    final accessToken = await storage.read(key: 'accessToken');
+  Future<PresenceModel> updateData(int id, PresenceModel presenceModel) async {
+    // String? token = await UserSharedPref().getAccessToken();
+    String? token = await UserSharedPref().getAccessToken();
 
     var data = presenceModel.toJson();
     var body = jsonEncode(data);
@@ -105,7 +107,7 @@ class PresenceApi {
     var res = await client.put(updateUrl,
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
-          'Authorization': 'Bearer $accessToken'
+          'Authorization': 'Bearer $token'
         },
         body: body);
     if (res.statusCode == 200) {
@@ -115,16 +117,15 @@ class PresenceApi {
     }
   }
 
-  
   Future<PresenceModel> deleteData(int id) async {
-    final accessToken = await storage.read(key: 'accessToken');
+    // String? token = await UserSharedPref().getAccessToken();
+    String? token = await UserSharedPref().getAccessToken();
 
-    var deleteUrl =
-        Uri.parse("$mainUrl/rh/presences/delete-presence/$id");
+    var deleteUrl = Uri.parse("$mainUrl/rh/presences/delete-presence/$id");
 
     var res = await client.delete(deleteUrl, headers: <String, String>{
       'Content-Type': 'application/json; charset=UTF-8',
-      'Authorization': 'Bearer $accessToken'
+      'Authorization': 'Bearer $token'
     });
     if (res.statusCode == 200) {
       return PresenceModel.fromJson(json.decode(res.body)['agents']);
@@ -132,5 +133,4 @@ class PresenceApi {
       throw Exception(json.decode(res.body)['message']);
     }
   }
-
 }

@@ -870,7 +870,7 @@ class _DetailEntretienState extends State<DetailEntretien> {
 
   Future submitApprobation(EntretienModel data) async {
     final approbation = ApprobationModel(
-        reference: data.id!,
+        reference: data.created.microsecondsSinceEpoch,
         title: data.nom,
         departement: 'Logistique',
         fontctionOccupee: user.fonctionOccupe,

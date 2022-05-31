@@ -50,6 +50,7 @@ import 'package:fokad_admin/src/pages/comptabilite/grand_livre/grand_livre_compt
 import 'package:fokad_admin/src/pages/comptabilite/journal/components/add_journal_comptabilite.dart';
 import 'package:fokad_admin/src/pages/comptabilite/journal/journal_comptabilite.dart';
 import 'package:fokad_admin/src/pages/devis/components/add_devis.dart';
+import 'package:fokad_admin/src/pages/devis/components/detail_devis.dart';
 import 'package:fokad_admin/src/pages/devis/devis_page.dart';
 import 'package:fokad_admin/src/pages/exploitations/dashboard/dashboard_exp.dart';
 import 'package:fokad_admin/src/pages/exploitations/expl_dd/exploitaion_dd.dart';
@@ -88,10 +89,15 @@ import 'package:fokad_admin/src/pages/mails/components/new_mail.dart';
 import 'package:fokad_admin/src/pages/mails/mails_page.dart';
 import 'package:fokad_admin/src/pages/rh/agents/agents_rh.dart';
 import 'package:fokad_admin/src/pages/rh/agents/components/add_agent.dart';
+import 'package:fokad_admin/src/pages/rh/agents/components/detail_agent_page.dart';
+import 'package:fokad_admin/src/pages/rh/agents/components/update_agent.dart';
 import 'package:fokad_admin/src/pages/rh/dashboard/dashboard_rh.dart';
 import 'package:fokad_admin/src/pages/rh/dd_rh/departement_rh.dart';
 import 'package:fokad_admin/src/pages/rh/paiements/components/add_paiement_salaire.dart';
+import 'package:fokad_admin/src/pages/rh/paiements/components/paiement_bulletin.dart';
 import 'package:fokad_admin/src/pages/rh/paiements/paiements_rh.dart';
+import 'package:fokad_admin/src/pages/rh/performences/components/add_performence_note.dart';
+import 'package:fokad_admin/src/pages/rh/performences/components/detail_perfomence.dart';
 import 'package:fokad_admin/src/pages/rh/performences/performences_rh.dart';
 import 'package:fokad_admin/src/pages/rh/presences/components/add_presence.dart';
 import 'package:fokad_admin/src/pages/rh/presences/presences_rh.dart';
@@ -113,6 +119,7 @@ class UserRoutes {
 class DevisRoutes {
   static const devis = "/devis";
   static const devisAdd = "/devis-add";
+  static const devisDetail = "/devis-detail";
 }
 
 class AdminRoutes {
@@ -130,16 +137,21 @@ class AdminRoutes {
 class RhRoutes {
   static const rhDashboard = "/rh-dashboard";
   static const rhAgent = "/rh-agents";
-  static const rhAgentPage = "/rh-agents-page/:id";
+  static const rhAgentPage = "/rh-agents-page";
+  static const rhAgentPageUser = "/rh-agents-page-user";
   static const rhAgentAdd = "/rh-agents-add";
+  static const rhAgentUpdate = "/rh-agents-update";
   static const rhPaiement = "/rh-paiements";
   static const rhPaiementAdd = "/rh-paiements-add";
-  static const rhPaiementBulletin = "/rh-paiements-bulletin/:id";
+  static const rhPaiementBulletin = "/rh-paiements-bulletin";
   static const rhPresence = "/rh-presences";
   static const rhPresenceAdd = "/rh-presences-add";
   static const rhPerformence = "/rh-performence";
+  static const rhPerformenceDetail = "/rh-performence-detail";
+  static const rhPerformenceAddNote = "/rh-performence-add-note";
   static const rhPerformenceAdd = "/rh-performence-add";
   static const rhDD = "/rh-dd";
+  static const rhHistoriqueSalaire = "/rh-historique-salaire";
 }
 
 class BudgetRoutes {
@@ -279,12 +291,17 @@ final routes = <String, WidgetBuilder>{
   // RH
   RhRoutes.rhDashboard: (context) => const DashboardRh(),
   RhRoutes.rhAgent: (context) => const AgentsRh(),
+  RhRoutes.rhAgentPage: (context) => const DetailAgentPage(),
   RhRoutes.rhAgentAdd: (context) => const AddAgent(),
+  RhRoutes.rhAgentUpdate: (context) => const UpdateAgent(),
   RhRoutes.rhPaiement: (context) => const PaiementRh(),
+  RhRoutes.rhPaiementBulletin: (context) => const PaiementBulletin(),
   RhRoutes.rhPaiementAdd: (context) => const AddPaiementSalaire(),
   RhRoutes.rhPresence: (context) => const PresenceRh(),
   RhRoutes.rhPresenceAdd: (context) => const AddPresence(),
   RhRoutes.rhPerformence: (context) => const PerformenceRH(),
+  RhRoutes.rhPerformenceDetail: (context) => const DetailPerformence(),
+  RhRoutes.rhPerformenceAddNote: (context) => const AddPerformenceNote(),
   RhRoutes.rhDD: (context) => const DepartementRH(),
 
   // Budgets
@@ -323,6 +340,7 @@ final routes = <String, WidgetBuilder>{
   // DEVIS
   DevisRoutes.devis: (context) => const DevisPage(),
   DevisRoutes.devisAdd: (context) => const AddDevis(),
+  DevisRoutes.devisDetail: (context) => const DetailDevis(),
 
   // LOGISTIQUES
   LogistiqueRoutes.logDD: (context) => const LogDD(),

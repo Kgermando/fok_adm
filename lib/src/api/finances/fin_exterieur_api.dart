@@ -2,25 +2,23 @@
 
 import 'dart:convert';
 
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:fokad_admin/src/helpers/user_shared_pref.dart';
 import 'package:fokad_admin/src/api/auth/auth_api.dart';
 import 'package:fokad_admin/src/api/route_api.dart';
 import 'package:fokad_admin/src/models/finances/fin_exterieur_model.dart';
 import 'package:http/http.dart' as http;
 
-
 class FinExterieurApi {
   var client = http.Client();
-  final storage = const FlutterSecureStorage();
+  // final storage = const FlutterSecureStorage();
 
-   Future<String?> getToken() async {
-    final data = await storage.read(key: "accessToken");
-    return data;
-  }
-
+  // Future<String?> getToken() async {
+  //   final data = await storage.read(key: "accessToken");
+  //   return data;
+  // }
 
   Future<List<FinanceExterieurModel>> getAllData() async {
-    String? token = await getToken();
+    String? token = await UserSharedPref().getAccessToken();
     if (token!.isNotEmpty) {
       var splittedJwt = token.split(".");
       var payload = json.decode(
@@ -47,14 +45,15 @@ class FinExterieurApi {
   }
 
   Future<FinanceExterieurModel> getOneData(int id) async {
-    String? token = await getToken();
+    String? token = await UserSharedPref().getAccessToken();
 
     if (token!.isNotEmpty) {
       var splittedJwt = token.split(".");
       var payload = json.decode(
           ascii.decode(base64.decode(base64.normalize(splittedJwt[1]))));
     }
-    var getUrl = Uri.parse("$mainUrl/finances/transactions/financements-exterieur/$id");
+    var getUrl =
+        Uri.parse("$mainUrl/finances/transactions/financements-exterieur/$id");
     var resp = await client.get(
       getUrl,
       headers: <String, String>{
@@ -69,8 +68,9 @@ class FinExterieurApi {
     }
   }
 
-  Future<FinanceExterieurModel> insertData(FinanceExterieurModel financeExterieurModel) async {
-    final accessToken = await storage.read(key: 'accessToken');
+  Future<FinanceExterieurModel> insertData(
+      FinanceExterieurModel financeExterieurModel) async {
+    String? token = await UserSharedPref().getAccessToken();
 
     var data = financeExterieurModel.toJson();
     var body = jsonEncode(data);
@@ -78,7 +78,7 @@ class FinExterieurApi {
     var resp = await client.post(addfinExterieurUrl,
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
-          'Authorization': 'Bearer $accessToken'
+          'Authorization': 'Bearer $token'
         },
         body: body);
     if (resp.statusCode == 200) {
@@ -91,8 +91,9 @@ class FinExterieurApi {
     }
   }
 
-  Future<FinanceExterieurModel> updateData(int id, FinanceExterieurModel financeExterieurModel) async {
-    final accessToken = await storage.read(key: 'accessToken');
+  Future<FinanceExterieurModel> updateData(
+      int id, FinanceExterieurModel financeExterieurModel) async {
+    String? token = await UserSharedPref().getAccessToken();
 
     var data = financeExterieurModel.toJson();
     var body = jsonEncode(data);
@@ -102,7 +103,7 @@ class FinExterieurApi {
     var res = await client.put(updateUrl,
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
-          'Authorization': 'Bearer $accessToken'
+          'Authorization': 'Bearer $token'
         },
         body: body);
     if (res.statusCode == 200) {
@@ -113,14 +114,14 @@ class FinExterieurApi {
   }
 
   Future<FinanceExterieurModel> deleteData(int id) async {
-    final accessToken = await storage.read(key: 'accessToken');
+    String? token = await UserSharedPref().getAccessToken();
 
     var deleteUrl = Uri.parse(
         "$mainUrl/finances/transactions/banques/delete-transaction-finExterieur/$id");
 
     var res = await client.delete(deleteUrl, headers: <String, String>{
       'Content-Type': 'application/json; charset=UTF-8',
-      'Authorization': 'Bearer $accessToken'
+      'Authorization': 'Bearer $token'
     });
     if (res.statusCode == 200) {
       return FinanceExterieurModel.fromJson(json.decode(res.body)['agents']);

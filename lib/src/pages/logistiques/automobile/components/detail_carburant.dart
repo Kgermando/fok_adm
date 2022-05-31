@@ -825,7 +825,7 @@ class _DetailCaburantState extends State<DetailCaburant> {
 
   Future submitApprobation(CarburantModel data) async {
     final approbation = ApprobationModel(
-        reference: data.id!,
+        reference: data.created.microsecondsSinceEpoch,
         title: data.nomReceptioniste,
         departement: 'Logistique',
         fontctionOccupee: user.fonctionOccupe,

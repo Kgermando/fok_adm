@@ -12,6 +12,7 @@ import 'package:fokad_admin/src/navigation/header/custom_appbar.dart';
 import 'package:fokad_admin/src/pages/rh/agents/components/agent_pdf.dart';
 import 'package:fokad_admin/src/pages/rh/agents/components/update_agent.dart';
 import 'package:fokad_admin/src/pages/rh/paiements/components/add_paiement_salaire.dart';
+import 'package:fokad_admin/src/routes/routes.dart';
 import 'package:fokad_admin/src/utils/loading.dart';
 import 'package:fokad_admin/src/widgets/print_widget.dart';
 import 'package:fokad_admin/src/widgets/title_widget.dart';
@@ -19,15 +20,14 @@ import 'package:intl/intl.dart';
 import 'package:simple_speed_dial/simple_speed_dial.dart';
 import 'package:syncfusion_flutter_barcodes/barcodes.dart';
 
-class AgentPage extends StatefulWidget {
-  const AgentPage({Key? key, this.id}) : super(key: key);
-  final int? id;
+class DetailAgentPage extends StatefulWidget {
+  const DetailAgentPage({Key? key}) : super(key: key);
 
   @override
-  State<AgentPage> createState() => _AgentPageState();
+  State<DetailAgentPage> createState() => _DetailAgentPageState();
 }
 
-class _AgentPageState extends State<AgentPage> {
+class _DetailAgentPageState extends State<DetailAgentPage> {
   final GlobalKey<ScaffoldState> _key = GlobalKey();
   final ScrollController _controllerScroll = ScrollController();
   bool isLoading = false;
@@ -37,29 +37,55 @@ class _AgentPageState extends State<AgentPage> {
 
   @override
   initState() {
-    getData();
+    getData(context);
     super.initState();
   }
 
+  // AgentModel agentModel = AgentModel(
+  //     nom: '-',
+  //     postNom: '-',
+  //     prenom: '-',
+  //     email: '-',
+  //     telephone: '-',
+  //     adresse: '-',
+  //     sexe: '-',
+  //     role: '5',
+  //     matricule: '-',
+  //     numeroSecuriteSociale: '-',
+  //     dateNaissance: DateTime.now(),
+  //     lieuNaissance: '-',
+  //     nationalite: '-',
+  //     typeContrat: '-',
+  //     departement: '-',
+  //     servicesAffectation: '-',
+  //     dateDebutContrat: DateTime.now(),
+  //     dateFinContrat: DateTime.now(),
+  //     fonctionOccupe: '-',
+  //     statutAgent: false,
+  //     createdAt: DateTime.now(),
+  //     salaire: '-',
+  //     signature: '-',
+  //     created:  DateTime.now());
   AgentModel? agentModel;
   UserModel user = UserModel(
-    nom: '-',
-    prenom: '-',
-    email: '-',
-    telephone: '-',
-    matricule: '-',
-    departement: '-',
-    servicesAffectation: '-',
-    fonctionOccupe: '-',
-    role: '5',
-    isOnline: false,
-    createdAt: DateTime.now(),
-    passwordHash: '-',
-    succursale: '-');
-  Future<void> getData() async {
+      nom: '-',
+      prenom: '-',
+      email: '-',
+      telephone: '-',
+      matricule: '-',
+      departement: '-',
+      servicesAffectation: '-',
+      fonctionOccupe: '-',
+      role: '5',
+      isOnline: false,
+      createdAt: DateTime.now(),
+      passwordHash: '-',
+      succursale: '-');
+  Future<void> getData(BuildContext context) async {
     UserModel userModel = await AuthApi().getUserId();
     final data = await UserApi().getAllData();
-    var agent = await AgentsApi().getOneData(widget.id!);
+    final id = ModalRoute.of(context)!.settings.arguments as int;
+    final agent = await AgentsApi().getOneData(id);
     setState(() {
       user = userModel;
       userList = data;
@@ -69,11 +95,26 @@ class _AgentPageState extends State<AgentPage> {
 
   @override
   Widget build(BuildContext context) {
+    final id = ModalRoute.of(context)!.settings.arguments as int;
     return Scaffold(
         key: _key,
         drawer: const DrawerMenu(),
         floatingActionButton:
-            (agentModel != null) ? speedialWidget(agentModel!) : Container(),
+            // speedialWidget(agentModel!),
+            FutureBuilder<AgentModel>(
+                future: AgentsApi().getOneData(id),
+                builder:
+                    (BuildContext context, AsyncSnapshot<AgentModel> snapshot) {
+                  if (snapshot.hasData) {
+                    AgentModel? agentModel = snapshot.data;
+                    return speedialWidget(agentModel!);
+                    // (int.parse(agentModel!.role) <= 3)
+                    //     ? speedialWidget(agentModel)
+                    //     : Container();
+                  } else {
+                    return const Center(child: CircularProgressIndicator());
+                  }
+                }),
         body: SafeArea(
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -87,7 +128,7 @@ class _AgentPageState extends State<AgentPage> {
                 child: Padding(
                     padding: const EdgeInsets.all(p10),
                     child: FutureBuilder<AgentModel>(
-                        future: AgentsApi().getOneData(widget.id!),
+                        future: AgentsApi().getOneData(id),
                         builder: (BuildContext context,
                             AsyncSnapshot<AgentModel> snapshot) {
                           if (snapshot.hasData) {
@@ -196,29 +237,28 @@ class _AgentPageState extends State<AgentPage> {
           backgroundColor: Colors.orange.shade700,
           label: 'Modifier CV agent',
           onPressed: () {
-            Navigator.of(context).push(MaterialPageRoute(
-                builder: (context) => UpdateAgent(agentModel: agentModel)));
+            Navigator.pushNamed(context, RhRoutes.rhAgentUpdate,
+                arguments: agentModel);
           },
         ),
-        if (int.parse(user.role) <= 2)
-          SpeedDialChild(
-            child: const Icon(Icons.safety_divider, size: 15.0),
-            foregroundColor: Colors.white,
-            backgroundColor: Colors.red.shade700,
-            label: 'Activer agent',
-            onPressed: () {
-              agentStatutDialog(agentModel);
-            },
-          ),
+        // if (int.parse(user.role) <= 2)
+        SpeedDialChild(
+          child: const Icon(Icons.safety_divider, size: 15.0),
+          foregroundColor: Colors.white,
+          backgroundColor: Colors.red.shade700,
+          label: 'Activer agent',
+          onPressed: () {
+            agentStatutDialog(agentModel);
+          },
+        ),
         SpeedDialChild(
             child: const Icon(Icons.monetization_on),
             foregroundColor: Colors.white,
             backgroundColor: Colors.blue.shade700,
             label: 'Paiement',
             onPressed: () {
-              Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) =>
-                      AddPaiementSalaire(agentModel: agentModel)));
+              Navigator.pushNamed(context, RhRoutes.rhPaiementAdd,
+                  arguments: agentModel);
             }),
       ],
     );
@@ -577,7 +617,7 @@ class _AgentPageState extends State<AgentPage> {
                       style: bodyMedium.copyWith(fontWeight: FontWeight.bold)),
                 ),
                 Expanded(
-                  child: SelectableText(agentModel.salaire,
+                  child: SelectableText("${agentModel.salaire} USD",
                       textAlign: TextAlign.start, style: bodyMedium),
                 )
               ],

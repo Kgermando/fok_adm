@@ -9,7 +9,6 @@ import 'package:fokad_admin/src/models/rh/agent_model.dart';
 import 'package:fokad_admin/src/models/users/user_model.dart';
 import 'package:fokad_admin/src/navigation/drawer/drawer_menu.dart';
 import 'package:fokad_admin/src/navigation/header/custom_appbar.dart';
-import 'package:fokad_admin/src/routes/routes.dart';
 import 'package:fokad_admin/src/utils/country.dart';
 import 'package:fokad_admin/src/utils/dropdown.dart';
 import 'package:fokad_admin/src/utils/fonction_occupe.dart';
@@ -19,8 +18,8 @@ import 'package:fokad_admin/src/widgets/title_widget.dart';
 import 'package:intl/intl.dart';
 
 class UpdateAgent extends StatefulWidget {
-  const UpdateAgent({Key? key, required this.agentModel}) : super(key: key);
-  final AgentModel agentModel;
+  const UpdateAgent({Key? key}) : super(key: key);
+  // final AgentModel? agentModel;
 
   @override
   State<UpdateAgent> createState() => _UpdateAgentState();
@@ -97,41 +96,7 @@ class _UpdateAgentState extends State<UpdateAgent> {
 
   @override
   void initState() {
-    matricule = widget.agentModel.matricule;
-    sexe = widget.agentModel.sexe;
-    role = widget.agentModel.role;
-    nationalite = widget.agentModel.nationalite;
-    departement = widget.agentModel.departement;
-    typeContrat = widget.agentModel.typeContrat;
-    servicesAffectation = widget.agentModel.servicesAffectation;
-    fonctionOccupe = widget.agentModel.fonctionOccupe;
-    createdAt = widget.agentModel.createdAt;
-    statutAgent = widget.agentModel.statutAgent;
-    // photo = widget.agentModel.photo!;
-    nomController = TextEditingController(text: widget.agentModel.nom);
-    postNomController = TextEditingController(text: widget.agentModel.postNom);
-    prenomController = TextEditingController(text: widget.agentModel.prenom);
-    emailController = TextEditingController(text: widget.agentModel.email);
-    telephoneController =
-        TextEditingController(text: widget.agentModel.telephone);
-    adresseController = TextEditingController(text: widget.agentModel.adresse);
-    numeroSecuriteSocialeController =
-        TextEditingController(text: widget.agentModel.numeroSecuriteSociale);
-    dateNaissanceController =
-        TextEditingController(text: widget.agentModel.dateNaissance.toString());
-    dateNaissanceController =
-        TextEditingController(text: widget.agentModel.dateNaissance.toString());
-    lieuNaissanceController =
-        TextEditingController(text: widget.agentModel.lieuNaissance);
-    dateDebutContratController = TextEditingController(
-        text: widget.agentModel.dateDebutContrat.toString());
-    dateFinContratController = TextEditingController(
-        text: widget.agentModel.dateFinContrat.toString());
-    competanceController =
-        TextEditingController(text: widget.agentModel.competance);
-    experienceController =
-        TextEditingController(text: widget.agentModel.experience);
-    salaireController = TextEditingController(text: widget.agentModel.salaire);
+    getData();
     super.initState();
   }
 
@@ -183,6 +148,41 @@ class _UpdateAgentState extends State<UpdateAgent> {
 
   @override
   Widget build(BuildContext context) {
+    final data = ModalRoute.of(context)!.settings.arguments as AgentModel;
+    final agentModel = ModalRoute.of(context)!.settings.arguments as AgentModel;
+    matricule = agentModel.matricule;
+    sexe = agentModel.sexe;
+    role = agentModel.role;
+    nationalite = agentModel.nationalite;
+    departement = agentModel.departement;
+    typeContrat = agentModel.typeContrat;
+    servicesAffectation = agentModel.servicesAffectation;
+    fonctionOccupe = agentModel.fonctionOccupe;
+    createdAt = agentModel.createdAt;
+    statutAgent = agentModel.statutAgent;
+    // photo = agentModel.photo!;
+    nomController = TextEditingController(text: agentModel.nom);
+    postNomController = TextEditingController(text: agentModel.postNom);
+    prenomController = TextEditingController(text: agentModel.prenom);
+    emailController = TextEditingController(text: agentModel.email);
+    telephoneController = TextEditingController(text: agentModel.telephone);
+    adresseController = TextEditingController(text: agentModel.adresse);
+    numeroSecuriteSocialeController =
+        TextEditingController(text: agentModel.numeroSecuriteSociale);
+    dateNaissanceController =
+        TextEditingController(text: agentModel.dateNaissance.toString());
+    dateNaissanceController =
+        TextEditingController(text: agentModel.dateNaissance.toString());
+    lieuNaissanceController =
+        TextEditingController(text: agentModel.lieuNaissance);
+    dateDebutContratController =
+        TextEditingController(text: agentModel.dateDebutContrat.toString());
+    dateFinContratController =
+        TextEditingController(text: agentModel.dateFinContrat.toString());
+    competanceController = TextEditingController(text: agentModel.competance);
+    experienceController = TextEditingController(text: agentModel.experience);
+    salaireController = TextEditingController(text: agentModel.salaire);
+
     return Scaffold(
         key: _key,
         drawer: const DrawerMenu(),
@@ -218,7 +218,7 @@ class _UpdateAgentState extends State<UpdateAgent> {
                           ),
                         ],
                       ),
-                      Expanded(child: updateAgentWidget())
+                      Expanded(child: updateAgentWidget(data))
                     ],
                   ),
                 ),
@@ -228,7 +228,7 @@ class _UpdateAgentState extends State<UpdateAgent> {
         ));
   }
 
-  Widget updateAgentWidget() {
+  Widget updateAgentWidget(AgentModel data) {
     return Form(
       key: _formKey,
       child: Row(
@@ -359,7 +359,7 @@ class _UpdateAgentState extends State<UpdateAgent> {
                         press: () {
                           final form = _formKey.currentState!;
                           if (form.validate()) {
-                            submit();
+                            submit(data);
                             form.reset();
                           }
                         })
@@ -955,9 +955,9 @@ class _UpdateAgentState extends State<UpdateAgent> {
         ));
   }
 
-  Future submit() async {
+  Future submit(AgentModel data) async {
     final agentModel = AgentModel(
-        id: widget.agentModel.id,
+        id: data.id,
         nom: nomController.text,
         postNom: postNomController.text,
         prenom: prenomController.text,
@@ -980,13 +980,13 @@ class _UpdateAgentState extends State<UpdateAgent> {
         competance: competanceController.toString(),
         experience: experienceController.text,
         statutAgent: false,
-        createdAt: widget.agentModel.createdAt,
+        createdAt: data.createdAt,
         photo: '-',
         salaire: salaireController.text,
         signature: user.matricule.toString(),
         created: DateTime.now());
 
-    await AgentsApi().updateData(widget.agentModel.id!, agentModel);
+    await AgentsApi().updateData(agentModel.id!, agentModel);
     Navigator.of(context).pop();
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
       content: const Text("Mis a jour agent avec succès!"),

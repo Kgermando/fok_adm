@@ -2,23 +2,23 @@
 
 import 'dart:convert';
 
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:fokad_admin/src/helpers/user_shared_pref.dart';
 import 'package:fokad_admin/src/api/auth/auth_api.dart';
 import 'package:fokad_admin/src/api/route_api.dart';
 import 'package:fokad_admin/src/models/comm_maketing/restitution_model.dart';
 import 'package:http/http.dart' as http;
 
 class RestitutionApi {
-   var client = http.Client();
-  final storage = const FlutterSecureStorage();
+  var client = http.Client();
+  // final storage = const FlutterSecureStorage();
 
-  Future<String?> getToken() async {
-    final data = await storage.read(key: "accessToken");
-    return data;
-  }
+  // Future<String?> getToken() async {
+  //   final data = await storage.read(key: "accessToken");
+  //   return data;
+  // }
 
   Future<List<RestitutionModel>> getAllData() async {
-    String? token = await getToken();
+    String? token = await UserSharedPref().getAccessToken();
 
     if (token!.isNotEmpty) {
       var splittedJwt = token.split(".");
@@ -46,7 +46,7 @@ class RestitutionApi {
   }
 
   Future<RestitutionModel> getOneData(int id) async {
-    String? token = await getToken();
+    String? token = await UserSharedPref().getAccessToken();
 
     if (token!.isNotEmpty) {
       var splittedJwt = token.split(".");
@@ -69,7 +69,7 @@ class RestitutionApi {
   }
 
   Future<RestitutionModel> insertData(RestitutionModel restitutionModel) async {
-    final accessToken = await storage.read(key: 'accessToken');
+    String? token = await UserSharedPref().getAccessToken();
 
     var data = restitutionModel.toJson();
     var body = jsonEncode(data);
@@ -77,7 +77,7 @@ class RestitutionApi {
     var resp = await client.post(addRestitutionsUrl,
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
-          'Authorization': 'Bearer $accessToken'
+          'Authorization': 'Bearer $token'
         },
         body: body);
     if (resp.statusCode == 200) {
@@ -90,18 +90,18 @@ class RestitutionApi {
     }
   }
 
-  Future<RestitutionModel> updateData(int id, RestitutionModel restitutionModel) async {
-    final accessToken = await storage.read(key: 'accessToken');
+  Future<RestitutionModel> updateData(
+      int id, RestitutionModel restitutionModel) async {
+    String? token = await UserSharedPref().getAccessToken();
 
     var data = restitutionModel.toJson();
     var body = jsonEncode(data);
-    var updateUrl =
-        Uri.parse("$mainUrl/restitutions/update-restitution/$id");
+    var updateUrl = Uri.parse("$mainUrl/restitutions/update-restitution/$id");
 
     var res = await client.put(updateUrl,
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
-          'Authorization': 'Bearer $accessToken'
+          'Authorization': 'Bearer $token'
         },
         body: body);
     if (res.statusCode == 200) {
@@ -112,14 +112,13 @@ class RestitutionApi {
   }
 
   Future<RestitutionModel> deleteData(int id) async {
-    final accessToken = await storage.read(key: 'accessToken');
+    String? token = await UserSharedPref().getAccessToken();
 
-    var deleteUrl =
-        Uri.parse("$mainUrl/restitutions/delete-restitution/$id");
+    var deleteUrl = Uri.parse("$mainUrl/restitutions/delete-restitution/$id");
 
     var res = await client.delete(deleteUrl, headers: <String, String>{
       'Content-Type': 'application/json; charset=UTF-8',
-      'Authorization': 'Bearer $accessToken'
+      'Authorization': 'Bearer $token'
     });
     if (res.statusCode == 200) {
       return RestitutionModel.fromJson(json.decode(res.body)['data']);

@@ -828,7 +828,7 @@ class _DetailProdModelState extends State<DetailProdModel> {
 
   Future submitApprobation(ProductModel data) async {
     final approbation = ApprobationModel(
-        reference: data.id!,
+        reference: data.created.microsecondsSinceEpoch,
         title: data.idProduct,
         departement: 'Commercial et Marketing',
         fontctionOccupee: user.fonctionOccupe,

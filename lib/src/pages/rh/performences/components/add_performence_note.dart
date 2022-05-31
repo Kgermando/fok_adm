@@ -13,9 +13,8 @@ import 'package:fokad_admin/src/widgets/title_widget.dart';
 
 
 class AddPerformenceNote extends StatefulWidget {
-  const AddPerformenceNote({Key? key, required this.performenceModel})
+  const AddPerformenceNote({Key? key})
       : super(key: key);
-  final PerformenceModel performenceModel;
 
   @override
   State<AddPerformenceNote> createState() => _AddPerformenceNoteState();
@@ -57,6 +56,7 @@ class _AddPerformenceNoteState extends State<AddPerformenceNote> {
 
   @override
   Widget build(BuildContext context) {
+    final data = ModalRoute.of(context)!.settings.arguments as PerformenceModel;
     return Scaffold(
         key: _key,
         drawer: const DrawerMenu(),
@@ -97,7 +97,7 @@ class _AddPerformenceNoteState extends State<AddPerformenceNote> {
                       Expanded(
                           child: Scrollbar(
                         controller: _controllerScroll,
-                        child: addAgentWidget(),
+                        child: addAgentWidget(data),
                       ))
                     ],
                   ),
@@ -108,7 +108,7 @@ class _AddPerformenceNoteState extends State<AddPerformenceNote> {
         ));
   }
 
-  Widget addAgentWidget() {
+  Widget addAgentWidget(PerformenceModel data) {
     final bodyMedium = Theme.of(context).textTheme.bodyMedium;
     return Form(
       key: _formKey,
@@ -142,7 +142,7 @@ class _AddPerformenceNoteState extends State<AddPerformenceNote> {
                         Expanded(
                           flex: 3,
                           child: SelectableText(
-                              widget.performenceModel.hospitalite,
+                             data.nom,
                               textAlign: TextAlign.start, style: bodyMedium),
                         )
                       ],
@@ -162,7 +162,7 @@ class _AddPerformenceNoteState extends State<AddPerformenceNote> {
                         Expanded(
                           flex: 3,
                           child: SelectableText(
-                              widget.performenceModel.ponctualite,
+                             data.postnom,
                               textAlign: TextAlign.start, style: bodyMedium),
                         )
                       ],
@@ -182,7 +182,7 @@ class _AddPerformenceNoteState extends State<AddPerformenceNote> {
                         Expanded(
                           flex: 3,
                           child: SelectableText(
-                              widget.performenceModel.travaille,
+                             data.prenom,
                               textAlign: TextAlign.start, style: bodyMedium),
                         )
                       ],
@@ -201,7 +201,7 @@ class _AddPerformenceNoteState extends State<AddPerformenceNote> {
                         ),
                         Expanded(
                           flex: 3,
-                          child: SelectableText(widget.performenceModel.agent,
+                          child: SelectableText(data.agent,
                               textAlign: TextAlign.start, style: bodyMedium),
                         )
                       ],
@@ -221,7 +221,7 @@ class _AddPerformenceNoteState extends State<AddPerformenceNote> {
                         Expanded(
                           flex: 3,
                           child: SelectableText(
-                              widget.performenceModel.departement,
+                             data.departement,
                               textAlign: TextAlign.start, style: bodyMedium),
                         )
                       ],
@@ -252,7 +252,7 @@ class _AddPerformenceNoteState extends State<AddPerformenceNote> {
                         press: () {
                           final form = _formKey.currentState!;
                           if (form.validate()) {
-                            submit();
+                            submit(data);
                             form.reset();
                           }
                         })
@@ -283,7 +283,8 @@ class _AddPerformenceNoteState extends State<AddPerformenceNote> {
                 ),
                 keyboardType: TextInputType.number,
                 inputFormatters: <TextInputFormatter>[
-                  FilteringTextInputFormatter.digitsOnly
+                  FilteringTextInputFormatter.digitsOnly,
+                  FilteringTextInputFormatter.allow(RegExp(r'^[1-9]$|^10$')),
                 ],
                 style: const TextStyle(),
                 validator: (value) {
@@ -317,7 +318,8 @@ class _AddPerformenceNoteState extends State<AddPerformenceNote> {
                 ),
                 keyboardType: TextInputType.number,
                 inputFormatters: <TextInputFormatter>[
-                  FilteringTextInputFormatter.digitsOnly
+                  FilteringTextInputFormatter.digitsOnly,
+                  FilteringTextInputFormatter.allow(RegExp(r'^[1-9]$|^10$')),
                 ],
                 style: const TextStyle(),
                 validator: (value) {
@@ -351,7 +353,8 @@ class _AddPerformenceNoteState extends State<AddPerformenceNote> {
                 ),
                 keyboardType: TextInputType.number,
                 inputFormatters: <TextInputFormatter>[
-                  FilteringTextInputFormatter.digitsOnly
+                  FilteringTextInputFormatter.digitsOnly,
+                  FilteringTextInputFormatter.allow(RegExp(r'^[1-9]$|^10$')),
                 ],
                 style: const TextStyle(),
                 validator: (value) {
@@ -392,10 +395,10 @@ class _AddPerformenceNoteState extends State<AddPerformenceNote> {
         ));
   }
 
-  Future<void> submit() async {
+  Future<void> submit(PerformenceModel data) async {
     final performenceNoteModel = PerformenceNoteModel(
-        agent: widget.performenceModel.agent,
-        departement: widget.performenceModel.departement,
+        agent:data.agent,
+        departement:data.departement,
         hospitalite: hospitaliteController.text,
         ponctualite: ponctualiteController.text,
         travaille: travailleController.text,

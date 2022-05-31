@@ -2,23 +2,17 @@
 
 import 'dart:convert';
 
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:fokad_admin/src/api/auth/auth_api.dart';
 import 'package:fokad_admin/src/api/route_api.dart';
+import 'package:fokad_admin/src/helpers/user_shared_pref.dart';
 import 'package:fokad_admin/src/models/rh/perfomence_model.dart';
-import 'package:http/http.dart' as http; 
+import 'package:http/http.dart' as http;
 
 class PerformenceApi {
-   var client = http.Client();
-  final storage = const FlutterSecureStorage();
-
-  Future<String?> getToken() async {
-    final data = await storage.read(key: "accessToken");
-    return data;
-  }
+  var client = http.Client();
 
   Future<List<PerformenceModel>> getAllData() async {
-    String? token = await getToken();
+    String? token = await UserSharedPref().getAccessToken();
 
     if (token!.isNotEmpty) {
       var splittedJwt = token.split(".");
@@ -46,7 +40,7 @@ class PerformenceApi {
   }
 
   Future<PerformenceModel> getOneData(int id) async {
-    String? token = await getToken();
+    String? token = await UserSharedPref().getAccessToken();
 
     if (token!.isNotEmpty) {
       var splittedJwt = token.split(".");
@@ -68,9 +62,8 @@ class PerformenceApi {
     }
   }
 
-  Future<PerformenceModel> insertData(
-      PerformenceModel performenceModel) async {
-    final accessToken = await storage.read(key: 'accessToken');
+  Future<PerformenceModel> insertData(PerformenceModel performenceModel) async {
+    String? token = await UserSharedPref().getAccessToken();
 
     var data = performenceModel.toJson();
     var body = jsonEncode(data);
@@ -78,7 +71,7 @@ class PerformenceApi {
     var resp = await client.post(addPerformenceUrl,
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
-          'Authorization': 'Bearer $accessToken'
+          'Authorization': 'Bearer $token'
         },
         body: body);
     if (resp.statusCode == 200) {
@@ -91,17 +84,19 @@ class PerformenceApi {
     }
   }
 
-  Future<PerformenceModel> updateData(int id, PerformenceModel performenceModel) async {
-    final accessToken = await storage.read(key: 'accessToken');
+  Future<PerformenceModel> updateData(
+      int id, PerformenceModel performenceModel) async {
+    String? token = await UserSharedPref().getAccessToken();
 
     var data = performenceModel.toJson();
     var body = jsonEncode(data);
-    var updateUrl = Uri.parse("$mainUrl/rh/performences/update-performence/$id");
+    var updateUrl =
+        Uri.parse("$mainUrl/rh/performences/update-performence/$id");
 
     var res = await client.put(updateUrl,
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
-          'Authorization': 'Bearer $accessToken'
+          'Authorization': 'Bearer $token'
         },
         body: body);
     if (res.statusCode == 200) {
@@ -111,15 +106,15 @@ class PerformenceApi {
     }
   }
 
-
   Future<PerformenceModel> deleteData(int id) async {
-    final accessToken = await storage.read(key: 'accessToken');
+    String? token = await UserSharedPref().getAccessToken();
 
-    var deleteUrl = Uri.parse("$mainUrl/rh/performences/delete-performence/$id");
+    var deleteUrl =
+        Uri.parse("$mainUrl/rh/performences/delete-performence/$id");
 
     var res = await client.delete(deleteUrl, headers: <String, String>{
       'Content-Type': 'application/json; charset=UTF-8',
-      'Authorization': 'Bearer $accessToken'
+      'Authorization': 'Bearer $token'
     });
     if (res.statusCode == 200) {
       return PerformenceModel.fromJson(json.decode(res.body)['agents']);
@@ -127,5 +122,4 @@ class PerformenceApi {
       throw Exception(json.decode(res.body)['message']);
     }
   }
-
 }

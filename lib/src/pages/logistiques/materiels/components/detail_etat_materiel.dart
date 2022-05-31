@@ -138,9 +138,9 @@ class _DetailEtatMaterielState extends State<DetailEtatMateriel> {
                                       infosEditeurWidget(),
                                     const SizedBox(height: p10),
                                     if (int.parse(user.role) <= 2)
-                                        if (approb.fontctionOccupee !=
-                                            user.fonctionOccupe)
-                                          approbationForm(data),
+                                      if (approb.fontctionOccupee !=
+                                          user.fonctionOccupe)
+                                        approbationForm(data),
                                   ],
                                 )))
                               ],
@@ -805,7 +805,7 @@ class _DetailEtatMaterielState extends State<DetailEtatMateriel> {
 
   Future submitApprobation(EtatMaterielModel data) async {
     final approbation = ApprobationModel(
-        reference: data.id!,
+        reference: data.created.microsecondsSinceEpoch,
         title: data.nom,
         departement: 'Logistique',
         fontctionOccupee: user.fonctionOccupe,

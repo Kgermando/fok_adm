@@ -68,7 +68,7 @@ class _DetailMobilierState extends State<DetailMobilier> {
 
   Future<void> getData() async {
     UserModel userModel = await AuthApi().getUserId();
-     var approbations = await ApprobationApi().getAllData();
+    var approbations = await ApprobationApi().getAllData();
     setState(() {
       user = userModel;
       approbList = approbations;
@@ -738,7 +738,7 @@ class _DetailMobilierState extends State<DetailMobilier> {
 
   Future submitApprobation(MobilierModel data) async {
     final approbation = ApprobationModel(
-        reference: data.id!,
+        reference: data.created.microsecondsSinceEpoch,
         title: data.nom,
         departement: 'Logistique',
         fontctionOccupee: user.fonctionOccupe,

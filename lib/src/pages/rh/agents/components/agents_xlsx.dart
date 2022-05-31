@@ -13,8 +13,7 @@ import 'package:syncfusion_flutter_pdf/pdf.dart';
 import 'package:syncfusion_flutter_xlsio/xlsio.dart' hide Column, Row;
 
 // Local import
-import '/src/helpers/save_file_mobile.dart'
-    if (dart.library.html) 'src/helpers/save_file_web.dart' as helper;
+import 'package:fokad_admin/src/helpers/save_file_mobile.dart' if (dart.library.html) 'src/helpers/save_file_web.dart' as helper;
 
 class AgentXlsx extends StatefulWidget {
   const AgentXlsx({Key? key}) : super(key: key);

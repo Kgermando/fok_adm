@@ -18,7 +18,6 @@ class ServiceAffectation {
     'Supervision',
     'Recrutement',
     'Rémunération du personnel',
-    'Gestion prévisionnelle de l\'emploi et des compétences',
     'Restoration et Transport'
   ];
 

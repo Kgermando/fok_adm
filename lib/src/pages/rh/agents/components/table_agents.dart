@@ -5,6 +5,7 @@ import 'package:fokad_admin/src/api/rh/agents_api.dart';
 import 'package:fokad_admin/src/models/rh/agent_model.dart';
 import 'package:fokad_admin/src/pages/rh/agents/components/agents_xlsx.dart';
 import 'package:fokad_admin/src/pages/rh/agents/components/detail_agent_page.dart';
+import 'package:fokad_admin/src/routes/routes.dart';
 import 'package:fokad_admin/src/utils/class_implemented.dart';
 import 'package:fokad_admin/src/widgets/print_widget.dart';
 import 'package:intl/intl.dart';
@@ -34,14 +35,17 @@ class _TableAgentsState extends State<TableAgents> {
 
   @override
   Widget build(BuildContext context) {
+    
     return PlutoGrid(
       columns: columns,
       rows: rows,
       onRowDoubleTap: (PlutoGridOnRowDoubleTapEvent tapEvent) {
         final dataList = tapEvent.row!.cells.values;
         final idPlutoRow = dataList.elementAt(0);
-        Navigator.of(context).push(MaterialPageRoute(
-            builder: (context) => AgentPage(id: idPlutoRow.value)));
+        // Navigator.of(context).push(MaterialPageRoute(
+        //     builder: (context) => AgentPage(id: idPlutoRow.value)));
+        Navigator.pushNamed(context, RhRoutes.rhAgentPage, 
+          arguments: idPlutoRow.value);
       },
       onLoaded: (PlutoGridOnLoadedEvent event) {
         stateManager = event.stateManager;

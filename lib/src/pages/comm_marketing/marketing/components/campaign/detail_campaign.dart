@@ -955,7 +955,7 @@ class _DetailCampaignState extends State<DetailCampaign> {
 
   Future submitApprobation(CampaignModel data) async {
     final approbation = ApprobationModel(
-        reference: data.id!,
+        reference: data.created.microsecondsSinceEpoch,
         title: data.typeProduit,
         departement: 'Commercial et Marketing',
         fontctionOccupee: user.fonctionOccupe,

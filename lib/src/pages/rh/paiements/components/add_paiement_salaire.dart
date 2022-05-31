@@ -15,8 +15,7 @@ import 'package:fokad_admin/src/widgets/title_widget.dart';
 import 'package:intl/intl.dart';
 
 class AddPaiementSalaire extends StatefulWidget {
-  const AddPaiementSalaire({Key? key, this.agentModel}) : super(key: key);
-  final AgentModel? agentModel;
+  const AddPaiementSalaire({Key? key}) : super(key: key);
 
   @override
   State<AddPaiementSalaire> createState() => _AddPaiementSalaireState();
@@ -126,7 +125,6 @@ class _AddPaiementSalaireState extends State<AddPaiementSalaire> {
 
   Future<void> getData() async {
     UserModel user = await AuthApi().getUserId();
-    // AgentModel data = await AgentsApi().getOneData(widget.id!);
     if (!mounted) return;
     setState(() {
       signature = user.matricule;
@@ -135,6 +133,8 @@ class _AddPaiementSalaireState extends State<AddPaiementSalaire> {
 
   @override
   Widget build(BuildContext context) {
+    final agentModel = ModalRoute.of(context)!.settings.arguments as AgentModel;
+
     return Scaffold(
         key: _key,
         drawer: const DrawerMenu(),
@@ -172,7 +172,7 @@ class _AddPaiementSalaireState extends State<AddPaiementSalaire> {
                       Expanded(
                           child: Scrollbar(
                         controller: _controllerScroll,
-                        child: addPaiementSalaireWidget(),
+                        child: addPaiementSalaireWidget(agentModel),
                       ))
                     ],
                   ),
@@ -183,7 +183,7 @@ class _AddPaiementSalaireState extends State<AddPaiementSalaire> {
         ));
   }
 
-  Widget addPaiementSalaireWidget() {
+  Widget addPaiementSalaireWidget(AgentModel agentModel) {
     return Form(
       key: _formKey,
       child: Row(
@@ -221,7 +221,7 @@ class _AddPaiementSalaireState extends State<AddPaiementSalaire> {
                   const SizedBox(
                     height: p20,
                   ),
-                  agentWidget(),
+                  agentWidget(agentModel),
                   const SizedBox(
                     height: p20,
                   ),
@@ -279,7 +279,7 @@ class _AddPaiementSalaireState extends State<AddPaiementSalaire> {
                       press: () {
                         final form = _formKey.currentState!;
                         if (form.validate()) {
-                          submit();
+                          submit(agentModel);
                           form.reset();
                         }
                       })
@@ -292,7 +292,7 @@ class _AddPaiementSalaireState extends State<AddPaiementSalaire> {
     );
   }
 
-  Widget agentWidget() {
+  Widget agentWidget(AgentModel agentModel) {
     final bodyMedium = Theme.of(context).textTheme.bodyMedium;
     return Column(
       children: [
@@ -309,7 +309,7 @@ class _AddPaiementSalaireState extends State<AddPaiementSalaire> {
             ),
             Expanded(
                 child: SelectableText(
-              widget.agentModel!.matricule,
+              agentModel.matricule,
               style: bodyMedium,
             ))
           ],
@@ -328,7 +328,7 @@ class _AddPaiementSalaireState extends State<AddPaiementSalaire> {
             ),
             Expanded(
                 child: SelectableText(
-              widget.agentModel!.numeroSecuriteSociale,
+              agentModel.numeroSecuriteSociale,
               style: bodyMedium,
             ))
           ],
@@ -347,7 +347,7 @@ class _AddPaiementSalaireState extends State<AddPaiementSalaire> {
             ),
             Expanded(
                 child: SelectableText(
-              widget.agentModel!.nom,
+              agentModel.nom,
               style: bodyMedium,
             ))
           ],
@@ -366,7 +366,7 @@ class _AddPaiementSalaireState extends State<AddPaiementSalaire> {
             ),
             Expanded(
                 child: SelectableText(
-              widget.agentModel!.prenom,
+              agentModel.prenom,
               style: bodyMedium,
             ))
           ],
@@ -385,7 +385,7 @@ class _AddPaiementSalaireState extends State<AddPaiementSalaire> {
             ),
             Expanded(
                 child: SelectableText(
-              widget.agentModel!.telephone,
+              agentModel.telephone,
               style: bodyMedium,
             ))
           ],
@@ -404,7 +404,7 @@ class _AddPaiementSalaireState extends State<AddPaiementSalaire> {
             ),
             Expanded(
                 child: SelectableText(
-              widget.agentModel!.adresse,
+              agentModel.adresse,
               style: bodyMedium,
             ))
           ],
@@ -423,7 +423,7 @@ class _AddPaiementSalaireState extends State<AddPaiementSalaire> {
             ),
             Expanded(
                 child: SelectableText(
-              widget.agentModel!.departement,
+              agentModel.departement,
               style: bodyMedium,
             ))
           ],
@@ -442,7 +442,7 @@ class _AddPaiementSalaireState extends State<AddPaiementSalaire> {
             ),
             Expanded(
                 child: SelectableText(
-              widget.agentModel!.servicesAffectation,
+              agentModel.servicesAffectation,
               style: bodyMedium,
             ))
           ],
@@ -461,7 +461,7 @@ class _AddPaiementSalaireState extends State<AddPaiementSalaire> {
             ),
             Expanded(
                 child: SelectableText(
-              '${widget.agentModel!.salaire} USD',
+              '${agentModel.salaire} USD',
               style: bodyMedium,
             ))
           ],
@@ -1297,18 +1297,18 @@ class _AddPaiementSalaireState extends State<AddPaiementSalaire> {
         ));
   }
 
-  Future<void> submit() async {
+  Future<void> submit(AgentModel agentModel) async {
     final paiementSalaireModel = PaiementSalaireModel(
-      nom: widget.agentModel!.nom,
-      postNom: widget.agentModel!.postNom,
-      prenom: widget.agentModel!.prenom,
-      telephone: widget.agentModel!.telephone,
-      adresse: widget.agentModel!.adresse,
-      departement: widget.agentModel!.departement,
-      numeroSecuriteSociale: widget.agentModel!.numeroSecuriteSociale,
-      matricule: widget.agentModel!.matricule,
-      servicesAffectation: widget.agentModel!.servicesAffectation,
-      salaire: widget.agentModel!.salaire,
+      nom: agentModel.nom,
+      postNom: agentModel.postNom,
+      prenom: agentModel.prenom,
+      telephone: agentModel.telephone,
+      adresse: agentModel.adresse,
+      departement: agentModel.departement,
+      numeroSecuriteSociale: agentModel.numeroSecuriteSociale,
+      matricule: agentModel.matricule,
+      servicesAffectation: agentModel.servicesAffectation,
+      salaire: agentModel.salaire,
       observation: false, // Finance
       modePaiement: '-',
       createdAt: DateTime.now(),

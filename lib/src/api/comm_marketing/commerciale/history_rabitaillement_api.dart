@@ -2,24 +2,23 @@
 
 import 'dart:convert';
 
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:fokad_admin/src/helpers/user_shared_pref.dart';
 import 'package:fokad_admin/src/api/auth/auth_api.dart';
 import 'package:fokad_admin/src/api/route_api.dart';
 import 'package:fokad_admin/src/models/comm_maketing/history_ravitaillement_model.dart';
 import 'package:http/http.dart' as http;
 
-
 class HistoryRavitaillementApi {
-   var client = http.Client();
-  final storage = const FlutterSecureStorage();
+  var client = http.Client();
+  // final storage = const FlutterSecureStorage();
 
-  Future<String?> getToken() async {
-    final data = await storage.read(key: "accessToken");
-    return data;
-  }
+  // Future<String?> getToken() async {
+  //   final data = await storage.read(key: "accessToken");
+  //   return data;
+  // }
 
   Future<List<HistoryRavitaillementModel>> getAllData() async {
-    String? token = await getToken();
+    String? token = await UserSharedPref().getAccessToken();
 
     if (token!.isNotEmpty) {
       var splittedJwt = token.split(".");
@@ -47,7 +46,7 @@ class HistoryRavitaillementApi {
   }
 
   Future<HistoryRavitaillementModel> getOneData(int id) async {
-    String? token = await getToken();
+    String? token = await UserSharedPref().getAccessToken();
 
     if (token!.isNotEmpty) {
       var splittedJwt = token.split(".");
@@ -71,7 +70,7 @@ class HistoryRavitaillementApi {
 
   Future<HistoryRavitaillementModel> insertData(
       HistoryRavitaillementModel historyRavitaillementModel) async {
-    final accessToken = await storage.read(key: 'accessToken');
+    String? token = await UserSharedPref().getAccessToken();
 
     var data = historyRavitaillementModel.toJson();
     var body = jsonEncode(data);
@@ -79,7 +78,7 @@ class HistoryRavitaillementApi {
     var resp = await client.post(addHistoryRavitaillementsUrl,
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
-          'Authorization': 'Bearer $accessToken'
+          'Authorization': 'Bearer $token'
         },
         body: body);
     if (resp.statusCode == 200) {
@@ -92,18 +91,19 @@ class HistoryRavitaillementApi {
     }
   }
 
-  Future<HistoryRavitaillementModel> updateData(int id, HistoryRavitaillementModel historyRavitaillementModel) async {
-    final accessToken = await storage.read(key: 'accessToken');
+  Future<HistoryRavitaillementModel> updateData(
+      int id, HistoryRavitaillementModel historyRavitaillementModel) async {
+    String? token = await UserSharedPref().getAccessToken();
 
     var data = historyRavitaillementModel.toJson();
     var body = jsonEncode(data);
-    var updateUrl =
-        Uri.parse("$mainUrl/history-ravitaillements/update-history-ravitaillement/$id");
+    var updateUrl = Uri.parse(
+        "$mainUrl/history-ravitaillements/update-history-ravitaillement/$id");
 
     var res = await client.put(updateUrl,
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
-          'Authorization': 'Bearer $accessToken'
+          'Authorization': 'Bearer $token'
         },
         body: body);
     if (res.statusCode == 200) {
@@ -114,14 +114,14 @@ class HistoryRavitaillementApi {
   }
 
   Future<HistoryRavitaillementModel> deleteData(int id) async {
-    final accessToken = await storage.read(key: 'accessToken');
+    String? token = await UserSharedPref().getAccessToken();
 
-    var deleteUrl =
-        Uri.parse("$mainUrl/history-ravitaillements/delete-history-ravitaillement/$id");
+    var deleteUrl = Uri.parse(
+        "$mainUrl/history-ravitaillements/delete-history-ravitaillement/$id");
 
     var res = await client.delete(deleteUrl, headers: <String, String>{
       'Content-Type': 'application/json; charset=UTF-8',
-      'Authorization': 'Bearer $accessToken'
+      'Authorization': 'Bearer $token'
     });
     if (res.statusCode == 200) {
       return HistoryRavitaillementModel.fromJson(json.decode(res.body)['data']);

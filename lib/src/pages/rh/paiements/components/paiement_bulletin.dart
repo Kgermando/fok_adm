@@ -19,9 +19,7 @@ import 'package:fokad_admin/src/widgets/title_widget.dart';
 import 'package:intl/intl.dart';
 
 class PaiementBulletin extends StatefulWidget {
-  const PaiementBulletin({Key? key, this.id}) : super(key: key);
-
-  final int? id;
+  const PaiementBulletin({Key? key}) : super(key: key);
 
   @override
   State<PaiementBulletin> createState() => _PaiementBulletinState();
@@ -48,8 +46,6 @@ class _PaiementBulletinState extends State<PaiementBulletin> {
       TextEditingController();
 
   String? paye;
-
-  
 
   @override
   void initState() {
@@ -102,6 +98,7 @@ class _PaiementBulletinState extends State<PaiementBulletin> {
 
   @override
   Widget build(BuildContext context) {
+    final id = ModalRoute.of(context)!.settings.arguments as int;
     return Scaffold(
       key: _key,
       drawer: const DrawerMenu(),
@@ -118,7 +115,7 @@ class _PaiementBulletinState extends State<PaiementBulletin> {
             child: Padding(
               padding: const EdgeInsets.all(p10),
               child: FutureBuilder<PaiementSalaireModel>(
-                  future: PaiementSalaireApi().getOneData(widget.id!),
+                  future: PaiementSalaireApi().getOneData(id),
                   builder: (BuildContext context,
                       AsyncSnapshot<PaiementSalaireModel> snapshot) {
                     if (snapshot.hasData) {
@@ -138,8 +135,7 @@ class _PaiementBulletinState extends State<PaiementBulletin> {
                               SizedBox(
                                 width: p20,
                                 child: IconButton(
-                                    onPressed: () =>
-                                        Navigator.pop(context),
+                                    onPressed: () => Navigator.pop(context),
                                     icon: const Icon(Icons.arrow_back)),
                               ),
                               const SizedBox(width: p10),
@@ -153,18 +149,18 @@ class _PaiementBulletinState extends State<PaiementBulletin> {
                           Expanded(
                               child: SingleChildScrollView(
                                   child: Column(
-                                    children: [
-                                      bulletinPaieWidget(data!),
-                                      const SizedBox(height: p10),
-                                      if (approbationData.isNotEmpty)
-                                      infosEditeurWidget(),
-                                      const SizedBox(height: p10),
-                                      if (int.parse(user.role) <= 2)
-                                        if (approb.fontctionOccupee !=
-                                            user.fonctionOccupe)
-                                          approbationForm(data),
-                                    ],
-                                  )))
+                            children: [
+                              bulletinPaieWidget(data!),
+                              const SizedBox(height: p10),
+                              if (approbationData.isNotEmpty)
+                                infosEditeurWidget(),
+                              const SizedBox(height: p10),
+                              if (int.parse(user.role) <= 2)
+                                if (approb.fontctionOccupee !=
+                                    user.fonctionOccupe)
+                                  approbationForm(data),
+                            ],
+                          )))
                         ],
                       );
                     } else {
@@ -500,7 +496,7 @@ class _PaiementBulletinState extends State<PaiementBulletin> {
               width: p10,
             ),
             if (!data.observation && user.departement == "Finances")
-            Expanded(child: checkboxRead(data)),
+              Expanded(child: checkboxRead(data)),
             Expanded(
                 child: (data.observation)
                     ? SelectableText(
@@ -1674,7 +1670,7 @@ class _PaiementBulletinState extends State<PaiementBulletin> {
                                                       //     _approbationKey
                                                       //         .currentState!;
                                                       // if (form.validate()) {
-                                                        
+
                                                       //   form.reset();
                                                       // }
                                                       submitApprobation(data);
@@ -1703,7 +1699,7 @@ class _PaiementBulletinState extends State<PaiementBulletin> {
                                       // final form =
                                       //     _approbationKey.currentState!;
                                       // if (form.validate()) {
-                                        
+
                                       //   form.reset();
                                       // }
                                       submitApprobation(data);
@@ -1784,7 +1780,7 @@ class _PaiementBulletinState extends State<PaiementBulletin> {
 
   Future submitApprobation(PaiementSalaireModel data) async {
     final approbation = ApprobationModel(
-        reference: data.id!,
+        reference: data.createdAt.microsecondsSinceEpoch,
         title: data.matricule,
         departement: data.departement,
         fontctionOccupee: user.fonctionOccupe,
@@ -1808,7 +1804,7 @@ class _PaiementBulletinState extends State<PaiementBulletin> {
         adresse: data.adresse,
         departement: data.departement,
         numeroSecuriteSociale: data.numeroSecuriteSociale,
-        matricule:data. matricule,
+        matricule: data.matricule,
         servicesAffectation: data.servicesAffectation,
         salaire: data.salaire,
         observation: isChecked,
@@ -1840,7 +1836,8 @@ class _PaiementBulletinState extends State<PaiementBulletin> {
         retenuesFiscalesDeduction: data.retenuesFiscalesDeduction,
         nombreEnfantBeneficaireAllocationsFamiliales:
             data.nombreEnfantBeneficaireAllocationsFamiliales,
-        nombreDeJoursAllocationsFamiliales: data.nombreDeJoursAllocationsFamiliales,
+        nombreDeJoursAllocationsFamiliales:
+            data.nombreDeJoursAllocationsFamiliales,
         tauxJoursAllocationsFamiliales: data.tauxJoursAllocationsFamiliales,
         totalAPayerAllocationsFamiliales: data.totalAPayerAllocationsFamiliales,
         netAPayer: data.netAPayer,
@@ -1848,12 +1845,11 @@ class _PaiementBulletinState extends State<PaiementBulletin> {
             data.montantPrisConsiderationCalculCotisationsINSS,
         totalDuBrut: data.totalDuBrut,
         signature: data.signature);
-    await PaiementSalaireApi().updateData(widget.id!, paiementSalaireModel);
+    await PaiementSalaireApi().updateData(data.id!, paiementSalaireModel);
     Navigator.of(context).pop();
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
       content: const Text("Mise à jour avec succès!"),
       backgroundColor: Colors.green[700],
     ));
   }
-
 }

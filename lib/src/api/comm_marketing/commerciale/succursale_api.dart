@@ -2,23 +2,23 @@
 
 import 'dart:convert';
 
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:fokad_admin/src/helpers/user_shared_pref.dart';
 import 'package:fokad_admin/src/api/auth/auth_api.dart';
 import 'package:fokad_admin/src/api/route_api.dart';
 import 'package:fokad_admin/src/models/comm_maketing/succursale_model.dart';
 import 'package:http/http.dart' as http;
 
 class SuccursaleApi {
-   var client = http.Client();
-  final storage = const FlutterSecureStorage();
+  var client = http.Client();
+  // final storage = const FlutterSecureStorage();
 
-  Future<String?> getToken() async {
-    final data = await storage.read(key: "accessToken");
-    return data;
-  }
+  // Future<String?> getToken() async {
+  //   final data = await storage.read(key: "accessToken");
+  //   return data;
+  // }
 
   Future<List<SuccursaleModel>> getAllData() async {
-    String? token = await getToken();
+    String? token = await UserSharedPref().getAccessToken();
 
     if (token!.isNotEmpty) {
       var splittedJwt = token.split(".");
@@ -46,7 +46,7 @@ class SuccursaleApi {
   }
 
   Future<SuccursaleModel> getOneData(int id) async {
-    String? token = await getToken();
+    String? token = await UserSharedPref().getAccessToken();
 
     if (token!.isNotEmpty) {
       var splittedJwt = token.split(".");
@@ -69,7 +69,7 @@ class SuccursaleApi {
   }
 
   Future<SuccursaleModel> insertData(SuccursaleModel succursaleModel) async {
-    final accessToken = await storage.read(key: 'accessToken');
+    String? token = await UserSharedPref().getAccessToken();
 
     var data = succursaleModel.toJson();
     var body = jsonEncode(data);
@@ -77,7 +77,7 @@ class SuccursaleApi {
     var resp = await client.post(addSuccursalesUrl,
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
-          'Authorization': 'Bearer $accessToken'
+          'Authorization': 'Bearer $token'
         },
         body: body);
     if (resp.statusCode == 200) {
@@ -90,18 +90,18 @@ class SuccursaleApi {
     }
   }
 
-  Future<SuccursaleModel> updateData(int id, SuccursaleModel succursaleModel) async {
-    final accessToken = await storage.read(key: 'accessToken');
+  Future<SuccursaleModel> updateData(
+      int id, SuccursaleModel succursaleModel) async {
+    String? token = await UserSharedPref().getAccessToken();
 
     var data = succursaleModel.toJson();
     var body = jsonEncode(data);
-    var updateUrl =
-        Uri.parse("$mainUrl/succursales/update-succursale/$id");
+    var updateUrl = Uri.parse("$mainUrl/succursales/update-succursale/$id");
 
     var res = await client.put(updateUrl,
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
-          'Authorization': 'Bearer $accessToken'
+          'Authorization': 'Bearer $token'
         },
         body: body);
     if (res.statusCode == 200) {
@@ -112,14 +112,13 @@ class SuccursaleApi {
   }
 
   Future<SuccursaleModel> deleteData(int id) async {
-    final accessToken = await storage.read(key: 'accessToken');
+    String? token = await UserSharedPref().getAccessToken();
 
-    var deleteUrl =
-        Uri.parse("$mainUrl/succursales/delete-succursale/$id");
+    var deleteUrl = Uri.parse("$mainUrl/succursales/delete-succursale/$id");
 
     var res = await client.delete(deleteUrl, headers: <String, String>{
       'Content-Type': 'application/json; charset=UTF-8',
-      'Authorization': 'Bearer $accessToken'
+      'Authorization': 'Bearer $token'
     });
     if (res.statusCode == 200) {
       return SuccursaleModel.fromJson(json.decode(res.body)['data']);

@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:fokad_admin/src/api/user/user_api.dart';
 import 'package:fokad_admin/src/models/users/user_model.dart';
 import 'package:fokad_admin/src/pages/rh/dd_rh/components/users/detail._user.dart';
+import 'package:fokad_admin/src/routes/routes.dart';
 import 'package:fokad_admin/src/utils/class_implemented.dart';
 import 'package:fokad_admin/src/widgets/print_widget.dart';
 import 'package:intl/intl.dart';
@@ -44,9 +45,8 @@ class _TableUsersState extends State<TableUsers> {
         onRowDoubleTap: (PlutoGridOnRowDoubleTapEvent tapEvent) {
           final dataList = tapEvent.row!.cells.values;
           final idPlutoRow = dataList.elementAt(0);
-
-          Navigator.of(context).push(MaterialPageRoute(
-              builder: (context) => DetailUser(id: idPlutoRow.value)));
+           Navigator.pushNamed(context, RhRoutes.rhAgentPageUser,
+              arguments: idPlutoRow.value);
         },
         onLoaded: (PlutoGridOnLoadedEvent event) {
           stateManager = event.stateManager;

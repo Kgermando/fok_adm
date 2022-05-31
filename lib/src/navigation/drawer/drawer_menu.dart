@@ -53,12 +53,12 @@ class _DrawerMenuState extends State<DrawerMenu> {
   }
 
   @override
-  Widget build(BuildContext context) {
-    // String pageCurrente = Routemaster.of(context).currentRoute.fullPath;
-    String? pageCurrente = ModalRoute.of(context)!.settings.name;
-    // print('pageCurrente $pageCurrente');
+  Widget build(BuildContext context) { 
+    String?pageCurrente = ModalRoute.of(context)!.settings.name;
+    print('pageCurrente $pageCurrente');
 
     return Drawer(
+      backgroundColor: Colors.amber[100],
       elevation: 10.0,
       child: Scrollbar(
         controller: controller,
@@ -67,36 +67,55 @@ class _DrawerMenuState extends State<DrawerMenu> {
           children: [
             DrawerHeader(
                 child: Image.asset(
-              'assets/images/logo.png',
+              'assets/images/logo_sans_fond.png',
               width: 100,
               height: 100,
             )),
             if (user.departement == 'Administration')
-              AdministrationNav(pageCurrente: pageCurrente!),
+            if (pageCurrente != null)
+              AdministrationNav(pageCurrente: pageCurrente),
+              
             if (user.departement == 'Ressources Humaines' ||
                 user.departement == 'Administration')
-              RhNav(pageCurrente: pageCurrente!),
+                if (pageCurrente != null)
+              RhNav(pageCurrente: pageCurrente),
+              
             if (user.departement == 'Budgets' ||
                 user.departement == 'Administration')
-              BudgetNav(pageCurrente: pageCurrente!),
+                if (pageCurrente != null)
+              BudgetNav(pageCurrente: pageCurrente),
+              
             if (user.departement == 'Finances' ||
                 user.departement == 'Administration')
-              FinancesNav(pageCurrente: pageCurrente!),
+                if (pageCurrente != null)
+              FinancesNav(pageCurrente: pageCurrente),
+              
             if (user.departement == 'Comptabilites' ||
                 user.departement == 'Administration')
-              ComptabiliteNav(pageCurrente: pageCurrente!),
+                if (pageCurrente != null)
+              ComptabiliteNav(pageCurrente: pageCurrente),
+              
             if (user.departement == 'Exploitations' ||
                 user.departement == 'Administration')
-              ExploitationNav(pageCurrente: pageCurrente!),
+                if (pageCurrente != null)
+              ExploitationNav(pageCurrente: pageCurrente),
+              
             if (user.departement == 'Commercial et Marketing' ||
                 user.departement == 'Administration')
-              ComMarketing(pageCurrente: pageCurrente!),
+                if (pageCurrente != null)
+              ComMarketing(pageCurrente: pageCurrente),
+              
             if (user.departement == 'Logistique' ||
                 user.departement == 'Administration')
-              LogistiqueNav(pageCurrente: pageCurrente!),
+                if (pageCurrente != null)
+              LogistiqueNav(pageCurrente: pageCurrente),
               
-            EtatBesoinNav(pageCurrente: pageCurrente!),
+            if(pageCurrente != null)
+            EtatBesoinNav(pageCurrente: pageCurrente),
+            
+            if (pageCurrente != null)
             ArchiveNav(pageCurrente: pageCurrente),
+            
 
             // MailsNAv(pageCurrente: pageCurrente)
           ],

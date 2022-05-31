@@ -2,23 +2,23 @@
 
 import 'dart:convert';
 
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:fokad_admin/src/helpers/user_shared_pref.dart';
 import 'package:fokad_admin/src/api/auth/auth_api.dart';
 import 'package:fokad_admin/src/api/route_api.dart';
 import 'package:fokad_admin/src/models/comm_maketing/cart_model.dart';
 import 'package:http/http.dart' as http;
 
 class CartApi {
-   var client = http.Client();
-  final storage = const FlutterSecureStorage();
+  var client = http.Client();
+  // final storage = const FlutterSecureStorage();
 
-  Future<String?> getToken() async {
-    final data = await storage.read(key: "accessToken");
-    return data;
-  }
+  // Future<String?> getToken() async {
+  //   final data = await storage.read(key: "accessToken");
+  //   return data;
+  // }
 
   Future<List<CartModel>> getAllData(String matricule) async {
-    String? token = await getToken();
+    String? token = await UserSharedPref().getAccessToken();
 
     if (token!.isNotEmpty) {
       var splittedJwt = token.split(".");
@@ -48,7 +48,7 @@ class CartApi {
   }
 
   Future<CartModel> getOneData(int id) async {
-    String? token = await getToken();
+    String? token = await UserSharedPref().getAccessToken();
 
     if (token!.isNotEmpty) {
       var splittedJwt = token.split(".");
@@ -71,7 +71,7 @@ class CartApi {
   }
 
   Future<CartModel> insertData(CartModel cartModel) async {
-    final accessToken = await storage.read(key: 'accessToken');
+    String? token = await UserSharedPref().getAccessToken();
 
     var data = cartModel.toJson();
     var body = jsonEncode(data);
@@ -79,7 +79,7 @@ class CartApi {
     var resp = await client.post(addCartsUrl,
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
-          'Authorization': 'Bearer $accessToken'
+          'Authorization': 'Bearer $token'
         },
         body: body);
     if (resp.statusCode == 200) {
@@ -93,17 +93,16 @@ class CartApi {
   }
 
   Future<CartModel> updateData(int id, CartModel cartModel) async {
-    final accessToken = await storage.read(key: 'accessToken');
+    String? token = await UserSharedPref().getAccessToken();
 
     var data = cartModel.toJson();
     var body = jsonEncode(data);
-    var updateUrl =
-        Uri.parse("$mainUrl/carts/update-cart/$id");
+    var updateUrl = Uri.parse("$mainUrl/carts/update-cart/$id");
 
     var res = await client.put(updateUrl,
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
-          'Authorization': 'Bearer $accessToken'
+          'Authorization': 'Bearer $token'
         },
         body: body);
     if (res.statusCode == 200) {
@@ -114,14 +113,13 @@ class CartApi {
   }
 
   Future<void> deleteData(int id) async {
-    final accessToken = await storage.read(key: 'accessToken');
+    String? token = await UserSharedPref().getAccessToken();
 
-    var deleteUrl =
-        Uri.parse("$mainUrl/carts/delete-cart/$id");
+    var deleteUrl = Uri.parse("$mainUrl/carts/delete-cart/$id");
 
     var res = await client.delete(deleteUrl, headers: <String, String>{
       'Content-Type': 'application/json; charset=UTF-8',
-      'Authorization': 'Bearer $accessToken'
+      'Authorization': 'Bearer $token'
     });
     if (res.statusCode == 200) {
     } else {
@@ -130,13 +128,13 @@ class CartApi {
   }
 
   Future<void> deleteAllData(String signature) async {
-    final accessToken = await storage.read(key: 'accessToken');
+    String? token = await UserSharedPref().getAccessToken();
 
     var deleteUrl = Uri.parse("$mainUrl/carts/delete-all-cart/$signature");
 
     var res = await client.delete(deleteUrl, headers: <String, String>{
       'Content-Type': 'application/json; charset=UTF-8',
-      'Authorization': 'Bearer $accessToken'
+      'Authorization': 'Bearer $token'
     });
     if (res.statusCode == 200) {
     } else {

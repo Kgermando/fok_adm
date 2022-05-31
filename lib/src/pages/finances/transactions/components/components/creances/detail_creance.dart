@@ -1073,7 +1073,7 @@ class _DetailCreanceState extends State<DetailCreance> {
 
   Future submitApprobation(CreanceModel data) async {
     final approbation = ApprobationModel(
-        reference: data.id!,
+        reference: data.created.microsecondsSinceEpoch,
         title: data.nomComplet,
         departement: '-',
         fontctionOccupee: user.fonctionOccupe,

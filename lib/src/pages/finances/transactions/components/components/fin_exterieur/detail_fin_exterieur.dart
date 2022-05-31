@@ -864,7 +864,7 @@ class _DetailFinExterieurState extends State<DetailFinExterieur> {
 
   Future submitApprobation(FinanceExterieurModel data) async {
     final approbation = ApprobationModel(
-        reference: data.id!,
+        reference: data.created.microsecondsSinceEpoch,
         title: data.nomComplet,
         departement: 'Finances',
         fontctionOccupee: user.fonctionOccupe,

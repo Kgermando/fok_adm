@@ -2,7 +2,6 @@
 
 import 'dart:convert';
 import 'dart:io';
-import 'dart:typed_data';
 import 'package:fokad_admin/src/api/auth/auth_api.dart';
 import 'package:fokad_admin/src/helpers/pdf_api.dart';
 import 'package:fokad_admin/src/models/comm_maketing/creance_cart_model.dart';
@@ -13,8 +12,8 @@ import 'package:pdf/widgets.dart' as pw;
 import 'package:pdf/widgets.dart';
 
 // Local import
-import '/src/helpers/save_file_mobile_pdf.dart'
-    if (dart.library.html) 'src/helpers/save_file_web.dart' as helper;
+// import 'package:fokad_admin/src/helpers/save_file_mobile_pdf.dart'
+//     if (dart.library.html) 'src/helpers/save_file_web.dart' as helper;
 
 
 class CreanceCartPDF {

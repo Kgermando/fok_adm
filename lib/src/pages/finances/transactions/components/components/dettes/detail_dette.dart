@@ -1069,7 +1069,7 @@ class _DetailDetteState extends State<DetailDette> {
 
   Future submitApprobation(DetteModel data) async {
     final approbation = ApprobationModel(
-        reference: data.id!,
+        reference: data.created.microsecondsSinceEpoch,
         title: data.nomComplet,
         departement: '-',
         fontctionOccupee: user.fonctionOccupe,

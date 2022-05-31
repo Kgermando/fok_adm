@@ -6,6 +6,7 @@ import 'package:fokad_admin/src/api/auth/auth_api.dart';
 import 'package:fokad_admin/src/api/devis/devis_api.dart';
 import 'package:fokad_admin/src/models/devis/devis_models.dart';
 import 'package:fokad_admin/src/pages/devis/components/detail_devis.dart';
+import 'package:fokad_admin/src/routes/routes.dart';
 import 'package:fokad_admin/src/widgets/print_widget.dart';
 import 'package:fokad_admin/src/utils/class_implemented.dart';
 import 'package:intl/intl.dart';
@@ -64,8 +65,9 @@ class _TableDevisFinState extends State<TableDevisFin> {
         onRowDoubleTap: (PlutoGridOnRowDoubleTapEvent tapEvent) {
           final dataList = tapEvent.row!.cells.values;
           final idPlutoRow = dataList.elementAt(0);
-          Navigator.of(context).push(MaterialPageRoute(
-              builder: (context) => DetailDevis(id: idPlutoRow.value)));
+          Navigator.pushNamed(context, DevisRoutes.devisDetail,
+              arguments: idPlutoRow.value);    
+          
         },
         onLoaded: (PlutoGridOnLoadedEvent event) {
           stateManager = event.stateManager;

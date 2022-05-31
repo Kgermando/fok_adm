@@ -1,3 +1,4 @@
+import 'package:badges/badges.dart';
 import 'package:flutter/material.dart';
 import 'package:fokad_admin/src/api/approbation/approbation_api.dart';
 import 'package:fokad_admin/src/api/budgets/departement_budget_api.dart';
@@ -5,7 +6,6 @@ import 'package:fokad_admin/src/api/budgets/ligne_budgetaire_api.dart';
 import 'package:fokad_admin/src/constants/app_theme.dart';
 import 'package:fokad_admin/src/constants/responsive.dart';
 import 'package:fokad_admin/src/models/budgets/departement_budget_model.dart';
-import 'package:fokad_admin/src/models/budgets/ligne_budgetaire_model.dart';
 import 'package:fokad_admin/src/navigation/drawer/drawer_menu.dart';
 import 'package:fokad_admin/src/navigation/header/custom_appbar.dart';
 import 'package:fokad_admin/src/pages/administration/components/budgets/table_departement_budget_admin.dart';
@@ -34,18 +34,18 @@ class _BudgetsAdminState extends State<BudgetsAdmin> {
   Future<void> getData() async {
     List<DepartementBudgetModel?> departementBudget =
         await DepeartementBudgetApi().getAllData();
-  var approbations = await ApprobationApi().getAllData();
+    var approbations = await ApprobationApi().getAllData();
     // List<LigneBudgetaireModel?> dataLigneBudgetaireList =
     //     await LIgneBudgetaireApi().getAllData();
     setState(() {
       for (var item in approbations) {
         budgetCount = departementBudget
             .where((element) =>
-             DateTime.now().millisecondsSinceEpoch <=
+                DateTime.now().millisecondsSinceEpoch <=
                     element!.periodeFin.millisecondsSinceEpoch &&
                 element.id == item.reference &&
-                    item.fontctionOccupee == 'Directeur de budget' &&
-                    item.approbation == "Approved")
+                item.fontctionOccupee == 'Directeur de budget' &&
+                item.approbation == "Approved")
             .length;
       }
     });
@@ -74,7 +74,9 @@ class _BudgetsAdminState extends State<BudgetsAdmin> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       CustomAppbar(
-                          title: 'Budgets', controllerMenu: () => _key.currentState!.openDrawer()),
+                          title: 'Budgets',
+                          controllerMenu: () =>
+                              _key.currentState!.openDrawer()),
                       Expanded(
                           child: Scrollbar(
                         controller: _controllerScroll,
@@ -84,9 +86,11 @@ class _BudgetsAdminState extends State<BudgetsAdmin> {
                             Card(
                                 color: Colors.blue.shade700,
                                 child: ExpansionTile(
-                                  leading: const Icon(Icons.folder, color: Colors.white),
-                                  title:
-                                      Text('Dossier Budgets', style: headline6!.copyWith(color: Colors.white)),
+                                  leading: const Icon(Icons.folder,
+                                      color: Colors.white),
+                                  title: Text('Dossier Budgets',
+                                      style: headline6!
+                                          .copyWith(color: Colors.white)),
                                   subtitle: Text(
                                       "Vous avez $budgetCount dossiers necessitent votre approbation",
                                       style: bodyMedium!
@@ -97,13 +101,15 @@ class _BudgetsAdminState extends State<BudgetsAdmin> {
                                       isOpenBudget = !val;
                                     });
                                   },
-                                  trailing: const Icon(Icons.arrow_drop_down, color: Colors.white),
+                                  trailing: const Icon(Icons.arrow_drop_down,
+                                      color: Colors.white),
                                   children: const [TableDepartementBudgetDG()],
                                 )),
+                             
                           ],
                         ),
-                      ))
-                    ], 
+                      )),
+                    ],
                   ),
                 ),
               ),
@@ -111,4 +117,26 @@ class _BudgetsAdminState extends State<BudgetsAdmin> {
           ),
         ));
   }
+
+  // Widget folderWidget() {
+  //   final bodyMedium = Theme.of(context).textTheme.bodyMedium;
+  //   return SizedBox(
+  //     width: 100,
+  //     child: InkWell(
+  //       onDoubleTap: () {},
+  //       child: Badge(
+  //         badgeContent: Text("$budgetCount"),
+  //         child: Column(
+  //           children: [
+  //             Icon(
+  //               Icons.folder, 
+  //               size: p50, color: Colors.blue.shade700),
+  //             Text("Budgets", 
+  //             style: bodyMedium!.copyWith(color: Colors.blue))
+  //           ],
+  //         ),
+  //       ),
+  //     ),
+  //   );
+  // }
 }

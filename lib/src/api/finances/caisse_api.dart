@@ -2,7 +2,7 @@
 
 import 'dart:convert';
 
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:fokad_admin/src/helpers/user_shared_pref.dart';
 import 'package:fokad_admin/src/api/auth/auth_api.dart';
 import 'package:fokad_admin/src/api/route_api.dart';
 import 'package:fokad_admin/src/models/charts/courbe_chart_model.dart';
@@ -11,16 +11,15 @@ import 'package:http/http.dart' as http;
 
 class CaisseApi {
   var client = http.Client();
-  final storage = const FlutterSecureStorage();
+  // final storage = const FlutterSecureStorage();
 
-   Future<String?> getToken() async {
-    final data = await storage.read(key: "accessToken");
-    return data;
-  }
-
+  // Future<String?> getToken() async {
+  //   final data = await storage.read(key: "accessToken");
+  //   return data;
+  // }
 
   Future<List<CaisseModel>> getAllData() async {
-    String? token = await getToken();
+    String? token = await UserSharedPref().getAccessToken();
 
     if (token!.isNotEmpty) {
       var splittedJwt = token.split(".");
@@ -48,7 +47,7 @@ class CaisseApi {
   }
 
   Future<CaisseModel> getOneData(int id) async {
-    String? token = await getToken();
+    String? token = await UserSharedPref().getAccessToken();
 
     if (token!.isNotEmpty) {
       var splittedJwt = token.split(".");
@@ -71,7 +70,7 @@ class CaisseApi {
   }
 
   Future<CaisseModel> insertData(CaisseModel caisseModel) async {
-    final accessToken = await storage.read(key: 'accessToken');
+    String? token = await UserSharedPref().getAccessToken();
 
     var data = caisseModel.toJson();
     var body = jsonEncode(data);
@@ -79,7 +78,7 @@ class CaisseApi {
     var resp = await client.post(addCaisseUrl,
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
-          'Authorization': 'Bearer $accessToken'
+          'Authorization': 'Bearer $token'
         },
         body: body);
     if (resp.statusCode == 200) {
@@ -93,7 +92,7 @@ class CaisseApi {
   }
 
   Future<CaisseModel> updateData(int id, CaisseModel caisseModel) async {
-    final accessToken = await storage.read(key: 'accessToken');
+    String? token = await UserSharedPref().getAccessToken();
 
     var data = caisseModel.toJson();
     var body = jsonEncode(data);
@@ -103,7 +102,7 @@ class CaisseApi {
     var res = await client.put(updateUrl,
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
-          'Authorization': 'Bearer $accessToken'
+          'Authorization': 'Bearer $token'
         },
         body: body);
     if (res.statusCode == 200) {
@@ -114,14 +113,14 @@ class CaisseApi {
   }
 
   Future<CaisseModel> deleteData(int id) async {
-    final accessToken = await storage.read(key: 'accessToken');
+    String? token = await UserSharedPref().getAccessToken();
 
     var deleteUrl = Uri.parse(
         "$mainUrl/finances/transactions/caisses/delete-transaction-caisse/$id");
 
     var res = await client.delete(deleteUrl, headers: <String, String>{
       'Content-Type': 'application/json; charset=UTF-8',
-      'Authorization': 'Bearer $accessToken'
+      'Authorization': 'Bearer $token'
     });
     if (res.statusCode == 200) {
       return CaisseModel.fromJson(json.decode(res.body)['agents']);
@@ -130,9 +129,8 @@ class CaisseApi {
     }
   }
 
-
   Future<List<CourbeChartModel>> getAllDataMouthEncaissement() async {
-    String? token = await getToken();
+    String? token = await UserSharedPref().getAccessToken();
 
     if (token!.isNotEmpty) {
       var splittedJwt = token.split(".");
@@ -159,7 +157,7 @@ class CaisseApi {
   }
 
   Future<List<CourbeChartModel>> getAllDataMouthDecaissement() async {
-    String? token = await getToken();
+    String? token = await UserSharedPref().getAccessToken();
 
     if (token!.isNotEmpty) {
       var splittedJwt = token.split(".");
@@ -186,7 +184,7 @@ class CaisseApi {
   }
 
   Future<List<CourbeChartModel>> getAllDataYearEncaissement() async {
-    String? token = await getToken();
+    String? token = await UserSharedPref().getAccessToken();
 
     if (token!.isNotEmpty) {
       var splittedJwt = token.split(".");
@@ -214,7 +212,7 @@ class CaisseApi {
   }
 
   Future<List<CourbeChartModel>> getAllDataYearDecaissement() async {
-    String? token = await getToken();
+    String? token = await UserSharedPref().getAccessToken();
 
     if (token!.isNotEmpty) {
       var splittedJwt = token.split(".");
@@ -240,7 +238,4 @@ class CaisseApi {
       throw Exception(jsonDecode(resp.body)['message']);
     }
   }
-
-
-
 }

@@ -24,10 +24,10 @@ class _PerformenceRHState extends State<PerformenceRH> {
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              if (Responsive.isDesktop(context))
-                const Expanded(
-                  child: DrawerMenu(),
-                ),
+            if (Responsive.isDesktop(context))
+              const Expanded(
+                child: DrawerMenu(),
+              ),
               Expanded(
                 flex: 5,
                 child: Padding(

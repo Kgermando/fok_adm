@@ -9,5 +9,16 @@ Widget loading() => Row(
   ],
 );
 
+Widget loadingColor() => Row(
+  mainAxisAlignment: MainAxisAlignment.center,
+  children: const [
+    CircularProgressIndicator(),
+    SizedBox(
+      width: 20.0,
+    ),
+    Text('Patientez svp...', style: TextStyle())
+  ],
+);
+
 
 Widget loadingMini() => const CircularProgressIndicator(strokeWidth: 2.0,);

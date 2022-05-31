@@ -31,7 +31,6 @@ class _DetailImmobilierState extends State<DetailImmobilier> {
   TextEditingController signatureJustificationDGController =
       TextEditingController();
 
-
   @override
   initState() {
     getData();
@@ -310,7 +309,6 @@ class _DetailImmobilierState extends State<DetailImmobilier> {
       ),
     );
   }
-
 
   Widget infosEditeurWidget() {
     final bodyLarge = Theme.of(context).textTheme.bodyLarge;
@@ -741,7 +739,7 @@ class _DetailImmobilierState extends State<DetailImmobilier> {
 
   Future submitApprobation(ImmobilierModel data) async {
     final approbation = ApprobationModel(
-        reference: data.id!,
+        reference: data.created.microsecondsSinceEpoch,
         title: data.typeAllocation,
         departement: 'Logistique',
         fontctionOccupee: user.fonctionOccupe,
@@ -754,5 +752,4 @@ class _DetailImmobilierState extends State<DetailImmobilier> {
     await ApprobationApi().insertData(approbation);
     Navigator.of(context).pop();
   }
-
 }

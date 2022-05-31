@@ -1644,7 +1644,7 @@ class _DetailCompteResultatState extends State<DetailCompteResultat> {
 
   Future submitApprobation(CompteResulatsModel data) async {
     final approbation = ApprobationModel(
-        reference: data.id!,
+        reference: data.created.microsecondsSinceEpoch,
         title: data.intitule,
         departement: 'Comptabilites',
         fontctionOccupee: user.fonctionOccupe,

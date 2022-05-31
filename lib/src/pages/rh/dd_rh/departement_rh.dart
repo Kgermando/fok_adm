@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:fokad_admin/src/api/approbation/approbation_api.dart';
 import 'package:fokad_admin/src/api/rh/paiement_salaire_api.dart';
 import 'package:fokad_admin/src/constants/app_theme.dart';
 import 'package:fokad_admin/src/constants/responsive.dart';
@@ -8,6 +9,7 @@ import 'package:fokad_admin/src/navigation/drawer/drawer_menu.dart';
 import 'package:fokad_admin/src/navigation/header/custom_appbar.dart';
 import 'package:fokad_admin/src/pages/rh/dd_rh/components/salaires/table_salaires_dd.dart';
 import 'package:fokad_admin/src/pages/rh/dd_rh/components/users/table_users.dart';
+import 'package:fokad_admin/src/routes/routes.dart';
 
 class DepartementRH extends StatefulWidget {
   const DepartementRH({Key? key}) : super(key: key);
@@ -28,24 +30,25 @@ class _DepartementRHState extends State<DepartementRH> {
   @override
   void initState() {
     getData();
-
     super.initState();
   }
 
   Future<void> getData() async {
     // RH
     var salaires = await PaiementSalaireApi().getAllData();
-    // List<UserModel> users = await UserApi().getAllData();
-
+    var approbations = await ApprobationApi().getAllData();
     setState(() {
-      salairesCount =
-          salaires
-          .where((element) =>
-              element.createdAt.month == DateTime.now().month &&
-              element.createdAt.year == DateTime.now().year )
-          .length;
-      // userAcount = users.length;
-    });
+      for (var item in approbations) {
+        salairesCount = salaires
+            .where((element) =>
+            element.createdAt.month == DateTime.now().month &&
+              element.createdAt.year == DateTime.now().year &&
+              element.id == item.reference &&
+              item.fontctionOccupee != 'Directeur de departement')
+            .length;
+        }
+      }
+    );
   }
 
   @override
@@ -55,6 +58,18 @@ class _DepartementRHState extends State<DepartementRH> {
     return Scaffold(
         key: _key,
         drawer: const DrawerMenu(),
+        floatingActionButton: FloatingActionButton.extended(
+        backgroundColor: Colors.brown.shade700,
+        foregroundColor: Colors.white,
+        onPressed: () {
+          Navigator.pushNamed(context, RhRoutes.rhHistoriqueSalaire);
+        },
+        label: Row(
+          children: const [
+            Icon(Icons.history),
+            Text("Voir Historique"),
+          ],
+        )),
         body: SafeArea(
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -71,7 +86,7 @@ class _DepartementRHState extends State<DepartementRH> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       CustomAppbar(
-                          title: 'Directeur de departement RH',
+                        title: 'Directeur de departement RH',
                           controllerMenu: () =>
                               _key.currentState!.openDrawer()),
                       Expanded(

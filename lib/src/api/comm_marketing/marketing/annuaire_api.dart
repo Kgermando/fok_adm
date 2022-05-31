@@ -2,23 +2,23 @@
 
 import 'dart:convert';
 
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:fokad_admin/src/helpers/user_shared_pref.dart';
 import 'package:fokad_admin/src/api/auth/auth_api.dart';
 import 'package:fokad_admin/src/api/route_api.dart';
 import 'package:fokad_admin/src/models/comm_maketing/annuaire_model.dart';
 import 'package:http/http.dart' as http;
 
 class AnnuaireApi {
-   var client = http.Client();
-  final storage = const FlutterSecureStorage();
+  var client = http.Client();
+  // final storage = const FlutterSecureStorage();
 
-  Future<String?> getToken() async {
-    final data = await storage.read(key: "accessToken");
-    return data;
-  }
+  // Future<String?> getToken() async {
+  //   final data = await storage.read(key: "accessToken");
+  //   return data;
+  // }
 
   Future<List<AnnuaireModel>> getAllData() async {
-    String? token = await getToken();
+    String? token = await UserSharedPref().getAccessToken();
 
     if (token!.isNotEmpty) {
       var splittedJwt = token.split(".");
@@ -46,7 +46,7 @@ class AnnuaireApi {
   }
 
   Future<List<AnnuaireModel>> getAllDataSearch(String query) async {
-    String? token = await getToken();
+    String? token = await UserSharedPref().getAccessToken();
 
     if (token!.isNotEmpty) {
       var splittedJwt = token.split(".");
@@ -86,7 +86,7 @@ class AnnuaireApi {
   }
 
   Future<AnnuaireModel> getOneData(int id) async {
-    String? token = await getToken();
+    String? token = await UserSharedPref().getAccessToken();
 
     if (token!.isNotEmpty) {
       var splittedJwt = token.split(".");
@@ -109,7 +109,7 @@ class AnnuaireApi {
   }
 
   Future<AnnuaireModel> insertData(AnnuaireModel annuaireModel) async {
-    final accessToken = await storage.read(key: 'accessToken');
+    String? token = await UserSharedPref().getAccessToken();
 
     var data = annuaireModel.toJson();
     var body = jsonEncode(data);
@@ -117,7 +117,7 @@ class AnnuaireApi {
     var resp = await client.post(addAnnuairesUrl,
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
-          'Authorization': 'Bearer $accessToken'
+          'Authorization': 'Bearer $token'
         },
         body: body);
     if (resp.statusCode == 200) {
@@ -131,7 +131,7 @@ class AnnuaireApi {
   }
 
   Future<AnnuaireModel> updateData(int id, AnnuaireModel annuaireModel) async {
-    final accessToken = await storage.read(key: 'accessToken');
+    String? token = await UserSharedPref().getAccessToken();
 
     var data = annuaireModel.toJson();
     var body = jsonEncode(data);
@@ -140,7 +140,7 @@ class AnnuaireApi {
     var res = await client.put(updateUrl,
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
-          'Authorization': 'Bearer $accessToken'
+          'Authorization': 'Bearer $token'
         },
         body: body);
     if (res.statusCode == 200) {
@@ -151,13 +151,13 @@ class AnnuaireApi {
   }
 
   Future<AnnuaireModel> deleteData(int id) async {
-    final accessToken = await storage.read(key: 'accessToken');
+    String? token = await UserSharedPref().getAccessToken();
 
     var deleteUrl = Uri.parse("$mainUrl/annuaires/delete-annuaire/$id");
 
     var res = await client.delete(deleteUrl, headers: <String, String>{
       'Content-Type': 'application/json; charset=UTF-8',
-      'Authorization': 'Bearer $accessToken'
+      'Authorization': 'Bearer $token'
     });
     if (res.statusCode == 200) {
       return AnnuaireModel.fromJson(json.decode(res.body)['data']);

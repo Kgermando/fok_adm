@@ -3,7 +3,7 @@ import 'package:fokad_admin/src/api/auth/auth_api.dart';
 import 'package:fokad_admin/src/api/rh/performence_api.dart';
 import 'package:fokad_admin/src/models/rh/perfomence_model.dart';
 import 'package:fokad_admin/src/models/users/user_model.dart';
-import 'package:fokad_admin/src/pages/rh/performences/components/detail_perfomence.dart';
+import 'package:fokad_admin/src/routes/routes.dart';
 import 'package:fokad_admin/src/utils/class_implemented.dart';
 import 'package:fokad_admin/src/widgets/print_widget.dart';
 import 'package:intl/intl.dart';
@@ -39,9 +39,9 @@ class _TablePerformenceState extends State<TablePerformence> {
       onRowDoubleTap: (PlutoGridOnRowDoubleTapEvent tapEvent) {
         final dataList = tapEvent.row!.cells.values;
         final idPlutoRow = dataList.elementAt(0);
-
-        Navigator.of(context).push(MaterialPageRoute(
-            builder: (context) => DetailPerformence(id: idPlutoRow.value)));
+        
+        Navigator.pushNamed(context, RhRoutes.rhPerformenceDetail,
+            arguments: idPlutoRow.value);
       },
       onLoaded: (PlutoGridOnLoadedEvent event) {
         stateManager = event.stateManager;
@@ -64,15 +64,15 @@ class _TablePerformenceState extends State<TablePerformence> {
           resolveDefaultColumnFilter: (column, resolver) {
             if (column.field == 'id') {
               return resolver<ClassFilterImplemented>() as PlutoFilterType;
-            } else if (column.field == 'agent') {
-              return resolver<ClassFilterImplemented>() as PlutoFilterType;
             } else if (column.field == 'departement') {
               return resolver<ClassFilterImplemented>() as PlutoFilterType;
-            } else if (column.field == 'hospitalite') {
+            } else if (column.field == 'agent') {
               return resolver<ClassFilterImplemented>() as PlutoFilterType;
-            } else if (column.field == 'ponctualite') {
+            } else if (column.field == 'nom') {
               return resolver<ClassFilterImplemented>() as PlutoFilterType;
-            } else if (column.field == 'travaille') {
+            } else if (column.field == 'postnom') {
+              return resolver<ClassFilterImplemented>() as PlutoFilterType;
+            } else if (column.field == 'prenom') {
               return resolver<ClassFilterImplemented>() as PlutoFilterType;
             } else if (column.field == 'signature') {
               return resolver<ClassFilterImplemented>() as PlutoFilterType;
@@ -102,18 +102,6 @@ class _TablePerformenceState extends State<TablePerformence> {
       ),
       PlutoColumn(
         readOnly: true,
-        title: 'Matricule',
-        field: 'agent',
-        type: PlutoColumnType.number(),
-        enableRowDrag: true,
-        enableContextMenu: false,
-        enableDropToResize: true,
-        titleTextAlign: PlutoColumnTextAlign.left,
-        width: 100,
-        minWidth: 80,
-      ),
-      PlutoColumn(
-        readOnly: true,
         title: 'departement',
         field: 'departement',
         type: PlutoColumnType.text(),
@@ -121,43 +109,56 @@ class _TablePerformenceState extends State<TablePerformence> {
         enableContextMenu: false,
         enableDropToResize: true,
         titleTextAlign: PlutoColumnTextAlign.left,
-        width: 150,
+        width: 250,
         minWidth: 150,
       ),
       PlutoColumn(
         readOnly: true,
+        title: 'Matricule',
+        field: 'agent',
+        type: PlutoColumnType.number(),
+        enableRowDrag: true,
+        enableContextMenu: false,
+        enableDropToResize: true,
+        titleTextAlign: PlutoColumnTextAlign.left,
+        width: 200,
+        minWidth: 80,
+      ),
+      
+      PlutoColumn(
+        readOnly: true,
         title: 'Nom',
-        field: 'hospitalite',
+        field: 'nom',
         type: PlutoColumnType.text(),
         enableRowDrag: true,
         enableContextMenu: false,
         enableDropToResize: true,
         titleTextAlign: PlutoColumnTextAlign.left,
-        width: 150,
+        width: 200,
         minWidth: 150,
       ),
       PlutoColumn(
         readOnly: true,
         title: 'Post-Nom',
-        field: 'ponctualite',
+        field: 'postnom',
         type: PlutoColumnType.text(),
         enableRowDrag: true,
         enableContextMenu: false,
         enableDropToResize: true,
         titleTextAlign: PlutoColumnTextAlign.left,
-        width: 150,
+        width: 200,
         minWidth: 150,
       ),
       PlutoColumn(
         readOnly: true,
         title: 'Prénom',
-        field: 'travaille',
+        field: 'prenom',
         type: PlutoColumnType.text(),
         enableRowDrag: true,
         enableContextMenu: false,
         enableDropToResize: true,
         titleTextAlign: PlutoColumnTextAlign.left,
-        width: 150,
+        width: 200,
         minWidth: 150,
       ),
       PlutoColumn(
@@ -169,7 +170,7 @@ class _TablePerformenceState extends State<TablePerformence> {
         enableContextMenu: false,
         enableDropToResize: true,
         titleTextAlign: PlutoColumnTextAlign.left,
-        width: 150,
+        width: 200,
         minWidth: 150,
       ),
       PlutoColumn(
@@ -181,7 +182,7 @@ class _TablePerformenceState extends State<TablePerformence> {
         enableContextMenu: false,
         enableDropToResize: true,
         titleTextAlign: PlutoColumnTextAlign.left,
-        width: 150,
+        width: 200,
         minWidth: 150,
       ),
     ];
@@ -197,13 +198,14 @@ class _TablePerformenceState extends State<TablePerformence> {
       setState(() {
         for (var item in data) {
           id = item!.id;
-          rows.add(PlutoRow(cells: {
+          rows.add(PlutoRow(
+            cells: {
             'id': PlutoCell(value: item.id),
-            'agent': PlutoCell(value: item.agent),
             'departement': PlutoCell(value: item.departement),
-            'hospitalite': PlutoCell(value: item.hospitalite),
-            'ponctualite': PlutoCell(value: item.ponctualite),
-            'travaille': PlutoCell(value: item.travaille),
+            'agent': PlutoCell(value: item.agent),
+            'nom': PlutoCell(value: item.nom),
+            'postnom': PlutoCell(value: item.postnom),
+            'prenom': PlutoCell(value: item.prenom),
             'signature': PlutoCell(value: item.signature),
             'created': PlutoCell(
                 value: DateFormat("dd-MM-yyyy HH:mm").format(item.created))

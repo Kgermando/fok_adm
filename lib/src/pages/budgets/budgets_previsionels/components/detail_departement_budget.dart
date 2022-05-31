@@ -1230,7 +1230,7 @@ class _DetailDepartmentBudgetState extends State<DetailDepartmentBudget> {
 
   Future submitApprobation(DepartementBudgetModel data) async {
     final approbation = ApprobationModel(
-        reference: data.id!,
+        reference: data.created.microsecondsSinceEpoch,
         title: data.title,
         departement: data.departement,
         fontctionOccupee: user.fonctionOccupe,

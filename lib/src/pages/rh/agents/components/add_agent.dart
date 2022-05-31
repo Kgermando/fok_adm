@@ -320,7 +320,6 @@ class _AddAgentState extends State<AddAgent> {
                           final form = _formKey.currentState!;
                           if (form.validate()) {
                             submit();
-                            submitPerformence();
                             form.reset();
                           }
                         })
@@ -745,12 +744,15 @@ class _AddAgentState extends State<AddAgent> {
           ),
           value: servicesAffectation,
           isExpanded: true,
-          items: servAffectList.map((String value) {
-            return DropdownMenuItem<String>(
-              value: value,
-              child: Text(value),
-            );
-          }).toSet().toList(),
+          items: servAffectList
+              .map((String value) {
+                return DropdownMenuItem<String>(
+                  value: value,
+                  child: Text(value),
+                );
+              })
+              .toSet()
+              .toList(),
           validator: (value) => value == null ? "Select Service" : null,
           onChanged: (value) {
             setState(() {
@@ -821,12 +823,14 @@ class _AddAgentState extends State<AddAgent> {
           ),
           value: fonctionOccupe,
           isExpanded: true,
-          items: fonctionList.map((String value) {
-            return DropdownMenuItem<String>(
-              value: value,
-              child: Text(value),
-            );
-          }).toSet()
+          items: fonctionList
+              .map((String value) {
+                return DropdownMenuItem<String>(
+                  value: value,
+                  child: Text(value),
+                );
+              })
+              .toSet()
               .toList(),
           validator: (value) => value == null ? "Select Fonction" : null,
           onChanged: (value) {
@@ -926,8 +930,7 @@ class _AddAgentState extends State<AddAgent> {
         email: (emailController.text == '') ? '-' : emailController.text,
         telephone:
             (telephoneController.text == '') ? '-' : telephoneController.text,
-        adresse:
-            (adresseController.text == '') ? '-' : telephoneController.text,
+        adresse: (adresseController.text == '') ? '-' : adresseController.text,
         sexe: (sexe.toString() == '') ? '-' : sexe.toString(),
         role: (role.toString() == '') ? '-' : role.toString(),
         matricule: (matricule == '') ? '-' : matricule,
@@ -969,6 +972,7 @@ class _AddAgentState extends State<AddAgent> {
         created: DateTime.now());
 
     await AgentsApi().insertData(agentModel);
+    await submitPerformence();
     Navigator.of(context).pop();
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
       content: const Text("Enregistrer agent avec succès!"),
@@ -980,9 +984,9 @@ class _AddAgentState extends State<AddAgent> {
     final performenceModel = PerformenceModel(
         agent: matricule,
         departement: departement.toString(),
-        hospitalite: nomController.text,
-        ponctualite: postNomController.text,
-        travaille: prenomController.text,
+        nom: nomController.text,
+        postnom: postNomController.text,
+        prenom: prenomController.text,
         signature: user!.matricule.toString(),
         created: DateTime.now());
     await PerformenceApi().insertData(performenceModel);

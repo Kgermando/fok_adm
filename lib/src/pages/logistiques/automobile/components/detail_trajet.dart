@@ -795,7 +795,7 @@ class _DetailTrajetState extends State<DetailTrajet> {
 
   Future submitApprobation(TrajetModel data) async {
     final approbation = ApprobationModel(
-        reference: data.id!,
+        reference: data.created.microsecondsSinceEpoch,
         title: data.mission,
         departement: 'Logistique',
         fontctionOccupee: user.fonctionOccupe,

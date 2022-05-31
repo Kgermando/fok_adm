@@ -14,9 +14,24 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   setPathUrlStrategy();
   timeago.setLocaleMessages('fr_short', timeago.FrShortMessages());
-  await Future<void>.delayed(Duration.zero);
 
-  final user = await AuthApi().getUserId();
+  UserModel user = UserModel(
+    nom: '-',
+    prenom: '-',
+    email: '-',
+    telephone: '-',
+    matricule: '-',
+    departement: '-',
+    servicesAffectation: '-',
+    fonctionOccupe: '-',
+    role: '5',
+    isOnline: false,
+    createdAt: DateTime.now(),
+    passwordHash: '-',
+    succursale: '-');
+
+  //  user = await AuthApi().getUserId();
+
   runApp(MyApp(user: user));
 }
 
@@ -34,49 +49,42 @@ class MyApp extends StatelessWidget {
       } else {
         homeRoute = AdminRoutes.adminLogistique;
       }
-      
     } else if (user.departement == "Finances") {
       if (double.parse(user.role) <= 2) {
         homeRoute = FinanceRoutes.financeDashboard;
       } else {
         homeRoute = FinanceRoutes.transactionsDettes;
       }
-      
     } else if (user.departement == "Comptabilites") {
       if (double.parse(user.role) <= 2) {
         homeRoute = ComptabiliteRoutes.comptabiliteDashboard;
       } else {
         homeRoute = ComptabiliteRoutes.comptabiliteJournal;
       }
-      
     } else if (user.departement == "Budgets") {
       if (double.parse(user.role) <= 2) {
         homeRoute = BudgetRoutes.budgetDashboard;
       } else {
         homeRoute = BudgetRoutes.budgetBudgetPrevisionel;
       }
-      
     } else if (user.departement == "Ressources Humaines") {
       if (double.parse(user.role) <= 2) {
         homeRoute = RhRoutes.rhDashboard;
       } else {
         homeRoute = RhRoutes.rhPresence;
       }
-      
     } else if (user.departement == "Exploitations") {
       if (double.parse(user.role) <= 2) {
         homeRoute = ExploitationRoutes.expDashboard;
       } else {
         homeRoute = ExploitationRoutes.expTache;
       }
-      
     } else if (user.departement == "Commercial et Marketing") {
       if (double.parse(user.role) <= 2) {
         homeRoute = ComMarketingRoutes.comMarketingDashboard;
       } else {
         homeRoute = ComMarketingRoutes.comMarketingAnnuaire;
       }
-      
     } else if (user.departement == "Logistique") {
       if (double.parse(user.role) <= 2) {
         homeRoute = ArchiveRoutes.arcihves;

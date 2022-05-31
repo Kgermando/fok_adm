@@ -2,24 +2,17 @@
 
 import 'dart:convert';
 
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:fokad_admin/src/helpers/user_shared_pref.dart';
 import 'package:fokad_admin/src/api/route_api.dart';
 import 'package:fokad_admin/src/models/comm_maketing/courbe_vente_gain_model.dart';
 import 'package:fokad_admin/src/models/comm_maketing/vente_chart_model.dart';
 import 'package:http/http.dart' as http;
 
 class VenteGainApi {
-   var client = http.Client();
-  final storage = const FlutterSecureStorage();
-
-  Future<String?> getToken() async {
-    var data = await storage.read(key: "accessToken");
-    return data;
-  }
-
+  var client = http.Client();
 
   Future<List<VenteChartModel>> getVenteChart() async {
-    String? token = await getToken();
+    String? token = await UserSharedPref().getAccessToken();
 
     if (token!.isNotEmpty) {
       var splittedJwt = token.split(".");
@@ -47,7 +40,7 @@ class VenteGainApi {
   }
 
   Future<List<CourbeVenteModel>> getAllDataVenteMouth() async {
-    String? token = await getToken();
+    String? token = await UserSharedPref().getAccessToken();
 
     if (token!.isNotEmpty) {
       var splittedJwt = token.split(".");
@@ -75,7 +68,7 @@ class VenteGainApi {
   }
 
   Future<List<CourbeVenteModel>> getAllDataVenteYear() async {
-    String? token = await getToken();
+    String? token = await UserSharedPref().getAccessToken();
 
     if (token!.isNotEmpty) {
       var splittedJwt = token.split(".");
@@ -103,7 +96,7 @@ class VenteGainApi {
   }
 
   Future<List<CourbeGainModel>> getAllDataGainMouth() async {
-    String? token = await getToken();
+    String? token = await UserSharedPref().getAccessToken();
 
     if (token!.isNotEmpty) {
       var splittedJwt = token.split(".");
@@ -131,7 +124,7 @@ class VenteGainApi {
   }
 
   Future<List<CourbeGainModel>> getAllDataGainYear() async {
-    String? token = await getToken();
+    String? token = await UserSharedPref().getAccessToken();
 
     if (token!.isNotEmpty) {
       var splittedJwt = token.split(".");

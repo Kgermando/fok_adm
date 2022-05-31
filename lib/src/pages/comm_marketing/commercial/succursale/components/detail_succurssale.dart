@@ -849,7 +849,7 @@ class _DetailSuccursaleState extends State<DetailSuccursale> {
 
   Future submitApprobation(SuccursaleModel data) async {
     final approbation = ApprobationModel(
-        reference: data.id!,
+        reference: data.created.microsecondsSinceEpoch,
         title: data.name,
         departement: 'Commercial et Marketing',
         fontctionOccupee: user.fonctionOccupe,

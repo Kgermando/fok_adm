@@ -300,133 +300,151 @@ class _AddDevisState extends State<AddDevis> {
   }
 
   Widget listDynamictWidget() {
-    return Scrollbar(
-      controller: _controllerScrollList,
-      isAlwaysShown: true,
-      child: ListView.builder(
-          controller: _controllerScrollList,
-          itemCount: count,
-          shrinkWrap: true,
-          itemBuilder: (context, index) {
-            return Column(
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    IconButton(
-                        onPressed: () {
-                          setState(() {
-                            final nbreController = TextEditingController();
-                            final descriptionController =
-                                TextEditingController();
-                            final fraisController = TextEditingController();
-                            listNbreController.add(nbreController);
-                            listDescriptionController
-                                .add(descriptionController);
-                            listFraisController.add(fraisController);
-                            count++;
-                            onUpdate(
-                                index,
-                                listNbreController[index].text,
-                                listDescriptionController[index].text,
-                                listFraisController[index].text);
-                          });
-                        },
-                        icon: const Icon(Icons.add)),
-                    if (count > 0)
-                      IconButton(
-                          onPressed: () {
-                            setState(() {
-                              final nbreController = TextEditingController();
-                              final descriptionController =
-                                  TextEditingController();
-                              final fraisController = TextEditingController();
-                              listNbreController.remove(nbreController);
-                              listDescriptionController
-                                  .remove(descriptionController);
-                              listFraisController.remove(fraisController);
-                              count--;
-                            });
-                          },
-                          icon: const Icon(Icons.close)),
-                  ],
-                ),
-                Row(
-                  children: [
-                    Expanded(
-                        flex: 2,
-                        child: Container(
-                            margin: const EdgeInsets.only(bottom: p20),
-                            child: TextFormField(
-                              controller: listNbreController[index],
-                              decoration: InputDecoration(
-                                border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(10.0)),
-                                labelText: '${index + 1}. Nombre',
-                              ),
-                              keyboardType: TextInputType.text,
-                              style: const TextStyle(),
-                            ))),
-                    const SizedBox(width: p10),
-                    Expanded(
-                        flex: 4,
-                        child: Container(
-                            margin: const EdgeInsets.only(bottom: p20),
-                            child: TextFormField(
-                              controller: listDescriptionController[index],
-                              decoration: InputDecoration(
-                                border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(10.0)),
-                                labelText: '${index + 1}. Désignation',
-                              ),
-                              keyboardType: TextInputType.text,
-                            ))),
-                    const SizedBox(width: p10),
-                    Expanded(
-                        flex: 2,
-                        child: Container(
-                            margin: const EdgeInsets.only(bottom: p20),
-                            child: TextFormField(
-                              controller: listFraisController[index],
-                              decoration: InputDecoration(
-                                border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(10.0)),
-                                labelText: '${index + 1}. Montant',
-                              ),
-                              keyboardType: TextInputType.number,
-                              inputFormatters: <TextInputFormatter>[
-                                FilteringTextInputFormatter.digitsOnly
-                              ],
-                              style: const TextStyle(),
-                            )))
-                  ],
-                ),
-                if (count >= 1)
+    return Container(
+      decoration: BoxDecoration(color: Colors.green[200]),
+      child: Scrollbar(
+        controller: _controllerScrollList,
+        child: ListView.builder(
+            controller: _controllerScrollList,
+            itemCount: count,
+            shrinkWrap: true,
+            itemBuilder: (context, index) {
+              return Column(
+                children: [
                   Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.end,
                     children: [
-                      SizedBox(
-                        height: 50,
-                        // width: double.infinity,
-                        child: Card(
-                            elevation: 10,
-                            color: Colors.red.shade700,
-                            child: const Padding(
-                              padding: EdgeInsets.all(8.0),
-                              child: SelectableText(
-                                "Note: Ajoutez un champ en plus (+1) pour enregistrer le precedent",
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                  color: Colors.white,
-                                ),
-                              ),
-                            )),
-                      ),
+                      // IconButton(
+                      //     onPressed: () {
+                      //       setState(() {
+                      //         final nbreController = TextEditingController();
+                      //         final descriptionController =
+                      //             TextEditingController();
+                      //         final fraisController = TextEditingController();
+                      //         listNbreController.add(nbreController);
+                      //         listDescriptionController
+                      //             .add(descriptionController);
+                      //         listFraisController.add(fraisController);
+                      //         count++;
+                      //         onUpdate(
+                      //             index,
+                      //             listNbreController[index].text,
+                      //             listDescriptionController[index].text,
+                      //             listFraisController[index].text);
+                      //       });
+                      //     },
+                      //     icon: const Icon(Icons.add)),
+                      if (count > 0)
+                        IconButton(
+                            onPressed: () {
+                              setState(() {
+                                final nbreController = TextEditingController();
+                                final descriptionController =
+                                    TextEditingController();
+                                final fraisController = TextEditingController();
+                                listNbreController.remove(nbreController);
+                                listDescriptionController
+                                    .remove(descriptionController);
+                                listFraisController.remove(fraisController);
+                                count--;
+                              });
+                            },
+                            icon: const Icon(Icons.close)),
                     ],
-                  )
-              ],
-            );
-          }),
+                  ),
+                  Row(
+                    children: [
+                      Expanded(
+                          flex: 2,
+                          child: Container(
+                              margin: const EdgeInsets.only(bottom: p20),
+                              child: TextFormField(
+                                controller: listNbreController[index],
+                                decoration: InputDecoration(
+                                  border: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(10.0)),
+                                  labelText: '${index + 1}. Nombre',
+                                ),
+                                keyboardType: TextInputType.text,
+                                style: const TextStyle(),
+                              ))),
+                      const SizedBox(width: p10),
+                      Expanded(
+                          flex: 4,
+                          child: Container(
+                              margin: const EdgeInsets.only(bottom: p20),
+                              child: TextFormField(
+                                controller: listDescriptionController[index],
+                                decoration: InputDecoration(
+                                  border: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(10.0)),
+                                  labelText: '${index + 1}. Désignation',
+                                ),
+                                keyboardType: TextInputType.text,
+                              ))),
+                      const SizedBox(width: p10),
+                      Expanded(
+                          flex: 2,
+                          child: Container(
+                              margin: const EdgeInsets.only(bottom: p20),
+                              child: TextFormField(
+                                controller: listFraisController[index],
+                                decoration: InputDecoration(
+                                  border: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(10.0)),
+                                  labelText: '${index + 1}. Montant',
+                                ),
+                                keyboardType: TextInputType.number,
+                                inputFormatters: <TextInputFormatter>[
+                                  FilteringTextInputFormatter.digitsOnly
+                                ],
+                                style: const TextStyle(),
+                              )))
+                    ],
+                  ),
+                  if (count >= 1)
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        SizedBox(
+                          height: 50,
+                          // width: double.infinity,
+                          child: ElevatedButton(
+                            onPressed: (() {
+                             setState(() {
+                                final nbreController =
+                                    TextEditingController();
+                                final descriptionController =
+                                    TextEditingController();
+                                final fraisController =
+                                    TextEditingController();
+                                listNbreController.add(nbreController);
+                                listDescriptionController
+                                    .add(descriptionController);
+                                listFraisController.add(fraisController);
+                                count++;
+                                onUpdate(
+                                    index,
+                                    listNbreController[index].text,
+                                    listDescriptionController[index].text,
+                                    listFraisController[index].text);
+                              });
+                            }),
+                            child: const Text(
+                              "Enregistrer et ajouter un nouveau",
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                color: Colors.white,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    )
+                ],
+              );
+            }),
+      ),
     );
   }
 

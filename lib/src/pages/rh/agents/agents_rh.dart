@@ -5,6 +5,7 @@ import 'package:fokad_admin/src/navigation/drawer/drawer_menu.dart';
 import 'package:fokad_admin/src/navigation/header/custom_appbar.dart';
 import 'package:fokad_admin/src/pages/rh/agents/components/add_agent.dart';
 import 'package:fokad_admin/src/pages/rh/agents/components/table_agents.dart';
+import 'package:fokad_admin/src/routes/routes.dart';
 
 class AgentsRh extends StatefulWidget {
   const AgentsRh({Key? key}) : super(key: key);
@@ -22,9 +23,10 @@ class _AgentsRhState extends State<AgentsRh> {
         key: _key,
         drawer: const DrawerMenu(),
         floatingActionButton: FloatingActionButton(
-          onPressed: () =>  Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) => const AddAgent())),
-          child: const Icon(Icons.person_add),
+          onPressed: () {
+            Navigator.pushNamed(context, RhRoutes.rhAgentAdd);
+          },
+          child: const Icon(Icons.person_add), 
         ),
         body: SafeArea(
           child: Row(
@@ -41,7 +43,7 @@ class _AgentsRhState extends State<AgentsRh> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      CustomAppbar(title: 'Liste des Agents',
+                      CustomAppbar(title: 'Liste du Personnels',
                           controllerMenu: () =>
                               _key.currentState!.openDrawer()),
                       const Expanded(child: TableAgents())

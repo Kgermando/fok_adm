@@ -8,12 +8,11 @@ import 'package:fokad_admin/src/models/rh/perfomence_model.dart';
 import 'package:fokad_admin/src/models/users/user_model.dart';
 import 'package:fokad_admin/src/navigation/drawer/drawer_menu.dart';
 import 'package:fokad_admin/src/navigation/header/custom_appbar.dart';
-import 'package:fokad_admin/src/pages/rh/performences/components/add_performence_note.dart';
+import 'package:fokad_admin/src/routes/routes.dart';
 import 'package:fokad_admin/src/widgets/print_widget.dart';
 import 'package:fokad_admin/src/widgets/title_widget.dart';
 import 'package:intl/intl.dart';
 import 'package:timeago/timeago.dart' as timeago;
-
 
 final _lightColors = [
   Colors.pinkAccent.shade700,
@@ -25,8 +24,7 @@ final _lightColors = [
 ];
 
 class DetailPerformence extends StatefulWidget {
-  const DetailPerformence({Key? key, required this.id}) : super(key: key);
-  final int id;
+  const DetailPerformence({Key? key}) : super(key: key);
 
   @override
   State<DetailPerformence> createState() => _DetailPerformenceState();
@@ -46,16 +44,13 @@ class _DetailPerformenceState extends State<DetailPerformence> {
     super.initState();
   }
 
-  PerformenceModel? performenceModel;
   String? signature;
   Future<void> getData() async {
     UserModel userModel = await AuthApi().getUserId();
-    PerformenceModel data = await PerformenceApi().getOneData(widget.id);
     List<PerformenceNoteModel> dataList =
         await PerformenceNoteApi().getAllData();
     setState(() {
       signature = userModel.matricule;
-      performenceModel = data;
 
       for (var item in dataList) {
         hospitaliteTotal += double.parse(item.hospitalite);
@@ -67,73 +62,86 @@ class _DetailPerformenceState extends State<DetailPerformence> {
 
   @override
   Widget build(BuildContext context) {
+    final id = ModalRoute.of(context)!.settings.arguments as int;
     return Scaffold(
-        key: _key,
-        drawer: const DrawerMenu(),
-        floatingActionButton: FloatingActionButton(
-          child: const Icon(Icons.add),
-          onPressed: () {
-            Navigator.of(context).push(MaterialPageRoute(
-              builder: (context) => AddPerformenceNote(performenceModel: performenceModel!)));
+      key: _key,
+      drawer: const DrawerMenu(),
+      floatingActionButton: FutureBuilder<PerformenceModel>(
+        future: PerformenceApi().getOneData(id),
+        builder:
+            (BuildContext context, AsyncSnapshot<PerformenceModel> snapshot) {
+          if (snapshot.hasData) {
+            PerformenceModel? data = snapshot.data;
+            return FloatingActionButton(
+                child: const Icon(Icons.add),
+                onPressed: () {
+                    Navigator.pushNamed(context, RhRoutes.rhPerformenceAddNote,
+                      arguments: data);
+                });
+          } else {
+            return const Center(child: CircularProgressIndicator());
           }
-        ),
-        body: SafeArea(
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              if (Responsive.isDesktop(context))
-                const Expanded(
-                  child: DrawerMenu(),
-                ),
-              Expanded(
-                flex: 5,
-                child: Padding(
-                    padding: const EdgeInsets.all(p10),
-                    child: FutureBuilder<PerformenceModel>(
-                        future: PerformenceApi().getOneData(widget.id),
-                        builder: (BuildContext context,
-                            AsyncSnapshot<PerformenceModel> snapshot) {
-                          if (snapshot.hasData) {
-                            PerformenceModel? data = snapshot.data;
-                            return Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Row(
-                                  children: [
-                                    SizedBox(
-                                      width: p20,
-                                      child: IconButton(
-                                          onPressed: () =>
-                                              Navigator.pop(context),
-                                          icon: const Icon(Icons.arrow_back)),
-                                    ),
-                                    const SizedBox(width: p10),
-                                    Expanded(
-                                      child: CustomAppbar(
-                                          title: "Performences",
-                                          controllerMenu: () =>
-                                              _key.currentState!.openDrawer()),
-                                    ),
-                                  ],
-                                ),
-                                Expanded(
-                                    child: SingleChildScrollView(
-                                        child: pageDetail(data!)))
-                              ],
-                            );
-                          } else {
-                            return const Center(
-                                child: CircularProgressIndicator());
-                          }
-                        })),
+        }
+      ),
+      body: SafeArea(
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            if (Responsive.isDesktop(context))
+              const Expanded(
+                child: DrawerMenu(),
               ),
-            ],
-          ),
-        ));
+            Expanded(
+              flex: 5,
+              child: Padding(
+                  padding: const EdgeInsets.all(p10),
+                  child: FutureBuilder<PerformenceModel>(
+                      future: PerformenceApi().getOneData(id),
+                      builder: (BuildContext context,
+                          AsyncSnapshot<PerformenceModel> snapshot) {
+                        if (snapshot.hasData) {
+                          PerformenceModel? data = snapshot.data;
+                          return Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Row(
+                                children: [
+                                  SizedBox(
+                                    width: p20,
+                                    child: IconButton(
+                                        onPressed: () =>
+                                            Navigator.pop(context),
+                                        icon: const Icon(Icons.arrow_back)),
+                                  ),
+                                  const SizedBox(width: p10),
+                                  Expanded(
+                                    child: CustomAppbar(
+                                        title: "Performences",
+                                        controllerMenu: () =>
+                                            _key.currentState!.openDrawer()),
+                                  ),
+                                ],
+                              ),
+                              Expanded(
+                                  child: SingleChildScrollView(
+                                      child: pageDetail(data!)))
+                            ],
+                          );
+                        } else {
+                          return const Center(
+                              child: CircularProgressIndicator());
+                        }
+                      })),
+            ),
+          ],
+        ),
+      )
+    );
   }
 
   Widget pageDetail(PerformenceModel data) {
-    return Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center, children: [
       Card(
         elevation: 10,
         child: Container(
@@ -194,7 +202,7 @@ class _DetailPerformenceState extends State<DetailPerformence> {
               ),
               Expanded(
                 flex: 3,
-                child: SelectableText(data.hospitalite,
+                child: SelectableText(data.nom,
                     textAlign: TextAlign.start, style: bodyMedium),
               )
             ],
@@ -212,7 +220,7 @@ class _DetailPerformenceState extends State<DetailPerformence> {
               ),
               Expanded(
                 flex: 3,
-                child: SelectableText(data.ponctualite,
+                child: SelectableText(data.postnom,
                     textAlign: TextAlign.start, style: bodyMedium),
               )
             ],
@@ -230,7 +238,7 @@ class _DetailPerformenceState extends State<DetailPerformence> {
               ),
               Expanded(
                 flex: 3,
-                child: SelectableText(data.travaille,
+                child: SelectableText(data.prenom,
                     textAlign: TextAlign.start, style: bodyMedium),
               )
             ],
@@ -274,13 +282,11 @@ class _DetailPerformenceState extends State<DetailPerformence> {
           Divider(
             color: Colors.red.shade700,
           ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              SelectableText("CUMULS",
-                textAlign: TextAlign.center, style: headline6!.
-                copyWith(color: Colors.red.shade700, 
-                fontWeight: FontWeight.bold)),
+          Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+            SelectableText("CUMULS",
+                textAlign: TextAlign.center,
+                style: headline6!.copyWith(
+                    color: Colors.red.shade700, fontWeight: FontWeight.bold)),
           ]),
           Row(
             children: [
@@ -334,7 +340,7 @@ class _DetailPerformenceState extends State<DetailPerformence> {
   }
 
   Widget listRapport(PerformenceModel data) {
-    final bodyLarge = Theme.of(context).textTheme.bodyLarge;
+    final headline6 = Theme.of(context).textTheme.headline6;
     return SizedBox(
         height: 500,
         child: FutureBuilder<List<PerformenceNoteModel>>(
@@ -351,7 +357,7 @@ class _DetailPerformenceState extends State<DetailPerformence> {
                           Center(
                             child: Text(
                               "Pas encore de note.",
-                              style: bodyLarge,
+                              style: headline6,
                             ),
                           ),
                         ],

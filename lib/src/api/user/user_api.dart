@@ -2,24 +2,24 @@
 
 import 'dart:convert';
 
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:fokad_admin/src/api/auth/auth_api.dart';
 import 'package:fokad_admin/src/api/route_api.dart';
+import 'package:fokad_admin/src/helpers/user_shared_pref.dart';
 import 'package:fokad_admin/src/models/users/user_model.dart';
-import 'package:http/http.dart' as http; 
-
+import 'package:http/http.dart' as http;
 
 class UserApi {
   var client = http.Client();
-  final storage = const FlutterSecureStorage();
+  // final storage = const FlutterSecureStorage();
 
-  Future<String?> getToken() async {
-    final data = await storage.read(key: "accessToken");
-    return data;
-  }
+  // Future<String?> getToken() async {
+  //   final data = await storage.read(key: "accessToken");
+  //   return data;
+  // }
 
   Future<List<UserModel>> getAllData() async {
-    String? token = await getToken();
+    // String? token = await UserSharedPref().getAccessToken();
+    String? token = await UserSharedPref().getAccessToken();
 
     if (token!.isNotEmpty) {
       var splittedJwt = token.split(".");
@@ -46,9 +46,9 @@ class UserApi {
     }
   }
 
-
   Future<UserModel> getOneData(int id) async {
-    String? token = await getToken();
+    // String? token = await UserSharedPref().getAccessToken();
+    String? token = await UserSharedPref().getAccessToken();
 
     if (token!.isNotEmpty) {
       var splittedJwt = token.split(".");
@@ -71,7 +71,8 @@ class UserApi {
   }
 
   Future<UserModel> insertData(UserModel userModel) async {
-    final accessToken = await storage.read(key: 'accessToken');
+    // String? token = await UserSharedPref().getAccessToken();
+    String? token = await UserSharedPref().getAccessToken();
 
     var data = userModel.toJson();
     var body = jsonEncode(data);
@@ -79,7 +80,7 @@ class UserApi {
     var resp = await client.post(registerUrl,
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
-          'Authorization': 'Bearer $accessToken'
+          'Authorization': 'Bearer $token'
         },
         body: body);
     if (resp.statusCode == 200) {
@@ -93,7 +94,8 @@ class UserApi {
   }
 
   Future<UserModel> updateData(int id, UserModel userModel) async {
-    final accessToken = await storage.read(key: 'accessToken');
+    // String? token = await UserSharedPref().getAccessToken();
+    String? token = await UserSharedPref().getAccessToken();
 
     var data = userModel.toJson();
     var body = jsonEncode(data);
@@ -102,7 +104,7 @@ class UserApi {
     var res = await client.patch(updateAgentsUrl,
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
-          'Authorization': 'Bearer $accessToken'
+          'Authorization': 'Bearer $token'
         },
         body: body);
     if (res.statusCode == 200) {
@@ -113,19 +115,17 @@ class UserApi {
   }
 
   Future<void> deleteData(int id) async {
-    final accessToken = await storage.read(key: 'accessToken');
+    // String? token = await UserSharedPref().getAccessToken();
+    String? token = await UserSharedPref().getAccessToken();
 
     var deleteAgentsUrl = Uri.parse("$mainUrl/user/delete-user/$id");
     var res = await client.delete(deleteAgentsUrl, headers: <String, String>{
       'Content-Type': 'application/json; charset=UTF-8',
-      'Authorization': 'Bearer $accessToken'
+      'Authorization': 'Bearer $token'
     });
     if (res.statusCode == 200) {
-  
     } else {
       throw Exception(json.decode(res.body)['message']);
     }
   }
-
-
 }

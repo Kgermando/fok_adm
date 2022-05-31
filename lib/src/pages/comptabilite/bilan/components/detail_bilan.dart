@@ -940,7 +940,7 @@ class _DetailBilanState extends State<DetailBilan> {
 
   Future submitApprobation(BilanModel data) async {
     final approbation = ApprobationModel(
-        reference: data.id!,
+        reference: data.created.microsecondsSinceEpoch,
         title: data.titleBilan,
         departement: 'Comptabilites',
         fontctionOccupee: user.fonctionOccupe,

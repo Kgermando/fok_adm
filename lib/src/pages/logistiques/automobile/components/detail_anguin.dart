@@ -890,7 +890,7 @@ class _DetailAnguinState extends State<DetailAnguin> {
 
   Future submitApprobation(AnguinModel data) async {
     final approbation = ApprobationModel(
-        reference: data.id!,
+        reference: data.created.microsecondsSinceEpoch,
         title: data.nom,
         departement: 'Logistique',
         fontctionOccupee: user.fonctionOccupe,

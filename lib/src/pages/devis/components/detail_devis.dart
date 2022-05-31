@@ -22,8 +22,7 @@ import 'package:intl/intl.dart';
 import 'package:pluto_grid/pluto_grid.dart';
 
 class DetailDevis extends StatefulWidget {
-  const DetailDevis({Key? key, required this.id}) : super(key: key);
-  final int id;
+  const DetailDevis({Key? key}) : super(key: key);
 
   @override
   State<DetailDevis> createState() => _DetailDevisState();
@@ -103,6 +102,7 @@ class _DetailDevisState extends State<DetailDevis> {
 
   @override
   Widget build(BuildContext context) {
+    final id = ModalRoute.of(context)!.settings.arguments as int;
     return Scaffold(
         key: _key,
         drawer: const DrawerMenu(),
@@ -119,7 +119,7 @@ class _DetailDevisState extends State<DetailDevis> {
                 child: Padding(
                     padding: const EdgeInsets.all(p10),
                     child: FutureBuilder<DevisModel>(
-                        future: DevisAPi().getOneData(widget.id),
+                        future: DevisAPi().getOneData(id),
                         builder: (BuildContext context,
                             AsyncSnapshot<DevisModel> snapshot) {
                           if (snapshot.hasData) {
@@ -979,7 +979,7 @@ class _DetailDevisState extends State<DetailDevis> {
 
   Future submitApprobation(DevisModel data) async {
     final approbation = ApprobationModel(
-        reference: data.id!,
+        reference: data.created.microsecondsSinceEpoch,
         title: data.title,
         departement: data.departement,
         fontctionOccupee: user.fonctionOccupe,

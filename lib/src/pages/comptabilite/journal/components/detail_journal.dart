@@ -797,7 +797,7 @@ class _DetailJournalState extends State<DetailJournal> {
 
   Future submitApprobation(JournalModel data) async {
     final approbation = ApprobationModel(
-        reference: data.id!,
+        reference: data.created.microsecondsSinceEpoch,
         title: data.libele,
         departement: 'Comptabilites',
         fontctionOccupee: user.fonctionOccupe,
