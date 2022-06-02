@@ -8,14 +8,13 @@ import 'package:fokad_admin/src/models/mail/mail_model.dart';
 import 'package:fokad_admin/src/models/users/user_model.dart';
 import 'package:fokad_admin/src/navigation/drawer/drawer_menu.dart';
 import 'package:fokad_admin/src/navigation/header/custom_appbar.dart';
+import 'package:fokad_admin/src/widgets/print_widget.dart';
 import 'package:intl/intl.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
 class DetailMail extends StatefulWidget {
-  const DetailMail({Key? key, required this.mailModel, required this.color})
+  const DetailMail({Key? key})
       : super(key: key);
-  final MailModel mailModel;
-  final Color color;
 
   @override
   State<DetailMail> createState() => _DetailMailState();
@@ -53,6 +52,7 @@ class _DetailMailState extends State<DetailMail> {
 
   @override
   Widget build(BuildContext context) {
+    MailColor mailColor = ModalRoute.of(context)!.settings.arguments as MailColor;
     return Scaffold(
         key: _key,
         drawer: const DrawerMenu(),
@@ -69,7 +69,7 @@ class _DetailMailState extends State<DetailMail> {
                 child: Padding(
                     padding: const EdgeInsets.all(p10),
                     child: FutureBuilder<MailModel>(
-                        future: MailApi().getOneData(widget.mailModel.id!),
+                        future: MailApi().getOneData(mailColor.mail.id!),
                         builder: (BuildContext context,
                             AsyncSnapshot<MailModel> snapshot) {
                           if (snapshot.hasData) {
@@ -97,7 +97,7 @@ class _DetailMailState extends State<DetailMail> {
                                 ),
                                 Expanded(
                                     child: SingleChildScrollView(
-                                        child: pageDetail(data!)))
+                                        child: pageDetail(data!, mailColor.color)))
                               ],
                             );
                           } else {
@@ -111,14 +111,14 @@ class _DetailMailState extends State<DetailMail> {
         ));
   }
 
-  Widget pageDetail(MailModel data) {
+  Widget pageDetail(MailModel data, color) {
     return Row(mainAxisAlignment: MainAxisAlignment.center, children: [
       Card(
         // elevation: 10,
         child: Container(
           margin: const EdgeInsets.all(p16),
           width: (Responsive.isDesktop(context))
-              ? MediaQuery.of(context).size.width / 2
+              ? MediaQuery.of(context).size.width / 1.5
               : double.infinity,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(p10),
@@ -138,10 +138,19 @@ class _DetailMailState extends State<DetailMail> {
                     SelectableText(
                         timeago.format(data.dateSend, locale: 'fr_short'),
                         textAlign: TextAlign.start),
+                    IconButton(onPressed: () {}, tooltip: 'Repondre', 
+                      icon: const Icon(Icons.reply)),
+                    IconButton(onPressed: () {}, tooltip: 'Transfère',
+                        icon: const Icon(Icons.redo)),
+                    IconButton(
+                        onPressed: () {},
+                        tooltip: 'Suypprimer',
+                        icon: const Icon(Icons.delete)),
+                    PrintWidget(onPressed: () {})
                   ],
                 ),
               ),
-              dataWidget(data)
+              dataWidget(data, color)
             ],
           ),
         ),
@@ -149,11 +158,11 @@ class _DetailMailState extends State<DetailMail> {
     ]);
   }
 
-  Widget dataWidget(MailModel data) {
+  Widget dataWidget(MailModel data, color) {
     final headlineSmall = Theme.of(context).textTheme.headlineSmall;
     final bodyMedium = Theme.of(context).textTheme.bodyMedium;
     final bodySmall = Theme.of(context).textTheme.bodySmall;
-    final String firstLettter = data.fullName[0];
+    final String firstLettter = data.fullNameDest[0];
     return Padding(
       padding: const EdgeInsets.all(p10),
       child: Column(
@@ -163,7 +172,7 @@ class _DetailMailState extends State<DetailMail> {
               width: 50,
               height: 50,
               child: CircleAvatar(
-                backgroundColor: widget.color,
+                backgroundColor: color,
                 child: AutoSizeText(
                   firstLettter.toUpperCase(),
                   style: headlineSmall!.copyWith(color: Colors.white),

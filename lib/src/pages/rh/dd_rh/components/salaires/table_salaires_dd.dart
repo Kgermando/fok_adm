@@ -43,7 +43,7 @@ class _TableSalairesDDState extends State<TableSalairesDD> {
           final dataList = tapEvent.row!.cells.values;
           final idPlutoRow = dataList.elementAt(0);
 
-         Navigator.pushNamed(context, RhRoutes.rhPaiementBulletin,
+          Navigator.pushNamed(context, RhRoutes.rhPaiementBulletin,
               arguments: idPlutoRow.value);
         },
         onLoaded: (PlutoGridOnLoadedEvent event) {
@@ -144,7 +144,7 @@ class _TableSalairesDDState extends State<TableSalairesDD> {
       ),
       PlutoColumn(
         readOnly: true,
-        title: 'departement',
+        title: 'Département',
         field: 'departement',
         type: PlutoColumnType.text(),
         enableRowDrag: true,
@@ -199,18 +199,21 @@ class _TableSalairesDDState extends State<TableSalairesDD> {
     List<PaiementSalaireModel?> data = [];
     var approbations = await ApprobationApi().getAllData();
     for (var item in approbations) {
-      data = dataList
-          .where((element) =>
-          element!.createdAt.month == DateTime.now().month &&
-            element.createdAt.year == DateTime.now().year &&
-            element.id == item.reference &&
-            item.fontctionOccupee != 'Directeur de departement')
-          .toList();
+      data = dataList.where((element) {
+        element!.createdAt.microsecondsSinceEpoch.compareTo(item.reference);
+        return false;
+      }).toList();
     }
- 
+
+    // if (element!.createdAt.microsecondsSinceEpoch == item.reference) {
+    //   element.createdAt.month == DateTime.now().month &&
+    //       element.createdAt.year == DateTime.now().year &&
+    //       item.fontctionOccupee == 'Directeur de departement';
+    // }
+
     if (mounted) {
       setState(() {
-        for (var item in data) {
+        for (var item in dataList) {
           rows.add(PlutoRow(cells: {
             'id': PlutoCell(value: item!.id),
             'prenom': PlutoCell(value: item.prenom),

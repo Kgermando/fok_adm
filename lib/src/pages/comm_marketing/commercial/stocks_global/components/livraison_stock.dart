@@ -31,7 +31,6 @@ class _LivraisonStockState extends State<LivraisonStock> {
   bool isLoading = false;
 
   List<SuccursaleModel> succursaleList = [];
-  // List<AchatModel> achatList = [];
 
   int? id;
   String? quantityStock;

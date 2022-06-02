@@ -213,7 +213,7 @@ class _AddPerformenceNoteState extends State<AddPerformenceNote> {
                       children: [
                         Expanded(
                           flex: 1,
-                          child: Text('Départemznt :',
+                          child: Text('Département :',
                               textAlign: TextAlign.start,
                               style: bodyMedium.copyWith(
                                   fontWeight: FontWeight.bold)),
@@ -279,7 +279,7 @@ class _AddPerformenceNoteState extends State<AddPerformenceNote> {
                 decoration: InputDecoration(
                   border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(10.0)),
-                  labelText: 'Hospitalite',
+                  labelText: 'Hospitalité',
                 ),
                 keyboardType: TextInputType.number,
                 inputFormatters: <TextInputFormatter>[
@@ -314,7 +314,7 @@ class _AddPerformenceNoteState extends State<AddPerformenceNote> {
                 decoration: InputDecoration(
                   border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(10.0)),
-                  labelText: 'Ponctualite',
+                  labelText: 'Ponctualité',
                 ),
                 keyboardType: TextInputType.number,
                 inputFormatters: <TextInputFormatter>[

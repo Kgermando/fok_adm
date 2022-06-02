@@ -41,14 +41,13 @@ class _DepartementRHState extends State<DepartementRH> {
       for (var item in approbations) {
         salairesCount = salaires
             .where((element) =>
-            element.createdAt.month == DateTime.now().month &&
-              element.createdAt.year == DateTime.now().year &&
-              element.id == item.reference &&
-              item.fontctionOccupee != 'Directeur de departement')
+                element.createdAt.month == DateTime.now().month &&
+                element.createdAt.year == DateTime.now().year &&
+                element.createdAt.microsecondsSinceEpoch == item.reference &&
+                item.fontctionOccupee != 'Directeur de departement')
             .length;
-        }
       }
-    );
+    });
   }
 
   @override
@@ -59,17 +58,18 @@ class _DepartementRHState extends State<DepartementRH> {
         key: _key,
         drawer: const DrawerMenu(),
         floatingActionButton: FloatingActionButton.extended(
-        backgroundColor: Colors.brown.shade700,
-        foregroundColor: Colors.white,
-        onPressed: () {
-          Navigator.pushNamed(context, RhRoutes.rhHistoriqueSalaire);
-        },
-        label: Row(
-          children: const [
-            Icon(Icons.history),
-            Text("Voir Historique"),
-          ],
-        )),
+            backgroundColor: Colors.brown.shade700,
+            foregroundColor: Colors.white,
+            onPressed: () {
+              Navigator.pushNamed(context, RhRoutes.rhHistoriqueSalaire);
+            },
+            label: Row(
+              children: const [
+                Icon(Icons.history),
+                SizedBox(width: p10),
+                Text("Voir Historique"),
+              ],
+            )),
         body: SafeArea(
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -86,7 +86,7 @@ class _DepartementRHState extends State<DepartementRH> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       CustomAppbar(
-                        title: 'Directeur de departement RH',
+                          title: 'Directeur de departement RH',
                           controllerMenu: () =>
                               _key.currentState!.openDrawer()),
                       Expanded(
@@ -96,19 +96,21 @@ class _DepartementRHState extends State<DepartementRH> {
                             Card(
                               color: Colors.red.shade700,
                               child: ExpansionTile(
-                                leading: const Icon(Icons.folder, color: Colors.white),
-                                title:
-                                    Text('Dossier Salaires', style: headline6!.copyWith(color: Colors.white)),
-                                  subtitle: Text(
+                                leading: const Icon(Icons.folder,
+                                    color: Colors.white),
+                                title: Text('Dossier Salaires',
+                                    style: headline6!
+                                        .copyWith(color: Colors.white)),
+                                subtitle: Text(
                                     "Vous $salairesCount dossiers necessitent votre approbation",
-                                    style: bodyMedium!.copyWith(
-                                        color: Colors.white)),
+                                    style: bodyMedium!
+                                        .copyWith(color: Colors.white)),
                                 initiallyExpanded: false,
                                 onExpansionChanged: (val) {
                                   setState(() {
                                     isOpen1 = !val;
                                   });
-                                }, 
+                                },
                                 trailing: const Icon(Icons.arrow_drop_down,
                                     color: Colors.white),
                                 children: const [TableSalairesDD()],
@@ -117,7 +119,8 @@ class _DepartementRHState extends State<DepartementRH> {
                             Card(
                               color: Colors.green.shade700,
                               child: ExpansionTile(
-                                leading: const Icon(Icons.folder, color: Colors.white),
+                                leading: const Icon(Icons.folder,
+                                    color: Colors.white),
                                 title: Text('Dossier utilisateurs actifs',
                                     style: headline6.copyWith(
                                         color: Colors.white)),
@@ -131,8 +134,8 @@ class _DepartementRHState extends State<DepartementRH> {
                                     isOpen2 = !val;
                                   });
                                 },
-                                trailing: const Icon(Icons.arrow_drop_down, 
-                                  color: Colors.white),
+                                trailing: const Icon(Icons.arrow_drop_down,
+                                    color: Colors.white),
                                 children: const [TableUsers()],
                               ),
                             ),

@@ -88,7 +88,6 @@ class _AchatsPageState extends State<AchatsPage> {
                                         ))
                                       : Scrollbar(
                                           controller: controllerScrollbar,
-                                          isAlwaysShown: true,
                                           child: ListView.builder(
                                               controller: controllerScrollbar,
                                               itemCount: dataList.length,

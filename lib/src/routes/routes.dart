@@ -15,6 +15,7 @@ import 'package:fokad_admin/src/pages/auth/profil_page.dart';
 import 'package:fokad_admin/src/pages/budgets/budget_dd/budget_dd.dart';
 import 'package:fokad_admin/src/pages/budgets/budgets_previsionels/budgets_previsionnels.dart';
 import 'package:fokad_admin/src/pages/budgets/budgets_previsionels/components/add_budget_previsionel.dart';
+import 'package:fokad_admin/src/pages/budgets/budgets_previsionels/components/detail_departement_budget.dart';
 import 'package:fokad_admin/src/pages/budgets/dashboard/dashboard_budget.dart';
 import 'package:fokad_admin/src/pages/budgets/historique_budget/historique_budgets_previsionnels.dart';
 import 'package:fokad_admin/src/pages/comm_marketing/c_m_dd/c_m_dd.dart';
@@ -85,6 +86,7 @@ import 'package:fokad_admin/src/pages/logistiques/materiels/add_mobiler_materiel
 import 'package:fokad_admin/src/pages/logistiques/materiels/etat_materiel.dart';
 import 'package:fokad_admin/src/pages/logistiques/materiels/immobilier_materiel.dart';
 import 'package:fokad_admin/src/pages/logistiques/materiels/mobilier_materiel.dart';
+import 'package:fokad_admin/src/pages/mails/components/detail_mail.dart';
 import 'package:fokad_admin/src/pages/mails/components/new_mail.dart';
 import 'package:fokad_admin/src/pages/mails/mails_page.dart';
 import 'package:fokad_admin/src/pages/rh/agents/agents_rh.dart';
@@ -93,6 +95,9 @@ import 'package:fokad_admin/src/pages/rh/agents/components/detail_agent_page.dar
 import 'package:fokad_admin/src/pages/rh/agents/components/update_agent.dart';
 import 'package:fokad_admin/src/pages/rh/dashboard/dashboard_rh.dart';
 import 'package:fokad_admin/src/pages/rh/dd_rh/departement_rh.dart';
+import 'package:fokad_admin/src/pages/rh/dd_rh/historique/table_salaires_historique.dart';
+import 'package:fokad_admin/src/pages/rh/etat_besoin/add_etat_besoin_rh.dart';
+import 'package:fokad_admin/src/pages/rh/etat_besoin/etat_besoin_rh_page.dart';
 import 'package:fokad_admin/src/pages/rh/paiements/components/add_paiement_salaire.dart';
 import 'package:fokad_admin/src/pages/rh/paiements/components/paiement_bulletin.dart';
 import 'package:fokad_admin/src/pages/rh/paiements/paiements_rh.dart';
@@ -152,6 +157,8 @@ class RhRoutes {
   static const rhPerformenceAdd = "/rh-performence-add";
   static const rhDD = "/rh-dd";
   static const rhHistoriqueSalaire = "/rh-historique-salaire";
+  static const rhEtatBesoin = "/rh-etat-besoin";
+  static const rhEtatBesoinAdd = "/rh-etat-besoin-add";
 }
 
 class BudgetRoutes {
@@ -161,6 +168,8 @@ class BudgetRoutes {
   static const budgetBudgetPrevisionelAdd = "/budgets-previsionels-add";
   static const historiqueBudgetBudgetPrevisionel =
       "/historique-budgets-previsionels";
+  static const budgetBudgetPrevisionelDetail =
+      "/budgets-previsionels-detail";
 }
 
 class FinanceRoutes {
@@ -267,6 +276,7 @@ class ArchiveRoutes {
 class MailRoutes {
   static const mails = "/mails";
   static const addMail = "/mail-add";
+  static const mailDetail = "/mail-detail";
 }
 
 final routes = <String, WidgetBuilder>{
@@ -303,6 +313,9 @@ final routes = <String, WidgetBuilder>{
   RhRoutes.rhPerformenceDetail: (context) => const DetailPerformence(),
   RhRoutes.rhPerformenceAddNote: (context) => const AddPerformenceNote(),
   RhRoutes.rhDD: (context) => const DepartementRH(),
+  RhRoutes.rhHistoriqueSalaire: (context) => const TableSalairesHistorique(),
+  RhRoutes.rhEtatBesoin: (context) => const EtatBesoinRHPage(),
+  RhRoutes.rhEtatBesoinAdd: (context) => const AddEtatBesoinRH(),
 
   // Budgets
   BudgetRoutes.budgetDashboard: (context) => const DashboardBudget(),
@@ -310,6 +323,8 @@ final routes = <String, WidgetBuilder>{
   BudgetRoutes.budgetBudgetPrevisionel: (context) => const BudgetsPrevisionnels(),
   BudgetRoutes.budgetBudgetPrevisionelAdd: (context) => const AddBudgetPrevionel(),
   BudgetRoutes.historiqueBudgetBudgetPrevisionel: (context) => const HistoriqueBudgetsPrevisionnels(),
+  BudgetRoutes.budgetBudgetPrevisionelDetail: (context) =>
+      const DetailDepartmentBudget(),
 
   // FInance
   FinanceRoutes.financeDashboard: (context) => const DashboardFinance(),
@@ -397,6 +412,7 @@ final routes = <String, WidgetBuilder>{
   // Mails
   MailRoutes.mails: (context) => const MailPages(),
   MailRoutes.addMail: (context) => const NewMail(),
+  MailRoutes.mailDetail: (context) => const DetailMail(),
 
   // Archives
   ArchiveRoutes.arcihves: (context) => const ArchivePage(),

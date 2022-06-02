@@ -201,11 +201,11 @@ class _TableSalairesBudgetState extends State<TableSalairesBudget> {
     for (var item in approbations) {
       data = dataList
           .where((element) =>
-          element!.createdAt.month == DateTime.now().month &&
-            element.createdAt.year == DateTime.now().year &&
-            element.id == item.reference &&
-            item.fontctionOccupee == 'Directeur générale' &&
-            item.approbation == "Approved")
+              element!.createdAt.month == DateTime.now().month &&
+              element.createdAt.year == DateTime.now().year &&
+              element.createdAt.microsecondsSinceEpoch == item.reference &&
+              item.fontctionOccupee == 'Directeur générale' &&
+              item.approbation == "Approved")
           .toList();
     }
 

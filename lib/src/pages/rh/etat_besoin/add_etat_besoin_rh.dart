@@ -9,19 +9,18 @@ import 'package:fokad_admin/src/constants/responsive.dart';
 import 'package:fokad_admin/src/models/devis/devis_models.dart';
 import 'package:fokad_admin/src/navigation/drawer/drawer_menu.dart';
 import 'package:fokad_admin/src/navigation/header/custom_appbar.dart';
-import 'package:fokad_admin/src/utils/dropdown.dart';
 import 'package:fokad_admin/src/utils/priority_dropdown.dart';
 import 'package:fokad_admin/src/widgets/btn_widget.dart';
 import 'package:fokad_admin/src/widgets/title_widget.dart';
 
-class AddDevis extends StatefulWidget {
-  const AddDevis({Key? key}) : super(key: key);
+class AddEtatBesoinRH extends StatefulWidget {
+  const AddEtatBesoinRH({Key? key}) : super(key: key);
 
   @override
-  State<AddDevis> createState() => _AddDevisState();
+  State<AddEtatBesoinRH> createState() => _AddEtatBesoinRHState();
 }
 
-class _AddDevisState extends State<AddDevis> {
+class _AddEtatBesoinRHState extends State<AddEtatBesoinRH> {
   final GlobalKey<ScaffoldState> _key = GlobalKey();
   final _formKey = GlobalKey<FormState>();
   bool isLoading = false;
@@ -30,12 +29,10 @@ class _AddDevisState extends State<AddDevis> {
   late List<Map<String, dynamic>> _values;
   late String result;
 
-  final List<String> departementList = Dropdown().departement;
   final List<String> priorityList = PriorityDropdown().priorityDropdown;
 
   final TextEditingController titleController = TextEditingController();
   String? priority;
-  String? departement;
 
   List<TextEditingController> listNbreController = [];
   List<TextEditingController> listDescriptionController = [];
@@ -153,7 +150,7 @@ class _AddDevisState extends State<AddDevis> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: const [
-                        TitleWidget(title: "Ajout besion"),
+                        TitleWidget(title: "Nouveau état de besion"),
                       ],
                     ),
                     const SizedBox(
@@ -168,18 +165,18 @@ class _AddDevisState extends State<AddDevis> {
                         Expanded(child: priorityWidget())
                       ],
                     ),
-                    departmentWidget(),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        SelectableText('Devis',
-                            style: Theme.of(context).textTheme.bodyText2),
+                        SelectableText('Enumerez les éléments',
+                            style: Theme.of(context).textTheme.headline6),
                         if (count == 0)
                           Row(
                             mainAxisAlignment: MainAxisAlignment.end,
                             children: [
                               IconButton(
-                                  icon: const Icon(Icons.add),
+                                  icon: Icon(Icons.add,
+                                      color: Colors.teal.shade700),
                                   onPressed: () {
                                     setState(() {
                                       final nbreController =
@@ -199,21 +196,25 @@ class _AddDevisState extends State<AddDevis> {
                           ),
                       ],
                     ),
-                    Flexible(
-                      child: listDynamictWidget()),
+                    Flexible(child: listDynamictWidget()),
                     const SizedBox(
                       height: p20,
                     ),
-                    BtnWidget(
-                        title: 'Soumettre',
-                        isLoading: isLoading,
-                        press: () {
-                          final form = _formKey.currentState!;
-                          if (form.validate()) {
-                            submit();
-                            form.reset();
-                          }
-                        })
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        BtnWidget(
+                            title: 'Soumettre',
+                            isLoading: isLoading,
+                            press: () {
+                              final form = _formKey.currentState!;
+                              if (form.validate()) {
+                                submit();
+                                form.reset();
+                              }
+                            }),
+                      ],
+                    )
                   ],
                 ),
               ),
@@ -257,6 +258,7 @@ class _AddDevisState extends State<AddDevis> {
         ),
         value: priority,
         isExpanded: true,
+        validator: (value) => value == null ? "Select Priorité" : null,
         items: priorityList.map((String value) {
           return DropdownMenuItem<String>(
             value: value,
@@ -272,36 +274,10 @@ class _AddDevisState extends State<AddDevis> {
     );
   }
 
-  Widget departmentWidget() {
-    return Container(
-      margin: const EdgeInsets.only(bottom: p20),
-      child: DropdownButtonFormField<String>(
-        decoration: InputDecoration(
-          labelText: 'Département',
-          labelStyle: const TextStyle(),
-          border: OutlineInputBorder(borderRadius: BorderRadius.circular(5.0)),
-          contentPadding: const EdgeInsets.only(left: 5.0),
-        ),
-        value: departement,
-        isExpanded: true,
-        items: departementList.map((String value) {
-          return DropdownMenuItem<String>(
-            value: value,
-            child: Text(value),
-          );
-        }).toList(),
-        onChanged: (value) {
-          setState(() {
-            departement = value!;
-          });
-        },
-      ),
-    );
-  }
-
   Widget listDynamictWidget() {
     return Container(
-      decoration: BoxDecoration(color: Colors.green[500]),
+      decoration: BoxDecoration(color: Colors.green[100]),
+      padding: const EdgeInsets.all(p10),
       child: Scrollbar(
         controller: _controllerScrollList,
         child: ListView.builder(
@@ -309,31 +285,15 @@ class _AddDevisState extends State<AddDevis> {
             itemCount: count,
             shrinkWrap: true,
             itemBuilder: (context, index) {
+              final i = index + 1;
+              final ii = index + count;
+                print('ii $ii');
+                print('count $count');
               return Column(
                 children: [
                   Row(
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
-                      // IconButton(
-                      //     onPressed: () {
-                      //       setState(() {
-                      //         final nbreController = TextEditingController();
-                      //         final descriptionController =
-                      //             TextEditingController();
-                      //         final fraisController = TextEditingController();
-                      //         listNbreController.add(nbreController);
-                      //         listDescriptionController
-                      //             .add(descriptionController);
-                      //         listFraisController.add(fraisController);
-                      //         count++;
-                      //         onUpdate(
-                      //             index,
-                      //             listNbreController[index].text,
-                      //             listDescriptionController[index].text,
-                      //             listFraisController[index].text);
-                      //       });
-                      //     },
-                      //     icon: const Icon(Icons.add)),
                       if (count > 0)
                         IconButton(
                             onPressed: () {
@@ -362,7 +322,8 @@ class _AddDevisState extends State<AddDevis> {
                                 controller: listNbreController[index],
                                 decoration: InputDecoration(
                                   border: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(10.0)),
+                                      borderRadius:
+                                          BorderRadius.circular(10.0)),
                                   labelText: '${index + 1}. Nombre',
                                 ),
                                 keyboardType: TextInputType.text,
@@ -377,7 +338,8 @@ class _AddDevisState extends State<AddDevis> {
                                 controller: listDescriptionController[index],
                                 decoration: InputDecoration(
                                   border: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(10.0)),
+                                      borderRadius:
+                                          BorderRadius.circular(10.0)),
                                   labelText: '${index + 1}. Désignation',
                                 ),
                                 keyboardType: TextInputType.text,
@@ -391,7 +353,8 @@ class _AddDevisState extends State<AddDevis> {
                                 controller: listFraisController[index],
                                 decoration: InputDecoration(
                                   border: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(10.0)),
+                                      borderRadius:
+                                          BorderRadius.circular(10.0)),
                                   labelText: '${index + 1}. Montant',
                                 ),
                                 keyboardType: TextInputType.number,
@@ -402,22 +365,26 @@ class _AddDevisState extends State<AddDevis> {
                               )))
                     ],
                   ),
-                  if (count >= 1)
+                  if (index < i)
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         SizedBox(
                           height: 50,
-                          // width: double.infinity,
                           child: TextButton(
+                            style: ElevatedButton.styleFrom(
+                              primary: Colors.teal.shade700,
+                              elevation: 5.0,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(10.0),
+                              ),
+                            ),
                             onPressed: (() {
-                             setState(() {
-                                final nbreController =
-                                    TextEditingController();
+                              setState(() {
+                                final nbreController = TextEditingController();
                                 final descriptionController =
                                     TextEditingController();
-                                final fraisController =
-                                    TextEditingController();
+                                final fraisController = TextEditingController();
                                 listNbreController.add(nbreController);
                                 listDescriptionController
                                     .add(descriptionController);
@@ -486,7 +453,7 @@ class _AddDevisState extends State<AddDevis> {
     final devisModel = DevisModel(
         title: titleController.text,
         priority: priority.toString(),
-        departement: departement.toString(),
+        departement: "Ressources Humaines",
         list: jsonList,
         ligneBudgtaire: '-',
         resources: '-',
@@ -500,6 +467,4 @@ class _AddDevisState extends State<AddDevis> {
       backgroundColor: Colors.green[700],
     ));
   }
-
-
 }

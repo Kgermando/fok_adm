@@ -111,18 +111,18 @@ class _DashboardFinanceState extends State<DashboardFinance> {
         depensesCaisse += double.parse(item!.montant);
       }
 
-
       for (var item in approbations) {
         // Creance remboursement
-        var creancePayementList =
-            creanceDettes.where((element) => element.creanceDette == 'creances');
-      
+        var creancePayementList = creanceDettes
+            .where((element) => element.creanceDette == 'creances');
+
         List<CreanceModel?> nonPayeCreanceList = dataCreanceList
-            .where((element) => element!.statutPaie == false &&
-                element.id == item.reference &&
+            .where((element) =>
+                element!.statutPaie == false &&
+                element.created.microsecondsSinceEpoch == item.reference &&
                 item.fontctionOccupee == 'Directeur générale')
             .toList();
-            
+
         for (var item in nonPayeCreanceList) {
           nonPayesCreance += double.parse(item!.montant);
         }
@@ -131,11 +131,12 @@ class _DashboardFinanceState extends State<DashboardFinance> {
         }
 
         // Dette remboursement
-      var detteRemboursementList =
+        var detteRemboursementList =
             creanceDettes.where((element) => element.creanceDette == 'dettes');
         List<DetteModel?> nonPayeDetteList = dataDetteList
-            .where((element) => element!.statutPaie == false && 
-            element.id == item.reference &&
+            .where((element) =>
+                element!.statutPaie == false &&
+                element.created.microsecondsSinceEpoch == item.reference &&
                 item.fontctionOccupee == 'Directeur générale')
             .toList();
         for (var item in nonPayeDetteList) {
@@ -145,7 +146,6 @@ class _DashboardFinanceState extends State<DashboardFinance> {
           detteRemboursement += double.parse(item.montant);
         }
       }
-      
 
       // FinanceExterieur
       List<FinanceExterieurModel?> recetteList = dataFinanceExterieurList;

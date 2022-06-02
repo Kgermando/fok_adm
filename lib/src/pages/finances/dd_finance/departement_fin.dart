@@ -59,7 +59,7 @@ class _DepartementFinState extends State<DepartementFin> {
         creanceCount = creances
             .where((element) =>
                 element.statutPaie == false &&
-                element.id == item.reference &&
+                element.created.microsecondsSinceEpoch == item.reference &&
                 item.fontctionOccupee == 'Directeur budget')
             .toList()
             .length;
@@ -67,17 +67,18 @@ class _DepartementFinState extends State<DepartementFin> {
 
       for (var item in approbations) {
         detteCount = dettes
-            .where((element) => element.statutPaie == false &&
-                element.id == item.reference &&
+            .where((element) =>
+                element.statutPaie == false &&
+                element.created.microsecondsSinceEpoch == item.reference &&
                 item.fontctionOccupee == 'Directeur budget')
             .toList()
             .length;
       }
-          
+
       for (var item in approbations) {
         salaireCount = salaires
             .where((element) =>
-                element.id == item.reference &&
+                element.createdAt.microsecondsSinceEpoch == item.reference &&
                 item.fontctionOccupee == 'Directeur budget')
             .toList()
             .length;
@@ -85,7 +86,7 @@ class _DepartementFinState extends State<DepartementFin> {
       for (var item in approbations) {
         campaignCount = campaigns
             .where((element) =>
-                element.id == item.reference &&
+                element.created.microsecondsSinceEpoch == item.reference &&
                 item.fontctionOccupee == 'Directeur budget')
             .toList()
             .length;
@@ -93,7 +94,7 @@ class _DepartementFinState extends State<DepartementFin> {
       for (var item in approbations) {
         devisCount = devis
             .where((element) =>
-                element.id == item.reference &&
+                element.created.microsecondsSinceEpoch == item.reference &&
                 item.fontctionOccupee == 'Directeur budget')
             .toList()
             .length;
@@ -101,7 +102,7 @@ class _DepartementFinState extends State<DepartementFin> {
       for (var item in approbations) {
         projetCount = projets
             .where((element) =>
-                element.id == item.reference &&
+                element.created.microsecondsSinceEpoch == item.reference &&
                 item.fontctionOccupee == 'Directeur finance')
             .toList()
             .length;

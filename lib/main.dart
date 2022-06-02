@@ -30,8 +30,6 @@ void main() async {
     passwordHash: '-',
     succursale: '-');
 
-  //  user = await AuthApi().getUserId();
-
   runApp(MyApp(user: user));
 }
 

@@ -2,10 +2,10 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:fokad_admin/src/api/approbation/approbation_api.dart';
-import 'package:fokad_admin/src/api/comptabilite/balance_compte_api.dart'; 
+import 'package:fokad_admin/src/api/comptabilite/balance_compte_api.dart';
 import 'package:fokad_admin/src/api/comptabilite/bilan_api.dart';
 import 'package:fokad_admin/src/api/comptabilite/compte_resultat_api.dart';
-import 'package:fokad_admin/src/api/comptabilite/journal_api.dart'; 
+import 'package:fokad_admin/src/api/comptabilite/journal_api.dart';
 import 'package:fokad_admin/src/constants/app_theme.dart';
 import 'package:fokad_admin/src/constants/responsive.dart';
 import 'package:fokad_admin/src/navigation/drawer/drawer_menu.dart';
@@ -13,10 +13,10 @@ import 'package:fokad_admin/src/navigation/header/custom_appbar.dart';
 import 'package:fokad_admin/src/pages/administration/components/comptabilites/tabla_journal_admin.dart';
 import 'package:fokad_admin/src/pages/administration/components/comptabilites/table_balance_comptabilite_admin.dart';
 import 'package:fokad_admin/src/pages/administration/components/comptabilites/table_bilan_admin.dart';
-import 'package:fokad_admin/src/pages/administration/components/comptabilites/table_compte_resultat_admin.dart'; 
+import 'package:fokad_admin/src/pages/administration/components/comptabilites/table_compte_resultat_admin.dart';
 
 class CompteAdmin extends StatefulWidget {
-  const CompteAdmin({ Key? key }) : super(key: key);
+  const CompteAdmin({Key? key}) : super(key: key);
 
   @override
   State<CompteAdmin> createState() => _CompteAdminState();
@@ -35,9 +35,8 @@ class _CompteAdminState extends State<CompteAdmin> {
   int compteResultatCount = 0;
   int journalCount = 0;
   int balanceCount = 0;
-  
 
-    @override
+  @override
   void initState() {
     Timer.periodic(const Duration(milliseconds: 500), ((timer) {
       getData();
@@ -55,19 +54,27 @@ class _CompteAdminState extends State<CompteAdmin> {
     var approbations = await ApprobationApi().getAllData();
 
     setState(() {
-       for (var item in approbations) {
-          bilanCount =
-            bilans.where((element) => element.id == item.reference && 
-            item.approbation == 'Directeur de departement').length;
-        journalCount =
-            journal.where((element) => element.id == item.reference &&
-                item.approbation == 'Directeur de departement').length;
+      for (var item in approbations) {
+        bilanCount = bilans
+            .where((element) =>
+                element.created.microsecondsSinceEpoch == item.reference &&
+                item.approbation == 'Directeur de departement')
+            .length;
+        journalCount = journal
+            .where((element) =>
+                element.created.microsecondsSinceEpoch == item.reference &&
+                item.approbation == 'Directeur de departement')
+            .length;
         compteResultatCount = compteReultats
-            .where((element) => element.id == item.reference &&
-                item.approbation == 'Directeur de departement').length;
-        balanceCount =
-            balances.where((element) => element.id == item.reference &&
-                item.approbation == 'Directeur de departement').length;
+            .where((element) =>
+                element.created.microsecondsSinceEpoch == item.reference &&
+                item.approbation == 'Directeur de departement')
+            .length;
+        balanceCount = balances
+            .where((element) =>
+                element.created.microsecondsSinceEpoch == item.reference &&
+                item.approbation == 'Directeur de departement')
+            .length;
       }
     });
   }
@@ -103,8 +110,8 @@ class _CompteAdminState extends State<CompteAdmin> {
                         controller: _controllerScroll,
                         child: ListView(
                           controller: _controllerScroll,
-                          children: [ 
-                             Card(
+                          children: [
+                            Card(
                               color: Colors.blue.shade700,
                               child: ExpansionTile(
                                 leading: const Icon(

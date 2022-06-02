@@ -102,7 +102,7 @@ class _TablePerformenceState extends State<TablePerformence> {
       ),
       PlutoColumn(
         readOnly: true,
-        title: 'departement',
+        title: 'Département',
         field: 'departement',
         type: PlutoColumnType.text(),
         enableRowDrag: true,
@@ -116,7 +116,7 @@ class _TablePerformenceState extends State<TablePerformence> {
         readOnly: true,
         title: 'Matricule',
         field: 'agent',
-        type: PlutoColumnType.number(),
+        type: PlutoColumnType.text(),
         enableRowDrag: true,
         enableContextMenu: false,
         enableDropToResize: true,
@@ -163,7 +163,7 @@ class _TablePerformenceState extends State<TablePerformence> {
       ),
       PlutoColumn(
         readOnly: true,
-        title: 'signature',
+        title: 'Signature',
         field: 'signature',
         type: PlutoColumnType.text(),
         enableRowDrag: true,

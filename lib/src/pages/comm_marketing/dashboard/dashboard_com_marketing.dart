@@ -71,13 +71,13 @@ class _ComMarketingState extends State<ComMarketing> {
       for (var item in approbations) {
         campaignCount = campaigns
             .where((element) =>
-                element.id == item.reference &&
+                element.created.microsecondsSinceEpoch == item.reference &&
                 item.fontctionOccupee == 'Directeur générale' &&
                 item.approbation == "Approved")
             .length;
-         succursaleCount = succursales
+        succursaleCount = succursales
             .where((element) =>
-                element.id == item.reference &&
+                element.created.microsecondsSinceEpoch == item.reference &&
                 item.fontctionOccupee == 'Directeur générale' &&
                 item.approbation == "Approved")
             .length;

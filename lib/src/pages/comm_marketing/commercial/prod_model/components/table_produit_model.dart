@@ -194,7 +194,8 @@ class _TableProduitModelState extends State<TableProduitModel> {
     for (var item in approbations) {
       data = dataList
           .where((element) =>
-              element.id == item.reference && item.approbation == 'Approved')
+              element.created.microsecondsSinceEpoch == item.reference &&
+              item.approbation == 'Approved')
           .toList();
     }
 

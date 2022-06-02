@@ -3,6 +3,7 @@ import 'package:fokad_admin/src/api/approbation/approbation_api.dart';
 import 'package:fokad_admin/src/api/budgets/departement_budget_api.dart';
 import 'package:fokad_admin/src/models/budgets/departement_budget_model.dart';
 import 'package:fokad_admin/src/pages/budgets/budgets_previsionels/components/detail_departement_budget.dart';
+import 'package:fokad_admin/src/routes/routes.dart';
 import 'package:fokad_admin/src/widgets/print_widget.dart';
 import 'package:fokad_admin/src/utils/class_implemented.dart';
 import 'package:intl/intl.dart';
@@ -42,9 +43,9 @@ class _TableDepartementBudgetDGState extends State<TableDepartementBudgetDG> {
           final dataList = tapEvent.row!.cells.values;
           final idPlutoRow = dataList.elementAt(0);
 
-          Navigator.of(context).push(MaterialPageRoute(
-              builder: (context) =>
-                  DetailDepartmentBudget(id: idPlutoRow.value)));
+          Navigator.pushNamed(
+              context, BudgetRoutes.budgetBudgetPrevisionelDetail,
+              arguments: idPlutoRow.value);
         },
         onLoaded: (PlutoGridOnLoadedEvent event) {
           stateManager = event.stateManager;
@@ -147,13 +148,13 @@ class _TableDepartementBudgetDGState extends State<TableDepartementBudgetDG> {
     List<DepartementBudgetModel?> data = [];
     for (var item in approbations) {
       data = dataList
-        .where((element) =>
-            DateTime.now().millisecondsSinceEpoch <=
-                element!.periodeFin.millisecondsSinceEpoch &&
-            element.id == item.reference &&
-            item.fontctionOccupee == 'Directeur de budget' &&
-            item.approbation == "Approved")
-        .toList();
+          .where((element) =>
+              DateTime.now().millisecondsSinceEpoch <=
+                  element!.periodeFin.millisecondsSinceEpoch &&
+              element.created.microsecondsSinceEpoch == item.reference &&
+              item.fontctionOccupee == 'Directeur de budget' &&
+              item.approbation == "Approved")
+          .toList();
     }
 
     if (mounted) {

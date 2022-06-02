@@ -46,7 +46,6 @@ class ServiceAffectation {
 
   List<String> expDropdown = [
     'Supervision',
-    // 'Exploitation',
     'Gestion des projets',
     'Suivi des projets',
     'Gestion des ressources des projets',

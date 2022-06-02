@@ -2,8 +2,11 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:fokad_admin/src/api/rh/paiement_salaire_api.dart';
+import 'package:fokad_admin/src/constants/app_theme.dart';
+import 'package:fokad_admin/src/constants/responsive.dart';
 import 'package:fokad_admin/src/models/rh/paiement_salaire_model.dart';
 import 'package:fokad_admin/src/navigation/drawer/drawer_menu.dart';
+import 'package:fokad_admin/src/navigation/header/custom_appbar.dart';
 import 'package:fokad_admin/src/routes/routes.dart';
 import 'package:fokad_admin/src/utils/class_implemented.dart';
 import 'package:fokad_admin/src/widgets/print_widget.dart';
@@ -39,59 +42,104 @@ class _TableSalairesHistoriqueState extends State<TableSalairesHistorique> {
     return Scaffold(
       key: _key,
       drawer: const DrawerMenu(),
-      body: PlutoGrid(
-        columns: columns,
-        rows: rows,
-        onRowDoubleTap: (PlutoGridOnRowDoubleTapEvent tapEvent) {
-          final dataList = tapEvent.row!.cells.values;
-          final idPlutoRow = dataList.elementAt(0);
-    
-          Navigator.pushNamed(context, RhRoutes.rhPaiementBulletin,
-              arguments: idPlutoRow.value);
-        },
-        onLoaded: (PlutoGridOnLoadedEvent event) {
-          stateManager = event.stateManager;
-          stateManager!.setShowColumnFilter(true);
-          stateManager!.notifyListeners();
-        },
-        createHeader: (PlutoGridStateManager header) {
-          return Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              const TitleWidget(title: "Historique salaire"),
-              PrintWidget(onPressed: () {})],
-          );
-        },
-        configuration: PlutoGridConfiguration(
-          columnFilterConfig: PlutoGridColumnFilterConfig(
-            filters: const [
-              ...FilterHelper.defaultFilters,
-              // custom filter
-              ClassFilterImplemented(),
-            ],
-            resolveDefaultColumnFilter: (column, resolver) {
-              if (column.field == 'id') {
-                return resolver<ClassFilterImplemented>() as PlutoFilterType;
-              } else if (column.field == 'prenom') {
-                return resolver<ClassFilterImplemented>() as PlutoFilterType;
-              } else if (column.field == 'nom') {
-                return resolver<ClassFilterImplemented>() as PlutoFilterType;
-              } else if (column.field == 'matricule') {
-                return resolver<ClassFilterImplemented>() as PlutoFilterType;
-              } else if (column.field == 'departement') {
-                return resolver<ClassFilterImplemented>() as PlutoFilterType;
-              } else if (column.field == 'observation') {
-                return resolver<ClassFilterImplemented>() as PlutoFilterType;
-              } else if (column.field == 'modePaiement') {
-                return resolver<ClassFilterImplemented>() as PlutoFilterType;
-              } else if (column.field == 'salaire') {
-                return resolver<ClassFilterImplemented>() as PlutoFilterType;
-              } else if (column.field == 'created') {
-                return resolver<ClassFilterImplemented>() as PlutoFilterType;
-              }
-              return resolver<PlutoFilterTypeContains>() as PlutoFilterType;
-            },
-          ),
+      body: SafeArea(
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            if (Responsive.isDesktop(context))
+              const Expanded(
+                child: DrawerMenu(),
+              ),
+            Expanded(
+              flex: 5,
+              child: Padding(
+                padding: const EdgeInsets.all(p10),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      children: [
+                        SizedBox(
+                          width: 20.0,
+                          child: IconButton(
+                              onPressed: () {
+                                Navigator.of(context).pop();
+                              },
+                              icon: const Icon(Icons.arrow_back)),
+                        ),
+                        const SizedBox(
+                          width: p10,
+                        ),
+                        Expanded(
+                            flex: 5,
+                            child: CustomAppbar(
+                                title: 'Etat de besoin',
+                                controllerMenu: () =>
+                                    _key.currentState!.openDrawer())),
+                      ],
+                    ),
+                    Expanded(
+                      child: PlutoGrid(
+                        columns: columns,
+                        rows: rows,
+                        onRowDoubleTap: (PlutoGridOnRowDoubleTapEvent tapEvent) {
+                          final dataList = tapEvent.row!.cells.values;
+                          final idPlutoRow = dataList.elementAt(0);
+                        
+                          Navigator.pushNamed(context, RhRoutes.rhPaiementBulletin,
+                              arguments: idPlutoRow.value);
+                        },
+                        onLoaded: (PlutoGridOnLoadedEvent event) {
+                          stateManager = event.stateManager;
+                          stateManager!.setShowColumnFilter(true);
+                          stateManager!.notifyListeners();
+                        },
+                        createHeader: (PlutoGridStateManager header) {
+                          return Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              const TitleWidget(title: "Historique salaire"),
+                              PrintWidget(onPressed: () {})],
+                          );
+                        },
+                        configuration: PlutoGridConfiguration(
+                          columnFilterConfig: PlutoGridColumnFilterConfig(
+                            filters: const [
+                              ...FilterHelper.defaultFilters,
+                              // custom filter
+                              ClassFilterImplemented(),
+                            ],
+                            resolveDefaultColumnFilter: (column, resolver) {
+                              if (column.field == 'id') {
+                                return resolver<ClassFilterImplemented>() as PlutoFilterType;
+                              } else if (column.field == 'prenom') {
+                                return resolver<ClassFilterImplemented>() as PlutoFilterType;
+                              } else if (column.field == 'nom') {
+                                return resolver<ClassFilterImplemented>() as PlutoFilterType;
+                              } else if (column.field == 'matricule') {
+                                return resolver<ClassFilterImplemented>() as PlutoFilterType;
+                              } else if (column.field == 'departement') {
+                                return resolver<ClassFilterImplemented>() as PlutoFilterType;
+                              } else if (column.field == 'observation') {
+                                return resolver<ClassFilterImplemented>() as PlutoFilterType;
+                              } else if (column.field == 'modePaiement') {
+                                return resolver<ClassFilterImplemented>() as PlutoFilterType;
+                              } else if (column.field == 'salaire') {
+                                return resolver<ClassFilterImplemented>() as PlutoFilterType;
+                              } else if (column.field == 'created') {
+                                return resolver<ClassFilterImplemented>() as PlutoFilterType;
+                              }
+                              return resolver<PlutoFilterTypeContains>() as PlutoFilterType;
+                            },
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ],
         ),
       ),
     );

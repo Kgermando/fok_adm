@@ -15,9 +15,8 @@ import 'package:fokad_admin/src/pages/administration/components/logistiques/tabl
 import 'package:fokad_admin/src/pages/administration/components/logistiques/table_mobilier_admin.dart';
 import 'package:fokad_admin/src/pages/administration/components/logistiques/table_trajet_anguin_admin.dart';
 
-
 class LogistiquesAdmin extends StatefulWidget {
-  const LogistiquesAdmin({ Key? key }) : super(key: key);
+  const LogistiquesAdmin({Key? key}) : super(key: key);
 
   @override
   State<LogistiquesAdmin> createState() => _LogistiquesAdminState();
@@ -40,7 +39,7 @@ class _LogistiquesAdminState extends State<LogistiquesAdmin> {
   int entretiensCount = 0;
   int etatmaterielsCount = 0;
 
-   @override
+  @override
   void initState() {
     getData();
 
@@ -56,18 +55,26 @@ class _LogistiquesAdminState extends State<LogistiquesAdmin> {
 
     setState(() {
       for (var item in approbations) {
-        anguinsapprobationDD =
-            anguins.where((element) => element.id == item.reference &&
-                item.approbation == 'Directeur de departement').length;
-        carburantCount =
-            carburants.where((element) => element.id == item.reference &&
-                item.approbation == 'Directeur de departement').length;
-        immobiliersCount =
-            immobiliers.where((element) => element.id == item.reference &&
-                item.approbation == 'Directeur de departement').length;
-        mobiliersCount =
-            mobiliers.where((element) => element.id == item.reference &&
-                item.approbation == 'Directeur de departement').length;
+        anguinsapprobationDD = anguins
+            .where((element) =>
+                element.created.microsecondsSinceEpoch == item.reference &&
+                item.approbation == 'Directeur de departement')
+            .length;
+        carburantCount = carburants
+            .where((element) =>
+                element.created.microsecondsSinceEpoch == item.reference &&
+                item.approbation == 'Directeur de departement')
+            .length;
+        immobiliersCount = immobiliers
+            .where((element) =>
+                element.created.microsecondsSinceEpoch == item.reference &&
+                item.approbation == 'Directeur de departement')
+            .length;
+        mobiliersCount = mobiliers
+            .where((element) =>
+                element.created.microsecondsSinceEpoch == item.reference &&
+                item.approbation == 'Directeur de departement')
+            .length;
       }
     });
   }
@@ -94,7 +101,8 @@ class _LogistiquesAdminState extends State<LogistiquesAdmin> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      CustomAppbar(title: 'Logistique',
+                      CustomAppbar(
+                          title: 'Logistique',
                           controllerMenu: () =>
                               _key.currentState!.openDrawer()),
                       Expanded(
@@ -195,7 +203,6 @@ class _LogistiquesAdminState extends State<LogistiquesAdmin> {
                                 children: const [TableMobilierDG()],
                               ),
                             ),
-                           
                           ],
                         ),
                       ))

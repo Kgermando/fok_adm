@@ -129,158 +129,159 @@ class _DashboardAdministrationState extends State<DashboardAdministration> {
     var dataDevisList = await DevisAPi().getAllData();
     var approbations = await ApprobationApi().getAllData();
 
+    if (mounted) {
+      setState(() {
+        agentsCount = agents.length;
+        agentActifCount =
+            agents.where((element) => element.statutAgent == true).length;
 
-  if (mounted) {
-    setState(() {
-      agentsCount = agents.length;
-      agentActifCount =
-          agents.where((element) => element.statutAgent == true).length;
-
-      // Exploitations
-      for (var item in approbations) {
+        // Exploitations
+        for (var item in approbations) {
           projetsApprouveCount = projets
               .where((element) =>
-                  element.id == item.reference &&
+                  element.created.microsecondsSinceEpoch == item.reference &&
                   item.fontctionOccupee == 'Directeur générale')
               .length;
         }
 
-      // Comm & Marketing
-      for (var item in approbations) {
-        campaignCount = campaigns
-            .where((element) =>
-                element.id == item.reference &&
-                item.fontctionOccupee == 'Directeur générale')
-            .length;
-      }
+        // Comm & Marketing
+        for (var item in approbations) {
+          campaignCount = campaigns
+              .where((element) =>
+                  element.created.microsecondsSinceEpoch == item.reference &&
+                  item.fontctionOccupee == 'Directeur générale')
+              .length;
+        }
 
-      // Budgets
-      for (var item in approbations) {
+        // Budgets
+        for (var item in approbations) {
           departementsList = departements
               .where((element) =>
-                  element.id == item.reference &&
+                  element.created.microsecondsSinceEpoch == item.reference &&
                   item.fontctionOccupee == 'Directeur générale' &&
                   DateTime.now().isBefore(element.periodeFin))
               .toList();
         }
 
-      ligneBudgetaireList = budgets
-          .where((element) =>
-              DateTime.now().isBefore(DateTime.parse(element.periodeBudget)))
-          .toList();
+        ligneBudgetaireList = budgets
+            .where((element) =>
+                DateTime.now().isBefore(DateTime.parse(element.periodeBudget)))
+            .toList();
 
-      for (var item in ligneBudgetaireList) {
-        for (var i in approbations) {
+        for (var item in ligneBudgetaireList) {
+          for (var i in approbations) {
             dataCampaignList = campaigns
-              .where((element) =>
-                element.id == i.reference &&
-                i.fontctionOccupee == 'Directeur générale' &&
-                element.created.isBefore(DateTime.parse(item.periodeBudget)))
-              .toList();
-          dataDevisList = devis
-              .where((element) =>
-              element.id == i.reference &&
+                .where((element) =>
+                    element.id == i.reference &&
                     i.fontctionOccupee == 'Directeur générale' &&
-                element.created.isBefore(DateTime.parse(item.periodeBudget)))
-              .toList();
-          dataProjetList = projets
-              .where((element) =>
-              element.id == i.reference &&
+                    element.created
+                        .isBefore(DateTime.parse(item.periodeBudget)))
+                .toList();
+            dataDevisList = devis
+                .where((element) =>
+                    element.id == i.reference &&
                     i.fontctionOccupee == 'Directeur générale' &&
-              element.created.isBefore(DateTime.parse(item.periodeBudget)))
-              .toList();
-          dataSalaireList = salaires
-              .where((element) =>
-              element.id == i.reference &&
+                    element.created
+                        .isBefore(DateTime.parse(item.periodeBudget)))
+                .toList();
+            dataProjetList = projets
+                .where((element) =>
+                    element.id == i.reference &&
                     i.fontctionOccupee == 'Directeur générale' &&
-                element.createdAt.isBefore(DateTime.parse(item.periodeBudget)))
-              .toList();
+                    element.created
+                        .isBefore(DateTime.parse(item.periodeBudget)))
+                .toList();
+            dataSalaireList = salaires
+                .where((element) =>
+                    element.id == i.reference &&
+                    i.fontctionOccupee == 'Directeur générale' &&
+                    element.createdAt
+                        .isBefore(DateTime.parse(item.periodeBudget)))
+                .toList();
+          }
         }
-      }
 
-       // Comptabilite
-      bilanCount = bilans.length;
-      journalCount = journals.length;
+        // Comptabilite
+        bilanCount = bilans.length;
+        journalCount = journals.length;
 
-      // FINANCE
-      // Banque
-      List<BanqueModel?> recetteBanqueList = dataBanqueList
-          .where((element) => element.typeOperation == "Depot")
-          .toList();
-      List<BanqueModel?> depensesBanqueList = dataBanqueList
-          .where((element) => element.typeOperation == "Retrait")
-          .toList();
-      for (var item in recetteBanqueList) {
-        recetteBanque += double.parse(item!.montant);
-      }
-      for (var item in depensesBanqueList) {
-        depensesBanque += double.parse(item!.montant);
-      }
-      // Caisse
-      List<CaisseModel?> recetteCaisseList = dataCaisseList
-          .where((element) => element.typeOperation == "Encaissement")
-          .toList();
-      List<CaisseModel?> depensesCaisseList = dataCaisseList
-          .where((element) => element.typeOperation == "Decaissement")
-          .toList();
-      for (var item in recetteCaisseList) {
-        recetteCaisse += double.parse(item!.montant);
-      }
-      for (var item in depensesCaisseList) {
-        depensesCaisse += double.parse(item!.montant);
-      }
-
-       // Creance
-      var creancePayementList =
-          creanceDettes.where((element) => element.creanceDette == 'creances');
-
-      List<CreanceModel?> nonPayeCreanceList = dataCreanceList
-          .where((element) =>
-              element.statutPaie == false)
-          .toList();
-      for (var item in nonPayeCreanceList) {
-        nonPayesCreance += double.parse(item!.montant);
-      }
-      for (var item in creancePayementList) {
-        creancePayement += double.parse(item.montant);
-      }
-
-      // Dette
-      var detteRemboursementList =
-          creanceDettes.where((element) => element.creanceDette == 'dettes');
-      List<DetteModel?> nonPayeDetteList = dataDetteList
-          .where((element) =>
-              element.statutPaie == false)
-          .toList();
-      for (var item in nonPayeDetteList) {
-        nonPayesDette += double.parse(item!.montant);
-      }
-      for (var item in detteRemboursementList) {
-        detteRemboursement += double.parse(item.montant);
-      }
-
-      // FinanceExterieur
-      List<FinanceExterieurModel?> recetteList = dataFinanceExterieurList;
-      for (var item in recetteList) {
-        cumulFinanceExterieur += double.parse(item!.montant);
-      }
-
-      List<DevisModel?> devisList = dataDevisList;
-
-      for (var item in devisList) {
-        for (var i in item!.list) {
-          depenses += double.parse(i['frais']);
+        // FINANCE
+        // Banque
+        List<BanqueModel?> recetteBanqueList = dataBanqueList
+            .where((element) => element.typeOperation == "Depot")
+            .toList();
+        List<BanqueModel?> depensesBanqueList = dataBanqueList
+            .where((element) => element.typeOperation == "Retrait")
+            .toList();
+        for (var item in recetteBanqueList) {
+          recetteBanque += double.parse(item!.montant);
         }
-      }
+        for (var item in depensesBanqueList) {
+          depensesBanque += double.parse(item!.montant);
+        }
+        // Caisse
+        List<CaisseModel?> recetteCaisseList = dataCaisseList
+            .where((element) => element.typeOperation == "Encaissement")
+            .toList();
+        List<CaisseModel?> depensesCaisseList = dataCaisseList
+            .where((element) => element.typeOperation == "Decaissement")
+            .toList();
+        for (var item in recetteCaisseList) {
+          recetteCaisse += double.parse(item!.montant);
+        }
+        for (var item in depensesCaisseList) {
+          depensesCaisse += double.parse(item!.montant);
+        }
 
-      soldeBanque = recetteBanque - depensesBanque;
-      soldeCaisse = recetteCaisse - depensesCaisse;
-      soldeCreance = nonPayesCreance - creancePayement;
-      soldeDette = nonPayesDette - detteRemboursement;
+        // Creance
+        var creancePayementList = creanceDettes
+            .where((element) => element.creanceDette == 'creances');
 
-      disponible = soldeBanque + soldeCaisse + cumulFinanceExterieur;
-    });
-  }
+        List<CreanceModel?> nonPayeCreanceList = dataCreanceList
+            .where((element) => element.statutPaie == false)
+            .toList();
+        for (var item in nonPayeCreanceList) {
+          nonPayesCreance += double.parse(item!.montant);
+        }
+        for (var item in creancePayementList) {
+          creancePayement += double.parse(item.montant);
+        }
+
+        // Dette
+        var detteRemboursementList =
+            creanceDettes.where((element) => element.creanceDette == 'dettes');
+        List<DetteModel?> nonPayeDetteList = dataDetteList
+            .where((element) => element.statutPaie == false)
+            .toList();
+        for (var item in nonPayeDetteList) {
+          nonPayesDette += double.parse(item!.montant);
+        }
+        for (var item in detteRemboursementList) {
+          detteRemboursement += double.parse(item.montant);
+        }
+
+        // FinanceExterieur
+        List<FinanceExterieurModel?> recetteList = dataFinanceExterieurList;
+        for (var item in recetteList) {
+          cumulFinanceExterieur += double.parse(item!.montant);
+        }
+
+        List<DevisModel?> devisList = dataDevisList;
+
+        for (var item in devisList) {
+          for (var i in item!.list) {
+            depenses += double.parse(i['frais']);
+          }
+        }
+
+        soldeBanque = recetteBanque - depensesBanque;
+        soldeCaisse = recetteCaisse - depensesCaisse;
+        soldeCreance = nonPayesCreance - creancePayement;
+        soldeDette = nonPayesDette - detteRemboursement;
+
+        disponible = soldeBanque + soldeCaisse + cumulFinanceExterieur;
+      });
+    }
   }
 
   @override

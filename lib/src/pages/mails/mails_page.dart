@@ -85,14 +85,23 @@ class _MailPagesState extends State<MailPages> {
                           controllerMenu: () =>
                               _key.currentState!.openDrawer()),
                       if (mailsList.isEmpty)
-                        Center(
+                      Center(
                             child: SizedBox(
                               height: 300,
                               child: Text(
                           "Vous n'avez pas aucun mail",
                           style: headline6
                         ),
-                            )),
+                            )
+                      ),
+                      if (mailsList.isNotEmpty)
+                      TextField(
+                        decoration: InputDecoration(
+                          border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10.0)),
+                          labelText: 'Recherche mail',
+                        ),
+                      ),
                       Expanded(
                           child: ListView.builder(
                               itemCount: mailsList.length,
@@ -114,8 +123,9 @@ class _MailPagesState extends State<MailPages> {
     return InkWell(
       onTap: () async {
         await readMail(mail);
-        Navigator.of(context).push(MaterialPageRoute(
-            builder: (context) => DetailMail(mailModel: mail, color: color)));
+
+        Navigator.pushNamed(context, MailRoutes.mailDetail,
+            arguments: MailColor(mail: mail, color: color));
       },
       child: Padding(
         padding: const EdgeInsets.all(p10),

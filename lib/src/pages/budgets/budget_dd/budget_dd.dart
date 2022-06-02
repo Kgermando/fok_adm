@@ -42,14 +42,13 @@ class _BudgetDDState extends State<BudgetDD> {
 
   @override
   void initState() {
-     getData();
+    getData();
 
     super.initState();
   }
 
   Future<void> getData() async {
-    var salaires =
-        await PaiementSalaireApi().getAllData();
+    var salaires = await PaiementSalaireApi().getAllData();
     var campaigns = await CampaignApi().getAllData();
     var devis = await DevisAPi().getAllData();
     var projets = await ProjetsApi().getAllData();
@@ -60,7 +59,7 @@ class _BudgetDDState extends State<BudgetDD> {
       for (var item in approbations) {
         salaireCount = salaires
             .where((element) =>
-                element.id == item.reference &&
+                element.createdAt.microsecondsSinceEpoch == item.reference &&
                 item.fontctionOccupee == 'Directeur générale' &&
                 item.approbation == "Approved")
             .toList()
@@ -69,7 +68,7 @@ class _BudgetDDState extends State<BudgetDD> {
       for (var item in approbations) {
         campaignCount = campaigns
             .where((element) =>
-                element.id == item.reference &&
+                element.created.microsecondsSinceEpoch == item.reference &&
                 item.fontctionOccupee == 'Directeur générale' &&
                 item.approbation == "Approved")
             .toList()
@@ -78,7 +77,7 @@ class _BudgetDDState extends State<BudgetDD> {
       for (var item in approbations) {
         devisCount = devis
             .where((element) =>
-                element.id == item.reference && 
+                element.created.microsecondsSinceEpoch == item.reference &&
                 item.fontctionOccupee == 'Directeur générale' &&
                 item.approbation == "Approved")
             .toList()
@@ -87,7 +86,7 @@ class _BudgetDDState extends State<BudgetDD> {
       for (var item in approbations) {
         projetCount = projets
             .where((element) =>
-                element.id == item.reference &&
+                element.created.microsecondsSinceEpoch == item.reference &&
                 item.fontctionOccupee == 'Directeur générale' &&
                 item.approbation == "Approved")
             .toList()
@@ -96,7 +95,7 @@ class _BudgetDDState extends State<BudgetDD> {
       for (var item in approbations) {
         budgetDepCount = budgetDep
             .where((element) =>
-                element.id == item.reference &&
+                element.created.microsecondsSinceEpoch == item.reference &&
                 item.fontctionOccupee == 'Directeur générale' &&
                 item.approbation == "Approved")
             .toList()

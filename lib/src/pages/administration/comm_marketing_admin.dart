@@ -12,7 +12,7 @@ import 'package:fokad_admin/src/pages/administration/components/comm_marketing/t
 import 'package:fokad_admin/src/pages/administration/components/comm_marketing/table_succursale_dg.dart';
 
 class CommMarketingAdmin extends StatefulWidget {
-  const CommMarketingAdmin({ Key? key }) : super(key: key);
+  const CommMarketingAdmin({Key? key}) : super(key: key);
 
   @override
   State<CommMarketingAdmin> createState() => _CommMarketingAdminState();
@@ -39,22 +39,22 @@ class _CommMarketingAdminState extends State<CommMarketingAdmin> {
     List<CampaignModel> campaign = await CampaignApi().getAllData();
     List<SuccursaleModel> succursale = await SuccursaleApi().getAllData();
     var approbations = await ApprobationApi().getAllData();
-    
+
     setState(() {
       for (var item in approbations) {
         campaignCount = campaign
             .where((element) =>
-                element.id == item.reference &&
+                element.created.microsecondsSinceEpoch == item.reference &&
                 item.approbation == 'Directeur de departement')
             .length;
         succursaleCount = succursale
             .where((element) =>
-                element.id == item.reference &&
+                element.created.microsecondsSinceEpoch == item.reference &&
                 item.approbation == 'Directeur de departement')
             .length;
       }
     });
-  } 
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -79,7 +79,9 @@ class _CommMarketingAdminState extends State<CommMarketingAdmin> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       CustomAppbar(
-                          title: 'Commercial & Marketing', controllerMenu: () => _key.currentState!.openDrawer()),
+                          title: 'Commercial & Marketing',
+                          controllerMenu: () =>
+                              _key.currentState!.openDrawer()),
                       Expanded(
                           child: Scrollbar(
                         controller: _controllerScroll,
@@ -89,13 +91,15 @@ class _CommMarketingAdminState extends State<CommMarketingAdmin> {
                             Card(
                               color: Colors.orange.shade700,
                               child: ExpansionTile(
-                                leading: const Icon(Icons.folder, color: Colors.white),
-                                title:
-                                    Text('Dossier Campagnes', style: headline6!
+                                leading: const Icon(Icons.folder,
+                                    color: Colors.white),
+                                title: Text('Dossier Campagnes',
+                                    style: headline6!
                                         .copyWith(color: Colors.white)),
                                 subtitle: Text(
                                     "Vous avez $campaignCount dossiers necessitent votre approbation",
-                                    style: bodyMedium!.copyWith(color: Colors.white)),
+                                    style: bodyMedium!
+                                        .copyWith(color: Colors.white)),
                                 initiallyExpanded: false,
                                 onExpansionChanged: (val) {
                                   setState(() {
@@ -113,10 +117,12 @@ class _CommMarketingAdminState extends State<CommMarketingAdmin> {
                                 leading: const Icon(Icons.folder,
                                     color: Colors.white),
                                 title: Text('Dossier Succursale',
-                                    style: headline6.copyWith(color: Colors.white)),
+                                    style: headline6.copyWith(
+                                        color: Colors.white)),
                                 subtitle: Text(
                                     "Vous avez $succursaleCount dossiers necessitent votre approbation",
-                                    style: bodyMedium.copyWith(color: Colors.white)),
+                                    style: bodyMedium.copyWith(
+                                        color: Colors.white)),
                                 initiallyExpanded: false,
                                 onExpansionChanged: (val) {
                                   setState(() {

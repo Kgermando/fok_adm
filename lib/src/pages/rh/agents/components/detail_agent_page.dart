@@ -10,8 +10,6 @@ import 'package:fokad_admin/src/models/users/user_model.dart';
 import 'package:fokad_admin/src/navigation/drawer/drawer_menu.dart';
 import 'package:fokad_admin/src/navigation/header/custom_appbar.dart';
 import 'package:fokad_admin/src/pages/rh/agents/components/agent_pdf.dart';
-import 'package:fokad_admin/src/pages/rh/agents/components/update_agent.dart';
-import 'package:fokad_admin/src/pages/rh/paiements/components/add_paiement_salaire.dart';
 import 'package:fokad_admin/src/routes/routes.dart';
 import 'package:fokad_admin/src/utils/loading.dart';
 import 'package:fokad_admin/src/widgets/print_widget.dart';
@@ -41,46 +39,22 @@ class _DetailAgentPageState extends State<DetailAgentPage> {
     super.initState();
   }
 
-  // AgentModel agentModel = AgentModel(
-  //     nom: '-',
-  //     postNom: '-',
-  //     prenom: '-',
-  //     email: '-',
-  //     telephone: '-',
-  //     adresse: '-',
-  //     sexe: '-',
-  //     role: '5',
-  //     matricule: '-',
-  //     numeroSecuriteSociale: '-',
-  //     dateNaissance: DateTime.now(),
-  //     lieuNaissance: '-',
-  //     nationalite: '-',
-  //     typeContrat: '-',
-  //     departement: '-',
-  //     servicesAffectation: '-',
-  //     dateDebutContrat: DateTime.now(),
-  //     dateFinContrat: DateTime.now(),
-  //     fonctionOccupe: '-',
-  //     statutAgent: false,
-  //     createdAt: DateTime.now(),
-  //     salaire: '-',
-  //     signature: '-',
-  //     created:  DateTime.now());
   AgentModel? agentModel;
   UserModel user = UserModel(
-      nom: '-',
-      prenom: '-',
-      email: '-',
-      telephone: '-',
-      matricule: '-',
-      departement: '-',
-      servicesAffectation: '-',
-      fonctionOccupe: '-',
-      role: '5',
-      isOnline: false,
-      createdAt: DateTime.now(),
-      passwordHash: '-',
-      succursale: '-');
+    nom: '-',
+    prenom: '-',
+    email: '-',
+    telephone: '-',
+    matricule: '-',
+    departement: '-',
+    servicesAffectation: '-',
+    fonctionOccupe: '-',
+    role: '5',
+    isOnline: false,
+    createdAt: DateTime.now(),
+    passwordHash: '-',
+    succursale: '-'
+  );
   Future<void> getData(BuildContext context) async {
     UserModel userModel = await AuthApi().getUserId();
     final data = await UserApi().getAllData();
@@ -100,21 +74,22 @@ class _DetailAgentPageState extends State<DetailAgentPage> {
         key: _key,
         drawer: const DrawerMenu(),
         floatingActionButton:
-            // speedialWidget(agentModel!),
-            FutureBuilder<AgentModel>(
-                future: AgentsApi().getOneData(id),
-                builder:
-                    (BuildContext context, AsyncSnapshot<AgentModel> snapshot) {
-                  if (snapshot.hasData) {
-                    AgentModel? agentModel = snapshot.data;
-                    return speedialWidget(agentModel!);
-                    // (int.parse(agentModel!.role) <= 3)
-                    //     ? speedialWidget(agentModel)
-                    //     : Container();
-                  } else {
-                    return const Center(child: CircularProgressIndicator());
-                  }
-                }),
+          // speedialWidget(agentModel!),
+          FutureBuilder<AgentModel>(
+            future: AgentsApi().getOneData(id),
+            builder:
+                (BuildContext context, AsyncSnapshot<AgentModel> snapshot) {
+              if (snapshot.hasData) {
+                AgentModel? data = snapshot.data;
+                return speedialWidget(data!);
+                // (int.parse(agentModel!.role) <= 3)
+                //     ? speedialWidget(agentModel)
+                //     : Container();
+              } else {
+                return const Center(child: CircularProgressIndicator());
+              }
+            }
+          ),
         body: SafeArea(
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -126,43 +101,43 @@ class _DetailAgentPageState extends State<DetailAgentPage> {
               Expanded(
                 flex: 5,
                 child: Padding(
-                    padding: const EdgeInsets.all(p10),
-                    child: FutureBuilder<AgentModel>(
-                        future: AgentsApi().getOneData(id),
-                        builder: (BuildContext context,
-                            AsyncSnapshot<AgentModel> snapshot) {
-                          if (snapshot.hasData) {
-                            AgentModel? agentModel = snapshot.data;
-                            return Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
+                  padding: const EdgeInsets.all(p10),
+                  child: FutureBuilder<AgentModel>(
+                    future: AgentsApi().getOneData(id),
+                    builder: (BuildContext context,
+                        AsyncSnapshot<AgentModel> snapshot) {
+                      if (snapshot.hasData) {
+                        AgentModel? agentModel = snapshot.data;
+                        return Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Row(
                               children: [
-                                Row(
-                                  children: [
-                                    SizedBox(
-                                      width: p20,
-                                      child: IconButton(
-                                          onPressed: () =>
-                                              Navigator.pop(context),
-                                          icon: const Icon(Icons.arrow_back)),
-                                    ),
-                                    const SizedBox(width: p10),
-                                    Expanded(
-                                      child: CustomAppbar(
-                                          title:
-                                              'Agent ${agentModel!.matricule}',
-                                          controllerMenu: () =>
-                                              _key.currentState!.openDrawer()),
-                                    ),
-                                  ],
+                                SizedBox(
+                                  width: p20,
+                                  child: IconButton(
+                                      onPressed: () =>
+                                          Navigator.pop(context),
+                                      icon: const Icon(Icons.arrow_back)),
                                 ),
-                                Expanded(child: pageDetail(agentModel))
+                                const SizedBox(width: p10),
+                                Expanded(
+                                  child: CustomAppbar(
+                                      title:
+                                          'Agent ${agentModel!.matricule}',
+                                      controllerMenu: () =>
+                                          _key.currentState!.openDrawer()),
+                                ),
                               ],
-                            );
-                          } else {
-                            return const Center(
-                                child: CircularProgressIndicator());
-                          }
-                        })),
+                            ),
+                            Expanded(child: pageDetail(agentModel))
+                          ],
+                        );
+                      } else {
+                        return const Center(
+                            child: CircularProgressIndicator());
+                      }
+                    })),
               ),
             ],
           ),

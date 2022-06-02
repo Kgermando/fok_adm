@@ -25,7 +25,6 @@ class FonctionOccupee {
     'Directeur de departement',
     'Chef de service',
     'Agent',
-    'Expert',
     'Stagiaire professionnel',
     'Stagiaire academique'
   ];

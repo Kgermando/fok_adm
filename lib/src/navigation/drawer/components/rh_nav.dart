@@ -1,6 +1,7 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:badges/badges.dart';
 import 'package:flutter/material.dart';
+import 'package:fokad_admin/src/api/approbation/approbation_api.dart';
 import 'package:fokad_admin/src/api/auth/auth_api.dart';
 import 'package:fokad_admin/src/api/rh/paiement_salaire_api.dart';
 import 'package:fokad_admin/src/models/users/user_model.dart';
@@ -33,16 +34,18 @@ class _RhNavState extends State<RhNav> {
   Future<void> getData() async {
     // RH
     var salaires = await PaiementSalaireApi().getAllData();
-    if (mounted) {
-      setState(() {
+    var approbations = await ApprobationApi().getAllData();
+    setState(() {
+      for (var item in approbations) {
         salairesCount = salaires
             .where((element) =>
                 element.createdAt.month == DateTime.now().month &&
-                element.createdAt.year == DateTime.now().year)
+                element.createdAt.year == DateTime.now().year &&
+                element.createdAt.microsecondsSinceEpoch == item.reference &&
+                item.fontctionOccupee != 'Directeur de departement')
             .length;
-        // userAcount = users.length;
-      });
-    }
+      }
+    });
   }
 
   @override
@@ -133,6 +136,18 @@ class _RhNavState extends State<RhNav> {
                           Navigator.pushNamed(context, RhRoutes.rhPresence);
                           // Navigator.of(context).pop();
                         }),
+                    if (userRole <= 2)
+                      DrawerWidget(
+                          selected:
+                              widget.pageCurrente == RhRoutes.rhEtatBesoin,
+                          icon: Icons.note_alt,
+                          sizeIcon: 20.0,
+                          title: 'Etat besoin',
+                          style: bodyText1,
+                          onTap: () {
+                            Navigator.pushNamed(context, RhRoutes.rhEtatBesoin);
+                            // Navigator.of(context).pop();
+                          }),
                     if (userRole <= 3)
                       DrawerWidget(
                           selected:

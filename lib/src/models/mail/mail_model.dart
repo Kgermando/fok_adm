@@ -1,3 +1,5 @@
+import 'package:flutter/material.dart';
+
 class MailModel {
   late int? id;
   late String fullName;
@@ -74,4 +76,11 @@ class MailModel {
       'dateRead': dateRead.toIso8601String()
     };
   }
+}
+
+class MailColor {
+  final MailModel mail;
+  final Color color;
+
+  MailColor({required this.mail, required this.color});
 }

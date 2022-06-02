@@ -1,23 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:fokad_admin/src/api/approbation/approbation_api.dart';
-import 'package:fokad_admin/src/api/budgets/departement_budget_api.dart';
-import 'package:fokad_admin/src/models/budgets/departement_budget_model.dart';
-import 'package:fokad_admin/src/pages/budgets/budgets_previsionels/components/detail_departement_budget.dart';
+import 'package:fokad_admin/src/api/auth/auth_api.dart';
+import 'package:fokad_admin/src/api/devis/devis_api.dart';
+import 'package:fokad_admin/src/models/devis/devis_models.dart';
 import 'package:fokad_admin/src/routes/routes.dart';
-import 'package:fokad_admin/src/widgets/print_widget.dart';
 import 'package:fokad_admin/src/utils/class_implemented.dart';
+import 'package:fokad_admin/src/widgets/print_widget.dart';
+import 'package:fokad_admin/src/widgets/title_widget.dart';
 import 'package:intl/intl.dart';
 import 'package:pluto_grid/pluto_grid.dart';
 
-class TableDepartementBudgetDD extends StatefulWidget {
-  const TableDepartementBudgetDD({Key? key}) : super(key: key);
+class TabvleEtatBesoinRH extends StatefulWidget {
+  const TabvleEtatBesoinRH({Key? key}) : super(key: key);
 
   @override
-  State<TableDepartementBudgetDD> createState() =>
-      _TableDepartementBudgetDDState();
+  State<TabvleEtatBesoinRH> createState() => _TabvleEtatBesoinRHState();
 }
 
-class _TableDepartementBudgetDDState extends State<TableDepartementBudgetDD> {
+class _TabvleEtatBesoinRHState extends State<TabvleEtatBesoinRH> {
   List<PlutoColumn> columns = [];
   List<PlutoRow> rows = [];
   PlutoGridStateManager? stateManager;
@@ -28,8 +28,31 @@ class _TableDepartementBudgetDDState extends State<TableDepartementBudgetDD> {
   @override
   initState() {
     agentsColumn();
+    getData();
     agentsRow();
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+  }
+
+  String? matricule;
+  String? departement;
+  String? servicesAffectation;
+  String? fonctionOccupe;
+
+  Future<void> getData() async {
+    final userModel = await AuthApi().getUserId();
+    if (mounted) {
+      setState(() {
+        matricule = userModel.matricule;
+        departement = userModel.departement;
+        servicesAffectation = userModel.servicesAffectation;
+        fonctionOccupe = userModel.fonctionOccupe;
+      });
+    }
   }
 
   @override
@@ -43,8 +66,7 @@ class _TableDepartementBudgetDDState extends State<TableDepartementBudgetDD> {
           final dataList = tapEvent.row!.cells.values;
           final idPlutoRow = dataList.elementAt(0);
 
-          Navigator.pushNamed(
-              context, BudgetRoutes.budgetBudgetPrevisionelDetail,
+          Navigator.pushNamed(context, DevisRoutes.devisDetail,
               arguments: idPlutoRow.value);
         },
         onLoaded: (PlutoGridOnLoadedEvent event) {
@@ -56,8 +78,7 @@ class _TableDepartementBudgetDDState extends State<TableDepartementBudgetDD> {
           return Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text("Liste des budgets",
-                  style: Theme.of(context).textTheme.headline6),
+              const TitleWidget(title: 'Ressource humaines'),
               PrintWidget(onPressed: () {})
             ],
           );
@@ -72,10 +93,11 @@ class _TableDepartementBudgetDDState extends State<TableDepartementBudgetDD> {
             resolveDefaultColumnFilter: (column, resolver) {
               if (column.field == 'id') {
                 return resolver<ClassFilterImplemented>() as PlutoFilterType;
-              }
-              if (column.field == 'departement') {
+              } else if (column.field == 'title') {
                 return resolver<ClassFilterImplemented>() as PlutoFilterType;
-              } else if (column.field == 'periodeBudget') {
+              } else if (column.field == 'priority') {
+                return resolver<ClassFilterImplemented>() as PlutoFilterType;
+              } else if (column.field == 'departement') {
                 return resolver<ClassFilterImplemented>() as PlutoFilterType;
               } else if (column.field == 'created') {
                 return resolver<ClassFilterImplemented>() as PlutoFilterType;
@@ -104,6 +126,30 @@ class _TableDepartementBudgetDDState extends State<TableDepartementBudgetDD> {
       ),
       PlutoColumn(
         readOnly: true,
+        title: 'Titre',
+        field: 'title',
+        type: PlutoColumnType.text(),
+        enableRowDrag: true,
+        enableContextMenu: false,
+        enableDropToResize: true,
+        titleTextAlign: PlutoColumnTextAlign.left,
+        width: 300,
+        minWidth: 150,
+      ),
+      PlutoColumn(
+        readOnly: true,
+        title: 'Priorité',
+        field: 'priority',
+        type: PlutoColumnType.text(),
+        enableRowDrag: true,
+        enableContextMenu: false,
+        enableDropToResize: true,
+        titleTextAlign: PlutoColumnTextAlign.left,
+        width: 200,
+        minWidth: 150,
+      ),
+      PlutoColumn(
+        readOnly: true,
         title: 'Département',
         field: 'departement',
         type: PlutoColumnType.text(),
@@ -111,65 +157,53 @@ class _TableDepartementBudgetDDState extends State<TableDepartementBudgetDD> {
         enableContextMenu: false,
         enableDropToResize: true,
         titleTextAlign: PlutoColumnTextAlign.left,
-        width: 200,
-        minWidth: 150,
-      ),
-      PlutoColumn(
-        readOnly: true,
-        title: 'Periode Budget',
-        field: 'periodeBudget',
-        type: PlutoColumnType.text(),
-        enableRowDrag: true,
-        enableContextMenu: false,
-        enableDropToResize: true,
-        titleTextAlign: PlutoColumnTextAlign.left,
-        width: 200,
+        width: 300,
         minWidth: 150,
       ),
       PlutoColumn(
         readOnly: true,
         title: 'Date',
         field: 'created',
-        type: PlutoColumnType.date(),
+        type: PlutoColumnType.text(),
         enableRowDrag: true,
         enableContextMenu: false,
         enableDropToResize: true,
         titleTextAlign: PlutoColumnTextAlign.left,
-        width: 200,
+        width: 300,
         minWidth: 150,
       ),
     ];
   }
 
   Future agentsRow() async {
-    List<DepartementBudgetModel?> dataList =
-        await DepeartementBudgetApi().getAllData();
-    List<DepartementBudgetModel?> data = [];
-    var approbations = await ApprobationApi().getAllData();
-    for (var item in approbations) {
-      data = dataList
-          .where((element) =>
-              element!.id == item.reference &&
-              item.fontctionOccupee == 'Directeur générale' &&
-              item.approbation == "Approved")
-          .toList();
-    }
+    // final userModel = await AuthApi().getUserId();
+    List<DevisModel?> dataList = await DevisAPi().getAllData();
+    // List<DevisModel?> data = [];
+    // var approbations = await ApprobationApi().getAllData();
+    // for (var item in approbations) {
+    //   data = dataList
+    //       .where((element) =>
+    //           element!.departement == userModel.departement &&
+    //               userModel.fonctionOccupe == 'Directeur de departement' ||
+    //           userModel.fonctionOccupe == 'Directeur de budget' ||
+    //           userModel.fonctionOccupe == 'Directeur de finance' ||
+    //           userModel.fonctionOccupe == 'Directeur de générale')
+    //       .toList();
+    // }
 
     if (mounted) {
       setState(() {
-        for (var item in data) {
-          id = item!.id;
+        for (var item in dataList) {
           rows.add(PlutoRow(cells: {
-            'id': PlutoCell(value: item.id),
+            'id': PlutoCell(value: item!.id),
+            'title': PlutoCell(value: item.title),
+            'priority': PlutoCell(value: item.priority),
             'departement': PlutoCell(value: item.departement),
-            'periodeBudget': PlutoCell(
-                value:
-                    "${DateFormat("dd-MM-yyyy").format(item.periodeDebut)} - ${DateFormat("dd-MM-yyyy").format(item.periodeFin)}"),
             'created': PlutoCell(
                 value: DateFormat("dd-MM-yyyy HH:mm").format(item.created))
           }));
+          stateManager!.resetCurrentState();
         }
-        stateManager!.resetCurrentState();
       });
     }
   }

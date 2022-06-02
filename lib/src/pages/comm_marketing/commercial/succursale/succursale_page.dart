@@ -95,7 +95,9 @@ class _SuccursalePageState extends State<SuccursalePage> {
                                 for (var item in approbationList) {
                                   succursaleModels = snapshot.data!
                                       .where((element) =>
-                                          element.id == item.reference &&
+                                          element.created
+                                                  .microsecondsSinceEpoch ==
+                                              item.reference &&
                                           item.fontctionOccupee ==
                                               'Directeur générale' &&
                                           item.approbation == "Approved")

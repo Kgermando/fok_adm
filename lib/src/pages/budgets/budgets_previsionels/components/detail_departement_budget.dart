@@ -27,8 +27,7 @@ import 'package:fokad_admin/src/widgets/title_widget.dart';
 import 'package:intl/intl.dart';
 
 class DetailDepartmentBudget extends StatefulWidget {
-  const DetailDepartmentBudget({Key? key, required this.id}) : super(key: key);
-  final int id;
+  const DetailDepartmentBudget({Key? key}) : super(key: key);
 
   @override
   State<DetailDepartmentBudget> createState() => _DetailDepartmentBudgetState();
@@ -59,7 +58,6 @@ class _DetailDepartmentBudgetState extends State<DetailDepartmentBudget> {
 
   String? ligneBudgtaire;
   String? resource;
-  DepartementBudgetModel? departementBudget;
   List<LigneBudgetaireModel> ligneBudgetaireList = [];
   List<CampaignModel> dataCampaignList = [];
   List<DevisModel> dataDevisList = [];
@@ -94,7 +92,6 @@ class _DetailDepartmentBudgetState extends State<DetailDepartmentBudget> {
       succursale: '-');
   Future<void> getData() async {
     UserModel userModel = await AuthApi().getUserId();
-    var dataList = await DepeartementBudgetApi().getOneData(widget.id);
     var budgets = await LIgneBudgetaireApi().getAllData();
     var campaigns = await CampaignApi().getAllData();
     var devis = await DevisAPi().getAllData();
@@ -104,7 +101,6 @@ class _DetailDepartmentBudgetState extends State<DetailDepartmentBudget> {
 
     setState(() {
       user = userModel;
-      departementBudget = dataList;
       ligneBudgetaireList = budgets;
       approbList = approbations;
 
@@ -140,15 +136,26 @@ class _DetailDepartmentBudgetState extends State<DetailDepartmentBudget> {
 
   @override
   Widget build(BuildContext context) {
+    final id = ModalRoute.of(context)!.settings.arguments as int;
     return Scaffold(
         key: _key,
         drawer: const DrawerMenu(),
-        floatingActionButton: FloatingActionButton(
-            child: const Icon(Icons.add),
-            onPressed: () {
-              Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) => AjoutLigneBudgetaire(
-                      departementBudgetModel: departementBudget!)));
+        floatingActionButton: FutureBuilder<DepartementBudgetModel>(
+            future: DepeartementBudgetApi().getOneData(id),
+            builder: (BuildContext context,
+                AsyncSnapshot<DepartementBudgetModel> snapshot) {
+              if (snapshot.hasData) {
+                DepartementBudgetModel? data = snapshot.data;
+                return FloatingActionButton(
+                    child: const Icon(Icons.add),
+                    onPressed: () {
+                      Navigator.of(context).push(MaterialPageRoute(
+                          builder: (context) => AjoutLigneBudgetaire(
+                              departementBudgetModel: data!)));
+                    });
+              } else {
+                return const Center(child: CircularProgressIndicator());
+              }
             }),
         body: SafeArea(
           child: Row(
@@ -163,7 +170,7 @@ class _DetailDepartmentBudgetState extends State<DetailDepartmentBudget> {
                 child: Padding(
                     padding: const EdgeInsets.all(p10),
                     child: FutureBuilder<DepartementBudgetModel>(
-                        future: DepeartementBudgetApi().getOneData(widget.id),
+                        future: DepeartementBudgetApi().getOneData(id),
                         builder: (BuildContext context,
                             AsyncSnapshot<DepartementBudgetModel> snapshot) {
                           if (snapshot.hasData) {
@@ -251,8 +258,7 @@ class _DetailDepartmentBudgetState extends State<DetailDepartmentBudget> {
               width: 2.0,
             ),
           ),
-          child: ListView(
-            controller: _controllerScroll,
+          child: Column(
             children: [
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,

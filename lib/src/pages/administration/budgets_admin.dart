@@ -43,7 +43,7 @@ class _BudgetsAdminState extends State<BudgetsAdmin> {
             .where((element) =>
                 DateTime.now().millisecondsSinceEpoch <=
                     element!.periodeFin.millisecondsSinceEpoch &&
-                element.id == item.reference &&
+                element.created.microsecondsSinceEpoch == item.reference &&
                 item.fontctionOccupee == 'Directeur de budget' &&
                 item.approbation == "Approved")
             .length;
@@ -105,7 +105,6 @@ class _BudgetsAdminState extends State<BudgetsAdmin> {
                                       color: Colors.white),
                                   children: const [TableDepartementBudgetDG()],
                                 )),
-                             
                           ],
                         ),
                       )),
@@ -129,9 +128,9 @@ class _BudgetsAdminState extends State<BudgetsAdmin> {
   //         child: Column(
   //           children: [
   //             Icon(
-  //               Icons.folder, 
+  //               Icons.folder,
   //               size: p50, color: Colors.blue.shade700),
-  //             Text("Budgets", 
+  //             Text("Budgets",
   //             style: bodyMedium!.copyWith(color: Colors.blue))
   //           ],
   //         ),

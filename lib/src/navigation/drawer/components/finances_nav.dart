@@ -12,7 +12,7 @@ import 'package:fokad_admin/src/api/rh/paiement_salaire_api.dart';
 import 'package:fokad_admin/src/models/users/user_model.dart';
 import 'package:fokad_admin/src/navigation/drawer/drawer_widget.dart';
 import 'package:fokad_admin/src/routes/routes.dart';
-
+import 'package:fokad_admin/src/utils/loading.dart';
 
 class FinancesNav extends StatefulWidget {
   const FinancesNav({Key? key, required this.pageCurrente}) : super(key: key);
@@ -68,63 +68,62 @@ class _FinancesNavState extends State<FinancesNav> {
 
     if (mounted) {
       setState(() {
-      user = userModel;
-      for (var item in approbations) {
-        creanceCount = creances
-            .where((element) =>
-                element.statutPaie == false &&
-                element.id == item.reference &&
-                item.fontctionOccupee == 'Directeur budget')
-            .toList()
-            .length;
-      }
+        user = userModel;
+        for (var item in approbations) {
+          creanceCount = creances
+              .where((element) =>
+                  element.statutPaie == false &&
+                  element.created.microsecondsSinceEpoch == item.reference &&
+                  item.fontctionOccupee == 'Directeur budget')
+              .toList()
+              .length;
+        }
 
-      for (var item in approbations) {
-        detteCount = dettes
-            .where((element) =>
-                element.statutPaie == false &&
-                element.id == item.reference &&
-                item.fontctionOccupee == 'Directeur budget')
-            .toList()
-            .length;
-      }
+        for (var item in approbations) {
+          detteCount = dettes
+              .where((element) =>
+                  element.statutPaie == false &&
+                  element.created.microsecondsSinceEpoch == item.reference &&
+                  item.fontctionOccupee == 'Directeur budget')
+              .toList()
+              .length;
+        }
 
-      for (var item in approbations) {
-        salaireCount = salaires
-            .where((element) =>
-                element.id == item.reference &&
-                item.fontctionOccupee == 'Directeur budget')
-            .toList()
-            .length;
-      }
-      for (var item in approbations) {
-        campaignCount = campaigns
-            .where((element) =>
-                element.id == item.reference &&
-                item.fontctionOccupee == 'Directeur budget')
-            .toList()
-            .length;
-      }
-      for (var item in approbations) {
-        devisCount = devis
-            .where((element) =>
-                element.id == item.reference &&
-                item.fontctionOccupee == 'Directeur budget')
-            .toList()
-            .length;
-      }
-      for (var item in approbations) {
-        projetCount = projets
-            .where((element) =>
-                element.id == item.reference &&
-                item.fontctionOccupee == 'Directeur finance')
-            .toList()
-            .length;
-      }
-    });
+        for (var item in approbations) {
+          salaireCount = salaires
+              .where((element) =>
+                  element.createdAt.microsecondsSinceEpoch == item.reference &&
+                  item.fontctionOccupee == 'Directeur budget')
+              .toList()
+              .length;
+        }
+        for (var item in approbations) {
+          campaignCount = campaigns
+              .where((element) =>
+                  element.created.microsecondsSinceEpoch == item.reference &&
+                  item.fontctionOccupee == 'Directeur budget')
+              .toList()
+              .length;
+        }
+        for (var item in approbations) {
+          devisCount = devis
+              .where((element) =>
+                  element.created.microsecondsSinceEpoch == item.reference &&
+                  item.fontctionOccupee == 'Directeur budget')
+              .toList()
+              .length;
+        }
+        for (var item in approbations) {
+          projetCount = projets
+              .where((element) =>
+                  element.created.microsecondsSinceEpoch == item.reference &&
+                  item.fontctionOccupee == 'Directeur finance')
+              .toList()
+              .length;
+        }
+      });
     }
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -134,8 +133,12 @@ class _FinancesNavState extends State<FinancesNav> {
 
     double userRole = double.parse(user.role);
 
-    itemCount =  creanceCount + detteCount + salaireCount + campaignCount +
-       devisCount + projetCount;
+    itemCount = creanceCount +
+        detteCount +
+        salaireCount +
+        campaignCount +
+        devisCount +
+        projetCount;
 
     return ExpansionTile(
       leading: const Icon(Icons.account_balance, size: 30.0),
@@ -148,119 +151,135 @@ class _FinancesNavState extends State<FinancesNav> {
       },
       trailing: const Icon(Icons.arrow_drop_down),
       children: [
-        if (userRole <= 2)
-        DrawerWidget(
-            selected: widget.pageCurrente == FinanceRoutes.financeDashboard,
-            icon: Icons.dashboard,
-            sizeIcon: 20.0,
-            title: 'Dashboard',
-            style: bodyText1!,
-            onTap: () {
-              Navigator.pushNamed(
-                    context, FinanceRoutes.financeDashboard);
-              // Navigator.of(context).pop();
-            }),
-        if (userRole <= 2)
-        DrawerWidget(
-            selected: widget.pageCurrente == FinanceRoutes.finDD,
-            icon: Icons.manage_accounts,
-            sizeIcon: 20.0,
-            title: 'Directeur de departement',
-            style: bodyText1!,
-            badge: Badge(
-              showBadge: (itemCount >= 1) ? true : false,
-              badgeColor: Colors.teal,
-              badgeContent: Text('$itemCount',
-                  style: const TextStyle(fontSize: 10.0, color: Colors.white)),
-              child: const Icon(Icons.notifications),
-            ),
-            onTap: () {
-              Navigator.pushNamed(context, FinanceRoutes.finDD);
-              // Navigator.of(context).pop();
-            }),
-        ExpansionTile(
-          leading: const Icon(Icons.compare_arrows, size: 20.0),
-          title: Text('Transactions', style: bodyText1),
-          initiallyExpanded: false,
-          onExpansionChanged: (val) {
-            setState(() {
-              isOpenTransaction = !val;
-            });
-          },
-          children: [
-            DrawerWidget(
-                selected:
-                    widget.pageCurrente == FinanceRoutes.transactionsBanque,
-                icon: Icons.arrow_right,
-                sizeIcon: 15.0,
-                title: 'Banque',
-                style: bodyText2!,
-                onTap: () {
-                  Navigator.pushNamed(context, FinanceRoutes.transactionsBanque);
-                  // Navigator.of(context).pop();
-                }),
-            DrawerWidget(
-                selected:
-                    widget.pageCurrente == FinanceRoutes.transactionsCaisse,
-                icon: Icons.arrow_right,
-                sizeIcon: 15.0,
-                title: 'Caisse',
-                style: bodyText2,
-                onTap: () {
-                  Navigator.pushNamed(
-                      context, FinanceRoutes.transactionsCaisse);
-                  // Navigator.of(context).pop();
-                }),
-            if (userRole <= 2)
-            DrawerWidget(
-                selected:
-                    widget.pageCurrente == FinanceRoutes.transactionsCreances,
-                icon: Icons.arrow_right,
-                sizeIcon: 15.0,
-                title: 'Creances',
-                style: bodyText2,
-                onTap: () {
-                  Navigator.pushNamed(
-                        context, FinanceRoutes.transactionsCreances);
-                  // Navigator.of(context).pop();
-                }),
-            if (userRole <= 2)
-            DrawerWidget(
-                selected:
-                    widget.pageCurrente == FinanceRoutes.transactionsDettes,
-                icon: Icons.arrow_right,
-                sizeIcon: 15.0,
-                title: 'Dettes',
-                style: bodyText2,
-                onTap: () {
-                  Navigator.pushNamed(
-                        context, FinanceRoutes.transactionsDettes);
-                  // Navigator.of(context).pop();
-                }),
-            DrawerWidget(
-                selected: widget.pageCurrente ==
-                    FinanceRoutes.transactionsFinancementExterne,
-                icon: Icons.arrow_right,
-                sizeIcon: 15.0,
-                title: 'Autres Fin.',
-                style: bodyText2,
-                onTap: () {
-                  Navigator.pushNamed(
-                      context, FinanceRoutes.transactionsFinancementExterne);
-                  // Navigator.of(context).pop();
-                }),
-          ],
-        ),
-        DrawerWidget(
-            selected: widget.pageCurrente == RhRoutes.rhPerformence,
-            icon: Icons.multiline_chart_sharp,
-            sizeIcon: 20.0,
-            title: 'Performences',
-            style: bodyText1!,
-            onTap: () {
-              Navigator.pushNamed(
-                  context, RhRoutes.rhPerformence);
-              // Navigator.of(context).pop();
+        FutureBuilder<UserModel>(
+            future: AuthApi().getUserId(),
+            builder: (BuildContext context, AsyncSnapshot<UserModel> snapshot) {
+              if (snapshot.hasData) {
+                UserModel? user = snapshot.data;
+                int userRole = int.parse(user!.role);
+                return Column(
+                  children: [
+                    if (userRole <= 2)
+                      DrawerWidget(
+                          selected: widget.pageCurrente ==
+                              FinanceRoutes.financeDashboard,
+                          icon: Icons.dashboard,
+                          sizeIcon: 20.0,
+                          title: 'Dashboard',
+                          style: bodyText1!,
+                          onTap: () {
+                            Navigator.pushNamed(
+                                context, FinanceRoutes.financeDashboard);
+                            // Navigator.of(context).pop();
+                          }),
+                    if (userRole <= 2)
+                      DrawerWidget(
+                          selected: widget.pageCurrente == FinanceRoutes.finDD,
+                          icon: Icons.manage_accounts,
+                          sizeIcon: 20.0,
+                          title: 'Directeur de departement',
+                          style: bodyText1!,
+                          badge: Badge(
+                            showBadge: (itemCount >= 1) ? true : false,
+                            badgeColor: Colors.teal,
+                            badgeContent: Text('$itemCount',
+                                style: const TextStyle(
+                                    fontSize: 10.0, color: Colors.white)),
+                            child: const Icon(Icons.notifications),
+                          ),
+                          onTap: () {
+                            Navigator.pushNamed(context, FinanceRoutes.finDD);
+                            // Navigator.of(context).pop();
+                          }),
+                    ExpansionTile(
+                      leading: const Icon(Icons.compare_arrows, size: 20.0),
+                      title: Text('Transactions', style: bodyText1),
+                      initiallyExpanded: false,
+                      onExpansionChanged: (val) {
+                        setState(() {
+                          isOpenTransaction = !val;
+                        });
+                      },
+                      children: [
+                        DrawerWidget(
+                            selected: widget.pageCurrente ==
+                                FinanceRoutes.transactionsBanque,
+                            icon: Icons.arrow_right,
+                            sizeIcon: 15.0,
+                            title: 'Banque',
+                            style: bodyText2!,
+                            onTap: () {
+                              Navigator.pushNamed(
+                                  context, FinanceRoutes.transactionsBanque);
+                              // Navigator.of(context).pop();
+                            }),
+                        DrawerWidget(
+                            selected: widget.pageCurrente ==
+                                FinanceRoutes.transactionsCaisse,
+                            icon: Icons.arrow_right,
+                            sizeIcon: 15.0,
+                            title: 'Caisse',
+                            style: bodyText2,
+                            onTap: () {
+                              Navigator.pushNamed(
+                                  context, FinanceRoutes.transactionsCaisse);
+                              // Navigator.of(context).pop();
+                            }),
+                        if (userRole <= 2)
+                          DrawerWidget(
+                              selected: widget.pageCurrente ==
+                                  FinanceRoutes.transactionsCreances,
+                              icon: Icons.arrow_right,
+                              sizeIcon: 15.0,
+                              title: 'Creances',
+                              style: bodyText2,
+                              onTap: () {
+                                Navigator.pushNamed(context,
+                                    FinanceRoutes.transactionsCreances);
+                                // Navigator.of(context).pop();
+                              }),
+                        if (userRole <= 2)
+                          DrawerWidget(
+                              selected: widget.pageCurrente ==
+                                  FinanceRoutes.transactionsDettes,
+                              icon: Icons.arrow_right,
+                              sizeIcon: 15.0,
+                              title: 'Dettes',
+                              style: bodyText2,
+                              onTap: () {
+                                Navigator.pushNamed(
+                                    context, FinanceRoutes.transactionsDettes);
+                                // Navigator.of(context).pop();
+                              }),
+                        DrawerWidget(
+                            selected: widget.pageCurrente ==
+                                FinanceRoutes.transactionsFinancementExterne,
+                            icon: Icons.arrow_right,
+                            sizeIcon: 15.0,
+                            title: 'Autres Fin.',
+                            style: bodyText2,
+                            onTap: () {
+                              Navigator.pushNamed(context,
+                                  FinanceRoutes.transactionsFinancementExterne);
+                              // Navigator.of(context).pop();
+                            }),
+                      ],
+                    ),
+                    DrawerWidget(
+                        selected: widget.pageCurrente == RhRoutes.rhPerformence,
+                        icon: Icons.multiline_chart_sharp,
+                        sizeIcon: 20.0,
+                        title: 'Performences',
+                        style: bodyText1!,
+                        onTap: () {
+                          Navigator.pushNamed(context, RhRoutes.rhPerformence);
+                          // Navigator.of(context).pop();
+                        }),
+                  ],
+                );
+              } else {
+                return Center(child: loadingColor());
+              }
             }),
       ],
     );

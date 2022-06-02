@@ -121,13 +121,19 @@ class _AddPaiementSalaireState extends State<AddPaiementSalaire> {
     super.dispose();
   }
 
+  List<PaiementSalaireModel?> paiementList = [];
   String? signature;
-
   Future<void> getData() async {
     UserModel user = await AuthApi().getUserId();
+    var paiements = await PaiementSalaireApi().getAllData();
     if (!mounted) return;
     setState(() {
       signature = user.matricule;
+      paiementList = paiements
+          .where((element) =>
+              element.createdAt.month == DateTime.now().month &&
+              element.createdAt.year == DateTime.now().year)
+          .toList();
     });
   }
 
@@ -184,6 +190,12 @@ class _AddPaiementSalaireState extends State<AddPaiementSalaire> {
   }
 
   Widget addPaiementSalaireWidget(AgentModel agentModel) {
+    // var isAgentDouble;
+    var isAgentDouble = paiementList
+        .where((e) =>
+            e!.matricule == agentModel.matricule)
+        .toList();
+
     return Form(
       key: _formKey,
       child: Row(
@@ -273,16 +285,23 @@ class _AddPaiementSalaireState extends State<AddPaiementSalaire> {
                   const SizedBox(
                     height: p20,
                   ),
-                  BtnWidget(
-                      title: 'Soumettre',
-                      isLoading: isLoading,
-                      press: () {
-                        final form = _formKey.currentState!;
-                        if (form.validate()) {
-                          submit(agentModel);
-                          form.reset();
-                        }
-                      })
+                    if (isAgentDouble.isEmpty)
+                      BtnWidget(
+                          title: 'Soumettre',
+                          isLoading: isLoading,
+                          press: () {
+                            final form = _formKey.currentState!;
+                            if (form.validate()) {
+                              submit(agentModel);
+                              form.reset();
+                            }
+                          }),
+                          
+                    if (isAgentDouble.isNotEmpty)
+                      Text("Cet agent a été déjà soumis.",
+                        textAlign: TextAlign.center,
+                        style: Theme.of(context).textTheme.headline6!
+                        .copyWith(color: Colors.red.shade700))
                 ],
               ),
             ),

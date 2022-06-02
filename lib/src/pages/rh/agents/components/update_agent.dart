@@ -15,7 +15,6 @@ import 'package:fokad_admin/src/utils/fonction_occupe.dart';
 import 'package:fokad_admin/src/utils/service_affectation.dart';
 import 'package:fokad_admin/src/widgets/btn_widget.dart';
 import 'package:fokad_admin/src/widgets/title_widget.dart';
-import 'package:intl/intl.dart';
 
 class UpdateAgent extends StatefulWidget {
   const UpdateAgent({Key? key}) : super(key: key);
@@ -719,39 +718,28 @@ class _UpdateAgentState extends State<UpdateAgent> {
         onChanged: (value) {
           setState(() {
             departement = value!;
-            String fokad = 'FO';
-            final date = DateFormat("yy").format(DateTime.now());
-
             if (departement == 'Administration') {
-              matricule = "${fokad}ADM$date-${agentCount!.count + 1}";
               fonctionList = fonctionAdminList;
               servAffectList = serviceAffectationAdmin;
             } else if (departement == 'Finances') {
-              matricule = "${fokad}FIN$date-${agentCount!.count + 1}";
               fonctionList = fonctionfinList;
               servAffectList = serviceAffectationFin;
             } else if (departement == 'Comptabilites') {
-              matricule = "${fokad}CPT$date-${agentCount!.count + 1}";
               fonctionList = fonctioncompteList;
               servAffectList = serviceAffectationCompt;
             } else if (departement == 'Budgets') {
-              matricule = "${fokad}BUD$date-${agentCount!.count + 1}";
               fonctionList = fonctionbudList;
               servAffectList = serviceAffectationBud;
             } else if (departement == 'Ressources Humaines') {
-              matricule = "${fokad}RH$date-${agentCount!.count + 1}";
               fonctionList = fonctionrhList;
               servAffectList = serviceAffectationRH;
             } else if (departement == 'Exploitations') {
-              matricule = "${fokad}EXP$date-${agentCount!.count + 1}";
               fonctionList = fonctionexpList;
               servAffectList = serviceAffectationEXp;
             } else if (departement == 'Commercial et Marketing') {
-              matricule = "${fokad}COM$date-${agentCount!.count + 1}";
               fonctionList = fonctioncommList;
               servAffectList = serviceAffectationComm;
             } else if (departement == 'Logistique') {
-              matricule = "${fokad}LOG$date-${agentCount!.count + 1}";
               fonctionList = fonctionlogList;
               servAffectList = serviceAffectationLog;
             } else {
@@ -957,36 +945,36 @@ class _UpdateAgentState extends State<UpdateAgent> {
 
   Future submit(AgentModel data) async {
     final agentModel = AgentModel(
-        id: data.id,
-        nom: nomController.text,
-        postNom: postNomController.text,
-        prenom: prenomController.text,
-        email: emailController.text,
-        telephone: telephoneController.text,
-        adresse: telephoneController.text,
-        sexe: sexe.toString(),
-        role: role.toString(),
-        matricule: matricule,
-        numeroSecuriteSociale: numeroSecuriteSocialeController.text,
-        dateNaissance: DateTime.parse(dateNaissanceController.text),
-        lieuNaissance: lieuNaissanceController.text,
-        nationalite: nationalite.toString(),
-        typeContrat: typeContrat.toString(),
-        departement: departement.toString(),
-        servicesAffectation: servicesAffectation.toString(),
-        dateDebutContrat: DateTime.parse(dateDebutContratController.text),
-        dateFinContrat: DateTime.parse(dateFinContratController.text),
-        fonctionOccupe: fonctionOccupe.toString(),
-        competance: competanceController.toString(),
-        experience: experienceController.text,
-        statutAgent: false,
-        createdAt: data.createdAt,
-        photo: '-',
-        salaire: salaireController.text,
-        signature: user.matricule.toString(),
-        created: DateTime.now());
+      id: data.id,
+      nom: nomController.text,
+      postNom: postNomController.text,
+      prenom: prenomController.text,
+      email: emailController.text,
+      telephone: telephoneController.text,
+      adresse: adresseController.text,
+      sexe: sexe.toString(),
+      role: role.toString(),
+      matricule: matricule,
+      numeroSecuriteSociale: numeroSecuriteSocialeController.text,
+      dateNaissance: DateTime.parse(dateNaissanceController.text),
+      lieuNaissance: lieuNaissanceController.text,
+      nationalite: nationalite.toString(),
+      typeContrat: typeContrat.toString(),
+      departement: departement.toString(),
+      servicesAffectation: servicesAffectation.toString(),
+      dateDebutContrat: DateTime.parse(dateDebutContratController.text),
+      dateFinContrat: DateTime.parse(dateFinContratController.text),
+      fonctionOccupe: fonctionOccupe.toString(),
+      competance: competanceController.text,
+      experience: experienceController.text,
+      statutAgent: false,
+      createdAt: data.createdAt,
+      photo: '-',
+      salaire: salaireController.text,
+      signature: user.matricule.toString(),
+      created: DateTime.now());
 
-    await AgentsApi().updateData(agentModel.id!, agentModel);
+    await AgentsApi().updateData(data.id!, agentModel);
     Navigator.of(context).pop();
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
       content: const Text("Mis a jour agent avec succès!"),

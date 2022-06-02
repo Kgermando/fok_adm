@@ -139,7 +139,7 @@ class _AddBudgetPrevionelState extends State<AddBudgetPrevionel> {
                       ],
                     ),
                     const SizedBox(
-                      width: p20,
+                      width: p50,
                     ),
                     Row(
                       children: [

@@ -4,7 +4,7 @@ import 'package:fokad_admin/src/api/auth/auth_api.dart';
 import 'package:fokad_admin/src/api/budgets/departement_budget_api.dart';
 import 'package:fokad_admin/src/models/budgets/departement_budget_model.dart';
 import 'package:fokad_admin/src/models/users/user_model.dart';
-import 'package:fokad_admin/src/pages/budgets/budgets_previsionels/components/detail_departement_budget.dart';
+import 'package:fokad_admin/src/routes/routes.dart';
 import 'package:fokad_admin/src/widgets/print_widget.dart';
 import 'package:fokad_admin/src/utils/class_implemented.dart';
 import 'package:intl/intl.dart';
@@ -41,9 +41,9 @@ class _TableDepartementBudgetState extends State<TableDepartementBudget> {
         final dataList = tapEvent.row!.cells.values;
         final idPlutoRow = dataList.elementAt(0);
 
-        Navigator.of(context).push(MaterialPageRoute(
-            builder: (context) =>
-                DetailDepartmentBudget(id: idPlutoRow.value)));
+        Navigator.pushNamed(context, BudgetRoutes.budgetBudgetPrevisionelDetail,
+            arguments: idPlutoRow.value);
+        
       },
       onLoaded: (PlutoGridOnLoadedEvent event) {
         stateManager = event.stateManager;
@@ -97,6 +97,18 @@ class _TableDepartementBudgetState extends State<TableDepartementBudget> {
       ),
       PlutoColumn(
         readOnly: true,
+        title: 'Titre',
+        field: 'title',
+        type: PlutoColumnType.text(),
+        enableRowDrag: true,
+        enableContextMenu: false,
+        enableDropToResize: true,
+        titleTextAlign: PlutoColumnTextAlign.left,
+        width: 300,
+        minWidth: 150,
+      ),
+      PlutoColumn(
+        readOnly: true,
         title: 'Département',
         field: 'departement',
         type: PlutoColumnType.text(),
@@ -128,7 +140,7 @@ class _TableDepartementBudgetState extends State<TableDepartementBudget> {
         enableContextMenu: false,
         enableDropToResize: true,
         titleTextAlign: PlutoColumnTextAlign.left,
-        width: 150,
+        width: 200,
         minWidth: 150,
       ),
     ];
@@ -137,26 +149,28 @@ class _TableDepartementBudgetState extends State<TableDepartementBudget> {
   Future agentsRow() async {
     UserModel userModel = await AuthApi().getUserId();
     var approbations = await ApprobationApi().getAllData();
-    List<DepartementBudgetModel?> dataList = await DepeartementBudgetApi().getAllData();
+    List<DepartementBudgetModel?> dataList =
+        await DepeartementBudgetApi().getAllData();
     List<DepartementBudgetModel?> data = [];
 
-     for (var item in approbations) {
+    for (var item in approbations) {
       data = dataList
           .where((element) =>
-            DateTime.now().millisecondsSinceEpoch <=
-                element!.periodeFin.millisecondsSinceEpoch &&
-            element.id == item.reference &&
-            item.fontctionOccupee == 'Directeur générale' && 
-            item.approbation == "Approved" ||
-            element.signature == userModel.matricule)
+              DateTime.now().millisecondsSinceEpoch <=
+                      element!.periodeFin.millisecondsSinceEpoch &&
+                  element.created.microsecondsSinceEpoch == item.reference &&
+                  item.fontctionOccupee == 'Directeur générale' &&
+                  item.approbation == "Approved" ||
+              element.signature == userModel.matricule)
           .toList();
     }
 
     if (mounted) {
       setState(() {
-        for (var item in data) {
+        for (var item in dataList) {
           rows.add(PlutoRow(cells: {
             'id': PlutoCell(value: item!.id),
+            'title': PlutoCell(value: item.title),
             'departement': PlutoCell(value: item.departement),
             'periodeBudget': PlutoCell(
                 value:
