@@ -55,7 +55,7 @@ class _DetailFinExterieurState extends State<DetailFinExterieur> {
   List<ApprobationModel> approbList = [];
   List<ApprobationModel> approbationData = [];
   ApprobationModel approb = ApprobationModel(
-      reference: 1,
+      reference: DateTime.now(),
       title: '-',
       departement: '-',
       fontctionOccupee: '-',
@@ -864,7 +864,7 @@ class _DetailFinExterieurState extends State<DetailFinExterieur> {
 
   Future submitApprobation(FinanceExterieurModel data) async {
     final approbation = ApprobationModel(
-        reference: data.created.microsecondsSinceEpoch,
+        reference: data.created,
         title: data.nomComplet,
         departement: 'Finances',
         fontctionOccupee: user.fonctionOccupe,

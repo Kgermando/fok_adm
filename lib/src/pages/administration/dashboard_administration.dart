@@ -268,11 +268,11 @@ class _DashboardAdministrationState extends State<DashboardAdministration> {
 
         List<DevisModel?> devisList = dataDevisList;
 
-        for (var item in devisList) {
-          for (var i in item!.list) {
-            depenses += double.parse(i['frais']);
-          }
-        }
+        // for (var item in devisList) {
+        //   for (var i in item!.list) {
+        //     depenses += double.parse(i['frais']);
+        //   }
+        // }
 
         soldeBanque = recetteBanque - depensesBanque;
         soldeCaisse = recetteCaisse - depensesCaisse;
@@ -292,9 +292,9 @@ class _DashboardAdministrationState extends State<DashboardAdministration> {
     for (var item in dataCampaignList) {
       totalCampaign += double.parse(item.resources);
     }
-    for (var item in dataDevisList) {
-      totalDevis += double.parse(item.resources);
-    }
+    // for (var item in dataDevisList) {
+    //   totalDevis += double.parse(item.resources);
+    // }
     for (var item in dataProjetList) {
       totalProjet += double.parse(item.resources);
     }

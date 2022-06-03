@@ -56,7 +56,7 @@ class _DetailCampaignState extends State<DetailCampaign> {
   List<ApprobationModel> approbList = [];
   List<ApprobationModel> approbationData = [];
   ApprobationModel approb = ApprobationModel(
-      reference: 1,
+      reference: DateTime.now(),
       title: '-',
       departement: '-',
       fontctionOccupee: '-',
@@ -955,7 +955,7 @@ class _DetailCampaignState extends State<DetailCampaign> {
 
   Future submitApprobation(CampaignModel data) async {
     final approbation = ApprobationModel(
-        reference: data.created.microsecondsSinceEpoch,
+        reference: data.created,
         title: data.typeProduit,
         departement: 'Commercial et Marketing',
         fontctionOccupee: user.fonctionOccupe,

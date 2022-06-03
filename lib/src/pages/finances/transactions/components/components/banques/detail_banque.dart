@@ -61,7 +61,7 @@ class _DetailBanqueState extends State<DetailBanque> {
   List<ApprobationModel> approbList = [];
   List<ApprobationModel> approbationData = [];
   ApprobationModel approb = ApprobationModel(
-      reference: 1,
+      reference: DateTime.now(),
       title: '-',
       departement: '-',
       fontctionOccupee: '-',

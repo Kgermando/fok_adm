@@ -1,5 +1,6 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
-import 'package:fokad_admin/src/api/approbation/approbation_api.dart';
 import 'package:fokad_admin/src/api/auth/auth_api.dart';
 import 'package:fokad_admin/src/api/devis/devis_api.dart';
 import 'package:fokad_admin/src/models/devis/devis_models.dart';
@@ -55,6 +56,13 @@ class _TabvleEtatBesoinRHState extends State<TabvleEtatBesoinRH> {
     }
   }
 
+  void handleKeyboard(PlutoKeyManagerEvent event) {
+    // Specify the desired shortcut key.
+    if (event.isKeyDownEvent && event.isCtrlC) {
+      agentsRow();
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return SizedBox(
@@ -65,14 +73,17 @@ class _TabvleEtatBesoinRHState extends State<TabvleEtatBesoinRH> {
         onRowDoubleTap: (PlutoGridOnRowDoubleTapEvent tapEvent) {
           final dataList = tapEvent.row!.cells.values;
           final idPlutoRow = dataList.elementAt(0);
-
           Navigator.pushNamed(context, DevisRoutes.devisDetail,
               arguments: idPlutoRow.value);
         },
         onLoaded: (PlutoGridOnLoadedEvent event) {
           stateManager = event.stateManager;
           stateManager!.setShowColumnFilter(true);
-          stateManager!.notifyListeners();
+          // stateManager!.addListener(agentsRow);
+          // removeKeyboardListener =
+          //     stateManager!.keyManager!.subject.stream.listen(handleKeyboard);
+
+          // stateManager!.setSelectingMode(PlutoGridSelectingMode.none);
         },
         createHeader: (PlutoGridStateManager header) {
           return Row(
@@ -83,11 +94,14 @@ class _TabvleEtatBesoinRHState extends State<TabvleEtatBesoinRH> {
             ],
           );
         },
+        // createFooter: (PlutoGridStateManager fotter) {
+        //   // fotter.setPageSize(100, notify: false); // default 40
+        //   return PlutoPagination(fotter);
+        // },
         configuration: PlutoGridConfiguration(
           columnFilterConfig: PlutoGridColumnFilterConfig(
             filters: const [
               ...FilterHelper.defaultFilters,
-              // custom filter
               ClassFilterImplemented(),
             ],
             resolveDefaultColumnFilter: (column, resolver) {
@@ -176,24 +190,14 @@ class _TabvleEtatBesoinRHState extends State<TabvleEtatBesoinRH> {
   }
 
   Future agentsRow() async {
-    // final userModel = await AuthApi().getUserId();
+    final userModel = await AuthApi().getUserId();
     List<DevisModel?> dataList = await DevisAPi().getAllData();
-    // List<DevisModel?> data = [];
-    // var approbations = await ApprobationApi().getAllData();
-    // for (var item in approbations) {
-    //   data = dataList
-    //       .where((element) =>
-    //           element!.departement == userModel.departement &&
-    //               userModel.fonctionOccupe == 'Directeur de departement' ||
-    //           userModel.fonctionOccupe == 'Directeur de budget' ||
-    //           userModel.fonctionOccupe == 'Directeur de finance' ||
-    //           userModel.fonctionOccupe == 'Directeur de générale')
-    //       .toList();
-    // }
-
+    var data = dataList
+        .where((element) => element!.departement == userModel.departement)
+        .toList();
     if (mounted) {
       setState(() {
-        for (var item in dataList) {
+        for (var item in data) {
           rows.add(PlutoRow(cells: {
             'id': PlutoCell(value: item!.id),
             'title': PlutoCell(value: item.title),
@@ -203,6 +207,9 @@ class _TabvleEtatBesoinRHState extends State<TabvleEtatBesoinRH> {
                 value: DateFormat("dd-MM-yyyy HH:mm").format(item.created))
           }));
           stateManager!.resetCurrentState();
+          stateManager!.notifyListeners();
+          // stateManager!.isPaginated;
+          //
         }
       });
     }

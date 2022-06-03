@@ -86,7 +86,7 @@ class _DetailAgentPageState extends State<DetailAgentPage> {
                 //     ? speedialWidget(agentModel)
                 //     : Container();
               } else {
-                return const Center(child: CircularProgressIndicator());
+                return loadingMini();
               }
             }
           ),

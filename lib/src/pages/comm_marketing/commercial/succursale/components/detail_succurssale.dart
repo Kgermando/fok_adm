@@ -83,7 +83,7 @@ class _DetailSuccursaleState extends State<DetailSuccursale> {
   List<ApprobationModel> approbList = [];
   List<ApprobationModel> approbationData = [];
   ApprobationModel approb = ApprobationModel(
-      reference: 1,
+      reference: DateTime.now(),
       title: '-',
       departement: '-',
       fontctionOccupee: '-',
@@ -849,7 +849,7 @@ class _DetailSuccursaleState extends State<DetailSuccursale> {
 
   Future submitApprobation(SuccursaleModel data) async {
     final approbation = ApprobationModel(
-        reference: data.created.microsecondsSinceEpoch,
+        reference: data.created,
         title: data.name,
         departement: 'Commercial et Marketing',
         fontctionOccupee: user.fonctionOccupe,

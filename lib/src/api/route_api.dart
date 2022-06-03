@@ -92,6 +92,9 @@ var addDevissUrl = Uri.parse("$mainUrl/devis/insert-new-devis");
 var devisPieDepMounthUrl = Uri.parse("$mainUrl/devis/chart-pie-dep-mounth/");
 var devisPieDepYearUrl = Uri.parse("$mainUrl/devis/chart-pie-dep-year/");
 
+var devisListObjetUrl = Uri.parse("$mainUrl/devis-list-objets/");
+var adddevisListObjetUrl = Uri.parse("$mainUrl/devis-list-objets/insert-new-devis-list-objet");
+
 // Budget
 var budgetDepartementsUrl = Uri.parse("$mainUrl/budgets/departements/");
 var addBudgetDepartementsUrl = Uri.parse("$mainUrl/budgets/departements/insert-new-departement-budget");

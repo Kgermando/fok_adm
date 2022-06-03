@@ -468,55 +468,55 @@ class _DetailLigneBudgetaireState extends State<DetailLigneBudgetaire> {
     double finPropreProjet = 0.0;
     double finExterieurProjet = 0.0;
 
-    var etatBesionCaisseList = dataDevisList
-        .where((element) =>
-            element.departement == ligneBudgetaireModel!.departement &&
-            element.ligneBudgtaire ==
-                ligneBudgetaireModel!.nomLigneBudgetaire &&
-            element.created.isBefore(
-                DateTime.parse(ligneBudgetaireModel!.periodeBudget)) &&
-            element.resources == "caisse")
-        .toList();
-    var etatBesionBanqueList = dataDevisList
-        .where((element) =>
-            element.departement == ligneBudgetaireModel!.departement &&
-            element.ligneBudgtaire ==
-                ligneBudgetaireModel!.nomLigneBudgetaire &&
-            element.created.isBefore(
-                DateTime.parse(ligneBudgetaireModel!.periodeBudget)) &&
-            element.resources == "banque")
-        .toList();
-    var etatBesionFinPropreList = dataDevisList
-        .where((element) =>
-            element.departement == ligneBudgetaireModel!.departement &&
-            element.ligneBudgtaire ==
-                ligneBudgetaireModel!.nomLigneBudgetaire &&
-            element.created.isBefore(
-                DateTime.parse(ligneBudgetaireModel!.periodeBudget)) &&
-            element.resources == "finPropre")
-        .toList();
-    var etatBesionFinExterieurList = dataDevisList
-        .where((element) =>
-            element.departement == ligneBudgetaireModel!.departement &&
-            element.ligneBudgtaire ==
-                ligneBudgetaireModel!.nomLigneBudgetaire &&
-            element.created.isBefore(
-                DateTime.parse(ligneBudgetaireModel!.periodeBudget)) &&
-            element.resources == "finExterieur")
-        .toList();
+    // var etatBesionCaisseList = dataDevisList
+    //     .where((element) =>
+    //         element.departement == ligneBudgetaireModel!.departement &&
+    //         element.ligneBudgtaire ==
+    //             ligneBudgetaireModel!.nomLigneBudgetaire &&
+    //         element.created.isBefore(
+    //             DateTime.parse(ligneBudgetaireModel!.periodeBudget)) &&
+    //         element.resources == "caisse")
+    //     .toList();
+    // var etatBesionBanqueList = dataDevisList
+    //     .where((element) =>
+    //         element.departement == ligneBudgetaireModel!.departement &&
+    //         element.ligneBudgtaire ==
+    //             ligneBudgetaireModel!.nomLigneBudgetaire &&
+    //         element.created.isBefore(
+    //             DateTime.parse(ligneBudgetaireModel!.periodeBudget)) &&
+    //         element.resources == "banque")
+    //     .toList();
+    // var etatBesionFinPropreList = dataDevisList
+    //     .where((element) =>
+    //         element.departement == ligneBudgetaireModel!.departement &&
+    //         element.ligneBudgtaire ==
+    //             ligneBudgetaireModel!.nomLigneBudgetaire &&
+    //         element.created.isBefore(
+    //             DateTime.parse(ligneBudgetaireModel!.periodeBudget)) &&
+    //         element.resources == "finPropre")
+    //     .toList();
+    // var etatBesionFinExterieurList = dataDevisList
+    //     .where((element) =>
+    //         element.departement == ligneBudgetaireModel!.departement &&
+    //         element.ligneBudgtaire ==
+    //             ligneBudgetaireModel!.nomLigneBudgetaire &&
+    //         element.created.isBefore(
+    //             DateTime.parse(ligneBudgetaireModel!.periodeBudget)) &&
+    //         element.resources == "finExterieur")
+    //     .toList();
 
-    for (var item in etatBesionCaisseList) {
-      caisseetatBesion += double.parse(item.resources);
-    }
-    for (var item in etatBesionBanqueList) {
-      banqueetatBesion += double.parse(item.resources);
-    }
-    for (var item in etatBesionFinPropreList) {
-      finPropreetatBesion += double.parse(item.resources);
-    }
-    for (var item in etatBesionFinExterieurList) {
-      finExterieuretatBesion += double.parse(item.resources);
-    }
+    // for (var item in etatBesionCaisseList) {
+    //   caisseetatBesion += double.parse(item.resources);
+    // }
+    // for (var item in etatBesionBanqueList) {
+    //   banqueetatBesion += double.parse(item.resources);
+    // }
+    // for (var item in etatBesionFinPropreList) {
+    //   finPropreetatBesion += double.parse(item.resources);
+    // }
+    // for (var item in etatBesionFinExterieurList) {
+    //   finExterieuretatBesion += double.parse(item.resources);
+    // }
 
     var salairecaisseList = dataSalaireList
         .where((element) =>
@@ -897,7 +897,7 @@ class _DetailLigneBudgetaireState extends State<DetailLigneBudgetaire> {
   Future etatBesionRow() async {
     var dataList = dataDevisList.where((element) =>
         element.departement == ligneBudgetaireModel!.departement &&
-        element.ligneBudgtaire == ligneBudgetaireModel!.nomLigneBudgetaire &&
+        // element.ligneBudgtaire == ligneBudgetaireModel!.nomLigneBudgetaire &&
         element.created
             .isBefore(DateTime.parse(ligneBudgetaireModel!.periodeBudget)));
     if (mounted) {
@@ -906,8 +906,8 @@ class _DetailLigneBudgetaireState extends State<DetailLigneBudgetaire> {
           rowEtatBesion.add(PlutoRow(cells: {
             'id': PlutoCell(value: item.id),
             'designation': PlutoCell(value: item.title),
-            'nomLigneBudgetaire': PlutoCell(value: item.ligneBudgtaire),
-            'resources': PlutoCell(value: item.resources),
+            // 'nomLigneBudgetaire': PlutoCell(value: item.ligneBudgtaire),
+            // 'resources': PlutoCell(value: item.resources),
             'created': PlutoCell(
                 value: DateFormat("dd-MM-yy HH:mm").format(item.created))
           }));

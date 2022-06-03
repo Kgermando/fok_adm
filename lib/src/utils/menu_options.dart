@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_phoenix/flutter_phoenix.dart';
 import 'package:fokad_admin/src/api/auth/auth_api.dart';
 import 'package:fokad_admin/src/models/menu_item.dart';
 import 'package:fokad_admin/src/routes/routes.dart';
@@ -32,7 +33,8 @@ class MenuOptions with ChangeNotifier {
       case MenuItems.itemLogout:
         // Remove stockage jwt here.
         AuthApi().logout();
-        Navigator.pushNamed(context, UserRoutes.logout);
+        // Navigator.pushNamed(context, UserRoutes.logout);
+        Phoenix.rebirth(context);
     }
   }
 }

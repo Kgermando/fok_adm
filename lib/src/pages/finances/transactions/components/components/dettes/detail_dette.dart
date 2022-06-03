@@ -72,7 +72,7 @@ class _DetailDetteState extends State<DetailDette> {
   List<ApprobationModel> approbList = [];
   List<ApprobationModel> approbationData = [];
   ApprobationModel approb = ApprobationModel(
-      reference: 1,
+      reference: DateTime.now(),
       title: '-',
       departement: '-',
       fontctionOccupee: '-',
@@ -1069,7 +1069,7 @@ class _DetailDetteState extends State<DetailDette> {
 
   Future submitApprobation(DetteModel data) async {
     final approbation = ApprobationModel(
-        reference: data.created.microsecondsSinceEpoch,
+        reference: data.created,
         title: data.nomComplet,
         departement: '-',
         fontctionOccupee: user.fonctionOccupe,

@@ -181,20 +181,20 @@ class _TableDevisState extends State<TableDevis> {
     List<DevisModel?> dataList = await DevisAPi().getAllData();
      List<DevisModel?> data = [];
     var approbations = await ApprobationApi().getAllData();
-    for (var item in approbations) {
-      data = dataList
-          .where((element) =>
-              element!.departement == userModel.departement &&
-              userModel.fonctionOccupe == 'Directeur de departement' ||
-              userModel.fonctionOccupe == 'Directeur de budget' ||
-              userModel.fonctionOccupe == 'Directeur de finance' ||
-              userModel.fonctionOccupe == 'Directeur de générale')
-          .toList();
-    }
+    // for (var item in approbations) {
+    //   data = dataList
+    //       .where((element) =>
+    //           element!.departement == userModel.departement &&
+    //           userModel.fonctionOccupe == 'Directeur de departement' ||
+    //           userModel.fonctionOccupe == 'Directeur de budget' ||
+    //           userModel.fonctionOccupe == 'Directeur de finance' ||
+    //           userModel.fonctionOccupe == 'Directeur de générale')
+    //       .toList();
+    // }
 
     if (mounted) {
       setState(() {
-        for (var item in data) {
+        for (var item in dataList) {
           rows.add(PlutoRow(cells: {
             'id': PlutoCell(value: item!.id),
             'title': PlutoCell(value: item.title),

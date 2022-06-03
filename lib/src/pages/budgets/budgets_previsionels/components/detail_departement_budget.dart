@@ -66,7 +66,7 @@ class _DetailDepartmentBudgetState extends State<DetailDepartmentBudget> {
   List<ApprobationModel> approbList = [];
   List<ApprobationModel> approbationData = [];
   ApprobationModel approb = ApprobationModel(
-      reference: 1,
+      reference: DateTime.now(),
       title: '-',
       departement: '-',
       fontctionOccupee: '-',
@@ -423,43 +423,43 @@ class _DetailDepartmentBudgetState extends State<DetailDepartmentBudget> {
     double finPropreProjet = 0.0;
     double finExterieurProjet = 0.0;
 
-    var etatBesionCaisseList = dataDevisList
-        .where((element) =>
-            element.departement == data.departement &&
-            element.created.isBefore(data.periodeFin) &&
-            element.resources == "caisse")
-        .toList();
-    var etatBesionBanqueList = dataDevisList
-        .where((element) =>
-            element.departement == data.departement &&
-            element.created.isBefore(data.periodeFin) &&
-            element.resources == "banque")
-        .toList();
-    var etatBesionFinPropreList = dataDevisList
-        .where((element) =>
-            element.departement == data.departement &&
-            element.created.isBefore(data.periodeFin) &&
-            element.resources == "finPropre")
-        .toList();
-    var etatBesionFinExterieurList = dataDevisList
-        .where((element) =>
-            element.departement == data.departement &&
-            element.created.isBefore(data.periodeFin) &&
-            element.resources == "finExterieur")
-        .toList();
+    // var etatBesionCaisseList = dataDevisList
+    //     .where((element) =>
+    //         element.departement == data.departement &&
+    //         element.created.isBefore(data.periodeFin) &&
+    //         element.resources == "caisse")
+    //     .toList();
+    // var etatBesionBanqueList = dataDevisList
+    //     .where((element) =>
+    //         element.departement == data.departement &&
+    //         element.created.isBefore(data.periodeFin) &&
+    //         element.resources == "banque")
+    //     .toList();
+    // var etatBesionFinPropreList = dataDevisList
+    //     .where((element) =>
+    //         element.departement == data.departement &&
+    //         element.created.isBefore(data.periodeFin) &&
+    //         element.resources == "finPropre")
+    //     .toList();
+    // var etatBesionFinExterieurList = dataDevisList
+    //     .where((element) =>
+    //         element.departement == data.departement &&
+    //         element.created.isBefore(data.periodeFin) &&
+    //         element.resources == "finExterieur")
+    //     .toList();
 
-    for (var item in etatBesionCaisseList) {
-      caisseetatBesion += double.parse(item.resources);
-    }
-    for (var item in etatBesionBanqueList) {
-      banqueetatBesion += double.parse(item.resources);
-    }
-    for (var item in etatBesionFinPropreList) {
-      finPropreetatBesion += double.parse(item.resources);
-    }
-    for (var item in etatBesionFinExterieurList) {
-      finExterieuretatBesion += double.parse(item.resources);
-    }
+    // for (var item in etatBesionCaisseList) {
+    //   caisseetatBesion += double.parse(item.resources);
+    // }
+    // for (var item in etatBesionBanqueList) {
+    //   banqueetatBesion += double.parse(item.resources);
+    // }
+    // for (var item in etatBesionFinPropreList) {
+    //   finPropreetatBesion += double.parse(item.resources);
+    // }
+    // for (var item in etatBesionFinExterieurList) {
+    //   finExterieuretatBesion += double.parse(item.resources);
+    // }
 
     var salairecaisseList = dataSalaireList
         .where((element) =>
@@ -1236,7 +1236,7 @@ class _DetailDepartmentBudgetState extends State<DetailDepartmentBudget> {
 
   Future submitApprobation(DepartementBudgetModel data) async {
     final approbation = ApprobationModel(
-        reference: data.created.microsecondsSinceEpoch,
+        reference: data.created,
         title: data.title,
         departement: data.departement,
         fontctionOccupee: user.fonctionOccupe,

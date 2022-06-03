@@ -56,7 +56,7 @@ class _DetailProdModelState extends State<DetailProdModel> {
   List<ApprobationModel> approbList = [];
   List<ApprobationModel> approbationData = [];
   ApprobationModel approb = ApprobationModel(
-      reference: 1,
+      reference: DateTime.now(),
       title: '-',
       departement: '-',
       fontctionOccupee: '-',
@@ -828,7 +828,7 @@ class _DetailProdModelState extends State<DetailProdModel> {
 
   Future submitApprobation(ProductModel data) async {
     final approbation = ApprobationModel(
-        reference: data.created.microsecondsSinceEpoch,
+        reference: data.created,
         title: data.idProduct,
         departement: 'Commercial et Marketing',
         fontctionOccupee: user.fonctionOccupe,

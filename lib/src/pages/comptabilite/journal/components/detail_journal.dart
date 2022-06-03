@@ -55,7 +55,7 @@ class _DetailJournalState extends State<DetailJournal> {
   List<ApprobationModel> approbList = [];
   List<ApprobationModel> approbationData = [];
   ApprobationModel approb = ApprobationModel(
-      reference: 1,
+      reference: DateTime.now(),
       title: '-',
       departement: '-',
       fontctionOccupee: '-',
@@ -797,7 +797,7 @@ class _DetailJournalState extends State<DetailJournal> {
 
   Future submitApprobation(JournalModel data) async {
     final approbation = ApprobationModel(
-        reference: data.created.microsecondsSinceEpoch,
+        reference: data.created,
         title: data.libele,
         departement: 'Comptabilites',
         fontctionOccupee: user.fonctionOccupe,

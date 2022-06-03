@@ -40,7 +40,7 @@ class _DetailImmobilierState extends State<DetailImmobilier> {
   List<ApprobationModel> approbList = [];
   List<ApprobationModel> approbationData = [];
   ApprobationModel approb = ApprobationModel(
-      reference: 1,
+      reference: DateTime.now(),
       title: '-',
       departement: '-',
       fontctionOccupee: '-',
@@ -739,7 +739,7 @@ class _DetailImmobilierState extends State<DetailImmobilier> {
 
   Future submitApprobation(ImmobilierModel data) async {
     final approbation = ApprobationModel(
-        reference: data.created.microsecondsSinceEpoch,
+        reference: data.created,
         title: data.typeAllocation,
         departement: 'Logistique',
         fontctionOccupee: user.fonctionOccupe,

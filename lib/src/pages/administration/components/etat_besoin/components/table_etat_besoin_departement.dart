@@ -4,21 +4,23 @@ import 'package:flutter/material.dart';
 import 'package:fokad_admin/src/api/auth/auth_api.dart';
 import 'package:fokad_admin/src/api/devis/devis_api.dart';
 import 'package:fokad_admin/src/models/devis/devis_models.dart';
-import 'package:fokad_admin/src/pages/devis/components/detail_devis.dart';
 import 'package:fokad_admin/src/routes/routes.dart';
-import 'package:fokad_admin/src/widgets/print_widget.dart';
 import 'package:fokad_admin/src/utils/class_implemented.dart';
+import 'package:fokad_admin/src/widgets/print_widget.dart';
+import 'package:fokad_admin/src/widgets/title_widget.dart';
 import 'package:intl/intl.dart';
 import 'package:pluto_grid/pluto_grid.dart';
 
-class TableEtatBesoin extends StatefulWidget {
-  const TableEtatBesoin({Key? key}) : super(key: key);
+class TabvleEtatBesoinDepartement extends StatefulWidget {
+  const TabvleEtatBesoinDepartement({Key? key}) : super(key: key);
 
   @override
-  State<TableEtatBesoin> createState() => _TableEtatBesoinState();
+  State<TabvleEtatBesoinDepartement> createState() =>
+      _TabvleEtatBesoinDepartementState();
 }
 
-class _TableEtatBesoinState extends State<TableEtatBesoin> {
+class _TabvleEtatBesoinDepartementState
+    extends State<TabvleEtatBesoinDepartement> {
   List<PlutoColumn> columns = [];
   List<PlutoRow> rows = [];
   PlutoGridStateManager? stateManager;
@@ -46,13 +48,20 @@ class _TableEtatBesoinState extends State<TableEtatBesoin> {
 
   Future<void> getData() async {
     final userModel = await AuthApi().getUserId();
-    if(mounted) {
+    if (mounted) {
       setState(() {
-      matricule = userModel.matricule;
-      departement = userModel.departement;
-      servicesAffectation = userModel.servicesAffectation;
-      fonctionOccupe = userModel.fonctionOccupe;
-    });
+        matricule = userModel.matricule;
+        departement = userModel.departement;
+        servicesAffectation = userModel.servicesAffectation;
+        fonctionOccupe = userModel.fonctionOccupe;
+      });
+    }
+  }
+
+  void handleKeyboard(PlutoKeyManagerEvent event) {
+    // Specify the desired shortcut key.
+    if (event.isKeyDownEvent && event.isCtrlC) {
+      agentsRow();
     }
   }
 
@@ -67,25 +76,34 @@ class _TableEtatBesoinState extends State<TableEtatBesoin> {
           final dataList = tapEvent.row!.cells.values;
           final idPlutoRow = dataList.elementAt(0);
           Navigator.pushNamed(context, DevisRoutes.devisDetail,
-              arguments: idPlutoRow.value);    
-          
+              arguments: idPlutoRow.value);
         },
         onLoaded: (PlutoGridOnLoadedEvent event) {
           stateManager = event.stateManager;
           stateManager!.setShowColumnFilter(true);
-          stateManager!.notifyListeners();
+          // stateManager!.addListener(agentsRow);
+          // removeKeyboardListener =
+          //     stateManager!.keyManager!.subject.stream.listen(handleKeyboard);
+
+          // stateManager!.setSelectingMode(PlutoGridSelectingMode.none);
         },
         createHeader: (PlutoGridStateManager header) {
           return Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [PrintWidget(onPressed: () {})],
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              const TitleWidget(title: 'Departements'),
+              PrintWidget(onPressed: () {})
+            ],
           );
         },
+        // createFooter: (PlutoGridStateManager fotter) {
+        //   // fotter.setPageSize(100, notify: false); // default 40
+        //   return PlutoPagination(fotter);
+        // },
         configuration: PlutoGridConfiguration(
           columnFilterConfig: PlutoGridColumnFilterConfig(
             filters: const [
               ...FilterHelper.defaultFilters,
-              // custom filter
               ClassFilterImplemented(),
             ],
             resolveDefaultColumnFilter: (column, resolver) {
@@ -96,10 +114,6 @@ class _TableEtatBesoinState extends State<TableEtatBesoin> {
               } else if (column.field == 'priority') {
                 return resolver<ClassFilterImplemented>() as PlutoFilterType;
               } else if (column.field == 'departement') {
-                return resolver<ClassFilterImplemented>() as PlutoFilterType;
-              } else if (column.field == 'approbation') {
-                return resolver<ClassFilterImplemented>() as PlutoFilterType;
-              } else if (column.field == 'observation') {
                 return resolver<ClassFilterImplemented>() as PlutoFilterType;
               } else if (column.field == 'created') {
                 return resolver<ClassFilterImplemented>() as PlutoFilterType;
@@ -147,7 +161,7 @@ class _TableEtatBesoinState extends State<TableEtatBesoin> {
         enableContextMenu: false,
         enableDropToResize: true,
         titleTextAlign: PlutoColumnTextAlign.left,
-        width: 150,
+        width: 200,
         minWidth: 150,
       ),
       PlutoColumn(
@@ -159,7 +173,7 @@ class _TableEtatBesoinState extends State<TableEtatBesoin> {
         enableContextMenu: false,
         enableDropToResize: true,
         titleTextAlign: PlutoColumnTextAlign.left,
-        width: 200,
+        width: 300,
         minWidth: 150,
       ),
       PlutoColumn(
@@ -171,7 +185,7 @@ class _TableEtatBesoinState extends State<TableEtatBesoin> {
         enableContextMenu: false,
         enableDropToResize: true,
         titleTextAlign: PlutoColumnTextAlign.left,
-        width: 200,
+        width: 300,
         minWidth: 150,
       ),
     ];
@@ -179,10 +193,7 @@ class _TableEtatBesoinState extends State<TableEtatBesoin> {
 
   Future agentsRow() async {
     List<DevisModel?> dataList = await DevisAPi().getAllData();
-
-   var data = dataList.toList();
-    
-
+    var data = dataList.toList();
     if (mounted) {
       setState(() {
         for (var item in data) {
@@ -195,6 +206,9 @@ class _TableEtatBesoinState extends State<TableEtatBesoin> {
                 value: DateFormat("dd-MM-yyyy HH:mm").format(item.created))
           }));
           stateManager!.resetCurrentState();
+          // stateManager!.notifyListeners();
+          // stateManager!.isPaginated;
+          //
         }
       });
     }

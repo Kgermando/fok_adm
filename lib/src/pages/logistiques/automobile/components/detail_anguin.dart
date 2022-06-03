@@ -46,7 +46,7 @@ class _DetailAnguinState extends State<DetailAnguin> {
   List<ApprobationModel> approbList = [];
   List<ApprobationModel> approbationData = [];
   ApprobationModel approb = ApprobationModel(
-      reference: 1,
+      reference: DateTime.now(),
       title: '-',
       departement: '-',
       fontctionOccupee: '-',
@@ -890,7 +890,7 @@ class _DetailAnguinState extends State<DetailAnguin> {
 
   Future submitApprobation(AnguinModel data) async {
     final approbation = ApprobationModel(
-        reference: data.created.microsecondsSinceEpoch,
+        reference: data.created,
         title: data.nom,
         departement: 'Logistique',
         fontctionOccupee: user.fonctionOccupe,

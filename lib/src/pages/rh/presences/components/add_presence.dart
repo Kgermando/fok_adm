@@ -256,6 +256,7 @@ class _AddPresenceState extends State<AddPresence> {
 
   Future<void> submit() async {
     final jsonList = arriveAgentList.map((item) => jsonEncode(item)).toList();
+    print("jsonList $jsonList");
     final presenceModel = PresenceModel(
         arrive: DateTime.now(),
         arriveAgent: jsonList,

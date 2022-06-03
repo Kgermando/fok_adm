@@ -40,7 +40,7 @@ class _DetailBilanState extends State<DetailBilan> {
   List<ApprobationModel> approbList = [];
   List<ApprobationModel> approbationData = [];
   ApprobationModel approb = ApprobationModel(
-      reference: 1,
+      reference: DateTime.now(),
       title: '-',
       departement: '-',
       fontctionOccupee: '-',
@@ -940,7 +940,7 @@ class _DetailBilanState extends State<DetailBilan> {
 
   Future submitApprobation(BilanModel data) async {
     final approbation = ApprobationModel(
-        reference: data.created.microsecondsSinceEpoch,
+        reference: data.created,
         title: data.titleBilan,
         departement: 'Comptabilites',
         fontctionOccupee: user.fonctionOccupe,

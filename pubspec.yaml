@@ -52,6 +52,7 @@ dependencies:
   path_provider: ^2.0.10
   path_provider_platform_interface: ^2.0.4
   contextmenu: ^3.0.0
+  flutter_phoenix: ^1.0.0
   
 
 dev_dependencies:

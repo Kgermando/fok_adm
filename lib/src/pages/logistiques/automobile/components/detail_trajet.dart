@@ -44,7 +44,7 @@ class _DetailTrajetState extends State<DetailTrajet> {
   List<ApprobationModel> approbList = [];
   List<ApprobationModel> approbationData = [];
   ApprobationModel approb = ApprobationModel(
-      reference: 1,
+      reference: DateTime.now(),
       title: '-',
       departement: '-',
       fontctionOccupee: '-',
@@ -795,7 +795,7 @@ class _DetailTrajetState extends State<DetailTrajet> {
 
   Future submitApprobation(TrajetModel data) async {
     final approbation = ApprobationModel(
-        reference: data.created.microsecondsSinceEpoch,
+        reference: data.created,
         title: data.mission,
         departement: 'Logistique',
         fontctionOccupee: user.fonctionOccupe,

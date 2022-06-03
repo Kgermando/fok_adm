@@ -324,6 +324,7 @@ class _SortiePresenceState extends State<SortiePresence> {
 
   Future<void> submit() async {
     final jsonList = sortieAgentList.map((item) => jsonEncode(item)).toList();
+    print("jsonList $jsonList");
     final presenceModel = PresenceModel(
         arrive: widget.presenceModel.arrive,
         arriveAgent: widget.presenceModel.arriveAgent,

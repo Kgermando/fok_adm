@@ -50,7 +50,6 @@ import 'package:fokad_admin/src/pages/comptabilite/dashboard/dashboard_comptabil
 import 'package:fokad_admin/src/pages/comptabilite/grand_livre/grand_livre_comptabilite.dart';
 import 'package:fokad_admin/src/pages/comptabilite/journal/components/add_journal_comptabilite.dart';
 import 'package:fokad_admin/src/pages/comptabilite/journal/journal_comptabilite.dart';
-import 'package:fokad_admin/src/pages/devis/components/add_devis.dart';
 import 'package:fokad_admin/src/pages/devis/components/detail_devis.dart';
 import 'package:fokad_admin/src/pages/devis/devis_page.dart';
 import 'package:fokad_admin/src/pages/exploitations/dashboard/dashboard_exp.dart';
@@ -96,7 +95,6 @@ import 'package:fokad_admin/src/pages/rh/agents/components/update_agent.dart';
 import 'package:fokad_admin/src/pages/rh/dashboard/dashboard_rh.dart';
 import 'package:fokad_admin/src/pages/rh/dd_rh/departement_rh.dart';
 import 'package:fokad_admin/src/pages/rh/dd_rh/historique/table_salaires_historique.dart';
-import 'package:fokad_admin/src/pages/rh/etat_besoin/add_etat_besoin_rh.dart';
 import 'package:fokad_admin/src/pages/rh/etat_besoin/etat_besoin_rh_page.dart';
 import 'package:fokad_admin/src/pages/rh/paiements/components/add_paiement_salaire.dart';
 import 'package:fokad_admin/src/pages/rh/paiements/components/paiement_bulletin.dart';
@@ -315,7 +313,6 @@ final routes = <String, WidgetBuilder>{
   RhRoutes.rhDD: (context) => const DepartementRH(),
   RhRoutes.rhHistoriqueSalaire: (context) => const TableSalairesHistorique(),
   RhRoutes.rhEtatBesoin: (context) => const EtatBesoinRHPage(),
-  RhRoutes.rhEtatBesoinAdd: (context) => const AddEtatBesoinRH(),
 
   // Budgets
   BudgetRoutes.budgetDashboard: (context) => const DashboardBudget(),
@@ -354,7 +351,6 @@ final routes = <String, WidgetBuilder>{
 
   // DEVIS
   DevisRoutes.devis: (context) => const DevisPage(),
-  DevisRoutes.devisAdd: (context) => const AddDevis(),
   DevisRoutes.devisDetail: (context) => const DetailDevis(),
 
   // LOGISTIQUES

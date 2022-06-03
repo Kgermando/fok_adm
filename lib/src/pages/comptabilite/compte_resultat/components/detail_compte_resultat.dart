@@ -48,7 +48,7 @@ class _DetailCompteResultatState extends State<DetailCompteResultat> {
   List<ApprobationModel> approbList = [];
   List<ApprobationModel> approbationData = [];
   ApprobationModel approb = ApprobationModel(
-      reference: 1,
+      reference: DateTime.now(),
       title: '-',
       departement: '-',
       fontctionOccupee: '-',
@@ -1644,7 +1644,7 @@ class _DetailCompteResultatState extends State<DetailCompteResultat> {
 
   Future submitApprobation(CompteResulatsModel data) async {
     final approbation = ApprobationModel(
-        reference: data.created.microsecondsSinceEpoch,
+        reference: data.created,
         title: data.intitule,
         departement: 'Comptabilites',
         fontctionOccupee: user.fonctionOccupe,

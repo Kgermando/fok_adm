@@ -35,7 +35,8 @@ class _RhNavState extends State<RhNav> {
     // RH
     var salaires = await PaiementSalaireApi().getAllData();
     var approbations = await ApprobationApi().getAllData();
-    setState(() {
+    if (mounted) {
+      setState(() {
       for (var item in approbations) {
         salairesCount = salaires
             .where((element) =>
@@ -46,6 +47,7 @@ class _RhNavState extends State<RhNav> {
             .length;
       }
     });
+    }
   }
 
   @override

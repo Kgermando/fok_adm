@@ -59,7 +59,7 @@ class _PaiementBulletinState extends State<PaiementBulletin> {
   List<ApprobationModel> approbList = [];
   List<ApprobationModel> approbationData = [];
   ApprobationModel approb = ApprobationModel(
-      reference: 1,
+      reference: DateTime.now(),
       title: '-',
       departement: '-',
       fontctionOccupee: '-',
@@ -1780,7 +1780,7 @@ class _PaiementBulletinState extends State<PaiementBulletin> {
 
   Future submitApprobation(PaiementSalaireModel data) async {
     final approbation = ApprobationModel(
-        reference: data.createdAt.microsecondsSinceEpoch,
+        reference: data.createdAt,
         title: data.matricule,
         departement: data.departement,
         fontctionOccupee: user.fonctionOccupe,

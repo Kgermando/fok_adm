@@ -2,11 +2,12 @@ import 'dart:async';
 
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:fokad_admin/src/api/approbation/approbation_api.dart';
 import 'package:fokad_admin/src/api/auth/auth_api.dart';
 import 'package:fokad_admin/src/api/budgets/ligne_budgetaire_api.dart';
 import 'package:fokad_admin/src/api/devis/devis_api.dart';
-import 'package:fokad_admin/src/api/user/user_api.dart';
+import 'package:fokad_admin/src/api/devis/devis_list_objets_api.dart';
 import 'package:fokad_admin/src/constants/app_theme.dart';
 import 'package:fokad_admin/src/constants/responsive.dart';
 import 'package:fokad_admin/src/models/approbation/approbation_model.dart';
@@ -16,10 +17,10 @@ import 'package:fokad_admin/src/models/devis/devis_models.dart';
 import 'package:fokad_admin/src/models/users/user_model.dart';
 import 'package:fokad_admin/src/navigation/drawer/drawer_menu.dart';
 import 'package:fokad_admin/src/navigation/header/custom_appbar.dart';
+import 'package:fokad_admin/src/utils/loading.dart';
 import 'package:fokad_admin/src/widgets/print_widget.dart';
 import 'package:fokad_admin/src/widgets/title_widget.dart';
 import 'package:intl/intl.dart';
-import 'package:pluto_grid/pluto_grid.dart';
 
 class DetailDevis extends StatefulWidget {
   const DetailDevis({Key? key}) : super(key: key);
@@ -34,12 +35,13 @@ class _DetailDevisState extends State<DetailDevis> {
   bool isLoading = false;
   bool isChecked = false;
 
-  List<UserModel> userList = [];
+  final _formKey = GlobalKey<FormState>();
+  bool isLoadingBtn = false;
 
-  List<PlutoColumn> columns = [];
-  List<PlutoRow> rows = [];
-  PlutoGridStateManager? stateManager;
-  PlutoGridSelectingMode gridSelectingMode = PlutoGridSelectingMode.row;
+  double quantity = 0.0;
+  final TextEditingController designationController = TextEditingController();
+  double montantUnitaire = 0.0;
+  double montantGlobal = 0.0;
 
   String approbationDGController = '-';
   TextEditingController signatureJustificationDGController =
@@ -47,21 +49,20 @@ class _DetailDevisState extends State<DetailDevis> {
 
   String? ligneBudgtaire;
   String? resource;
-  List<dynamic> listObjets = [];
 
   @override
   initState() {
     getData();
-    agentsColumn();
-    agentsRow();
     super.initState();
   }
 
+  List<DevisListObjetsModel> devisObjetList = [];
+  List<DevisListObjetsModel> devObjetList = [];
   List<LigneBudgetaireModel> ligneBudgetaireList = [];
   List<ApprobationModel> approbList = [];
   List<ApprobationModel> approbationData = [];
   ApprobationModel approb = ApprobationModel(
-      reference: 1,
+      reference: DateTime.now(),
       title: '-',
       departement: '-',
       fontctionOccupee: '-',
@@ -86,16 +87,16 @@ class _DetailDevisState extends State<DetailDevis> {
       passwordHash: '-',
       succursale: '-');
   Future<void> getData() async {
-    final dataUser = await UserApi().getAllData();
     UserModel userModel = await AuthApi().getUserId();
     var budgets = await LIgneBudgetaireApi().getAllData();
     var approbations = await ApprobationApi().getAllData();
+    var devisObjetLists = await DevisListObjetsApi().getAllData();
     if (mounted) {
       setState(() {
-        userList = dataUser;
         user = userModel;
         ligneBudgetaireList = budgets;
         approbList = approbations;
+        devObjetList = devisObjetLists;
       });
     }
   }
@@ -106,6 +107,17 @@ class _DetailDevisState extends State<DetailDevis> {
     return Scaffold(
         key: _key,
         drawer: const DrawerMenu(),
+        floatingActionButton: FutureBuilder<DevisModel>(
+            future: DevisAPi().getOneData(id),
+            builder:
+                (BuildContext context, AsyncSnapshot<DevisModel> snapshot) {
+              if (snapshot.hasData) {
+                DevisModel? data = snapshot.data;
+                return addObjetDevisButton(data!);
+              } else {
+                return loadingMini();
+              }
+            }),
         body: SafeArea(
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -124,10 +136,15 @@ class _DetailDevisState extends State<DetailDevis> {
                             AsyncSnapshot<DevisModel> snapshot) {
                           if (snapshot.hasData) {
                             DevisModel? data = snapshot.data;
-                            listObjets = data!.list;
+                            devisObjetList = devObjetList
+                                .where((element) =>
+                                    element.referenceDate.microsecondsSinceEpoch ==
+                                    data!.createdRef.microsecondsSinceEpoch)
+                                .toList();
                             approbationData = approbList
                                 .where(
-                                    (element) => element.reference == data.id!)
+                                  (element) => element.reference.microsecondsSinceEpoch 
+                                    == data!.created.microsecondsSinceEpoch)
                                 .toList();
 
                             if (approbationData.isNotEmpty) {
@@ -148,7 +165,7 @@ class _DetailDevisState extends State<DetailDevis> {
                                     const SizedBox(width: p10),
                                     Expanded(
                                       child: CustomAppbar(
-                                          title: "Ticket n° ${data.id}",
+                                          title: "Ticket n° ${data!.id}",
                                           controllerMenu: () =>
                                               _key.currentState!.openDrawer()),
                                     ),
@@ -185,7 +202,7 @@ class _DetailDevisState extends State<DetailDevis> {
   Widget pageDetail(DevisModel data) {
     return Row(mainAxisAlignment: MainAxisAlignment.center, children: [
       Card(
-        elevation: 10,
+        // elevation: 10,
         child: Container(
           margin: const EdgeInsets.all(p16),
           width: (Responsive.isDesktop(context))
@@ -208,6 +225,12 @@ class _DetailDevisState extends State<DetailDevis> {
                     children: [
                       Row(
                         children: [
+                          IconButton(
+                              color: Colors.green.shade700,
+                              onPressed: () {
+                                submitToDG(data);
+                              },
+                              icon: const Icon(Icons.send)),
                           deleteButton(data),
                           PrintWidget(
                               tooltip: 'Imprimer le document', onPressed: () {})
@@ -224,7 +247,7 @@ class _DetailDevisState extends State<DetailDevis> {
               SizedBox(
                 height: 300,
                 width: double.infinity,
-                child: tableauList(),
+                child: SingleChildScrollView(child: tableDevisListObjet()),
               ),
             ],
           ),
@@ -378,97 +401,252 @@ class _DetailDevisState extends State<DetailDevis> {
     );
   }
 
-  Widget tableauList() {
-    return PlutoGrid(
-      columns: columns,
-      rows: rows,
-      onLoaded: (PlutoGridOnLoadedEvent event) {
-        stateManager = event.stateManager;
-        stateManager!.notifyListeners();
-      },
-      createHeader: (PlutoGridStateManager header) {
-        return Row(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: const [
-            TitleWidget(title: "Devis"),
+  FloatingActionButton addObjetDevisButton(DevisModel data) {
+    return FloatingActionButton(
+      child: const Icon(Icons.add),
+      tooltip: "Ajout objet",
+      onPressed: () => showDialog<String>(
+        context: context,
+        builder: (BuildContext context) => AlertDialog(
+          title: const Text('Ajout votre devis'),
+          content: StatefulBuilder(
+              builder: (BuildContext context, StateSetter setState) {
+            montantGlobal = quantity * montantUnitaire;
+            return SizedBox(
+              height: 200,
+              width: 500,
+              child: Form(
+                key: _formKey,
+                child: Column(
+                  children: [
+                    Row(
+                      children: [
+                        Expanded(
+                          flex: 1,
+                          child: Container(
+                              margin:
+                                  const EdgeInsets.only(bottom: p20, left: p20),
+                              child: TextFormField(
+                                decoration: InputDecoration(
+                                  border: OutlineInputBorder(
+                                      borderRadius:
+                                          BorderRadius.circular(10.0)),
+                                  labelText: 'Quantité',
+                                ),
+                                keyboardType: TextInputType.number,
+                                inputFormatters: <TextInputFormatter>[
+                                  FilteringTextInputFormatter.digitsOnly
+                                ],
+                                onChanged: (value) {
+                                  setState(() {
+                                    quantity =
+                                        (value == "") ? 1 : double.parse(value);
+                                  });
+                                },
+                              )),
+                        ),
+                        Expanded(
+                          flex: 3,
+                          child: Container(
+                              margin:
+                                  const EdgeInsets.only(bottom: p20, left: p20),
+                              child: TextFormField(
+                                controller: designationController,
+                                decoration: InputDecoration(
+                                  border: OutlineInputBorder(
+                                      borderRadius:
+                                          BorderRadius.circular(10.0)),
+                                  labelText: 'Désignation',
+                                ),
+                                keyboardType: TextInputType.text,
+                              )),
+                        ),
+                      ],
+                    ),
+                    Row(
+                      children: [
+                        Expanded(
+                          child: Container(
+                              margin:
+                                  const EdgeInsets.only(bottom: p20, left: p20),
+                              child: TextFormField(
+                                decoration: InputDecoration(
+                                  border: OutlineInputBorder(
+                                      borderRadius:
+                                          BorderRadius.circular(10.0)),
+                                  labelText: 'Montant unitaire',
+                                ),
+                                keyboardType: TextInputType.number,
+                                inputFormatters: <TextInputFormatter>[
+                                  FilteringTextInputFormatter.digitsOnly
+                                ],
+                                onChanged: (value) {
+                                  setState(() {
+                                    montantUnitaire =
+                                        (value == "") ? 1 : double.parse(value);
+                                  });
+                                },
+                              )),
+                        ),
+                        Expanded(
+                          child: Container(
+                              margin:
+                                  const EdgeInsets.only(bottom: p20, left: p20),
+                              child: Column(
+                                children: [
+                                  Text("Montant global",
+                                      style: TextStyle(
+                                          color: Colors.red.shade700)),
+                                  Text(
+                                      "${NumberFormat.decimalPattern('fr').format(double.parse(montantGlobal.toStringAsFixed(2)))} \$",
+                                      style: TextStyle(
+                                          color: Colors.red.shade700)),
+                                ],
+                              )),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+            );
+          }),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () => Navigator.pop(context),
+              child: const Text('Annuler'),
+            ),
+            TextButton(
+              onPressed: () async {
+                setState(() => isLoadingBtn = true);
+                await submitObjet(data);
+              },
+              child: isLoadingBtn ? loadingMini() : const Text('OK'),
+            ),
           ],
-        );
-      },
+        ),
+      ), 
     );
   }
 
-  void agentsColumn() {
-    columns = [
-      PlutoColumn(
-        readOnly: true,
-        title: 'N°',
-        field: 'id',
-        type: PlutoColumnType.number(),
-        enableRowDrag: true,
-        enableContextMenu: false,
-        enableDropToResize: true,
-        titleTextAlign: PlutoColumnTextAlign.left,
-        width: 100,
-        minWidth: 80,
+  Widget tableDevisListObjet() {
+    return Flexible(
+      child: Table(
+        border: TableBorder.all(color: Colors.amber.shade700),
+        columnWidths: const {
+          0: FixedColumnWidth(50.0), // fixed to 100 width
+          1: FlexColumnWidth(300.0),
+          2: FixedColumnWidth(150.0), //fixed to 100 width
+          3: FixedColumnWidth(150.0),
+        },
+        children: [
+          tableDevisHeader(),
+          for (var item in devisObjetList) tableDevisBody(item)
+        ],
       ),
-      PlutoColumn(
-        readOnly: true,
-        title: 'Nombre',
-        field: 'nombre',
-        type: PlutoColumnType.text(),
-        enableRowDrag: true,
-        enableContextMenu: false,
-        enableDropToResize: true,
-        titleTextAlign: PlutoColumnTextAlign.left,
-        width: 200,
-        minWidth: 150,
-      ),
-      PlutoColumn(
-        readOnly: true,
-        title: 'Description',
-        field: 'description',
-        type: PlutoColumnType.text(),
-        enableRowDrag: true,
-        enableContextMenu: false,
-        enableDropToResize: true,
-        titleTextAlign: PlutoColumnTextAlign.left,
-        width: 300,
-        minWidth: 150,
-      ),
-      PlutoColumn(
-        readOnly: true,
-        title: 'Frais',
-        field: 'frais',
-        type: PlutoColumnType.text(),
-        enableRowDrag: true,
-        enableContextMenu: false,
-        enableDropToResize: true,
-        titleTextAlign: PlutoColumnTextAlign.left,
-        width: 200,
-        minWidth: 150,
-      ),
-    ];
+    );
   }
 
-  Future agentsRow() async {
-    List<DevisListObjetsModel> dataList = [];
-    for (var item in listObjets) {
-      dataList.add(DevisListObjetsModel.fromJson(item));
-    }
-    if (mounted) {
-      setState(() {
-        for (var item in dataList) {
-          rows.add(PlutoRow(cells: {
-            'id': PlutoCell(value: item.id),
-            'nombre': PlutoCell(value: item.nombre),
-            'description': PlutoCell(value: item.description),
-            'frais': PlutoCell(value: item.frais)
-          }));
-          stateManager!.resetCurrentState();
-          stateManager!.notifyListeners();
-        }
-      });
-    }
+  TableRow tableDevisBody(data) {
+    final bodyMedium = Theme.of(context).textTheme.bodyMedium;
+    return TableRow(
+      children: [
+        Container(
+          padding: const EdgeInsets.all(16.0 * 0.75),
+          // decoration:
+          //     BoxDecoration(border: Border.all(color: Colors.amber.shade700)),
+          child: AutoSizeText(
+            double.parse(data.quantity).toStringAsFixed(0),
+            maxLines: 1,
+            textAlign: TextAlign.center,
+            style: bodyMedium,
+          ),
+        ),
+        Container(
+          padding: const EdgeInsets.all(16.0 * 0.75),
+          // decoration:
+          //     BoxDecoration(border: Border.all(color: Colors.amber.shade700)),
+          child: AutoSizeText(
+            data.designation,
+            maxLines: 3,
+            textAlign: TextAlign.center,
+            style: bodyMedium,
+          ),
+        ),
+        Container(
+          padding: const EdgeInsets.all(16.0 * 0.75),
+          // decoration:
+          //     BoxDecoration(border: Border.all(color: Colors.amber.shade700)),
+          child: AutoSizeText(
+            "${NumberFormat.decimalPattern('fr').format(double.parse(double.parse(data.montantUnitaire).toStringAsFixed(2)))} \$",
+            maxLines: 1,
+            textAlign: TextAlign.center,
+            style: bodyMedium,
+          ),
+        ),
+        Container(
+          padding: const EdgeInsets.all(16.0 * 0.75),
+          // decoration:
+          //     BoxDecoration(border: Border.all(color: Colors.amber.shade700)),
+          child: AutoSizeText(
+            "${NumberFormat.decimalPattern('fr').format(double.parse(double.parse(data.montantGlobal).toStringAsFixed(2)))} \$",
+            maxLines: 1,
+            textAlign: TextAlign.center,
+            style: bodyMedium,
+          ),
+        ),
+      ],
+    );
+  }
+
+  TableRow tableDevisHeader() {
+    final bodyMedium = Theme.of(context).textTheme.bodyMedium;
+    return TableRow(children: [
+      Container(
+        padding: const EdgeInsets.all(16.0 * 0.75),
+        // decoration:
+        //     BoxDecoration(border: Border.all(color: Colors.amber.shade700)),
+        child: AutoSizeText(
+          "Qty".toUpperCase(),
+          maxLines: 1,
+          textAlign: TextAlign.center,
+          style: bodyMedium!.copyWith(fontWeight: FontWeight.bold),
+        ),
+      ),
+      Container(
+        padding: const EdgeInsets.all(16.0 * 0.75),
+        // decoration:
+        //     BoxDecoration(border: Border.all(color: Colors.amber.shade700)),
+        child: AutoSizeText(
+          "Désignation".toUpperCase(),
+          maxLines: 1,
+          textAlign: TextAlign.center,
+          style: bodyMedium.copyWith(fontWeight: FontWeight.bold),
+        ),
+      ),
+      Container(
+        padding: const EdgeInsets.all(16.0 * 0.75),
+        // decoration:
+        //     BoxDecoration(border: Border.all(color: Colors.amber.shade700)),
+        child: AutoSizeText(
+          "Montant unitaire".toUpperCase(),
+          maxLines: 1,
+          textAlign: TextAlign.center,
+          style: bodyMedium.copyWith(fontWeight: FontWeight.bold),
+        ),
+      ),
+      Container(
+        padding: const EdgeInsets.all(16.0 * 0.75),
+        // decoration:
+        //     BoxDecoration(border: Border.all(color: Colors.amber.shade700)),
+        child: AutoSizeText(
+          "Montant global".toUpperCase(),
+          maxLines: 1,
+          textAlign: TextAlign.center,
+          style: bodyMedium.copyWith(fontWeight: FontWeight.bold),
+        ),
+      ),
+    ]);
   }
 
   Widget infosEditeurWidget() {
@@ -979,7 +1157,7 @@ class _DetailDevisState extends State<DetailDevis> {
 
   Future submitApprobation(DevisModel data) async {
     final approbation = ApprobationModel(
-        reference: data.created.microsecondsSinceEpoch,
+        reference: data.createdRef,
         title: data.title,
         departement: data.departement,
         fontctionOccupee: user.fonctionOccupe,
@@ -999,16 +1177,51 @@ class _DetailDevisState extends State<DetailDevis> {
         title: data.title,
         priority: data.priority,
         departement: data.departement,
-        list: data.list,
-        ligneBudgtaire: data.ligneBudgtaire,
-        resources: data.resources,
         observation: isChecked,
         signature: data.signature,
-        created: DateTime.now());
+        createdRef: data.createdRef,
+        created: DateTime.now(),
+        isSubmit: false);
     await DevisAPi().updateData(data.id!, devisModel);
     Navigator.of(context).pop();
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-      content: const Text("Mise à jour avec succès!"),
+      content: const Text("Payement effectué avec succès!"),
+      backgroundColor: Colors.green[700],
+    ));
+  }
+
+  Future<void> submitToDG(DevisModel data) async {
+    final devisModel = DevisModel(
+        title: data.title,
+        priority: data.priority,
+        departement: data.departement,
+        observation: isChecked,
+        signature: data.signature,
+        createdRef: data.createdRef,
+        created: DateTime.now(),
+        isSubmit: true);
+    await DevisAPi().updateData(data.id!, devisModel);
+    Navigator.of(context).pop();
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      content: const Text("Soumis chez le DG avec succès!"),
+      backgroundColor: Colors.green[700],
+    ));
+  }
+
+  Future<void> submitObjet(DevisModel data) async {
+    montantGlobal = quantity * montantUnitaire;
+    final devisListObjetsModel = DevisListObjetsModel(
+      referenceDate: data.createdRef,
+      title: data.title,
+      quantity: quantity.toString(),
+      designation: designationController.text,
+      montantUnitaire: montantUnitaire.toString(),
+      montantGlobal: montantGlobal.toString(),
+    );
+    await DevisListObjetsApi().insertData(devisListObjetsModel);
+    Navigator.of(context).pop();
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      content: const Text("Enregistré avec succès!"),
       backgroundColor: Colors.green[700],
     ));
   }

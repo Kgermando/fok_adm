@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:flutter_phoenix/flutter_phoenix.dart';
 import 'package:fokad_admin/src/api/auth/auth_api.dart';
+import 'package:fokad_admin/src/api/devis/devis_api.dart';
 import 'package:fokad_admin/src/app_state/app_state.dart';
 import 'package:fokad_admin/src/models/users/user_model.dart';
 import 'package:fokad_admin/src/provider/controller.dart';
@@ -30,7 +32,7 @@ void main() async {
     passwordHash: '-',
     succursale: '-');
 
-  runApp(MyApp(user: user));
+  runApp(Phoenix(child: MyApp(user: user)));
 }
 
 class MyApp extends StatelessWidget {
@@ -98,6 +100,7 @@ class MyApp extends StatelessWidget {
           ChangeNotifierProvider(create: (context) => Controller()),
           ChangeNotifierProvider(create: (context) => ThemeProvider()),
           ChangeNotifierProvider(create: (context) => AuthApi()),
+          ChangeNotifierProvider(create: (context) => DevisAPi()),
           ChangeNotifierProvider(create: (_) => AppState()),
         ],
         builder: (context, _) {

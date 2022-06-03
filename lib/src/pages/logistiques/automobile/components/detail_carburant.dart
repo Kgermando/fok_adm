@@ -43,7 +43,7 @@ class _DetailCaburantState extends State<DetailCaburant> {
   List<ApprobationModel> approbList = [];
   List<ApprobationModel> approbationData = [];
   ApprobationModel approb = ApprobationModel(
-      reference: 1,
+      reference: DateTime.now(),
       title: '-',
       departement: '-',
       fontctionOccupee: '-',
@@ -825,7 +825,7 @@ class _DetailCaburantState extends State<DetailCaburant> {
 
   Future submitApprobation(CarburantModel data) async {
     final approbation = ApprobationModel(
-        reference: data.created.microsecondsSinceEpoch,
+        reference: data.created,
         title: data.nomReceptioniste,
         departement: 'Logistique',
         fontctionOccupee: user.fonctionOccupe,

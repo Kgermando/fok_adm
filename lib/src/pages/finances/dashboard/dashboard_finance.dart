@@ -153,13 +153,15 @@ class _DashboardFinanceState extends State<DashboardFinance> {
         cumulFinanceExterieur += double.parse(item!.montant);
       }
 
-      List<DevisModel?> devisList = dataDevisList;
 
-      for (var item in devisList) {
-        for (var i in item!.list) {
-          depenses += double.parse(i['frais']);
-        }
-      }
+      // DEvis
+      // List<DevisModel?> devisList = dataDevisList;
+
+      // for (var item in devisList) {
+      //   for (var i in item!.list) {
+      //     depenses += double.parse(i['frais']);
+      //   }
+      // }
 
       soldeBanque = recetteBanque - depensesBanque;
       soldeCaisse = recetteCaisse - depensesCaisse;

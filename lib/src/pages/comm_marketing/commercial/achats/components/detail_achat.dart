@@ -109,7 +109,6 @@ class _DetailAchatState extends State<DetailAchat> {
                                 Expanded(
                                     child: Scrollbar(
                                         controller: _controllerScroll,
-                                        isAlwaysShown: true,
                                         child: pageDetail(data)))
                               ],
                             );

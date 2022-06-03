@@ -72,7 +72,7 @@ class _DetailCreanceState extends State<DetailCreance> {
   List<ApprobationModel> approbList = [];
   List<ApprobationModel> approbationData = [];
   ApprobationModel approb = ApprobationModel(
-      reference: 1,
+      reference: DateTime.now(),
       title: '-',
       departement: '-',
       fontctionOccupee: '-',
@@ -1073,7 +1073,7 @@ class _DetailCreanceState extends State<DetailCreance> {
 
   Future submitApprobation(CreanceModel data) async {
     final approbation = ApprobationModel(
-        reference: data.created.microsecondsSinceEpoch,
+        reference: data.created,
         title: data.nomComplet,
         departement: '-',
         fontctionOccupee: user.fonctionOccupe,

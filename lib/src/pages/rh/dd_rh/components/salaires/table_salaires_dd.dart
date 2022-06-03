@@ -200,7 +200,7 @@ class _TableSalairesDDState extends State<TableSalairesDD> {
     var approbations = await ApprobationApi().getAllData();
     for (var item in approbations) {
       data = dataList.where((element) {
-        element!.createdAt.microsecondsSinceEpoch.compareTo(item.reference);
+        element!.createdAt.microsecondsSinceEpoch.compareTo(item.reference.microsecondsSinceEpoch);
         return false;
       }).toList();
     }

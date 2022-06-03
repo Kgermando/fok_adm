@@ -144,9 +144,9 @@ class _DashboardBudgetState extends State<DashboardBudget> {
     for (var item in dataCampaignList) {
       totalCampaign += double.parse(item.resources);
     }
-    for (var item in dataDevisList) {
-      totalDevis += double.parse(item.resources);
-    }
+    // for (var item in dataDevisList) {
+    //   totalDevis += double.parse(item.resources);
+    // }
     for (var item in dataProjetList) {
       totalProjet += double.parse(item.resources);
     }
@@ -161,9 +161,9 @@ class _DashboardBudgetState extends State<DashboardBudget> {
     for (var item in dataCampaignList.where((e) => e.resources == "caisse")) {
       caisseCampaign += double.parse(item.resources);
     }
-    for (var item in dataDevisList.where((e) => e.resources == "caisse")) {
-      caisseetatBesion += double.parse(item.resources);
-    }
+    // for (var item in dataDevisList.where((e) => e.resources == "caisse")) {
+    //   caisseetatBesion += double.parse(item.resources);
+    // }
     for (var item in dataProjetList.where((e) => e.resources == "caisse")) {
       caisseProjet += double.parse(item.resources);
     }
@@ -174,9 +174,9 @@ class _DashboardBudgetState extends State<DashboardBudget> {
     for (var item in dataCampaignList.where((e) => e.resources == "banque")) {
       banqueCampaign += double.parse(item.resources);
     }
-    for (var item in dataDevisList.where((e) => e.resources == "banque")) {
-      banqueetatBesion += double.parse(item.resources);
-    }
+    // for (var item in dataDevisList.where((e) => e.resources == "banque")) {
+    //   banqueetatBesion += double.parse(item.resources);
+    // }
     for (var item in dataProjetList.where((e) => e.resources == "banque")) {
       banqueProjet += double.parse(item.resources);
     }
@@ -188,9 +188,9 @@ class _DashboardBudgetState extends State<DashboardBudget> {
         in dataCampaignList.where((e) => e.resources == "finPropre")) {
       finPropreCampaign += double.parse(item.resources);
     }
-    for (var item in dataDevisList.where((e) => e.resources == "finPropre")) {
-      finPropreetatBesion += double.parse(item.resources);
-    }
+    // for (var item in dataDevisList.where((e) => e.resources == "finPropre")) {
+    //   finPropreetatBesion += double.parse(item.resources);
+    // }
     for (var item in dataProjetList.where((e) => e.resources == "finPropre")) {
       finPropreProjet += double.parse(item.resources);
     }
@@ -202,10 +202,10 @@ class _DashboardBudgetState extends State<DashboardBudget> {
         in dataCampaignList.where((e) => e.resources == "finExterieur")) {
       finExterieurCampaign += double.parse(item.resources);
     }
-    for (var item
-        in dataDevisList.where((e) => e.resources == "finExterieur")) {
-      finExterieuretatBesion += double.parse(item.resources);
-    }
+    // for (var item
+    //     in dataDevisList.where((e) => e.resources == "finExterieur")) {
+    //   finExterieuretatBesion += double.parse(item.resources);
+    // }
     for (var item
         in dataProjetList.where((e) => e.resources == "finExterieur")) {
       finExterieurProjet += double.parse(item.resources);
