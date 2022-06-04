@@ -34,7 +34,7 @@ class AgentsApi extends ChangeNotifier {
       await AuthApi().refreshAccessToken();
       return getCount();
     } else {
-      throw Exception(jsonDecode(resp.body)['message']);
+      throw Exception(resp.statusCode);
     }
   }
 
@@ -66,7 +66,7 @@ class AgentsApi extends ChangeNotifier {
       notifyListeners();
       return data;
     } else {
-      throw Exception(jsonDecode(resp.body)['message']);
+      throw Exception(resp.statusCode);
     }
   }
 
@@ -101,7 +101,7 @@ class AgentsApi extends ChangeNotifier {
             sexeLower.contains(searchLower);
       }).toList();
     } else {
-      throw Exception(jsonDecode(resp.body)['message']);
+      throw Exception(resp.statusCode);
     }
   }
 
@@ -124,7 +124,7 @@ class AgentsApi extends ChangeNotifier {
     if (resp.statusCode == 200) {
       return AgentModel.fromJson(json.decode(resp.body));
     } else {
-      throw Exception(json.decode(resp.body)['message']);
+      throw Exception(resp.statusCode);
     }
   }
 
@@ -151,7 +151,7 @@ class AgentsApi extends ChangeNotifier {
       }
       return data;
     } else {
-      throw Exception(jsonDecode(resp.body)['message']);
+      throw Exception(resp.statusCode);
     }
   }
 
@@ -173,7 +173,7 @@ class AgentsApi extends ChangeNotifier {
       return insertData(agentModel);
     } else {
       
-      throw Exception(json.decode(resp.body)['message']);
+      throw Exception(resp.statusCode);
     }
   }
 
@@ -193,7 +193,7 @@ class AgentsApi extends ChangeNotifier {
     if (res.statusCode == 200) {
       return AgentModel.fromJson(json.decode(res.body));
     } else {
-      throw Exception(json.decode(res.body)['message']);
+      throw Exception(res.statusCode);
     }
   }
 
@@ -209,7 +209,7 @@ class AgentsApi extends ChangeNotifier {
     if (res.statusCode == 200) {
       return AgentModel.fromJson(json.decode(res.body)['agents']);
     } else {
-      throw Exception(json.decode(res.body)['message']);
+      throw Exception(res.statusCode);
     }
   }
 }

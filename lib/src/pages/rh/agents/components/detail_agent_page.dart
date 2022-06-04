@@ -134,8 +134,8 @@ class _DetailAgentPageState extends State<DetailAgentPage> {
                           ],
                         );
                       } else {
-                        return const Center(
-                            child: CircularProgressIndicator());
+                        return Center(
+                            child: loading());
                       }
                     })),
               ),
@@ -652,52 +652,56 @@ class _DetailAgentPageState extends State<DetailAgentPage> {
   }
 
   agentStatutDialog(AgentModel agentModel) {
-    statutAgent = agentModel.statutAgent;
     return showDialog(
         context: context,
         barrierDismissible: true,
         builder: (context) {
           return StatefulBuilder(builder: (context, StateSetter setState) {
+            statutAgent = agentModel.statutAgent;
             return !isLoading
                 ? AlertDialog(
                     title: const Text('Autorisation d\'accès au système'),
-                    content: FlutterSwitch(
-                      width: 225.0,
-                      height: 55.0,
-                      activeColor: Colors.green,
-                      inactiveColor: Colors.red,
-                      valueFontSize: 25.0,
-                      toggleSize: 45.0,
-                      value: statutAgent,
-                      borderRadius: 30.0,
-                      padding: 8.0,
-                      showOnOff: true,
-                      activeText: 'Active',
-                      inactiveText: 'Inactive',
-                      onToggle: (val) {
-                        setState(() {
-                          isLoading == true;
-                          statutAgent = val;
-                          if (statutAgent) {
-                            createUser(
-                                agentModel.nom,
-                                agentModel.prenom,
-                                agentModel.email,
-                                agentModel.telephone,
-                                agentModel.matricule,
-                                agentModel.departement,
-                                agentModel.servicesAffectation,
-                                agentModel.fonctionOccupe,
-                                agentModel.role);
-                            updateAgent(agentModel);
-                            // isLoading == false;
-                          } else {
-                            deleteUser(agentModel);
-                            updateAgent(agentModel);
-                            // isLoading == false;
-                          }
-                        });
-                      },
+                    content: SizedBox(
+                      height: 200,
+                      width: 300,
+                      child: FlutterSwitch(
+                        width: 225.0,
+                        height: 55.0,
+                        activeColor: Colors.green,
+                        inactiveColor: Colors.red,
+                        valueFontSize: 25.0,
+                        toggleSize: 45.0,
+                        value: statutAgent,
+                        borderRadius: 30.0,
+                        padding: 8.0,
+                        showOnOff: true,
+                        activeText: 'Active',
+                        inactiveText: 'Inactive',
+                        onToggle: (val) {
+                          setState(() {
+                            isLoading == true;
+                            statutAgent = val;
+                            if (statutAgent) {
+                              createUser(
+                                  agentModel.nom,
+                                  agentModel.prenom,
+                                  agentModel.email,
+                                  agentModel.telephone,
+                                  agentModel.matricule,
+                                  agentModel.departement,
+                                  agentModel.servicesAffectation,
+                                  agentModel.fonctionOccupe,
+                                  agentModel.role);
+                              updateAgent(agentModel);
+                              // isLoading == false;
+                            } else {
+                              deleteUser(agentModel);
+                              updateAgent(agentModel);
+                              // isLoading == false;
+                            }
+                          });
+                        },
+                      ),
                     ),
                     actions: <Widget>[
                       TextButton(

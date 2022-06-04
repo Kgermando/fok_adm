@@ -25,7 +25,7 @@ class PerformenceNoteApi {
       var payload = json.decode(
           ascii.decode(base64.decode(base64.normalize(splittedJwt[1]))));
     }
-    var resp = await client.get(
+    var res = await client.get(
       listPerformenceNoteUrl,
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
@@ -33,15 +33,15 @@ class PerformenceNoteApi {
       },
     );
 
-    if (resp.statusCode == 200) {
-      List<dynamic> bodyList = json.decode(resp.body);
+    if (res.statusCode == 200) {
+      List<dynamic> bodyList = json.decode(res.body);
       List<PerformenceNoteModel> data = [];
       for (var u in bodyList) {
         data.add(PerformenceNoteModel.fromJson(u));
       }
       return data;
     } else {
-      throw Exception(jsonDecode(resp.body)['message']);
+      throw Exception(res.statusCode);
     }
   }
 
@@ -64,7 +64,7 @@ class PerformenceNoteApi {
     if (resp.statusCode == 200) {
       return PerformenceNoteModel.fromJson(json.decode(resp.body));
     } else {
-      throw Exception(json.decode(resp.body)['message']);
+      throw Exception(resp.statusCode);
     }
   }
 
@@ -87,7 +87,7 @@ class PerformenceNoteApi {
       await AuthApi().refreshAccessToken();
       return insertData(performenceModel);
     } else {
-      throw Exception(json.decode(resp.body)['message']);
+      throw Exception(resp.statusCode);
     }
   }
 
@@ -109,7 +109,7 @@ class PerformenceNoteApi {
     if (res.statusCode == 200) {
       return PerformenceNoteModel.fromJson(json.decode(res.body));
     } else {
-      throw Exception(json.decode(res.body)['message']);
+      throw Exception(res.statusCode);
     }
   }
 
@@ -126,7 +126,7 @@ class PerformenceNoteApi {
     if (res.statusCode == 200) {
       return PerformenceNoteModel.fromJson(json.decode(res.body)['agents']);
     } else {
-      throw Exception(json.decode(res.body)['message']);
+      throw Exception(res.statusCode);
     }
   }
 }

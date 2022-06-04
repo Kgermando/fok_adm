@@ -80,19 +80,19 @@ class PresenceApi {
     var data = presenceModel.toJson();
     var body = jsonEncode(data);
 
-    var resp = await client.post(addPresenceUrl,
+    var res = await client.post(addPresenceUrl,
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
           'Authorization': 'Bearer $token'
         },
         body: body);
-    if (resp.statusCode == 200) {
-      return PresenceModel.fromJson(json.decode(resp.body));
-    } else if (resp.statusCode == 401) {
+    if (res.statusCode == 200) {
+      return PresenceModel.fromJson(json.decode(res.body));
+    } else if (res.statusCode == 401) {
       await AuthApi().refreshAccessToken();
       return insertData(presenceModel);
     } else {
-      throw Exception(json.decode(resp.body)['message']);
+      throw Exception(res.statusCode);
     }
   }
 
@@ -113,7 +113,7 @@ class PresenceApi {
     if (res.statusCode == 200) {
       return PresenceModel.fromJson(json.decode(res.body));
     } else {
-      throw Exception(json.decode(res.body)['message']);
+      throw Exception(res.statusCode);
     }
   }
 
@@ -130,7 +130,7 @@ class PresenceApi {
     if (res.statusCode == 200) {
       return PresenceModel.fromJson(json.decode(res.body)['agents']);
     } else {
-      throw Exception(json.decode(res.body)['message']);
+      throw Exception(res.statusCode);
     }
   }
 }

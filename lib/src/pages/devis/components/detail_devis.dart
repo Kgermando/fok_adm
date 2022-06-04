@@ -415,7 +415,9 @@ class _DetailDevisState extends State<DetailDevis> {
             return SizedBox(
               height: 200,
               width: 500,
-              child: Form(
+              child: isLoadingBtn
+                  ? loading()
+                  :  Form(
                 key: _formKey,
                 child: Column(
                   children: [
@@ -517,9 +519,9 @@ class _DetailDevisState extends State<DetailDevis> {
               child: const Text('Annuler'),
             ),
             TextButton(
-              onPressed: () async {
+              onPressed: () {
                 setState(() => isLoadingBtn = true);
-                await submitObjet(data);
+                 submitObjet(data);
               },
               child: isLoadingBtn ? loadingMini() : const Text('OK'),
             ),

@@ -6,6 +6,7 @@ import 'package:fokad_admin/src/models/comm_maketing/achat_model.dart';
 import 'package:fokad_admin/src/navigation/drawer/drawer_menu.dart';
 import 'package:fokad_admin/src/navigation/header/custom_appbar.dart';
 import 'package:fokad_admin/src/pages/comm_marketing/commercial/ventes/components/vente_items_widget.dart';
+import 'package:fokad_admin/src/utils/loading.dart';
 
 class VentesPage extends StatefulWidget {
   const VentesPage({Key? key}) : super(key: key);
@@ -76,7 +77,6 @@ class _VentesPageState extends State<VentesPage> {
                                         )
                                       : Scrollbar(
                                           controller: _controllerScroll,
-                                          isAlwaysShown: true,
                                           child: ListView.builder(
                                               controller: _controllerScroll,
                                               itemCount: achats.length,
@@ -87,8 +87,8 @@ class _VentesPageState extends State<VentesPage> {
                                               }),
                                         );
                                 } else {
-                                  return const Center(
-                                      child: CircularProgressIndicator());
+                                  return Center(
+                                      child: loading());
                                 }
                               })),
                     ],

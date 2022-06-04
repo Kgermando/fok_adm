@@ -31,6 +31,7 @@ void main() async {
     createdAt: DateTime.now(),
     passwordHash: '-',
     succursale: '-');
+  // final user = await AuthApi().getUserId();
 
   runApp(Phoenix(child: MyApp(user: user)));
 }
@@ -41,7 +42,10 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    String homeRoute = UserRoutes.login;
+     String homeRoute = UserRoutes.login;
+    if (user == null) {
+      Navigator.pushNamed(context, homeRoute);
+    }
 
     if (user.departement == "Administration") {
       if (double.parse(user.role) <= 2) {

@@ -50,7 +50,7 @@ class _EtatBesoinAdminState extends State<EtatBesoinAdmin> {
       for (var item in approbations) {
         bool isApprove = data
             .map((e) =>
-                e.createdRef.microsecondsSinceEpoch == item.reference &&
+                e.createdRef.microsecondsSinceEpoch == item.reference.microsecondsSinceEpoch &&
                 item.fontctionOccupee == 'Directeur générale')
             .first;
         if (!isApprove) {

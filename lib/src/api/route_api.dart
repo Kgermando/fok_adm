@@ -26,6 +26,10 @@ var addPaiementSalaireUrl = Uri.parse("$mainUrl/rh/paiement-salaires/insert-new-
 var listPresenceUrl = Uri.parse("$mainUrl/rh/presences/");
 var addPresenceUrl =
     Uri.parse("$mainUrl/rh/presences/insert-new-presence");
+var listPresenceEntrerUrl = Uri.parse("$mainUrl/rh/presences-entrers/");
+var addPresenceEntrerUrl = Uri.parse("$mainUrl/rh/presences-entrers/insert-new-presence-entrer");
+var listPresenceSortieUrl = Uri.parse("$mainUrl/rh/presences-sorties/");
+var addPresenceSortieUrl = Uri.parse("$mainUrl/rh/presences-sorties/insert-new-presence-sortie");
 
 var listPerformenceUrl = Uri.parse("$mainUrl/rh/performences/");
 var addPerformenceUrl =

@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:fokad_admin/src/api/rh/presence_api.dart';
 import 'package:fokad_admin/src/models/rh/presence_model.dart';
 import 'package:fokad_admin/src/pages/rh/presences/components/detail_presence.dart';
+import 'package:fokad_admin/src/routes/routes.dart';
 import 'package:fokad_admin/src/utils/class_implemented.dart';
 import 'package:fokad_admin/src/widgets/print_widget.dart';
 import 'package:intl/intl.dart';
@@ -42,8 +43,8 @@ class _TablePresenceState extends State<TablePresence> {
       onRowDoubleTap: (PlutoGridOnRowDoubleTapEvent tapEvent) {
         final dataList = tapEvent.row!.cells.values;
         final idPlutoRow = dataList.elementAt(0);
-        Navigator.of(context).push(MaterialPageRoute(
-            builder: (context) => DetailPresence(id: idPlutoRow.value)));
+        Navigator.pushNamed(context, RhRoutes.rhPresenceDetail,
+            arguments: idPlutoRow.value);
       },
       onLoaded: (PlutoGridOnLoadedEvent event) {
         stateManager = event.stateManager;
@@ -132,18 +133,6 @@ class _TablePresenceState extends State<TablePresence> {
         width: 200,
         minWidth: 200,
       ),
-      PlutoColumn(
-        readOnly: true,
-        title: 'Date',
-        field: 'created',
-        type: PlutoColumnType.text(),
-        enableRowDrag: true,
-        enableContextMenu: false,
-        enableDropToResize: true,
-        titleTextAlign: PlutoColumnTextAlign.left,
-        width: 200,
-        minWidth: 200,
-      ),
     ];
   }
 
@@ -158,15 +147,13 @@ class _TablePresenceState extends State<TablePresence> {
           rows.add(PlutoRow(cells: {
             'id': PlutoCell(value: item.id),
             'arrive': PlutoCell(
-                value: DateFormat("dd-MM-yyyy HH:mm").format(item.arrive)),
+                value: DateFormat("dd-MM-yyyy HH:mm").format(item.created)),
             'sortie': PlutoCell(
                 value: (item.finJournee)
-                    ? DateFormat("dd-MM-yyyy HH:mm").format(item.sortie)
+                    ? DateFormat("dd-MM-yyyy HH:mm").format(item.createdRef)
                     : "-"),
             'finJournee': PlutoCell(
                 value: (item.finJournee) ? "Journée fini" : 'Journée en cours'),
-            'created': PlutoCell(
-                value: DateFormat("dd-MM-yyyy HH:mm").format(item.created))
           }));
         }
         stateManager!.resetCurrentState();

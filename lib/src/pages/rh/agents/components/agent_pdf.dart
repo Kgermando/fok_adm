@@ -26,6 +26,7 @@ class AgentPdf {
         buildTitle(data),
         Divider(),
         buildBody(data)
+        
       ],
       footer: (context) => buildFooter(user),
     ));
@@ -34,7 +35,7 @@ class AgentPdf {
     final Uint8List bytes = await pdf.save();
     return helper.saveAndLaunchFilePdf(bytes, 'rh-$date.pdf');
   }
-
+ 
   static Widget buildHeader(AgentModel data, UserModel user) => Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -128,6 +129,7 @@ class AgentPdf {
 
   static Widget buildBody(AgentModel data) {
     return pw.Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
       Row(
         children: [
@@ -289,30 +291,29 @@ class AgentPdf {
           )
         ],
       ),
-      Padding(
-        padding: const EdgeInsets.all(p10),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text('Formation :'),
-                SizedBox(height: p8),
-                Text(data.competance!)
-              ],
-            ),
-            SizedBox(height: p30),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text('Experience :'),
-                SizedBox(height: p8),
-                Text(data.experience!)
-              ],
-            ),
-          ],
-        ),
+      Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text('Formation :', textAlign: pw.TextAlign.left,
+                  style: pw.TextStyle(fontWeight: FontWeight.bold)),
+              SizedBox(height: p10),
+              Text(data.competance!, textAlign: pw.TextAlign.justify)
+            ],
+          ),
+          SizedBox(height: p30),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text('Experience :', textAlign: pw.TextAlign.left, 
+                style: pw.TextStyle(fontWeight: FontWeight.bold)),
+              SizedBox(height: p10),
+              Text(data.experience!, textAlign: pw.TextAlign.justify)
+            ],
+          ),
+        ],
       )
 
     ]);
@@ -326,7 +327,8 @@ class AgentPdf {
           // buildSimpleText(title: 'Address', value: invoice.supplier.address),
           // SizedBox(height: 1 * PdfPageFormat.mm),
           // buildSimpleText(title: 'Paypal', value: invoice.supplier.paymentInfo),
-          pw.Text('Fonds Kasaiens de développement.')
+          pw.Text('Fonds Kasaiens de développement.', 
+            style: const pw.TextStyle(fontSize: 10))
         ],
       );
 

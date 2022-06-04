@@ -102,7 +102,9 @@ import 'package:fokad_admin/src/pages/rh/paiements/paiements_rh.dart';
 import 'package:fokad_admin/src/pages/rh/performences/components/add_performence_note.dart';
 import 'package:fokad_admin/src/pages/rh/performences/components/detail_perfomence.dart';
 import 'package:fokad_admin/src/pages/rh/performences/performences_rh.dart';
-import 'package:fokad_admin/src/pages/rh/presences/components/add_presence.dart';
+import 'package:fokad_admin/src/pages/rh/presences/components/detail_presence.dart';
+import 'package:fokad_admin/src/pages/rh/presences/components/entrer_presence.dart';
+import 'package:fokad_admin/src/pages/rh/presences/components/sortie_presence.dart';
 import 'package:fokad_admin/src/pages/rh/presences/presences_rh.dart';
 import 'package:fokad_admin/src/pages/screens/help_screen.dart';
 import 'package:fokad_admin/src/pages/screens/settings_screen.dart';
@@ -148,7 +150,9 @@ class RhRoutes {
   static const rhPaiementAdd = "/rh-paiements-add";
   static const rhPaiementBulletin = "/rh-paiements-bulletin";
   static const rhPresence = "/rh-presences";
-  static const rhPresenceAdd = "/rh-presences-add";
+  static const rhPresenceDetail = "/rh-presences-detail";
+  static const rhPresenceEntrer = "/rh-presences-entrer";
+  static const rhPresenceSortie = "/rh-presences-sortie";
   static const rhPerformence = "/rh-performence";
   static const rhPerformenceDetail = "/rh-performence-detail";
   static const rhPerformenceAddNote = "/rh-performence-add-note";
@@ -306,7 +310,9 @@ final routes = <String, WidgetBuilder>{
   RhRoutes.rhPaiementBulletin: (context) => const PaiementBulletin(),
   RhRoutes.rhPaiementAdd: (context) => const AddPaiementSalaire(),
   RhRoutes.rhPresence: (context) => const PresenceRh(),
-  RhRoutes.rhPresenceAdd: (context) => const AddPresence(),
+  RhRoutes.rhPresenceDetail: (context) => const DetailPresence(),
+  RhRoutes.rhPresenceEntrer: (context) => const EntrerPresence(),
+  RhRoutes.rhPresenceSortie: (context) => const SortiePresence(),
   RhRoutes.rhPerformence: (context) => const PerformenceRH(),
   RhRoutes.rhPerformenceDetail: (context) => const DetailPerformence(),
   RhRoutes.rhPerformenceAddNote: (context) => const AddPerformenceNote(),
