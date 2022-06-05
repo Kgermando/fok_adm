@@ -9,6 +9,7 @@ import 'package:fokad_admin/src/api/exploitations/projets_api.dart';
 import 'package:fokad_admin/src/api/finances/creance_api.dart';
 import 'package:fokad_admin/src/api/finances/dette_api.dart';
 import 'package:fokad_admin/src/api/rh/paiement_salaire_api.dart';
+import 'package:fokad_admin/src/constants/app_theme.dart';
 import 'package:fokad_admin/src/models/users/user_model.dart';
 import 'package:fokad_admin/src/navigation/drawer/drawer_widget.dart';
 import 'package:fokad_admin/src/routes/routes.dart';
@@ -278,7 +279,9 @@ class _FinancesNavState extends State<FinancesNav> {
               ],
             );
           } else {
-            return Center(child: loadingColor());
+            return Column(
+              children: [loadingColor(), const SizedBox(height: p20)],
+            );
           }
         });
   }

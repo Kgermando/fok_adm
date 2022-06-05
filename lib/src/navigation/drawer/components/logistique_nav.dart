@@ -9,6 +9,7 @@ import 'package:fokad_admin/src/api/logistiques/etat_materiel_api.dart';
 import 'package:fokad_admin/src/api/logistiques/immobiler_api.dart';
 import 'package:fokad_admin/src/api/logistiques/mobilier_api.dart';
 import 'package:fokad_admin/src/api/logistiques/trajet_api.dart';
+import 'package:fokad_admin/src/constants/app_theme.dart';
 import 'package:fokad_admin/src/models/users/user_model.dart';
 import 'package:fokad_admin/src/navigation/drawer/drawer_widget.dart';
 import 'package:fokad_admin/src/routes/routes.dart';
@@ -277,7 +278,9 @@ class _LogistiqueNavState extends State<LogistiqueNav> {
               ],
             );
           } else {
-            return Center(child: loadingColor());
+            return Column(
+              children: [loadingColor(), const SizedBox(height: p20)],
+            );
           }
         });
   }

@@ -1,4 +1,3 @@
-import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:fokad_admin/src/api/auth/auth_api.dart';
 import 'package:fokad_admin/src/api/comptabilite/bilan_api.dart';
@@ -8,7 +7,6 @@ import 'package:fokad_admin/src/models/comptabilites/bilan_model.dart';
 import 'package:fokad_admin/src/models/users/user_model.dart';
 import 'package:fokad_admin/src/navigation/drawer/drawer_menu.dart';
 import 'package:fokad_admin/src/navigation/header/custom_appbar.dart';
-import 'package:fokad_admin/src/pages/comptabilite/bilan/components/add_comptes_bilan.dart';
 import 'package:fokad_admin/src/pages/comptabilite/bilan/components/table_bilan.dart';
 import 'package:fokad_admin/src/utils/loading.dart';
 import 'package:fokad_admin/src/widgets/title_widget.dart';
@@ -53,7 +51,10 @@ class _BilanComptabiliteState extends State<BilanComptabilite> {
         key: _key,
         drawer: const DrawerMenu(),
         floatingActionButton: FloatingActionButton(
-            child: const Icon(Icons.add), onPressed: () {}),
+            child: const Icon(Icons.add),
+            onPressed: () {
+              newFicheDialog();
+            }),
         body: SafeArea(
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -90,11 +91,12 @@ class _BilanComptabiliteState extends State<BilanComptabilite> {
         builder: (context) {
           return StatefulBuilder(builder: (context, StateSetter setState) {
             return AlertDialog(
-              title: const TitleWidget(title: 'Génerer le bilan'),
+              scrollable: true,
+              title: const Text('Génerer le bilan'),
               content: SizedBox(
                   height: 200,
                   width: 300,
-                  child: isLoading
+                  child: isLoading 
                       ? loading()
                       : Form(
                           key: _formKey,
@@ -122,7 +124,6 @@ class _BilanComptabiliteState extends State<BilanComptabilite> {
         });
   }
 
-
   Widget titleBilanWidget() {
     return Container(
         margin: const EdgeInsets.only(bottom: p20),
@@ -147,11 +148,10 @@ class _BilanComptabiliteState extends State<BilanComptabilite> {
 
   Future<void> submit() async {
     final bilanModel = BilanModel(
-      titleBilan: titleBilanController.text,
-      signature: user!.matricule,
-      createdRef: DateTime.now(),
-      created: DateTime.now()
-    );
+        titleBilan: titleBilanController.text,
+        signature: user!.matricule,
+        createdRef: DateTime.now(),
+        created: DateTime.now());
     await BilanApi().insertData(bilanModel);
     Navigator.of(context).pop();
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(

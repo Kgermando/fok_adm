@@ -34,7 +34,9 @@ class MyThemes {
     scaffoldBackgroundColor: Colors.grey.shade900,
     primaryColor: Colors.black,
     fontFamily: 'Poppins',
-    colorScheme: const ColorScheme.dark(),
+    colorScheme: ColorScheme.dark(
+      primary: Colors.amber.shade700,
+    ),
     // textButtonTheme: TextButtonThemeData(
     //   style: ButtonStyle(
     //     elevation: MaterialStateProperty.all(5.0),
@@ -67,16 +69,26 @@ class MyThemes {
   );
 
   static final lightTheme = ThemeData(
+    useMaterial3: true,
+    pageTransitionsTheme: const PageTransitionsTheme(
+      builders: {
+        TargetPlatform.windows: ZoomPageTransitionsBuilder(),
+        TargetPlatform.android: ZoomPageTransitionsBuilder(),
+        TargetPlatform.iOS: ZoomPageTransitionsBuilder(),
+      },
+    ),
     scaffoldBackgroundColor: Colors.blue.shade50,
     primaryColor: Colors.white,
     primarySwatch: roleThemeSwatch(1),
     fontFamily: 'Poppins',
-    colorScheme: const ColorScheme.light(),
-    // iconTheme: const IconThemeData(color: Colors.orange, opacity: 0.8),
-    floatingActionButtonTheme: FloatingActionButtonThemeData(
-      foregroundColor: Colors.white,
-      backgroundColor: Colors.amber.shade700
+    colorScheme: ColorScheme.light(
+      primary: Colors.amber.shade700,
     ),
+    // iconTheme: const IconThemeData(color: Colors.orange, opacity: 0.8),
+    // floatingActionButtonTheme: FloatingActionButtonThemeData(
+    //   foregroundColor: Colors.white,
+    //   backgroundColor: Colors.amber.shade700
+    // ),
     elevatedButtonTheme: ElevatedButtonThemeData(
       style: ButtonStyle(
         elevation: MaterialStateProperty.all(5.0),
@@ -90,6 +102,6 @@ class MyThemes {
         backgroundColor: MaterialStateProperty.all(Colors.amber.shade700),
       ),
     ),
-    visualDensity: VisualDensity.adaptivePlatformDensity,
+    // visualDensity: VisualDensity.adaptivePlatformDensity,
   );
 }

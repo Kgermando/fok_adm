@@ -210,8 +210,7 @@ class _EntrerPresenceState extends State<EntrerPresence> {
         builder: (context) {
           return StatefulBuilder(builder: (context, StateSetter setState) {
             return AlertDialog(
-              title: TitleWidget(
-                  title: 'Remarque sur ${agent.nom} ${agent.prenom}'),
+              title: Text('Remarque sur ${agent.nom} ${agent.prenom}'),
               content:
                   SizedBox(height: 100, width: 100, child: noteWidget(agent)),
               actions: <Widget>[

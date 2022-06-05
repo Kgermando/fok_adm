@@ -5,6 +5,7 @@ import 'package:fokad_admin/src/api/auth/auth_api.dart';
 import 'package:fokad_admin/src/api/comm_marketing/commerciale/produit_model_api.dart';
 import 'package:fokad_admin/src/api/comm_marketing/commerciale/succursale_api.dart';
 import 'package:fokad_admin/src/api/comm_marketing/marketing/campaign_api.dart';
+import 'package:fokad_admin/src/constants/app_theme.dart';
 import 'package:fokad_admin/src/models/users/user_model.dart';
 import 'package:fokad_admin/src/navigation/drawer/drawer_widget.dart';
 import 'package:fokad_admin/src/routes/routes.dart';
@@ -340,7 +341,9 @@ class _ComMarketingState extends State<ComMarketing> {
               ],
             );
           } else {
-            return Center(child: loadingColor());
+            return Column(
+              children: [loadingColor(), const SizedBox(height: p20)],
+            );
           }
         });
   }

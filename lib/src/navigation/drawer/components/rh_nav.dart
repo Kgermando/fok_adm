@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:fokad_admin/src/api/approbation/approbation_api.dart';
 import 'package:fokad_admin/src/api/auth/auth_api.dart';
 import 'package:fokad_admin/src/api/rh/paiement_salaire_api.dart';
+import 'package:fokad_admin/src/constants/app_theme.dart';
 import 'package:fokad_admin/src/models/users/user_model.dart';
 import 'package:fokad_admin/src/navigation/drawer/drawer_widget.dart';
 import 'package:fokad_admin/src/routes/routes.dart';
@@ -162,7 +163,9 @@ class _RhNavState extends State<RhNav> {
               ],
             );
           } else {
-            return Center(child: loadingColor());
+            return Column(
+              children: [loadingColor(), const SizedBox(height: p20)],
+            );
           }
         });
   }

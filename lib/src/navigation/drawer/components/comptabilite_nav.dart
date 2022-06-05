@@ -6,6 +6,7 @@ import 'package:fokad_admin/src/api/comptabilite/balance_compte_api.dart';
 import 'package:fokad_admin/src/api/comptabilite/bilan_api.dart';
 import 'package:fokad_admin/src/api/comptabilite/compte_resultat_api.dart';
 import 'package:fokad_admin/src/api/comptabilite/journal_api.dart';
+import 'package:fokad_admin/src/constants/app_theme.dart';
 import 'package:fokad_admin/src/models/users/user_model.dart';
 import 'package:fokad_admin/src/navigation/drawer/drawer_widget.dart';
 import 'package:fokad_admin/src/routes/routes.dart';
@@ -199,7 +200,9 @@ class _ComptabiliteNavState extends State<ComptabiliteNav> {
               ],
             );
           } else {
-            return Center(child: loadingColor());
+            return Column(
+              children: [loadingColor(), const SizedBox(height: p20)],
+            );
           }
         });
   }
