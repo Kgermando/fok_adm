@@ -143,9 +143,8 @@ class _TablePresenceState extends State<TablePresence> {
     if (mounted) {
       setState(() {
         for (var item in data) {
-          id = item!.id;
           rows.add(PlutoRow(cells: {
-            'id': PlutoCell(value: item.id),
+            'id': PlutoCell(value: item!.id),
             'arrive': PlutoCell(
                 value: DateFormat("dd-MM-yyyy HH:mm").format(item.created)),
             'sortie': PlutoCell(
