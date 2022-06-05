@@ -114,39 +114,36 @@ class _EntrerPresenceState extends State<EntrerPresence> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        Card(
-          // elevation: 10,
-          child: Padding(
-            padding: const EdgeInsets.all(p16),
-            child: SizedBox(
-              width: Responsive.isDesktop(context)
-                  ? MediaQuery.of(context).size.width / 2
-                  : MediaQuery.of(context).size.width,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      const TitleWidget(title: 'Entrer'),
-                      Column(
-                        children: [
-                          PrintWidget(onPressed: () {}),
-                          Text(DateFormat("dd-MM-yyyy HH:mm")
-                              .format(DateTime.now()))
-                        ],
-                      )
-                    ],
-                  ),
-                  const SizedBox(
-                    height: p20,
-                  ),
-                  agentWidget(data),
-                  const SizedBox(
-                    height: p20,
-                  ),
-                ],
-              ),
+        Padding(
+          padding: const EdgeInsets.all(p16),
+          child: SizedBox(
+            width: Responsive.isDesktop(context)
+                ? MediaQuery.of(context).size.width / 2
+                : MediaQuery.of(context).size.width,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    const TitleWidget(title: 'Entrer'),
+                    Column(
+                      children: [
+                        PrintWidget(onPressed: () {}),
+                        Text(DateFormat("dd-MM-yyyy HH:mm")
+                            .format(DateTime.now()))
+                      ],
+                    )
+                  ],
+                ),
+                const SizedBox(
+                  height: p20,
+                ),
+                agentWidget(data),
+                const SizedBox(
+                  height: p20,
+                ),
+              ],
             ),
           ),
         ),
@@ -158,7 +155,7 @@ class _EntrerPresenceState extends State<EntrerPresence> {
     // Agents qui ne sont pas encore entrer
     List<UserModel> presenceUserList = [];
 
-    // Verification de l'agent si il est deja  entrer aujourd'hui
+    // Verification de l'agent si il est deja entrer aujourd'hui
     var presenceEntrerTodayList = presenceAgentEntrerList
         .where((element) =>
             element.reference.microsecondsSinceEpoch ==
@@ -169,31 +166,41 @@ class _EntrerPresenceState extends State<EntrerPresence> {
         agentList.toSet().difference(presenceEntrerTodayList.toSet()).toList();
 
     return SizedBox(
-      height: MediaQuery.of(context).size.height / 1.2,
+      height: MediaQuery.of(context).size.height / 1.5,
       child: ListView.builder(
         itemCount: presenceUserList.length,
         itemBuilder: (context, index) {
           var agent = presenceUserList[index];
-          return ListTile(
-            style: ListTileStyle.list,
-            leading: const Icon(Icons.person_pin, size: 40.0),
-            title: Text("${agent.nom} ${agent.prenom}"),
-            subtitle: Text(agent.matricule),
-            onLongPress: () {
-              detailAgentDialog(agent);
-            },
-            trailing: isLoading
-              ? loadingMini()
-              : IconButton(
-                  onPressed: () {
-                    setState(() {
-                      isLoading = true;
-                    });
-                    submit(agent);
-                  },
-                  icon: Icon(Icons.send, color: Colors.amber.shade700)),
-          );
-        }));
+          return dataListWidget(agent);
+        }
+      )
+    );
+  }
+
+  Widget dataListWidget(UserModel agent) {
+    return Card(
+      elevation: 10,
+      child: ListTile(
+        style: ListTileStyle.list,
+        leading: const Icon(Icons.person_pin, size: 40.0),
+        title: Text("${agent.nom} ${agent.prenom}"),
+        subtitle: Text(agent.matricule),
+        onLongPress: () {
+          detailAgentDialog(agent);
+        },
+        trailing: isLoading
+          ? loadingMini()
+          : IconButton(
+              tooltip: "Validez l'entrer",
+              onPressed: () {
+                setState(() {
+                  isLoading = true;
+                });
+                submit(agent);
+              },
+              icon: Icon(Icons.send, color: Colors.amber.shade700)),
+      ),
+    );
   }
 
   detailAgentDialog(UserModel agent) {
@@ -203,15 +210,10 @@ class _EntrerPresenceState extends State<EntrerPresence> {
         builder: (context) {
           return StatefulBuilder(builder: (context, StateSetter setState) {
             return AlertDialog(
-              title: TitleWidget(title: 'Remarque sur ${agent.nom} ${agent.prenom}'),
-              content: SizedBox(
-                  height: 200,
-                  width: 300,
-                  child: Column(
-                    children: [
-                      noteWidget(agent)
-                    ],
-                  )),
+              title: TitleWidget(
+                  title: 'Remarque sur ${agent.nom} ${agent.prenom}'),
+              content:
+                  SizedBox(height: 100, width: 100, child: noteWidget(agent)),
               actions: <Widget>[
                 TextButton(
                   onPressed: () => Navigator.pop(context, 'OK'),

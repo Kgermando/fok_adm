@@ -43,7 +43,7 @@ class _LogistiqueNavState extends State<LogistiqueNav> {
     super.initState();
   }
 
-   UserModel user = UserModel(
+  UserModel user = UserModel(
       nom: '-',
       prenom: '-',
       email: '-',
@@ -67,18 +67,18 @@ class _LogistiqueNavState extends State<LogistiqueNav> {
     var mobiliers = await MobilierApi().getAllData();
     var entretiens = await EntretienApi().getAllData();
     var etatmateriels = await EtatMaterielApi().getAllData();
-  if(mounted) {
-    setState(() {
-      user = userModel;
-      anguinsapprobationDD = anguins.length;
-      carburantCount = carburants.length;
-      trajetsCount = trajets.length;
-      immobiliersCount = immobiliers.length;
-      mobiliersCount = mobiliers.length;
-      entretiensCount = entretiens.length;
-      etatmaterielsCount = etatmateriels.length;
-    });
-  }
+    if (mounted) {
+      setState(() {
+        user = userModel;
+        anguinsapprobationDD = anguins.length;
+        carburantCount = carburants.length;
+        trajetsCount = trajets.length;
+        immobiliersCount = immobiliers.length;
+        mobiliersCount = mobiliers.length;
+        entretiensCount = entretiens.length;
+        etatmaterielsCount = etatmateriels.length;
+      });
+    }
   }
 
   @override
@@ -87,204 +87,198 @@ class _LogistiqueNavState extends State<LogistiqueNav> {
     final bodyText1 = Theme.of(context).textTheme.bodyText1;
     final bodyText2 = Theme.of(context).textTheme.bodyText2;
 
-    itemCount =  anguinsapprobationDD + carburantCount + trajetsCount + 
-      immobiliersCount + mobiliersCount + entretiensCount + etatmaterielsCount;
+    itemCount = anguinsapprobationDD +
+        carburantCount +
+        trajetsCount +
+        immobiliersCount +
+        mobiliersCount +
+        entretiensCount +
+        etatmaterielsCount;
 
-    return ExpansionTile(
-      leading: const Icon(Icons.brightness_low, size: 30.0),
-      title: AutoSizeText('Logistique', maxLines: 1, style: bodyLarge),
-      initiallyExpanded: false,
-      onExpansionChanged: (val) {
-        setState(() {
-          isOpen = !val;
-        });
-      },
-      trailing: const Icon(Icons.arrow_drop_down),
-      children: [
-        FutureBuilder<UserModel>(
-            future: AuthApi().getUserId(),
-            builder: (BuildContext context, AsyncSnapshot<UserModel> snapshot) {
-              if (snapshot.hasData) {
-                UserModel? user = snapshot.data;
-                int userRole = int.parse(user!.role);
-                return Column(
+    return FutureBuilder<UserModel>(
+        future: AuthApi().getUserId(),
+        builder: (BuildContext context, AsyncSnapshot<UserModel> snapshot) {
+          if (snapshot.hasData) {
+            UserModel? user = snapshot.data;
+            int userRole = int.parse(user!.role);
+            return ExpansionTile(
+              leading: const Icon(Icons.brightness_low, size: 30.0),
+              title: AutoSizeText('Logistique', maxLines: 1, style: bodyLarge),
+              initiallyExpanded: (user.departement == 'Logistique') ? true : false,
+              onExpansionChanged: (val) {
+                setState(() {
+                  isOpen = !val;
+                });
+              },
+              trailing: const Icon(Icons.arrow_drop_down),
+              children: [
+                if (userRole <= 2)
+                  DrawerWidget(
+                      selected:
+                          widget.pageCurrente == LogistiqueRoutes.logDashboard,
+                      icon: Icons.dashboard,
+                      sizeIcon: 20.0,
+                      title: 'Dashboard',
+                      style: bodyText1!,
+                      onTap: () {
+                        Navigator.pushNamed(
+                            context, LogistiqueRoutes.logDashboard);
+                        // Navigator.of(context).pop();
+                      }),
+                if (userRole <= 2)
+                  DrawerWidget(
+                      selected: widget.pageCurrente == LogistiqueRoutes.logDD,
+                      icon: Icons.manage_accounts,
+                      sizeIcon: 20.0,
+                      title: 'Directeur de departement',
+                      style: bodyText1!,
+                      badge: Badge(
+                        showBadge: (itemCount >= 1) ? true : false,
+                        badgeColor: Colors.teal,
+                        badgeContent: Text('$itemCount',
+                            style: const TextStyle(
+                                fontSize: 10.0, color: Colors.white)),
+                        child: const Icon(Icons.notifications),
+                      ),
+                      onTap: () {
+                        Navigator.pushNamed(context, LogistiqueRoutes.logDD);
+                        // Navigator.of(context).pop();
+                      }),
+                ExpansionTile(
+                  leading: const Icon(Icons.car_rental, size: 20.0),
+                  title: Text('Automobile', style: bodyText1),
+                  initiallyExpanded: false,
+                  onExpansionChanged: (val) {
+                    setState(() {
+                      isOpenAutomobile = !val;
+                    });
+                  },
                   children: [
-                    if (userRole <= 2)
-                      DrawerWidget(
-                          selected: widget.pageCurrente ==
-                              LogistiqueRoutes.logDashboard,
-                          icon: Icons.dashboard,
-                          sizeIcon: 20.0,
-                          title: 'Dashboard',
-                          style: bodyText1!,
-                          onTap: () {
-                            Navigator.pushNamed(
-                                context, LogistiqueRoutes.logDashboard);
-                            // Navigator.of(context).pop();
-                          }),
-                    if (userRole <= 2)
-                      DrawerWidget(
-                          selected:
-                              widget.pageCurrente == LogistiqueRoutes.logDD,
-                          icon: Icons.manage_accounts,
-                          sizeIcon: 20.0,
-                          title: 'Directeur de departement',
-                          style: bodyText1!,
-                          badge: Badge(
-                            showBadge: (itemCount >= 1) ? true : false,
-                            badgeColor: Colors.teal,
-                            badgeContent: Text('$itemCount',
-                                style: const TextStyle(
-                                    fontSize: 10.0, color: Colors.white)),
-                            child: const Icon(Icons.notifications),
-                          ),
-                          onTap: () {
-                            Navigator.pushNamed(
-                                context, LogistiqueRoutes.logDD);
-                            // Navigator.of(context).pop();
-                          }),
-                    ExpansionTile(
-                      leading: const Icon(Icons.car_rental, size: 20.0),
-                      title: Text('Automobile', style: bodyText1),
-                      initiallyExpanded: false,
-                      onExpansionChanged: (val) {
-                        setState(() {
-                          isOpenAutomobile = !val;
-                        });
-                      },
-                      children: [
-                        DrawerWidget(
-                            selected: widget.pageCurrente ==
-                                LogistiqueRoutes.logAnguinAuto,
-                            icon: Icons.arrow_right,
-                            sizeIcon: 15.0,
-                            title: 'Anguins',
-                            style: bodyText2!,
-                            onTap: () {
-                              Navigator.pushNamed(
-                                  context, LogistiqueRoutes.logAnguinAuto);
-                              // Navigator.of(context).pop();
-                            }),
-                        DrawerWidget(
-                            selected: widget.pageCurrente ==
-                                LogistiqueRoutes.logCarburantAuto,
-                            icon: Icons.arrow_right,
-                            sizeIcon: 15.0,
-                            title: 'Carburant',
-                            style: bodyText2,
-                            onTap: () {
-                              Navigator.pushNamed(
-                                  context, LogistiqueRoutes.logCarburantAuto);
-                              // Navigator.of(context).pop();
-                            }),
-                        DrawerWidget(
-                            selected: widget.pageCurrente ==
-                                LogistiqueRoutes.logTrajetAuto,
-                            icon: Icons.arrow_right,
-                            sizeIcon: 15.0,
-                            title: 'Trajets',
-                            style: bodyText2,
-                            onTap: () {
-                              Navigator.pushNamed(
-                                  context, LogistiqueRoutes.logTrajetAuto);
-                              // Navigator.of(context).pop();
-                            }),
-                      ],
-                    ),
-                    ExpansionTile(
-                      leading: const Icon(Icons.laptop_windows, size: 20.0),
-                      title: Text('Materiels', style: bodyText1),
-                      initiallyExpanded: false,
-                      onExpansionChanged: (val) {
-                        setState(() {
-                          isOpenMateriels = !val;
-                        });
-                      },
-                      children: [
-                        DrawerWidget(
-                            selected: widget.pageCurrente ==
-                                LogistiqueRoutes.logEtatMateriel,
-                            icon: Icons.arrow_right,
-                            sizeIcon: 15.0,
-                            title: 'Etat materiels',
-                            style: bodyText2,
-                            onTap: () {
-                              Navigator.pushNamed(
-                                  context, LogistiqueRoutes.logEtatMateriel);
-                              // Navigator.of(context).pop();
-                            }),
-                        DrawerWidget(
-                            selected: widget.pageCurrente ==
-                                LogistiqueRoutes.logMobilierMateriel,
-                            icon: Icons.arrow_right,
-                            sizeIcon: 15.0,
-                            title: 'Mobiliers',
-                            style: bodyText2,
-                            onTap: () {
-                              Navigator.pushNamed(context,
-                                  LogistiqueRoutes.logMobilierMateriel);
-                              // Navigator.of(context).pop();
-                            }),
-                        DrawerWidget(
-                            selected: widget.pageCurrente ==
-                                LogistiqueRoutes.logImmobilierMateriel,
-                            icon: Icons.arrow_right,
-                            sizeIcon: 15.0,
-                            title: 'Immobiliers',
-                            style: bodyText2,
-                            onTap: () {
-                              Navigator.pushNamed(context,
-                                  LogistiqueRoutes.logImmobilierMateriel);
-                              // Navigator.of(context).pop();
-                            }),
-                      ],
-                    ),
-                    ExpansionTile(
-                      leading: const Icon(Icons.settings, size: 20.0),
-                      title: Text('Entretiens & Maintenance', style: bodyText1),
-                      initiallyExpanded: false,
-                      onExpansionChanged: (val) {
-                        setState(() {
-                          isOpenMateriels = !val;
-                        });
-                      },
-                      children: [
-                        DrawerWidget(
-                            selected: widget.pageCurrente ==
-                                LogistiqueRoutes.logEntretien,
-                            icon: Icons.arrow_right,
-                            sizeIcon: 15.0,
-                            title: 'Entretiens',
-                            style: bodyText2,
-                            onTap: () {
-                              Navigator.pushNamed(
-                                  context, LogistiqueRoutes.logEntretien);
-                              // Navigator.of(context).pop();
-                            }),
-                      ],
-                    ),
                     DrawerWidget(
-                        selected: widget.pageCurrente == RhRoutes.rhPerformence,
-                        icon: Icons.multiline_chart_sharp,
-                        sizeIcon: 20.0,
-                        title: 'Performences',
-                        style: bodyText1!,
+                        selected: widget.pageCurrente ==
+                            LogistiqueRoutes.logAnguinAuto,
+                        icon: Icons.arrow_right,
+                        sizeIcon: 15.0,
+                        title: 'Anguins',
+                        style: bodyText2!,
                         onTap: () {
-                          Navigator.pushNamed(context, RhRoutes.rhPerformence);
+                          Navigator.pushNamed(
+                              context, LogistiqueRoutes.logAnguinAuto);
+                          // Navigator.of(context).pop();
+                        }),
+                    DrawerWidget(
+                        selected: widget.pageCurrente ==
+                            LogistiqueRoutes.logCarburantAuto,
+                        icon: Icons.arrow_right,
+                        sizeIcon: 15.0,
+                        title: 'Carburant',
+                        style: bodyText2,
+                        onTap: () {
+                          Navigator.pushNamed(
+                              context, LogistiqueRoutes.logCarburantAuto);
+                          // Navigator.of(context).pop();
+                        }),
+                    DrawerWidget(
+                        selected: widget.pageCurrente ==
+                            LogistiqueRoutes.logTrajetAuto,
+                        icon: Icons.arrow_right,
+                        sizeIcon: 15.0,
+                        title: 'Trajets',
+                        style: bodyText2,
+                        onTap: () {
+                          Navigator.pushNamed(
+                              context, LogistiqueRoutes.logTrajetAuto);
                           // Navigator.of(context).pop();
                         }),
                   ],
-                );
-              } else {
-                return Center(child: loadingColor());
-              }
-            }),
-
-
-
-
-        
-      ],
-    );
+                ),
+                ExpansionTile(
+                  leading: const Icon(Icons.laptop_windows, size: 20.0),
+                  title: Text('Materiels', style: bodyText1),
+                  initiallyExpanded: false,
+                  onExpansionChanged: (val) {
+                    setState(() {
+                      isOpenMateriels = !val;
+                    });
+                  },
+                  children: [
+                    DrawerWidget(
+                        selected: widget.pageCurrente ==
+                            LogistiqueRoutes.logEtatMateriel,
+                        icon: Icons.arrow_right,
+                        sizeIcon: 15.0,
+                        title: 'Etat materiels',
+                        style: bodyText2,
+                        onTap: () {
+                          Navigator.pushNamed(
+                              context, LogistiqueRoutes.logEtatMateriel);
+                          // Navigator.of(context).pop();
+                        }),
+                    DrawerWidget(
+                        selected: widget.pageCurrente ==
+                            LogistiqueRoutes.logMobilierMateriel,
+                        icon: Icons.arrow_right,
+                        sizeIcon: 15.0,
+                        title: 'Mobiliers',
+                        style: bodyText2,
+                        onTap: () {
+                          Navigator.pushNamed(
+                              context, LogistiqueRoutes.logMobilierMateriel);
+                          // Navigator.of(context).pop();
+                        }),
+                    DrawerWidget(
+                        selected: widget.pageCurrente ==
+                            LogistiqueRoutes.logImmobilierMateriel,
+                        icon: Icons.arrow_right,
+                        sizeIcon: 15.0,
+                        title: 'Immobiliers',
+                        style: bodyText2,
+                        onTap: () {
+                          Navigator.pushNamed(
+                              context, LogistiqueRoutes.logImmobilierMateriel);
+                          // Navigator.of(context).pop();
+                        }),
+                  ],
+                ),
+                ExpansionTile(
+                  leading: const Icon(Icons.settings, size: 20.0),
+                  title: Text('Entretiens & Maintenance', style: bodyText1),
+                  initiallyExpanded: false,
+                  onExpansionChanged: (val) {
+                    setState(() {
+                      isOpenMateriels = !val;
+                    });
+                  },
+                  children: [
+                    DrawerWidget(
+                        selected: widget.pageCurrente ==
+                            LogistiqueRoutes.logEntretien,
+                        icon: Icons.arrow_right,
+                        sizeIcon: 15.0,
+                        title: 'Entretiens',
+                        style: bodyText2,
+                        onTap: () {
+                          Navigator.pushNamed(
+                              context, LogistiqueRoutes.logEntretien);
+                          // Navigator.of(context).pop();
+                        }),
+                  ],
+                ),
+                DrawerWidget(
+                    selected: widget.pageCurrente == RhRoutes.rhPerformence,
+                    icon: Icons.multiline_chart_sharp,
+                    sizeIcon: 20.0,
+                    title: 'Performences',
+                    style: bodyText1!,
+                    onTap: () {
+                      Navigator.pushNamed(context, RhRoutes.rhPerformence);
+                      // Navigator.of(context).pop();
+                    }),
+              ],
+            );
+          } else {
+            return Center(child: loadingColor());
+          }
+        });
   }
 }

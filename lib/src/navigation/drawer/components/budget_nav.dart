@@ -68,7 +68,8 @@ class _BudgetNavState extends State<BudgetNav> {
         for (var item in approbations) {
           salaireCount = salaires
               .where((element) =>
-                  element.createdAt.microsecondsSinceEpoch == item.reference.microsecondsSinceEpoch &&
+                  element.createdAt.microsecondsSinceEpoch ==
+                      item.reference.microsecondsSinceEpoch &&
                   item.fontctionOccupee == 'Directeur générale')
               .toList()
               .length;
@@ -76,7 +77,8 @@ class _BudgetNavState extends State<BudgetNav> {
         for (var item in approbations) {
           campaignCount = campaigns
               .where((element) =>
-                  element.created.microsecondsSinceEpoch == item.reference.microsecondsSinceEpoch &&
+                  element.created.microsecondsSinceEpoch ==
+                      item.reference.microsecondsSinceEpoch &&
                   item.fontctionOccupee == 'Directeur générale')
               .toList()
               .length;
@@ -84,7 +86,8 @@ class _BudgetNavState extends State<BudgetNav> {
         for (var item in approbations) {
           devisCount = devis
               .where((element) =>
-                  element.created.microsecondsSinceEpoch == item.reference.microsecondsSinceEpoch &&
+                  element.created.microsecondsSinceEpoch ==
+                      item.reference.microsecondsSinceEpoch &&
                   item.fontctionOccupee == 'Directeur générale')
               .toList()
               .length;
@@ -92,7 +95,8 @@ class _BudgetNavState extends State<BudgetNav> {
         for (var item in approbations) {
           projetCount = projets
               .where((element) =>
-                  element.created.microsecondsSinceEpoch == item.reference.microsecondsSinceEpoch &&
+                  element.created.microsecondsSinceEpoch ==
+                      item.reference.microsecondsSinceEpoch &&
                   item.fontctionOccupee == 'Directeur générale')
               .toList()
               .length;
@@ -100,7 +104,8 @@ class _BudgetNavState extends State<BudgetNav> {
         for (var item in approbations) {
           budgetDepCount = budgetDep
               .where((element) =>
-                  element.created.microsecondsSinceEpoch == item.reference.microsecondsSinceEpoch &&
+                  element.created.microsecondsSinceEpoch ==
+                      item.reference.microsecondsSinceEpoch &&
                   item.fontctionOccupee == 'Directeur générale')
               .toList()
               .length;
@@ -114,114 +119,100 @@ class _BudgetNavState extends State<BudgetNav> {
     final bodyLarge = Theme.of(context).textTheme.bodyLarge;
     final bodyText1 = Theme.of(context).textTheme.bodyText1;
 
-    double userRole = double.parse(user.role);
-
     itemCount = salaireCount +
         campaignCount +
         devisCount +
         projetCount +
         budgetDepCount;
 
-    return ExpansionTile(
-      leading: const Icon(Icons.fact_check, size: 30.0),
-      title: AutoSizeText('Budgets', maxLines: 1, style: bodyLarge),
-      initiallyExpanded: false,
-      onExpansionChanged: (val) {
-        setState(() {
-          isOpenBudget = !val;
+    return FutureBuilder<UserModel>(
+        future: AuthApi().getUserId(),
+        builder: (BuildContext context, AsyncSnapshot<UserModel> snapshot) {
+          if (snapshot.hasData) {
+            UserModel? user = snapshot.data;
+            int userRole = int.parse(user!.role);
+            return ExpansionTile(
+              leading: const Icon(Icons.fact_check, size: 30.0),
+              title: AutoSizeText('Budgets', maxLines: 1, style: bodyLarge),
+              initiallyExpanded: (user.departement == 'Budgets') ? true : false,
+              onExpansionChanged: (val) {
+                setState(() {
+                  isOpenBudget = !val;
+                });
+              },
+              trailing: const Icon(Icons.arrow_drop_down),
+              children: [
+                if (userRole <= 2)
+                  DrawerWidget(
+                      selected:
+                          widget.pageCurrente == BudgetRoutes.budgetDashboard,
+                      icon: Icons.dashboard,
+                      sizeIcon: 20.0,
+                      title: 'Dashboard',
+                      style: bodyText1!,
+                      onTap: () {
+                        Navigator.pushNamed(
+                            context, BudgetRoutes.budgetDashboard);
+                        // Navigator.of(context).pop();
+                      }),
+                if (userRole <= 2)
+                  DrawerWidget(
+                      selected: widget.pageCurrente == BudgetRoutes.budgetDD,
+                      icon: Icons.manage_accounts,
+                      sizeIcon: 20.0,
+                      title: 'Directeur de departement',
+                      style: bodyText1!,
+                      badge: Badge(
+                        showBadge: (itemCount >= 1) ? true : false,
+                        badgeColor: Colors.teal,
+                        badgeContent: Text('$itemCount',
+                            style: const TextStyle(
+                                fontSize: 10.0, color: Colors.white)),
+                        child: const Icon(Icons.notifications),
+                      ),
+                      onTap: () {
+                        Navigator.pushNamed(context, BudgetRoutes.budgetDD);
+                        // Navigator.of(context).pop();
+                      }),
+                DrawerWidget(
+                    selected: widget.pageCurrente ==
+                        BudgetRoutes.budgetBudgetPrevisionel,
+                    icon: Icons.wallet_giftcard,
+                    sizeIcon: 20.0,
+                    title: 'Budgets previsonels',
+                    style: bodyText1!,
+                    onTap: () {
+                      Navigator.pushNamed(
+                          context, BudgetRoutes.budgetBudgetPrevisionel);
+                      // Navigator.of(context).pop();
+                    }),
+                DrawerWidget(
+                    selected: widget.pageCurrente ==
+                        BudgetRoutes.historiqueBudgetBudgetPrevisionel,
+                    icon: Icons.history_sharp,
+                    sizeIcon: 20.0,
+                    title: 'Historique Budgetaires',
+                    style: bodyText1,
+                    onTap: () {
+                      Navigator.pushNamed(context,
+                          BudgetRoutes.historiqueBudgetBudgetPrevisionel);
+                      // Navigator.of(context).pop();
+                    }),
+                DrawerWidget(
+                    selected: widget.pageCurrente == RhRoutes.rhPerformence,
+                    icon: Icons.multiline_chart_sharp,
+                    sizeIcon: 20.0,
+                    title: 'Performences',
+                    style: bodyText1,
+                    onTap: () {
+                      Navigator.pushNamed(context, RhRoutes.rhPerformence);
+                      // Navigator.of(context).pop();
+                    }),
+              ],
+            );
+          } else {
+            return Center(child: loadingColor());
+          }
         });
-      },
-      trailing: const Icon(Icons.arrow_drop_down),
-      children: [
-        FutureBuilder<UserModel>(
-            future: AuthApi().getUserId(),
-            builder: (BuildContext context, AsyncSnapshot<UserModel> snapshot) {
-              if (snapshot.hasData) {
-                UserModel? user = snapshot.data;
-                int userRole = int.parse(user!.role);
-                return Column(
-                  children: [
-                    if (userRole <= 2)
-                      DrawerWidget(
-                          selected: widget.pageCurrente ==
-                              BudgetRoutes.budgetDashboard,
-                          icon: Icons.dashboard,
-                          sizeIcon: 20.0,
-                          title: 'Dashboard',
-                          style: bodyText1!,
-                          onTap: () {
-                            Navigator.pushNamed(
-                                context, BudgetRoutes.budgetDashboard);
-                            // Navigator.of(context).pop();
-                          }),
-                    if (userRole <= 2)
-                      DrawerWidget(
-                          selected:
-                              widget.pageCurrente == BudgetRoutes.budgetDD,
-                          icon: Icons.manage_accounts,
-                          sizeIcon: 20.0,
-                          title: 'Directeur de departement',
-                          style: bodyText1!,
-                          badge: Badge(
-                            showBadge: (itemCount >= 1) ? true : false,
-                            badgeColor: Colors.teal,
-                            badgeContent: Text('$itemCount',
-                                style: const TextStyle(
-                                    fontSize: 10.0, color: Colors.white)),
-                            child: const Icon(Icons.notifications),
-                          ),
-                          onTap: () {
-                            Navigator.pushNamed(context, BudgetRoutes.budgetDD);
-                            // Navigator.of(context).pop();
-                          }),
-                    DrawerWidget(
-                        selected: widget.pageCurrente ==
-                            BudgetRoutes.budgetBudgetPrevisionel,
-                        icon: Icons.wallet_giftcard,
-                        sizeIcon: 20.0,
-                        title: 'Budgets previsonels',
-                        style: bodyText1!,
-                        onTap: () {
-                          Navigator.pushNamed(
-                              context, BudgetRoutes.budgetBudgetPrevisionel);
-                          // Navigator.of(context).pop();
-                        }),
-                    DrawerWidget(
-                        selected: widget.pageCurrente ==
-                            BudgetRoutes.historiqueBudgetBudgetPrevisionel,
-                        icon: Icons.history_sharp,
-                        sizeIcon: 20.0,
-                        title: 'Historique Budgetaires',
-                        style: bodyText1,
-                        onTap: () {
-                          Navigator.pushNamed(context,
-                              BudgetRoutes.historiqueBudgetBudgetPrevisionel);
-                          // Navigator.of(context).pop();
-                        }),
-                    DrawerWidget(
-                        selected: widget.pageCurrente == RhRoutes.rhPerformence,
-                        icon: Icons.multiline_chart_sharp,
-                        sizeIcon: 20.0,
-                        title: 'Performences',
-                        style: bodyText1,
-                        onTap: () {
-                          Navigator.pushNamed(context, RhRoutes.rhPerformence);
-                          // Navigator.of(context).pop();
-                        }),
-                  ],
-                );
-              } else {
-                return Center(child: loadingColor());
-              }
-            }),
-
-
-
-
-
-
-        
-      ],
-    );
   }
 }
