@@ -3,21 +3,25 @@ import 'package:flutter/material.dart';
 import 'package:fokad_admin/src/api/approbation/approbation_api.dart';
 import 'package:fokad_admin/src/api/auth/auth_api.dart';
 import 'package:fokad_admin/src/api/comptabilite/bilan_api.dart';
+import 'package:fokad_admin/src/api/comptabilite/compte_actif_api.dart';
+import 'package:fokad_admin/src/api/comptabilite/compte_passif_api.dart';
 import 'package:fokad_admin/src/constants/app_theme.dart';
 import 'package:fokad_admin/src/constants/responsive.dart';
 import 'package:fokad_admin/src/models/approbation/approbation_model.dart';
 import 'package:fokad_admin/src/models/comptabilites/bilan_model.dart';
-import 'package:fokad_admin/src/models/comptabilites/comptes.dart';
+import 'package:fokad_admin/src/models/comptabilites/compte_actif_model.dart';
+import 'package:fokad_admin/src/models/comptabilites/compte_passif_model.dart';
 import 'package:fokad_admin/src/models/users/user_model.dart';
 import 'package:fokad_admin/src/navigation/drawer/drawer_menu.dart';
 import 'package:fokad_admin/src/navigation/header/custom_appbar.dart';
+import 'package:fokad_admin/src/routes/routes.dart';
+import 'package:fokad_admin/src/utils/loading.dart';
 import 'package:fokad_admin/src/widgets/print_widget.dart';
 import 'package:fokad_admin/src/widgets/title_widget.dart';
 import 'package:intl/intl.dart';
 
 class DetailBilan extends StatefulWidget {
-  const DetailBilan({Key? key, required this.id}) : super(key: key);
-  final int id;
+  const DetailBilan({Key? key}) : super(key: key);
 
   @override
   State<DetailBilan> createState() => _DetailBilanState();
@@ -37,6 +41,8 @@ class _DetailBilanState extends State<DetailBilan> {
     super.initState();
   }
 
+  List<CompteActifModel> compteActifList = [];
+  List<ComptePassifModel> comptePassifList = [];
   List<ApprobationModel> approbList = [];
   List<ApprobationModel> approbationData = [];
   ApprobationModel approb = ApprobationModel(
@@ -67,18 +73,38 @@ class _DetailBilanState extends State<DetailBilan> {
       succursale: '-');
   Future<void> getData() async {
     UserModel userModel = await AuthApi().getUserId();
+    var compteActif = await CompteActifApi().getAllData();
+    var compatePassif = await ComptePassifApi().getAllData();
     var approbations = await ApprobationApi().getAllData();
     setState(() {
       user = userModel;
+      compteActifList = compteActif;
+      comptePassifList = compatePassif;
       approbList = approbations;
     });
   }
 
   @override
   Widget build(BuildContext context) {
+    final id = ModalRoute.of(context)!.settings.arguments as int;
     return Scaffold(
         key: _key,
         drawer: const DrawerMenu(),
+        floatingActionButton: FutureBuilder<BilanModel>(
+            future: BilanApi().getOneData(id),
+            builder:
+                (BuildContext context, AsyncSnapshot<BilanModel> snapshot) {
+              if (snapshot.hasData) {
+                BilanModel? data = snapshot.data;
+                return FloatingActionButton(onPressed: () {
+                  Navigator.pushReplacementNamed(
+                      context, ComptabiliteRoutes.comptabiliteBilanAdd,
+                      arguments: data);
+                });
+              } else {
+                return loadingMini();
+              }
+            }),
         body: SafeArea(
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -92,14 +118,15 @@ class _DetailBilanState extends State<DetailBilan> {
                 child: Padding(
                     padding: const EdgeInsets.all(p10),
                     child: FutureBuilder<BilanModel>(
-                        future: BilanApi().getOneData(widget.id),
+                        future: BilanApi().getOneData(id),
                         builder: (BuildContext context,
                             AsyncSnapshot<BilanModel> snapshot) {
                           if (snapshot.hasData) {
                             BilanModel? data = snapshot.data;
                             approbationData = approbList
-                                .where(
-                                    (element) => element.reference == data!.id!)
+                                .where((element) =>
+                                    element.reference.microsecondsSinceEpoch ==
+                                    data!.createdRef.microsecondsSinceEpoch)
                                 .toList();
 
                             if (approbationData.isNotEmpty) {
@@ -206,24 +233,23 @@ class _DetailBilanState extends State<DetailBilan> {
 
   Widget totalMontant(BilanModel data) {
     final headline6 = Theme.of(context).textTheme.headline6;
-    List<Comptes> dataList = [];
     double totalActif = 0.0;
-    var actifList = data.comptesActif.toList();
+    var actifList = compteActifList
+        .where((element) =>
+            element.reference.microsecondsSinceEpoch ==
+            data.createdRef.microsecondsSinceEpoch)
+        .toList();
     for (var item in actifList) {
-      dataList.add(Comptes.fromJson(item));
-    }
-
-    for (var item in dataList) {
       totalActif += double.parse(item.montant);
     }
 
     double totalPassif = 0.0;
-    List<Comptes> dataPassifList = [];
-    var passifList = data.comptesPactif.toList();
+    var passifList = comptePassifList
+        .where((element) =>
+            element.reference.microsecondsSinceEpoch ==
+            data.createdRef.microsecondsSinceEpoch)
+        .toList();
     for (var item in passifList) {
-      dataPassifList.add(Comptes.fromJson(item));
-    }
-    for (var item in dataPassifList) {
       totalPassif += double.parse(item.montant);
     }
     return Padding(
@@ -276,14 +302,13 @@ class _DetailBilanState extends State<DetailBilan> {
 
   Widget deleteButton(BilanModel data) {
     return IconButton(
-      icon: Icon(Icons.delete, color: Colors.red.shade700),
-      tooltip: "Supprimer",
+      icon: Icon(Icons.delete, color: Colors.blue.shade700),
+      tooltip: "Modification",
       onPressed: () => showDialog<String>(
         context: context,
         builder: (BuildContext context) => AlertDialog(
           title: const Text('Etes-vous sûr de faire cette action ?'),
-          content: const Text(
-              'Cette action permet de permet de mettre ce fichier en corbeille.'),
+          content: const Text('Cette action permet de modifier ce document.'),
           actions: <Widget>[
             TextButton(
               onPressed: () => Navigator.pop(context),
@@ -291,7 +316,7 @@ class _DetailBilanState extends State<DetailBilan> {
             ),
             TextButton(
               onPressed: () {
-                submitCorbeille(data);
+                updateSubmit(data);
               },
               child: const Text('OK'),
             ),
@@ -339,7 +364,7 @@ class _DetailBilanState extends State<DetailBilan> {
                       ],
                     ),
                     const SizedBox(height: p30),
-                    actifWidget(data)
+                    compteActifWidget(data)
                   ],
                 ),
               ),
@@ -378,7 +403,7 @@ class _DetailBilanState extends State<DetailBilan> {
                         ],
                       ),
                       const SizedBox(height: p30),
-                      passifWidget(data)
+                      comptePassifWidget(data)
                     ],
                   ),
                 ),
@@ -390,124 +415,142 @@ class _DetailBilanState extends State<DetailBilan> {
     );
   }
 
-  Widget actifWidget(BilanModel data) {
+  Widget compteActifWidget(BilanModel data) {
     final bodyMedium = Theme.of(context).textTheme.bodyMedium;
 
-    List<Comptes> dataList = [];
-    var actifList = data.comptesActif.toList();
-    for (var item in actifList) {
-      dataList.add(Comptes.fromJson(item));
-    }
-    return SizedBox(
-      height: MediaQuery.of(context).size.height / 1.5,
-      child: ListView.builder(
-        itemCount: dataList.length,
-        itemBuilder: (context, index) {
-          final actif = dataList[index];
-
-          return Column(
-            children: [
-              Row(
-                children: [
-                  Expanded(
-                    flex: 3,
-                    child: SelectableText(actif.comptes,
-                        textAlign: TextAlign.start, style: bodyMedium),
-                  ),
-                  Expanded(
-                    flex: 1,
-                    child: Container(
-                      decoration: BoxDecoration(
-                          border: Border(
-                        left: BorderSide(
-                          color: Colors.amber.shade700,
-                          width: 2,
+    return FutureBuilder<List<CompteActifModel>>(
+        future: CompteActifApi().getAllData(),
+        builder: (BuildContext context,
+            AsyncSnapshot<List<CompteActifModel>> snapshot) {
+          if (snapshot.hasData) {
+            List<CompteActifModel>? dataList = snapshot.data!
+                .where((element) =>
+                    element.reference.microsecondsSinceEpoch ==
+                    data.createdRef.microsecondsSinceEpoch)
+                .toList();
+            return ListView.builder(
+              itemCount: dataList.length,
+              itemBuilder: (context, index) {
+                final actif = dataList[index];
+                return Column(
+                  children: [
+                    Row(
+                      children: [
+                        Expanded(
+                          flex: 3,
+                          child: SelectableText(actif.comptes,
+                              textAlign: TextAlign.start, style: bodyMedium),
                         ),
-                      )),
-                      child: SelectableText(
-                          "${NumberFormat.decimalPattern('fr').format(double.parse(actif.montant))} \$",
-                          textAlign: TextAlign.center,
-                          style: bodyMedium),
+                        Expanded(
+                          flex: 1,
+                          child: Container(
+                            decoration: BoxDecoration(
+                                border: Border(
+                              left: BorderSide(
+                                color: Colors.amber.shade700,
+                                width: 2,
+                              ),
+                            )),
+                            child: SelectableText(
+                                "${NumberFormat.decimalPattern('fr').format(double.parse(actif.montant))} \$",
+                                textAlign: TextAlign.center,
+                                style: bodyMedium),
+                          ),
+                        )
+                      ],
                     ),
-                  )
-                ],
-              ),
-              Divider(
-                color: Colors.amber.shade700,
-              ),
-            ],
-          );
-        },
-      ),
-    );
+                    Divider(
+                      color: Colors.amber.shade700,
+                    ),
+                  ],
+                );
+              },
+            );
+          } else {
+            return Center(child: loading());
+          }
+        });
   }
 
-  Widget passifWidget(BilanModel data) {
+  // child: SizedBox(
+  //       height: MediaQuery.of(context).size.height / 1.5,
+  //       child:
+  //     ),
+
+  Widget comptePassifWidget(BilanModel data) {
     final bodyMedium = Theme.of(context).textTheme.bodyMedium;
 
-    List<Comptes> dataPassifList = [];
-    var passifList = data.comptesPactif.toList();
-    for (var item in passifList) {
-      dataPassifList.add(Comptes.fromJson(item));
-    }
+    return FutureBuilder<List<ComptePassifModel>>(
+        future: ComptePassifApi().getAllData(),
+        builder: (BuildContext context,
+            AsyncSnapshot<List<ComptePassifModel>> snapshot) {
+          if (snapshot.hasData) {
+            List<ComptePassifModel>? dataList = snapshot.data!
+                .where((element) =>
+                    element.reference.microsecondsSinceEpoch ==
+                    data.createdRef.microsecondsSinceEpoch)
+                .toList();
+            return ListView.builder(
+              itemCount: dataList.length,
+              itemBuilder: (context, index) {
+                final passif = dataList[index];
 
-    return SizedBox(
-      height: MediaQuery.of(context).size.height / 1.5,
-      child: ListView.builder(
-        itemCount: dataPassifList.length,
-        itemBuilder: (context, index) {
-          final passif = dataPassifList[index];
-
-          return Column(
-            children: [
-              Row(
-                children: [
-                  Expanded(
-                    flex: 3,
-                    child: SelectableText(passif.comptes,
-                        textAlign: TextAlign.start, style: bodyMedium),
-                  ),
-                  Expanded(
-                    flex: 1,
-                    child: Container(
-                      decoration: BoxDecoration(
-                          border: Border(
-                        left: BorderSide(
-                          color: Colors.amber.shade700,
-                          width: 2,
+                return Column(
+                  children: [
+                    Row(
+                      children: [
+                        Expanded(
+                          flex: 3,
+                          child: SelectableText(passif.comptes,
+                              textAlign: TextAlign.start, style: bodyMedium),
                         ),
-                      )),
-                      child: SelectableText(
-                          "${NumberFormat.decimalPattern('fr').format(double.parse(passif.montant))} \$",
-                          textAlign: TextAlign.center,
-                          style: bodyMedium),
+                        Expanded(
+                          flex: 1,
+                          child: Container(
+                            decoration: BoxDecoration(
+                                border: Border(
+                              left: BorderSide(
+                                color: Colors.amber.shade700,
+                                width: 2,
+                              ),
+                            )),
+                            child: SelectableText(
+                                "${NumberFormat.decimalPattern('fr').format(double.parse(passif.montant))} \$",
+                                textAlign: TextAlign.center,
+                                style: bodyMedium),
+                          ),
+                        )
+                      ],
                     ),
-                  )
-                ],
-              ),
-              Divider(
-                color: Colors.amber.shade700,
-              ),
-            ],
-          );
-        },
-      ),
-    );
+                    Divider(
+                      color: Colors.amber.shade700,
+                    ),
+                  ],
+                );
+              },
+            );
+          } else {
+            return Center(child: loading());
+          }
+        });
   }
 
-  Future<void> submitCorbeille(BilanModel data) async {
+  // SizedBox(
+  //   height: MediaQuery.of(context).size.height / 1.5,
+  //   child:
+  // );
+
+  Future<void> updateSubmit(BilanModel data) async {
     final bilanModel = BilanModel(
         titleBilan: data.titleBilan,
-        comptesActif: data.comptesActif,
-        comptesPactif: data.comptesPactif,
-        statut: true,
         signature: data.signature,
-        created: data.created);
+        createdRef: data.createdRef,
+        created: DateTime.now());
     await BilanApi().updateData(data.id!, bilanModel);
     Navigator.of(context).pop();
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-      content: const Text("Mis en corbeille avec succès!"),
-      backgroundColor: Colors.red[700],
+      content: const Text("Mis à jour effectué avec succès!"),
+      backgroundColor: Colors.blue[700],
     ));
   }
 

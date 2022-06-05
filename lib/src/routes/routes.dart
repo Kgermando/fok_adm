@@ -42,7 +42,8 @@ import 'package:fokad_admin/src/pages/comm_marketing/marketing/components/campai
 import 'package:fokad_admin/src/pages/comptabilite/balance/balance_comptabilite.dart';
 import 'package:fokad_admin/src/pages/comptabilite/balance/components/add_balance_comptabilite.dart';
 import 'package:fokad_admin/src/pages/comptabilite/bilan/bilan_comptabilite.dart';
-import 'package:fokad_admin/src/pages/comptabilite/bilan/components/add_bilan.dart';
+import 'package:fokad_admin/src/pages/comptabilite/bilan/components/add_comptes_bilan.dart';
+import 'package:fokad_admin/src/pages/comptabilite/bilan/components/detail_bilan.dart';
 import 'package:fokad_admin/src/pages/comptabilite/compt_dd/comptabilite_dd.dart';
 import 'package:fokad_admin/src/pages/comptabilite/compte_resultat/components/add_compte_resultat.dart';
 import 'package:fokad_admin/src/pages/comptabilite/compte_resultat/compte_resultat.dart';
@@ -199,6 +200,7 @@ class ComptabiliteRoutes {
   static const comptabiliteDashboard = "/comptabilite-dashboard";
   static const comptabiliteBilan = "/comptabilite-bilan";
   static const comptabiliteBilanAdd = "/comptabilite-bilan-add";
+  static const comptabiliteBilanDetail = "/comptabilite-bilan-detail";
   static const comptabiliteJournal = "/comptabilite-journal";
   static const comptabiliteJournalAdd = "/comptabilite-journal-add";
   static const comptabiliteCompteResultat = "/comptabilite-compte-resultat";
@@ -346,7 +348,8 @@ final routes = <String, WidgetBuilder>{
   ComptabiliteRoutes.comptabiliteDD: (context) => const ComptabiliteDD(),
   ComptabiliteRoutes.comptabiliteDashboard: (context) => const DashboardComptabilite(),
   ComptabiliteRoutes.comptabiliteBilan: (context) =>const BilanComptabilite(),
-  ComptabiliteRoutes.comptabiliteBilanAdd: (context) => const AddBilan(),
+  ComptabiliteRoutes.comptabiliteBilanAdd: (context) => const AddCompteBilan(),
+  ComptabiliteRoutes.comptabiliteBilanDetail: (context) => const DetailBilan(),
   ComptabiliteRoutes.comptabiliteJournal: (context) => const JournalComptabilite(),
   ComptabiliteRoutes.comptabiliteJournalAdd: (context) => const AddJournalComptabilite(),
   ComptabiliteRoutes.comptabiliteCompteResultat: (context) =>const CompteResultat(),

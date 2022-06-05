@@ -16,7 +16,6 @@ import 'package:fokad_admin/src/pages/rh/presences/components/entrer_presence.da
 import 'package:fokad_admin/src/pages/rh/presences/components/sortie_presence.dart';
 import 'package:fokad_admin/src/routes/routes.dart';
 import 'package:fokad_admin/src/utils/loading.dart';
-import 'package:fokad_admin/src/widgets/btn_widget.dart';
 import 'package:fokad_admin/src/widgets/title_widget.dart';
 import 'package:intl/intl.dart';
 import 'package:simple_speed_dial/simple_speed_dial.dart';

@@ -76,6 +76,11 @@ var creacneDetteAddUrl = Uri.parse("$mainUrl/finances/creance-dettes/insert-new-
 var bilansUrl = Uri.parse("$mainUrl/comptabilite/bilans/");
 var addbilansUrl = Uri.parse("$mainUrl/comptabilite/bilans/insert-new-bilan");
 
+var compteActifUrl = Uri.parse("$mainUrl/comptabilite/compte-actif/");
+var addCompteActifUrl = Uri.parse("$mainUrl/comptabilite/comptes-actif/insert-new-compte-actif");
+var comptePassifUrl = Uri.parse("$mainUrl/comptabilite/comptes-passif/");
+var addComptePassifUrl = Uri.parse("$mainUrl/comptabilite/comptes-passif/insert-new-compte-passif");
+
 var journalsUrl = Uri.parse("$mainUrl/comptabilite/journals/");
 var addjournalsUrl = Uri.parse( "$mainUrl/comptabilite/journals/insert-new-journal");
 var journalsChartMounthUrl = Uri.parse("$mainUrl/comptabilite/journals/journal-chart-month/");

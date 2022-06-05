@@ -46,8 +46,8 @@ class _TableBilanCorbeilleState extends State<TableBilanCorbeille> {
           final dataList = tapEvent.row!.cells.values;
           final idPlutoRow = dataList.elementAt(0);
 
-          Navigator.of(context).push(MaterialPageRoute(
-              builder: (context) => DetailBilan(id: idPlutoRow.value)));
+          // Navigator.of(context).push(MaterialPageRoute(
+          //     builder: (context) => DetailBilan(id: idPlutoRow.value)));
         },
         onLoaded: (PlutoGridOnLoadedEvent event) {
           stateManager = event.stateManager;
@@ -140,7 +140,7 @@ class _TableBilanCorbeilleState extends State<TableBilanCorbeille> {
 
   Future agentsRow() async {
     List<BilanModel?> dataList = await BilanApi().getAllData();
-    var data = dataList.where((element) => element!.statut == true);
+    var data = dataList;
 
     if (mounted) {
       setState(() {
