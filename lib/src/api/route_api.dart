@@ -76,7 +76,7 @@ var creacneDetteAddUrl = Uri.parse("$mainUrl/finances/creance-dettes/insert-new-
 var bilansUrl = Uri.parse("$mainUrl/comptabilite/bilans/");
 var addbilansUrl = Uri.parse("$mainUrl/comptabilite/bilans/insert-new-bilan");
 
-var compteActifUrl = Uri.parse("$mainUrl/comptabilite/compte-actif/");
+var compteActifUrl = Uri.parse("$mainUrl/comptabilite/comptes-actif/");
 var addCompteActifUrl = Uri.parse("$mainUrl/comptabilite/comptes-actif/insert-new-compte-actif");
 var comptePassifUrl = Uri.parse("$mainUrl/comptabilite/comptes-passif/");
 var addComptePassifUrl = Uri.parse("$mainUrl/comptabilite/comptes-passif/insert-new-compte-passif");

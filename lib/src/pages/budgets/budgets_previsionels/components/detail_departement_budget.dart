@@ -22,6 +22,7 @@ import 'package:fokad_admin/src/navigation/drawer/drawer_menu.dart';
 import 'package:fokad_admin/src/navigation/header/custom_appbar.dart';
 import 'package:fokad_admin/src/pages/budgets/ligne_budgetaire/components/ajout_ligne_budgetaire.dart';
 import 'package:fokad_admin/src/pages/budgets/ligne_budgetaire/components/ligne_budgetaire.dart';
+import 'package:fokad_admin/src/utils/loading.dart';
 import 'package:fokad_admin/src/widgets/print_widget.dart';
 import 'package:fokad_admin/src/widgets/title_widget.dart';
 import 'package:intl/intl.dart';
@@ -154,7 +155,7 @@ class _DetailDepartmentBudgetState extends State<DetailDepartmentBudget> {
                               departementBudgetModel: data!)));
                     });
               } else {
-                return const Center(child: CircularProgressIndicator());
+                return loadingMini();
               }
             }),
         body: SafeArea(

@@ -24,8 +24,7 @@ import 'package:intl/intl.dart';
 import 'package:pluto_grid/pluto_grid.dart';
 
 class DetailLigneBudgetaire extends StatefulWidget {
-  const DetailLigneBudgetaire({Key? key, required this.id}) : super(key: key);
-  final int id;
+  const DetailLigneBudgetaire({Key? key}) : super(key: key);
 
   @override
   State<DetailLigneBudgetaire> createState() => _DetailLigneBudgetaireState();
@@ -60,16 +59,11 @@ class _DetailLigneBudgetaireState extends State<DetailLigneBudgetaire> {
   @override
   initState() {
     agentsColumn();
-    Timer.periodic(const Duration(milliseconds: 500), ((timer) {
-      setState(() {
-        getData();
-        salaireRow();
-        campaignRow();
-        projetRow();
-        etatBesionRow();
-      });
-      timer.cancel();
-    }));
+    getData();
+    salaireRow();
+    campaignRow();
+    projetRow();
+    etatBesionRow();
     super.initState();
   }
 
@@ -117,6 +111,7 @@ class _DetailLigneBudgetaireState extends State<DetailLigneBudgetaire> {
 
   @override
   Widget build(BuildContext context) {
+    final id = ModalRoute.of(context)!.settings.arguments as int;
     return Scaffold(
         key: _key,
         drawer: const DrawerMenu(),
@@ -133,7 +128,7 @@ class _DetailLigneBudgetaireState extends State<DetailLigneBudgetaire> {
                 child: Padding(
                     padding: const EdgeInsets.all(p10),
                     child: FutureBuilder<LigneBudgetaireModel>(
-                        future: LIgneBudgetaireApi().getOneData(widget.id),
+                        future: LIgneBudgetaireApi().getOneData(id),
                         builder: (BuildContext context,
                             AsyncSnapshot<LigneBudgetaireModel> snapshot) {
                           if (snapshot.hasData) {

@@ -9,7 +9,6 @@ import 'package:fokad_admin/src/models/mail/mail_model.dart';
 import 'package:fokad_admin/src/models/users/user_model.dart';
 import 'package:fokad_admin/src/navigation/drawer/drawer_menu.dart';
 import 'package:fokad_admin/src/navigation/header/custom_appbar.dart';
-import 'package:fokad_admin/src/pages/mails/components/detail_mail.dart';
 import 'package:fokad_admin/src/pages/mails/components/list_mails.dart';
 import 'package:fokad_admin/src/routes/routes.dart';
 import 'package:fokad_admin/src/utils/loading.dart';
@@ -77,7 +76,7 @@ class _MailPagesState extends State<MailPages> {
 
   @override
   Widget build(BuildContext context) {
-    final headline6 = Theme.of(context).textTheme.headline6;
+    
     return Scaffold(
         key: _key,
         drawer: const DrawerMenu(),
