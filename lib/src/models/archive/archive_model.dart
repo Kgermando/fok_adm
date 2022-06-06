@@ -1,3 +1,52 @@
+class ArchiveFolderModel {
+  late int? id;
+  late String departement;
+  late String folderName;
+  late String signature;
+  late DateTime created;
+
+  ArchiveFolderModel(
+    { 
+      this.id,
+      required this.departement,
+      required this.folderName,
+      required this.signature,
+      required this.created
+    }
+  );
+
+  factory ArchiveFolderModel.fromSQL(List<dynamic> row) {
+    return ArchiveFolderModel(
+      id: row[0],
+      departement: row[1],
+      folderName: row[2],
+      signature: row[3],
+      created: row[4]
+    );
+  }
+
+  factory ArchiveFolderModel.fromJson(Map<String, dynamic> json) {
+    return ArchiveFolderModel(
+      id: json['id'],
+      departement: json['departement'],
+      folderName: json['folderName'],
+      signature: json['signature'],
+      created: DateTime.parse(json['created'])
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'departement': departement,
+      'folderName': folderName,
+      'signature': signature,
+      'created': created.toIso8601String()
+    };
+  }
+}
+
+
 class ArchiveModel { 
   late int? id;
   late String nomDocument;

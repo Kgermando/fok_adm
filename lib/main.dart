@@ -88,9 +88,9 @@ class MyApp extends StatelessWidget {
       }
     } else if (user.departement == "Logistique") {
       if (double.parse(user.role) <= 2) {
-        homeRoute = ArchiveRoutes.arcihves;
+        homeRoute = LogistiqueRoutes.logDashboard;
       } else {
-        homeRoute = ArchiveRoutes.arcihves;
+        homeRoute = LogistiqueRoutes.logAnguinAuto;
       }
     } else {
       homeRoute = UserRoutes.login;

@@ -187,6 +187,17 @@ class _ComptabiliteNavState extends State<ComptabiliteNav> {
                           context, ComptabiliteRoutes.comptabiliteGrandLivre);
                       // Navigator.of(context).pop();
                     }),
+                if (userRole <= 2)
+                  DrawerWidget(
+                      selected: widget.pageCurrente == ComptabiliteRoutes.comptabiliteEtatBesoin,
+                      icon: Icons.note_alt,
+                      sizeIcon: 20.0,
+                      title: 'Etat besoin',
+                      style: bodyText1!,
+                      onTap: () {
+                        Navigator.pushNamed(context, ComptabiliteRoutes.comptabiliteEtatBesoin);
+                        // Navigator.of(context).pop();
+                      }),
                 DrawerWidget(
                     selected: widget.pageCurrente == RhRoutes.rhPerformence,
                     icon: Icons.multiline_chart_sharp,
@@ -195,6 +206,16 @@ class _ComptabiliteNavState extends State<ComptabiliteNav> {
                     style: bodyText1!,
                     onTap: () {
                       Navigator.pushNamed(context, RhRoutes.rhPerformence);
+                      // Navigator.of(context).pop();
+                    }),
+                DrawerWidget(
+                    selected: widget.pageCurrente == ArchiveRoutes.archives,
+                    icon: Icons.archive,
+                    sizeIcon: 20.0,
+                    title: 'Archives',
+                    style: bodyLarge!,
+                    onTap: () {
+                      Navigator.pushNamed(context, ArchiveRoutes.archives);
                       // Navigator.of(context).pop();
                     }),
               ],

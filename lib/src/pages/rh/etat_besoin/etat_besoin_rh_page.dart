@@ -27,6 +27,18 @@ class _EtatBesoinRHPageState extends State<EtatBesoinRHPage> {
   final TextEditingController titleController = TextEditingController();
   String? priority;
 
+  @override
+  void initState() {
+    getData();
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    titleController.dispose();
+    super.dispose();
+  }
+
   String? matricule;
 
   Future<void> getData() async {
@@ -79,7 +91,9 @@ class _EtatBesoinRHPageState extends State<EtatBesoinRHPage> {
                             height: p20,
                           ),
                           ElevatedButton(
-                            child: (isLoading) ? loadingMini() : const Text('Crée maintenant'),
+                            child: (isLoading)
+                                ? loadingMini()
+                                : const Text('Crée maintenant'),
                             onPressed: () {
                               setState(() {
                                 isLoading = true;
@@ -117,8 +131,7 @@ class _EtatBesoinRHPageState extends State<EtatBesoinRHPage> {
                           title: 'Etat de besoin',
                           controllerMenu: () =>
                               _key.currentState!.openDrawer()),
-                      // const Expanded(child: TableDevis())
-                      const Expanded(child: TabvleEtatBesoinRH())
+                      const Expanded(child: TableEtatBesoinRH())
                     ],
                   ),
                 ),

@@ -66,7 +66,7 @@ class _ArchivePageState extends State<ArchivePage> {
             child: const Icon(Icons.add),
             onPressed: () {
               Navigator.pushNamed(
-                  context, ArchiveRoutes.addArcihves);
+                  context, ArchiveRoutes.addArchives);
             }),
         body: SafeArea(
           child: Row(

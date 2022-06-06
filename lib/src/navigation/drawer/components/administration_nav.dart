@@ -373,6 +373,17 @@ class _AdministrationNavState extends State<AdministrationNav> {
                     onTap: () {
                       Navigator.pushNamed(context, RhRoutes.rhPerformence);
                     }),
+                DrawerWidget(
+                  selected: widget.pageCurrente == ArchiveRoutes.archives,
+                  icon: Icons.archive,
+                  sizeIcon: 20.0,
+                  title: 'Archives',
+                  style: bodyLarge!,
+                  onTap: () {
+                    Navigator.pushNamed(context, ArchiveRoutes.archives);
+                    // Navigator.of(context).pop();
+                  }
+                ),
 
               ],
             );

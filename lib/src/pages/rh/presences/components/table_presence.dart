@@ -54,7 +54,13 @@ class _TablePresenceState extends State<TablePresence> {
       createHeader: (PlutoGridStateManager header) {
         return Row(
           mainAxisAlignment: MainAxisAlignment.end,
-          children: [PrintWidget(onPressed: () {})],
+          children: [
+            IconButton(
+                onPressed: () {
+                  Navigator.pushNamed(context, RhRoutes.rhPresence);
+                },
+                icon: const Icon(Icons.refresh)),
+            PrintWidget(onPressed: () {})],
         );
       },
       configuration: PlutoGridConfiguration(

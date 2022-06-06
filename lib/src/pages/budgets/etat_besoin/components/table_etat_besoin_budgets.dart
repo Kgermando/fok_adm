@@ -11,14 +11,14 @@ import 'package:fokad_admin/src/widgets/title_widget.dart';
 import 'package:intl/intl.dart';
 import 'package:pluto_grid/pluto_grid.dart';
 
-class TabvleEtatBesoinBudget extends StatefulWidget {
-  const TabvleEtatBesoinBudget({Key? key}) : super(key: key);
+class TableEtatBesoinBudgets extends StatefulWidget {
+  const TableEtatBesoinBudgets({Key? key}) : super(key: key);
 
   @override
-  State<TabvleEtatBesoinBudget> createState() => _TabvleEtatBesoinBudgetState();
+  State<TableEtatBesoinBudgets> createState() => _TableEtatBesoinBudgetsState();
 }
 
-class _TabvleEtatBesoinBudgetState extends State<TabvleEtatBesoinBudget> {
+class _TableEtatBesoinBudgetsState extends State<TableEtatBesoinBudgets> {
   List<PlutoColumn> columns = [];
   List<PlutoRow> rows = [];
   PlutoGridStateManager? stateManager;
@@ -79,18 +79,22 @@ class _TabvleEtatBesoinBudgetState extends State<TabvleEtatBesoinBudget> {
         onLoaded: (PlutoGridOnLoadedEvent event) {
           stateManager = event.stateManager;
           stateManager!.setShowColumnFilter(true);
-          // stateManager!.addListener(agentsRow);
-          // removeKeyboardListener =
-          //     stateManager!.keyManager!.subject.stream.listen(handleKeyboard);
-
-          // stateManager!.setSelectingMode(PlutoGridSelectingMode.none);
         },
         createHeader: (PlutoGridStateManager header) {
           return Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               const TitleWidget(title: 'Budgets'),
-              PrintWidget(onPressed: () {})
+              Row(
+                children: [
+                  IconButton(
+                    onPressed: () {
+                      Navigator.pushNamed(context, BudgetRoutes.budgetEtatBesoin);
+                    },
+                    icon: const Icon(Icons.refresh)),
+                  PrintWidget(onPressed: () {}),
+                ],
+              )
             ],
           );
         },
@@ -140,7 +144,7 @@ class _TabvleEtatBesoinBudgetState extends State<TabvleEtatBesoinBudget> {
       ),
       PlutoColumn(
         readOnly: true,
-        title: 'Titre',
+        title: 'Intitlé',
         field: 'title',
         type: PlutoColumnType.text(),
         enableRowDrag: true,
@@ -190,10 +194,9 @@ class _TabvleEtatBesoinBudgetState extends State<TabvleEtatBesoinBudget> {
   }
 
   Future agentsRow() async {
-    final userModel = await AuthApi().getUserId();
     List<DevisModel?> dataList = await DevisAPi().getAllData();
     var data = dataList
-        .where((element) => element!.departement == userModel.departement)
+        .where((element) => element!.departement == 'Budgets')
         .toList();
     if (mounted) {
       setState(() {
@@ -207,7 +210,7 @@ class _TabvleEtatBesoinBudgetState extends State<TabvleEtatBesoinBudget> {
                 value: DateFormat("dd-MM-yyyy HH:mm").format(item.created))
           }));
           stateManager!.resetCurrentState();
-          // stateManager!.notifyListeners();
+          stateManager!.notifyListeners();
           // stateManager!.isPaginated;
           //
         }

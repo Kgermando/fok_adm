@@ -9,6 +9,7 @@ import 'package:fokad_admin/src/pages/administration/finances_admin.dart';
 import 'package:fokad_admin/src/pages/administration/logistique_admin.dart';
 import 'package:fokad_admin/src/pages/administration/rh_admin.dart';
 import 'package:fokad_admin/src/pages/archives/add_archive.dart';
+import 'package:fokad_admin/src/pages/archives/archive_folder.dart';
 import 'package:fokad_admin/src/pages/archives/archive_page.dart';
 import 'package:fokad_admin/src/pages/auth/login_auth.dart';
 import 'package:fokad_admin/src/pages/auth/profil_page.dart';
@@ -17,6 +18,7 @@ import 'package:fokad_admin/src/pages/budgets/budgets_previsionels/budgets_previ
 import 'package:fokad_admin/src/pages/budgets/budgets_previsionels/components/add_budget_previsionel.dart';
 import 'package:fokad_admin/src/pages/budgets/budgets_previsionels/components/detail_departement_budget.dart';
 import 'package:fokad_admin/src/pages/budgets/dashboard/dashboard_budget.dart';
+import 'package:fokad_admin/src/pages/budgets/etat_besoin/etat_besoin_budgets_page.dart';
 import 'package:fokad_admin/src/pages/budgets/historique_budget/historique_budgets_previsionnels.dart';
 import 'package:fokad_admin/src/pages/budgets/ligne_budgetaire/components/detail_ligne_budgetaire.dart';
 import 'package:fokad_admin/src/pages/comm_marketing/c_m_dd/c_m_dd.dart';
@@ -36,6 +38,7 @@ import 'package:fokad_admin/src/pages/comm_marketing/commercial/succursale/compo
 import 'package:fokad_admin/src/pages/comm_marketing/commercial/succursale/succursale_page.dart';
 import 'package:fokad_admin/src/pages/comm_marketing/commercial/ventes/ventes_page.dart';
 import 'package:fokad_admin/src/pages/comm_marketing/dashboard/dashboard_com_marketing.dart';
+import 'package:fokad_admin/src/pages/comm_marketing/etat_besoin/etat_besoin_cm_page.dart';
 import 'package:fokad_admin/src/pages/comm_marketing/marketing/agenda_marketing.dart';
 import 'package:fokad_admin/src/pages/comm_marketing/marketing/annuaire_marketing.dart';
 import 'package:fokad_admin/src/pages/comm_marketing/marketing/campaign_marketing.dart';
@@ -49,18 +52,21 @@ import 'package:fokad_admin/src/pages/comptabilite/compt_dd/comptabilite_dd.dart
 import 'package:fokad_admin/src/pages/comptabilite/compte_resultat/components/add_compte_resultat.dart';
 import 'package:fokad_admin/src/pages/comptabilite/compte_resultat/compte_resultat.dart';
 import 'package:fokad_admin/src/pages/comptabilite/dashboard/dashboard_comptabilite.dart';
+import 'package:fokad_admin/src/pages/comptabilite/etat_besoin/etat_besoin_comptabilite_page.dart';
 import 'package:fokad_admin/src/pages/comptabilite/grand_livre/grand_livre_comptabilite.dart';
 import 'package:fokad_admin/src/pages/comptabilite/journal/components/add_journal_comptabilite.dart';
 import 'package:fokad_admin/src/pages/comptabilite/journal/journal_comptabilite.dart';
 import 'package:fokad_admin/src/pages/devis/components/detail_devis.dart';
 import 'package:fokad_admin/src/pages/devis/devis_page.dart';
 import 'package:fokad_admin/src/pages/exploitations/dashboard/dashboard_exp.dart';
+import 'package:fokad_admin/src/pages/exploitations/etat_besoin/etat_besoin_exp_page.dart';
 import 'package:fokad_admin/src/pages/exploitations/expl_dd/exploitaion_dd.dart';
 import 'package:fokad_admin/src/pages/exploitations/projets/add_projet_exp.dart';
 import 'package:fokad_admin/src/pages/exploitations/projets/projets_expo.dart';
 import 'package:fokad_admin/src/pages/exploitations/taches/tache_exp.dart';
 import 'package:fokad_admin/src/pages/exploitations/versements/versement_projet.dart';
 import 'package:fokad_admin/src/pages/finances/dashboard/dashboard_finance.dart';
+import 'package:fokad_admin/src/pages/finances/etat_besoin/etat_besoin_fin_page.dart';
 import 'package:fokad_admin/src/pages/finances/transactions/components/banque_transactions.dart';
 import 'package:fokad_admin/src/pages/finances/transactions/components/caisses_transactions.dart';
 import 'package:fokad_admin/src/pages/finances/transactions/components/components/banques/add_depot_banque.dart';
@@ -80,6 +86,7 @@ import 'package:fokad_admin/src/pages/logistiques/automobile/trajet_auto.dart';
 import 'package:fokad_admin/src/pages/logistiques/dashboard/dashboard_log.dart';
 import 'package:fokad_admin/src/pages/logistiques/entretiens/add_entretien.dart';
 import 'package:fokad_admin/src/pages/logistiques/entretiens/entretien_page.dart';
+import 'package:fokad_admin/src/pages/logistiques/etat_besoin/etat_besoin_log_page.dart';
 import 'package:fokad_admin/src/pages/logistiques/log_dd/log_dd.dart';
 import 'package:fokad_admin/src/pages/logistiques/materiels/add_etat_materiel.dart';
 import 'package:fokad_admin/src/pages/logistiques/materiels/add_immobilier.dart';
@@ -108,6 +115,8 @@ import 'package:fokad_admin/src/pages/rh/presences/components/detail_presence.da
 import 'package:fokad_admin/src/pages/rh/presences/components/entrer_presence.dart';
 import 'package:fokad_admin/src/pages/rh/presences/components/sortie_presence.dart';
 import 'package:fokad_admin/src/pages/rh/presences/presences_rh.dart';
+import 'package:fokad_admin/src/pages/rh/transport_restauration/components/detrail_transport_restaurant.dart';
+import 'package:fokad_admin/src/pages/rh/transport_restauration/transport_restauration_page.dart';
 import 'package:fokad_admin/src/pages/screens/help_screen.dart';
 import 'package:fokad_admin/src/pages/screens/settings_screen.dart';
 
@@ -162,7 +171,8 @@ class RhRoutes {
   static const rhDD = "/rh-dd";
   static const rhHistoriqueSalaire = "/rh-historique-salaire";
   static const rhEtatBesoin = "/rh-etat-besoin";
-  static const rhEtatBesoinAdd = "/rh-etat-besoin-add";
+  static const rhTransportRest = "/rh-transport-rest";
+  static const rhTransportRestDetail = "/rh-transport-rest-detail";
 }
 
 class BudgetRoutes {
@@ -175,6 +185,7 @@ class BudgetRoutes {
       "/historique-budgets-previsionels";
   static const budgetBudgetPrevisionelDetail =
       "/budgets-previsionels-detail";
+  static const budgetEtatBesoin = "/budgets-etat-besoin";
 }
 
 class FinanceRoutes {
@@ -196,6 +207,7 @@ class FinanceRoutes {
       "/transactions-financement-externe-add";
   static const transactionsDepenses = "/transactions-depenses";
   static const finDD = "/fin-dd";
+  static const finEtatBesoin = "/fin-etat-besoin";
 }
 
 class ComptabiliteRoutes {
@@ -212,6 +224,7 @@ class ComptabiliteRoutes {
   static const comptabiliteBalanceAdd = "/comptabilite-balance-add";
   static const comptabiliteGrandLivre = "/comptabilite-grand-livre";
   static const comptabiliteDD = "/comptabilite-dd";
+  static const comptabiliteEtatBesoin = "/comptabilite-etat-besoin";
 }
 
 class LogistiqueRoutes {
@@ -224,7 +237,6 @@ class LogistiqueRoutes {
   static const logTrajetAuto = "/log-trajet-auto";
   static const logAddEntretien = "/log-add-entretien";
   static const logEntretien = "/log-entretien";
-
   static const logAddEtatMateriel = "/log-add-etat-materiel";
   static const logEtatMateriel = "/log-etat-materiel";
   static const logAddImmobilerMateriel = "/log-add-immobilier-materiel";
@@ -232,6 +244,7 @@ class LogistiqueRoutes {
   static const logAddMobilierMateriel = "/log-add-mobilier-materiel";
   static const logMobilierMateriel = "/log-mobilier-materiel";
   static const logDD = "/log-dd";
+  static const logEtatBesoin = "/log-etat-besoin";
 }
 
 class ExploitationRoutes {
@@ -242,6 +255,7 @@ class ExploitationRoutes {
   static const expTache = "/exploitation-taches";
   static const expVirement = "/exploitation-virement";
   static const expDD = "/exp-dd";
+  static const exploitationEtatBesoin = "/exploitation-etat-besoin";
 }
 
 class ComMarketingRoutes {
@@ -272,11 +286,13 @@ class ComMarketingRoutes {
   static const comMarketingnumberFact = "/com-marketing-number-fact";
   static const comMarketingRestitution = "/com-marketing-restitution";
   static const comMarketingVente = "/com-marketing-vente";
+  static const comMarketingEtatBesoin = "/com-marketing-etat-besoin";
 }
 
 class ArchiveRoutes {
-  static const arcihves = "/arcihves";
-  static const addArcihves = "/arcihves-add";
+  static const archives = "/archives";
+  static const archivePage = "/archive-page";
+  static const addArchives = "/archives-add";
 }
 
 class MailRoutes {
@@ -323,6 +339,8 @@ final routes = <String, WidgetBuilder>{
   RhRoutes.rhDD: (context) => const DepartementRH(),
   RhRoutes.rhHistoriqueSalaire: (context) => const TableSalairesHistorique(),
   RhRoutes.rhEtatBesoin: (context) => const EtatBesoinRHPage(),
+  RhRoutes.rhTransportRest: (context) => const TransportRestaurationPage(),
+  RhRoutes.rhTransportRestDetail: (context) => const DetailTransportRestaurant(),
 
   // Budgets
   BudgetRoutes.budgetDashboard: (context) => const DashboardBudget(),
@@ -334,6 +352,8 @@ final routes = <String, WidgetBuilder>{
   BudgetRoutes.historiqueBudgetBudgetPrevisionel: (context) => const HistoriqueBudgetsPrevisionnels(),
   BudgetRoutes.budgetBudgetPrevisionelDetail: (context) =>
       const DetailDepartmentBudget(),
+  BudgetRoutes.budgetEtatBesoin: (context) =>
+      const EtatBesoinBudgetsPage(),
 
   // FInance
   FinanceRoutes.financeDashboard: (context) => const DashboardFinance(),
@@ -347,6 +367,8 @@ final routes = <String, WidgetBuilder>{
   FinanceRoutes.transactionsDettes: (context) => const DetteTransactions(),
   FinanceRoutes.transactionsFinancementExterne: (context) => const FinExterneTransactions(),
   FinanceRoutes.transactionsFinancementExterneAdd: (context) => const AddAutreFin(),
+  FinanceRoutes.finEtatBesoin: (context) =>
+      const EtatBesoinFinPage(),
 
   // Comptabilite
   ComptabiliteRoutes.comptabiliteDD: (context) => const ComptabiliteDD(),
@@ -361,6 +383,8 @@ final routes = <String, WidgetBuilder>{
   ComptabiliteRoutes.comptabiliteBalance: (context) => const BalanceComptabilite(),
   ComptabiliteRoutes.comptabiliteBalanceAdd: (context) => const AddBalanceComptabilite(),
   ComptabiliteRoutes.comptabiliteGrandLivre: (context) => const GrandLivreComptabilite(),
+  ComptabiliteRoutes.comptabiliteEtatBesoin: (context) =>
+      const EtatBesoinComptabilitePage(),
 
   // DEVIS
   DevisRoutes.devis: (context) => const DevisPage(),
@@ -383,6 +407,7 @@ final routes = <String, WidgetBuilder>{
   LogistiqueRoutes.logImmobilierMateriel: (context) =>const ImmobilierMateriel(),
   LogistiqueRoutes.logAddMobilierMateriel: (context) =>const AddMobilerMateriel(),
   LogistiqueRoutes.logMobilierMateriel: (context) =>const MobilierMateriel(),
+  LogistiqueRoutes.logEtatBesoin: (context) => const EtatBesoinLogPage(),
 
   // Exploitations
   ExploitationRoutes.expDD: (context) => const ExploitationDD(),
@@ -391,6 +416,7 @@ final routes = <String, WidgetBuilder>{
   ExploitationRoutes.expProjet: (context) => const ProjetsExp(),
   ExploitationRoutes.expVirement: (context) => const VersementProjet(),
   ExploitationRoutes.expTache: (context) => const TacheExp(),
+  ExploitationRoutes.exploitationEtatBesoin: (context) => const EtatBesoinExploitationsPage(),
 
   // Marketing
   ComMarketingRoutes.comMarketingDD: (context) => const CMDD(),
@@ -416,6 +442,8 @@ final routes = <String, WidgetBuilder>{
   ComMarketingRoutes.comMarketingcart: (context) =>const CartPage(),
   ComMarketingRoutes.comMarketingHistoryRavitaillement: (context) =>const HistoryRavitaillement(),
   ComMarketingRoutes.comMarketingHistoryLivraison: (context) =>const HistoryLivraison(),
+  ComMarketingRoutes.comMarketingEtatBesoin: (context) =>
+      const EtatBesoinCMPage(),
 
 
   // Mails
@@ -424,6 +452,7 @@ final routes = <String, WidgetBuilder>{
   MailRoutes.mailDetail: (context) => const DetailMail(),
 
   // Archives
-  ArchiveRoutes.arcihves: (context) => const ArchivePage(),
-  ArchiveRoutes.addArcihves: (context) => const AddArchive(),
+  ArchiveRoutes.archives: (context) => const ArchiveFolder(),
+  ArchiveRoutes.archivePage: (context) => const ArchivePage(),
+  ArchiveRoutes.addArchives: (context) => const AddArchive(),
 };

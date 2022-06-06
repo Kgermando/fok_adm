@@ -6,19 +6,20 @@ import 'package:fokad_admin/src/constants/responsive.dart';
 import 'package:fokad_admin/src/models/devis/devis_models.dart';
 import 'package:fokad_admin/src/navigation/drawer/drawer_menu.dart';
 import 'package:fokad_admin/src/navigation/header/custom_appbar.dart';
+import 'package:fokad_admin/src/pages/finances/etat_besoin/components/table_etat_besoin_rh.dart';
 import 'package:fokad_admin/src/pages/rh/etat_besoin/components/table_etat_besoin_rh.dart';
 import 'package:fokad_admin/src/utils/loading.dart';
 import 'package:fokad_admin/src/utils/priority_dropdown.dart';
 import 'package:fokad_admin/src/widgets/title_widget.dart';
 
-class EtatBesoinFinancePage extends StatefulWidget {
-  const EtatBesoinFinancePage({Key? key}) : super(key: key);
+class EtatBesoinFinPage extends StatefulWidget {
+  const EtatBesoinFinPage({Key? key}) : super(key: key);
 
   @override
-  State<EtatBesoinFinancePage> createState() => _EtatBesoinFinancePageState();
+  State<EtatBesoinFinPage> createState() => _EtatBesoinFinPageState();
 }
 
-class _EtatBesoinFinancePageState extends State<EtatBesoinFinancePage> {
+class _EtatBesoinFinPageState extends State<EtatBesoinFinPage> {
   final GlobalKey<ScaffoldState> _key = GlobalKey();
 
   final _formKey = GlobalKey<FormState>();
@@ -26,6 +27,18 @@ class _EtatBesoinFinancePageState extends State<EtatBesoinFinancePage> {
   final List<String> priorityList = PriorityDropdown().priorityDropdown;
   final TextEditingController titleController = TextEditingController();
   String? priority;
+
+  @override
+  void initState() {
+    getData();
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    titleController.dispose();
+    super.dispose();
+  }
 
   String? matricule;
 
@@ -43,9 +56,10 @@ class _EtatBesoinFinancePageState extends State<EtatBesoinFinancePage> {
         key: _key,
         drawer: const DrawerMenu(),
         floatingActionButton: FloatingActionButton(
-            tooltip: 'Ajout etat de besoin RH',
+            tooltip: 'Ajout etat de besoin Finances',
             child: const Icon(Icons.add),
             onPressed: () {
+              // Navigator.pushNamed(context, RhRoutes.rhEtatBesoinAdd);
               showModalBottomSheet<void>(
                 context: context,
                 constraints: BoxConstraints(
@@ -118,8 +132,7 @@ class _EtatBesoinFinancePageState extends State<EtatBesoinFinancePage> {
                           title: 'Etat de besoin',
                           controllerMenu: () =>
                               _key.currentState!.openDrawer()),
-                      // const Expanded(child: TableDevis())
-                      const Expanded(child: TabvleEtatBesoinRH())
+                      const Expanded(child: TableEtatBesoinFin())
                     ],
                   ),
                 ),

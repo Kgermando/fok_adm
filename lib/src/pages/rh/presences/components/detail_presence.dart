@@ -349,7 +349,7 @@ class _DetailPresenceState extends State<DetailPresence> {
         builder: (context) {
           return StatefulBuilder(builder: (context, StateSetter setState) {
             return AlertDialog(
-              title: const TitleWidget(title: 'Infos detail'),
+              title: const Text('Infos detail'),
               content: SizedBox(
                 height: 200,
                 width: 300,

@@ -38,6 +38,16 @@ var listPerformenceNoteUrl = Uri.parse("$mainUrl/rh/performences-note/");
 var addPerformenceNoteUrl =
     Uri.parse("$mainUrl/rh/performences-note/insert-new-performence-note");
 
+var transportRestaurationUrl =
+    Uri.parse("$mainUrl/rh/transport-restaurations/");
+var addTransportRestaurationUrl =
+    Uri.parse("$mainUrl/rh/transport-restaurations/insert-new-transport-restauration");
+var transRestAgentsUrl =
+    Uri.parse("$mainUrl/rh/trans-rest-agents/");
+var addTransRestAgentsUrl = Uri.parse(
+    "$mainUrl/rh/trans-rest-agents/insert-new-trans-rest-agent");
+
+
 
 // Finances
 var banqueUrl = Uri.parse("$mainUrl/finances/transactions/banques/");

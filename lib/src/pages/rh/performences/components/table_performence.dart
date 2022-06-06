@@ -51,7 +51,13 @@ class _TablePerformenceState extends State<TablePerformence> {
       createHeader: (PlutoGridStateManager header) {
         return Row(
           mainAxisAlignment: MainAxisAlignment.end,
-          children: [PrintWidget(onPressed: () {})],
+          children: [
+            IconButton(
+                onPressed: () {
+                  Navigator.pushNamed(context, RhRoutes.rhPerformence);
+                },
+                icon: const Icon(Icons.refresh)),
+            PrintWidget(onPressed: () {})],
         );
       },
       configuration: PlutoGridConfiguration(

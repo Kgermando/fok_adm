@@ -199,6 +199,17 @@ class _BudgetNavState extends State<BudgetNav> {
                           BudgetRoutes.historiqueBudgetBudgetPrevisionel);
                       // Navigator.of(context).pop();
                     }),
+                if (userRole <= 2)
+                  DrawerWidget(
+                      selected: widget.pageCurrente == BudgetRoutes.budgetEtatBesoin,
+                      icon: Icons.note_alt,
+                      sizeIcon: 20.0,
+                      title: 'Etat besoin',
+                      style: bodyText1,
+                      onTap: () {
+                        Navigator.pushNamed(context, BudgetRoutes.budgetEtatBesoin);
+                        // Navigator.of(context).pop();
+                      }),
                 DrawerWidget(
                     selected: widget.pageCurrente == RhRoutes.rhPerformence,
                     icon: Icons.multiline_chart_sharp,
@@ -207,6 +218,16 @@ class _BudgetNavState extends State<BudgetNav> {
                     style: bodyText1,
                     onTap: () {
                       Navigator.pushNamed(context, RhRoutes.rhPerformence);
+                      // Navigator.of(context).pop();
+                    }),
+                DrawerWidget(
+                    selected: widget.pageCurrente == ArchiveRoutes.archives,
+                    icon: Icons.archive,
+                    sizeIcon: 20.0,
+                    title: 'Archives',
+                    style: bodyLarge!,
+                    onTap: () {
+                      Navigator.pushNamed(context, ArchiveRoutes.archives);
                       // Navigator.of(context).pop();
                     }),
               ],

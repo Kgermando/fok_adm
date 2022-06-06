@@ -11,16 +11,14 @@ import 'package:fokad_admin/src/widgets/title_widget.dart';
 import 'package:intl/intl.dart';
 import 'package:pluto_grid/pluto_grid.dart';
 
-class TabvleEtatBesoinLogistique extends StatefulWidget {
-  const TabvleEtatBesoinLogistique({Key? key}) : super(key: key);
+class TableEtatBesoinLog extends StatefulWidget {
+  const TableEtatBesoinLog({Key? key}) : super(key: key);
 
   @override
-  State<TabvleEtatBesoinLogistique> createState() =>
-      _TabvleEtatBesoinLogistiqueState();
+  State<TableEtatBesoinLog> createState() => _TableEtatBesoinLogState();
 }
 
-class _TabvleEtatBesoinLogistiqueState
-    extends State<TabvleEtatBesoinLogistique> {
+class _TableEtatBesoinLogState extends State<TableEtatBesoinLog> {
   List<PlutoColumn> columns = [];
   List<PlutoRow> rows = [];
   PlutoGridStateManager? stateManager;
@@ -81,18 +79,22 @@ class _TabvleEtatBesoinLogistiqueState
         onLoaded: (PlutoGridOnLoadedEvent event) {
           stateManager = event.stateManager;
           stateManager!.setShowColumnFilter(true);
-          // stateManager!.addListener(agentsRow);
-          // removeKeyboardListener =
-          //     stateManager!.keyManager!.subject.stream.listen(handleKeyboard);
-
-          // stateManager!.setSelectingMode(PlutoGridSelectingMode.none);
         },
         createHeader: (PlutoGridStateManager header) {
           return Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               const TitleWidget(title: 'Logistique'),
-              PrintWidget(onPressed: () {})
+              Row(
+                children: [
+                  IconButton(
+                    onPressed: () {
+                      Navigator.pushNamed(context, LogistiqueRoutes.logEtatBesoin);
+                    },
+                    icon: const Icon(Icons.refresh)),
+                  PrintWidget(onPressed: () {}),
+                ],
+              )
             ],
           );
         },
@@ -142,7 +144,7 @@ class _TabvleEtatBesoinLogistiqueState
       ),
       PlutoColumn(
         readOnly: true,
-        title: 'Titre',
+        title: 'Intitlé',
         field: 'title',
         type: PlutoColumnType.text(),
         enableRowDrag: true,
@@ -192,10 +194,9 @@ class _TabvleEtatBesoinLogistiqueState
   }
 
   Future agentsRow() async {
-    final userModel = await AuthApi().getUserId();
     List<DevisModel?> dataList = await DevisAPi().getAllData();
     var data = dataList
-        .where((element) => element!.departement == userModel.departement)
+        .where((element) => element!.departement == 'Logistique')
         .toList();
     if (mounted) {
       setState(() {
@@ -209,7 +210,7 @@ class _TabvleEtatBesoinLogistiqueState
                 value: DateFormat("dd-MM-yyyy HH:mm").format(item.created))
           }));
           stateManager!.resetCurrentState();
-          // stateManager!.notifyListeners();
+          stateManager!.notifyListeners();
           // stateManager!.isPaginated;
           //
         }

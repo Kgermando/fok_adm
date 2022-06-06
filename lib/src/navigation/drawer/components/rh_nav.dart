@@ -128,6 +128,17 @@ class _RhNavState extends State<RhNav> {
                         Navigator.pushNamed(context, RhRoutes.rhPaiement);
                         // Navigator.of(context).pop();
                       }),
+                if (userRole <= 3)
+                  DrawerWidget(
+                      selected: widget.pageCurrente == RhRoutes.rhTransportRest,
+                      icon: Icons.restaurant,
+                      sizeIcon: 20.0,
+                      title: 'Transport & restauration',
+                      style: bodyText1!,
+                      onTap: () {
+                        Navigator.pushNamed(context, RhRoutes.rhTransportRest);
+                        // Navigator.of(context).pop();
+                      }),
                 DrawerWidget(
                     selected: widget.pageCurrente == RhRoutes.rhPresence,
                     icon: Icons.checklist_outlined,
@@ -160,6 +171,16 @@ class _RhNavState extends State<RhNav> {
                         Navigator.pushNamed(context, RhRoutes.rhPerformence);
                         // Navigator.of(context).pop();
                       }),
+                DrawerWidget(
+                    selected: widget.pageCurrente == ArchiveRoutes.archives,
+                    icon: Icons.archive,
+                    sizeIcon: 20.0,
+                    title: 'Archives',
+                    style: bodyLarge!,
+                    onTap: () {
+                      Navigator.pushNamed(context, ArchiveRoutes.archives);
+                      // Navigator.of(context).pop();
+                    }),
               ],
             );
           } else {

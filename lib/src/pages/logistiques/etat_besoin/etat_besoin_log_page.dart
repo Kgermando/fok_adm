@@ -6,21 +6,19 @@ import 'package:fokad_admin/src/constants/responsive.dart';
 import 'package:fokad_admin/src/models/devis/devis_models.dart';
 import 'package:fokad_admin/src/navigation/drawer/drawer_menu.dart';
 import 'package:fokad_admin/src/navigation/header/custom_appbar.dart';
-import 'package:fokad_admin/src/pages/rh/etat_besoin/components/table_etat_besoin_rh.dart';
+import 'package:fokad_admin/src/pages/logistiques/etat_besoin/components/table_etat_besoin_log.dart';
 import 'package:fokad_admin/src/utils/loading.dart';
 import 'package:fokad_admin/src/utils/priority_dropdown.dart';
 import 'package:fokad_admin/src/widgets/title_widget.dart';
 
-class EtatBesoinComMarketingPage extends StatefulWidget {
-  const EtatBesoinComMarketingPage({Key? key}) : super(key: key);
+class EtatBesoinLogPage extends StatefulWidget {
+  const EtatBesoinLogPage({Key? key}) : super(key: key);
 
   @override
-  State<EtatBesoinComMarketingPage> createState() =>
-      _EtatBesoinComMarketingPageState();
+  State<EtatBesoinLogPage> createState() => _EtatBesoinLogPageState();
 }
 
-class _EtatBesoinComMarketingPageState
-    extends State<EtatBesoinComMarketingPage> {
+class _EtatBesoinLogPageState extends State<EtatBesoinLogPage> {
   final GlobalKey<ScaffoldState> _key = GlobalKey();
 
   final _formKey = GlobalKey<FormState>();
@@ -28,6 +26,18 @@ class _EtatBesoinComMarketingPageState
   final List<String> priorityList = PriorityDropdown().priorityDropdown;
   final TextEditingController titleController = TextEditingController();
   String? priority;
+
+  @override
+  void initState() {
+    getData();
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    titleController.dispose();
+    super.dispose();
+  }
 
   String? matricule;
 
@@ -45,9 +55,10 @@ class _EtatBesoinComMarketingPageState
         key: _key,
         drawer: const DrawerMenu(),
         floatingActionButton: FloatingActionButton(
-            tooltip: 'Ajout etat de besoin RH',
+            tooltip: 'Ajout etat de besoin Logistique',
             child: const Icon(Icons.add),
             onPressed: () {
+              // Navigator.pushNamed(context, RhRoutes.rhEtatBesoinAdd);
               showModalBottomSheet<void>(
                 context: context,
                 constraints: BoxConstraints(
@@ -120,8 +131,7 @@ class _EtatBesoinComMarketingPageState
                           title: 'Etat de besoin',
                           controllerMenu: () =>
                               _key.currentState!.openDrawer()),
-                      // const Expanded(child: TableDevis())
-                      const Expanded(child: TabvleEtatBesoinRH())
+                      const Expanded(child: TableEtatBesoinLog())
                     ],
                   ),
                 ),
@@ -184,7 +194,7 @@ class _EtatBesoinComMarketingPageState
     final devisModel = DevisModel(
         title: titleController.text,
         priority: priority.toString(),
-        departement: "Commercial et Marketing",
+        departement: "Logistique",
         observation: false,
         signature: matricule.toString(),
         createdRef: DateTime.now(),

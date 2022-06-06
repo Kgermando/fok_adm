@@ -1,24 +1,22 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:fokad_admin/src/api/auth/auth_api.dart';
-import 'package:fokad_admin/src/api/devis/devis_api.dart';
-import 'package:fokad_admin/src/models/devis/devis_models.dart';
+import 'package:fokad_admin/src/api/rh/transport_restaurant_api.dart';
+import 'package:fokad_admin/src/models/users/user_model.dart';
 import 'package:fokad_admin/src/routes/routes.dart';
 import 'package:fokad_admin/src/utils/class_implemented.dart';
 import 'package:fokad_admin/src/widgets/print_widget.dart';
-import 'package:fokad_admin/src/widgets/title_widget.dart';
 import 'package:intl/intl.dart';
 import 'package:pluto_grid/pluto_grid.dart';
 
-class TableEtatBesoinRH extends StatefulWidget {
-  const TableEtatBesoinRH({Key? key}) : super(key: key);
+class TableTansportRestaurant extends StatefulWidget {
+  const TableTansportRestaurant({Key? key}) : super(key: key);
 
   @override
-  State<TableEtatBesoinRH> createState() => _TableEtatBesoinRHState();
+  State<TableTansportRestaurant> createState() =>
+      _TableTansportRestaurantState();
 }
 
-class _TableEtatBesoinRHState extends State<TableEtatBesoinRH> {
+class _TableTansportRestaurantState extends State<TableTansportRestaurant> {
   List<PlutoColumn> columns = [];
   List<PlutoRow> rows = [];
   PlutoGridStateManager? stateManager;
@@ -39,19 +37,12 @@ class _TableEtatBesoinRHState extends State<TableEtatBesoinRH> {
     super.dispose();
   }
 
-  String? matricule;
-  String? departement;
-  String? servicesAffectation;
-  String? fonctionOccupe;
-
+  UserModel? user;
   Future<void> getData() async {
     final userModel = await AuthApi().getUserId();
     if (mounted) {
       setState(() {
-        matricule = userModel.matricule;
-        departement = userModel.departement;
-        servicesAffectation = userModel.servicesAffectation;
-        fonctionOccupe = userModel.fonctionOccupe;
+        user = userModel;
       });
     }
   }
@@ -73,7 +64,7 @@ class _TableEtatBesoinRHState extends State<TableEtatBesoinRH> {
         onRowDoubleTap: (PlutoGridOnRowDoubleTapEvent tapEvent) {
           final dataList = tapEvent.row!.cells.values;
           final idPlutoRow = dataList.elementAt(0);
-          Navigator.pushNamed(context, DevisRoutes.devisDetail,
+          Navigator.pushNamed(context, RhRoutes.rhTransportRestDetail,
               arguments: idPlutoRow.value);
         },
         onLoaded: (PlutoGridOnLoadedEvent event) {
@@ -82,26 +73,21 @@ class _TableEtatBesoinRHState extends State<TableEtatBesoinRH> {
         },
         createHeader: (PlutoGridStateManager header) {
           return Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            mainAxisAlignment: MainAxisAlignment.end,
             children: [
-              const TitleWidget(title: 'Ressource humaines'),
               Row(
                 children: [
                   IconButton(
-                    onPressed: () {
-                      Navigator.pushNamed(context, RhRoutes.rhEtatBesoin);
-                    },
-                    icon: const Icon(Icons.refresh)),
+                      onPressed: () {
+                        Navigator.pushNamed(context, RhRoutes.rhTransportRest);
+                      },
+                      icon: const Icon(Icons.refresh)),
                   PrintWidget(onPressed: () {}),
                 ],
               )
             ],
           );
         },
-        // createFooter: (PlutoGridStateManager fotter) {
-        //   // fotter.setPageSize(100, notify: false); // default 40
-        //   return PlutoPagination(fotter);
-        // },
         configuration: PlutoGridConfiguration(
           columnFilterConfig: PlutoGridColumnFilterConfig(
             filters: const [
@@ -113,9 +99,9 @@ class _TableEtatBesoinRHState extends State<TableEtatBesoinRH> {
                 return resolver<ClassFilterImplemented>() as PlutoFilterType;
               } else if (column.field == 'title') {
                 return resolver<ClassFilterImplemented>() as PlutoFilterType;
-              } else if (column.field == 'priority') {
+              } else if (column.field == 'observation') {
                 return resolver<ClassFilterImplemented>() as PlutoFilterType;
-              } else if (column.field == 'departement') {
+              } else if (column.field == 'signature') {
                 return resolver<ClassFilterImplemented>() as PlutoFilterType;
               } else if (column.field == 'created') {
                 return resolver<ClassFilterImplemented>() as PlutoFilterType;
@@ -156,8 +142,8 @@ class _TableEtatBesoinRHState extends State<TableEtatBesoinRH> {
       ),
       PlutoColumn(
         readOnly: true,
-        title: 'Priorité',
-        field: 'priority',
+        title: 'Observation',
+        field: 'observation',
         type: PlutoColumnType.text(),
         enableRowDrag: true,
         enableContextMenu: false,
@@ -168,8 +154,8 @@ class _TableEtatBesoinRHState extends State<TableEtatBesoinRH> {
       ),
       PlutoColumn(
         readOnly: true,
-        title: 'Département',
-        field: 'departement',
+        title: 'Signature',
+        field: 'signature',
         type: PlutoColumnType.text(),
         enableRowDrag: true,
         enableContextMenu: false,
@@ -195,18 +181,17 @@ class _TableEtatBesoinRHState extends State<TableEtatBesoinRH> {
 
   Future agentsRow() async {
     final userModel = await AuthApi().getUserId();
-    List<DevisModel?> dataList = await DevisAPi().getAllData();
-    var data = dataList
-        .where((element) => element!.departement == userModel.departement)
-        .toList();
+    var dataList = await TransportRestaurationApi().getAllData();
+    var data = dataList.toList();
     if (mounted) {
       setState(() {
         for (var item in data) {
           rows.add(PlutoRow(cells: {
-            'id': PlutoCell(value: item!.id),
+            'id': PlutoCell(value: item.id),
             'title': PlutoCell(value: item.title),
-            'priority': PlutoCell(value: item.priority),
-            'departement': PlutoCell(value: item.departement),
+            'observation': PlutoCell(
+                value: (item.observation == true) ? "Payé" : "Non payé"),
+            'signature': PlutoCell(value: item.signature),
             'created': PlutoCell(
                 value: DateFormat("dd-MM-yyyy HH:mm").format(item.created))
           }));

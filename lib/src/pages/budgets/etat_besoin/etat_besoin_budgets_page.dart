@@ -6,20 +6,19 @@ import 'package:fokad_admin/src/constants/responsive.dart';
 import 'package:fokad_admin/src/models/devis/devis_models.dart';
 import 'package:fokad_admin/src/navigation/drawer/drawer_menu.dart';
 import 'package:fokad_admin/src/navigation/header/custom_appbar.dart';
-import 'package:fokad_admin/src/pages/rh/etat_besoin/components/table_etat_besoin_rh.dart';
+import 'package:fokad_admin/src/pages/budgets/etat_besoin/components/table_etat_besoin_budgets.dart';
 import 'package:fokad_admin/src/utils/loading.dart';
 import 'package:fokad_admin/src/utils/priority_dropdown.dart';
 import 'package:fokad_admin/src/widgets/title_widget.dart';
 
-class EtatBesoinLogistiquePage extends StatefulWidget {
-  const EtatBesoinLogistiquePage({Key? key}) : super(key: key);
+class EtatBesoinBudgetsPage extends StatefulWidget {
+  const EtatBesoinBudgetsPage({Key? key}) : super(key: key);
 
   @override
-  State<EtatBesoinLogistiquePage> createState() =>
-      _EtatBesoinLogistiquePageState();
+  State<EtatBesoinBudgetsPage> createState() => _EtatBesoinBudgetsPageState();
 }
 
-class _EtatBesoinLogistiquePageState extends State<EtatBesoinLogistiquePage> {
+class _EtatBesoinBudgetsPageState extends State<EtatBesoinBudgetsPage> {
   final GlobalKey<ScaffoldState> _key = GlobalKey();
 
   final _formKey = GlobalKey<FormState>();
@@ -27,6 +26,18 @@ class _EtatBesoinLogistiquePageState extends State<EtatBesoinLogistiquePage> {
   final List<String> priorityList = PriorityDropdown().priorityDropdown;
   final TextEditingController titleController = TextEditingController();
   String? priority;
+
+  @override
+  void initState() {
+    getData();
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    titleController.dispose();
+    super.dispose();
+  }
 
   String? matricule;
 
@@ -44,9 +55,10 @@ class _EtatBesoinLogistiquePageState extends State<EtatBesoinLogistiquePage> {
         key: _key,
         drawer: const DrawerMenu(),
         floatingActionButton: FloatingActionButton(
-            tooltip: 'Ajout etat de besoin RH',
+            tooltip: 'Ajout etat de besoin Budgets',
             child: const Icon(Icons.add),
             onPressed: () {
+              // Navigator.pushNamed(context, RhRoutes.rhEtatBesoinAdd);
               showModalBottomSheet<void>(
                 context: context,
                 constraints: BoxConstraints(
@@ -119,8 +131,7 @@ class _EtatBesoinLogistiquePageState extends State<EtatBesoinLogistiquePage> {
                           title: 'Etat de besoin',
                           controllerMenu: () =>
                               _key.currentState!.openDrawer()),
-                      // const Expanded(child: TableDevis())
-                      const Expanded(child: TabvleEtatBesoinRH())
+                      const Expanded(child: TableEtatBesoinBudgets())
                     ],
                   ),
                 ),
@@ -183,7 +194,7 @@ class _EtatBesoinLogistiquePageState extends State<EtatBesoinLogistiquePage> {
     final devisModel = DevisModel(
         title: titleController.text,
         priority: priority.toString(),
-        departement: "Logistique",
+        departement: "Budgets",
         observation: false,
         signature: matricule.toString(),
         createdRef: DateTime.now(),

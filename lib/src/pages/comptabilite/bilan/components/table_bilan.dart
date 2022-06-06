@@ -54,7 +54,14 @@ class _TableBilanState extends State<TableBilan> {
       createHeader: (PlutoGridStateManager header) {
         return Row(
           mainAxisAlignment: MainAxisAlignment.end,
-          children: [PrintWidget(onPressed: () {})],
+          children: [
+            IconButton(
+                onPressed: () {
+                   Navigator.pushNamed(
+                      context, ComptabiliteRoutes.comptabiliteBilan); 
+                },
+                icon: const Icon(Icons.refresh)),
+            PrintWidget(onPressed: () {})],
         );
       },
       configuration: PlutoGridConfiguration(

@@ -11,15 +11,14 @@ import 'package:fokad_admin/src/widgets/title_widget.dart';
 import 'package:intl/intl.dart';
 import 'package:pluto_grid/pluto_grid.dart';
 
-class TabvleEtatBesoinFinance extends StatefulWidget {
-  const TabvleEtatBesoinFinance({Key? key}) : super(key: key);
+class TableEtatBesoinCM extends StatefulWidget {
+  const TableEtatBesoinCM({Key? key}) : super(key: key);
 
   @override
-  State<TabvleEtatBesoinFinance> createState() =>
-      _TabvleEtatBesoinFinanceState();
+  State<TableEtatBesoinCM> createState() => _TableEtatBesoinCMState();
 }
 
-class _TabvleEtatBesoinFinanceState extends State<TabvleEtatBesoinFinance> {
+class _TableEtatBesoinCMState extends State<TableEtatBesoinCM> {
   List<PlutoColumn> columns = [];
   List<PlutoRow> rows = [];
   PlutoGridStateManager? stateManager;
@@ -80,18 +79,23 @@ class _TabvleEtatBesoinFinanceState extends State<TabvleEtatBesoinFinance> {
         onLoaded: (PlutoGridOnLoadedEvent event) {
           stateManager = event.stateManager;
           stateManager!.setShowColumnFilter(true);
-          // stateManager!.addListener(agentsRow);
-          // removeKeyboardListener =
-          //     stateManager!.keyManager!.subject.stream.listen(handleKeyboard);
-
-          // stateManager!.setSelectingMode(PlutoGridSelectingMode.none);
         },
         createHeader: (PlutoGridStateManager header) {
           return Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              const TitleWidget(title: 'Finances'),
-              PrintWidget(onPressed: () {})
+              const TitleWidget(title: 'Commercial et Marketing'),
+              Row(
+                children: [
+                  IconButton(
+                    onPressed: () {
+                      Navigator.pushNamed(context, 
+                      ComMarketingRoutes.comMarketingEtatBesoin);
+                    },
+                    icon: const Icon(Icons.refresh)),
+                  PrintWidget(onPressed: () {}),
+                ],
+              )
             ],
           );
         },
@@ -141,7 +145,7 @@ class _TabvleEtatBesoinFinanceState extends State<TabvleEtatBesoinFinance> {
       ),
       PlutoColumn(
         readOnly: true,
-        title: 'Titre',
+        title: 'Intitlé',
         field: 'title',
         type: PlutoColumnType.text(),
         enableRowDrag: true,
@@ -191,10 +195,9 @@ class _TabvleEtatBesoinFinanceState extends State<TabvleEtatBesoinFinance> {
   }
 
   Future agentsRow() async {
-    final userModel = await AuthApi().getUserId();
     List<DevisModel?> dataList = await DevisAPi().getAllData();
     var data = dataList
-        .where((element) => element!.departement == userModel.departement)
+        .where((element) => element!.departement == 'Commercial et Marketing')
         .toList();
     if (mounted) {
       setState(() {
@@ -208,7 +211,7 @@ class _TabvleEtatBesoinFinanceState extends State<TabvleEtatBesoinFinance> {
                 value: DateFormat("dd-MM-yyyy HH:mm").format(item.created))
           }));
           stateManager!.resetCurrentState();
-          // stateManager!.notifyListeners();
+          stateManager!.notifyListeners();
           // stateManager!.isPaginated;
           //
         }

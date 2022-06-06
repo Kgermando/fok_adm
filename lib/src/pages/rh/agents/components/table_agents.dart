@@ -55,6 +55,10 @@ class _TableAgentsState extends State<TableAgents> {
         return Row(
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
+            IconButton(onPressed: () {
+              Navigator.pushNamed(
+                      context, RhRoutes.rhAgent); 
+            }, icon: const Icon(Icons.refresh)),
             PrintWidget(onPressed: () {
               Navigator.of(context).push(MaterialPageRoute(
                   builder: (context) => const AgentXlsx()));

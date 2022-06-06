@@ -6,9 +6,6 @@ import 'package:fokad_admin/src/constants/responsive.dart';
 import 'package:fokad_admin/src/provider/theme_provider.dart';
 import 'package:fokad_admin/src/routes/routes.dart';
 import 'package:fokad_admin/src/widgets/btn_widget.dart';
-import 'package:provider/provider.dart';
-
-import '../../app_state/app_state.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -323,10 +320,12 @@ class _LoginPageState extends State<LoginPage> {
                     }
                     
                   } else if (user.departement == "Logistique") {
-                     if (double.parse(user.role) <= 2) {
-                       Navigator.pushNamed(context, ArchiveRoutes.arcihves);
+                      if (double.parse(user.role) <= 2) {
+                        Navigator.pushNamed(
+                          context, LogistiqueRoutes.logDashboard);
                     } else {
-                      Navigator.pushNamed(context, ArchiveRoutes.arcihves);
+                      Navigator.pushNamed(
+                          context, LogistiqueRoutes.logAnguinAuto);
                     }
                   }
 

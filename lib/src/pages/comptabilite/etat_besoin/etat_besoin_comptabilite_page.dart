@@ -6,7 +6,7 @@ import 'package:fokad_admin/src/constants/responsive.dart';
 import 'package:fokad_admin/src/models/devis/devis_models.dart';
 import 'package:fokad_admin/src/navigation/drawer/drawer_menu.dart';
 import 'package:fokad_admin/src/navigation/header/custom_appbar.dart';
-import 'package:fokad_admin/src/pages/rh/etat_besoin/components/table_etat_besoin_rh.dart';
+import 'package:fokad_admin/src/pages/comptabilite/etat_besoin/components/table_etat_besoin_comptabilite.dart';
 import 'package:fokad_admin/src/utils/loading.dart';
 import 'package:fokad_admin/src/utils/priority_dropdown.dart';
 import 'package:fokad_admin/src/widgets/title_widget.dart';
@@ -15,12 +15,10 @@ class EtatBesoinComptabilitePage extends StatefulWidget {
   const EtatBesoinComptabilitePage({Key? key}) : super(key: key);
 
   @override
-  State<EtatBesoinComptabilitePage> createState() =>
-      _EtatBesoinComptabilitePageState();
+  State<EtatBesoinComptabilitePage> createState() => _EtatBesoinComptabilitePageState();
 }
 
-class _EtatBesoinComptabilitePageState
-    extends State<EtatBesoinComptabilitePage> {
+class _EtatBesoinComptabilitePageState extends State<EtatBesoinComptabilitePage> {
   final GlobalKey<ScaffoldState> _key = GlobalKey();
 
   final _formKey = GlobalKey<FormState>();
@@ -28,6 +26,18 @@ class _EtatBesoinComptabilitePageState
   final List<String> priorityList = PriorityDropdown().priorityDropdown;
   final TextEditingController titleController = TextEditingController();
   String? priority;
+
+  @override
+  void initState() {
+    getData();
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    titleController.dispose();
+    super.dispose();
+  }
 
   String? matricule;
 
@@ -48,6 +58,7 @@ class _EtatBesoinComptabilitePageState
             tooltip: 'Ajout etat de besoin RH',
             child: const Icon(Icons.add),
             onPressed: () {
+              // Navigator.pushNamed(context, RhRoutes.rhEtatBesoinAdd);
               showModalBottomSheet<void>(
                 context: context,
                 constraints: BoxConstraints(
@@ -120,8 +131,7 @@ class _EtatBesoinComptabilitePageState
                           title: 'Etat de besoin',
                           controllerMenu: () =>
                               _key.currentState!.openDrawer()),
-                      // const Expanded(child: TableDevis())
-                      const Expanded(child: TabvleEtatBesoinRH())
+                      const Expanded(child: TableEtatBesoinComptabilite())
                     ],
                   ),
                 ),

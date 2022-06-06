@@ -121,7 +121,8 @@ class _PaiementBulletinState extends State<PaiementBulletin> {
                     if (snapshot.hasData) {
                       PaiementSalaireModel? data = snapshot.data;
                       approbationData = approbList
-                          .where((element) => element.reference == data!.id!)
+                          .where((element) => element.reference.microsecondsSinceEpoch == 
+                            data!.createdAt.microsecondsSinceEpoch)
                           .toList();
 
                       if (approbationData.isNotEmpty) {

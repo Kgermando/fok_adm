@@ -29,17 +29,17 @@ class _ArchiveNavState extends State<ArchiveNav> {
         });
       },
       trailing: const Icon(Icons.arrow_drop_down),
-      children: [
-        DrawerWidget(
-            selected: widget.pageCurrente == ArchiveRoutes.arcihves,
-            icon: Icons.archive,
-            sizeIcon: 20.0,
-            title: 'Archives',
-            style: bodyLarge!,
-            onTap: () {
-              Navigator.pushNamed(context, ArchiveRoutes.arcihves);
-              // Navigator.of(context).pop();
-            }),
+      children: const [
+        // DrawerWidget(
+        //     selected: widget.pageCurrente == ArchiveRoutes.arcihves,
+        //     icon: Icons.archive,
+        //     sizeIcon: 20.0,
+        //     title: 'Archives',
+        //     style: bodyLarge!,
+        //     onTap: () {
+        //       Navigator.pushNamed(context, ArchiveRoutes.arcihves);
+        //       // Navigator.of(context).pop();
+        //     }),
       ],
     );
   }
