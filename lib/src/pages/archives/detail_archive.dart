@@ -1,3 +1,4 @@
+import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
 import 'package:fokad_admin/src/api/archives/archive_api.dart';
 import 'package:fokad_admin/src/constants/app_theme.dart';
@@ -5,11 +6,13 @@ import 'package:fokad_admin/src/constants/responsive.dart';
 import 'package:fokad_admin/src/models/archive/archive_model.dart';
 import 'package:fokad_admin/src/navigation/drawer/drawer_menu.dart';
 import 'package:fokad_admin/src/navigation/header/custom_appbar.dart';
+import 'package:fokad_admin/src/pages/archives/components/archive_pdf_viewer.dart';
 import 'package:fokad_admin/src/utils/loading.dart';
 import 'package:fokad_admin/src/widgets/print_widget.dart';
 import 'package:fokad_admin/src/widgets/title_widget.dart';
 import 'package:intl/intl.dart';
 import 'package:pluto_grid/pluto_grid.dart';
+import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 
 class DetailArchive extends StatefulWidget {
   const DetailArchive({Key? key}) : super(key: key);
@@ -28,7 +31,6 @@ class _DetailArchiveState extends State<DetailArchive> {
   PlutoGridStateManager? stateManager;
   PlutoGridSelectingMode gridSelectingMode = PlutoGridSelectingMode.row;
 
-
   // @override
   // initState() {
   //   Timer.periodic(const Duration(milliseconds: 500), ((timer) {
@@ -40,7 +42,6 @@ class _DetailArchiveState extends State<DetailArchive> {
 
   //   super.initState();
   // }
-
 
   // Future<void> getData() async {
   //   var ar = await LIgneBudgetaireApi().getAllData();
@@ -104,8 +105,7 @@ class _DetailArchiveState extends State<DetailArchive> {
                               ],
                             );
                           } else {
-                            return Center(
-                                child: loading());
+                            return Center(child: loading());
                           }
                         })),
               ),
@@ -142,14 +142,15 @@ class _DetailArchiveState extends State<DetailArchive> {
                       PrintWidget(
                           tooltip: 'Imprimer le document', onPressed: () {}),
                       SelectableText(
-                          DateFormat("dd-MM-yyyy HH:mm")
-                              .format(data.created),
+                          DateFormat("dd-MM-yyyy HH:mm").format(data.created),
                           textAlign: TextAlign.start),
                     ],
                   )
                 ],
               ),
-              dataWidget(data)
+              dataWidget(data),
+              // documentFile(data),
+              documentViewer(data)
             ],
           ),
         ),
@@ -208,13 +209,20 @@ class _DetailArchiveState extends State<DetailArchive> {
           Row(
             children: [
               Expanded(
-                child: Text('Montant :',
+                child: Text('FIchier archivé :',
                     textAlign: TextAlign.start,
                     style: bodyMedium.copyWith(fontWeight: FontWeight.bold)),
               ),
               Expanded(
-                child: SelectableText(data.fichier,
-                    textAlign: TextAlign.start, style: bodyMedium),
+                child: TextButton(
+                  onPressed: () {
+                    Navigator.push(context, MaterialPageRoute(
+                      builder: (context) => 
+                      ArchivePdfViewer(archiveModel: data)));
+                  },
+                  child: SelectableText(data.fichier,
+                      textAlign: TextAlign.start, style: bodyMedium),
+                ),
               )
             ],
           ),
@@ -235,5 +243,28 @@ class _DetailArchiveState extends State<DetailArchive> {
         ],
       ),
     );
+  }
+
+  Widget documentFile(ArchiveModel data) {
+    return Padding(
+      padding: const EdgeInsets.all(p20),
+      child: ExtendedImage.network(
+        data.fichier,
+        width: 400,
+        height: 200,
+        fit: BoxFit.fill,
+        cache: true,
+        border: Border.all(color: Colors.red, width: 1.0),
+        shape: BoxShape.rectangle,
+        borderRadius: const BorderRadius.all(Radius.circular(30.0)),
+        //cancelToken: cancellationToken,
+      ),
+    );
+  }
+
+  Widget documentViewer(ArchiveModel data) {
+    return Padding(
+        padding: const EdgeInsets.all(p20),
+        child: Expanded(child: SfPdfViewer.network(data.fichier)));
   }
 }

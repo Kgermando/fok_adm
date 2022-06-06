@@ -27,10 +27,7 @@ class _TablePresenceState extends State<TablePresence> {
   @override
   initState() {
     agentsColumn();
-    Timer.periodic(const Duration(milliseconds: 500), ((timer) {
-      agentsRow();
-      timer.cancel();
-    }));
+    agentsRow();
     super.initState();
   }
 

@@ -10,15 +10,8 @@ import 'package:http/http.dart' as http;
 
 class ArchiveApi {
   var client = http.Client();
-  // final storage = const FlutterSecureStorage();
-
-  // Future<String?> getToken() async {
-  //   final data = await storage.read(key: "accessToken");
-  //   return data;
-  // }
-
+  
   Future<List<ArchiveModel>> getAllData() async {
-    // String? token = await UserSharedPref().getAccessToken();
     String? token = await UserSharedPref().getAccessToken();
 
     if (token!.isNotEmpty) {
@@ -42,7 +35,7 @@ class ArchiveApi {
       }
       return data;
     } else {
-      throw Exception(jsonDecode(resp.body)['message']);
+      throw Exception(resp.statusCode);
     }
   }
 
@@ -55,7 +48,7 @@ class ArchiveApi {
       var payload = json.decode(
           ascii.decode(base64.decode(base64.normalize(splittedJwt[1]))));
     }
-    var getUrl = Uri.parse("$mainUrl/archves/$id");
+    var getUrl = Uri.parse("$mainUrl/archives/$id");
     var resp = await client.get(
       getUrl,
       headers: <String, String>{
@@ -66,7 +59,7 @@ class ArchiveApi {
     if (resp.statusCode == 200) {
       return ArchiveModel.fromJson(json.decode(resp.body));
     } else {
-      throw Exception(json.decode(resp.body)['message']);
+      throw Exception(resp.statusCode);
     }
   }
 
@@ -89,7 +82,7 @@ class ArchiveApi {
       await AuthApi().refreshAccessToken();
       return insertData(archiveModel);
     } else {
-      throw Exception(json.decode(resp.body)['message']);
+      throw Exception(resp.statusCode);
     }
   }
 
@@ -99,7 +92,7 @@ class ArchiveApi {
 
     var data = archiveModel.toJson();
     var body = jsonEncode(data);
-    var updateUrl = Uri.parse("$mainUrl/archves/update-archve/$id");
+    var updateUrl = Uri.parse("$mainUrl/archives/update-archive/$id");
 
     var res = await client.put(updateUrl,
         headers: <String, String>{
@@ -110,7 +103,7 @@ class ArchiveApi {
     if (res.statusCode == 200) {
       return ArchiveModel.fromJson(json.decode(res.body));
     } else {
-      throw Exception(json.decode(res.body)['message']);
+      throw Exception(res.statusCode);
     }
   }
 
@@ -118,7 +111,7 @@ class ArchiveApi {
     // String? token = await UserSharedPref().getAccessToken();
     String? token = await UserSharedPref().getAccessToken();
 
-    var deleteUrl = Uri.parse("$mainUrl/archves/delete-archve/$id");
+    var deleteUrl = Uri.parse("$mainUrl/archives/delete-archive/$id");
 
     var res = await client.delete(deleteUrl, headers: <String, String>{
       'Content-Type': 'application/json; charset=UTF-8',
@@ -127,7 +120,7 @@ class ArchiveApi {
     if (res.statusCode == 200) {
       return ArchiveModel.fromJson(json.decode(res.body)['data']);
     } else {
-      throw Exception(json.decode(res.body)['message']);
+      throw Exception(res.statusCode);
     }
   }
 }

@@ -73,15 +73,15 @@ class _ArchiveFolderState extends State<ArchiveFolder> {
         key: _key,
         drawer: const DrawerMenu(),
         floatingActionButton: FloatingActionButton.extended(
-          label: Row(
-            children: const [
-              Icon(Icons.add),
-              Text("Nouveau dossier"),
-            ],
-          ),
-          onPressed: () {
-            detailAgentDialog();
-        }),
+            label: Row(
+              children: const [
+                Icon(Icons.add),
+                Text("Nouveau dossier"),
+              ],
+            ),
+            onPressed: () {
+              detailAgentDialog();
+            }),
         body: SafeArea(
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -101,39 +101,50 @@ class _ArchiveFolderState extends State<ArchiveFolder> {
                           title: 'Gestion des archives',
                           controllerMenu: () =>
                               _key.currentState!.openDrawer()),
-                      Padding(
-                        padding: const EdgeInsets.all(p30),
-                        child: Expanded(
-                          child: ContextMenuArea(
-                          builder: (context) => [
-                            ListTile(
-                              title: const Text('Nouveau dossier'),
-                              onTap: () {
-                                detailAgentDialog();
-                              },
-                            ),
-                          ],
-                          child: FutureBuilder<List<ArchiveFolderModel>>(
-                            future: ArchiveFolderApi().getAllData(),
-                            builder: (BuildContext context,
-                                AsyncSnapshot<List<ArchiveFolderModel>>
-                                    snapshot) {
-                              if (snapshot.hasData) {
-                                List<ArchiveFolderModel>? archiveFolderList =
-                                    snapshot.data;
-                                return Wrap(
-                                    children: List.generate(
-                                        archiveFolderList!.length, (index) {
-                                  final data = archiveFolderList[index];
-                                  final color = _lightColors[
-                                      index % _lightColors.length];
-                                  return cardFolder(data, color);
-                                }));
-                              } else {
-                                return Center(child: loading());
-                              }
-                            },
-                          )),
+                      Expanded(
+                        child: Padding(
+                          padding: const EdgeInsets.all(p30),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.end,
+                                children: [
+                                  IconButton(
+                                    onPressed: () {
+                                      Navigator.pushNamed(context,
+                                          ArchiveRoutes.archives);
+                                    },
+                                    icon: const Icon(Icons.refresh)),
+                                ],
+                              ),
+                              Expanded(
+                                child: FutureBuilder<List<ArchiveFolderModel>>(
+                                  future: ArchiveFolderApi().getAllData(),
+                                  builder: (BuildContext context,
+                                      AsyncSnapshot<List<ArchiveFolderModel>>
+                                          snapshot) {
+                                    if (snapshot.hasData) {
+                                      List<ArchiveFolderModel>?
+                                        archiveFolderList = snapshot.data!
+                                        .where((element) => element.departement == 
+                                        user.departement).toList();
+                                      return Wrap(
+                                          children: List.generate(
+                                              archiveFolderList.length, (index) {
+                                        final data = archiveFolderList[index];
+                                        final color = _lightColors[
+                                            index % _lightColors.length];
+                                        return cardFolder(data, color);
+                                      }));
+                                    } else {
+                                      return Center(child: loading());
+                                    }
+                                  },
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
                       )
                     ],
@@ -147,17 +158,20 @@ class _ArchiveFolderState extends State<ArchiveFolder> {
 
   Widget cardFolder(ArchiveFolderModel data, Color color) {
     return GestureDetector(
-      onDoubleTap: () {
-        Navigator.pushNamed(context, 
-          ArchiveRoutes.archiveTable,
-              arguments: data
-        );
-      },
-      child: Icon(
-        Icons.folder,
-        color: color,
-      )
-    );
+        onDoubleTap: () {
+          Navigator.pushNamed(context, ArchiveRoutes.archiveTable,
+              arguments: data);
+        },
+        child: Column(
+          children: [
+            Icon(
+              Icons.folder,
+              color: color,
+              size: 100.0,
+            ),
+            Text(data.folderName)
+          ],
+        ));
   }
 
   detailAgentDialog() {
@@ -215,15 +229,15 @@ class _ArchiveFolderState extends State<ArchiveFolder> {
   }
 
   Future<void> submit() async {
-    final archiveFolderModel = ArchiveFolderModel(
+    final archiveModel = ArchiveFolderModel(
         departement: user.departement,
         folderName: folderNameController.text,
         signature: user.matricule,
         created: DateTime.now());
-
+    await ArchiveFolderApi().insertData(archiveModel);
     Navigator.pop(context);
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-      content: const Text("Ajouté avec succès!"),
+      content: const Text("Dossier créé avec succès!"),
       backgroundColor: Colors.green[700],
     ));
   }

@@ -227,8 +227,11 @@ var campaignsUrl = Uri.parse("$mainUrl/campaigns/");
 var addCampaignsUrl = Uri.parse("$mainUrl/campaigns/insert-new-campaign");
 
 // ARCHIVES
-var archvesUrl = Uri.parse("$mainUrl/archves/");
-var addArchvesUrl = Uri.parse("$mainUrl/archves/insert-new-archve");
+var archvesUrl = Uri.parse("$mainUrl/archives/");
+var addArchvesUrl = Uri.parse("$mainUrl/archives/insert-new-archive");
+
+var archveFoldersUrl = Uri.parse("$mainUrl/archives-folders/");
+var addArchveFolderUrl = Uri.parse("$mainUrl/archives-folders/insert-new-archive-folder");
 
 // MAILS
 var mailsUrl = Uri.parse("$mainUrl/mails/");

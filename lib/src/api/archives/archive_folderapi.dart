@@ -12,7 +12,6 @@ class ArchiveFolderApi {
   var client = http.Client();
 
   Future<List<ArchiveFolderModel>> getAllData() async {
-    // String? token = await UserSharedPref().getAccessToken();
     String? token = await UserSharedPref().getAccessToken();
 
     if (token!.isNotEmpty) {
@@ -21,7 +20,7 @@ class ArchiveFolderApi {
           ascii.decode(base64.decode(base64.normalize(splittedJwt[1]))));
     }
     var resp = await client.get(
-      archvesUrl,
+      archveFoldersUrl,
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
         'Authorization': 'Bearer $token'
@@ -36,12 +35,11 @@ class ArchiveFolderApi {
       }
       return data;
     } else {
-      throw Exception(jsonDecode(resp.body)['message']);
+      throw Exception(resp.statusCode);
     }
   }
 
   Future<ArchiveFolderModel> getOneData(int id) async {
-    // String? token = await UserSharedPref().getAccessToken();
     String? token = await UserSharedPref().getAccessToken();
 
     if (token!.isNotEmpty) {
@@ -49,7 +47,7 @@ class ArchiveFolderApi {
       var payload = json.decode(
           ascii.decode(base64.decode(base64.normalize(splittedJwt[1]))));
     }
-    var getUrl = Uri.parse("$mainUrl/archves/$id");
+    var getUrl = Uri.parse("$mainUrl/archives-folders/$id");
     var resp = await client.get(
       getUrl,
       headers: <String, String>{
@@ -60,18 +58,18 @@ class ArchiveFolderApi {
     if (resp.statusCode == 200) {
       return ArchiveFolderModel.fromJson(json.decode(resp.body));
     } else {
-      throw Exception(json.decode(resp.body)['message']);
+      throw Exception(resp.statusCode);
     }
   }
 
-  Future<ArchiveFolderModel> insertData(ArchiveModel archiveModel) async {
+  Future<ArchiveFolderModel> insertData(ArchiveFolderModel archiveModel) async {
     // String? token = await UserSharedPref().getAccessToken();
     String? token = await UserSharedPref().getAccessToken();
 
     var data = archiveModel.toJson();
     var body = jsonEncode(data);
 
-    var resp = await client.post(addArchvesUrl,
+    var resp = await client.post(addArchveFolderUrl,
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
           'Authorization': 'Bearer $token'
@@ -83,17 +81,16 @@ class ArchiveFolderApi {
       await AuthApi().refreshAccessToken();
       return insertData(archiveModel);
     } else {
-      throw Exception(json.decode(resp.body)['message']);
+      throw Exception(resp.statusCode);
     }
   }
 
   Future<ArchiveFolderModel> updateData(int id, ArchiveFolderModel archiveModel) async {
-    // String? token = await UserSharedPref().getAccessToken();
     String? token = await UserSharedPref().getAccessToken();
 
     var data = archiveModel.toJson();
     var body = jsonEncode(data);
-    var updateUrl = Uri.parse("$mainUrl/archves/update-archve/$id");
+    var updateUrl = Uri.parse("$mainUrl/archives-folders/update-archive-folder/$id");
 
     var res = await client.put(updateUrl,
         headers: <String, String>{
@@ -104,7 +101,7 @@ class ArchiveFolderApi {
     if (res.statusCode == 200) {
       return ArchiveFolderModel.fromJson(json.decode(res.body));
     } else {
-      throw Exception(json.decode(res.body)['message']);
+      throw Exception(res.statusCode);
     }
   }
 
@@ -112,7 +109,7 @@ class ArchiveFolderApi {
     // String? token = await UserSharedPref().getAccessToken();
     String? token = await UserSharedPref().getAccessToken();
 
-    var deleteUrl = Uri.parse("$mainUrl/archves/delete-archve/$id");
+    var deleteUrl = Uri.parse("$mainUrl/archives-folders/delete-archive-folder/$id");
 
     var res = await client.delete(deleteUrl, headers: <String, String>{
       'Content-Type': 'application/json; charset=UTF-8',
@@ -121,7 +118,7 @@ class ArchiveFolderApi {
     if (res.statusCode == 200) {
       return ArchiveFolderModel.fromJson(json.decode(res.body)['data']);
     } else {
-      throw Exception(json.decode(res.body)['message']);
+      throw Exception(res.statusCode);
     }
   }
 }

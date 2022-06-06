@@ -1,3 +1,6 @@
+import 'dart:io';
+
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:fokad_admin/src/api/archives/archive_api.dart';
 import 'package:fokad_admin/src/api/auth/auth_api.dart';
@@ -8,8 +11,10 @@ import 'package:fokad_admin/src/models/users/user_model.dart';
 import 'package:fokad_admin/src/navigation/drawer/drawer_menu.dart';
 import 'package:fokad_admin/src/navigation/header/custom_appbar.dart';
 import 'package:fokad_admin/src/utils/dropdown.dart';
+import 'package:fokad_admin/src/utils/loading.dart';
 import 'package:fokad_admin/src/widgets/btn_widget.dart';
 import 'package:fokad_admin/src/widgets/title_widget.dart';
+import 'package:dospace/dospace.dart' as dospace;
 
 class AddArchive extends StatefulWidget {
   const AddArchive({Key? key}) : super(key: key);
@@ -30,6 +35,50 @@ class _AddArchiveState extends State<AddArchive> {
   String? departement;
   TextEditingController descriptionController = TextEditingController();
   TextEditingController fichierController = TextEditingController();
+
+  // String projectName = "https://fokad-spaces.sfo3.digitaloceanspaces.com";
+  // String endPoint = "sfo3.digitaloceanspaces.com";
+  // String fokadToken =
+  //     "dop_v1_406372492288c59fb2c0d6a983a3a1c721715f8044071bbce0c4afadebde4c13";
+
+  dospace.Spaces spaces = dospace.Spaces(
+    region: "sfo3",
+    accessKey: "YGKB5YLBB27GESJOKSEX",
+    secretKey: "xBadujKrg8HwNTquw1TrfPta5d17O2OtvVLl8QSOegA",
+  );
+
+  bool isUploading = false;
+  String? uploadedFileUrl;
+
+  void _pdfUpload(File pdfFile) async {
+    String projectName = "fokad-spaces";
+    String region = "sfo3";
+    String folderName = "archives";
+    String? pdfFileName;
+
+    String extension = 'pdf';
+    pdfFileName = "${DateTime.now().millisecondsSinceEpoch}.$extension";
+
+    uploadedFileUrl = "https://" +
+        projectName +
+        "." +
+        region +
+        ".digitaloceanspaces.com/" +
+        folderName +
+        "/" +
+        pdfFileName.toString();
+    print('url: $uploadedFileUrl');
+    isUploading = true;
+    dospace.Bucket bucketpdf = spaces.bucket('fokad-spaces');
+    String? etagpdf = await bucketpdf.uploadFile(
+        folderName + '/' + pdfFileName.toString(),
+        pdfFile,
+        'application/pdf',
+        dospace.Permissions.private);
+    isUploading = false;
+    print('upload: $etagpdf');
+    print('done');
+  }
 
   @override
   initState() {
@@ -133,15 +182,7 @@ class _AddArchiveState extends State<AddArchive> {
                     const SizedBox(
                       height: p20,
                     ),
-                    Row(
-                      children: [
-                        Expanded(child: nomDocumentWidget()),
-                        const SizedBox(
-                          width: p10,
-                        ),
-                        Expanded(child: departementWidget())
-                      ],
-                    ),
+                    nomDocumentWidget(),
                     Row(
                       children: [
                         Expanded(child: fichierWidget()),
@@ -180,7 +221,6 @@ class _AddArchiveState extends State<AddArchive> {
         margin: const EdgeInsets.only(bottom: p20),
         child: TextFormField(
           controller: nomDocumentController,
-          readOnly: true,
           decoration: InputDecoration(
             border:
                 OutlineInputBorder(borderRadius: BorderRadius.circular(10.0)),
@@ -198,33 +238,33 @@ class _AddArchiveState extends State<AddArchive> {
         ));
   }
 
-  Widget departementWidget() {
-    return Container(
-      margin: const EdgeInsets.only(bottom: p20),
-      child: DropdownButtonFormField<String>(
-        decoration: InputDecoration(
-          labelText: 'Département',
-          labelStyle: const TextStyle(),
-          border: OutlineInputBorder(borderRadius: BorderRadius.circular(5.0)),
-          contentPadding: const EdgeInsets.only(left: 5.0),
-        ),
-        value: departement,
-        isExpanded: true,
-        items: departementList.map((String value) {
-          return DropdownMenuItem<String>(
-            value: value,
-            child: Text(value),
-          );
-        }).toList(),
-        validator: (value) => value == null ? "Select departement" : null,
-        onChanged: (value) {
-          setState(() {
-            departement = value!;
-          });
-        },
-      ),
-    );
-  }
+  // Widget departementWidget() {
+  //   return Container(
+  //     margin: const EdgeInsets.only(bottom: p20),
+  //     child: DropdownButtonFormField<String>(
+  //       decoration: InputDecoration(
+  //         labelText: 'Département',
+  //         labelStyle: const TextStyle(),
+  //         border: OutlineInputBorder(borderRadius: BorderRadius.circular(5.0)),
+  //         contentPadding: const EdgeInsets.only(left: 5.0),
+  //       ),
+  //       value: departement,
+  //       isExpanded: true,
+  //       items: departementList.map((String value) {
+  //         return DropdownMenuItem<String>(
+  //           value: value,
+  //           child: Text(value),
+  //         );
+  //       }).toList(),
+  //       validator: (value) => value == null ? "Select departement" : null,
+  //       onChanged: (value) {
+  //         setState(() {
+  //           departement = value!;
+  //         });
+  //       },
+  //     ),
+  //   );
+  // }
 
   Widget descriptionWidget() {
     return Container(
@@ -237,8 +277,8 @@ class _AddArchiveState extends State<AddArchive> {
             labelText: 'Description',
           ),
           keyboardType: TextInputType.multiline,
-          minLines: 1,
-          maxLines: 3,
+          minLines: 3,
+          maxLines: 5,
           style: const TextStyle(),
           validator: (value) {
             if (value != null && value.isEmpty) {
@@ -253,37 +293,39 @@ class _AddArchiveState extends State<AddArchive> {
   Widget fichierWidget() {
     return Container(
         margin: const EdgeInsets.only(bottom: p20),
-        child: TextFormField(
-          controller: fichierController,
-          keyboardType: TextInputType.multiline,
-          minLines: 3,
-          maxLines: 10,
-          decoration: InputDecoration(
-            border:
-                OutlineInputBorder(borderRadius: BorderRadius.circular(10.0)),
-            labelText: 'Fichier',
-          ),
-          style: const TextStyle(),
-          validator: (value) {
-            if (value != null && value.isEmpty) {
-              return 'Ce champs est obligatoire';
-            } else {
-              return null;
-            }
-          },
-        ));
+        child: isUploading
+            ? loading()
+            : TextButton.icon(
+                onPressed: () async {
+                  FilePickerResult? result =
+                      await FilePicker.platform.pickFiles();
+                  if (result != null) {
+                    File file = File(result.files.single.path!);
+                    setState(() {
+                      isUploading = true;
+                    });
+                    _pdfUpload(file);
+                    // setState(() {
+                    //   isUploading = false;
+                    // });
+                  } else {
+                    const Text("Votre fichier n'existe pas");
+                  }
+                },
+                icon: const Icon(Icons.upload_file),
+                label: Text("Selectionner le fichier",
+                    style: Theme.of(context).textTheme.bodyLarge)));
   }
 
   Future<void> submit(ArchiveFolderModel data) async {
     final archiveModel = ArchiveModel(
-      departement: data.departement,
-      folderName: data.folderName,
-      nomDocument: nomDocumentController.text,
-      description: descriptionController.text,
-      fichier: fichierController.text,
-      signature: signature.toString(),
-      created: DateTime.now()
-    );
+        departement: data.departement,
+        folderName: data.folderName,
+        nomDocument: nomDocumentController.text,
+        description: descriptionController.text,
+        fichier: uploadedFileUrl.toString(),
+        signature: signature.toString(),
+        created: DateTime.now());
     await ArchiveApi().insertData(archiveModel);
     Navigator.of(context).pop();
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
