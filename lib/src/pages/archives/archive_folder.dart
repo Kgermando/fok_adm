@@ -1,5 +1,6 @@
 import 'package:contextmenu/contextmenu.dart';
 import 'package:flutter/material.dart';
+import 'package:fokad_admin/src/api/archives/archive_folderapi.dart';
 import 'package:fokad_admin/src/api/auth/auth_api.dart';
 import 'package:fokad_admin/src/constants/app_theme.dart';
 import 'package:fokad_admin/src/constants/responsive.dart';
@@ -7,6 +8,17 @@ import 'package:fokad_admin/src/models/archive/archive_model.dart';
 import 'package:fokad_admin/src/models/users/user_model.dart';
 import 'package:fokad_admin/src/navigation/drawer/drawer_menu.dart';
 import 'package:fokad_admin/src/navigation/header/custom_appbar.dart';
+import 'package:fokad_admin/src/routes/routes.dart';
+import 'package:fokad_admin/src/utils/loading.dart';
+
+final _lightColors = [
+  Colors.amber.shade300,
+  Colors.lightGreen.shade400,
+  Colors.lightBlue.shade400,
+  Colors.orange.shade400,
+  Colors.pinkAccent.shade400,
+  Colors.tealAccent.shade400
+];
 
 class ArchiveFolder extends StatefulWidget {
   const ArchiveFolder({Key? key}) : super(key: key);
@@ -60,13 +72,16 @@ class _ArchiveFolderState extends State<ArchiveFolder> {
     return Scaffold(
         key: _key,
         drawer: const DrawerMenu(),
-        // floatingActionButton: FloatingActionButton(
-        //     foregroundColor: Colors.white,
-        //     backgroundColor: Colors.brown.shade700,
-        //     child: const Icon(Icons.add),
-        //     onPressed: () {
-        //       Navigator.pushNamed(context, ArchiveRoutes.addArcihves);
-        //     }),
+        floatingActionButton: FloatingActionButton.extended(
+          label: Row(
+            children: const [
+              Icon(Icons.add),
+              Text("Nouveau dossier"),
+            ],
+          ),
+          onPressed: () {
+            detailAgentDialog();
+        }),
         body: SafeArea(
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -86,30 +101,41 @@ class _ArchiveFolderState extends State<ArchiveFolder> {
                           title: 'Gestion des archives',
                           controllerMenu: () =>
                               _key.currentState!.openDrawer()),
-                      Expanded(
-                          child: Padding(
+                      Padding(
                         padding: const EdgeInsets.all(p30),
-                        child: ContextMenuArea(
-                            builder: (context) => [
-                                  ListTile(
-                                    title: const Text('Nouveau dossier'),
-                                    onTap: () {
-                                      detailAgentDialog();
-                                    },
-                                  ),
-                                ],
-                            child: const Card(
-                              // color: Theme.of(context).primaryColor,
-                              child: Center(
-                                child: Text(
-                                  'Cliquer pour crée un dossier.',
-                                  style: TextStyle(
-                                    // color:Theme.of(context).colorScheme.onPrimary,
-                                  ),
-                                ),
-                              ),
-                            )),
-                      ))
+                        child: Expanded(
+                          child: ContextMenuArea(
+                          builder: (context) => [
+                            ListTile(
+                              title: const Text('Nouveau dossier'),
+                              onTap: () {
+                                detailAgentDialog();
+                              },
+                            ),
+                          ],
+                          child: FutureBuilder<List<ArchiveFolderModel>>(
+                            future: ArchiveFolderApi().getAllData(),
+                            builder: (BuildContext context,
+                                AsyncSnapshot<List<ArchiveFolderModel>>
+                                    snapshot) {
+                              if (snapshot.hasData) {
+                                List<ArchiveFolderModel>? archiveFolderList =
+                                    snapshot.data;
+                                return Wrap(
+                                    children: List.generate(
+                                        archiveFolderList!.length, (index) {
+                                  final data = archiveFolderList[index];
+                                  final color = _lightColors[
+                                      index % _lightColors.length];
+                                  return cardFolder(data, color);
+                                }));
+                              } else {
+                                return Center(child: loading());
+                              }
+                            },
+                          )),
+                        ),
+                      )
                     ],
                   ),
                 ),
@@ -117,6 +143,21 @@ class _ArchiveFolderState extends State<ArchiveFolder> {
             ],
           ),
         ));
+  }
+
+  Widget cardFolder(ArchiveFolderModel data, Color color) {
+    return GestureDetector(
+      onDoubleTap: () {
+        Navigator.pushNamed(context, 
+          ArchiveRoutes.archiveTable,
+              arguments: data
+        );
+      },
+      child: Icon(
+        Icons.folder,
+        color: color,
+      )
+    );
   }
 
   detailAgentDialog() {
@@ -175,12 +216,11 @@ class _ArchiveFolderState extends State<ArchiveFolder> {
 
   Future<void> submit() async {
     final archiveFolderModel = ArchiveFolderModel(
-      departement: user.departement,
-      folderName: folderNameController.text,
-      signature: user.matricule,
-      created: DateTime.now()
-    );
-    
+        departement: user.departement,
+        folderName: folderNameController.text,
+        signature: user.matricule,
+        created: DateTime.now());
+
     Navigator.pop(context);
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
       content: const Text("Ajouté avec succès!"),

@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:fokad_admin/src/api/rh/presence_api.dart';
 import 'package:fokad_admin/src/models/rh/presence_model.dart';
-import 'package:fokad_admin/src/pages/rh/presences/components/detail_presence.dart';
 import 'package:fokad_admin/src/routes/routes.dart';
 import 'package:fokad_admin/src/utils/class_implemented.dart';
 import 'package:fokad_admin/src/widgets/print_widget.dart';

@@ -10,7 +10,8 @@ import 'package:fokad_admin/src/pages/administration/logistique_admin.dart';
 import 'package:fokad_admin/src/pages/administration/rh_admin.dart';
 import 'package:fokad_admin/src/pages/archives/add_archive.dart';
 import 'package:fokad_admin/src/pages/archives/archive_folder.dart';
-import 'package:fokad_admin/src/pages/archives/archive_page.dart';
+import 'package:fokad_admin/src/pages/archives/detail_archive.dart';
+import 'package:fokad_admin/src/pages/archives/table_archive.dart';
 import 'package:fokad_admin/src/pages/auth/login_auth.dart';
 import 'package:fokad_admin/src/pages/auth/profil_page.dart';
 import 'package:fokad_admin/src/pages/budgets/budget_dd/budget_dd.dart';
@@ -291,8 +292,9 @@ class ComMarketingRoutes {
 
 class ArchiveRoutes {
   static const archives = "/archives";
-  static const archivePage = "/archive-page";
+  static const archiveTable = "/archives-table";
   static const addArchives = "/archives-add";
+  static const archivesDetail = "/archives-detail";
 }
 
 class MailRoutes {
@@ -445,7 +447,6 @@ final routes = <String, WidgetBuilder>{
   ComMarketingRoutes.comMarketingEtatBesoin: (context) =>
       const EtatBesoinCMPage(),
 
-
   // Mails
   MailRoutes.mails: (context) => const MailPages(),
   MailRoutes.addMail: (context) => const NewMail(),
@@ -453,6 +454,7 @@ final routes = <String, WidgetBuilder>{
 
   // Archives
   ArchiveRoutes.archives: (context) => const ArchiveFolder(),
-  ArchiveRoutes.archivePage: (context) => const ArchivePage(),
+  ArchiveRoutes.archiveTable: (context) => const TableArchive(),
   ArchiveRoutes.addArchives: (context) => const AddArchive(),
+  ArchiveRoutes.archivesDetail: (context) => const DetailArchive(),
 };

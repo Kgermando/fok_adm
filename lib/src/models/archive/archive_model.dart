@@ -49,8 +49,9 @@ class ArchiveFolderModel {
 
 class ArchiveModel { 
   late int? id;
-  late String nomDocument;
   late String departement;
+  late String folderName;
+  late String nomDocument;
   late String description;
   late String fichier;
   late String signature;
@@ -58,8 +59,9 @@ class ArchiveModel {
 
   ArchiveModel({
     this.id,
-    required this.nomDocument,
     required this.departement,
+    required this.folderName,
+    required this.nomDocument,
     required this.description,
     required this.fichier,
     required this.signature,
@@ -69,20 +71,22 @@ class ArchiveModel {
   factory ArchiveModel.fromSQL(List<dynamic> row) {
     return ArchiveModel(
       id: row[0],
-      nomDocument: row[1],
-      departement: row[2],
-      description: row[3],
-      fichier: row[4],
-      signature: row[5],
-      created: row[6]
+      departement: row[1],
+      folderName: row[2],
+      nomDocument: row[3],
+      description: row[4],
+      fichier: row[5],
+      signature: row[6],
+      created: row[7]
     );
   }
 
   factory ArchiveModel.fromJson(Map<String, dynamic> json) {
     return ArchiveModel(
       id: json['id'],
-      nomDocument: json['nomDocument'],
       departement: json['departement'],
+      folderName: json['folderName'],
+      nomDocument: json['nomDocument'],
       description: json['description'],
       fichier: json['fichier'],
       signature: json['signature'],
@@ -93,8 +97,9 @@ class ArchiveModel {
   Map<String, dynamic> toJson() {
     return {
       'id': id,
-      'nomDocument': nomDocument,
       'departement': departement,
+      'folderName': folderName,
+      'nomDocument': nomDocument,
       'description': description,
       'fichier': fichier,
       'signature': signature,

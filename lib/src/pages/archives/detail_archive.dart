@@ -12,8 +12,7 @@ import 'package:intl/intl.dart';
 import 'package:pluto_grid/pluto_grid.dart';
 
 class DetailArchive extends StatefulWidget {
-  const DetailArchive({Key? key, required this.id}) : super(key: key);
-  final int id;
+  const DetailArchive({Key? key}) : super(key: key);
 
   @override
   State<DetailArchive> createState() => _DetailArchiveState();
@@ -55,6 +54,7 @@ class _DetailArchiveState extends State<DetailArchive> {
 
   @override
   Widget build(BuildContext context) {
+    final id = ModalRoute.of(context)!.settings.arguments as int;
     return Scaffold(
         key: _key,
         drawer: const DrawerMenu(),
@@ -71,7 +71,7 @@ class _DetailArchiveState extends State<DetailArchive> {
                 child: Padding(
                     padding: const EdgeInsets.all(p10),
                     child: FutureBuilder<ArchiveModel>(
-                        future: ArchiveApi().getOneData(widget.id),
+                        future: ArchiveApi().getOneData(id),
                         builder: (BuildContext context,
                             AsyncSnapshot<ArchiveModel> snapshot) {
                           if (snapshot.hasData) {

@@ -56,6 +56,8 @@ class _AddArchiveState extends State<AddArchive> {
 
   @override
   Widget build(BuildContext context) {
+    final archiveFolder =
+        ModalRoute.of(context)!.settings.arguments as ArchiveFolderModel;
     return Scaffold(
         key: _key,
         drawer: const DrawerMenu(),
@@ -96,7 +98,7 @@ class _AddArchiveState extends State<AddArchive> {
                       Expanded(
                           child: Scrollbar(
                         controller: _controllerScroll,
-                        child: addPageWidget(),
+                        child: addPageWidget(archiveFolder),
                       ))
                     ],
                   ),
@@ -107,7 +109,7 @@ class _AddArchiveState extends State<AddArchive> {
         ));
   }
 
-  Widget addPageWidget() {
+  Widget addPageWidget(ArchiveFolderModel archiveFolder) {
     return Form(
       key: _formKey,
       child: Row(
@@ -159,7 +161,7 @@ class _AddArchiveState extends State<AddArchive> {
                         press: () {
                           final form = _formKey.currentState!;
                           if (form.validate()) {
-                            submit();
+                            submit(archiveFolder);
                             form.reset();
                           }
                         })
@@ -272,14 +274,16 @@ class _AddArchiveState extends State<AddArchive> {
         ));
   }
 
-  Future<void> submit() async {
+  Future<void> submit(ArchiveFolderModel data) async {
     final archiveModel = ArchiveModel(
-        nomDocument: nomDocumentController.text,
-        departement: departement.toString(),
-        description: descriptionController.text,
-        fichier: fichierController.text,
-        signature: signature.toString(),
-        created: DateTime.now());
+      departement: data.departement,
+      folderName: data.folderName,
+      nomDocument: nomDocumentController.text,
+      description: descriptionController.text,
+      fichier: fichierController.text,
+      signature: signature.toString(),
+      created: DateTime.now()
+    );
     await ArchiveApi().insertData(archiveModel);
     Navigator.of(context).pop();
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
