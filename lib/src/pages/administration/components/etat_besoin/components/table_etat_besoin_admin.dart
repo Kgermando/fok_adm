@@ -79,25 +79,25 @@ class _TabvleEtatBesoinAdminState extends State<TabvleEtatBesoinAdmin> {
         onLoaded: (PlutoGridOnLoadedEvent event) {
           stateManager = event.stateManager;
           stateManager!.setShowColumnFilter(true);
-          // stateManager!.addListener(agentsRow);
-          // removeKeyboardListener =
-          //     stateManager!.keyManager!.subject.stream.listen(handleKeyboard);
-
-          // stateManager!.setSelectingMode(PlutoGridSelectingMode.none);
         },
         createHeader: (PlutoGridStateManager header) {
           return Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               const TitleWidget(title: 'Administration'),
-              PrintWidget(onPressed: () {})
+              Row(
+                children: [
+                  IconButton(
+                      onPressed: () {
+                        Navigator.pushNamed(context, AdminRoutes.adminEtatBesoin);
+                      },
+                      icon: const Icon(Icons.refresh)),
+                  PrintWidget(onPressed: () {}),
+                ],
+              )
             ],
           );
         },
-        // createFooter: (PlutoGridStateManager fotter) {
-        //   // fotter.setPageSize(100, notify: false); // default 40
-        //   return PlutoPagination(fotter);
-        // },
         configuration: PlutoGridConfiguration(
           columnFilterConfig: PlutoGridColumnFilterConfig(
             filters: const [
