@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fokad_admin/src/constants/app_theme.dart';
 import 'package:fokad_admin/src/constants/responsive.dart';
-import 'package:fokad_admin/src/models/archive/archive_model.dart';
 import 'package:fokad_admin/src/navigation/drawer/drawer_menu.dart';
 import 'package:fokad_admin/src/navigation/header/custom_appbar.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
@@ -66,6 +65,27 @@ class _ArchivePdfViewerState extends State<ArchivePdfViewer> {
                                       _key.currentState!.openDrawer())),
                         ],
                       ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          IconButton(
+                          icon: const Icon(
+                            Icons.keyboard_arrow_up,
+                            color: Colors.white,
+                          ),
+                          onPressed: () {
+                            _pdfViewerController.previousPage();
+                          },
+                        ),
+                        IconButton(
+                          icon: const Icon(
+                            Icons.keyboard_arrow_down,
+                            color: Colors.white,
+                          ),
+                          onPressed: () {
+                            _pdfViewerController.nextPage();
+                          },
+                        )]),
                       Expanded(
                           child: SfPdfViewer.network(
                           url,
