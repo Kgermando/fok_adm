@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fokad_admin/src/api/archives/archive_api.dart';
+import 'package:fokad_admin/src/api/archives/archive_folderapi.dart';
 import 'package:fokad_admin/src/models/archive/archive_model.dart';
 import 'package:fokad_admin/src/routes/routes.dart';
 import 'package:fokad_admin/src/utils/class_implemented.dart';
@@ -8,7 +9,8 @@ import 'package:intl/intl.dart';
 import 'package:pluto_grid/pluto_grid.dart';
 
 class TableArchiveData extends StatefulWidget {
-  const TableArchiveData({Key? key, required this.archiveFolderModel}) : super(key: key);
+  const TableArchiveData({Key? key, required this.archiveFolderModel})
+      : super(key: key);
   final ArchiveFolderModel archiveFolderModel;
 
   @override
@@ -49,6 +51,7 @@ class _TableArchiveDataState extends State<TableArchiveData> {
         return Row(
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
+            deleteButton(),
             IconButton(
                 onPressed: () {
                   Navigator.pop(context);
@@ -79,6 +82,34 @@ class _TableArchiveDataState extends State<TableArchiveData> {
             }
             return resolver<PlutoFilterTypeContains>() as PlutoFilterType;
           },
+        ),
+      ),
+    );
+  }
+
+  Widget deleteButton() {
+    return IconButton(
+      icon: Icon(Icons.delete, color: Colors.red.shade700),
+      tooltip: "Supprimer",
+      onPressed: () => showDialog<String>(
+        context: context,
+        builder: (BuildContext context) => AlertDialog(
+          title: const Text('Etes-vous sûr de faire cette action ?'),
+          content: const Text(
+              'Cette action permet de permet de mettre ce fichier en corbeille.'),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () => Navigator.pop(context),
+              child: const Text('Annuler'),
+            ),
+            TextButton(
+              onPressed: () async {
+                await ArchiveFolderApi().deleteData(widget.archiveFolderModel.id!);
+                Navigator.of(context).pop();
+              },
+              child: const Text('OK'),
+            ),
+          ],
         ),
       ),
     );
@@ -152,8 +183,8 @@ class _TableArchiveDataState extends State<TableArchiveData> {
   Future agentsRow() async {
     List<ArchiveModel?> dataList = await ArchiveApi().getAllData();
     var data = dataList.where((element) =>
-      element!.departement == widget.archiveFolderModel.departement &&
-      element.folderName == widget.archiveFolderModel.folderName);
+        element!.departement == widget.archiveFolderModel.departement &&
+        element.folderName == widget.archiveFolderModel.folderName);
 
     if (mounted) {
       setState(() {

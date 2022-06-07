@@ -391,7 +391,7 @@ class _AdministrationNavState extends State<AdministrationNav> {
             return Column(
               children: [
                 const SizedBox(height: p20),
-                loadingColor(),
+                loading(),
                 const SizedBox(height: p20)
               ],
             );

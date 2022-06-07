@@ -362,7 +362,7 @@ class _ComMarketingState extends State<ComMarketing> {
             );
           } else {
             return Column(
-              children: [loadingColor(), const SizedBox(height: p20)],
+              children: [loading(), const SizedBox(height: p20)],
             );
           }
         });

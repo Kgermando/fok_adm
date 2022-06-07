@@ -28,7 +28,7 @@ class BtnWidget extends StatelessWidget {
             ),
             onPressed: press,
             child: isLoading
-              ? loading()
+              ? loadingWhite()
               : Text(
                 title,
                 style: TextStyle(

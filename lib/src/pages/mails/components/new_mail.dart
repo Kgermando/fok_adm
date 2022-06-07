@@ -1,3 +1,7 @@
+import 'dart:io';
+
+import 'package:file_picker/file_picker.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:fokad_admin/src/api/auth/auth_api.dart';
 import 'package:fokad_admin/src/api/mails/mail_api.dart';
@@ -8,8 +12,12 @@ import 'package:fokad_admin/src/models/mail/mail_model.dart';
 import 'package:fokad_admin/src/models/users/user_model.dart';
 import 'package:fokad_admin/src/navigation/drawer/drawer_menu.dart';
 import 'package:fokad_admin/src/navigation/header/custom_appbar.dart';
+import 'package:fokad_admin/src/utils/loading.dart';
+import 'package:fokad_admin/src/utils/regex.dart';
 import 'package:fokad_admin/src/widgets/btn_widget.dart';
+import 'package:fokad_admin/src/widgets/file_uploader.dart';
 import 'package:fokad_admin/src/widgets/title_widget.dart';
+import 'package:dospace/dospace.dart' as dospace;
 
 
 class NewMail extends StatefulWidget {
@@ -26,12 +34,54 @@ class _NewMailState extends State<NewMail> {
   bool isLoading = false;
   bool isOpen = false;
 
+  final TextEditingController emailController = TextEditingController();
   final TextEditingController objetController = TextEditingController();
   final TextEditingController messageController = TextEditingController();
   final TextEditingController pieceJointeController = TextEditingController();
-  String? email;
   bool read = false;
   List<UserModel> ccList = [];
+
+  bool isUploading = false;
+  bool isUploadingDone = false;
+  String? uploadedFileUrl;
+
+  void _pdfUpload(File pdfFile) async {
+    String projectName = "fokad-spaces";
+    String region = "sfo3";
+    String folderName = "emails";
+    String? pdfFileName;
+
+    String extension = 'pdf';
+    pdfFileName = "${DateTime.now().millisecondsSinceEpoch}.$extension";
+
+    uploadedFileUrl = "https://" +
+        projectName +
+        "." +
+        region +
+        ".digitaloceanspaces.com/" +
+        folderName +
+        "/" +
+        pdfFileName.toString();
+    // print('url: $uploadedFileUrl');
+    setState(() {
+      isUploading = true;
+    });
+    dospace.Bucket bucketpdf = FileUploader().spaces.bucket('fokad-spaces');
+    String? etagpdf = await bucketpdf.uploadFile(
+        folderName + '/' + pdfFileName.toString(),
+        pdfFile,
+        'application/pdf',
+        dospace.Permissions.public);
+    setState(() {
+      isUploading = false;
+      isUploadingDone = true;
+    });
+    if (kDebugMode) {
+      print('upload: $etagpdf');
+      print('done');
+    }
+    
+  }
 
   @override
   initState() {
@@ -52,6 +102,7 @@ class _NewMailState extends State<NewMail> {
 
   @override
   void dispose() {
+    emailController.dispose();
     objetController.dispose();
     messageController.dispose();
     pieceJointeController.dispose();
@@ -115,6 +166,7 @@ class _NewMailState extends State<NewMail> {
   Widget addAgentWidget() {
     return Form(
       key: _formKey,
+      autovalidateMode: AutovalidateMode.always,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
@@ -141,6 +193,12 @@ class _NewMailState extends State<NewMail> {
                     const SizedBox(height: p20),
                     objetWidget(),
                     messageWidget(),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        fichierWidget(),
+                      ], 
+                    ),
                     const SizedBox(
                       height: p20,
                     ),
@@ -165,33 +223,23 @@ class _NewMailState extends State<NewMail> {
   }
 
   Widget emailWidget() {
-    var emailList = userList.map((e) => e.email).toList();
     return Container(
       margin: const EdgeInsets.only(bottom: p20),
-      child: DropdownButtonFormField<String>(
+      child: TextFormField(
+        controller: emailController,
         decoration: InputDecoration(
-          labelText: 'Select adresse email',
-          labelStyle: const TextStyle(),
-          border: OutlineInputBorder(borderRadius: BorderRadius.circular(5.0)),
-          contentPadding: const EdgeInsets.only(left: 5.0),
+          border:
+              OutlineInputBorder(borderRadius: BorderRadius.circular(10.0)),
+          labelText: "Email",
         ),
-        value: email,
-        isExpanded: true,
-        validator: (value) => value == null ? "Select email" : null,
-        items: emailList.map((String value) {
-          return DropdownMenuItem<String>(
-            value: value,
-            child: Text(value),
-          );
-        }).toList(),
-        onChanged: (value) {
-          setState(() {
-            email = value;
-          });
-        },
-      ),
+        keyboardType: TextInputType.text,
+        style: const TextStyle(),
+        validator: (value) => RegExpIsValide().validateEmail(value),
+      )
     );
   }
+
+
 
   Widget ccWidget() {
     return Material(
@@ -279,7 +327,7 @@ class _NewMailState extends State<NewMail> {
             helperText: "Ecrivez mail ...",
           ),
           keyboardType: TextInputType.multiline,
-          minLines: 5,
+          minLines: 10,
           maxLines: 20,
           style: const TextStyle(),
           validator: (value) {
@@ -292,17 +340,54 @@ class _NewMailState extends State<NewMail> {
         ));
   }
 
+
+  Widget fichierWidget() {
+    return Container(
+        margin: const EdgeInsets.only(bottom: p20),
+        child: isUploading
+            ? SizedBox(height: 50.0, width: 50.0, child: loadingMini())
+            : TextButton.icon(
+                onPressed: () async {
+                  FilePickerResult? result =
+                      await FilePicker.platform.pickFiles(
+                    type: FileType.custom,
+                    allowedExtensions: [
+                      'pdf', 'doc', 'docx', 'xlsx',
+                      'pptx', 'jpg', 'png'
+                    ],
+                  );
+                  if (result != null) {
+                    File file = File(result.files.single.path!);
+                    _pdfUpload(file);
+                  } else {
+                    const Text("Votre fichier n'existe pas");
+                  }
+                },
+                icon: isUploadingDone
+                  ? Icon(Icons.check_circle_outline, 
+                      color: Colors.green.shade700)
+                  : const Icon(Icons.attach_email),
+                label: isUploadingDone
+                    ? Text("Téléchargement terminé",
+                        style: Theme.of(context)
+                            .textTheme
+                            .bodyLarge!
+                            .copyWith(color: Colors.green.shade700))
+                    : Text("Joindre un fichier",
+                        style: Theme.of(context).textTheme.bodyLarge)));
+  }
+
   Future<void> send() async {
-    var userSelect = userList.where((element) => element.email == email).first;
+    var userSelect = userList.where((element) => element.email == emailController.text).first;
     final mailModel = MailModel(
         fullName: "${userSelect.prenom} ${userSelect.nom}",
-        email: email.toString(),
+        email: emailController.text,
         cc: ccList,
         objet: objetController.text,
         message: messageController.text,
-        pieceJointe: (pieceJointeController.text == '')
+        pieceJointe: (uploadedFileUrl == '')
             ? '-'
-            : pieceJointeController.text,
+            : uploadedFileUrl.toString(),
         read: read,
         fullNameDest: "${user!.prenom} ${user!.nom}",
         emailDest: user!.email,

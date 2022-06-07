@@ -20,14 +20,14 @@ Widget loading() => Row(
   ],
 );
 
-Widget loadingColor() => Row(
+Widget loadingWhite() => Row(
   mainAxisAlignment: MainAxisAlignment.center,
   children: const [
-    CircularProgressIndicator(strokeWidth: 2.0),
+    CircularProgressIndicator(strokeWidth: 2.0, color: Colors.white),
     SizedBox(
       width: 10.0,
     ),
-    Text('Patientez svp...', style: TextStyle())
+    Text('Patientez svp...', style: TextStyle(color: Colors.white))
   ],
 );
 

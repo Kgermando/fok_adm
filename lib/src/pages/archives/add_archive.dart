@@ -13,6 +13,7 @@ import 'package:fokad_admin/src/navigation/header/custom_appbar.dart';
 import 'package:fokad_admin/src/utils/dropdown.dart';
 import 'package:fokad_admin/src/utils/loading.dart';
 import 'package:fokad_admin/src/widgets/btn_widget.dart';
+import 'package:fokad_admin/src/widgets/file_uploader.dart';
 import 'package:fokad_admin/src/widgets/title_widget.dart';
 import 'package:dospace/dospace.dart' as dospace;
 
@@ -36,18 +37,8 @@ class _AddArchiveState extends State<AddArchive> {
   TextEditingController descriptionController = TextEditingController();
   TextEditingController fichierController = TextEditingController();
 
-  // String projectName = "https://fokad-spaces.sfo3.digitaloceanspaces.com";
-  // String endPoint = "sfo3.digitaloceanspaces.com";
-  // String fokadToken =
-  //     "dop_v1_406372492288c59fb2c0d6a983a3a1c721715f8044071bbce0c4afadebde4c13";
-
-  dospace.Spaces spaces = dospace.Spaces(
-    region: "sfo3",
-    accessKey: "YGKB5YLBB27GESJOKSEX",
-    secretKey: "xBadujKrg8HwNTquw1TrfPta5d17O2OtvVLl8QSOegA",
-  );
-
   bool isUploading = false;
+  bool isUploadingDone = false;
   String? uploadedFileUrl;
 
   void _pdfUpload(File pdfFile) async {
@@ -67,17 +58,22 @@ class _AddArchiveState extends State<AddArchive> {
         folderName +
         "/" +
         pdfFileName.toString();
-    print('url: $uploadedFileUrl');
-    isUploading = true;
-    dospace.Bucket bucketpdf = spaces.bucket('fokad-spaces');
+    // print('url: $uploadedFileUrl');
+    setState(() {
+      isUploading = true;
+    });
+    dospace.Bucket bucketpdf = FileUploader().spaces.bucket('fokad-spaces');
     String? etagpdf = await bucketpdf.uploadFile(
         folderName + '/' + pdfFileName.toString(),
         pdfFile,
         'application/pdf',
         dospace.Permissions.public);
-    isUploading = false;
-    print('upload: $etagpdf');
-    print('done');
+    setState(() {
+      isUploading = false;
+      isUploadingDone = true;
+    });
+    // print('upload: $etagpdf');
+    // print('done');
   }
 
   @override
@@ -238,34 +234,6 @@ class _AddArchiveState extends State<AddArchive> {
         ));
   }
 
-  // Widget departementWidget() {
-  //   return Container(
-  //     margin: const EdgeInsets.only(bottom: p20),
-  //     child: DropdownButtonFormField<String>(
-  //       decoration: InputDecoration(
-  //         labelText: 'Département',
-  //         labelStyle: const TextStyle(),
-  //         border: OutlineInputBorder(borderRadius: BorderRadius.circular(5.0)),
-  //         contentPadding: const EdgeInsets.only(left: 5.0),
-  //       ),
-  //       value: departement,
-  //       isExpanded: true,
-  //       items: departementList.map((String value) {
-  //         return DropdownMenuItem<String>(
-  //           value: value,
-  //           child: Text(value),
-  //         );
-  //       }).toList(),
-  //       validator: (value) => value == null ? "Select departement" : null,
-  //       onChanged: (value) {
-  //         setState(() {
-  //           departement = value!;
-  //         });
-  //       },
-  //     ),
-  //   );
-  // }
-
   Widget descriptionWidget() {
     return Container(
         margin: const EdgeInsets.only(bottom: p20),
@@ -294,30 +262,33 @@ class _AddArchiveState extends State<AddArchive> {
     return Container(
         margin: const EdgeInsets.only(bottom: p20),
         child: isUploading
-            ? loadingMini()
+            ? SizedBox(height: 50.0, width: 50.0, child: loadingMini())
             : TextButton.icon(
                 onPressed: () async {
                   FilePickerResult? result =
                       await FilePicker.platform.pickFiles(
-                        type: FileType.custom,
-                        allowedExtensions: ['pdf'],
-                      );
+                    type: FileType.custom,
+                    allowedExtensions: ['pdf'],
+                  );
                   if (result != null) {
                     File file = File(result.files.single.path!);
-                    setState(() {
-                      isUploading = true;
-                    });
                     _pdfUpload(file);
-                    // setState(() {
-                    //   isUploading = false;
-                    // });
                   } else {
                     const Text("Votre fichier n'existe pas");
                   }
                 },
-                icon: const Icon(Icons.upload_file),
-                label: Text("Selectionner le fichier",
-                    style: Theme.of(context).textTheme.bodyLarge)));
+                icon: isUploadingDone
+                    ? Icon(Icons.check_circle_outline,
+                        color: Colors.green.shade700)
+                    : const Icon(Icons.upload_file),
+                label: isUploadingDone
+                    ? Text("Téléchargement terminé",
+                        style: Theme.of(context)
+                            .textTheme
+                            .bodyLarge!
+                            .copyWith(color: Colors.green.shade700))
+                    : Text("Selectionner le fichier",
+                        style: Theme.of(context).textTheme.bodyLarge)));
   }
 
   Future<void> submit(ArchiveFolderModel data) async {
@@ -326,7 +297,9 @@ class _AddArchiveState extends State<AddArchive> {
         folderName: data.folderName,
         nomDocument: nomDocumentController.text,
         description: descriptionController.text,
-        fichier: uploadedFileUrl.toString(),
+        fichier: (uploadedFileUrl == '')
+            ? '-'
+            : uploadedFileUrl.toString(),
         signature: signature.toString(),
         created: DateTime.now());
     await ArchiveApi().insertData(archiveModel);

@@ -235,7 +235,7 @@ class _BudgetNavState extends State<BudgetNav> {
           } else {
             return Column(
               children: [
-                loadingColor(),
+                loading(),
                 const SizedBox(height: p20)
               ],
             );

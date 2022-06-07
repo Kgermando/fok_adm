@@ -68,13 +68,14 @@ class MyThemes {
     visualDensity: VisualDensity.adaptivePlatformDensity,
   );
 
+
   static final lightTheme = ThemeData(
     useMaterial3: true,
     pageTransitionsTheme: const PageTransitionsTheme(
       builders: {
-        TargetPlatform.windows: ZoomPageTransitionsBuilder(),
+        TargetPlatform.windows: FadeUpwardsPageTransitionsBuilder(),
         TargetPlatform.android: ZoomPageTransitionsBuilder(),
-        TargetPlatform.iOS: ZoomPageTransitionsBuilder(),
+        TargetPlatform.iOS: CupertinoPageTransitionsBuilder(),
       },
     ),
     scaffoldBackgroundColor: Colors.blue.shade50,

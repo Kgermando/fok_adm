@@ -1,26 +1,17 @@
-import 'dart:async';
-import 'dart:io';
 import 'package:dospace/dospace.dart' as dospace;
 
-// const bucketName = '';
-
 class FileUploader {
-  static dospace.Spaces spaces = dospace.Spaces(
-    region: "ams3",
-    accessKey: "5Z7HJJQSTHU3HNVX5PGI",
-    secretKey: "ZrKgGymuT9O5M/40sIUg6Lvgjw09Fo+C0a8p7JFX9dc",
+  
+  // String projectName = "https://fokad-spaces.sfo3.digitaloceanspaces.com";
+  // String endPoint = "sfo3.digitaloceanspaces.com";
+  // String fokadToken =
+  //     "dop_v1_406372492288c59fb2c0d6a983a3a1c721715f8044071bbce0c4afadebde4c13";
+
+
+   dospace.Spaces spaces = dospace.Spaces(
+    region: "sfo3",
+    accessKey: "YGKB5YLBB27GESJOKSEX",
+    secretKey: "xBadujKrg8HwNTquw1TrfPta5d17O2OtvVLl8QSOegA",
   );
 
-  static Future<dynamic> uploadFile(
-      String fileName, File file, String type) async {
-    dospace.Bucket bucket = spaces.bucket("clinic");
-
-    try {
-      String? etag = await bucket.uploadFile(
-          fileName, file, type, dospace.Permissions.public);
-      return etag;
-    } catch (e) {
-      return e;
-    }
-  }
 }

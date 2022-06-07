@@ -32,11 +32,8 @@ class _DetailArchiveState extends State<DetailArchive> {
   PlutoGridStateManager? stateManager;
   PlutoGridSelectingMode gridSelectingMode = PlutoGridSelectingMode.row;
 
-    late PdfViewerController _pdfViewerController;
-
   @override
   void initState() {
-    _pdfViewerController = PdfViewerController();
     super.initState();
   }
 
@@ -138,9 +135,7 @@ class _DetailArchiveState extends State<DetailArchive> {
                   )
                 ],
               ),
-              dataWidget(data),
-              // documentFile(data),
-              // documentViewer(data)
+              dataWidget(data)
             ],
           ),
         ),
@@ -199,12 +194,12 @@ class _DetailArchiveState extends State<DetailArchive> {
           Row(
             children: [
               Expanded(
-                child: Text('FIchier archivé :',
+                child: Text('Fichier archivé :',
                     textAlign: TextAlign.start,
                     style: bodyMedium.copyWith(fontWeight: FontWeight.bold)),
               ),
               Expanded(
-                child: TextButton(
+                child: (data.fichier == '-') ? const Text('-') : TextButton(
                   onPressed: () {
                     Navigator.pushNamed(context, ArchiveRoutes.archivePdf,
                         arguments: data.fichier);
