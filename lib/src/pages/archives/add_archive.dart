@@ -74,7 +74,7 @@ class _AddArchiveState extends State<AddArchive> {
         folderName + '/' + pdfFileName.toString(),
         pdfFile,
         'application/pdf',
-        dospace.Permissions.private);
+        dospace.Permissions.public);
     isUploading = false;
     print('upload: $etagpdf');
     print('done');
@@ -294,11 +294,14 @@ class _AddArchiveState extends State<AddArchive> {
     return Container(
         margin: const EdgeInsets.only(bottom: p20),
         child: isUploading
-            ? loading()
+            ? loadingMini()
             : TextButton.icon(
                 onPressed: () async {
                   FilePickerResult? result =
-                      await FilePicker.platform.pickFiles();
+                      await FilePicker.platform.pickFiles(
+                        type: FileType.custom,
+                        allowedExtensions: ['pdf'],
+                      );
                   if (result != null) {
                     File file = File(result.files.single.path!);
                     setState(() {

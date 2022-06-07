@@ -7,6 +7,7 @@ import 'package:fokad_admin/src/models/archive/archive_model.dart';
 import 'package:fokad_admin/src/navigation/drawer/drawer_menu.dart';
 import 'package:fokad_admin/src/navigation/header/custom_appbar.dart';
 import 'package:fokad_admin/src/pages/archives/components/archive_pdf_viewer.dart';
+import 'package:fokad_admin/src/routes/routes.dart';
 import 'package:fokad_admin/src/utils/loading.dart';
 import 'package:fokad_admin/src/widgets/print_widget.dart';
 import 'package:fokad_admin/src/widgets/title_widget.dart';
@@ -31,27 +32,16 @@ class _DetailArchiveState extends State<DetailArchive> {
   PlutoGridStateManager? stateManager;
   PlutoGridSelectingMode gridSelectingMode = PlutoGridSelectingMode.row;
 
-  // @override
-  // initState() {
-  //   Timer.periodic(const Duration(milliseconds: 500), ((timer) {
-  //     setState(() {
-  //       getData();
-  //     });
-  //     timer.cancel();
-  //   }));
+    late PdfViewerController _pdfViewerController;
 
-  //   super.initState();
-  // }
+  @override
+  void initState() {
+    _pdfViewerController = PdfViewerController();
+    super.initState();
+  }
 
-  // Future<void> getData() async {
-  //   var ar = await LIgneBudgetaireApi().getAllData();
-  //   setState(() {
-  //     ligneBudgetaireList = ligneBudgetaire;
-  //     user = userModel;
-  //     userList = dataUser;
-  //     ligneBudgetaireList = budgets;
-  //   });
-  // }
+
+  final GlobalKey<SfPdfViewerState> _pdfViewerKey = GlobalKey();
 
   @override
   Widget build(BuildContext context) {
@@ -150,7 +140,7 @@ class _DetailArchiveState extends State<DetailArchive> {
               ),
               dataWidget(data),
               // documentFile(data),
-              documentViewer(data)
+              // documentViewer(data)
             ],
           ),
         ),
@@ -216,12 +206,12 @@ class _DetailArchiveState extends State<DetailArchive> {
               Expanded(
                 child: TextButton(
                   onPressed: () {
-                    Navigator.push(context, MaterialPageRoute(
-                      builder: (context) => 
-                      ArchivePdfViewer(archiveModel: data)));
+                    Navigator.pushNamed(context, ArchiveRoutes.archivePdf,
+                        arguments: data.fichier);
+                   _pdfViewerKey.currentState?.openBookmarkView();
                   },
-                  child: SelectableText(data.fichier,
-                      textAlign: TextAlign.start, style: bodyMedium),
+                  child: Text("Cliquer pour visualiser",
+                      textAlign: TextAlign.start, style: bodyMedium.copyWith(color: Colors.red)),
                 ),
               )
             ],
@@ -245,26 +235,33 @@ class _DetailArchiveState extends State<DetailArchive> {
     );
   }
 
-  Widget documentFile(ArchiveModel data) {
-    return Padding(
-      padding: const EdgeInsets.all(p20),
-      child: ExtendedImage.network(
-        data.fichier,
-        width: 400,
-        height: 200,
-        fit: BoxFit.fill,
-        cache: true,
-        border: Border.all(color: Colors.red, width: 1.0),
-        shape: BoxShape.rectangle,
-        borderRadius: const BorderRadius.all(Radius.circular(30.0)),
-        //cancelToken: cancellationToken,
-      ),
-    );
-  }
+  // Widget documentFile(ArchiveModel data) {
+  //   return Padding(
+  //     padding: const EdgeInsets.all(p20),
+  //     child: ExtendedImage.network(
+  //       data.fichier,
+  //       width: 400,
+  //       height: 200,
+  //       fit: BoxFit.fill,
+  //       cache: true,
+  //       border: Border.all(color: Colors.red, width: 1.0),
+  //       shape: BoxShape.rectangle,
+  //       borderRadius: const BorderRadius.all(Radius.circular(30.0)),
+  //       //cancelToken: cancellationToken,
+  //     ),
+  //   );
+  // }
 
-  Widget documentViewer(ArchiveModel data) {
-    return Padding(
-        padding: const EdgeInsets.all(p20),
-        child: Expanded(child: SfPdfViewer.network(data.fichier)));
-  }
+  // Widget documentViewer(ArchiveModel data) {
+  //   return Padding(
+  //     padding: const EdgeInsets.all(p20),
+  //     child: Expanded(child: SfPdfViewer.network(
+  //       data.fichier,
+  //       controller: _pdfViewerController,
+  //         enableDocumentLinkAnnotation: false,
+  //         key: _pdfViewerKey,
+  //       )
+  //     )
+  //   );
+  // }
 }

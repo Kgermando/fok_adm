@@ -10,6 +10,7 @@ import 'package:fokad_admin/src/pages/administration/logistique_admin.dart';
 import 'package:fokad_admin/src/pages/administration/rh_admin.dart';
 import 'package:fokad_admin/src/pages/archives/add_archive.dart';
 import 'package:fokad_admin/src/pages/archives/archive_folder.dart';
+import 'package:fokad_admin/src/pages/archives/components/archive_pdf_viewer.dart';
 import 'package:fokad_admin/src/pages/archives/detail_archive.dart';
 import 'package:fokad_admin/src/pages/archives/table_archive.dart';
 import 'package:fokad_admin/src/pages/auth/login_auth.dart';
@@ -295,6 +296,7 @@ class ArchiveRoutes {
   static const archiveTable = "/archives-table";
   static const addArchives = "/archives-add";
   static const archivesDetail = "/archives-detail";
+  static const archivePdf = "/archives-pdf";
 }
 
 class MailRoutes {
@@ -457,4 +459,5 @@ final routes = <String, WidgetBuilder>{
   ArchiveRoutes.archiveTable: (context) => const TableArchive(),
   ArchiveRoutes.addArchives: (context) => const AddArchive(),
   ArchiveRoutes.archivesDetail: (context) => const DetailArchive(),
+  ArchiveRoutes.archivePdf: (context) => const ArchivePdfViewer(),
 };
