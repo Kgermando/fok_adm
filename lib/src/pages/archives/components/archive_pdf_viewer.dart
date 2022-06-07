@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:fokad_admin/src/constants/app_theme.dart';
 import 'package:fokad_admin/src/constants/responsive.dart';
 import 'package:fokad_admin/src/navigation/drawer/drawer_menu.dart';
@@ -22,6 +23,28 @@ class _ArchivePdfViewerState extends State<ArchivePdfViewer> {
   void initState() {
     _pdfViewerController = PdfViewerController();
     super.initState();
+  }
+
+  late OverlayEntry _overlayEntry;
+  void _showContextMenu(
+      BuildContext context, PdfTextSelectionChangedDetails details) {
+    final OverlayState? _overlayState = Overlay.of(context);
+    _overlayEntry = OverlayEntry(
+      builder: (context) => Positioned(
+        top: details.globalSelectedRegion!.center.dy - 55,
+        left: details.globalSelectedRegion!.bottomLeft.dx,
+        child: MaterialButton(
+          child: const Text('Copy', style: TextStyle(fontSize: 17)),
+          onPressed: () {
+            Clipboard.setData(ClipboardData(text: details.selectedText));
+            _pdfViewerController.clearSelection();
+          },
+          color: Colors.white,
+          elevation: 10,
+        ),
+      ),
+    );
+    _overlayState!.insert(_overlayEntry);
   }
 
 
@@ -93,6 +116,14 @@ class _ArchivePdfViewerState extends State<ArchivePdfViewer> {
                           controller: _pdfViewerController,
                           enableDocumentLinkAnnotation: false,
                           key: _pdfViewerKey,
+                          onTextSelectionChanged:
+                            (PdfTextSelectionChangedDetails details) {
+                          if (details.selectedText == null) {
+                            _overlayEntry.remove();
+                          } else if (details.selectedText != null) {
+                            _showContextMenu(context, details);
+                          }
+                        },
                         ) 
                       )
                     ],
