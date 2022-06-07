@@ -7,7 +7,6 @@ import 'package:fokad_admin/src/models/comm_maketing/achat_model.dart';
 import 'package:fokad_admin/src/models/comm_maketing/cart_model.dart';
 import 'package:fokad_admin/src/models/users/user_model.dart';
 import 'package:fokad_admin/src/pages/comm_marketing/commercial/cart/components/detail_cart.dart';
-import 'package:fokad_admin/src/routes/routes.dart';
 import 'package:fokad_admin/src/utils/loading.dart';
 import 'package:intl/intl.dart';
 

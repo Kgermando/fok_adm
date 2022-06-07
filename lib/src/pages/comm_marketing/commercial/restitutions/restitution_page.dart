@@ -62,7 +62,6 @@ class _RestitutionPageState extends State<RestitutionPage> {
                                         ))
                                       : Scrollbar(
                                           controller: controllerScrollbar,
-                                          isAlwaysShown: true,
                                           child: ListView.builder(
                                               controller: controllerScrollbar,
                                               itemCount: dataList.length,

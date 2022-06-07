@@ -158,7 +158,7 @@ class _TableDepartementBudgetState extends State<TableDepartementBudget> {
           .where((element) =>
               DateTime.now().millisecondsSinceEpoch <=
                       element!.periodeFin.millisecondsSinceEpoch &&
-                  element.created.microsecondsSinceEpoch == item.reference &&
+                  element.created.microsecondsSinceEpoch == item.reference.microsecondsSinceEpoch &&
                   item.fontctionOccupee == 'Directeur générale' &&
                   item.approbation == "Approved" ||
               element.signature == userModel.matricule)

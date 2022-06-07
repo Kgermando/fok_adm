@@ -59,7 +59,7 @@ class _DepartementFinState extends State<DepartementFin> {
         creanceCount = creances
             .where((element) =>
                 element.statutPaie == false &&
-                element.created.microsecondsSinceEpoch == item.reference &&
+                element.created.microsecondsSinceEpoch == item.reference.microsecondsSinceEpoch &&
                 item.fontctionOccupee == 'Directeur budget')
             .toList()
             .length;
@@ -69,7 +69,7 @@ class _DepartementFinState extends State<DepartementFin> {
         detteCount = dettes
             .where((element) =>
                 element.statutPaie == false &&
-                element.created.microsecondsSinceEpoch == item.reference &&
+                element.created.microsecondsSinceEpoch == item.reference.microsecondsSinceEpoch &&
                 item.fontctionOccupee == 'Directeur budget')
             .toList()
             .length;
@@ -78,7 +78,7 @@ class _DepartementFinState extends State<DepartementFin> {
       for (var item in approbations) {
         salaireCount = salaires
             .where((element) =>
-                element.createdAt.microsecondsSinceEpoch == item.reference &&
+                element.createdAt.microsecondsSinceEpoch == item.reference.microsecondsSinceEpoch &&
                 item.fontctionOccupee == 'Directeur budget')
             .toList()
             .length;
@@ -86,7 +86,7 @@ class _DepartementFinState extends State<DepartementFin> {
       for (var item in approbations) {
         campaignCount = campaigns
             .where((element) =>
-                element.created.microsecondsSinceEpoch == item.reference &&
+                element.created.microsecondsSinceEpoch == item.reference.microsecondsSinceEpoch &&
                 item.fontctionOccupee == 'Directeur budget')
             .toList()
             .length;
@@ -94,7 +94,7 @@ class _DepartementFinState extends State<DepartementFin> {
       for (var item in approbations) {
         devisCount = devis
             .where((element) =>
-                element.created.microsecondsSinceEpoch == item.reference &&
+                element.created.microsecondsSinceEpoch == item.reference.microsecondsSinceEpoch &&
                 item.fontctionOccupee == 'Directeur budget')
             .toList()
             .length;
@@ -102,7 +102,7 @@ class _DepartementFinState extends State<DepartementFin> {
       for (var item in approbations) {
         projetCount = projets
             .where((element) =>
-                element.created.microsecondsSinceEpoch == item.reference &&
+                element.created.microsecondsSinceEpoch == item.reference.microsecondsSinceEpoch &&
                 item.fontctionOccupee == 'Directeur finance')
             .toList()
             .length;

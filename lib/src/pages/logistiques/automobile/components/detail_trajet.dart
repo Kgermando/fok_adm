@@ -102,7 +102,7 @@ class _DetailTrajetState extends State<DetailTrajet> {
                             TrajetModel? data = snapshot.data;
                             approbationData = approbList
                                 .where(
-                                    (element) => element.reference == data!.id!)
+                                    (element) => element.reference.microsecondsSinceEpoch == data!.created.microsecondsSinceEpoch)
                                 .toList();
 
                             if (approbationData.isNotEmpty) {

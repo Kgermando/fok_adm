@@ -24,7 +24,7 @@ class EntrerPresence extends StatefulWidget {
 class _EntrerPresenceState extends State<EntrerPresence> {
   final GlobalKey<ScaffoldState> _key = GlobalKey();
   // final ScrollController _controllerScroll = ScrollController();
-  final _formKey = GlobalKey<FormState>();
+  // final _formKey = GlobalKey<FormState>();
   bool isLoading = false;
 
   TextEditingController noteController = TextEditingController();

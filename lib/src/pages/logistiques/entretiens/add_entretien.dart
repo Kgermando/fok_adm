@@ -344,7 +344,6 @@ class _AddEntretienPageState extends State<AddEntretienPage> {
   Widget objetRemplaceWidget() {
     return Scrollbar(
       controller: _controllerEtatObjet,
-      isAlwaysShown: true,
       child: ListView.builder(
           controller: _controllerEtatObjet,
           itemCount: count,

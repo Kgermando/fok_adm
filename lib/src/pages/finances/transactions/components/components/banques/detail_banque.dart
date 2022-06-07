@@ -1,16 +1,13 @@
 import 'dart:async';
 
-import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:fokad_admin/src/api/approbation/approbation_api.dart';
 import 'package:fokad_admin/src/api/auth/auth_api.dart';
-import 'package:fokad_admin/src/api/budgets/ligne_budgetaire_api.dart';
 import 'package:fokad_admin/src/api/finances/banque_api.dart';
 import 'package:fokad_admin/src/api/user/user_api.dart';
 import 'package:fokad_admin/src/constants/app_theme.dart';
 import 'package:fokad_admin/src/constants/responsive.dart';
 import 'package:fokad_admin/src/models/approbation/approbation_model.dart';
-import 'package:fokad_admin/src/models/budgets/ligne_budgetaire_model.dart';
 import 'package:fokad_admin/src/models/finances/banque_model.dart';
 import 'package:fokad_admin/src/models/finances/coupure_billet_model.dart';
 import 'package:fokad_admin/src/models/users/user_model.dart';
@@ -122,7 +119,7 @@ class _DetailBanqueState extends State<DetailBanque> {
                             coupureBillet = data!.coupureBillet;
                             approbationData = approbList
                                 .where(
-                                    (element) => element.reference == data.id!)
+                                    (element) => element.reference.microsecondsSinceEpoch == data.created.microsecondsSinceEpoch)
                                 .toList();
 
                             if (approbationData.isNotEmpty) {

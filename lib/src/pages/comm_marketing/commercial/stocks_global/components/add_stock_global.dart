@@ -65,7 +65,7 @@ class _AddStockGlobalState extends State<AddStockGlobal> {
       for (var item in approbations) {
         idProductDropdown = produitModel
             .where((element) =>
-                element.created.microsecondsSinceEpoch == item.reference &&
+                element.created.microsecondsSinceEpoch == item.reference.microsecondsSinceEpoch &&
                 item.approbation == 'Approved')
             .toList();
       }

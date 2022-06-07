@@ -65,7 +65,6 @@ class _DetailAgendaState extends State<DetailAgenda> {
                         Expanded(
                             child: Scrollbar(
                                 controller: _controllerScroll,
-                                isAlwaysShown: true,
                                 child: pageDetail()))
                       ],
                     )),

@@ -45,7 +45,7 @@ class _RhAdminState extends State<RhAdmin> {
       for (var item in approbations) {
         salaireCount = salaires
             .where((element) =>
-                element.createdAt.microsecondsSinceEpoch == item.reference &&
+                element.createdAt.microsecondsSinceEpoch == item.reference.microsecondsSinceEpoch &&
                 item.approbation == 'Directeur de departement' &&
                 element.observation == false)
             .length;

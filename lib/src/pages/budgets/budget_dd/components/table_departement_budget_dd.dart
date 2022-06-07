@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:fokad_admin/src/api/approbation/approbation_api.dart';
 import 'package:fokad_admin/src/api/budgets/departement_budget_api.dart';
 import 'package:fokad_admin/src/models/budgets/departement_budget_model.dart';
-import 'package:fokad_admin/src/pages/budgets/budgets_previsionels/components/detail_departement_budget.dart';
 import 'package:fokad_admin/src/routes/routes.dart';
 import 'package:fokad_admin/src/widgets/print_widget.dart';
 import 'package:fokad_admin/src/utils/class_implemented.dart';
@@ -149,7 +148,7 @@ class _TableDepartementBudgetDDState extends State<TableDepartementBudgetDD> {
     for (var item in approbations) {
       data = dataList
           .where((element) =>
-              element!.id == item.reference &&
+              element!.created.microsecondsSinceEpoch  == item.reference.microsecondsSinceEpoch &&
               item.fontctionOccupee == 'Directeur générale' &&
               item.approbation == "Approved")
           .toList();

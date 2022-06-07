@@ -88,7 +88,6 @@ class _DetailAnnuaireState extends State<DetailAnnuaire> {
                       Expanded(
                         child: Scrollbar(
                           controller: _controllerScroll,
-                          isAlwaysShown: true,
                           child: isLoading
                               ? const Center(child: CircularProgressIndicator())
                               : Row(

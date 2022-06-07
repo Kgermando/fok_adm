@@ -338,7 +338,6 @@ class _AddRetratBanqueState extends State<AddRetratBanque> {
   Widget coupureBilletWidget() {
     return Scrollbar(
       controller: _controllerBillet,
-      isAlwaysShown: true,
       child: ListView.builder(
           controller: _controllerBillet,
           itemCount: count,

@@ -2,7 +2,6 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:fokad_admin/src/api/approbation/approbation_api.dart';
 import 'package:fokad_admin/src/api/auth/auth_api.dart';
-import 'package:fokad_admin/src/api/budgets/ligne_budgetaire_api.dart';
 import 'package:fokad_admin/src/api/finances/fin_exterieur_api.dart';
 import 'package:fokad_admin/src/api/user/user_api.dart';
 import 'package:fokad_admin/src/constants/app_theme.dart';
@@ -119,7 +118,7 @@ class _DetailFinExterieurState extends State<DetailFinExterieur> {
                             FinanceExterieurModel? data = snapshot.data;
                             approbationData = approbList
                                 .where(
-                                    (element) => element.reference == data!.id!)
+                                    (element) => element.reference.microsecondsSinceEpoch == data!.created.microsecondsSinceEpoch)
                                 .toList();
 
                             if (approbationData.isNotEmpty) {

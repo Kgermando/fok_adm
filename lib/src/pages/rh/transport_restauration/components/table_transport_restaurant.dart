@@ -180,7 +180,7 @@ class _TableTansportRestaurantState extends State<TableTansportRestaurant> {
   }
 
   Future agentsRow() async {
-    final userModel = await AuthApi().getUserId();
+    // final userModel = await AuthApi().getUserId();
     var dataList = await TransportRestaurationApi().getAllData();
     var data = dataList.toList();
     if (mounted) {

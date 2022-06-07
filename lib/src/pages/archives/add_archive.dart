@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:file_picker/file_picker.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:fokad_admin/src/api/archives/archive_api.dart';
 import 'package:fokad_admin/src/api/auth/auth_api.dart';
@@ -72,8 +73,11 @@ class _AddArchiveState extends State<AddArchive> {
       isUploading = false;
       isUploadingDone = true;
     });
-    // print('upload: $etagpdf');
-    // print('done');
+    if (kDebugMode) {
+      print('upload: $etagpdf');
+      print('done');
+    }
+    
   }
 
   @override

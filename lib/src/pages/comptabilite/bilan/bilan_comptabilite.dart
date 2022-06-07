@@ -9,7 +9,6 @@ import 'package:fokad_admin/src/navigation/drawer/drawer_menu.dart';
 import 'package:fokad_admin/src/navigation/header/custom_appbar.dart';
 import 'package:fokad_admin/src/pages/comptabilite/bilan/components/table_bilan.dart';
 import 'package:fokad_admin/src/utils/loading.dart';
-import 'package:fokad_admin/src/widgets/title_widget.dart';
 
 class BilanComptabilite extends StatefulWidget {
   const BilanComptabilite({Key? key}) : super(key: key);

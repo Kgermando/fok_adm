@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:fokad_admin/src/api/approbation/approbation_api.dart';
 import 'package:fokad_admin/src/api/devis/devis_api.dart';
 import 'package:fokad_admin/src/models/devis/devis_models.dart';
-import 'package:fokad_admin/src/pages/devis/components/detail_devis.dart';
 import 'package:fokad_admin/src/routes/routes.dart';
 import 'package:fokad_admin/src/widgets/print_widget.dart';
 import 'package:fokad_admin/src/utils/class_implemented.dart';
@@ -161,7 +160,7 @@ class _TableDevisBudgetDDState extends State<TableDevisBudgetDD> {
     for (var item in approbations) {
       data = dataList
           .where((element) =>
-              element!.id == item.reference && 
+              element!.created.microsecondsSinceEpoch == item.reference.microsecondsSinceEpoch && 
               item.fontctionOccupee == 'Directeur générale' && item.approbation == "Approved")
           .toList();
     }

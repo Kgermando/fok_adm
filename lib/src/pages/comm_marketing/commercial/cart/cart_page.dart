@@ -145,7 +145,6 @@ class _CartPageState extends State<CartPage> {
                                           )
                                         : Scrollbar(
                                             controller: _controllerScroll,
-                                            isAlwaysShown: true,
                                             child: Column(
                                               children: [
                                                 Expanded(

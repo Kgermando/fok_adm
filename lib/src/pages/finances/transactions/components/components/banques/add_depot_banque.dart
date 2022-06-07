@@ -335,7 +335,6 @@ class _AddDepotBanqueState extends State<AddDepotBanque> {
   Widget coupureBilletWidget() {
     return Scrollbar(
       controller: _controllerBillet,
-      isAlwaysShown: true,
       child: ListView.builder(
           controller: _controllerBillet,
           itemCount: count,

@@ -247,7 +247,6 @@ class _AddBalanceComptabiliteState extends State<AddBalanceComptabilite> {
   Widget comptesBalanceWidget() {
     return Scrollbar(
       controller: _controllerActifList,
-      isAlwaysShown: true,
       child: ListView.builder(
           controller: _controllerActifList,
           itemCount: count,

@@ -97,7 +97,8 @@ class _SuccursalePageState extends State<SuccursalePage> {
                                       .where((element) =>
                                           element.created
                                                   .microsecondsSinceEpoch ==
-                                              item.reference &&
+                                              item.reference
+                                                  .microsecondsSinceEpoch &&
                                           item.fontctionOccupee ==
                                               'Directeur générale' &&
                                           item.approbation == "Approved")

@@ -57,22 +57,22 @@ class _LogistiquesAdminState extends State<LogistiquesAdmin> {
       for (var item in approbations) {
         anguinsapprobationDD = anguins
             .where((element) =>
-                element.created.microsecondsSinceEpoch == item.reference &&
+                element.created.microsecondsSinceEpoch == item.reference.microsecondsSinceEpoch &&
                 item.approbation == 'Directeur de departement')
             .length;
         carburantCount = carburants
             .where((element) =>
-                element.created.microsecondsSinceEpoch == item.reference &&
+                element.created.microsecondsSinceEpoch == item.reference.microsecondsSinceEpoch &&
                 item.approbation == 'Directeur de departement')
             .length;
         immobiliersCount = immobiliers
             .where((element) =>
-                element.created.microsecondsSinceEpoch == item.reference &&
+                element.created.microsecondsSinceEpoch == item.reference.microsecondsSinceEpoch &&
                 item.approbation == 'Directeur de departement')
             .length;
         mobiliersCount = mobiliers
             .where((element) =>
-                element.created.microsecondsSinceEpoch == item.reference &&
+                element.created.microsecondsSinceEpoch == item.reference.microsecondsSinceEpoch &&
                 item.approbation == 'Directeur de departement')
             .length;
       }

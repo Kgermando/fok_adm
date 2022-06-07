@@ -44,12 +44,12 @@ class _CommMarketingAdminState extends State<CommMarketingAdmin> {
       for (var item in approbations) {
         campaignCount = campaign
             .where((element) =>
-                element.created.microsecondsSinceEpoch == item.reference &&
+                element.created.microsecondsSinceEpoch == item.reference.microsecondsSinceEpoch &&
                 item.approbation == 'Directeur de departement')
             .length;
         succursaleCount = succursale
             .where((element) =>
-                element.created.microsecondsSinceEpoch == item.reference &&
+                element.created.microsecondsSinceEpoch == item.reference.microsecondsSinceEpoch &&
                 item.approbation == 'Directeur de departement')
             .length;
       }

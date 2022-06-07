@@ -139,7 +139,7 @@ class _DashboardAdministrationState extends State<DashboardAdministration> {
         for (var item in approbations) {
           projetsApprouveCount = projets
               .where((element) =>
-                  element.created.microsecondsSinceEpoch == item.reference &&
+                  element.created.microsecondsSinceEpoch == item.reference.microsecondsSinceEpoch &&
                   item.fontctionOccupee == 'Directeur générale')
               .length;
         }
@@ -148,7 +148,7 @@ class _DashboardAdministrationState extends State<DashboardAdministration> {
         for (var item in approbations) {
           campaignCount = campaigns
               .where((element) =>
-                  element.created.microsecondsSinceEpoch == item.reference &&
+                  element.created.microsecondsSinceEpoch == item.reference.microsecondsSinceEpoch &&
                   item.fontctionOccupee == 'Directeur générale')
               .length;
         }
@@ -157,7 +157,7 @@ class _DashboardAdministrationState extends State<DashboardAdministration> {
         for (var item in approbations) {
           departementsList = departements
               .where((element) =>
-                  element.created.microsecondsSinceEpoch == item.reference &&
+                  element.created.microsecondsSinceEpoch == item.reference.microsecondsSinceEpoch &&
                   item.fontctionOccupee == 'Directeur générale' &&
                   DateTime.now().isBefore(element.periodeFin))
               .toList();
@@ -172,28 +172,31 @@ class _DashboardAdministrationState extends State<DashboardAdministration> {
           for (var i in approbations) {
             dataCampaignList = campaigns
                 .where((element) =>
-                    element.id == i.reference &&
+                    element.created.microsecondsSinceEpoch == i.reference.microsecondsSinceEpoch &&
                     i.fontctionOccupee == 'Directeur générale' &&
                     element.created
                         .isBefore(DateTime.parse(item.periodeBudget)))
                 .toList();
             dataDevisList = devis
                 .where((element) =>
-                    element.id == i.reference &&
+                   element.created.microsecondsSinceEpoch ==
+                        i.reference.microsecondsSinceEpoch &&
                     i.fontctionOccupee == 'Directeur générale' &&
                     element.created
                         .isBefore(DateTime.parse(item.periodeBudget)))
                 .toList();
             dataProjetList = projets
                 .where((element) =>
-                    element.id == i.reference &&
+                    element.created.microsecondsSinceEpoch ==
+                        i.reference.microsecondsSinceEpoch &&
                     i.fontctionOccupee == 'Directeur générale' &&
                     element.created
                         .isBefore(DateTime.parse(item.periodeBudget)))
                 .toList();
             dataSalaireList = salaires
                 .where((element) =>
-                    element.id == i.reference &&
+                    element.createdAt.microsecondsSinceEpoch ==
+                        i.reference.microsecondsSinceEpoch &&
                     i.fontctionOccupee == 'Directeur générale' &&
                     element.createdAt
                         .isBefore(DateTime.parse(item.periodeBudget)))

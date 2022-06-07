@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:fokad_admin/src/api/budgets/ligne_budgetaire_api.dart';
 import 'package:fokad_admin/src/models/budgets/departement_budget_model.dart';
 import 'package:fokad_admin/src/models/budgets/ligne_budgetaire_model.dart';
-import 'package:fokad_admin/src/pages/budgets/ligne_budgetaire/components/detail_ligne_budgetaire.dart';
 import 'package:fokad_admin/src/routes/routes.dart';
 import 'package:fokad_admin/src/widgets/print_widget.dart';
 import 'package:fokad_admin/src/utils/class_implemented.dart';

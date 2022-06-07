@@ -189,8 +189,8 @@ class _DetailDevisState extends State<DetailDevis> {
                               ],
                             );
                           } else {
-                            return const Center(
-                                child: CircularProgressIndicator());
+                            return Center(
+                                child: loading());
                           }
                         })),
               ),
@@ -549,7 +549,7 @@ class _DetailDevisState extends State<DetailDevis> {
     );
   }
 
-  TableRow tableDevisBody(data) {
+  TableRow tableDevisBody(DevisListObjetsModel data) {
     final bodyMedium = Theme.of(context).textTheme.bodyMedium;
     return TableRow(
       children: [

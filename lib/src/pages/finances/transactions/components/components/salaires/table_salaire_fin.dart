@@ -209,7 +209,7 @@ class _TableSalaireFinState extends State<TableSalaireFin> {
     for (var item in approbations) {
       data = dataList
           .where((element) =>
-              element!.id == item.reference &&
+              element!.createdAt.microsecondsSinceEpoch == item.reference.microsecondsSinceEpoch &&
                   item.fontctionOccupee == 'Directeur de budget' &&
                   item.approbation == "Approved")
           .toList();

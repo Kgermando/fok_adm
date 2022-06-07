@@ -332,7 +332,6 @@ class _AddEncaissementState extends State<AddEncaissement> {
   Widget coupureBilletWidget() {
     return Scrollbar(
       controller: _controllerBillet,
-      isAlwaysShown: true,
       child: ListView.builder(
           controller: _controllerBillet,
           itemCount: count,

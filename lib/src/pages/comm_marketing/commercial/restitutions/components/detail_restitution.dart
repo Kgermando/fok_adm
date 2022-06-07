@@ -111,7 +111,6 @@ class _DetailRestitutionState extends State<DetailRestitution> {
                                 Expanded(
                                     child: Scrollbar(
                                         controller: _controllerScroll,
-                                        isAlwaysShown: true,
                                         child: pageDetail(data)))
                               ],
                             );

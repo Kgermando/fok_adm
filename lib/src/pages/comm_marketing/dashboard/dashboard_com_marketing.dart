@@ -13,7 +13,6 @@ import 'package:fokad_admin/src/constants/app_theme.dart';
 import 'package:fokad_admin/src/constants/responsive.dart';
 import 'package:fokad_admin/src/models/comm_maketing/creance_cart_model.dart';
 import 'package:fokad_admin/src/models/comm_maketing/gain_model.dart';
-import 'package:fokad_admin/src/models/comm_maketing/succursale_model.dart';
 import 'package:fokad_admin/src/models/comm_maketing/vente_cart_model.dart';
 import 'package:fokad_admin/src/navigation/drawer/drawer_menu.dart';
 import 'package:fokad_admin/src/navigation/header/custom_appbar.dart';
@@ -71,13 +70,13 @@ class _ComMarketingState extends State<ComMarketing> {
       for (var item in approbations) {
         campaignCount = campaigns
             .where((element) =>
-                element.created.microsecondsSinceEpoch == item.reference &&
+                element.created.microsecondsSinceEpoch == item.reference.microsecondsSinceEpoch &&
                 item.fontctionOccupee == 'Directeur générale' &&
                 item.approbation == "Approved")
             .length;
         succursaleCount = succursales
             .where((element) =>
-                element.created.microsecondsSinceEpoch == item.reference &&
+                element.created.microsecondsSinceEpoch == item.reference.microsecondsSinceEpoch &&
                 item.fontctionOccupee == 'Directeur générale' &&
                 item.approbation == "Approved")
             .length;

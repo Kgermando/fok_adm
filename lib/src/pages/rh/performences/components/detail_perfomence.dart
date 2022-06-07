@@ -358,7 +358,6 @@ class _DetailPerformenceState extends State<DetailPerformence> {
                     .where((element) => element.agent == data.agent)
                     .toList();
 
-                print("rapports $rapports");
                 return rapports.isEmpty
                     ? Column(
                         children: [

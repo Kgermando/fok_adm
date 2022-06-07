@@ -41,20 +41,19 @@ class _DetailAgentPageState extends State<DetailAgentPage> {
 
   AgentModel? agentModel;
   UserModel user = UserModel(
-    nom: '-',
-    prenom: '-',
-    email: '-',
-    telephone: '-',
-    matricule: '-',
-    departement: '-',
-    servicesAffectation: '-',
-    fonctionOccupe: '-',
-    role: '5',
-    isOnline: false,
-    createdAt: DateTime.now(),
-    passwordHash: '-',
-    succursale: '-'
-  );
+      nom: '-',
+      prenom: '-',
+      email: '-',
+      telephone: '-',
+      matricule: '-',
+      departement: '-',
+      servicesAffectation: '-',
+      fonctionOccupe: '-',
+      role: '5',
+      isOnline: false,
+      createdAt: DateTime.now(),
+      passwordHash: '-',
+      succursale: '-');
   Future<void> getData(BuildContext context) async {
     UserModel userModel = await AuthApi().getUserId();
     final data = await UserApi().getAllData();
@@ -74,22 +73,21 @@ class _DetailAgentPageState extends State<DetailAgentPage> {
         key: _key,
         drawer: const DrawerMenu(),
         floatingActionButton:
-          // speedialWidget(agentModel!),
-          FutureBuilder<AgentModel>(
-            future: AgentsApi().getOneData(id),
-            builder:
-                (BuildContext context, AsyncSnapshot<AgentModel> snapshot) {
-              if (snapshot.hasData) {
-                AgentModel? data = snapshot.data;
-                return speedialWidget(data!);
-                // (int.parse(agentModel!.role) <= 3)
-                //     ? speedialWidget(agentModel)
-                //     : Container();
-              } else {
-                return loadingMini();
-              }
-            }
-          ),
+            // speedialWidget(agentModel!),
+            FutureBuilder<AgentModel>(
+                future: AgentsApi().getOneData(id),
+                builder:
+                    (BuildContext context, AsyncSnapshot<AgentModel> snapshot) {
+                  if (snapshot.hasData) {
+                    AgentModel? data = snapshot.data;
+                    return speedialWidget(data!);
+                    // (int.parse(agentModel!.role) <= 3)
+                    //     ? speedialWidget(agentModel)
+                    //     : Container();
+                  } else {
+                    return loadingMini();
+                  }
+                }),
         body: SafeArea(
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -101,43 +99,42 @@ class _DetailAgentPageState extends State<DetailAgentPage> {
               Expanded(
                 flex: 5,
                 child: Padding(
-                  padding: const EdgeInsets.all(p10),
-                  child: FutureBuilder<AgentModel>(
-                    future: AgentsApi().getOneData(id),
-                    builder: (BuildContext context,
-                        AsyncSnapshot<AgentModel> snapshot) {
-                      if (snapshot.hasData) {
-                        AgentModel? agentModel = snapshot.data;
-                        return Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Row(
+                    padding: const EdgeInsets.all(p10),
+                    child: FutureBuilder<AgentModel>(
+                        future: AgentsApi().getOneData(id),
+                        builder: (BuildContext context,
+                            AsyncSnapshot<AgentModel> snapshot) {
+                          if (snapshot.hasData) {
+                            AgentModel? agentModel = snapshot.data;
+                            return Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                SizedBox(
-                                  width: p20,
-                                  child: IconButton(
-                                      onPressed: () =>
-                                          Navigator.pop(context),
-                                      icon: const Icon(Icons.arrow_back)),
+                                Row(
+                                  children: [
+                                    SizedBox(
+                                      width: p20,
+                                      child: IconButton(
+                                          onPressed: () =>
+                                              Navigator.pop(context),
+                                          icon: const Icon(Icons.arrow_back)),
+                                    ),
+                                    const SizedBox(width: p10),
+                                    Expanded(
+                                      child: CustomAppbar(
+                                          title:
+                                              'Agent ${agentModel!.matricule}',
+                                          controllerMenu: () =>
+                                              _key.currentState!.openDrawer()),
+                                    ),
+                                  ],
                                 ),
-                                const SizedBox(width: p10),
-                                Expanded(
-                                  child: CustomAppbar(
-                                      title:
-                                          'Agent ${agentModel!.matricule}',
-                                      controllerMenu: () =>
-                                          _key.currentState!.openDrawer()),
-                                ),
+                                Expanded(child: pageDetail(agentModel))
                               ],
-                            ),
-                            Expanded(child: pageDetail(agentModel))
-                          ],
-                        );
-                      } else {
-                        return Center(
-                            child: loading());
-                      }
-                    })),
+                            );
+                          } else {
+                            return Center(child: loading());
+                          }
+                        })),
               ),
             ],
           ),
@@ -183,7 +180,8 @@ class _DetailAgentPageState extends State<DetailAgentPage> {
                 identiteWidget(agentModel),
                 serviceWidet(agentModel),
                 competenceExperienceWidet(agentModel),
-                infosEditeurWidet(agentModel)
+                infosEditeurWidet(agentModel),
+                const SizedBox(height: p20)
               ],
             ),
           ),
@@ -561,7 +559,8 @@ class _DetailAgentPageState extends State<DetailAgentPage> {
               ),
               Expanded(
                 child: Text(
-                    DateFormat("dd-MM-yy").format(agentModel.dateDebutContrat),
+                    DateFormat("dd-MM-yyyy")
+                        .format(agentModel.dateDebutContrat),
                     textAlign: TextAlign.start,
                     style: bodyMedium),
               )
@@ -577,7 +576,8 @@ class _DetailAgentPageState extends State<DetailAgentPage> {
                 ),
                 Expanded(
                   child: Text(
-                      DateFormat("dd-MM-yy").format(agentModel.dateFinContrat),
+                      DateFormat("dd-MM-yyyy")
+                          .format(agentModel.dateFinContrat),
                       textAlign: TextAlign.start,
                       style: bodyMedium),
                 )
@@ -652,19 +652,50 @@ class _DetailAgentPageState extends State<DetailAgentPage> {
   }
 
   agentStatutDialog(AgentModel agentModel) {
+    statutAgent = agentModel.statutAgent;
     return showDialog(
         context: context,
         barrierDismissible: true,
         builder: (context) {
           return StatefulBuilder(builder: (context, StateSetter setState) {
-            statutAgent = agentModel.statutAgent;
-            return !isLoading
-                ? AlertDialog(
-                    title: const Text('Autorisation d\'accès au système'),
-                    content: SizedBox(
-                      height: 200,
-                      width: 300,
-                      child: FlutterSwitch(
+            if (!isLoading) {
+              return AlertDialog(
+                title: const Text('Autorisation d\'accès au système'),
+                content: SizedBox(
+                  height: 100,
+                  width: 200,
+                  child: Column(
+                    children: [
+                      // Switch(
+                      //     activeColor: Colors.green,
+                      //     splashRadius: p50,
+                      //     value: statutAgent,
+                      //     onChanged: (val) {
+                      //       setState(() {
+                      //         statutAgent = val;
+                      //         print("statutAgent $statutAgent");
+                      //         if (statutAgent == true) {
+                      //           createUser(
+                      //               agentModel.nom,
+                      //               agentModel.prenom,
+                      //               agentModel.email,
+                      //               agentModel.telephone,
+                      //               agentModel.matricule,
+                      //               agentModel.departement,
+                      //               agentModel.servicesAffectation,
+                      //               agentModel.fonctionOccupe,
+                      //               agentModel.role);
+                      //           updateAgent(agentModel);
+                      //           // isLoading == false;
+                      //         } else {
+                      //           deleteUser(agentModel);
+                      //           updateAgent(agentModel);
+                      //           // isLoading == false;
+                      //         }
+                      //       });
+                      //     }),
+
+                      FlutterSwitch(
                         width: 225.0,
                         height: 55.0,
                         activeColor: Colors.green,
@@ -678,10 +709,10 @@ class _DetailAgentPageState extends State<DetailAgentPage> {
                         activeText: 'Active',
                         inactiveText: 'Inactive',
                         onToggle: (val) {
+                          // isLoading == true;
                           setState(() {
-                            isLoading == true;
                             statutAgent = val;
-                            if (statutAgent) {
+                            if (statutAgent == true) {
                               createUser(
                                   agentModel.nom,
                                   agentModel.prenom,
@@ -700,17 +731,23 @@ class _DetailAgentPageState extends State<DetailAgentPage> {
                               // isLoading == false;
                             }
                           });
+
+                          // setState(() {});
                         },
                       ),
-                    ),
-                    actions: <Widget>[
-                      TextButton(
-                        onPressed: () => Navigator.pop(context, 'OK'),
-                        child: const Text('OK'),
-                      ),
                     ],
-                  )
-                : loading();
+                  ),
+                ),
+                actions: <Widget>[
+                  TextButton(
+                    onPressed: () => Navigator.pop(context, 'OK'),
+                    child: const Text('OK'),
+                  ),
+                ],
+              );
+            } else {
+              return loading();
+            }
           });
         });
   }
@@ -746,7 +783,7 @@ class _DetailAgentPageState extends State<DetailAgentPage> {
         created: DateTime.now());
     await AgentsApi().updateData(agentModel.id!, agent);
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-      content: const Text("Mise à statut avec succès!"),
+      content: const Text("Mise à statut agent succès!"),
       backgroundColor: Colors.blue[700],
     ));
   }
@@ -759,7 +796,7 @@ class _DetailAgentPageState extends State<DetailAgentPage> {
         .toList();
     await UserApi().deleteData(users.first!);
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-      content: const Text("Suppression avec succès!"),
+      content: const Text("Suppression accès agent succès!"),
       backgroundColor: Colors.red[700],
     ));
   }
@@ -792,7 +829,7 @@ class _DetailAgentPageState extends State<DetailAgentPage> {
         succursale: '-');
     await UserApi().insertData(userModel);
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-      content: const Text("Enregistrer avec succès!"),
+      content: const Text("Activation agent avec succès!"),
       backgroundColor: Colors.green[700],
     ));
   }

@@ -146,7 +146,7 @@ class _TableBilanComptabiliteState extends State<TableBilanComptabilite> {
     for (var item in approbations) {
       data = dataList
           .where((element) =>
-              element!.id == item.reference &&
+              element!.created.microsecondsSinceEpoch == item.reference.microsecondsSinceEpoch &&
               item.fontctionOccupee == 'Directeur générale' &&
               item.approbation == "Approved" ||
               element.statut == false &&

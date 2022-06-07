@@ -59,7 +59,7 @@ class _BudgetDDState extends State<BudgetDD> {
       for (var item in approbations) {
         salaireCount = salaires
             .where((element) =>
-                element.createdAt.microsecondsSinceEpoch == item.reference &&
+                element.createdAt.microsecondsSinceEpoch == item.reference.microsecondsSinceEpoch &&
                 item.fontctionOccupee == 'Directeur générale' &&
                 item.approbation == "Approved")
             .toList()
@@ -68,7 +68,7 @@ class _BudgetDDState extends State<BudgetDD> {
       for (var item in approbations) {
         campaignCount = campaigns
             .where((element) =>
-                element.created.microsecondsSinceEpoch == item.reference &&
+                element.created.microsecondsSinceEpoch == item.reference.microsecondsSinceEpoch &&
                 item.fontctionOccupee == 'Directeur générale' &&
                 item.approbation == "Approved")
             .toList()
@@ -77,7 +77,7 @@ class _BudgetDDState extends State<BudgetDD> {
       for (var item in approbations) {
         devisCount = devis
             .where((element) =>
-                element.created.microsecondsSinceEpoch == item.reference &&
+                element.created.microsecondsSinceEpoch == item.reference.microsecondsSinceEpoch &&
                 item.fontctionOccupee == 'Directeur générale' &&
                 item.approbation == "Approved")
             .toList()
@@ -86,7 +86,7 @@ class _BudgetDDState extends State<BudgetDD> {
       for (var item in approbations) {
         projetCount = projets
             .where((element) =>
-                element.created.microsecondsSinceEpoch == item.reference &&
+                element.created.microsecondsSinceEpoch == item.reference.microsecondsSinceEpoch &&
                 item.fontctionOccupee == 'Directeur générale' &&
                 item.approbation == "Approved")
             .toList()
@@ -95,7 +95,7 @@ class _BudgetDDState extends State<BudgetDD> {
       for (var item in approbations) {
         budgetDepCount = budgetDep
             .where((element) =>
-                element.created.microsecondsSinceEpoch == item.reference &&
+                element.created.microsecondsSinceEpoch == item.reference.microsecondsSinceEpoch &&
                 item.fontctionOccupee == 'Directeur générale' &&
                 item.approbation == "Approved")
             .toList()

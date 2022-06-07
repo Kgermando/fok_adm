@@ -167,7 +167,7 @@ class _TableAgentsState extends State<TableAgents> {
         enableContextMenu: false,
         enableDropToResize: true,
         titleTextAlign: PlutoColumnTextAlign.left,
-        width: 200,
+        width: 300,
         minWidth: 150,
       ),
       PlutoColumn(
@@ -232,14 +232,14 @@ class _TableAgentsState extends State<TableAgents> {
       ),
       PlutoColumn(
         readOnly: true,
-        title: 'departement',
+        title: 'Département',
         field: 'departement',
         type: PlutoColumnType.text(),
         enableRowDrag: true,
         enableContextMenu: false,
         enableDropToResize: true,
         titleTextAlign: PlutoColumnTextAlign.left,
-        width: 200,
+        width: 250,
         minWidth: 150,
       ),
       PlutoColumn(
@@ -251,7 +251,7 @@ class _TableAgentsState extends State<TableAgents> {
         enableContextMenu: false,
         enableDropToResize: true,
         titleTextAlign: PlutoColumnTextAlign.left,
-        width: 200,
+        width: 300,
         minWidth: 150,
       ),
       PlutoColumn(
@@ -284,19 +284,17 @@ class _TableAgentsState extends State<TableAgents> {
             'email': PlutoCell(value: item.email),
             'telephone': PlutoCell(value: item.telephone),
             'sexe': PlutoCell(value: item.sexe),
-            'role': PlutoCell(value: item.role),
+            'role': PlutoCell(value: "Niveau ${item.role}"),
             'matricule': PlutoCell(value: item.matricule),
             'dateNaissance':
-                PlutoCell(value: DateFormat("dd-MM-yy").format(item.createdAt)),
+                PlutoCell(value: DateFormat("dd-MM-yyyy").format(item.createdAt)),
             'departement': PlutoCell(value: item.departement),
             'servicesAffectation': PlutoCell(value: item.servicesAffectation),
-            'statutAgent': PlutoCell(value: item.statutAgent)
+            'statutAgent': PlutoCell(value: (item.statutAgent) ? 'Agent actif' : 'Agent inactif')
           }));
         }
         stateManager!.resetCurrentState();
       });
     }
   }
-
-
 }

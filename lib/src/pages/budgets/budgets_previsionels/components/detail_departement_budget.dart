@@ -36,7 +36,6 @@ class DetailDepartmentBudget extends StatefulWidget {
 
 class _DetailDepartmentBudgetState extends State<DetailDepartmentBudget> {
   final GlobalKey<ScaffoldState> _key = GlobalKey();
-  final ScrollController _controllerScroll = ScrollController();
 
   String approbationDGController = '-';
   String approbationFinController = '-';
@@ -108,22 +107,22 @@ class _DetailDepartmentBudgetState extends State<DetailDepartmentBudget> {
       for (var i in approbations) {
         dataCampaignList = campaigns
             .where((element) =>
-                element.id == i.reference &&
+                element.created.microsecondsSinceEpoch == i.reference.microsecondsSinceEpoch &&
                 i.fontctionOccupee == 'Directeur générale')
             .toList();
         dataDevisList = devis
             .where((element) =>
-                element.id == i.reference &&
+                element.created.microsecondsSinceEpoch == i.reference.microsecondsSinceEpoch &&
                 i.fontctionOccupee == 'Directeur générale')
             .toList();
         dataProjetList = projets
             .where((element) =>
-                element.id == i.reference &&
+                element.created.microsecondsSinceEpoch == i.reference.microsecondsSinceEpoch &&
                 i.fontctionOccupee == 'Directeur générale')
             .toList();
         dataSalaireList = salaires
             .where((element) =>
-                element.id == i.reference &&
+                element.createdAt.microsecondsSinceEpoch == i.reference.microsecondsSinceEpoch &&
                 i.fontctionOccupee == 'Directeur générale')
             .toList();
       }
@@ -178,7 +177,7 @@ class _DetailDepartmentBudgetState extends State<DetailDepartmentBudget> {
                             DepartementBudgetModel? data = snapshot.data;
                             approbationData = approbList
                                 .where(
-                                    (element) => element.reference == data!.id!)
+                                    (element) => element.reference.microsecondsSinceEpoch == data!.created.microsecondsSinceEpoch)
                                 .toList();
 
                             if (approbationData.isNotEmpty) {

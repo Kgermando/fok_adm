@@ -7,9 +7,8 @@ import 'package:fokad_admin/src/models/devis/devis_models.dart';
 import 'package:fokad_admin/src/navigation/drawer/drawer_menu.dart';
 import 'package:fokad_admin/src/navigation/header/custom_appbar.dart';
 import 'package:fokad_admin/src/pages/finances/etat_besoin/components/table_etat_besoin_rh.dart';
-import 'package:fokad_admin/src/pages/rh/etat_besoin/components/table_etat_besoin_rh.dart';
-import 'package:fokad_admin/src/utils/loading.dart';
 import 'package:fokad_admin/src/utils/priority_dropdown.dart';
+import 'package:fokad_admin/src/widgets/btn_widget.dart';
 import 'package:fokad_admin/src/widgets/title_widget.dart';
 
 class EtatBesoinFinPage extends StatefulWidget {
@@ -91,21 +90,16 @@ class _EtatBesoinFinPageState extends State<EtatBesoinFinPage> {
                           const SizedBox(
                             height: p20,
                           ),
-                          ElevatedButton(
-                            child: (isLoading)
-                                ? loadingMini()
-                                : const Text('Crée maintenant'),
-                            onPressed: () {
-                              setState(() {
-                                isLoading = true;
-                              });
-                              final form = _formKey.currentState!;
-                              if (form.validate()) {
-                                submit();
-                                form.reset();
-                              }
-                            },
-                          )
+                          BtnWidget(
+                              title: 'Crée maintenant',
+                              press: () {
+                                final form = _formKey.currentState!;
+                                if (form.validate()) {
+                                  submit();
+                                  form.reset();
+                                }
+                              },
+                              isLoading: isLoading)
                         ],
                       ),
                     ),

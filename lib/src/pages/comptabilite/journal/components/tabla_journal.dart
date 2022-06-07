@@ -248,7 +248,7 @@ class _TableJournalState extends State<TableJournal> {
     for (var item in approbations) {
       data = dataList
           .where((element) =>
-              element!.id == item.reference &&
+              element!.created.microsecondsSinceEpoch == item.reference.microsecondsSinceEpoch &&
                   item.fontctionOccupee == 'Directeur générale' &&
                   item.approbation == "Approved" ||
                   element.signature == userModel.matricule)

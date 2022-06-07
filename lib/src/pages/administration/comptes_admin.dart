@@ -57,22 +57,22 @@ class _CompteAdminState extends State<CompteAdmin> {
       for (var item in approbations) {
         bilanCount = bilans
             .where((element) =>
-                element.created.microsecondsSinceEpoch == item.reference &&
+                element.created.microsecondsSinceEpoch == item.reference.microsecondsSinceEpoch &&
                 item.approbation == 'Directeur de departement')
             .length;
         journalCount = journal
             .where((element) =>
-                element.created.microsecondsSinceEpoch == item.reference &&
+                element.created.microsecondsSinceEpoch == item.reference.microsecondsSinceEpoch &&
                 item.approbation == 'Directeur de departement')
             .length;
         compteResultatCount = compteReultats
             .where((element) =>
-                element.created.microsecondsSinceEpoch == item.reference &&
+                element.created.microsecondsSinceEpoch == item.reference.microsecondsSinceEpoch &&
                 item.approbation == 'Directeur de departement')
             .length;
         balanceCount = balances
             .where((element) =>
-                element.created.microsecondsSinceEpoch == item.reference &&
+                element.created.microsecondsSinceEpoch == item.reference.microsecondsSinceEpoch &&
                 item.approbation == 'Directeur de departement')
             .length;
       }

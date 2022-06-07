@@ -11,7 +11,6 @@ import 'package:fokad_admin/src/api/finances/dette_api.dart';
 import 'package:fokad_admin/src/api/finances/fin_exterieur_api.dart';
 import 'package:fokad_admin/src/constants/app_theme.dart';
 import 'package:fokad_admin/src/constants/responsive.dart';
-import 'package:fokad_admin/src/models/devis/devis_models.dart';
 import 'package:fokad_admin/src/models/finances/banque_model.dart';
 import 'package:fokad_admin/src/models/finances/caisse_model.dart';
 import 'package:fokad_admin/src/models/finances/creances_model.dart';
@@ -80,7 +79,6 @@ class _DashboardFinanceState extends State<DashboardFinance> {
     List<DetteModel?> dataDetteList = await DetteApi().getAllData();
     var creanceDettes = await CreanceDetteApi().getAllData();
     var dataFinanceExterieurList = await FinExterieurApi().getAllData();
-    var dataDevisList = await DevisAPi().getAllData();
     var approbations = await ApprobationApi().getAllData();
 
     setState(() {
@@ -119,7 +117,7 @@ class _DashboardFinanceState extends State<DashboardFinance> {
         List<CreanceModel?> nonPayeCreanceList = dataCreanceList
             .where((element) =>
                 element!.statutPaie == false &&
-                element.created.microsecondsSinceEpoch == item.reference &&
+                element.created.microsecondsSinceEpoch == item.reference.microsecondsSinceEpoch &&
                 item.fontctionOccupee == 'Directeur générale')
             .toList();
 
@@ -136,7 +134,7 @@ class _DashboardFinanceState extends State<DashboardFinance> {
         List<DetteModel?> nonPayeDetteList = dataDetteList
             .where((element) =>
                 element!.statutPaie == false &&
-                element.created.microsecondsSinceEpoch == item.reference &&
+                element.created.microsecondsSinceEpoch == item.reference.microsecondsSinceEpoch &&
                 item.fontctionOccupee == 'Directeur générale')
             .toList();
         for (var item in nonPayeDetteList) {

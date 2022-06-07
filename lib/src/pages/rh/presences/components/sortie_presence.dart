@@ -1,11 +1,7 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:fokad_admin/src/api/auth/auth_api.dart';
-import 'package:fokad_admin/src/api/rh/presence_api.dart';
 import 'package:fokad_admin/src/api/rh/presence_entrer_api.dart';
 import 'package:fokad_admin/src/api/rh/presence_sortie_api.dart';
-import 'package:fokad_admin/src/api/user/user_api.dart';
 import 'package:fokad_admin/src/constants/app_theme.dart';
 import 'package:fokad_admin/src/constants/responsive.dart';
 import 'package:fokad_admin/src/models/rh/presence_entrer_model.dart';
@@ -15,7 +11,6 @@ import 'package:fokad_admin/src/models/users/user_model.dart';
 import 'package:fokad_admin/src/navigation/drawer/drawer_menu.dart';
 import 'package:fokad_admin/src/navigation/header/custom_appbar.dart';
 import 'package:fokad_admin/src/utils/loading.dart';
-import 'package:fokad_admin/src/widgets/btn_widget.dart';
 import 'package:fokad_admin/src/widgets/print_widget.dart';
 import 'package:fokad_admin/src/widgets/title_widget.dart';
 import 'package:intl/intl.dart';
@@ -29,8 +24,6 @@ class SortiePresence extends StatefulWidget {
 
 class _SortiePresenceState extends State<SortiePresence> {
   final GlobalKey<ScaffoldState> _key = GlobalKey();
-  final ScrollController _controllerScrollSortie = ScrollController();
-  final ScrollController _controllerScrollListAgent = ScrollController();
   final _formKey = GlobalKey<FormState>();
   bool isLoading = false;
 

@@ -203,7 +203,7 @@ class _TableSalairesBudgetState extends State<TableSalairesBudget> {
           .where((element) =>
               element!.createdAt.month == DateTime.now().month &&
               element.createdAt.year == DateTime.now().year &&
-              element.createdAt.microsecondsSinceEpoch == item.reference &&
+              element.createdAt.microsecondsSinceEpoch == item.reference.microsecondsSinceEpoch &&
               item.fontctionOccupee == 'Directeur générale' &&
               item.approbation == "Approved")
           .toList();

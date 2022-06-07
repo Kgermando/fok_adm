@@ -104,28 +104,28 @@ class _DashboardBudgetState extends State<DashboardBudget> {
           for (var i in approbations) {
             dataCampaignList = campaigns
                 .where((element) =>
-                    element.id == i.reference &&
+                    element.created.microsecondsSinceEpoch == i.reference.microsecondsSinceEpoch &&
                     i.fontctionOccupee == 'Directeur générale' &&
                     element.created
                         .isBefore(DateTime.parse(item.periodeBudget)))
                 .toList();
             dataDevisList = devis
                 .where((element) =>
-                    element.id == i.reference &&
+                    element.created.microsecondsSinceEpoch == i.reference.microsecondsSinceEpoch &&
                     i.fontctionOccupee == 'Directeur générale' &&
                     element.created
                         .isBefore(DateTime.parse(item.periodeBudget)))
                 .toList();
             dataProjetList = projets
                 .where((element) =>
-                    element.id == i.reference &&
+                    element.created.microsecondsSinceEpoch == i.reference.microsecondsSinceEpoch &&
                     i.fontctionOccupee == 'Directeur générale' &&
                     element.created
                         .isBefore(DateTime.parse(item.periodeBudget)))
                 .toList();
             dataSalaireList = salaires
                 .where((element) =>
-                    element.id == i.reference &&
+                    element.createdAt.microsecondsSinceEpoch == i.reference.microsecondsSinceEpoch &&
                     i.fontctionOccupee == 'Directeur générale' &&
                     element.createdAt
                         .isBefore(DateTime.parse(item.periodeBudget)))
@@ -215,7 +215,7 @@ class _DashboardBudgetState extends State<DashboardBudget> {
       finExterieursalaire += double.parse(item.resources);
     }
 
-    print("poursentExecution $poursentExecution");
+    // print("poursentExecution $poursentExecution");
 
     return Scaffold(
         key: _key,

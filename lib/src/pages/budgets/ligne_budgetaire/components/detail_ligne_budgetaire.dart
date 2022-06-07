@@ -158,7 +158,6 @@ class _DetailLigneBudgetaireState extends State<DetailLigneBudgetaire> {
                                 Expanded(
                                     child: Scrollbar(
                                         controller: _controllerScroll,
-                                        isAlwaysShown: true,
                                         child: pageDetail(data)))
                               ],
                             );

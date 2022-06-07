@@ -99,7 +99,6 @@ class _StockGlobalPageState extends State<StockGlobalPage> {
                                         ))
                                       : Scrollbar(
                                           controller: controllerScrollbar,
-                                          isAlwaysShown: true,
                                           child: ListView.builder(
                                               controller: controllerScrollbar,
                                               itemCount: dataList.length,

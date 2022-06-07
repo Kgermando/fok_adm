@@ -125,7 +125,7 @@ class _DetailProdModelState extends State<DetailProdModel> {
                             ProductModel? data = snapshot.data;
                             approbationData = approbList
                                 .where(
-                                    (element) => element.reference == data!.id!)
+                                    (element) => element.reference.microsecondsSinceEpoch == data!.created.microsecondsSinceEpoch)
                                 .toList();
 
                             if (approbationData.isNotEmpty) {

@@ -114,7 +114,6 @@ class _DetailCreanceFactState extends State<DetailCreanceFact> {
                                 Expanded(
                                     child: Scrollbar(
                                         controller: _controllerScroll,
-                                        isAlwaysShown: true,
                                         child: pageDetail(data)))
                               ],
                             );

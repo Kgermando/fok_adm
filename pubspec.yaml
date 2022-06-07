@@ -52,7 +52,6 @@ dependencies:
   open_file: ^3.2.1
   path_provider: ^2.0.10
   path_provider_platform_interface: ^2.0.4
-  contextmenu: ^3.0.0
   flutter_phoenix: ^1.0.0
   dospace: ^0.13.15
   file_picker: ^4.6.1

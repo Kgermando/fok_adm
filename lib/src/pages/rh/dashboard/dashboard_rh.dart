@@ -65,7 +65,7 @@ class _DashboardRhState extends State<DashboardRh> {
             .where((element) =>
                 element.createdAt.month == DateTime.now().month &&
                 element.createdAt.year == DateTime.now().year &&
-                element.createdAt.microsecondsSinceEpoch == item.reference &&
+                element.createdAt.microsecondsSinceEpoch == item.reference.microsecondsSinceEpoch &&
                 item.fontctionOccupee != 'Directeur de departement')
             .toList();
       }

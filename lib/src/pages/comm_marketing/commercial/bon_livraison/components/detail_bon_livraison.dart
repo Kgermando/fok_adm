@@ -115,7 +115,6 @@ class _DetailBonLivraisonState extends State<DetailBonLivraison> {
                                 Expanded(
                                     child: Scrollbar(
                                         controller: _controllerScroll,
-                                        isAlwaysShown: true,
                                         child: pageDetail(data)))
                               ],
                             );

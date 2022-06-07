@@ -103,7 +103,6 @@ class _RestitutionStockState extends State<RestitutionStock> {
                         Expanded(
                             child: Scrollbar(
                                 controller: _controllerScroll,
-                                isAlwaysShown: true,
                                 child: addPageWidget()))
                       ],
                     )),
