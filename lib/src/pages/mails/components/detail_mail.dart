@@ -8,13 +8,14 @@ import 'package:fokad_admin/src/models/mail/mail_model.dart';
 import 'package:fokad_admin/src/models/users/user_model.dart';
 import 'package:fokad_admin/src/navigation/drawer/drawer_menu.dart';
 import 'package:fokad_admin/src/navigation/header/custom_appbar.dart';
+import 'package:fokad_admin/src/routes/routes.dart';
+import 'package:fokad_admin/src/utils/loading.dart';
 import 'package:fokad_admin/src/widgets/print_widget.dart';
 import 'package:intl/intl.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
 class DetailMail extends StatefulWidget {
-  const DetailMail({Key? key})
-      : super(key: key);
+  const DetailMail({Key? key}) : super(key: key);
 
   @override
   State<DetailMail> createState() => _DetailMailState();
@@ -52,7 +53,8 @@ class _DetailMailState extends State<DetailMail> {
 
   @override
   Widget build(BuildContext context) {
-    MailColor mailColor = ModalRoute.of(context)!.settings.arguments as MailColor;
+    MailColor mailColor =
+        ModalRoute.of(context)!.settings.arguments as MailColor;
     return Scaffold(
         key: _key,
         drawer: const DrawerMenu(),
@@ -97,12 +99,13 @@ class _DetailMailState extends State<DetailMail> {
                                 ),
                                 Expanded(
                                     child: SingleChildScrollView(
-                                        child: pageDetail(data!, mailColor.color)))
+                                        child:
+                                            pageDetail(data!, mailColor.color)))
                               ],
                             );
                           } else {
-                            return const Center(
-                                child: CircularProgressIndicator());
+                            return Center(
+                                child: loading());
                           }
                         })),
               ),
@@ -138,12 +141,29 @@ class _DetailMailState extends State<DetailMail> {
                     SelectableText(
                         timeago.format(data.dateSend, locale: 'fr_short'),
                         textAlign: TextAlign.start),
-                    IconButton(onPressed: () {}, tooltip: 'Repondre', 
-                      icon: const Icon(Icons.reply)),
-                    IconButton(onPressed: () {}, tooltip: 'Transfère',
+                    IconButton(
+                        onPressed: () {
+                          Navigator.pushNamed(context, MailRoutes.mailRepondre,
+                              arguments: data);
+                        },
+                        tooltip: 'Repondre',
+                        icon: const Icon(Icons.reply)),
+                    IconButton(
+                        onPressed: () {
+                          Navigator.pushNamed(context, MailRoutes.mailTransfert,
+                              arguments: data);
+                        },
+                        tooltip: 'Transferer',
                         icon: const Icon(Icons.redo)),
                     IconButton(
-                        onPressed: () {},
+                        onPressed: () async {
+                          await MailApi().deleteData(data.id!);
+                          Navigator.pop(context);
+                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                            content: const Text("Mail supprimer avec succès!"),
+                            backgroundColor: Colors.red[700],
+                          ));
+                        },
                         tooltip: 'Suypprimer',
                         icon: const Icon(Icons.delete)),
                     PrintWidget(onPressed: () {})
@@ -185,13 +205,13 @@ class _DetailMailState extends State<DetailMail> {
             subtitle: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                if(data.email == user.email)
-                Row(
-                  children: [
-                    AutoSizeText("à".toUpperCase()),
-                    const AutoSizeText("moi."),
-                  ],
-                ),
+                if (data.email == user.email)
+                  Row(
+                    children: [
+                      AutoSizeText("à".toUpperCase()),
+                      const AutoSizeText("moi."),
+                    ],
+                  ),
                 SizedBox(
                   width: 500,
                   child: ExpansionTile(
@@ -203,10 +223,11 @@ class _DetailMailState extends State<DetailMail> {
                           const SizedBox(width: p10),
                           AutoSizeText(data.emailDest, style: bodySmall),
                           const SizedBox(width: p10),
-                          AutoSizeText(data.fullNameDest, style: bodySmall!.copyWith(fontWeight: FontWeight.w600)),
+                          AutoSizeText(data.fullNameDest,
+                              style: bodySmall!
+                                  .copyWith(fontWeight: FontWeight.w600)),
                         ],
                       ),
-                      
                       Row(
                         children: [
                           AutoSizeText("à:".toUpperCase()),
@@ -214,7 +235,8 @@ class _DetailMailState extends State<DetailMail> {
                           AutoSizeText(data.email, style: bodySmall),
                           const SizedBox(width: p10),
                           AutoSizeText(data.fullName,
-                            style: bodySmall.copyWith(fontWeight: FontWeight.w600)),
+                              style: bodySmall.copyWith(
+                                  fontWeight: FontWeight.w600)),
                         ],
                       ),
                       const SizedBox(width: p10),
@@ -223,17 +245,20 @@ class _DetailMailState extends State<DetailMail> {
                           const Text("Date:"),
                           const SizedBox(width: p10),
                           SelectableText(
-                            DateFormat("dd-MM-yyyy HH:mm")
-                                .format(data.dateSend),
-                            style: bodySmall,
-                            textAlign: TextAlign.start),
+                              DateFormat("dd-MM-yyyy HH:mm")
+                                  .format(data.dateSend),
+                              style: bodySmall,
+                              textAlign: TextAlign.start),
                         ],
                       ),
                       Row(
                         children: [
-                          Icon(Icons.lock, size: 15.0, color: Colors.green.shade700),
+                          Icon(Icons.lock,
+                              size: 15.0, color: Colors.green.shade700),
                           const SizedBox(width: p10),
-                          Text("Chiffrement Standard (TLS).", style:bodySmall.copyWith(color: Colors.green.shade700))
+                          Text("Chiffrement Standard (TLS).",
+                              style: bodySmall.copyWith(
+                                  color: Colors.green.shade700))
                         ],
                       )
                     ],

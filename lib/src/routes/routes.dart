@@ -98,6 +98,8 @@ import 'package:fokad_admin/src/pages/logistiques/materiels/immobilier_materiel.
 import 'package:fokad_admin/src/pages/logistiques/materiels/mobilier_materiel.dart';
 import 'package:fokad_admin/src/pages/mails/components/detail_mail.dart';
 import 'package:fokad_admin/src/pages/mails/components/new_mail.dart';
+import 'package:fokad_admin/src/pages/mails/components/repondre_mail.dart';
+import 'package:fokad_admin/src/pages/mails/components/tranfert_mail.dart';
 import 'package:fokad_admin/src/pages/mails/mails_page.dart';
 import 'package:fokad_admin/src/pages/rh/agents/agents_rh.dart';
 import 'package:fokad_admin/src/pages/rh/agents/components/add_agent.dart';
@@ -303,6 +305,8 @@ class MailRoutes {
   static const mails = "/mails";
   static const addMail = "/mail-add";
   static const mailDetail = "/mail-detail";
+  static const mailRepondre = "/mail-repondre";
+  static const mailTransfert = "/mail-tranfert";
 }
 
 final routes = <String, WidgetBuilder>{
@@ -453,6 +457,8 @@ final routes = <String, WidgetBuilder>{
   MailRoutes.mails: (context) => const MailPages(),
   MailRoutes.addMail: (context) => const NewMail(),
   MailRoutes.mailDetail: (context) => const DetailMail(),
+  MailRoutes.mailRepondre: (context) => const RepondreMail(),
+  MailRoutes.mailTransfert: (context) => const TransfertMail(),
 
   // Archives
   ArchiveRoutes.archives: (context) => const ArchiveFolder(),

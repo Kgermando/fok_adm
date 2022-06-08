@@ -532,20 +532,18 @@ class _DetailDevisState extends State<DetailDevis> {
   }
 
   Widget tableDevisListObjet() {
-    return Flexible(
-      child: Table(
-        border: TableBorder.all(color: Colors.amber.shade700),
-        columnWidths: const {
-          0: FixedColumnWidth(50.0), // fixed to 100 width
-          1: FlexColumnWidth(300.0),
-          2: FixedColumnWidth(150.0), //fixed to 100 width
-          3: FixedColumnWidth(150.0),
-        },
-        children: [
-          tableDevisHeader(),
-          for (var item in devisObjetList) tableDevisBody(item)
-        ],
-      ),
+    return Table(
+      border: TableBorder.all(color: Colors.amber.shade700),
+      columnWidths: const {
+        0: FixedColumnWidth(50.0), // fixed to 100 width
+        1: FlexColumnWidth(300.0),
+        2: FixedColumnWidth(150.0), //fixed to 100 width
+        3: FixedColumnWidth(150.0),
+      },
+      children: [
+        tableDevisHeader(),
+        for (var item in devisObjetList) tableDevisBody(item)
+      ],
     );
   }
 

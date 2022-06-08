@@ -52,7 +52,7 @@ class _DashboardAdministrationState extends State<DashboardAdministration> {
   // RH
   int agentsCount = 0;
   int agentActifCount = 0;
-
+ 
   // Budgets
   double coutTotal = 0.0;
   double sommeEnCours = 0.0;
@@ -302,7 +302,7 @@ class _DashboardAdministrationState extends State<DashboardAdministration> {
       totalProjet += double.parse(item.resources);
     }
     for (var item in dataSalaireList) {
-      totalSalaire += double.parse(item.resources);
+      totalSalaire += double.parse(item.salaire);
     }
     sommeEnCours = totalCampaign + totalDevis + totalProjet + totalSalaire;
     sommeRestantes = coutTotal - sommeEnCours;

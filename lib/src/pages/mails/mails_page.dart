@@ -104,92 +104,30 @@ class _MailPagesState extends State<MailPages> {
                           title: 'Mails',
                           controllerMenu: () =>
                               _key.currentState!.openDrawer()),
-                      StreamBuilder<List<MailModel>>(
-                        stream: _mails,
-                        builder: (BuildContext context, 
-                          AsyncSnapshot<List<MailModel>> snapshot) {
-                            List<Widget> children;
-                            if (snapshot.hasError) {
-                              children = <Widget>[
-                                const Icon(
-                                  Icons.error_outline,
-                                  color: Colors.red,
-                                  size: 60,
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.only(top: 16),
-                                  child: Text('Error: ${snapshot.error}'),
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.only(top: 8),
-                                  child: Text('Stack trace: ${snapshot.stackTrace}'),
-                                ),
-                              ];
+
+                      Expanded(
+                        child: FutureBuilder<List<MailModel>>(
+                          future: MailApi().getAllData(),
+                          builder: (BuildContext context, 
+                            AsyncSnapshot<List<MailModel>> snapshot) {
+                            if (snapshot.hasData) {
+                              List<MailModel>? data = snapshot.data;
+                              return (data!.isEmpty) 
+                                ? const Center(
+                                  child: Text("Vous n'avez pas de mails"))
+                                : ListView.builder(
+                                itemCount: data.length,
+                                itemBuilder: (context, index) {
+                                  final mail = data[index];
+                                  final color = _lightColors[index];
+                                  return pageWidget(mail, color);
+                                });
                             } else {
-                              switch (snapshot.connectionState) {
-                                case ConnectionState.none:
-                                  children = const <Widget>[
-                                    Icon(
-                                      Icons.info,
-                                      color: Colors.blue,
-                                      size: 60,
-                                    ),
-                                    Padding(
-                                      padding: EdgeInsets.only(top: 16),
-                                      child: Text('Select a lot'),
-                                    )
-                                  ];
-                                  break;
-                                case ConnectionState.waiting:
-                                 children = <Widget>[
-                                    loading()
-                                  ];
-                                  break;
-                                case ConnectionState.active:
-                                children = <Widget>[
-                                  const Icon(
-                                    Icons.check_circle_outline,
-                                    color: Colors.green,
-                                    size: 60,
-                                  ),
-                                  Padding(
-                                    padding: const EdgeInsets.only(top: 16),
-                                    child: Text('\$${snapshot.data}'),
-                                  ),
-                                ];
-                                break;
-                                case ConnectionState.done:
-                                  children = <Widget>[
-                                    const Icon(
-                                      Icons.info,
-                                      color: Colors.blue,
-                                      size: 60,
-                                    ),
-                                    Padding(
-                                      padding: const EdgeInsets.only(top: 16),
-                                      child: Text('\$${snapshot.data} (closed)'),
-                                    ),
-                                    Expanded(
-                                      child: ListView.builder(
-                                          itemCount: snapshot.data!.length,
-                                          itemBuilder: (context, index) {
-                                            final mail = snapshot.data![index];
-                                            final color = _lightColors[index];
-                                            return pageWidget(mail, color);
-                                          }),
-                                    )
-                                  ];
-                                  break;
-                              }
+                              return Center(child: loading());
                             }
-                          return Expanded(
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: children,
-                            ),
-                          );  
-                        }
-                      ),
+                          }
+                        )
+                      )
                     ],
                   ),
                 ),
