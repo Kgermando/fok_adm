@@ -19,8 +19,7 @@ import 'package:intl/intl.dart';
 import 'package:pluto_grid/pluto_grid.dart';
 
 class DetailCaisse extends StatefulWidget {
-  const DetailCaisse({Key? key, this.id}) : super(key: key);
-  final int? id;
+  const DetailCaisse({Key? key}) : super(key: key);
 
   @override
   State<DetailCaisse> createState() => _DetailCaisseState();
@@ -82,6 +81,7 @@ class _DetailCaisseState extends State<DetailCaisse> {
 
   @override
   Widget build(BuildContext context) {
+    final id = ModalRoute.of(context)!.settings.arguments as int;
     return Scaffold(
         key: _key,
         drawer: const DrawerMenu(),
@@ -98,7 +98,7 @@ class _DetailCaisseState extends State<DetailCaisse> {
                 child: Padding(
                     padding: const EdgeInsets.all(p10),
                     child: FutureBuilder<CaisseModel>(
-                        future: CaisseApi().getOneData(widget.id!),
+                        future: CaisseApi().getOneData(id),
                         builder: (BuildContext context,
                             AsyncSnapshot<CaisseModel> snapshot) {
                           if (snapshot.hasData) {

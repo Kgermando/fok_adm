@@ -87,7 +87,7 @@ class CreanceDetteApi {
       await AuthApi().refreshAccessToken();
       return insertData(creanceDetteModel);
     } else {
-      throw Exception(json.decode(resp.body)['message']);
+      throw Exception(resp.statusCode);
     }
   }
 

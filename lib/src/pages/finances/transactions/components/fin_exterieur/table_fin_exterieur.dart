@@ -1,62 +1,47 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:fokad_admin/src/api/finances/banque_api.dart';
-import 'package:fokad_admin/src/models/finances/banque_model.dart';
-import 'package:fokad_admin/src/pages/finances/transactions/components/components/banques/detail_banque.dart';
+import 'package:fokad_admin/src/api/finances/fin_exterieur_api.dart';
+import 'package:fokad_admin/src/models/finances/fin_exterieur_model.dart'; 
 import 'package:fokad_admin/src/routes/routes.dart';
 import 'package:fokad_admin/src/widgets/print_widget.dart';
 import 'package:fokad_admin/src/utils/class_implemented.dart';
 import 'package:intl/intl.dart';
 import 'package:pluto_grid/pluto_grid.dart';
 
-class TableBanque extends StatefulWidget {
-  const TableBanque({Key? key}) : super(key: key);
+class TableFinExterieur extends StatefulWidget {
+  const TableFinExterieur({Key? key}) : super(key: key);
 
   @override
-  State<TableBanque> createState() => _TableBanqueState();
+  State<TableFinExterieur> createState() => _TableFinExterieurState();
 }
 
-class _TableBanqueState extends State<TableBanque> {
+class _TableFinExterieurState extends State<TableFinExterieur> {
+  Timer? timer;
   List<PlutoColumn> columns = [];
   List<PlutoRow> rows = [];
   PlutoGridStateManager? stateManager;
   PlutoGridSelectingMode gridSelectingMode = PlutoGridSelectingMode.row;
 
   int? id;
-
-  double recette = 0.0;
-  double depenses = 0.0;
-  double solde = 0.0;
+  double cumul = 0.0;
 
   @override
   initState() {
-    Timer.periodic(const Duration(milliseconds: 500), ((timer) {
-      setState(() {
-        getData();
-        agentsRow();
-      });
-      timer.cancel();
-    }));
-
     agentsColumn();
+    getData();
+    agentsRow();
+
     super.initState();
   }
 
   Future<void> getData() async {
-    List<BanqueModel?> dataList = await BanqueApi().getAllData();
+    List<FinanceExterieurModel?> dataList =
+        await FinExterieurApi().getAllData();
     setState(() {
-      List<BanqueModel?> recetteList = dataList
-          .where((element) => element!.typeOperation == "Depot")
-          .toList();
-      List<BanqueModel?> depensesList = dataList
-          .where((element) => element!.typeOperation == "Retrait")
-          .toList();
+      List<FinanceExterieurModel?> recetteList = dataList;
       for (var item in recetteList) {
-        recette += double.parse(item!.montant);
-      }
-      for (var item in depensesList) {
-        depenses += double.parse(item!.montant);
+        cumul += double.parse(item!.montant);
       }
     });
   }
@@ -72,9 +57,9 @@ class _TableBanqueState extends State<TableBanque> {
             onRowDoubleTap: (PlutoGridOnRowDoubleTapEvent tapEvent) {
               final dataList = tapEvent.row!.cells.values;
               final idPlutoRow = dataList.elementAt(0);
-
-              Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) => DetailBanque(id: idPlutoRow.value)));
+              Navigator.pushNamed(context, FinanceRoutes.transactionsFinancementExterneDetail,
+                  arguments: idPlutoRow.value);
+              
             },
             onLoaded: (PlutoGridOnLoadedEvent event) {
               stateManager = event.stateManager;
@@ -88,11 +73,10 @@ class _TableBanqueState extends State<TableBanque> {
                   IconButton(
                       onPressed: () {
                         Navigator.pushNamed(
-                            context, FinanceRoutes.transactionsBanque);
+                            context, FinanceRoutes.transactionsFinancementExterne);
                       },
                       icon: Icon(Icons.refresh, color: Colors.green.shade700)),
-                  PrintWidget(onPressed: () {})
-                ],
+                  PrintWidget(onPressed: () {})],
               );
             },
             configuration: PlutoGridConfiguration(
@@ -103,10 +87,7 @@ class _TableBanqueState extends State<TableBanque> {
                   ClassFilterImplemented(),
                 ],
                 resolveDefaultColumnFilter: (column, resolver) {
-                  if (column.field == 'id') {
-                    return resolver<ClassFilterImplemented>()
-                        as PlutoFilterType;
-                  } else if (column.field == 'nomComplet') {
+                  if (column.field == 'nomComplet') {
                     return resolver<ClassFilterImplemented>()
                         as PlutoFilterType;
                   } else if (column.field == 'pieceJustificative') {
@@ -116,6 +97,9 @@ class _TableBanqueState extends State<TableBanque> {
                     return resolver<ClassFilterImplemented>()
                         as PlutoFilterType;
                   } else if (column.field == 'montant') {
+                    return resolver<ClassFilterImplemented>()
+                        as PlutoFilterType;
+                  } else if (column.field == 'ligneBudgtaire') {
                     return resolver<ClassFilterImplemented>()
                         as PlutoFilterType;
                   } else if (column.field == 'departement') {
@@ -153,33 +137,11 @@ class _TableBanqueState extends State<TableBanque> {
           children: [
             Row(
               children: [
-                SelectableText('Total recette: ',
+                SelectableText('Total: ',
                     style: bodyMedium!.copyWith(
                         fontWeight: FontWeight.bold, color: Colors.white)),
                 SelectableText(
-                    '${NumberFormat.decimalPattern('fr').format(recette)} \$',
-                    style: bodyMedium.copyWith(
-                        fontWeight: FontWeight.bold, color: Colors.white))
-              ],
-            ),
-            Row(
-              children: [
-                SelectableText('Total dépenses: ',
-                    style: bodyMedium.copyWith(
-                        fontWeight: FontWeight.bold, color: Colors.white)),
-                SelectableText(
-                    '${NumberFormat.decimalPattern('fr').format(depenses)} \$',
-                    style: bodyMedium.copyWith(
-                        fontWeight: FontWeight.bold, color: Colors.white))
-              ],
-            ),
-            Row(
-              children: [
-                SelectableText('Solde: ',
-                    style: bodyMedium.copyWith(
-                        fontWeight: FontWeight.bold, color: Colors.white)),
-                SelectableText(
-                    '${NumberFormat.decimalPattern('fr').format(recette - depenses)} \$',
+                    '${NumberFormat.decimalPattern('fr').format(cumul)} \$',
                     style: bodyMedium.copyWith(
                         fontWeight: FontWeight.bold, color: Colors.white))
               ],
@@ -257,8 +219,8 @@ class _TableBanqueState extends State<TableBanque> {
       ),
       PlutoColumn(
         readOnly: true,
-        title: 'departement',
-        field: 'departement',
+        title: 'Ligne budgtaire',
+        field: 'ligneBudgtaire',
         type: PlutoColumnType.text(),
         enableRowDrag: true,
         enableContextMenu: false,
@@ -307,7 +269,8 @@ class _TableBanqueState extends State<TableBanque> {
   }
 
   Future agentsRow() async {
-    List<BanqueModel?> dataList = await BanqueApi().getAllData();
+    List<FinanceExterieurModel?> dataList =
+        await FinExterieurApi().getAllData();
     var data = dataList;
 
     if (mounted) {
@@ -319,14 +282,13 @@ class _TableBanqueState extends State<TableBanque> {
             'nomComplet': PlutoCell(value: item.nomComplet),
             'pieceJustificative': PlutoCell(value: item.pieceJustificative),
             'libelle': PlutoCell(value: item.libelle),
-            'montant': PlutoCell(
-                value: "${NumberFormat.decimalPattern('fr')
-                .format(double.parse(item.montant))} \$"),
-            'departement': PlutoCell(value: item.departement),
+            'montant': PlutoCell(value: "${NumberFormat
+              .decimalPattern('fr').format(double.parse(item.montant))} \$"),
+            'ligneBudgtaire': PlutoCell(value: item.ligneBudgtaire),
             'typeOperation': PlutoCell(value: item.typeOperation),
             'numeroOperation': PlutoCell(value: item.numeroOperation),
             'created': PlutoCell(
-                value: DateFormat("dd-MM-yyyy H:mm").format(item.created))
+                value: DateFormat("DD-MM-yy H:mm").format(item.created))
           }));
         }
         stateManager!.resetCurrentState();

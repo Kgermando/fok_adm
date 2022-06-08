@@ -3,24 +3,23 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:fokad_admin/src/api/approbation/approbation_api.dart';
 import 'package:fokad_admin/src/api/auth/auth_api.dart';
-import 'package:fokad_admin/src/api/finances/dette_api.dart';
-import 'package:fokad_admin/src/models/finances/dette_model.dart';
+import 'package:fokad_admin/src/api/finances/creance_api.dart';
+import 'package:fokad_admin/src/models/finances/creances_model.dart';
 import 'package:fokad_admin/src/models/users/user_model.dart';
-import 'package:fokad_admin/src/pages/finances/transactions/components/components/dettes/detail_dette.dart';
 import 'package:fokad_admin/src/routes/routes.dart';
 import 'package:fokad_admin/src/widgets/print_widget.dart';
 import 'package:fokad_admin/src/utils/class_implemented.dart';
 import 'package:intl/intl.dart';
 import 'package:pluto_grid/pluto_grid.dart';
 
-class TableDette extends StatefulWidget {
-  const TableDette({Key? key}) : super(key: key);
+class TableCreance extends StatefulWidget {
+  const TableCreance({Key? key}) : super(key: key);
 
   @override
-  State<TableDette> createState() => _TableDetteState();
+  State<TableCreance> createState() => _TableCreanceState();
 }
 
-class _TableDetteState extends State<TableDette> {
+class _TableCreanceState extends State<TableCreance> {
   Timer? timer;
   List<PlutoColumn> columns = [];
   List<PlutoRow> rows = [];
@@ -28,6 +27,7 @@ class _TableDetteState extends State<TableDette> {
   PlutoGridSelectingMode gridSelectingMode = PlutoGridSelectingMode.row;
 
   int? id;
+
   double paye = 0.0;
   double nonPaye = 0.0;
 
@@ -36,16 +36,15 @@ class _TableDetteState extends State<TableDette> {
     agentsColumn();
     getData();
     agentsRow();
-
     super.initState();
   }
 
   Future<void> getData() async {
-    List<DetteModel?> dataList = await DetteApi().getAllData();
+    List<CreanceModel?> dataList = await CreanceApi().getAllData();
     setState(() {
-      List<DetteModel?> payeList =
+      List<CreanceModel?> payeList =
           dataList.where((element) => element!.statutPaie == true).toList();
-      List<DetteModel?> nonPayeList =
+      List<CreanceModel?> nonPayeList =
           dataList.where((element) => element!.statutPaie == false).toList();
       for (var item in payeList) {
         paye += double.parse(item!.montant);
@@ -67,9 +66,9 @@ class _TableDetteState extends State<TableDette> {
             onRowDoubleTap: (PlutoGridOnRowDoubleTapEvent tapEvent) {
               final dataList = tapEvent.row!.cells.values;
               final idPlutoRow = dataList.elementAt(0);
-
-              Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) => DetailDette(id: idPlutoRow.value)));
+              Navigator.pushNamed(
+                  context, FinanceRoutes.transactionsCreanceDetail,
+                  arguments: idPlutoRow.value);
             },
             onLoaded: (PlutoGridOnLoadedEvent event) {
               stateManager = event.stateManager;
@@ -83,7 +82,7 @@ class _TableDetteState extends State<TableDette> {
                   IconButton(
                       onPressed: () {
                         Navigator.pushNamed(
-                            context, FinanceRoutes.transactionsDettes);
+                            context, FinanceRoutes.transactionsCreances);
                       },
                       icon: Icon(Icons.refresh, color: Colors.green.shade700)),
                   PrintWidget(onPressed: () {})
@@ -238,7 +237,7 @@ class _TableDetteState extends State<TableDette> {
         enableContextMenu: false,
         enableDropToResize: true,
         titleTextAlign: PlutoColumnTextAlign.left,
-        width: 200,
+        width: 300,
         minWidth: 150,
       ),
       PlutoColumn(
@@ -282,8 +281,8 @@ class _TableDetteState extends State<TableDette> {
 
   Future agentsRow() async {
     UserModel userModel = await AuthApi().getUserId();
-    List<DetteModel?> dataList = await DetteApi().getAllData();
-    // List<DetteModel?> data = [];
+    List<CreanceModel?> dataList = await CreanceApi().getAllData();
+    List<CreanceModel?> data = [];
     // var approbations = await ApprobationApi().getAllData();
     // for (var item in approbations) {
     //   data = dataList
@@ -306,10 +305,10 @@ class _TableDetteState extends State<TableDette> {
             'pieceJustificative': PlutoCell(value: item.pieceJustificative),
             'libelle': PlutoCell(value: item.libelle),
             'montant': PlutoCell(value: "${NumberFormat.decimalPattern('fr')
-                .format(double.parse(item.montant))} \$"),
+              .format(double.parse(item.montant))} \$"),
             'numeroOperation': PlutoCell(value: item.numeroOperation),
             'created': PlutoCell(
-                value: DateFormat("DD-MM-yyyy HH:mm").format(item.created))
+                value: DateFormat("dd-MM-yyyy HH:mm").format(item.created))
           }));
         }
         stateManager!.resetCurrentState();

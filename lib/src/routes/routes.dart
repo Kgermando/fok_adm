@@ -69,16 +69,21 @@ import 'package:fokad_admin/src/pages/exploitations/taches/tache_exp.dart';
 import 'package:fokad_admin/src/pages/exploitations/versements/versement_projet.dart';
 import 'package:fokad_admin/src/pages/finances/dashboard/dashboard_finance.dart';
 import 'package:fokad_admin/src/pages/finances/etat_besoin/etat_besoin_fin_page.dart';
-import 'package:fokad_admin/src/pages/finances/transactions/components/banque_transactions.dart';
-import 'package:fokad_admin/src/pages/finances/transactions/components/caisses_transactions.dart';
-import 'package:fokad_admin/src/pages/finances/transactions/components/components/banques/add_depot_banque.dart';
-import 'package:fokad_admin/src/pages/finances/transactions/components/components/banques/add_retrait_banque.dart';
-import 'package:fokad_admin/src/pages/finances/transactions/components/components/caisses/add_decaissement.dart';
-import 'package:fokad_admin/src/pages/finances/transactions/components/components/caisses/add_encaissement.dart';
-import 'package:fokad_admin/src/pages/finances/transactions/components/components/fin_exterieur/add_autre_fin.dart';
-import 'package:fokad_admin/src/pages/finances/transactions/components/creance_transactions.dart';
-import 'package:fokad_admin/src/pages/finances/transactions/components/dette_transcations.dart';
-import 'package:fokad_admin/src/pages/finances/transactions/components/fin_externe_transactions.dart';
+import 'package:fokad_admin/src/pages/finances/transactions/banque_transactions.dart';
+import 'package:fokad_admin/src/pages/finances/transactions/caisses_transactions.dart';
+import 'package:fokad_admin/src/pages/finances/transactions/components/banques/add_depot_banque.dart';
+import 'package:fokad_admin/src/pages/finances/transactions/components/banques/add_retrait_banque.dart';
+import 'package:fokad_admin/src/pages/finances/transactions/components/banques/detail_banque.dart';
+import 'package:fokad_admin/src/pages/finances/transactions/components/caisses/add_decaissement.dart';
+import 'package:fokad_admin/src/pages/finances/transactions/components/caisses/add_encaissement.dart';
+import 'package:fokad_admin/src/pages/finances/transactions/components/caisses/detail_caisse.dart';
+import 'package:fokad_admin/src/pages/finances/transactions/components/creances/detail_creance.dart';
+import 'package:fokad_admin/src/pages/finances/transactions/components/dettes/detail_dette.dart';
+import 'package:fokad_admin/src/pages/finances/transactions/components/fin_exterieur/add_autre_fin.dart';
+import 'package:fokad_admin/src/pages/finances/transactions/components/fin_exterieur/detail_fin_exterieur.dart';
+import 'package:fokad_admin/src/pages/finances/transactions/creance_transactions.dart';
+import 'package:fokad_admin/src/pages/finances/transactions/dette_transcations.dart';
+import 'package:fokad_admin/src/pages/finances/transactions/fin_externe_transactions.dart';
 import 'package:fokad_admin/src/pages/logistiques/automobile/add_anguin_auto.dart';
 import 'package:fokad_admin/src/pages/logistiques/automobile/add_carburant.dart';
 import 'package:fokad_admin/src/pages/logistiques/automobile/add_trajet_auto.dart';
@@ -196,19 +201,26 @@ class FinanceRoutes {
   static const financeDashboard = "/finance-dashboard";
   static const financeTransactions = "/finance-transactions";
   static const transactionsCaisse = "/transactions-caisse";
+  static const transactionsCaisseDetail = "/transactions-caisse-detail";
   static const transactionsCaisseEncaissement =
       "/transactions-caisse-encaissement";
   static const transactionsCaisseDecaissement =
       "/transactions-caisse-decaissement";
   static const transactionsBanque = "/transactions-banque";
+  static const transactionsBanqueDetail = "/transactions-banque-detail";
   static const transactionsBanqueRetrait = "/transactions-banque-retrait";
   static const transactionsBanqueDepot = "/transactions-banque-depot";
   static const transactionsDettes = "/transactions-dettes";
+  static const transactionsDetteDetail = "/transactions-dettes-detail";
   static const transactionsCreances = "/transactions-creances";
+  static const transactionsCreanceDetail = "/transactions-creances-detail";
   static const transactionsFinancementExterne =
       "/transactions-financement-externe";
   static const transactionsFinancementExterneAdd =
       "/transactions-financement-externe-add";
+  static const transactionsFinancementExterneDetail =
+      "/transactions-financement-externe-detail";
+  
   static const transactionsDepenses = "/transactions-depenses";
   static const finDD = "/fin-dd";
   static const finEtatBesoin = "/fin-etat-besoin";
@@ -366,17 +378,23 @@ final routes = <String, WidgetBuilder>{
   // FInance
   FinanceRoutes.financeDashboard: (context) => const DashboardFinance(),
   FinanceRoutes.transactionsBanque: (context) => const BanqueTransactions(),
+  FinanceRoutes.transactionsBanqueDetail: (context) => const DetailBanque(),
   FinanceRoutes.transactionsBanqueDepot: (context) => const AddDepotBanque(),
   FinanceRoutes.transactionsBanqueRetrait: (context) => const AddRetratBanque(),
   FinanceRoutes.transactionsCaisse: (context) => const CaisseTransactions(),
+  FinanceRoutes.transactionsCaisseDetail: (context) => const DetailCaisse(),
   FinanceRoutes.transactionsCaisseEncaissement: (context) => const AddEncaissement(),
   FinanceRoutes.transactionsCaisseDecaissement: (context) => const AddDecaissement(),
   FinanceRoutes.transactionsCreances: (context) => const CreanceTransactions(),
+  FinanceRoutes.transactionsCreanceDetail: (context) => const DetailCreance(),
   FinanceRoutes.transactionsDettes: (context) => const DetteTransactions(),
+  FinanceRoutes.transactionsDetteDetail: (context) => const DetailDette(),
   FinanceRoutes.transactionsFinancementExterne: (context) => const FinExterneTransactions(),
   FinanceRoutes.transactionsFinancementExterneAdd: (context) => const AddAutreFin(),
+  FinanceRoutes.transactionsFinancementExterneDetail: (context) =>
+      const DetailFinExterieur(),
   FinanceRoutes.finEtatBesoin: (context) =>
-      const EtatBesoinFinPage(),
+      const EtatBesoinFinPage(), 
 
   // Comptabilite
   ComptabiliteRoutes.comptabiliteDD: (context) => const ComptabiliteDD(),

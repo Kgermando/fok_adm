@@ -1,48 +1,61 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:fokad_admin/src/api/finances/fin_exterieur_api.dart';
-import 'package:fokad_admin/src/models/finances/fin_exterieur_model.dart';
-import 'package:fokad_admin/src/pages/finances/transactions/components/components/fin_exterieur/detail_fin_exterieur.dart';
+import 'package:fokad_admin/src/api/finances/banque_api.dart';
+import 'package:fokad_admin/src/models/finances/banque_model.dart'; 
 import 'package:fokad_admin/src/routes/routes.dart';
 import 'package:fokad_admin/src/widgets/print_widget.dart';
 import 'package:fokad_admin/src/utils/class_implemented.dart';
 import 'package:intl/intl.dart';
 import 'package:pluto_grid/pluto_grid.dart';
 
-class TableFinExterieur extends StatefulWidget {
-  const TableFinExterieur({Key? key}) : super(key: key);
+class TableBanque extends StatefulWidget {
+  const TableBanque({Key? key}) : super(key: key);
 
   @override
-  State<TableFinExterieur> createState() => _TableFinExterieurState();
+  State<TableBanque> createState() => _TableBanqueState();
 }
 
-class _TableFinExterieurState extends State<TableFinExterieur> {
-  Timer? timer;
+class _TableBanqueState extends State<TableBanque> {
   List<PlutoColumn> columns = [];
   List<PlutoRow> rows = [];
   PlutoGridStateManager? stateManager;
   PlutoGridSelectingMode gridSelectingMode = PlutoGridSelectingMode.row;
 
   int? id;
-  double cumul = 0.0;
+
+  double recette = 0.0;
+  double depenses = 0.0;
+  double solde = 0.0;
 
   @override
   initState() {
-    agentsColumn();
-    getData();
-    agentsRow();
+    Timer.periodic(const Duration(milliseconds: 500), ((timer) {
+      setState(() {
+        getData();
+        agentsRow();
+      });
+      timer.cancel();
+    }));
 
+    agentsColumn();
     super.initState();
   }
 
   Future<void> getData() async {
-    List<FinanceExterieurModel?> dataList =
-        await FinExterieurApi().getAllData();
+    List<BanqueModel?> dataList = await BanqueApi().getAllData();
     setState(() {
-      List<FinanceExterieurModel?> recetteList = dataList;
+      List<BanqueModel?> recetteList = dataList
+          .where((element) => element!.typeOperation == "Depot")
+          .toList();
+      List<BanqueModel?> depensesList = dataList
+          .where((element) => element!.typeOperation == "Retrait")
+          .toList();
       for (var item in recetteList) {
-        cumul += double.parse(item!.montant);
+        recette += double.parse(item!.montant);
+      }
+      for (var item in depensesList) {
+        depenses += double.parse(item!.montant);
       }
     });
   }
@@ -58,10 +71,9 @@ class _TableFinExterieurState extends State<TableFinExterieur> {
             onRowDoubleTap: (PlutoGridOnRowDoubleTapEvent tapEvent) {
               final dataList = tapEvent.row!.cells.values;
               final idPlutoRow = dataList.elementAt(0);
-
-              Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) =>
-                      DetailFinExterieur(id: idPlutoRow.value)));
+              Navigator.pushNamed(
+                  context, FinanceRoutes.transactionsBanqueDetail,
+                  arguments: idPlutoRow.value);
             },
             onLoaded: (PlutoGridOnLoadedEvent event) {
               stateManager = event.stateManager;
@@ -75,10 +87,11 @@ class _TableFinExterieurState extends State<TableFinExterieur> {
                   IconButton(
                       onPressed: () {
                         Navigator.pushNamed(
-                            context, FinanceRoutes.transactionsFinancementExterne);
+                            context, FinanceRoutes.transactionsBanque);
                       },
                       icon: Icon(Icons.refresh, color: Colors.green.shade700)),
-                  PrintWidget(onPressed: () {})],
+                  PrintWidget(onPressed: () {})
+                ],
               );
             },
             configuration: PlutoGridConfiguration(
@@ -89,7 +102,10 @@ class _TableFinExterieurState extends State<TableFinExterieur> {
                   ClassFilterImplemented(),
                 ],
                 resolveDefaultColumnFilter: (column, resolver) {
-                  if (column.field == 'nomComplet') {
+                  if (column.field == 'id') {
+                    return resolver<ClassFilterImplemented>()
+                        as PlutoFilterType;
+                  } else if (column.field == 'nomComplet') {
                     return resolver<ClassFilterImplemented>()
                         as PlutoFilterType;
                   } else if (column.field == 'pieceJustificative') {
@@ -99,9 +115,6 @@ class _TableFinExterieurState extends State<TableFinExterieur> {
                     return resolver<ClassFilterImplemented>()
                         as PlutoFilterType;
                   } else if (column.field == 'montant') {
-                    return resolver<ClassFilterImplemented>()
-                        as PlutoFilterType;
-                  } else if (column.field == 'ligneBudgtaire') {
                     return resolver<ClassFilterImplemented>()
                         as PlutoFilterType;
                   } else if (column.field == 'departement') {
@@ -139,11 +152,33 @@ class _TableFinExterieurState extends State<TableFinExterieur> {
           children: [
             Row(
               children: [
-                SelectableText('Total: ',
+                SelectableText('Total recette: ',
                     style: bodyMedium!.copyWith(
                         fontWeight: FontWeight.bold, color: Colors.white)),
                 SelectableText(
-                    '${NumberFormat.decimalPattern('fr').format(cumul)} \$',
+                    '${NumberFormat.decimalPattern('fr').format(recette)} \$',
+                    style: bodyMedium.copyWith(
+                        fontWeight: FontWeight.bold, color: Colors.white))
+              ],
+            ),
+            Row(
+              children: [
+                SelectableText('Total dépenses: ',
+                    style: bodyMedium.copyWith(
+                        fontWeight: FontWeight.bold, color: Colors.white)),
+                SelectableText(
+                    '${NumberFormat.decimalPattern('fr').format(depenses)} \$',
+                    style: bodyMedium.copyWith(
+                        fontWeight: FontWeight.bold, color: Colors.white))
+              ],
+            ),
+            Row(
+              children: [
+                SelectableText('Solde: ',
+                    style: bodyMedium.copyWith(
+                        fontWeight: FontWeight.bold, color: Colors.white)),
+                SelectableText(
+                    '${NumberFormat.decimalPattern('fr').format(recette - depenses)} \$',
                     style: bodyMedium.copyWith(
                         fontWeight: FontWeight.bold, color: Colors.white))
               ],
@@ -221,8 +256,8 @@ class _TableFinExterieurState extends State<TableFinExterieur> {
       ),
       PlutoColumn(
         readOnly: true,
-        title: 'Ligne budgtaire',
-        field: 'ligneBudgtaire',
+        title: 'departement',
+        field: 'departement',
         type: PlutoColumnType.text(),
         enableRowDrag: true,
         enableContextMenu: false,
@@ -271,8 +306,7 @@ class _TableFinExterieurState extends State<TableFinExterieur> {
   }
 
   Future agentsRow() async {
-    List<FinanceExterieurModel?> dataList =
-        await FinExterieurApi().getAllData();
+    List<BanqueModel?> dataList = await BanqueApi().getAllData();
     var data = dataList;
 
     if (mounted) {
@@ -284,13 +318,14 @@ class _TableFinExterieurState extends State<TableFinExterieur> {
             'nomComplet': PlutoCell(value: item.nomComplet),
             'pieceJustificative': PlutoCell(value: item.pieceJustificative),
             'libelle': PlutoCell(value: item.libelle),
-            'montant': PlutoCell(value: "${NumberFormat
-              .decimalPattern('fr').format(double.parse(item.montant))} \$"),
-            'ligneBudgtaire': PlutoCell(value: item.ligneBudgtaire),
+            'montant': PlutoCell(
+                value: "${NumberFormat.decimalPattern('fr')
+                .format(double.parse(item.montant))} \$"),
+            'departement': PlutoCell(value: item.departement),
             'typeOperation': PlutoCell(value: item.typeOperation),
             'numeroOperation': PlutoCell(value: item.numeroOperation),
             'created': PlutoCell(
-                value: DateFormat("DD-MM-yy H:mm").format(item.created))
+                value: DateFormat("dd-MM-yyyy H:mm").format(item.created))
           }));
         }
         stateManager!.resetCurrentState();

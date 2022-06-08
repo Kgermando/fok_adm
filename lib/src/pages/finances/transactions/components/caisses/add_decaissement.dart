@@ -3,10 +3,10 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:fokad_admin/src/api/auth/auth_api.dart';
-import 'package:fokad_admin/src/api/finances/banque_api.dart';
+import 'package:fokad_admin/src/api/finances/caisse_api.dart';
 import 'package:fokad_admin/src/constants/app_theme.dart';
 import 'package:fokad_admin/src/constants/responsive.dart';
-import 'package:fokad_admin/src/models/finances/banque_model.dart';
+import 'package:fokad_admin/src/models/finances/caisse_model.dart';
 import 'package:fokad_admin/src/navigation/drawer/drawer_menu.dart';
 import 'package:fokad_admin/src/navigation/header/custom_appbar.dart';
 import 'package:fokad_admin/src/utils/dropdown.dart';
@@ -14,18 +14,20 @@ import 'package:fokad_admin/src/utils/type_operation.dart';
 import 'package:fokad_admin/src/widgets/btn_widget.dart';
 import 'package:fokad_admin/src/widgets/title_widget.dart';
 
-class AddDepotBanque extends StatefulWidget {
-  const AddDepotBanque({ Key? key }) : super(key: key);
+class AddDecaissement extends StatefulWidget {
+  const AddDecaissement({ Key? key }) : super(key: key);
 
   @override
-  State<AddDepotBanque> createState() => _AddDepotBanqueState();
+  State<AddDecaissement> createState() => _AddDecaissementState();
 }
 
-class _AddDepotBanqueState extends State<AddDepotBanque> {
-  final GlobalKey<ScaffoldState> _key = GlobalKey();
+class _AddDecaissementState extends State<AddDecaissement> {
+ final GlobalKey<ScaffoldState> _key = GlobalKey();
   final controller = ScrollController();
   final ScrollController _controllerBillet = ScrollController();
+
   final _formKey = GlobalKey<FormState>();
+  final _formEncaissement = GlobalKey<FormState>();
 
   bool isLoading = false;
 
@@ -38,23 +40,18 @@ class _AddDepotBanqueState extends State<AddDepotBanque> {
 
   List<TextEditingController> coupureBilletControllerList = [];
   List<TextEditingController> nombreBilletControllerList = [];
-  // String? ligneBudgtaire;
+  String? ligneBudgtaire;
   String? departement;
-  String? typeOperation;
-  // String? resources;
+  // String? typeOperation;
 
   final List<String> typeCaisse = TypeOperation().typeVereCaisse;
-  final List<String> typeBanque = TypeOperation().typeVereBanque;
-  final List<String> typeBanqueRetraitDepot =
-      TypeOperation().typeBanqueRetraitDepot;
   final List<String> departementList = Dropdown().departement;
 
   late List<Map<String, dynamic>> _values;
   late String result;
-
   late int count;
 
-   @override
+  @override
   void initState() {
     setState(() {
       getData();
@@ -62,6 +59,7 @@ class _AddDepotBanqueState extends State<AddDepotBanque> {
       result = '';
       _values = [];
     });
+
     super.initState();
   }
 
@@ -86,16 +84,14 @@ class _AddDepotBanqueState extends State<AddDepotBanque> {
 
   Future<void> getData() async {
     final userModel = await AuthApi().getUserId();
-    final data = await BanqueApi().getAllData();
+    final data = await CaisseApi().getAllData();
     setState(() {
       matricule = userModel.matricule;
       numberItem = data.length;
     });
   }
 
-
-    
-@override
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
         key: _key,
@@ -131,7 +127,7 @@ class _AddDepotBanqueState extends State<AddDepotBanque> {
                           Expanded(
                               flex: 5,
                               child: CustomAppbar(
-                                  title: 'Banque',
+                                  title: 'Caisse',
                                   controllerMenu: () =>
                                       _key.currentState!.openDrawer())),
                         ],
@@ -150,6 +146,7 @@ class _AddDepotBanqueState extends State<AddDepotBanque> {
   }
 
   Widget addPageWidget() {
+    final headline6 = Theme.of(context).textTheme.headline6;
     return Form(
       key: _formKey,
       child: Row(
@@ -170,7 +167,7 @@ class _AddDepotBanqueState extends State<AddDepotBanque> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: const [
-                        TitleWidget(title: "Bordereau depôt"),
+                        TitleWidget(title: "Bon Décaissement"),
                       ],
                     ),
                     const SizedBox(
@@ -195,10 +192,14 @@ class _AddDepotBanqueState extends State<AddDepotBanque> {
                       ],
                     ),
                     deperatmentWidget(),
+                    const SizedBox(
+                      width: p10,
+                    ),
                     if (count == 0)
                       Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
+                          Text("Coupure billet", style: headline6),
                           IconButton(
                               icon: const Icon(Icons.add),
                               onPressed: () {
@@ -220,16 +221,21 @@ class _AddDepotBanqueState extends State<AddDepotBanque> {
                     const SizedBox(
                       height: p20,
                     ),
-                    BtnWidget(
-                        title: 'Soumettre',
-                        isLoading: isLoading,
-                        press: () {
-                          final form = _formKey.currentState!;
-                          if (form.validate()) {
-                            submitDepot();
-                            form.reset();
-                          }
-                        })
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        BtnWidget(
+                            title: 'Soumettre',
+                            isLoading: isLoading,
+                            press: () {
+                              final form = _formEncaissement.currentState!;
+                              if (form.validate()) {
+                                submitDecaissement();
+                                form.reset();
+                              }
+                            }),
+                      ],
+                    )
                   ],
                 ),
               ),
@@ -239,7 +245,6 @@ class _AddDepotBanqueState extends State<AddDepotBanque> {
       ),
     );
   }
-
 
   Widget nomCompletWidget() {
     return Container(
@@ -469,60 +474,6 @@ class _AddDepotBanqueState extends State<AddDepotBanque> {
     );
   }
 
-  Widget typeOperationWidget() {
-    return Container(
-      margin: const EdgeInsets.only(bottom: p20),
-      child: DropdownButtonFormField<String>(
-        decoration: InputDecoration(
-          labelText: 'Type d\'Operation',
-          labelStyle: const TextStyle(),
-          border: OutlineInputBorder(borderRadius: BorderRadius.circular(5.0)),
-          contentPadding: const EdgeInsets.only(left: 5.0),
-        ),
-        value: typeOperation,
-        isExpanded: true,
-        items: typeBanque.map((String value) {
-          return DropdownMenuItem<String>(
-            value: value,
-            child: Text(value),
-          );
-        }).toList(),
-        onChanged: (value) {
-          setState(() {
-            typeOperation = value!;
-          });
-        },
-      ),
-    );
-  }
-
-  Widget typeOperationWidgetRetrait() {
-    return Container(
-      margin: const EdgeInsets.only(bottom: p20),
-      child: DropdownButtonFormField<String>(
-        decoration: InputDecoration(
-          labelText: 'Type d\'Operation',
-          labelStyle: const TextStyle(),
-          border: OutlineInputBorder(borderRadius: BorderRadius.circular(5.0)),
-          contentPadding: const EdgeInsets.only(left: 5.0),
-        ),
-        value: typeOperation,
-        isExpanded: true,
-        items: typeBanque.map((String value) {
-          return DropdownMenuItem<String>(
-            value: value,
-            child: Text(value),
-          );
-        }).toList(),
-        onChanged: (value) {
-          setState(() {
-            typeOperation = value!;
-          });
-        },
-      ),
-    );
-  }
-
   onUpdate(int key, String nombreBillet, String coupureBillet) {
     int foundKey = -1;
     for (var map in _values) {
@@ -555,9 +506,10 @@ class _AddDepotBanqueState extends State<AddDepotBanque> {
     return encoder.convert(jsonObject);
   }
 
-  Future submitDepot() async {
+
+   Future submitDecaissement() async {
     final jsonList = _values.map((item) => jsonEncode(item)).toList();
-    final banqueModel = BanqueModel(
+    final caisseModel = CaisseModel(
         nomComplet: nomCompletController.text,
         pieceJustificative: pieceJustificativeController.text,
         libelle: libelleController.text,
@@ -566,18 +518,16 @@ class _AddDepotBanqueState extends State<AddDepotBanque> {
         ligneBudgtaire: '-',
         resources: '-',
         departement: '-',
-        typeOperation: 'Depot',
-        numeroOperation: 'FOKAD-Banque-${numberItem + 1}',
+        typeOperation: 'Decaissement',
+        numeroOperation: 'Transaction-Caisse-${numberItem + 1}',
         signature: matricule.toString(),
         created: DateTime.now());
-    await BanqueApi().insertData(banqueModel);
+    await CaisseApi().insertData(caisseModel);
     Navigator.of(context).pop();
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-      content: const Text("Dépôt effectué avec succès!"),
+      content: const Text("Enregistrer avec succès!"),
       backgroundColor: Colors.green[700],
     ));
   }
-
-
 
 }

@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:fokad_admin/src/api/finances/dette_api.dart';
 import 'package:fokad_admin/src/models/finances/dette_model.dart';
-import 'package:fokad_admin/src/pages/finances/transactions/components/components/dettes/detail_dette.dart';
+import 'package:fokad_admin/src/routes/routes.dart'; 
 import 'package:fokad_admin/src/widgets/print_widget.dart';
 import 'package:fokad_admin/src/utils/class_implemented.dart';
 import 'package:intl/intl.dart';
@@ -65,9 +65,9 @@ class _TableDetteAdminState extends State<TableDetteAdmin> {
               onRowDoubleTap: (PlutoGridOnRowDoubleTapEvent tapEvent) {
                 final dataList = tapEvent.row!.cells.values;
                 final idPlutoRow = dataList.elementAt(0);
-
-                Navigator.of(context).push(MaterialPageRoute(
-                    builder: (context) => DetailDette(id: idPlutoRow.value)));
+                Navigator.pushNamed(
+                    context, FinanceRoutes.transactionsDetteDetail,
+                    arguments: idPlutoRow.value);
               },
               onLoaded: (PlutoGridOnLoadedEvent event) {
                 stateManager = event.stateManager;

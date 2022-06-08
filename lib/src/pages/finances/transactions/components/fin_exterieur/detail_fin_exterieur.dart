@@ -17,8 +17,7 @@ import 'package:intl/intl.dart';
 import 'package:pluto_grid/pluto_grid.dart';
 
 class DetailFinExterieur extends StatefulWidget {
-  const DetailFinExterieur({Key? key, required this.id}) : super(key: key);
-  final int id;
+  const DetailFinExterieur({Key? key}) : super(key: key);
 
   @override
   State<DetailFinExterieur> createState() => _DetailFinExterieurState();
@@ -83,18 +82,17 @@ class _DetailFinExterieurState extends State<DetailFinExterieur> {
   Future<void> getData() async {
     final dataUser = await UserApi().getAllData();
     UserModel userModel = await AuthApi().getUserId();
-    FinanceExterieurModel data = await FinExterieurApi().getOneData(widget.id);
     var approbations = await ApprobationApi().getAllData();
     setState(() {
       userList = dataUser;
       user = userModel;
-      coupureBillet = data.coupureBillet;
       approbList = approbations;
     });
   }
 
   @override
   Widget build(BuildContext context) {
+    final id = ModalRoute.of(context)!.settings.arguments as int;
     return Scaffold(
         key: _key,
         drawer: const DrawerMenu(),
@@ -111,14 +109,16 @@ class _DetailFinExterieurState extends State<DetailFinExterieur> {
                 child: Padding(
                     padding: const EdgeInsets.all(p10),
                     child: FutureBuilder<FinanceExterieurModel>(
-                        future: FinExterieurApi().getOneData(widget.id),
+                        future: FinExterieurApi().getOneData(id),
                         builder: (BuildContext context,
                             AsyncSnapshot<FinanceExterieurModel> snapshot) {
                           if (snapshot.hasData) {
                             FinanceExterieurModel? data = snapshot.data;
+                            coupureBillet = data!.coupureBillet;
                             approbationData = approbList
-                                .where(
-                                    (element) => element.reference.microsecondsSinceEpoch == data!.created.microsecondsSinceEpoch)
+                                .where((element) =>
+                                    element.reference.microsecondsSinceEpoch ==
+                                    data.created.microsecondsSinceEpoch)
                                 .toList();
 
                             if (approbationData.isNotEmpty) {
@@ -149,7 +149,7 @@ class _DetailFinExterieurState extends State<DetailFinExterieur> {
                                     child: SingleChildScrollView(
                                         child: Column(
                                   children: [
-                                    pageDetail(data!),
+                                    pageDetail(data),
                                     const SizedBox(height: p10),
                                     if (approbationData.isNotEmpty)
                                       infosEditeurWidget(),

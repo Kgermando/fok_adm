@@ -3,10 +3,10 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:fokad_admin/src/api/auth/auth_api.dart';
-import 'package:fokad_admin/src/api/finances/caisse_api.dart';
+import 'package:fokad_admin/src/api/finances/banque_api.dart';
 import 'package:fokad_admin/src/constants/app_theme.dart';
 import 'package:fokad_admin/src/constants/responsive.dart';
-import 'package:fokad_admin/src/models/finances/caisse_model.dart';
+import 'package:fokad_admin/src/models/finances/banque_model.dart';
 import 'package:fokad_admin/src/navigation/drawer/drawer_menu.dart';
 import 'package:fokad_admin/src/navigation/header/custom_appbar.dart';
 import 'package:fokad_admin/src/utils/dropdown.dart';
@@ -14,20 +14,18 @@ import 'package:fokad_admin/src/utils/type_operation.dart';
 import 'package:fokad_admin/src/widgets/btn_widget.dart';
 import 'package:fokad_admin/src/widgets/title_widget.dart';
 
-class AddEncaissement extends StatefulWidget {
-  const AddEncaissement({ Key? key }) : super(key: key);
+class AddRetratBanque extends StatefulWidget {
+  const AddRetratBanque({ Key? key }) : super(key: key);
 
   @override
-  State<AddEncaissement> createState() => _AddEncaissementState();
+  State<AddRetratBanque> createState() => _AddRetratBanqueState();
 }
 
-class _AddEncaissementState extends State<AddEncaissement> {
+class _AddRetratBanqueState extends State<AddRetratBanque> {
   final GlobalKey<ScaffoldState> _key = GlobalKey();
   final controller = ScrollController();
   final ScrollController _controllerBillet = ScrollController();
-
   final _formKey = GlobalKey<FormState>();
-  final _formEncaissement = GlobalKey<FormState>();
 
   bool isLoading = false;
 
@@ -40,18 +38,23 @@ class _AddEncaissementState extends State<AddEncaissement> {
 
   List<TextEditingController> coupureBilletControllerList = [];
   List<TextEditingController> nombreBilletControllerList = [];
-  String? ligneBudgtaire;
+  // String? ligneBudgtaire;
   String? departement;
-  // String? typeOperation;
+  String? typeOperation;
+  // String? resources;
 
   final List<String> typeCaisse = TypeOperation().typeVereCaisse;
+  final List<String> typeBanque = TypeOperation().typeVereBanque;
+  final List<String> typeBanqueRetraitDepot =
+      TypeOperation().typeBanqueRetraitDepot;
   final List<String> departementList = Dropdown().departement;
 
   late List<Map<String, dynamic>> _values;
   late String result;
+
   late int count;
 
-  @override
+   @override
   void initState() {
     setState(() {
       getData();
@@ -59,7 +62,6 @@ class _AddEncaissementState extends State<AddEncaissement> {
       result = '';
       _values = [];
     });
-
     super.initState();
   }
 
@@ -84,15 +86,15 @@ class _AddEncaissementState extends State<AddEncaissement> {
 
   Future<void> getData() async {
     final userModel = await AuthApi().getUserId();
-    final data = await CaisseApi().getAllData();
+    final data = await BanqueApi().getAllData();
     setState(() {
       matricule = userModel.matricule;
       numberItem = data.length;
     });
   }
 
-
- @override
+  
+@override
   Widget build(BuildContext context) {
     return Scaffold(
         key: _key,
@@ -128,7 +130,7 @@ class _AddEncaissementState extends State<AddEncaissement> {
                           Expanded(
                               flex: 5,
                               child: CustomAppbar(
-                                  title: 'Caisse',
+                                  title: 'Banque',
                                   controllerMenu: () =>
                                       _key.currentState!.openDrawer())),
                         ],
@@ -145,6 +147,7 @@ class _AddEncaissementState extends State<AddEncaissement> {
           ),
         ));
   }
+
 
   Widget addPageWidget() {
     return Form(
@@ -167,7 +170,7 @@ class _AddEncaissementState extends State<AddEncaissement> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: const [
-                        TitleWidget(title: "Bon d'encaissement"),
+                        TitleWidget(title: "Bordereau retrait"),
                       ],
                     ),
                     const SizedBox(
@@ -191,6 +194,7 @@ class _AddEncaissementState extends State<AddEncaissement> {
                         Expanded(child: montantWidget())
                       ],
                     ),
+                    deperatmentWidget(),
                     if (count == 0)
                       Row(
                         mainAxisAlignment: MainAxisAlignment.end,
@@ -213,19 +217,26 @@ class _AddEncaissementState extends State<AddEncaissement> {
                         height: 500,
                         width: double.infinity,
                         child: coupureBilletWidget()),
+
+                    
                     const SizedBox(
                       height: p20,
                     ),
-                    BtnWidget(
-                        title: 'Soumettre',
-                        isLoading: isLoading,
-                        press: () {
-                          final form = _formEncaissement.currentState!;
-                          if (form.validate()) {
-                            submitEncaissement();
-                            form.reset();
-                          }
-                        })
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        BtnWidget(
+                            title: 'Soumettre',
+                            isLoading: isLoading,
+                            press: () {
+                              final form = _formKey.currentState!;
+                              if (form.validate()) {
+                                submitRetrait();
+                                form.reset();
+                              }
+                            }),
+                      ],
+                    )
                   ],
                 ),
               ),
@@ -238,7 +249,7 @@ class _AddEncaissementState extends State<AddEncaissement> {
 
 
 
-   Widget nomCompletWidget() {
+  Widget nomCompletWidget() {
     return Container(
         margin: const EdgeInsets.only(bottom: p20),
         child: TextFormField(
@@ -444,7 +455,7 @@ class _AddEncaissementState extends State<AddEncaissement> {
       margin: const EdgeInsets.only(bottom: p20),
       child: DropdownButtonFormField<String>(
         decoration: InputDecoration(
-          labelText: 'departement',
+          labelText: 'Département',
           labelStyle: const TextStyle(),
           border: OutlineInputBorder(borderRadius: BorderRadius.circular(5.0)),
           contentPadding: const EdgeInsets.only(left: 5.0),
@@ -460,6 +471,60 @@ class _AddEncaissementState extends State<AddEncaissement> {
         onChanged: (value) {
           setState(() {
             departement = value!;
+          });
+        },
+      ),
+    );
+  }
+
+  Widget typeOperationWidget() {
+    return Container(
+      margin: const EdgeInsets.only(bottom: p20),
+      child: DropdownButtonFormField<String>(
+        decoration: InputDecoration(
+          labelText: 'Type d\'Operation',
+          labelStyle: const TextStyle(),
+          border: OutlineInputBorder(borderRadius: BorderRadius.circular(5.0)),
+          contentPadding: const EdgeInsets.only(left: 5.0),
+        ),
+        value: typeOperation,
+        isExpanded: true,
+        items: typeBanque.map((String value) {
+          return DropdownMenuItem<String>(
+            value: value,
+            child: Text(value),
+          );
+        }).toList(),
+        onChanged: (value) {
+          setState(() {
+            typeOperation = value!;
+          });
+        },
+      ),
+    );
+  }
+
+  Widget typeOperationWidgetRetrait() {
+    return Container(
+      margin: const EdgeInsets.only(bottom: p20),
+      child: DropdownButtonFormField<String>(
+        decoration: InputDecoration(
+          labelText: 'Type d\'Operation',
+          labelStyle: const TextStyle(),
+          border: OutlineInputBorder(borderRadius: BorderRadius.circular(5.0)),
+          contentPadding: const EdgeInsets.only(left: 5.0),
+        ),
+        value: typeOperation,
+        isExpanded: true,
+        items: typeBanque.map((String value) {
+          return DropdownMenuItem<String>(
+            value: value,
+            child: Text(value),
+          );
+        }).toList(),
+        onChanged: (value) {
+          setState(() {
+            typeOperation = value!;
           });
         },
       ),
@@ -498,9 +563,10 @@ class _AddEncaissementState extends State<AddEncaissement> {
     return encoder.convert(jsonObject);
   }
 
-  Future submitEncaissement() async {
+
+  Future submitRetrait() async {
     final jsonList = _values.map((item) => jsonEncode(item)).toList();
-    final caisseModel = CaisseModel(
+    final banqueModel = BanqueModel(
         nomComplet: nomCompletController.text,
         pieceJustificative: pieceJustificativeController.text,
         libelle: libelleController.text,
@@ -508,17 +574,16 @@ class _AddEncaissementState extends State<AddEncaissement> {
         coupureBillet: jsonList,
         ligneBudgtaire: '-',
         resources: '-',
-        departement: '-',
-        typeOperation: 'Encaissement',
-        numeroOperation: 'Transaction-Caisse-${numberItem + 1}',
+        departement: departement.toString(),
+        typeOperation: 'Retrait',
+        numeroOperation: 'Transaction-Banque-${numberItem + 1}',
         signature: matricule.toString(),
         created: DateTime.now());
-    await CaisseApi().insertData(caisseModel);
+    await BanqueApi().insertData(banqueModel);
     Navigator.of(context).pop();
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-      content: const Text("Enregistrer avec succès!"),
+      content: const Text("Retrait Soumis avec succès!"),
       backgroundColor: Colors.green[700],
     ));
   }
-
 }

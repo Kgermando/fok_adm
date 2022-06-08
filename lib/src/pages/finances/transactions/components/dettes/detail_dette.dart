@@ -3,35 +3,34 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:fokad_admin/src/api/approbation/approbation_api.dart';
 import 'package:fokad_admin/src/api/auth/auth_api.dart';
-import 'package:fokad_admin/src/api/finances/creance_api.dart';
 import 'package:fokad_admin/src/api/finances/creance_dette_api.dart';
+import 'package:fokad_admin/src/api/finances/dette_api.dart';
 import 'package:fokad_admin/src/api/user/user_api.dart';
 import 'package:fokad_admin/src/constants/app_theme.dart';
 import 'package:fokad_admin/src/constants/responsive.dart';
 import 'package:fokad_admin/src/models/approbation/approbation_model.dart';
 import 'package:fokad_admin/src/models/finances/creance_dette_model.dart';
-import 'package:fokad_admin/src/models/finances/creances_model.dart';
+import 'package:fokad_admin/src/models/finances/dette_model.dart';
 import 'package:fokad_admin/src/models/users/user_model.dart';
 import 'package:fokad_admin/src/navigation/drawer/drawer_menu.dart';
 import 'package:fokad_admin/src/navigation/header/custom_appbar.dart';
-import 'package:fokad_admin/src/pages/finances/transactions/components/components/creance_dette/table_creance_dette.dart';
+import 'package:fokad_admin/src/pages/finances/transactions/components/creance_dette/table_creance_dette.dart';
+import 'package:fokad_admin/src/utils/loading.dart';
 import 'package:fokad_admin/src/widgets/btn_widget.dart';
 import 'package:fokad_admin/src/widgets/print_widget.dart';
 import 'package:fokad_admin/src/widgets/title_widget.dart';
 import 'package:intl/intl.dart';
 import 'package:pluto_grid/pluto_grid.dart';
 
-class DetailCreance extends StatefulWidget {
-  const DetailCreance({Key? key, this.id}) : super(key: key);
-  final int? id;
+class DetailDette extends StatefulWidget {
+  const DetailDette({Key? key}) : super(key: key);
 
   @override
-  State<DetailCreance> createState() => _DetailCreanceState();
+  State<DetailDette> createState() => _DetailDetteState();
 }
 
-class _DetailCreanceState extends State<DetailCreance> {
+class _DetailDetteState extends State<DetailDette> {
   final GlobalKey<ScaffoldState> _key = GlobalKey();
-  final ScrollController _controllerScroll = ScrollController();
   final _formKey = GlobalKey<FormState>();
   bool isLoading = false;
   List<UserModel> userList = [];
@@ -53,11 +52,7 @@ class _DetailCreanceState extends State<DetailCreance> {
   final TextEditingController libelleController = TextEditingController();
   final TextEditingController montantController = TextEditingController();
 
-  @override
-  initState() {
-    getData();
-    super.initState();
-  }
+  double total = 0.0;
 
   @override
   void dispose() {
@@ -68,7 +63,14 @@ class _DetailCreanceState extends State<DetailCreance> {
     super.dispose();
   }
 
+  @override
+  initState() {
+    getData();
+    super.initState();
+  }
+
   List<CreanceDetteModel> creanceDetteList = [];
+  List<CreanceDetteModel> creanceDetteFilter = [];
   List<ApprobationModel> approbList = [];
   List<ApprobationModel> approbationData = [];
   ApprobationModel approb = ApprobationModel(
@@ -82,7 +84,6 @@ class _DetailCreanceState extends State<DetailCreance> {
       justification: '-',
       signature: '-',
       created: DateTime.now());
-
   UserModel user = UserModel(
       nom: '-',
       prenom: '-',
@@ -97,7 +98,6 @@ class _DetailCreanceState extends State<DetailCreance> {
       createdAt: DateTime.now(),
       passwordHash: '-',
       succursale: '-');
-
   Future<void> getData() async {
     final dataUser = await UserApi().getAllData();
     UserModel userModel = await AuthApi().getUserId();
@@ -106,23 +106,31 @@ class _DetailCreanceState extends State<DetailCreance> {
     setState(() {
       userList = dataUser;
       user = userModel;
-      creanceDetteList = creanceDette
-          .where((element) => element.creanceDette == 'creances')
-          .toList();
+      creanceDetteFilter = creanceDette;
       approbList = approbations;
     });
   }
 
   @override
   Widget build(BuildContext context) {
+    final id = ModalRoute.of(context)!.settings.arguments as int;
     return Scaffold(
         key: _key,
         drawer: const DrawerMenu(),
-        floatingActionButton: FloatingActionButton(
-            tooltip: 'Payement',
-            child: const Icon(Icons.add),
-            onPressed: () {
-              dialongCreancePayement();
+        floatingActionButton: FutureBuilder<DetteModel>(
+            future: DetteApi().getOneData(id),
+            builder:
+                (BuildContext context, AsyncSnapshot<DetteModel> snapshot) {
+              if (snapshot.hasData) {
+                DetteModel? data = snapshot.data;
+                return FloatingActionButton(
+                    child: const Icon(Icons.add),
+                    onPressed: () {
+                      dialongDettePayement(data!);
+                    });
+              } else {
+                return loadingMini();
+              }
             }),
         body: SafeArea(
           child: Row(
@@ -136,15 +144,22 @@ class _DetailCreanceState extends State<DetailCreance> {
                 flex: 5,
                 child: Padding(
                     padding: const EdgeInsets.all(p10),
-                    child: FutureBuilder<CreanceModel>(
-                        future: CreanceApi().getOneData(widget.id!),
+                    child: FutureBuilder<DetteModel>(
+                        future: DetteApi().getOneData(id),
                         builder: (BuildContext context,
-                            AsyncSnapshot<CreanceModel> snapshot) {
+                            AsyncSnapshot<DetteModel> snapshot) {
                           if (snapshot.hasData) {
-                            CreanceModel? data = snapshot.data;
+                            DetteModel? data = snapshot.data;
+                            creanceDetteList = creanceDetteFilter
+                                .where((element) =>
+                                    element.creanceDette == 'dettes' &&
+                                    element.reference.microsecondsSinceEpoch ==
+                                        data!.createdRef.microsecondsSinceEpoch)
+                                .toList();
                             approbationData = approbList
-                                .where(
-                                    (element) => element.reference.microsecondsSinceEpoch == data!.created.microsecondsSinceEpoch)
+                                .where((element) =>
+                                    element.reference.microsecondsSinceEpoch ==
+                                    data!.created.microsecondsSinceEpoch)
                                 .toList();
 
                             if (approbationData.isNotEmpty) {
@@ -165,7 +180,7 @@ class _DetailCreanceState extends State<DetailCreance> {
                                     const SizedBox(width: p10),
                                     Expanded(
                                       child: CustomAppbar(
-                                          title: "Créance",
+                                          title: "Dette",
                                           controllerMenu: () =>
                                               _key.currentState!.openDrawer()),
                                     ),
@@ -189,8 +204,7 @@ class _DetailCreanceState extends State<DetailCreance> {
                               ],
                             );
                           } else {
-                            return const Center(
-                                child: CircularProgressIndicator());
+                            return Center(child: loading());
                           }
                         })),
               ),
@@ -199,7 +213,7 @@ class _DetailCreanceState extends State<DetailCreance> {
         ));
   }
 
-  Widget pageDetail(CreanceModel creanceModel) {
+  Widget pageDetail(DetteModel data) {
     return Row(mainAxisAlignment: MainAxisAlignment.center, children: [
       Card(
         elevation: 10,
@@ -215,30 +229,28 @@ class _DetailCreanceState extends State<DetailCreance> {
               width: 2.0,
             ),
           ),
-          child: ListView(
-            controller: _controllerScroll,
+          child: Column(
             children: [
               Row(
-                mainAxisAlignment: MainAxisAlignment.end,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  // TitleWidget(title: creanceModel.libelle),
+                  TitleWidget(title: data.libelle),
                   Column(
                     children: [
                       PrintWidget(
                           tooltip: 'Imprimer le document', onPressed: () {}),
                       SelectableText(
-                          DateFormat("dd-MM-yyyy HH:mm")
-                              .format(creanceModel.created),
+                          DateFormat("dd-MM-yyyy HH:mm").format(data.created),
                           textAlign: TextAlign.start),
                     ],
                   )
                 ],
               ),
-              dataWidget(creanceModel),
-              totalMontant(creanceModel),
+              dataWidget(data),
+              totalMontant(data),
               const SizedBox(
                   height: 300,
-                  child: TableCreanceDette(creanceDette: 'creances')),
+                  child: TableCreanceDette(creanceDette: 'dettes')),
             ],
           ),
         ),
@@ -246,9 +258,9 @@ class _DetailCreanceState extends State<DetailCreance> {
     ]);
   }
 
-  Widget totalMontant(CreanceModel data) {
+  Widget totalMontant(DetteModel data) {
     final headline6 = Theme.of(context).textTheme.headline6;
-    double total = 0.0;
+
     double totalCreanceDette = 0.0;
 
     for (var item in creanceDetteList) {
@@ -294,7 +306,7 @@ class _DetailCreanceState extends State<DetailCreance> {
     );
   }
 
-  Widget dataWidget(CreanceModel creanceModel) {
+  Widget dataWidget(DetteModel detteModel) {
     final bodyMedium = Theme.of(context).textTheme.bodyMedium;
     return Padding(
       padding: const EdgeInsets.all(p10),
@@ -308,7 +320,7 @@ class _DetailCreanceState extends State<DetailCreance> {
                     style: bodyMedium!.copyWith(fontWeight: FontWeight.bold)),
               ),
               Expanded(
-                child: SelectableText(creanceModel.nomComplet,
+                child: SelectableText(detteModel.nomComplet,
                     textAlign: TextAlign.start, style: bodyMedium),
               )
             ],
@@ -322,7 +334,7 @@ class _DetailCreanceState extends State<DetailCreance> {
                     style: bodyMedium.copyWith(fontWeight: FontWeight.bold)),
               ),
               Expanded(
-                child: SelectableText(creanceModel.pieceJustificative,
+                child: SelectableText(detteModel.pieceJustificative,
                     textAlign: TextAlign.start, style: bodyMedium),
               )
             ],
@@ -336,7 +348,7 @@ class _DetailCreanceState extends State<DetailCreance> {
                     style: bodyMedium.copyWith(fontWeight: FontWeight.bold)),
               ),
               Expanded(
-                child: SelectableText(creanceModel.libelle,
+                child: SelectableText(detteModel.libelle,
                     textAlign: TextAlign.start, style: bodyMedium),
               )
             ],
@@ -351,7 +363,7 @@ class _DetailCreanceState extends State<DetailCreance> {
               ),
               Expanded(
                 child: SelectableText(
-                    "${NumberFormat.decimalPattern('fr').format(double.parse(creanceModel.montant))} \$",
+                    "${NumberFormat.decimalPattern('fr').format(double.parse(detteModel.montant))} \$",
                     textAlign: TextAlign.start,
                     style: bodyMedium),
               )
@@ -366,7 +378,7 @@ class _DetailCreanceState extends State<DetailCreance> {
                     style: bodyMedium.copyWith(fontWeight: FontWeight.bold)),
               ),
               Expanded(
-                child: SelectableText(creanceModel.numeroOperation,
+                child: SelectableText(detteModel.numeroOperation,
                     textAlign: TextAlign.start, style: bodyMedium),
               )
             ],
@@ -380,7 +392,7 @@ class _DetailCreanceState extends State<DetailCreance> {
                     style: bodyMedium.copyWith(fontWeight: FontWeight.bold)),
               ),
               Expanded(
-                child: SelectableText(creanceModel.signature,
+                child: SelectableText(detteModel.signature,
                     textAlign: TextAlign.start, style: bodyMedium),
               )
             ],
@@ -396,9 +408,9 @@ class _DetailCreanceState extends State<DetailCreance> {
               const SizedBox(
                 width: p10,
               ),
-              if (!creanceModel.statutPaie && user.departement == "Finances")
-                Expanded(child: checkboxRead(creanceModel)),
-              (creanceModel.statutPaie)
+              if (!detteModel.statutPaie && user.departement == "Finances")
+                Expanded(child: checkboxRead(detteModel)),
+              (detteModel.statutPaie)
                   ? Expanded(
                       child: SelectableText('Payé',
                           textAlign: TextAlign.start,
@@ -431,7 +443,7 @@ class _DetailCreanceState extends State<DetailCreance> {
     return Colors.green;
   }
 
-  checkboxRead(CreanceModel data) {
+  checkboxRead(DetteModel data) {
     isChecked = data.statutPaie;
     return ListTile(
       leading: Checkbox(
@@ -455,71 +467,8 @@ class _DetailCreanceState extends State<DetailCreance> {
     );
   }
 
-  dialongCreancePayement() {
-    return showDialog(
-        context: context,
-        // barrierDismissible: false,
-        builder: (context) {
-          return StatefulBuilder(builder: (context, StateSetter setState) {
-            return Dialog(
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(p8),
-                ),
-                backgroundColor: Colors.transparent,
-                child: Form(
-                  key: _formKey,
-                  child: Card(
-                    child: Padding(
-                      padding: const EdgeInsets.all(p16),
-                      child: SizedBox(
-                        width: Responsive.isDesktop(context)
-                            ? MediaQuery.of(context).size.width / 2
-                            : MediaQuery.of(context).size.width,
-                        child: ListView(
-                          children: [
-                            const TitleWidget(title: 'Ajout une Créance'),
-                            const SizedBox(
-                              height: p20,
-                            ),
-                            Row(
-                              children: [
-                                Expanded(child: nomCompletWidget()),
-                                const SizedBox(width: p20),
-                                Expanded(child: libelleWidget()),
-                              ],
-                            ),
-                            Row(
-                              children: [
-                                Expanded(child: pieceJustificativeWidget()),
-                                const SizedBox(width: p20),
-                                Expanded(child: montantWidget()),
-                              ],
-                            ),
-                            const SizedBox(
-                              height: p20,
-                            ),
-                            BtnWidget(
-                                title: 'Soumettre',
-                                isLoading: isLoading,
-                                press: () {
-                                  final form = _formKey.currentState!;
-                                  if (form.validate()) {
-                                    creanceDette();
-                                    form.reset();
-                                  }
-                                })
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
-                ));
-          });
-        });
-  }
-
-  Future<void> submitobservation(CreanceModel data) async {
-    final creanceModel = CreanceModel(
+  Future<void> submitobservation(DetteModel data) async {
+    final detteModel = DetteModel(
         nomComplet: data.nomComplet,
         pieceJustificative: data.pieceJustificative,
         libelle: data.libelle,
@@ -527,13 +476,66 @@ class _DetailCreanceState extends State<DetailCreance> {
         numeroOperation: data.numeroOperation,
         statutPaie: isChecked,
         signature: data.signature,
-        created: data.created);
-    await CreanceApi().updateData(data.id!, creanceModel);
+        createdRef: data.createdRef,
+        created: DateTime.now());
+    await DetteApi().updateData(data.id!, detteModel);
     Navigator.of(context).pop();
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-      content: const Text("Créance payé avec succès!"),
+      content: const Text("Soumis avec succès!"),
       backgroundColor: Colors.green[700],
     ));
+  }
+
+  dialongDettePayement(DetteModel data) {
+    return showDialog(
+        context: context,
+        // barrierDismissible: false,
+        builder: (context) {
+          return StatefulBuilder(builder: (context, StateSetter setState) {
+            return AlertDialog(
+                content: SizedBox(
+              height: 400,
+              child: Form(
+                key: _formKey,
+                child: Column(
+                  children: [
+                    const Text('Ajout une dette'),
+                    const SizedBox(
+                      height: p20,
+                    ),
+                    Row(
+                      children: [
+                        Expanded(child: nomCompletWidget()),
+                        const SizedBox(width: p20),
+                        Expanded(child: libelleWidget()),
+                      ],
+                    ),
+                    Row(
+                      children: [
+                        Expanded(child: pieceJustificativeWidget()),
+                        const SizedBox(width: p20),
+                        Expanded(child: montantWidget()),
+                      ],
+                    ),
+                    const SizedBox(
+                      height: p20,
+                    ),
+                    BtnWidget(
+                        title: 'Soumettre',
+                        isLoading: isLoading,
+                        press: () {
+                          final form = _formKey.currentState!;
+                          if (form.validate()) {
+                            creanceDette(data);
+                            form.reset();
+                          }
+                        })
+                  ],
+                ),
+              ),
+            ));
+          });
+        });
   }
 
   Widget nomCompletWidget() {
@@ -606,10 +608,10 @@ class _DetailCreanceState extends State<DetailCreance> {
                   FilteringTextInputFormatter.digitsOnly
                 ],
                 decoration: InputDecoration(
-                  border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10.0)),
-                  labelText: 'Montant',
-                ),
+                    border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10.0)),
+                    labelText: 'Montant',
+                    hintText: 'Restant $total \$'),
                 validator: (value) => value != null && value.isEmpty
                     ? 'Ce champs est obligatoire.'
                     : null,
@@ -627,19 +629,20 @@ class _DetailCreanceState extends State<DetailCreance> {
         ));
   }
 
-  Future<void> creanceDette() async {
+  Future<void> creanceDette(DetteModel data) async {
     final creanceDetteModel = CreanceDetteModel(
+        reference: data.createdRef,
         nomComplet: nomCompletController.text,
         pieceJustificative: pieceJustificativeController.text,
         libelle: libelleController.text,
         montant: montantController.text,
-        creanceDette: "creances",
+        creanceDette: "dettes",
         signature: user.matricule,
         created: DateTime.now());
     await CreanceDetteApi().insertData(creanceDetteModel);
     Navigator.of(context).pop();
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-      content: const Text("Payement effectué!"),
+      content: const Text("Remboursement effectué!"),
       backgroundColor: Colors.green[700],
     ));
   }
@@ -898,7 +901,7 @@ class _DetailCreanceState extends State<DetailCreance> {
     );
   }
 
-  Widget approbationForm(CreanceModel data) {
+  Widget approbationForm(DetteModel data) {
     final bodyLarge = Theme.of(context).textTheme.bodyLarge;
     List<String> approbationList = ['Approved', 'Unapproved', '-'];
     return SizedBox(
@@ -1071,7 +1074,7 @@ class _DetailCreanceState extends State<DetailCreance> {
     );
   }
 
-  Future submitApprobation(CreanceModel data) async {
+  Future submitApprobation(DetteModel data) async {
     final approbation = ApprobationModel(
         reference: data.created,
         title: data.nomComplet,

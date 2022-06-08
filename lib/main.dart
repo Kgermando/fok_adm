@@ -11,7 +11,7 @@ import 'package:fokad_admin/src/routes/routes.dart';
 import 'package:provider/provider.dart';
 import 'package:timeago/timeago.dart' as timeago;
 import 'package:url_strategy/url_strategy.dart';
-
+ 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   setPathUrlStrategy();

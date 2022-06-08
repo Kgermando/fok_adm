@@ -3,19 +3,20 @@ import 'package:fokad_admin/src/constants/app_theme.dart';
 import 'package:fokad_admin/src/constants/responsive.dart';
 import 'package:fokad_admin/src/navigation/drawer/drawer_menu.dart';
 import 'package:fokad_admin/src/navigation/header/custom_appbar.dart';
-import 'package:fokad_admin/src/pages/finances/transactions/components/components/banques/table_banque.dart';
+import 'package:fokad_admin/src/pages/finances/transactions/components/caisses/table_caisse.dart';
 import 'package:fokad_admin/src/routes/routes.dart';
 import 'package:simple_speed_dial/simple_speed_dial.dart';
 
-class BanqueTransactions extends StatefulWidget {
-  const BanqueTransactions({Key? key}) : super(key: key);
+class CaisseTransactions extends StatefulWidget {
+  const CaisseTransactions({Key? key}) : super(key: key);
 
   @override
-  State<BanqueTransactions> createState() => _BanqueTransactionsState();
+  State<CaisseTransactions> createState() => _CaisseTransactionsState();
 }
 
-class _BanqueTransactionsState extends State<BanqueTransactions> {
+class _CaisseTransactionsState extends State<CaisseTransactions> {
   final GlobalKey<ScaffoldState> _key = GlobalKey();
+  final controller = ScrollController();
 
   @override
   Widget build(BuildContext context) {
@@ -39,10 +40,10 @@ class _BanqueTransactionsState extends State<BanqueTransactions> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       CustomAppbar(
-                          title: 'Transactions Banque',
+                          title: 'Livre de Caisse',
                           controllerMenu: () =>
                               _key.currentState!.openDrawer()),
-                      const Expanded(child: TableBanque())
+                      const Expanded(child: TableCaisse())
                     ],
                   ),
                 ),
@@ -65,26 +66,27 @@ class _BanqueTransactionsState extends State<BanqueTransactions> {
       speedDialChildren: <SpeedDialChild>[
         SpeedDialChild(
           child: const Icon(Icons.upload),
-          foregroundColor: Colors.white,
+          foregroundColor: Colors.black,
           backgroundColor: Colors.yellow.shade700,
-          label: 'Retrait',
+          label: 'Décaissement',
           onPressed: () {
             Navigator.pushNamed(
-                context, FinanceRoutes.transactionsBanqueRetrait);
+                context, FinanceRoutes.transactionsCaisseDecaissement);
           },
         ),
         SpeedDialChild(
           child: const Icon(Icons.file_download),
           foregroundColor: Colors.white,
           backgroundColor: Colors.green.shade700,
-          label: 'Dépôt',
+          label: 'Encaissement',
           onPressed: () {
             Navigator.pushNamed(
-                context, FinanceRoutes.transactionsBanqueDepot);
+                context, FinanceRoutes.transactionsCaisseEncaissement);
           },
         ),
       ],
     );
   }
 
+  
 }

@@ -19,8 +19,7 @@ import 'package:intl/intl.dart';
 import 'package:pluto_grid/pluto_grid.dart';
 
 class DetailBanque extends StatefulWidget {
-  const DetailBanque({Key? key, required this.id}) : super(key: key);
-  final int id;
+  const DetailBanque({Key? key}) : super(key: key);
 
   @override
   State<DetailBanque> createState() => _DetailBanqueState();
@@ -95,6 +94,7 @@ class _DetailBanqueState extends State<DetailBanque> {
 
   @override
   Widget build(BuildContext context) {
+    final id = ModalRoute.of(context)!.settings.arguments as int;
     return Scaffold(
         key: _key,
         drawer: const DrawerMenu(),
@@ -111,7 +111,7 @@ class _DetailBanqueState extends State<DetailBanque> {
                 child: Padding(
                     padding: const EdgeInsets.all(p10),
                     child: FutureBuilder<BanqueModel>(
-                        future: BanqueApi().getOneData(widget.id),
+                        future: BanqueApi().getOneData(id),
                         builder: (BuildContext context,
                             AsyncSnapshot<BanqueModel> snapshot) {
                           if (snapshot.hasData) {

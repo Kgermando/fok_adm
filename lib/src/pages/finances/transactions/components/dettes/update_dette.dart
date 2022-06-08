@@ -243,6 +243,7 @@ class _UpdateDetteState extends State<UpdateDette> {
         numeroOperation: 'Transaction-Dette-${numberItem + 1}',
         statutPaie: true,
         signature: matricule.toString(),
+        createdRef: DateTime.now(),
         created: DateTime.now());
 
     await DetteApi().insertData(detteModel);

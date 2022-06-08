@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:fokad_admin/src/api/finances/creance_api.dart';
 import 'package:fokad_admin/src/models/finances/creances_model.dart';
-import 'package:fokad_admin/src/pages/finances/transactions/components/components/creances/detail_creance.dart';
+import 'package:fokad_admin/src/routes/routes.dart';
 import 'package:fokad_admin/src/widgets/print_widget.dart';
 import 'package:fokad_admin/src/utils/class_implemented.dart';
 import 'package:intl/intl.dart';
@@ -65,9 +65,9 @@ class _TableCreanceAdminState extends State<TableCreanceAdmin> {
               onRowDoubleTap: (PlutoGridOnRowDoubleTapEvent tapEvent) {
                 final dataList = tapEvent.row!.cells.values;
                 final idPlutoRow = dataList.elementAt(0);
-
-                Navigator.of(context).push(MaterialPageRoute(
-                    builder: (context) => DetailCreance(id: idPlutoRow.value)));
+                Navigator.pushNamed(
+                    context, FinanceRoutes.transactionsCreanceDetail,
+                    arguments: idPlutoRow.value);
               },
               onLoaded: (PlutoGridOnLoadedEvent event) {
                 stateManager = event.stateManager;

@@ -7,7 +7,7 @@ import 'package:fokad_admin/src/constants/responsive.dart';
 import 'package:fokad_admin/src/models/finances/dette_model.dart';
 import 'package:fokad_admin/src/navigation/drawer/drawer_menu.dart';
 import 'package:fokad_admin/src/navigation/header/custom_appbar.dart';
-import 'package:fokad_admin/src/pages/finances/transactions/components/components/dettes/table_dette.dart';
+import 'package:fokad_admin/src/pages/finances/transactions/components/dettes/table_dette.dart';
 import 'package:fokad_admin/src/widgets/btn_widget.dart';
 import 'package:fokad_admin/src/widgets/print_widget.dart';
 import 'package:fokad_admin/src/widgets/title_widget.dart';
@@ -282,6 +282,7 @@ class _DetteTransactionsState extends State<DetteTransactions> {
       numeroOperation: 'Transaction-Dette-${numberItem + 1}',
       statutPaie: false,
       signature: matricule.toString(),
+      createdRef: DateTime.now(),
       created: DateTime.now(),
     );
     await DetteApi().insertData(detteModel);
