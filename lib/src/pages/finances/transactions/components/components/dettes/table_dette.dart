@@ -7,6 +7,7 @@ import 'package:fokad_admin/src/api/finances/dette_api.dart';
 import 'package:fokad_admin/src/models/finances/dette_model.dart';
 import 'package:fokad_admin/src/models/users/user_model.dart';
 import 'package:fokad_admin/src/pages/finances/transactions/components/components/dettes/detail_dette.dart';
+import 'package:fokad_admin/src/routes/routes.dart';
 import 'package:fokad_admin/src/widgets/print_widget.dart';
 import 'package:fokad_admin/src/utils/class_implemented.dart';
 import 'package:intl/intl.dart';
@@ -78,7 +79,15 @@ class _TableDetteState extends State<TableDette> {
             createHeader: (PlutoGridStateManager header) {
               return Row(
                 mainAxisAlignment: MainAxisAlignment.end,
-                children: [PrintWidget(onPressed: () {})],
+                children: [
+                  IconButton(
+                      onPressed: () {
+                        Navigator.pushNamed(
+                            context, FinanceRoutes.transactionsDettes);
+                      },
+                      icon: Icon(Icons.refresh, color: Colors.green.shade700)),
+                  PrintWidget(onPressed: () {})
+                ],
               );
             },
             configuration: PlutoGridConfiguration(
@@ -279,13 +288,14 @@ class _TableDetteState extends State<TableDette> {
     for (var item in approbations) {
       data = dataList
           .where((element) =>
-              element!.created.microsecondsSinceEpoch == item.reference.microsecondsSinceEpoch &&
+              element!.created.microsecondsSinceEpoch ==
+                      item.reference.microsecondsSinceEpoch &&
                   item.fontctionOccupee == 'Directeur générale' &&
                   item.approbation == "Approved" ||
               element.signature == userModel.matricule)
           .toList();
-    } 
-    
+    }
+
     if (mounted) {
       setState(() {
         for (var item in data) {

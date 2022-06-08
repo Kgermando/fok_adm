@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:fokad_admin/src/api/finances/fin_exterieur_api.dart';
 import 'package:fokad_admin/src/models/finances/fin_exterieur_model.dart';
 import 'package:fokad_admin/src/pages/finances/transactions/components/components/fin_exterieur/detail_fin_exterieur.dart';
+import 'package:fokad_admin/src/routes/routes.dart';
 import 'package:fokad_admin/src/widgets/print_widget.dart';
 import 'package:fokad_admin/src/utils/class_implemented.dart';
 import 'package:intl/intl.dart';
@@ -70,7 +71,14 @@ class _TableFinExterieurState extends State<TableFinExterieur> {
             createHeader: (PlutoGridStateManager header) {
               return Row(
                 mainAxisAlignment: MainAxisAlignment.end,
-                children: [PrintWidget(onPressed: () {})],
+                children: [
+                  IconButton(
+                      onPressed: () {
+                        Navigator.pushNamed(
+                            context, FinanceRoutes.transactionsFinancementExterne);
+                      },
+                      icon: Icon(Icons.refresh, color: Colors.green.shade700)),
+                  PrintWidget(onPressed: () {})],
               );
             },
             configuration: PlutoGridConfiguration(

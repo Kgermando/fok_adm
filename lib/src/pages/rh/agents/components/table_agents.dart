@@ -10,7 +10,6 @@ import 'package:fokad_admin/src/widgets/print_widget.dart';
 import 'package:intl/intl.dart';
 import 'package:pluto_grid/pluto_grid.dart';
 
-
 class TableAgents extends StatefulWidget {
   const TableAgents({Key? key}) : super(key: key);
 
@@ -34,7 +33,6 @@ class _TableAgentsState extends State<TableAgents> {
 
   @override
   Widget build(BuildContext context) {
-    
     return PlutoGrid(
       columns: columns,
       rows: rows,
@@ -43,8 +41,8 @@ class _TableAgentsState extends State<TableAgents> {
         final idPlutoRow = dataList.elementAt(0);
         // Navigator.of(context).push(MaterialPageRoute(
         //     builder: (context) => AgentPage(id: idPlutoRow.value)));
-        Navigator.pushNamed(context, RhRoutes.rhAgentPage, 
-          arguments: idPlutoRow.value);
+        Navigator.pushNamed(context, RhRoutes.rhAgentPage,
+            arguments: idPlutoRow.value);
       },
       onLoaded: (PlutoGridOnLoadedEvent event) {
         stateManager = event.stateManager;
@@ -55,13 +53,14 @@ class _TableAgentsState extends State<TableAgents> {
         return Row(
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
-            IconButton(onPressed: () {
-              Navigator.pushNamed(
-                      context, RhRoutes.rhAgent); 
-            }, icon: const Icon(Icons.refresh)),
+            IconButton(
+                onPressed: () {
+                  Navigator.pushNamed(context, RhRoutes.rhAgent);
+                },
+                icon: Icon(Icons.refresh, color: Colors.green.shade700)),
             PrintWidget(onPressed: () {
-              Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) => const AgentXlsx()));
+              Navigator.of(context).push(
+                  MaterialPageRoute(builder: (context) => const AgentXlsx()));
             })
           ],
         );
@@ -286,11 +285,12 @@ class _TableAgentsState extends State<TableAgents> {
             'sexe': PlutoCell(value: item.sexe),
             'role': PlutoCell(value: "Niveau ${item.role}"),
             'matricule': PlutoCell(value: item.matricule),
-            'dateNaissance':
-                PlutoCell(value: DateFormat("dd-MM-yyyy").format(item.createdAt)),
+            'dateNaissance': PlutoCell(
+                value: DateFormat("dd-MM-yyyy").format(item.createdAt)),
             'departement': PlutoCell(value: item.departement),
             'servicesAffectation': PlutoCell(value: item.servicesAffectation),
-            'statutAgent': PlutoCell(value: (item.statutAgent) ? 'Agent actif' : 'Agent inactif')
+            'statutAgent': PlutoCell(
+                value: (item.statutAgent) ? 'Agent actif' : 'Agent inactif')
           }));
         }
         stateManager!.resetCurrentState();

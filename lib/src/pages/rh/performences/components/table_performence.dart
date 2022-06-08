@@ -39,7 +39,7 @@ class _TablePerformenceState extends State<TablePerformence> {
       onRowDoubleTap: (PlutoGridOnRowDoubleTapEvent tapEvent) {
         final dataList = tapEvent.row!.cells.values;
         final idPlutoRow = dataList.elementAt(0);
-        
+
         Navigator.pushNamed(context, RhRoutes.rhPerformenceDetail,
             arguments: idPlutoRow.value);
       },
@@ -56,8 +56,9 @@ class _TablePerformenceState extends State<TablePerformence> {
                 onPressed: () {
                   Navigator.pushNamed(context, RhRoutes.rhPerformence);
                 },
-                icon: const Icon(Icons.refresh)),
-            PrintWidget(onPressed: () {})],
+                icon: Icon(Icons.refresh, color: Colors.green.shade700)),
+            PrintWidget(onPressed: () {})
+          ],
         );
       },
       configuration: PlutoGridConfiguration(
@@ -130,7 +131,6 @@ class _TablePerformenceState extends State<TablePerformence> {
         width: 200,
         minWidth: 80,
       ),
-      
       PlutoColumn(
         readOnly: true,
         title: 'Nom',
@@ -204,8 +204,7 @@ class _TablePerformenceState extends State<TablePerformence> {
       setState(() {
         for (var item in data) {
           id = item!.id;
-          rows.add(PlutoRow(
-            cells: {
+          rows.add(PlutoRow(cells: {
             'id': PlutoCell(value: item.id),
             'departement': PlutoCell(value: item.departement),
             'agent': PlutoCell(value: item.agent),

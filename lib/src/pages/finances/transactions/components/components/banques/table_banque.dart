@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:fokad_admin/src/api/finances/banque_api.dart';
 import 'package:fokad_admin/src/models/finances/banque_model.dart';
 import 'package:fokad_admin/src/pages/finances/transactions/components/components/banques/detail_banque.dart';
+import 'package:fokad_admin/src/routes/routes.dart';
 import 'package:fokad_admin/src/widgets/print_widget.dart';
 import 'package:fokad_admin/src/utils/class_implemented.dart';
 import 'package:intl/intl.dart';
@@ -83,7 +84,15 @@ class _TableBanqueState extends State<TableBanque> {
             createHeader: (PlutoGridStateManager header) {
               return Row(
                 mainAxisAlignment: MainAxisAlignment.end,
-                children: [PrintWidget(onPressed: () {})],
+                children: [
+                  IconButton(
+                      onPressed: () {
+                        Navigator.pushNamed(
+                            context, FinanceRoutes.transactionsBanque);
+                      },
+                      icon: Icon(Icons.refresh, color: Colors.green.shade700)),
+                  PrintWidget(onPressed: () {})
+                ],
               );
             },
             configuration: PlutoGridConfiguration(

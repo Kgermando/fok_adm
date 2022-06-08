@@ -80,8 +80,14 @@ class _MailPagesState extends State<MailPages> {
     return Scaffold(
         key: _key,
         drawer: const DrawerMenu(),
-        floatingActionButton: FloatingActionButton(
-            child: const Icon(Icons.send),
+        floatingActionButton: FloatingActionButton.extended(
+            label: Row(
+              children: const [
+                Icon(Icons.add),
+                SizedBox(width: p20),
+                Text("Nouveau mail")
+              ],
+            ),
             onPressed: () {
               Navigator.pushNamed(context, MailRoutes.addMail);
             }),

@@ -88,10 +88,11 @@ class _TableEtatBesoinBudgetsState extends State<TableEtatBesoinBudgets> {
               Row(
                 children: [
                   IconButton(
-                    onPressed: () {
-                      Navigator.pushNamed(context, BudgetRoutes.budgetEtatBesoin);
-                    },
-                    icon: const Icon(Icons.refresh)),
+                      onPressed: () {
+                        Navigator.pushNamed(
+                            context, BudgetRoutes.budgetEtatBesoin);
+                      },
+                      icon: Icon(Icons.refresh, color: Colors.green.shade700)),
                   PrintWidget(onPressed: () {}),
                 ],
               )
@@ -195,9 +196,8 @@ class _TableEtatBesoinBudgetsState extends State<TableEtatBesoinBudgets> {
 
   Future agentsRow() async {
     List<DevisModel?> dataList = await DevisAPi().getAllData();
-    var data = dataList
-        .where((element) => element!.departement == 'Budgets')
-        .toList();
+    var data =
+        dataList.where((element) => element!.departement == 'Budgets').toList();
     if (mounted) {
       setState(() {
         for (var item in data) {

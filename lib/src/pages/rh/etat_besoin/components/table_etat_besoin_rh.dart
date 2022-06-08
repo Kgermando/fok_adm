@@ -88,10 +88,10 @@ class _TableEtatBesoinRHState extends State<TableEtatBesoinRH> {
               Row(
                 children: [
                   IconButton(
-                    onPressed: () {
-                      Navigator.pushNamed(context, RhRoutes.rhEtatBesoin);
-                    },
-                    icon: const Icon(Icons.refresh)),
+                      onPressed: () {
+                        Navigator.pushNamed(context, RhRoutes.rhEtatBesoin);
+                      },
+                      icon: Icon(Icons.refresh, color: Colors.green.shade700)),
                   PrintWidget(onPressed: () {}),
                 ],
               )

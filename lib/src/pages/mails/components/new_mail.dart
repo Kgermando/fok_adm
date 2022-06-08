@@ -166,7 +166,7 @@ class _NewMailState extends State<NewMail> {
   Widget addAgentWidget() {
     return Form(
       key: _formKey,
-      autovalidateMode: AutovalidateMode.always,
+      autovalidateMode: AutovalidateMode.onUserInteraction,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [

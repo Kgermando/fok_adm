@@ -15,10 +15,12 @@ class TableEtatBesoinComptabilite extends StatefulWidget {
   const TableEtatBesoinComptabilite({Key? key}) : super(key: key);
 
   @override
-  State<TableEtatBesoinComptabilite> createState() => _TableEtatBesoinComptabiliteState();
+  State<TableEtatBesoinComptabilite> createState() =>
+      _TableEtatBesoinComptabiliteState();
 }
 
-class _TableEtatBesoinComptabiliteState extends State<TableEtatBesoinComptabilite> {
+class _TableEtatBesoinComptabiliteState
+    extends State<TableEtatBesoinComptabilite> {
   List<PlutoColumn> columns = [];
   List<PlutoRow> rows = [];
   PlutoGridStateManager? stateManager;
@@ -88,11 +90,11 @@ class _TableEtatBesoinComptabiliteState extends State<TableEtatBesoinComptabilit
               Row(
                 children: [
                   IconButton(
-                    onPressed: () {
-                      Navigator.pushNamed(context, 
-                        ComptabiliteRoutes.comptabiliteEtatBesoin);
-                    },
-                    icon: const Icon(Icons.refresh)),
+                      onPressed: () {
+                        Navigator.pushNamed(
+                            context, ComptabiliteRoutes.comptabiliteEtatBesoin);
+                      },
+                      icon: Icon(Icons.refresh, color: Colors.green.shade700)),
                   PrintWidget(onPressed: () {}),
                 ],
               )

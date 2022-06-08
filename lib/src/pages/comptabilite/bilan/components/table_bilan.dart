@@ -31,7 +31,7 @@ class _TableBilanState extends State<TableBilan> {
   void initState() {
     agentsColumn();
     agentsRow();
-  
+
     super.initState();
   }
 
@@ -57,11 +57,12 @@ class _TableBilanState extends State<TableBilan> {
           children: [
             IconButton(
                 onPressed: () {
-                   Navigator.pushNamed(
-                      context, ComptabiliteRoutes.comptabiliteBilan); 
+                  Navigator.pushNamed(
+                      context, ComptabiliteRoutes.comptabiliteBilan);
                 },
-                icon: const Icon(Icons.refresh)),
-            PrintWidget(onPressed: () {})],
+                icon: Icon(Icons.refresh, color: Colors.green.shade700)),
+            PrintWidget(onPressed: () {})
+          ],
         );
       },
       configuration: PlutoGridConfiguration(
@@ -169,9 +170,7 @@ class _TableBilanState extends State<TableBilan> {
           }));
           stateManager!.resetCurrentState();
         }
-        
       });
     }
   }
-
 }

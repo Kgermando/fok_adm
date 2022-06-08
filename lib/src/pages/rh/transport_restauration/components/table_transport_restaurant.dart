@@ -81,7 +81,7 @@ class _TableTansportRestaurantState extends State<TableTansportRestaurant> {
                       onPressed: () {
                         Navigator.pushNamed(context, RhRoutes.rhTransportRest);
                       },
-                      icon: const Icon(Icons.refresh)),
+                      icon: Icon(Icons.refresh, color: Colors.green.shade700)),
                   PrintWidget(onPressed: () {}),
                 ],
               )

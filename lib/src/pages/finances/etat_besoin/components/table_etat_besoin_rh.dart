@@ -85,13 +85,14 @@ class _TableEtatBesoinFinState extends State<TableEtatBesoinFin> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               const TitleWidget(title: 'Finances'),
-              Row( 
+              Row(
                 children: [
                   IconButton(
-                    onPressed: () {
-                      Navigator.pushNamed(context, FinanceRoutes.finEtatBesoin);
-                    },
-                    icon: const Icon(Icons.refresh)),
+                      onPressed: () {
+                        Navigator.pushNamed(
+                            context, FinanceRoutes.finEtatBesoin);
+                      },
+                      icon: Icon(Icons.refresh, color: Colors.green.shade700)),
                   PrintWidget(onPressed: () {}),
                 ],
               )

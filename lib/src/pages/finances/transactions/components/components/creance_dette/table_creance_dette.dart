@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:fokad_admin/src/api/finances/creance_dette_api.dart';
 import 'package:fokad_admin/src/models/finances/creance_dette_model.dart';
+import 'package:fokad_admin/src/routes/routes.dart';
 import 'package:fokad_admin/src/utils/class_implemented.dart';
 import 'package:fokad_admin/src/widgets/title_widget.dart';
 import 'package:intl/intl.dart';
 import 'package:pluto_grid/pluto_grid.dart';
 
 class TableCreanceDette extends StatefulWidget {
-  const TableCreanceDette({Key? key, required this.creanceDette}) : super(key: key);
+  const TableCreanceDette({Key? key, required this.creanceDette})
+      : super(key: key);
   final String creanceDette;
 
   @override
@@ -41,10 +43,25 @@ class _TableCreanceDetteState extends State<TableCreanceDette> {
       },
       createHeader: (PlutoGridStateManager header) {
         return Row(
-          mainAxisAlignment: MainAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-           TitleWidget(title: (widget.creanceDette == "creances") 
-            ? 'Payement' : "Remboursement"),
+            TitleWidget(
+                title: (widget.creanceDette == "creances")
+                    ? 'Payement'
+                    : "Remboursement"),
+            (widget.creanceDette == "creances")
+                ? IconButton(
+                    onPressed: () {
+                      Navigator.pushNamed(
+                          context, FinanceRoutes.transactionsCreances);
+                    },
+                    icon: Icon(Icons.refresh, color: Colors.green.shade700))
+                : IconButton(
+                    onPressed: () {
+                      Navigator.pushNamed(
+                          context, FinanceRoutes.transactionsDettes);
+                    },
+                    icon: Icon(Icons.refresh, color: Colors.green.shade700)),
           ],
         );
       },
@@ -166,7 +183,7 @@ class _TableCreanceDetteState extends State<TableCreanceDette> {
   Future agentsRow() async {
     List<CreanceDetteModel?> dataList = await CreanceDetteApi().getAllData();
     var data = dataList
-      .where((element) => element!.creanceDette == widget.creanceDette);
+        .where((element) => element!.creanceDette == widget.creanceDette);
 
     if (mounted) {
       setState(() {

@@ -87,14 +87,14 @@ class _TabvleEtatBesoinDepartementState
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               const TitleWidget(title: 'Departements'),
-               Row(
+              Row(
                 children: [
                   IconButton(
                       onPressed: () {
                         Navigator.pushNamed(
                             context, AdminRoutes.adminEtatBesoin);
                       },
-                      icon: const Icon(Icons.refresh)),
+                      icon: Icon(Icons.refresh, color: Colors.green.shade700)),
                   PrintWidget(onPressed: () {}),
                 ],
               )

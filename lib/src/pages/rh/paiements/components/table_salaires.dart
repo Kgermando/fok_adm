@@ -56,8 +56,9 @@ class _TableSalairesState extends State<TableSalaires> {
                 onPressed: () {
                   Navigator.pushNamed(context, RhRoutes.rhPaiement);
                 },
-                icon: const Icon(Icons.refresh)),
-            PrintWidget(onPressed: () {})],
+                icon: Icon(Icons.refresh, color: Colors.green.shade700)),
+            PrintWidget(onPressed: () {})
+          ],
         );
       },
       configuration: PlutoGridConfiguration(
@@ -201,10 +202,9 @@ class _TableSalairesState extends State<TableSalaires> {
 
     var data = dataList
         .where((element) =>
-            element!.createdAt.month == DateTime.now().month && 
+            element!.createdAt.month == DateTime.now().month &&
             element.createdAt.year == DateTime.now().year)
         .toList();
-
 
     if (mounted) {
       setState(() {

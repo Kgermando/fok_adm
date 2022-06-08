@@ -56,7 +56,7 @@ class _TableArchiveDataState extends State<TableArchiveData> {
                 onPressed: () {
                   Navigator.pop(context);
                 },
-                icon: const Icon(Icons.refresh)),
+                icon: Icon(Icons.refresh, color: Colors.green.shade700)),
             PrintWidget(onPressed: () {})
           ],
         );
@@ -104,7 +104,8 @@ class _TableArchiveDataState extends State<TableArchiveData> {
             ),
             TextButton(
               onPressed: () async {
-                await ArchiveFolderApi().deleteData(widget.archiveFolderModel.id!);
+                await ArchiveFolderApi()
+                    .deleteData(widget.archiveFolderModel.id!);
                 Navigator.of(context).pop();
               },
               child: const Text('OK'),

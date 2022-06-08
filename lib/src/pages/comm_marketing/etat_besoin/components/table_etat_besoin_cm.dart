@@ -88,11 +88,11 @@ class _TableEtatBesoinCMState extends State<TableEtatBesoinCM> {
               Row(
                 children: [
                   IconButton(
-                    onPressed: () {
-                      Navigator.pushNamed(context, 
-                      ComMarketingRoutes.comMarketingEtatBesoin);
-                    },
-                    icon: const Icon(Icons.refresh)),
+                      onPressed: () {
+                        Navigator.pushNamed(
+                            context, ComMarketingRoutes.comMarketingEtatBesoin);
+                      },
+                      icon: Icon(Icons.refresh, color: Colors.green.shade700)),
                   PrintWidget(onPressed: () {}),
                 ],
               )

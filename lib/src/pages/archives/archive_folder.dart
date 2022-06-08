@@ -110,11 +110,12 @@ class _ArchiveFolderState extends State<ArchiveFolder> {
                                 mainAxisAlignment: MainAxisAlignment.end,
                                 children: [
                                   IconButton(
-                                    onPressed: () {
-                                      Navigator.pushNamed(context,
-                                          ArchiveRoutes.archives);
-                                    },
-                                    icon: const Icon(Icons.refresh)),
+                                      onPressed: () {
+                                        Navigator.pushNamed(
+                                            context, ArchiveRoutes.archives);
+                                      },
+                                      icon: Icon(Icons.refresh,
+                                          color: Colors.green.shade700)),
                                 ],
                               ),
                               Expanded(
@@ -125,12 +126,15 @@ class _ArchiveFolderState extends State<ArchiveFolder> {
                                           snapshot) {
                                     if (snapshot.hasData) {
                                       List<ArchiveFolderModel>?
-                                        archiveFolderList = snapshot.data!
-                                        .where((element) => element.departement == 
-                                        user.departement).toList();
+                                          archiveFolderList = snapshot.data!
+                                              .where((element) =>
+                                                  element.departement ==
+                                                  user.departement)
+                                              .toList();
                                       return Wrap(
                                           children: List.generate(
-                                              archiveFolderList.length, (index) {
+                                              archiveFolderList.length,
+                                              (index) {
                                         final data = archiveFolderList[index];
                                         final color = _lightColors[
                                             index % _lightColors.length];

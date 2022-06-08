@@ -55,8 +55,9 @@ class _TablePresenceState extends State<TablePresence> {
                 onPressed: () {
                   Navigator.pushNamed(context, RhRoutes.rhPresence);
                 },
-                icon: const Icon(Icons.refresh)),
-            PrintWidget(onPressed: () {})],
+                icon: Icon(Icons.refresh, color: Colors.green.shade700)),
+            PrintWidget(onPressed: () {})
+          ],
         );
       },
       configuration: PlutoGridConfiguration(

@@ -88,10 +88,11 @@ class _TableEtatBesoinLogState extends State<TableEtatBesoinLog> {
               Row(
                 children: [
                   IconButton(
-                    onPressed: () {
-                      Navigator.pushNamed(context, LogistiqueRoutes.logEtatBesoin);
-                    },
-                    icon: const Icon(Icons.refresh)),
+                      onPressed: () {
+                        Navigator.pushNamed(
+                            context, LogistiqueRoutes.logEtatBesoin);
+                      },
+                      icon: Icon(Icons.refresh, color: Colors.green.shade700)),
                   PrintWidget(onPressed: () {}),
                 ],
               )

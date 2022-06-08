@@ -177,7 +177,7 @@ class _DetailTransportRestaurantState extends State<DetailTransportRestaurant> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   TitleWidget(title: data.title),
-                  Column(                                                                         
+                  Column(
                     children: [
                       Row(
                         children: [
@@ -186,9 +186,10 @@ class _DetailTransportRestaurantState extends State<DetailTransportRestaurant> {
                           //       Navigator.pushNamed(
                           //           context, RhRoutes.rhTransportRest);
                           //     },
-                          //     icon: const Icon(Icons.refresh)),
+                          //     icon: Icon(Icons.refresh, color: Colors.green.shade700)),
                           PrintWidget(
-                              tooltip: 'Imprimer le document', onPressed: () {}),
+                              tooltip: 'Imprimer le document',
+                              onPressed: () {}),
                         ],
                       ),
                       SelectableText(
@@ -244,10 +245,9 @@ class _DetailTransportRestaurantState extends State<DetailTransportRestaurant> {
                 width: p10,
               ),
               if (!data.observation && user.departement == "Finances")
+                Expanded(flex: 3, child: checkboxRead(data)),
               Expanded(
-                  flex: 3, child: checkboxRead(data)),
-              Expanded(
-                flex: 3,
+                  flex: 3,
                   child: (data.observation)
                       ? SelectableText(
                           'Payé',
@@ -422,7 +422,7 @@ class _DetailTransportRestaurantState extends State<DetailTransportRestaurant> {
                 ),
                 TextButton(
                   onPressed: () {
-                     final form = _formKey.currentState!;
+                    final form = _formKey.currentState!;
                     if (form.validate()) {
                       submitTransRestAgents(data);
                       form.reset();
@@ -540,12 +540,11 @@ class _DetailTransportRestaurantState extends State<DetailTransportRestaurant> {
 
   Future<void> submitTransRestAgents(TransportRestaurationModel data) async {
     final transRest = TransRestAgentsModel(
-      reference: data.createdRef,
-      nom: nomController.text,
-      prenom: prenomController.text,
-      matricule: matriculeController.text,
-      montant: montantController.text
-    );
+        reference: data.createdRef,
+        nom: nomController.text,
+        prenom: prenomController.text,
+        matricule: matriculeController.text,
+        montant: montantController.text);
     await TransRestAgentsApi().insertData(transRest);
     Navigator.pop(context);
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
