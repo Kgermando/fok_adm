@@ -216,7 +216,7 @@ class _TableBanqueState extends State<TableBanque> {
         enableContextMenu: false,
         enableDropToResize: true,
         titleTextAlign: PlutoColumnTextAlign.left,
-        width: 150,
+        width: 200,
         minWidth: 150,
       ),
       PlutoColumn(
@@ -228,7 +228,7 @@ class _TableBanqueState extends State<TableBanque> {
         enableContextMenu: false,
         enableDropToResize: true,
         titleTextAlign: PlutoColumnTextAlign.left,
-        width: 150,
+        width: 200,
         minWidth: 150,
       ),
       PlutoColumn(
@@ -240,7 +240,7 @@ class _TableBanqueState extends State<TableBanque> {
         enableContextMenu: false,
         enableDropToResize: true,
         titleTextAlign: PlutoColumnTextAlign.left,
-        width: 150,
+        width: 300,
         minWidth: 150,
       ),
       PlutoColumn(
@@ -252,7 +252,7 @@ class _TableBanqueState extends State<TableBanque> {
         enableContextMenu: false,
         enableDropToResize: true,
         titleTextAlign: PlutoColumnTextAlign.left,
-        width: 150,
+        width: 200,
         minWidth: 150,
       ),
       PlutoColumn(
@@ -264,7 +264,7 @@ class _TableBanqueState extends State<TableBanque> {
         enableContextMenu: false,
         enableDropToResize: true,
         titleTextAlign: PlutoColumnTextAlign.left,
-        width: 150,
+        width: 200,
         minWidth: 150,
       ),
       PlutoColumn(
@@ -276,7 +276,7 @@ class _TableBanqueState extends State<TableBanque> {
         enableContextMenu: false,
         enableDropToResize: true,
         titleTextAlign: PlutoColumnTextAlign.left,
-        width: 150,
+        width: 200,
         minWidth: 150,
       ),
       PlutoColumn(
@@ -288,7 +288,7 @@ class _TableBanqueState extends State<TableBanque> {
         enableContextMenu: false,
         enableDropToResize: true,
         titleTextAlign: PlutoColumnTextAlign.left,
-        width: 150,
+        width: 200,
         minWidth: 150,
       ),
       PlutoColumn(
@@ -300,7 +300,7 @@ class _TableBanqueState extends State<TableBanque> {
         enableContextMenu: false,
         enableDropToResize: true,
         titleTextAlign: PlutoColumnTextAlign.left,
-        width: 150,
+        width: 200,
         minWidth: 150,
       ),
     ];
@@ -320,13 +320,13 @@ class _TableBanqueState extends State<TableBanque> {
             'pieceJustificative': PlutoCell(value: item.pieceJustificative),
             'libelle': PlutoCell(value: item.libelle),
             'montant': PlutoCell(
-                value: NumberFormat.decimalPattern('fr')
-                    .format(double.parse(item.montant))),
+                value: "${NumberFormat.decimalPattern('fr')
+                .format(double.parse(item.montant))} \$"),
             'departement': PlutoCell(value: item.departement),
             'typeOperation': PlutoCell(value: item.typeOperation),
             'numeroOperation': PlutoCell(value: item.numeroOperation),
             'created': PlutoCell(
-                value: DateFormat("DD-MM-yy H:mm").format(item.created))
+                value: DateFormat("dd-MM-yyyy H:mm").format(item.created))
           }));
         }
         stateManager!.resetCurrentState();

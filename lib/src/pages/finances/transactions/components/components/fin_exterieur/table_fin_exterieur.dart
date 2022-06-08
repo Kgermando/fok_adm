@@ -180,7 +180,7 @@ class _TableFinExterieurState extends State<TableFinExterieur> {
         enableContextMenu: false,
         enableDropToResize: true,
         titleTextAlign: PlutoColumnTextAlign.left,
-        width: 150,
+        width: 200,
         minWidth: 150,
       ),
       PlutoColumn(
@@ -192,7 +192,7 @@ class _TableFinExterieurState extends State<TableFinExterieur> {
         enableContextMenu: false,
         enableDropToResize: true,
         titleTextAlign: PlutoColumnTextAlign.left,
-        width: 150,
+        width: 200,
         minWidth: 150,
       ),
       PlutoColumn(
@@ -204,7 +204,7 @@ class _TableFinExterieurState extends State<TableFinExterieur> {
         enableContextMenu: false,
         enableDropToResize: true,
         titleTextAlign: PlutoColumnTextAlign.left,
-        width: 150,
+        width: 300,
         minWidth: 150,
       ),
       PlutoColumn(
@@ -216,7 +216,7 @@ class _TableFinExterieurState extends State<TableFinExterieur> {
         enableContextMenu: false,
         enableDropToResize: true,
         titleTextAlign: PlutoColumnTextAlign.left,
-        width: 150,
+        width: 200,
         minWidth: 150,
       ),
       PlutoColumn(
@@ -228,7 +228,7 @@ class _TableFinExterieurState extends State<TableFinExterieur> {
         enableContextMenu: false,
         enableDropToResize: true,
         titleTextAlign: PlutoColumnTextAlign.left,
-        width: 150,
+        width: 200,
         minWidth: 150,
       ),
       PlutoColumn(
@@ -240,7 +240,7 @@ class _TableFinExterieurState extends State<TableFinExterieur> {
         enableContextMenu: false,
         enableDropToResize: true,
         titleTextAlign: PlutoColumnTextAlign.left,
-        width: 150,
+        width: 200,
         minWidth: 150,
       ),
       PlutoColumn(
@@ -252,7 +252,7 @@ class _TableFinExterieurState extends State<TableFinExterieur> {
         enableContextMenu: false,
         enableDropToResize: true,
         titleTextAlign: PlutoColumnTextAlign.left,
-        width: 150,
+        width: 200,
         minWidth: 150,
       ),
       PlutoColumn(
@@ -264,7 +264,7 @@ class _TableFinExterieurState extends State<TableFinExterieur> {
         enableContextMenu: false,
         enableDropToResize: true,
         titleTextAlign: PlutoColumnTextAlign.left,
-        width: 150,
+        width: 200,
         minWidth: 150,
       ),
     ];
@@ -284,7 +284,8 @@ class _TableFinExterieurState extends State<TableFinExterieur> {
             'nomComplet': PlutoCell(value: item.nomComplet),
             'pieceJustificative': PlutoCell(value: item.pieceJustificative),
             'libelle': PlutoCell(value: item.libelle),
-            'montant': PlutoCell(value: item.montant),
+            'montant': PlutoCell(value: "${NumberFormat
+              .decimalPattern('fr').format(double.parse(item.montant))} \$"),
             'ligneBudgtaire': PlutoCell(value: item.ligneBudgtaire),
             'typeOperation': PlutoCell(value: item.typeOperation),
             'numeroOperation': PlutoCell(value: item.numeroOperation),

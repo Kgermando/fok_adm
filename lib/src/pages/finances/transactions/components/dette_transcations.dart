@@ -117,59 +117,62 @@ class _DetteTransactionsState extends State<DetteTransactions> {
                   borderRadius: BorderRadius.circular(p8),
                 ),
                 backgroundColor: Colors.transparent,
-                child: Form(
-                  key: _formKey,
-                  child: Card(
-                    child: Padding(
-                      padding: const EdgeInsets.all(p16),
-                      child: SizedBox(
-                        width: Responsive.isDesktop(context)
-                            ? MediaQuery.of(context).size.width / 2
-                            : MediaQuery.of(context).size.width,
-                        child: ListView(
-                          children: [
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                const TitleWidget(title: 'Ajout dette'),
-                                PrintWidget(onPressed: () {})
-                              ],
-                            ),
-                            const SizedBox(
-                              height: p20,
-                            ),
-                            Row(
-                              children: [
-                                Expanded(child: nomCompletWidget()),
-                                const SizedBox(
-                                  width: p10,
-                                ),
-                                Expanded(child: pieceJustificativeWidget())
-                              ],
-                            ),
-                            Row(
-                              children: [
-                                Expanded(child: libelleWidget()),
-                                const SizedBox(
-                                  width: p10,
-                                ),
-                                Expanded(child: montantWidget())
-                              ],
-                            ),
-                            const SizedBox(
-                              height: p20,
-                            ),
-                            BtnWidget(
-                                title: 'Soumettre',
-                                isLoading: isLoading,
-                                press: () {
-                                  final form = _formKey.currentState!;
-                                  if (form.validate()) {
-                                    submit();
-                                    form.reset();
-                                  }
-                                })
-                          ],
+                child: SizedBox(
+                  height: 400,
+                  child: Form(
+                    key: _formKey,
+                    child: Card(
+                      child: Padding(
+                        padding: const EdgeInsets.all(p16),
+                        child: SizedBox(
+                          width: Responsive.isDesktop(context)
+                              ? MediaQuery.of(context).size.width / 2
+                              : MediaQuery.of(context).size.width,
+                          child: ListView(
+                            children: [
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  const TitleWidget(title: 'Ajout dette'),
+                                  PrintWidget(onPressed: () {})
+                                ],
+                              ),
+                              const SizedBox(
+                                height: p20,
+                              ),
+                              Row(
+                                children: [
+                                  Expanded(child: nomCompletWidget()),
+                                  const SizedBox(
+                                    width: p10,
+                                  ),
+                                  Expanded(child: pieceJustificativeWidget())
+                                ],
+                              ),
+                              Row(
+                                children: [
+                                  Expanded(child: libelleWidget()),
+                                  const SizedBox(
+                                    width: p10,
+                                  ),
+                                  Expanded(child: montantWidget())
+                                ],
+                              ),
+                              const SizedBox(
+                                height: p20,
+                              ),
+                              BtnWidget(
+                                  title: 'Soumettre',
+                                  isLoading: isLoading,
+                                  press: () {
+                                    final form = _formKey.currentState!;
+                                    if (form.validate()) {
+                                      submit();
+                                      form.reset();
+                                    }
+                                  })
+                            ],
+                          ),
                         ),
                       ),
                     ),

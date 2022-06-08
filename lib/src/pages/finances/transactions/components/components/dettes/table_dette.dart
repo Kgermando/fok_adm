@@ -214,7 +214,7 @@ class _TableDetteState extends State<TableDette> {
         enableContextMenu: false,
         enableDropToResize: true,
         titleTextAlign: PlutoColumnTextAlign.left,
-        width: 150,
+        width: 200,
         minWidth: 150,
       ),
       PlutoColumn(
@@ -226,7 +226,7 @@ class _TableDetteState extends State<TableDette> {
         enableContextMenu: false,
         enableDropToResize: true,
         titleTextAlign: PlutoColumnTextAlign.left,
-        width: 150,
+        width: 200,
         minWidth: 150,
       ),
       PlutoColumn(
@@ -238,7 +238,7 @@ class _TableDetteState extends State<TableDette> {
         enableContextMenu: false,
         enableDropToResize: true,
         titleTextAlign: PlutoColumnTextAlign.left,
-        width: 150,
+        width: 200,
         minWidth: 150,
       ),
       PlutoColumn(
@@ -250,7 +250,7 @@ class _TableDetteState extends State<TableDette> {
         enableContextMenu: false,
         enableDropToResize: true,
         titleTextAlign: PlutoColumnTextAlign.left,
-        width: 150,
+        width: 200,
         minWidth: 150,
       ),
       PlutoColumn(
@@ -262,7 +262,7 @@ class _TableDetteState extends State<TableDette> {
         enableContextMenu: false,
         enableDropToResize: true,
         titleTextAlign: PlutoColumnTextAlign.left,
-        width: 150,
+        width: 200,
         minWidth: 150,
       ),
       PlutoColumn(
@@ -274,7 +274,7 @@ class _TableDetteState extends State<TableDette> {
         enableContextMenu: false,
         enableDropToResize: true,
         titleTextAlign: PlutoColumnTextAlign.left,
-        width: 150,
+        width: 200,
         minWidth: 150,
       ),
     ];
@@ -283,29 +283,30 @@ class _TableDetteState extends State<TableDette> {
   Future agentsRow() async {
     UserModel userModel = await AuthApi().getUserId();
     List<DetteModel?> dataList = await DetteApi().getAllData();
-    List<DetteModel?> data = [];
-    var approbations = await ApprobationApi().getAllData();
-    for (var item in approbations) {
-      data = dataList
-          .where((element) =>
-              element!.created.microsecondsSinceEpoch ==
-                      item.reference.microsecondsSinceEpoch &&
-                  item.fontctionOccupee == 'Directeur générale' &&
-                  item.approbation == "Approved" ||
-              element.signature == userModel.matricule)
-          .toList();
-    }
+    // List<DetteModel?> data = [];
+    // var approbations = await ApprobationApi().getAllData();
+    // for (var item in approbations) {
+    //   data = dataList
+    //       .where((element) =>
+    //           element!.created.microsecondsSinceEpoch ==
+    //                   item.reference.microsecondsSinceEpoch &&
+    //               item.fontctionOccupee == 'Directeur générale' &&
+    //               item.approbation == "Approved" ||
+    //           element.signature == userModel.matricule)
+    //       .toList();
+    // }
 
     if (mounted) {
       setState(() {
-        for (var item in data) {
+        for (var item in dataList) {
           id = item!.id;
           rows.add(PlutoRow(cells: {
             'id': PlutoCell(value: item.id),
             'nomComplet': PlutoCell(value: item.nomComplet),
             'pieceJustificative': PlutoCell(value: item.pieceJustificative),
             'libelle': PlutoCell(value: item.libelle),
-            'montant': PlutoCell(value: item.montant),
+            'montant': PlutoCell(value: "${NumberFormat.decimalPattern('fr')
+                .format(double.parse(item.montant))} \$"),
             'numeroOperation': PlutoCell(value: item.numeroOperation),
             'created': PlutoCell(
                 value: DateFormat("DD-MM-yyyy HH:mm").format(item.created))

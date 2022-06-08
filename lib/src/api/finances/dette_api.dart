@@ -86,7 +86,7 @@ class DetteApi {
       await AuthApi().refreshAccessToken();
       return insertData(detteModel);
     } else {
-      throw Exception(json.decode(resp.body)['message']);
+      throw Exception(resp.statusCode);
     }
   }
 

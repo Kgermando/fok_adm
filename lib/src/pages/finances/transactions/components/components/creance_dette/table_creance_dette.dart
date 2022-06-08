@@ -114,7 +114,7 @@ class _TableCreanceDetteState extends State<TableCreanceDette> {
         enableContextMenu: false,
         enableDropToResize: true,
         titleTextAlign: PlutoColumnTextAlign.left,
-        width: 150,
+        width: 200,
         minWidth: 150,
       ),
       PlutoColumn(
@@ -126,7 +126,7 @@ class _TableCreanceDetteState extends State<TableCreanceDette> {
         enableContextMenu: false,
         enableDropToResize: true,
         titleTextAlign: PlutoColumnTextAlign.left,
-        width: 150,
+        width: 200,
         minWidth: 150,
       ),
       PlutoColumn(
@@ -138,7 +138,7 @@ class _TableCreanceDetteState extends State<TableCreanceDette> {
         enableContextMenu: false,
         enableDropToResize: true,
         titleTextAlign: PlutoColumnTextAlign.left,
-        width: 150,
+        width: 300,
         minWidth: 150,
       ),
       PlutoColumn(
@@ -150,7 +150,7 @@ class _TableCreanceDetteState extends State<TableCreanceDette> {
         enableContextMenu: false,
         enableDropToResize: true,
         titleTextAlign: PlutoColumnTextAlign.left,
-        width: 150,
+        width: 200,
         minWidth: 150,
       ),
       PlutoColumn(
@@ -162,7 +162,7 @@ class _TableCreanceDetteState extends State<TableCreanceDette> {
         enableContextMenu: false,
         enableDropToResize: true,
         titleTextAlign: PlutoColumnTextAlign.left,
-        width: 150,
+        width: 200,
         minWidth: 150,
       ),
       PlutoColumn(
@@ -174,7 +174,7 @@ class _TableCreanceDetteState extends State<TableCreanceDette> {
         enableContextMenu: false,
         enableDropToResize: true,
         titleTextAlign: PlutoColumnTextAlign.left,
-        width: 150,
+        width: 200,
         minWidth: 150,
       ),
     ];
@@ -194,7 +194,7 @@ class _TableCreanceDetteState extends State<TableCreanceDette> {
             'nomComplet': PlutoCell(value: item.nomComplet),
             'pieceJustificative': PlutoCell(value: item.pieceJustificative),
             'libelle': PlutoCell(value: item.libelle),
-            'montant': PlutoCell(value: item.montant),
+            'montant': PlutoCell(value: "${NumberFormat.decimalPattern('fr').format(double.parse(item.montant))} \$"),
             'signature': PlutoCell(value: item.signature),
             'created': PlutoCell(
                 value: DateFormat("dd-MM-yyy HH:mm").format(item.created))

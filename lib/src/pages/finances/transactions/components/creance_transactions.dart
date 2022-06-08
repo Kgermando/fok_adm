@@ -115,7 +115,7 @@ class _CreanceTransactionsState extends State<CreanceTransactions> {
                 ),
                 backgroundColor: Colors.transparent,
                 child: SizedBox(
-                  height: 500,
+                  height: 400,
                   child: Form(
                     key: _formKey,
                     child: Card(
