@@ -22,18 +22,17 @@ class AddBalanceComptabilite extends StatefulWidget {
 }
 
 class _AddBalanceComptabiliteState extends State<AddBalanceComptabilite> {
-  final GlobalKey<ScaffoldState> _key = GlobalKey();
-  final ScrollController _controllerActifList = ScrollController();
+  final GlobalKey<ScaffoldState> _key = GlobalKey(); 
   final _formKey = GlobalKey<FormState>();
   bool isLoading = false;
 
   TextEditingController titleController = TextEditingController();
-  List<String> comptesControllerList = [];
-  List<TextEditingController> montantDebitControllerList = [];
-  List<TextEditingController> montantCreditControllerList = [];
+  String? comptes;
+  TextEditingController montantDebitController = TextEditingController();
+  TextEditingController montantCreditController = TextEditingController();
   bool statut = false;
 
-  List<List<String>> comptesList = [];
+  List<String> comptesList = [];
   final comptesDropdown = ComptesDropdown().classCompte;
   final classActiveCompte = ComptesDropdown().classCompte;
   final classPassiveCompte = ComptesDropdown().classCompte;
@@ -47,15 +46,10 @@ class _AddBalanceComptabiliteState extends State<AddBalanceComptabilite> {
   final class8Dropdown = ComptesDropdown().classe8compte;
   final class9Dropdown = ComptesDropdown().classe9compte;
 
-  late List<Map<String, dynamic>> _values;
-
-  late int count;
 
   @override
   initState() {
     getData();
-    count = 0;
-    _values = [];
     super.initState();
   }
 
@@ -70,12 +64,6 @@ class _AddBalanceComptabiliteState extends State<AddBalanceComptabilite> {
   @override
   void dispose() {
     titleController.dispose();
-    for (final controller in montantDebitControllerList) {
-      controller.dispose();
-    }
-    for (final controller in montantCreditControllerList) {
-      controller.dispose();
-    }
     super.dispose();
   }
 
@@ -164,44 +152,6 @@ class _AddBalanceComptabiliteState extends State<AddBalanceComptabilite> {
                     const SizedBox(
                       width: p20,
                     ),
-                    Row(
-                      children: [
-                        Expanded(
-                            child: Column(
-                          children: [
-                            if (count == 0)
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.end,
-                                children: [
-                                  IconButton(
-                                      icon: const Icon(Icons.add),
-                                      onPressed: () {
-                                        setState(() {
-                                          var comptes = "";
-                                          var debit = TextEditingController();
-                                          var credit = TextEditingController();
-                                          List<String> compteItem = [];
-                                          comptesControllerList.add(comptes);
-                                          montantDebitControllerList.add(debit);
-                                          montantCreditControllerList
-                                              .add(credit);
-                                          comptesList.add(compteItem);
-                                          count++;
-                                        });
-                                      })
-                                ],
-                              ),
-                            SizedBox(
-                                height:
-                                    MediaQuery.of(context).size.height / 1.8,
-                                child: comptesBalanceWidget()),
-                          ],
-                        )),
-                      ],
-                    ),
-                    const SizedBox(
-                      height: p20,
-                    ),
                     BtnWidget(
                         title: 'Soumettre',
                         isLoading: isLoading,
@@ -245,278 +195,164 @@ class _AddBalanceComptabiliteState extends State<AddBalanceComptabilite> {
   }
 
   Widget comptesBalanceWidget() {
-    return Scrollbar(
-      controller: _controllerActifList,
-      child: ListView.builder(
-          controller: _controllerActifList,
-          itemCount: count,
-          shrinkWrap: true,
-          itemBuilder: (context, index) {
-            return Column(
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    Row(
-                      children: [
-                        if (index == index)
-                          IconButton(
-                              tooltip: "Ajout compte",
-                              onPressed: () {
-                                setState(() {
-                                  var comptes = "";
-                                  var debit = TextEditingController();
-                                  var credit = TextEditingController();
-                                  List<String> compteItem = [];
-                                  comptesControllerList.add(comptes);
-                                  montantDebitControllerList.add(debit);
-                                  montantCreditControllerList.add(credit);
-                                  comptesList.add(compteItem);
-                                  count++;
-                                  onUpdate(
-                                      index,
-                                      comptesControllerList[index],
-                                      montantDebitControllerList[index].text,
-                                      montantCreditControllerList[index].text);
-                                });
-                              },
-                              icon: const Icon(Icons.add)),
-                        if (count > 0)
-                          IconButton(
-                              tooltip: "Retirer",
-                              onPressed: () {
-                                setState(() {
-                                  var comptes = "";
-                                  var debit = TextEditingController();
-                                  var credit = TextEditingController();
-                                  List<String> compteItem = [];
-                                  comptesControllerList.add(comptes);
-                                  montantDebitControllerList.add(debit);
-                                  montantCreditControllerList.add(credit);
-                                  comptesList.add(compteItem);
-                                  count--;
-                                });
-                              },
-                              icon: const Icon(Icons.close)),
-                      ],
-                    ),
-                  ],
-                ),
-                Container(
+    return Column(
+      children: [
+        Container(
+          margin: const EdgeInsets.only(bottom: p20),
+          child: DropdownButtonFormField<String>(
+            decoration: InputDecoration(
+              labelText: 'Classe des comptes',
+              labelStyle: const TextStyle(),
+              border:
+                  OutlineInputBorder(borderRadius: BorderRadius.circular(5.0)),
+              contentPadding: const EdgeInsets.only(left: 5.0),
+            ),
+            // value: compteClassActifDrop,
+            isExpanded: true,
+            items: comptesDropdown
+                .map((String value) {
+                  return DropdownMenuItem<String>(
+                    value: value,
+                    child: Text(value),
+                  );
+                })
+                .toSet()
+                .toList(),
+            onChanged: (value) {
+              if (value == "Classe_1_Comptes_de_ressources_durables") {
+                comptesList = class1Dropdown;
+              } else if (value == "Classe_2_Comptes_Actif_immobilise") {
+                comptesList = class2Dropdown;
+              } else if (value == "Classe_3_Comptes_de_stocks") {
+                comptesList = class3Dropdown;
+              } else if (value == "Classe_4_Comptes_de_tiers") {
+                comptesList = class4Dropdown;
+              } else if (value == "Classe_5_Comptes_de_tresorerie") {
+                comptesList = class5Dropdown;
+              } else if (value ==
+                  "Classe_6_Comptes_de_charges_des_activites_ordinaires") {
+                comptesList = class6Dropdown;
+              } else if (value ==
+                  "Classe_7_Comptes_de_produits_des_activites_ordinaires") {
+                comptesList = class7Dropdown;
+              } else if (value ==
+                  "Classe_8_Comptes_des_autres_charges_et_des_autres_produits") {
+                comptesList = class8Dropdown;
+              } else if (value ==
+                  "Classe_9_Comptes_des_engagements_hors_bilan_et_comptes_de_la_comptabilite_analytique_de_gestion") {
+                comptesList = class9Dropdown;
+              } else {
+                comptesList = [];
+              }
+              setState(() {});
+            },
+          ),
+        ),
+        Row(
+          children: [
+            Expanded(
+                flex: 3,
+                child: Container(
                   margin: const EdgeInsets.only(bottom: p20),
                   child: DropdownButtonFormField<String>(
                     decoration: InputDecoration(
-                      labelText: 'Classe des comptes',
+                      labelText: 'Comptes',
                       labelStyle: const TextStyle(),
                       border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(5.0)),
                       contentPadding: const EdgeInsets.only(left: 5.0),
                     ),
-                    // value: compteClassActifDrop,
+                    // value: comptesActifControllerList[index],
                     isExpanded: true,
-                    items: comptesDropdown
-                        .map((String value) {
+                    items: comptesList
+                        .map((String? value) {
                           return DropdownMenuItem<String>(
                             value: value,
-                            child: Text(value),
+                            child: Text(value!),
                           );
                         })
                         .toSet()
                         .toList(),
+                    validator: (value) =>
+                        value == null ? "Select accréditation" : null,
                     onChanged: (value) {
-                      if (value == "Classe_1_Comptes_de_ressources_durables") {
-                        comptesList[index] = class1Dropdown;
-                      } else if (value == "Classe_2_Comptes_Actif_immobilise") {
-                        comptesList[index] = class2Dropdown;
-                      } else if (value == "Classe_3_Comptes_de_stocks") {
-                        comptesList[index] = class3Dropdown;
-                      } else if (value == "Classe_4_Comptes_de_tiers") {
-                        comptesList[index] = class4Dropdown;
-                      } else if (value == "Classe_5_Comptes_de_tresorerie") {
-                        comptesList[index] = class5Dropdown;
-                      } else if (value ==
-                          "Classe_6_Comptes_de_charges_des_activites_ordinaires") {
-                        comptesList[index] = class6Dropdown;
-                      } else if (value ==
-                          "Classe_7_Comptes_de_produits_des_activites_ordinaires") {
-                        comptesList[index] = class7Dropdown;
-                      } else if (value ==
-                          "Classe_8_Comptes_des_autres_charges_et_des_autres_produits") {
-                        comptesList[index] = class8Dropdown;
-                      } else if (value ==
-                          "Classe_9_Comptes_des_engagements_hors_bilan_et_comptes_de_la_comptabilite_analytique_de_gestion") {
-                        comptesList[index] = class9Dropdown;
-                      } else {
-                        comptesList[index] = [];
-                      }
-                      setState(() {});
+                      setState(() {
+                        comptes = value!;
+                      });
                     },
                   ),
-                ),
-                Row(
+                )),
+            const SizedBox(width: p10),
+            Expanded(
+                flex: 2,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Expanded(
-                        flex: 3,
-                        child: Container(
+                      flex: 3,
+                      child: Container(
                           margin: const EdgeInsets.only(bottom: p20),
-                          child: DropdownButtonFormField<String>(
+                          child: TextFormField(
+                            controller: montantDebitController,
+                            keyboardType: TextInputType.number,
+                            inputFormatters: <TextInputFormatter>[
+                              FilteringTextInputFormatter.digitsOnly
+                            ],
                             decoration: InputDecoration(
-                              labelText: 'Comptes',
-                              labelStyle: const TextStyle(),
                               border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(5.0)),
-                              contentPadding: const EdgeInsets.only(left: 5.0),
+                                  borderRadius: BorderRadius.circular(10.0)),
+                              labelText: 'Débit \$',
                             ),
-                            // value: comptesActifControllerList[index],
-                            isExpanded: true,
-                            items: comptesList[index]
-                                .map((String? value) {
-                                  return DropdownMenuItem<String>(
-                                    value: value,
-                                    child: Text(value!),
-                                  );
-                                })
-                                .toSet()
-                                .toList(),
-                            validator: (value) =>
-                                value == null ? "Select accréditation" : null,
-                            onChanged: (value) {
-                              setState(() {
-                                comptesControllerList[index] = value!;
-                              });
-                            },
-                          ),
-                        )),
-                    const SizedBox(width: p10),
+                            style: const TextStyle(),
+                            // validator: (value) {
+                            //   if (value != null && value.isEmpty) {
+                            //     return 'Ce champs est obligatoire';
+                            //   } else {
+                            //     return null;
+                            //   }
+                            // },
+                          )),
+                    ),
+                    const SizedBox(width: p20),
                     Expanded(
-                        flex: 2,
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Expanded(
-                              flex: 3,
-                              child: Container(
-                                  margin: const EdgeInsets.only(bottom: p20),
-                                  child: TextFormField(
-                                    controller:
-                                        montantDebitControllerList[index],
-                                    keyboardType: TextInputType.number,
-                                    inputFormatters: <TextInputFormatter>[
-                                      FilteringTextInputFormatter.digitsOnly
-                                    ],
-                                    decoration: InputDecoration(
-                                      border: OutlineInputBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(10.0)),
-                                      labelText: '${index + 1}. Débit \$',
-                                    ),
-                                    style: const TextStyle(),
-                                    // validator: (value) {
-                                    //   if (value != null && value.isEmpty) {
-                                    //     return 'Ce champs est obligatoire';
-                                    //   } else {
-                                    //     return null;
-                                    //   }
-                                    // },
-                                  )),
+                      flex: 3,
+                      child: Container(
+                          margin: const EdgeInsets.only(bottom: p20),
+                          child: TextFormField(
+                            controller: montantCreditController,
+                            keyboardType: TextInputType.number,
+                            inputFormatters: <TextInputFormatter>[
+                              FilteringTextInputFormatter.digitsOnly
+                            ],
+                            decoration: InputDecoration(
+                              border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(10.0)),
+                            labelText: ' Crédit \$',
                             ),
-                            const SizedBox(width: p20),
-                            Expanded(
-                              flex: 3,
-                              child: Container(
-                                  margin: const EdgeInsets.only(bottom: p20),
-                                  child: TextFormField(
-                                    controller:
-                                        montantCreditControllerList[index],
-                                    keyboardType: TextInputType.number,
-                                    inputFormatters: <TextInputFormatter>[
-                                      FilteringTextInputFormatter.digitsOnly
-                                    ],
-                                    decoration: InputDecoration(
-                                      border: OutlineInputBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(10.0)),
-                                      labelText: '${index + 1}. Crédit \$',
-                                    ),
-                                    style: const TextStyle(),
-                                    // validator: (value) {
-                                    //   if (value != null && value.isEmpty) {
-                                    //     return 'Ce champs est obligatoire';
-                                    //   } else {
-                                    //     return null;
-                                    //   }
-                                    // },
-                                  )),
-                            ),
-                          ],
-                        ))
+                            style: const TextStyle(),
+                            // validator: (value) {
+                            //   if (value != null && value.isEmpty) {
+                            //     return 'Ce champs est obligatoire';
+                            //   } else {
+                            //     return null;
+                            //   }
+                            // },
+                          )),
+                    ),
                   ],
-                ),
-                if (count >= 1)
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      SizedBox(
-                        height: 50,
-                        // width: double.infinity,
-                        child: Card(
-                            elevation: 10,
-                            color: Colors.red.shade700,
-                            child: const Padding(
-                              padding: EdgeInsets.all(8.0),
-                              child: SelectableText(
-                                "Note: Ajoutez un champ en plus (+1) pour enregistrer le precedent",
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                  color: Colors.white,
-                                ),
-                              ),
-                            )),
-                      ),
-                    ],
-                  )
-              ],
-            );
-          }),
+                ))
+          ],
+        ), 
+      ],
     );
   }
 
-  onUpdate(int key, String compte, String debit, String credit) {
-    String debitCompte = (debit == "") ? "0" : debit;
-    String creditCompte = (credit == "") ? "0" : credit;
-    double solde = double.parse(debitCompte) - double.parse(creditCompte);
-
-    int foundKey = -1;
-    for (var map in _values) {
-      if (map.containsKey('id')) {
-        if (map['id'] == key) {
-          foundKey = key;
-          break;
-        }
-      }
-    }
-    if (-1 != foundKey) {
-      _values.removeWhere((map) {
-        return map['id'] == foundKey;
-      });
-    }
-    Map<String, dynamic> json = {
-      'id': key,
-      'compte': compte,
-      'debit': debit,
-      'credit': credit,
-      'solde': solde
-    };
-    _values.add(json);
-  }
-
-  Future<void> submit() async {
-    final jsonList = _values.map((item) => jsonEncode(item)).toList();
+  Future<void> submit() async { 
     final balance = BalanceCompteModel(
         title: titleController.text,
-        comptes: jsonList,
         statut: statut,
         signature: user!.matricule.toString(),
+        createdRef: DateTime.now(),
         created: DateTime.now());
     await BalanceCompteApi().insertData(balance);
     Navigator.of(context).pop();

@@ -45,13 +45,18 @@ import 'package:fokad_admin/src/pages/comm_marketing/marketing/agenda_marketing.
 import 'package:fokad_admin/src/pages/comm_marketing/marketing/annuaire_marketing.dart';
 import 'package:fokad_admin/src/pages/comm_marketing/marketing/campaign_marketing.dart';
 import 'package:fokad_admin/src/pages/comm_marketing/marketing/components/campaign/add_campaign.dart';
+import 'package:fokad_admin/src/pages/comm_marketing/marketing/components/campaign/detail_campaign.dart';
+import 'package:fokad_admin/src/pages/comm_marketing/marketing/components/campaign/update_campaign.dart';
 import 'package:fokad_admin/src/pages/comptabilite/balance/balance_comptabilite.dart';
 import 'package:fokad_admin/src/pages/comptabilite/balance/components/add_balance_comptabilite.dart';
+import 'package:fokad_admin/src/pages/comptabilite/balance/components/detail_balance.dart';
 import 'package:fokad_admin/src/pages/comptabilite/bilan/bilan_comptabilite.dart';
 import 'package:fokad_admin/src/pages/comptabilite/bilan/components/add_comptes_bilan.dart';
 import 'package:fokad_admin/src/pages/comptabilite/bilan/components/detail_bilan.dart';
 import 'package:fokad_admin/src/pages/comptabilite/compt_dd/comptabilite_dd.dart';
 import 'package:fokad_admin/src/pages/comptabilite/compte_resultat/components/add_compte_resultat.dart';
+import 'package:fokad_admin/src/pages/comptabilite/compte_resultat/components/detail_compte_resultat.dart';
+import 'package:fokad_admin/src/pages/comptabilite/compte_resultat/components/update_compte_resultat.dart';
 import 'package:fokad_admin/src/pages/comptabilite/compte_resultat/compte_resultat.dart';
 import 'package:fokad_admin/src/pages/comptabilite/dashboard/dashboard_comptabilite.dart';
 import 'package:fokad_admin/src/pages/comptabilite/etat_besoin/etat_besoin_comptabilite_page.dart';
@@ -64,8 +69,12 @@ import 'package:fokad_admin/src/pages/exploitations/dashboard/dashboard_exp.dart
 import 'package:fokad_admin/src/pages/exploitations/etat_besoin/etat_besoin_exp_page.dart';
 import 'package:fokad_admin/src/pages/exploitations/expl_dd/exploitaion_dd.dart';
 import 'package:fokad_admin/src/pages/exploitations/projets/add_projet_exp.dart';
+import 'package:fokad_admin/src/pages/exploitations/projets/components/detail_projet.dart';
+import 'package:fokad_admin/src/pages/exploitations/projets/components/update_projet.dart';
 import 'package:fokad_admin/src/pages/exploitations/projets/projets_expo.dart';
+import 'package:fokad_admin/src/pages/exploitations/taches/add_tache_exp.dart';
 import 'package:fokad_admin/src/pages/exploitations/taches/tache_exp.dart';
+import 'package:fokad_admin/src/pages/exploitations/versements/add_versement_projet.dart';
 import 'package:fokad_admin/src/pages/exploitations/versements/versement_projet.dart';
 import 'package:fokad_admin/src/pages/finances/dashboard/dashboard_finance.dart';
 import 'package:fokad_admin/src/pages/finances/etat_besoin/etat_besoin_fin_page.dart';
@@ -89,6 +98,7 @@ import 'package:fokad_admin/src/pages/logistiques/automobile/add_carburant.dart'
 import 'package:fokad_admin/src/pages/logistiques/automobile/add_trajet_auto.dart';
 import 'package:fokad_admin/src/pages/logistiques/automobile/anguin_auto.dart';
 import 'package:fokad_admin/src/pages/logistiques/automobile/carburant_auto.dart';
+import 'package:fokad_admin/src/pages/logistiques/automobile/components/update_trajet.dart';
 import 'package:fokad_admin/src/pages/logistiques/automobile/trajet_auto.dart';
 import 'package:fokad_admin/src/pages/logistiques/dashboard/dashboard_log.dart';
 import 'package:fokad_admin/src/pages/logistiques/entretiens/add_entretien.dart';
@@ -98,6 +108,9 @@ import 'package:fokad_admin/src/pages/logistiques/log_dd/log_dd.dart';
 import 'package:fokad_admin/src/pages/logistiques/materiels/add_etat_materiel.dart';
 import 'package:fokad_admin/src/pages/logistiques/materiels/add_immobilier.dart';
 import 'package:fokad_admin/src/pages/logistiques/materiels/add_mobiler_materiel.dart';
+import 'package:fokad_admin/src/pages/logistiques/materiels/components/detail_etat_materiel.dart';
+import 'package:fokad_admin/src/pages/logistiques/materiels/components/detail_immobilier.dart';
+import 'package:fokad_admin/src/pages/logistiques/materiels/components/detail_mobilier.dart';
 import 'package:fokad_admin/src/pages/logistiques/materiels/etat_materiel.dart';
 import 'package:fokad_admin/src/pages/logistiques/materiels/immobilier_materiel.dart';
 import 'package:fokad_admin/src/pages/logistiques/materiels/mobilier_materiel.dart';
@@ -236,8 +249,13 @@ class ComptabiliteRoutes {
   static const comptabiliteCompteResultat = "/comptabilite-compte-resultat";
   static const comptabiliteCompteResultatAdd =
       "/comptabilite-compte-resultat-add";
+  static const comptabiliteCompteResultatDetail =
+      "/comptabilite-compte-resultat-detail";
+  static const comptabiliteCompteResultatUpdate =
+      "/comptabilite-compte-resultat-update";
   static const comptabiliteBalance = "/comptabilite-balance";
   static const comptabiliteBalanceAdd = "/comptabilite-balance-add";
+  static const comptabiliteBalanceDetail = "/comptabilite-balance-detail";
   static const comptabiliteGrandLivre = "/comptabilite-grand-livre";
   static const comptabiliteDD = "/comptabilite-dd";
   static const comptabiliteEtatBesoin = "/comptabilite-etat-besoin";
@@ -251,14 +269,18 @@ class LogistiqueRoutes {
   static const logCarburantAuto = "/log-carburant-auto";
   static const logAddTrajetAuto = "/log-add-trajet-auto";
   static const logTrajetAuto = "/log-trajet-auto";
+  static const logTrajetAutoUpdate = "/log-trajet-auto-update";
   static const logAddEntretien = "/log-add-entretien";
   static const logEntretien = "/log-entretien";
   static const logAddEtatMateriel = "/log-add-etat-materiel";
   static const logEtatMateriel = "/log-etat-materiel";
+  static const logEtatMaterielDetail = "/log-etat-materiel-detail";
   static const logAddImmobilerMateriel = "/log-add-immobilier-materiel";
   static const logImmobilierMateriel = "/log-immobilier-materiel";
+  static const logImmobilierMaterielDetail = "/log-immobilier-materiel-detail";
   static const logAddMobilierMateriel = "/log-add-mobilier-materiel";
   static const logMobilierMateriel = "/log-mobilier-materiel";
+  static const logMobilierMaterielDetail = "/log-mobilier-materiel-detail";
   static const logDD = "/log-dd";
   static const logEtatBesoin = "/log-etat-besoin";
 }
@@ -267,9 +289,12 @@ class ExploitationRoutes {
   static const expDashboard = "/exploitation-dashboard";
   static const expProjetAdd = "/exploitation-projets-add";
   static const expProjet = "/exploitation-projets";
+  static const expProjetUpdate = "/exploitation-projet-update";
+  static const expProjetDetail = "/exploitation-projets-detail";
   static const expTacheAdd = "/exploitation-taches-add";
-  static const expTache = "/exploitation-taches";
-  static const expVirement = "/exploitation-virement";
+  static const expTache = "/exploitation-taches"; 
+  static const expVersement = "/exploitation-virement";
+  static const expVersementAdd = "/exploitation-virement-add";
   static const expDD = "/exp-dd";
   static const exploitationEtatBesoin = "/exploitation-etat-besoin";
 }
@@ -282,6 +307,8 @@ class ComMarketingRoutes {
   static const comMarketingAgenda = "/com-marketing-agenda";
   static const comMarketingCampaign = "/com-marketing-campaign";
   static const comMarketingCampaignAdd = "/com-marketing-campaign-add";
+  static const comMarketingCampaignDetail = "/com-marketing-campaign-detail";
+  static const comMarketingCampaignUpdate = "/com-marketing-campaign-update";
   // Commercial
   static const comMarketingProduitModel = "/com-marketing-produit-model";
   static const comMarketingProduitModelAdd = "/com-marketing-produit-model-add";
@@ -401,13 +428,22 @@ final routes = <String, WidgetBuilder>{
   ComptabiliteRoutes.comptabiliteDashboard: (context) => const DashboardComptabilite(),
   ComptabiliteRoutes.comptabiliteBilan: (context) =>const BilanComptabilite(),
   ComptabiliteRoutes.comptabiliteBilanAdd: (context) => const AddCompteBilan(),
-  ComptabiliteRoutes.comptabiliteBilanDetail: (context) => const DetailBilan(),
+  ComptabiliteRoutes.comptabiliteBilanDetail: (context) => const DetailBilan(), 
   ComptabiliteRoutes.comptabiliteJournal: (context) => const JournalComptabilite(),
   ComptabiliteRoutes.comptabiliteJournalAdd: (context) => const AddJournalComptabilite(),
   ComptabiliteRoutes.comptabiliteCompteResultat: (context) =>const CompteResultat(),
-  ComptabiliteRoutes.comptabiliteCompteResultatAdd: (context) => const AddCompteResultat(),
+  ComptabiliteRoutes.comptabiliteCompteResultatDetail: (context) =>
+      const DetailCompteResultat(),
+    ComptabiliteRoutes.comptabiliteCompteResultatAdd: (context) =>
+      const AddCompteResultat(),
+  ComptabiliteRoutes.comptabiliteCompteResultatUpdate: (context) =>
+      const UpdateCompteResultat(),
+
   ComptabiliteRoutes.comptabiliteBalance: (context) => const BalanceComptabilite(),
-  ComptabiliteRoutes.comptabiliteBalanceAdd: (context) => const AddBalanceComptabilite(),
+  ComptabiliteRoutes.comptabiliteBalanceAdd: (context) =>
+      const AddBalanceComptabilite(),
+  ComptabiliteRoutes.comptabiliteBalanceDetail: (context) =>
+      const DetailBalance(), 
   ComptabiliteRoutes.comptabiliteGrandLivre: (context) => const GrandLivreComptabilite(),
   ComptabiliteRoutes.comptabiliteEtatBesoin: (context) =>
       const EtatBesoinComptabilitePage(),
@@ -425,14 +461,19 @@ final routes = <String, WidgetBuilder>{
   LogistiqueRoutes.logCarburantAuto: (context) => const CarburantAuto(),
   LogistiqueRoutes.logAddTrajetAuto: (context) => const AddTrajetAuto(),
   LogistiqueRoutes.logTrajetAuto: (context) => const TrajetAuto(),
+  LogistiqueRoutes.logTrajetAutoUpdate: (context) => const UpdateTrajet(),
   LogistiqueRoutes.logAddEntretien: (context) => const AddEntretienPage(),
   LogistiqueRoutes.logEntretien: (context) => const EntretienPage(),
   LogistiqueRoutes.logAddEtatMateriel: (context) => const AddEtatMateriel(),
   LogistiqueRoutes.logEtatMateriel: (context) => const EtatMateriel(),
+  LogistiqueRoutes.logEtatMaterielDetail: (context) => const DetailEtatMateriel(),
   LogistiqueRoutes.logAddImmobilerMateriel: (context) => const AddImmobilierMateriel(),
   LogistiqueRoutes.logImmobilierMateriel: (context) =>const ImmobilierMateriel(),
+  LogistiqueRoutes.logImmobilierMaterielDetail: (context) =>
+      const DetailImmobilier(),
   LogistiqueRoutes.logAddMobilierMateriel: (context) =>const AddMobilerMateriel(),
   LogistiqueRoutes.logMobilierMateriel: (context) =>const MobilierMateriel(),
+  LogistiqueRoutes.logMobilierMaterielDetail: (context) => const DetailMobilier(),
   LogistiqueRoutes.logEtatBesoin: (context) => const EtatBesoinLogPage(),
 
   // Exploitations
@@ -440,8 +481,12 @@ final routes = <String, WidgetBuilder>{
   ExploitationRoutes.expDashboard: (context) => const DashboardExp(),
   ExploitationRoutes.expProjetAdd: (context) => const AddProjetExp(),
   ExploitationRoutes.expProjet: (context) => const ProjetsExp(),
-  ExploitationRoutes.expVirement: (context) => const VersementProjet(),
+  ExploitationRoutes.expProjetUpdate: (context) => const UpdateProjet(),
+  ExploitationRoutes.expProjetDetail: (context) => const DetailProjet(),
+  ExploitationRoutes.expVersement: (context) => const VersementProjet(),
+  ExploitationRoutes.expVersementAdd: (context) => const AddVersementProjet(),
   ExploitationRoutes.expTache: (context) => const TacheExp(),
+  ExploitationRoutes.expTacheAdd: (context) => const AddTacheExp(),
   ExploitationRoutes.exploitationEtatBesoin: (context) => const EtatBesoinExploitationsPage(),
 
   // Marketing
@@ -451,6 +496,8 @@ final routes = <String, WidgetBuilder>{
   ComMarketingRoutes.comMarketingAgenda: (context) => const AgendaMarketing(),
   ComMarketingRoutes.comMarketingCampaign: (context) =>const CampaignMarketing(),
   ComMarketingRoutes.comMarketingCampaignAdd: (context) =>const AddCampaign(),
+  ComMarketingRoutes.comMarketingCampaignDetail: (context) => const DetailCampaign(),
+  ComMarketingRoutes.comMarketingCampaignUpdate: (context) => const UpdateCampaign(),
 
   // Commercial
   ComMarketingRoutes.comMarketingProduitModel: (context) =>const ProduitModelPage(),

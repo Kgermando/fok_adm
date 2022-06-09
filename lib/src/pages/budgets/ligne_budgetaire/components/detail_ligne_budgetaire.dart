@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:fokad_admin/src/api/approbation/approbation_api.dart';
 import 'package:fokad_admin/src/api/auth/auth_api.dart';
 import 'package:fokad_admin/src/api/budgets/ligne_budgetaire_api.dart';
 import 'package:fokad_admin/src/api/comm_marketing/marketing/campaign_api.dart';
@@ -9,6 +10,7 @@ import 'package:fokad_admin/src/api/exploitations/projets_api.dart';
 import 'package:fokad_admin/src/api/rh/paiement_salaire_api.dart';
 import 'package:fokad_admin/src/constants/app_theme.dart';
 import 'package:fokad_admin/src/constants/responsive.dart';
+import 'package:fokad_admin/src/models/approbation/approbation_model.dart';
 import 'package:fokad_admin/src/models/budgets/ligne_budgetaire_model.dart';
 import 'package:fokad_admin/src/models/comm_maketing/campaign_model.dart';
 import 'package:fokad_admin/src/models/devis/devis_models.dart';
@@ -76,7 +78,7 @@ class _DetailLigneBudgetaireState extends State<DetailLigneBudgetaire> {
   List<PaiementSalaireModel> dataSalaireList = [];
 
   LigneBudgetaireModel? ligneBudgetaireModel;
-
+  List<ApprobationModel> approbationsList = [];
   UserModel user = UserModel(
       nom: '-',
       prenom: '-',
@@ -99,8 +101,10 @@ class _DetailLigneBudgetaireState extends State<DetailLigneBudgetaire> {
     var devis = await DevisAPi().getAllData();
     var projets = await ProjetsApi().getAllData();
     var salaires = await PaiementSalaireApi().getAllData();
+    var approbations = await ApprobationApi().getAllData();
     setState(() {
       user = userModel;
+      approbationsList = approbations;
       ligneBudgetaireList = budgets;
       dataCampaignList = campaigns.toList();
       dataDevisList = devis.toList();
@@ -462,202 +466,161 @@ class _DetailLigneBudgetaireState extends State<DetailLigneBudgetaire> {
     double finPropreProjet = 0.0;
     double finExterieurProjet = 0.0;
 
-    // var etatBesionCaisseList = dataDevisList
-    //     .where((element) =>
-    //         element.departement == ligneBudgetaireModel!.departement &&
-    //         element.ligneBudgtaire ==
-    //             ligneBudgetaireModel!.nomLigneBudgetaire &&
-    //         element.created.isBefore(
-    //             DateTime.parse(ligneBudgetaireModel!.periodeBudget)) &&
-    //         element.resources == "caisse")
-    //     .toList();
-    // var etatBesionBanqueList = dataDevisList
-    //     .where((element) =>
-    //         element.departement == ligneBudgetaireModel!.departement &&
-    //         element.ligneBudgtaire ==
-    //             ligneBudgetaireModel!.nomLigneBudgetaire &&
-    //         element.created.isBefore(
-    //             DateTime.parse(ligneBudgetaireModel!.periodeBudget)) &&
-    //         element.resources == "banque")
-    //     .toList();
-    // var etatBesionFinPropreList = dataDevisList
-    //     .where((element) =>
-    //         element.departement == ligneBudgetaireModel!.departement &&
-    //         element.ligneBudgtaire ==
-    //             ligneBudgetaireModel!.nomLigneBudgetaire &&
-    //         element.created.isBefore(
-    //             DateTime.parse(ligneBudgetaireModel!.periodeBudget)) &&
-    //         element.resources == "finPropre")
-    //     .toList();
-    // var etatBesionFinExterieurList = dataDevisList
-    //     .where((element) =>
-    //         element.departement == ligneBudgetaireModel!.departement &&
-    //         element.ligneBudgtaire ==
-    //             ligneBudgetaireModel!.nomLigneBudgetaire &&
-    //         element.created.isBefore(
-    //             DateTime.parse(ligneBudgetaireModel!.periodeBudget)) &&
-    //         element.resources == "finExterieur")
-    //     .toList();
+    List<PaiementSalaireModel> salairecaisseList = [];
+    List<PaiementSalaireModel> salairebanqueList = [];
+    List<PaiementSalaireModel> salairefinPropreList = [];
+    List<PaiementSalaireModel> salairefinExterieurList = [];
 
-    // for (var item in etatBesionCaisseList) {
-    //   caisseetatBesion += double.parse(item.resources);
-    // }
-    // for (var item in etatBesionBanqueList) {
-    //   banqueetatBesion += double.parse(item.resources);
-    // }
-    // for (var item in etatBesionFinPropreList) {
-    //   finPropreetatBesion += double.parse(item.resources);
-    // }
-    // for (var item in etatBesionFinExterieurList) {
-    //   finExterieuretatBesion += double.parse(item.resources);
-    // }
+    for (var item in approbationsList) {
+      salairecaisseList = dataSalaireList
+          .where((element) =>
+              element.departement == ligneBudgetaireModel!.departement &&
+              item.ligneBudgtaire == ligneBudgetaireModel!.nomLigneBudgetaire &&
+              element.createdAt.isBefore(
+                  DateTime.parse(ligneBudgetaireModel!.periodeBudget)) &&
+              item.resources == "caisse")
+          .toList();
+      salairebanqueList = dataSalaireList
+          .where((element) =>
+              element.departement == ligneBudgetaireModel!.departement &&
+              item.ligneBudgtaire == ligneBudgetaireModel!.nomLigneBudgetaire &&
+              element.createdAt.isBefore(
+                  DateTime.parse(ligneBudgetaireModel!.periodeBudget)) &&
+              item.resources == "banque")
+          .toList();
+      salairefinPropreList = dataSalaireList
+          .where((element) =>
+              element.departement == ligneBudgetaireModel!.departement &&
+              item.ligneBudgtaire == ligneBudgetaireModel!.nomLigneBudgetaire &&
+              element.createdAt.isBefore(
+                  DateTime.parse(ligneBudgetaireModel!.periodeBudget)) &&
+              item.resources == "finPropre")
+          .toList();
+      salairefinExterieurList = dataSalaireList
+          .where((element) =>
+              element.departement == ligneBudgetaireModel!.departement &&
+              item.ligneBudgtaire == ligneBudgetaireModel!.nomLigneBudgetaire &&
+              element.createdAt.isBefore(
+                  DateTime.parse(ligneBudgetaireModel!.periodeBudget)) &&
+              item.resources == "finExterieur")
+          .toList();
+    }
 
-    var salairecaisseList = dataSalaireList
-        .where((element) =>
-            element.departement == ligneBudgetaireModel!.departement &&
-            element.ligneBudgtaire ==
-                ligneBudgetaireModel!.nomLigneBudgetaire &&
-            element.createdAt.isBefore(
-                DateTime.parse(ligneBudgetaireModel!.periodeBudget)) &&
-            element.resources == "caisse")
-        .toList();
-    var salairebanqueList = dataSalaireList
-        .where((element) =>
-            element.departement == ligneBudgetaireModel!.departement &&
-            element.ligneBudgtaire ==
-                ligneBudgetaireModel!.nomLigneBudgetaire &&
-            element.createdAt.isBefore(
-                DateTime.parse(ligneBudgetaireModel!.periodeBudget)) &&
-            element.resources == "banque")
-        .toList();
-    var salairefinPropreList = dataSalaireList
-        .where((element) =>
-            element.departement == ligneBudgetaireModel!.departement &&
-            element.ligneBudgtaire ==
-                ligneBudgetaireModel!.nomLigneBudgetaire &&
-            element.createdAt.isBefore(
-                DateTime.parse(ligneBudgetaireModel!.periodeBudget)) &&
-            element.resources == "finPropre")
-        .toList();
-    var salairefinExterieurList = dataSalaireList
-        .where((element) =>
-            element.departement == ligneBudgetaireModel!.departement &&
-            element.ligneBudgtaire ==
-                ligneBudgetaireModel!.nomLigneBudgetaire &&
-            element.createdAt.isBefore(
-                DateTime.parse(ligneBudgetaireModel!.periodeBudget)) &&
-            element.resources == "finExterieur")
-        .toList();
     for (var item in salairecaisseList) {
-      caissesalaire += double.parse(item.resources);
+      caissesalaire += double.parse(item.salaire);
     }
     for (var item in salairebanqueList) {
-      banquesalaire += double.parse(item.resources);
+      banquesalaire += double.parse(item.salaire);
     }
     for (var item in salairefinPropreList) {
-      finPropresalaire += double.parse(item.resources);
+      finPropresalaire += double.parse(item.salaire);
     }
     for (var item in salairefinExterieurList) {
-      finExterieursalaire += double.parse(item.resources);
+      finExterieursalaire += double.parse(item.salaire);
     }
 
-    var campaigncaisseList = dataCampaignList
-        .where((element) =>
-            "Commercial et Marketing" == ligneBudgetaireModel!.departement &&
-            element.ligneBudgtaire ==
-                ligneBudgetaireModel!.nomLigneBudgetaire &&
-            element.created.isBefore(
-                DateTime.parse(ligneBudgetaireModel!.periodeBudget)) &&
-            element.resources == "caisse")
-        .toList();
-    var campaignbanqueList = dataCampaignList
-        .where((element) =>
-            "Commercial et Marketing" == ligneBudgetaireModel!.departement &&
-            element.ligneBudgtaire ==
-                ligneBudgetaireModel!.nomLigneBudgetaire &&
-            element.created.isBefore(
-                DateTime.parse(ligneBudgetaireModel!.periodeBudget)) &&
-            element.resources == "banque")
-        .toList();
-    var campaignfinPropreList = dataCampaignList
-        .where((element) =>
-            "Commercial et Marketing" == ligneBudgetaireModel!.departement &&
-            element.ligneBudgtaire ==
-                ligneBudgetaireModel!.nomLigneBudgetaire &&
-            element.created.isBefore(
-                DateTime.parse(ligneBudgetaireModel!.periodeBudget)) &&
-            element.resources == "finPropre")
-        .toList();
-    var campaignfinExterieurList = dataCampaignList
-        .where((element) =>
-            "Commercial et Marketing" == ligneBudgetaireModel!.departement &&
-            element.ligneBudgtaire ==
-                ligneBudgetaireModel!.nomLigneBudgetaire &&
-            element.created.isBefore(
-                DateTime.parse(ligneBudgetaireModel!.periodeBudget)) &&
-            element.resources == "finExterieur")
-        .toList();
+    List<CampaignModel> campaigncaisseList = [];
+    List<CampaignModel> campaignbanqueList = [];
+    List<CampaignModel> campaignfinPropreList = [];
+    List<CampaignModel> campaignfinExterieurList = [];
+    for (var item in approbationsList) {
+      campaigncaisseList = dataCampaignList
+          .where((element) =>
+              "Commercial et Marketing" == ligneBudgetaireModel!.departement &&
+              item.ligneBudgtaire == ligneBudgetaireModel!.nomLigneBudgetaire &&
+              element.created.isBefore(
+                  DateTime.parse(ligneBudgetaireModel!.periodeBudget)) &&
+              item.resources == "caisse")
+          .toList();
+      campaignbanqueList = dataCampaignList
+          .where((element) =>
+              "Commercial et Marketing" == ligneBudgetaireModel!.departement &&
+              item.ligneBudgtaire == ligneBudgetaireModel!.nomLigneBudgetaire &&
+              element.created.isBefore(
+                  DateTime.parse(ligneBudgetaireModel!.periodeBudget)) &&
+              item.resources == "banque")
+          .toList();
+      campaignfinPropreList = dataCampaignList
+          .where((element) =>
+              "Commercial et Marketing" == ligneBudgetaireModel!.departement &&
+              item.ligneBudgtaire == ligneBudgetaireModel!.nomLigneBudgetaire &&
+              element.created.isBefore(
+                  DateTime.parse(ligneBudgetaireModel!.periodeBudget)) &&
+              item.resources == "finPropre")
+          .toList();
+      campaignfinExterieurList = dataCampaignList
+          .where((element) =>
+              "Commercial et Marketing" == ligneBudgetaireModel!.departement &&
+              item.ligneBudgtaire == ligneBudgetaireModel!.nomLigneBudgetaire &&
+              element.created.isBefore(
+                  DateTime.parse(ligneBudgetaireModel!.periodeBudget)) &&
+              item.resources == "finExterieur")
+          .toList();
+    }
+
     for (var item in campaigncaisseList) {
-      caisseCampaign += double.parse(item.resources);
+      caisseCampaign += double.parse(item.coutCampaign);
     }
     for (var item in campaignbanqueList) {
-      banqueCampaign += double.parse(item.resources);
+      banqueCampaign += double.parse(item.coutCampaign);
     }
     for (var item in campaignfinPropreList) {
-      finPropreCampaign += double.parse(item.resources);
+      finPropreCampaign += double.parse(item.coutCampaign);
     }
     for (var item in campaignfinExterieurList) {
-      finExterieurCampaign += double.parse(item.resources);
+      finExterieurCampaign += double.parse(item.coutCampaign);
     }
 
-    var projetcaisseList = dataProjetList
-        .where((element) =>
-            "Exploitations" == ligneBudgetaireModel!.departement &&
-            element.ligneBudgtaire ==
-                ligneBudgetaireModel!.nomLigneBudgetaire &&
-            element.created.isBefore(
-                DateTime.parse(ligneBudgetaireModel!.periodeBudget)) &&
-            element.resources == "caisse")
-        .toList();
-    var projetbanqueList = dataProjetList
-        .where((element) =>
-            "Exploitations" == ligneBudgetaireModel!.departement &&
-            element.ligneBudgtaire ==
-                ligneBudgetaireModel!.nomLigneBudgetaire &&
-            element.created.isBefore(
-                DateTime.parse(ligneBudgetaireModel!.periodeBudget)) &&
-            element.resources == "banque")
-        .toList();
-    var projetfinPropreList = dataProjetList
-        .where((element) =>
-            "Exploitations" == ligneBudgetaireModel!.departement &&
-            element.ligneBudgtaire ==
-                ligneBudgetaireModel!.nomLigneBudgetaire &&
-            element.created.isBefore(
-                DateTime.parse(ligneBudgetaireModel!.periodeBudget)) &&
-            element.resources == "finPropre")
-        .toList();
-    var projetfinExterieurList = dataProjetList
-        .where((element) =>
-            "Exploitations" == ligneBudgetaireModel!.departement &&
-            element.ligneBudgtaire ==
-                ligneBudgetaireModel!.nomLigneBudgetaire &&
-            element.created.isBefore(
-                DateTime.parse(ligneBudgetaireModel!.periodeBudget)) &&
-            element.resources == "finExterieur")
-        .toList();
+    List<ProjetModel> projetcaisseList = [];
+    List<ProjetModel> projetbanqueList = [];
+    List<ProjetModel> projetfinPropreList = [];
+    List<ProjetModel> projetfinExterieurList = [];
+    for (var item in approbationsList) {
+      projetcaisseList = dataProjetList
+          .where((element) =>
+              "Exploitations" == ligneBudgetaireModel!.departement &&
+              item.ligneBudgtaire == ligneBudgetaireModel!.nomLigneBudgetaire &&
+              element.created.isBefore(
+                  DateTime.parse(ligneBudgetaireModel!.periodeBudget)) &&
+              item.resources == "caisse")
+          .toList();
+      projetbanqueList = dataProjetList
+          .where((element) =>
+              "Exploitations" == ligneBudgetaireModel!.departement &&
+              item.ligneBudgtaire == ligneBudgetaireModel!.nomLigneBudgetaire &&
+              element.created.isBefore(
+                  DateTime.parse(ligneBudgetaireModel!.periodeBudget)) &&
+              item.resources == "banque")
+          .toList();
+      projetfinPropreList = dataProjetList
+          .where((element) =>
+              "Exploitations" == ligneBudgetaireModel!.departement &&
+              item.ligneBudgtaire == ligneBudgetaireModel!.nomLigneBudgetaire &&
+              element.created.isBefore(
+                  DateTime.parse(ligneBudgetaireModel!.periodeBudget)) &&
+              item.resources == "finPropre")
+          .toList();
+      projetfinExterieurList = dataProjetList
+          .where((element) =>
+              "Exploitations" == ligneBudgetaireModel!.departement &&
+              item.ligneBudgtaire == ligneBudgetaireModel!.nomLigneBudgetaire &&
+              element.created.isBefore(
+                  DateTime.parse(ligneBudgetaireModel!.periodeBudget)) &&
+              item.resources == "finExterieur")
+          .toList();
+    }
 
     for (var item in projetcaisseList) {
-      caisseProjet += double.parse(item.resources);
+      caisseProjet += double.parse(item.coutProjet);
     }
     for (var item in projetbanqueList) {
-      banqueProjet += double.parse(item.resources);
+      banqueProjet += double.parse(item.coutProjet);
     }
     for (var item in projetfinPropreList) {
-      finPropreProjet += double.parse(item.resources);
+      finPropreProjet += double.parse(item.coutProjet);
     }
     for (var item in projetfinExterieurList) {
-      finExterieurProjet += double.parse(item.resources);
+      finExterieurProjet += double.parse(item.coutProjet);
     }
 
     // Total par ressources
@@ -780,20 +743,8 @@ class _DetailLigneBudgetaireState extends State<DetailLigneBudgetaire> {
       ),
       PlutoColumn(
         readOnly: true,
-        title: 'Ligne Budgetaire',
-        field: 'nomLigneBudgetaire',
-        type: PlutoColumnType.number(),
-        enableRowDrag: true,
-        enableContextMenu: false,
-        enableDropToResize: true,
-        titleTextAlign: PlutoColumnTextAlign.left,
-        width: 200,
-        minWidth: 80,
-      ),
-      PlutoColumn(
-        readOnly: true,
-        title: 'Resources',
-        field: 'resources',
+        title: 'Département',
+        field: 'departement',
         type: PlutoColumnType.number(),
         enableRowDrag: true,
         enableContextMenu: false,
@@ -818,11 +769,17 @@ class _DetailLigneBudgetaireState extends State<DetailLigneBudgetaire> {
   }
 
   Future salaireRow() async {
-    var dataList = dataSalaireList.where((element) =>
-        element.departement == ligneBudgetaireModel!.departement &&
-        element.ligneBudgtaire == ligneBudgetaireModel!.nomLigneBudgetaire &&
-        element.createdAt
-            .isBefore(DateTime.parse(ligneBudgetaireModel!.periodeBudget)));
+    List<PaiementSalaireModel> dataList = [];
+
+    for (var item in approbationsList) {
+      dataList = dataSalaireList
+          .where((element) =>
+              element.departement == ligneBudgetaireModel!.departement &&
+              item.ligneBudgtaire == ligneBudgetaireModel!.nomLigneBudgetaire &&
+              element.createdAt.isBefore(
+                  DateTime.parse(ligneBudgetaireModel!.periodeBudget)))
+          .toList();
+    }
 
     if (mounted) {
       setState(() {
@@ -830,8 +787,7 @@ class _DetailLigneBudgetaireState extends State<DetailLigneBudgetaire> {
           rowSalaires.add(PlutoRow(cells: {
             'id': PlutoCell(value: item.id),
             'designation': PlutoCell(value: "${item.prenom} ${item.nom}"),
-            'nomLigneBudgetaire': PlutoCell(value: item.ligneBudgtaire),
-            'resources': PlutoCell(value: item.resources),
+            'departement': PlutoCell(value: item.departement),
             'created': PlutoCell(
                 value: DateFormat("dd-MM-yy HH:mm").format(item.createdAt))
           }));
@@ -842,11 +798,16 @@ class _DetailLigneBudgetaireState extends State<DetailLigneBudgetaire> {
   }
 
   Future campaignRow() async {
-    var dataList = dataCampaignList.where((element) =>
-        "Commercial et Marketing" == ligneBudgetaireModel!.departement &&
-        element.ligneBudgtaire == ligneBudgetaireModel!.nomLigneBudgetaire &&
-        element.created
-            .isBefore(DateTime.parse(ligneBudgetaireModel!.periodeBudget)));
+    List<CampaignModel> dataList = [];
+    for (var item in approbationsList) {
+      dataList = dataCampaignList
+          .where((element) =>
+              "Commercial et Marketing" == ligneBudgetaireModel!.departement &&
+              item.ligneBudgtaire == ligneBudgetaireModel!.nomLigneBudgetaire &&
+              element.created.isBefore(
+                  DateTime.parse(ligneBudgetaireModel!.periodeBudget)))
+          .toList();
+    }
 
     if (mounted) {
       setState(() {
@@ -854,8 +815,7 @@ class _DetailLigneBudgetaireState extends State<DetailLigneBudgetaire> {
           rowCampaigns.add(PlutoRow(cells: {
             'id': PlutoCell(value: item.id),
             'designation': PlutoCell(value: item.typeProduit),
-            'nomLigneBudgetaire': PlutoCell(value: item.ligneBudgtaire),
-            'resources': PlutoCell(value: item.resources),
+            'departement': PlutoCell(value: "Commercial et Marketing"),
             'created': PlutoCell(
                 value: DateFormat("dd-MM-yy HH:mm").format(item.created))
           }));
@@ -866,19 +826,25 @@ class _DetailLigneBudgetaireState extends State<DetailLigneBudgetaire> {
   }
 
   Future projetRow() async {
-    var dataList = dataProjetList.where((element) =>
-        "Exploitations" == ligneBudgetaireModel!.departement &&
-        element.ligneBudgtaire == ligneBudgetaireModel!.nomLigneBudgetaire &&
-        element.created
-            .isBefore(DateTime.parse(ligneBudgetaireModel!.periodeBudget)));
+    List<ProjetModel> dataList = [];
+    for (var item in approbationsList)  {
+      dataList = dataProjetList
+        .where((element) =>
+            "Exploitations" == ligneBudgetaireModel!.departement &&
+            item.ligneBudgtaire ==
+                ligneBudgetaireModel!.nomLigneBudgetaire &&
+            element.created
+                .isBefore(DateTime.parse(ligneBudgetaireModel!.periodeBudget)))
+        .toList();
+    }
+    
     if (mounted) {
       setState(() {
         for (var item in dataList) {
           rowProjets.add(PlutoRow(cells: {
             'id': PlutoCell(value: item.id),
             'designation': PlutoCell(value: item.nomProjet),
-            'nomLigneBudgetaire': PlutoCell(value: item.ligneBudgtaire),
-            'resources': PlutoCell(value: item.resources),
+            'departement': PlutoCell(value: "Exploitations"),
             'created': PlutoCell(
                 value: DateFormat("dd-MM-yy HH:mm").format(item.created))
           }));
@@ -888,20 +854,25 @@ class _DetailLigneBudgetaireState extends State<DetailLigneBudgetaire> {
     }
   }
 
-  Future etatBesionRow() async {
-    var dataList = dataDevisList.where((element) =>
-        element.departement == ligneBudgetaireModel!.departement &&
-        // element.ligneBudgtaire == ligneBudgetaireModel!.nomLigneBudgetaire &&
-        element.created
-            .isBefore(DateTime.parse(ligneBudgetaireModel!.periodeBudget)));
+  Future etatBesionRow() async { 
+  List<DevisModel> dataList = [];
+    for (var item in approbationsList)  {
+      dataList = dataDevisList
+        .where((element) =>
+            element.departement == ligneBudgetaireModel!.departement &&
+            item.ligneBudgtaire ==
+                ligneBudgetaireModel!.nomLigneBudgetaire &&
+            element.created
+                .isBefore(DateTime.parse(ligneBudgetaireModel!.periodeBudget)))
+        .toList();
+    }
     if (mounted) {
       setState(() {
         for (var item in dataList) {
           rowEtatBesion.add(PlutoRow(cells: {
             'id': PlutoCell(value: item.id),
             'designation': PlutoCell(value: item.title),
-            // 'nomLigneBudgetaire': PlutoCell(value: item.ligneBudgtaire),
-            // 'resources': PlutoCell(value: item.resources),
+            'departement': PlutoCell(value: item.departement),
             'created': PlutoCell(
                 value: DateFormat("dd-MM-yy HH:mm").format(item.created))
           }));
@@ -938,13 +909,11 @@ class _DetailLigneBudgetaireState extends State<DetailLigneBudgetaire> {
             resolveDefaultColumnFilter: (column, resolver) {
               if (column.field == 'id') {
                 return resolver<ClassFilterImplemented>() as PlutoFilterType;
-              } else if (column.field == 'nomLigneBudgetaire') {
+              } else if (column.field == 'designation') {
                 return resolver<ClassFilterImplemented>() as PlutoFilterType;
               } else if (column.field == 'departement') {
                 return resolver<ClassFilterImplemented>() as PlutoFilterType;
-              } else if (column.field == 'nombreUnite') {
-                return resolver<ClassFilterImplemented>() as PlutoFilterType;
-              } else if (column.field == 'coutUnitaire') {
+              } else if (column.field == 'created') {
                 return resolver<ClassFilterImplemented>() as PlutoFilterType;
               }
               return resolver<PlutoFilterTypeContains>() as PlutoFilterType;
@@ -982,13 +951,11 @@ class _DetailLigneBudgetaireState extends State<DetailLigneBudgetaire> {
             resolveDefaultColumnFilter: (column, resolver) {
               if (column.field == 'id') {
                 return resolver<ClassFilterImplemented>() as PlutoFilterType;
-              } else if (column.field == 'nomLigneBudgetaire') {
+              } else if (column.field == 'designation') {
                 return resolver<ClassFilterImplemented>() as PlutoFilterType;
               } else if (column.field == 'departement') {
                 return resolver<ClassFilterImplemented>() as PlutoFilterType;
-              } else if (column.field == 'nombreUnite') {
-                return resolver<ClassFilterImplemented>() as PlutoFilterType;
-              } else if (column.field == 'coutUnitaire') {
+              } else if (column.field == 'created') {
                 return resolver<ClassFilterImplemented>() as PlutoFilterType;
               }
               return resolver<PlutoFilterTypeContains>() as PlutoFilterType;
@@ -1026,13 +993,11 @@ class _DetailLigneBudgetaireState extends State<DetailLigneBudgetaire> {
             resolveDefaultColumnFilter: (column, resolver) {
               if (column.field == 'id') {
                 return resolver<ClassFilterImplemented>() as PlutoFilterType;
-              } else if (column.field == 'nomLigneBudgetaire') {
+              } else if (column.field == 'designation') {
                 return resolver<ClassFilterImplemented>() as PlutoFilterType;
               } else if (column.field == 'departement') {
                 return resolver<ClassFilterImplemented>() as PlutoFilterType;
-              } else if (column.field == 'nombreUnite') {
-                return resolver<ClassFilterImplemented>() as PlutoFilterType;
-              } else if (column.field == 'coutUnitaire') {
+              } else if (column.field == 'created') {
                 return resolver<ClassFilterImplemented>() as PlutoFilterType;
               }
               return resolver<PlutoFilterTypeContains>() as PlutoFilterType;
@@ -1070,13 +1035,11 @@ class _DetailLigneBudgetaireState extends State<DetailLigneBudgetaire> {
             resolveDefaultColumnFilter: (column, resolver) {
               if (column.field == 'id') {
                 return resolver<ClassFilterImplemented>() as PlutoFilterType;
-              } else if (column.field == 'nomLigneBudgetaire') {
+              } else if (column.field == 'designation') {
                 return resolver<ClassFilterImplemented>() as PlutoFilterType;
               } else if (column.field == 'departement') {
                 return resolver<ClassFilterImplemented>() as PlutoFilterType;
-              } else if (column.field == 'nombreUnite') {
-                return resolver<ClassFilterImplemented>() as PlutoFilterType;
-              } else if (column.field == 'coutUnitaire') {
+              } else if (column.field == 'created') {
                 return resolver<ClassFilterImplemented>() as PlutoFilterType;
               }
               return resolver<PlutoFilterTypeContains>() as PlutoFilterType;

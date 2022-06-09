@@ -307,6 +307,7 @@ class _AddEtatMaterielState extends State<AddEtatMateriel> {
         typeObjet: typeObjet.toString(),
         statut: statut.toString(),
         signature: signature.toString(),
+        createdRef:  DateTime.now(),
         created: DateTime.now());
     await EtatMaterielApi().insertData(etatMaterielModel);
     Navigator.pop(context);

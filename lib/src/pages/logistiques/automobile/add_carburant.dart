@@ -461,6 +461,7 @@ class _AddCarburantAutoState extends State<AddCarburantAuto> {
                 : dateHeureSortieAnguinController.text),
         qtyAchat: qtyAchatController.text,
         signature: signature.toString(),
+        createdRef: DateTime.now(),
         created: DateTime.now());
     await CarburantApi().insertData(carburantModel);
     Navigator.pop(context);

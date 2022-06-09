@@ -13,13 +13,13 @@ import 'package:fokad_admin/src/models/users/user_model.dart';
 import 'package:fokad_admin/src/navigation/drawer/drawer_menu.dart';
 import 'package:fokad_admin/src/navigation/header/custom_appbar.dart';
 import 'package:fokad_admin/src/pages/comm_marketing/marketing/components/campaign/update_campaign.dart';
+import 'package:fokad_admin/src/routes/routes.dart';
 import 'package:fokad_admin/src/widgets/print_widget.dart';
 import 'package:fokad_admin/src/widgets/title_widget.dart';
 import 'package:intl/intl.dart';
 
 class DetailCampaign extends StatefulWidget {
-  const DetailCampaign({Key? key, this.id}) : super(key: key);
-  final int? id;
+  const DetailCampaign({Key? key}) : super(key: key);
 
   @override
   State<DetailCampaign> createState() => _DetailCampaignState();
@@ -49,7 +49,6 @@ class _DetailCampaignState extends State<DetailCampaign> {
     super.initState();
   }
 
-  CampaignModel? projetModel;
   String? ligneBudgtaire;
   String? resource;
   List<LigneBudgetaireModel> ligneBudgetaireList = [];
@@ -82,11 +81,9 @@ class _DetailCampaignState extends State<DetailCampaign> {
       succursale: '-');
   Future<void> getData() async {
     UserModel userModel = await AuthApi().getUserId();
-    CampaignModel data = await CampaignApi().getOneData(widget.id!);
     var budgets = await LIgneBudgetaireApi().getAllData();
     var approbations = await ApprobationApi().getAllData();
     setState(() {
-      projetModel = data;
       user = userModel;
       ligneBudgetaireList = budgets;
       approbList = approbations;
@@ -95,6 +92,7 @@ class _DetailCampaignState extends State<DetailCampaign> {
 
   @override
   Widget build(BuildContext context) {
+    final id = ModalRoute.of(context)!.settings.arguments as int;
     return Scaffold(
         key: _key,
         drawer: const DrawerMenu(),
@@ -111,14 +109,15 @@ class _DetailCampaignState extends State<DetailCampaign> {
                 child: Padding(
                     padding: const EdgeInsets.all(p10),
                     child: FutureBuilder<CampaignModel>(
-                        future: CampaignApi().getOneData(widget.id!),
+                        future: CampaignApi().getOneData(id),
                         builder: (BuildContext context,
                             AsyncSnapshot<CampaignModel> snapshot) {
                           if (snapshot.hasData) {
                             CampaignModel? data = snapshot.data;
                             approbationData = approbList
-                                .where(
-                                    (element) => element.reference.microsecondsSinceEpoch == data!.created.microsecondsSinceEpoch)
+                                .where((element) =>
+                                    element.reference.microsecondsSinceEpoch ==
+                                    data!.created.microsecondsSinceEpoch)
                                 .toList();
 
                             if (approbationData.isNotEmpty) {
@@ -244,8 +243,10 @@ class _DetailCampaignState extends State<DetailCampaign> {
             ),
             TextButton(
               onPressed: () async {
-                Navigator.of(context).push(MaterialPageRoute(
-                    builder: (context) => UpdateCampaign(campaignModel: data)));
+                Navigator.pushNamed(
+                  context, ComMarketingRoutes.comMarketingCampaignUpdate,
+                  arguments: data
+                );
               },
               child: const Text('OK'),
             ),
@@ -295,34 +296,6 @@ class _DetailCampaignState extends State<DetailCampaign> {
           Row(
             children: [
               Expanded(
-                child: Text('Agent Affectés :',
-                    textAlign: TextAlign.start,
-                    style: bodyMedium.copyWith(fontWeight: FontWeight.bold)),
-              ),
-              Expanded(
-                child: Column(
-                  children: [
-                    SelectableText('${data.agentAffectes.length} agents',
-                        textAlign: TextAlign.start, style: bodyMedium),
-                    SizedBox(
-                        height: 200,
-                        child: Wrap(
-                          children:
-                              List.generate(data.agentAffectes.length, (index) {
-                            var agent = data.agentAffectes[index];
-                            return SelectableText(agent,
-                                textAlign: TextAlign.start, style: bodyMedium);
-                          }),
-                        )),
-                  ],
-                ),
-              )
-            ],
-          ),
-          Divider(color: Colors.amber.shade700),
-          Row(
-            children: [
-              Expanded(
                 child: Text('Coût de la Campagne :',
                     textAlign: TextAlign.start,
                     style: bodyMedium.copyWith(fontWeight: FontWeight.bold)),
@@ -365,12 +338,12 @@ class _DetailCampaignState extends State<DetailCampaign> {
           Row(
             children: [
               Expanded(
-                child: Text('Objetctifs :',
+                child: Text('objectifs :',
                     textAlign: TextAlign.start,
                     style: bodyMedium.copyWith(fontWeight: FontWeight.bold)),
               ),
               Expanded(
-                child: SelectableText(data.objetctifs,
+                child: SelectableText(data.objectifs,
                     textAlign: TextAlign.start, style: bodyMedium),
               )
             ],
@@ -974,16 +947,14 @@ class _DetailCampaignState extends State<DetailCampaign> {
     final campaignModel = CampaignModel(
         typeProduit: data.typeProduit,
         dateDebutEtFin: data.dateDebutEtFin,
-        agentAffectes: data.agentAffectes,
         coutCampaign: data.coutCampaign,
         lieuCible: data.lieuCible,
         promotion: data.promotion,
-        objetctifs: data.objetctifs,
-        ligneBudgtaire: data.ligneBudgtaire,
-        resources: data.resources,
+        objectifs: data.objectifs,
         observation: isChecked,
         signature: data.signature,
-        created: data.created);
+        createdRef: data.createdRef,
+        created: DateTime.now());
     await CampaignApi().updateData(data.id!, campaignModel);
     Navigator.of(context).pop();
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(

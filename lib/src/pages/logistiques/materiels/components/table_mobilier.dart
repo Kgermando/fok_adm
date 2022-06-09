@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:fokad_admin/src/api/logistiques/mobilier_api.dart';
 import 'package:fokad_admin/src/models/logistiques/mobilier_model.dart';
-import 'package:fokad_admin/src/pages/logistiques/materiels/components/detail_mobilier.dart';
+import 'package:fokad_admin/src/routes/routes.dart';
 import 'package:fokad_admin/src/widgets/print_widget.dart';
 import 'package:fokad_admin/src/utils/class_implemented.dart';
 import 'package:intl/intl.dart';
@@ -21,7 +21,7 @@ class _TableMobilierState extends State<TableMobilier> {
   PlutoGridSelectingMode gridSelectingMode = PlutoGridSelectingMode.row;
 
   int? id;
-
+ 
   @override
   void initState() {
     agentsColumn();
@@ -37,9 +37,8 @@ class _TableMobilierState extends State<TableMobilier> {
       onRowDoubleTap: (PlutoGridOnRowDoubleTapEvent tapEvent) {
         final dataList = tapEvent.row!.cells.values;
         final idPlutoRow = dataList.elementAt(0);
-
-        Navigator.of(context).push(MaterialPageRoute(
-            builder: (context) => DetailMobilier(id: idPlutoRow.value)));
+        Navigator.pushNamed(context, LogistiqueRoutes.logMobilierMaterielDetail,
+            arguments: idPlutoRow.value); 
       },
       onLoaded: (PlutoGridOnLoadedEvent event) {
         stateManager = event.stateManager;
@@ -49,7 +48,13 @@ class _TableMobilierState extends State<TableMobilier> {
       createHeader: (PlutoGridStateManager header) {
         return Row(
           mainAxisAlignment: MainAxisAlignment.end,
-          children: [PrintWidget(onPressed: () {})],
+          children: [
+            IconButton(
+                onPressed: () {
+                  Navigator.pushNamed(context, LogistiqueRoutes.logMobilierMateriel);
+                },
+                icon: Icon(Icons.refresh, color: Colors.green.shade700)),
+            PrintWidget(onPressed: () {})],
         );
       },
       configuration: PlutoGridConfiguration(

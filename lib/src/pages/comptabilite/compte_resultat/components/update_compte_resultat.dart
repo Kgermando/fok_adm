@@ -13,9 +13,8 @@ import 'package:fokad_admin/src/widgets/print_widget.dart';
 import 'package:fokad_admin/src/widgets/title_widget.dart';
 
 class UpdateCompteResultat extends StatefulWidget {
-  const UpdateCompteResultat({Key? key, required this.compteResulatsModel})
+  const UpdateCompteResultat({Key? key})
       : super(key: key);
-  final CompteResulatsModel compteResulatsModel;
 
   @override
   State<UpdateCompteResultat> createState() => _UpdateCompteResultatState();
@@ -69,57 +68,7 @@ class _UpdateCompteResultatState extends State<UpdateCompteResultat> {
   void initState() {
     getData();
     setState(() {
-      intituleController =
-          TextEditingController(text: widget.compteResulatsModel.intitule);
-      achatMarchandisesController = TextEditingController(
-          text: widget.compteResulatsModel.achatMarchandises);
-      variationStockMarchandisesController = TextEditingController(
-          text: widget.compteResulatsModel.variationStockMarchandises);
-      achatApprovionnementsController = TextEditingController(
-          text: widget.compteResulatsModel.achatApprovionnements);
-      variationApprovionnementsController = TextEditingController(
-          text: widget.compteResulatsModel.variationApprovionnements);
-      autresChargesExterneController = TextEditingController(
-          text: widget.compteResulatsModel.autresChargesExterne);
-      chargesfinancieresController = TextEditingController(
-          text: widget.compteResulatsModel.chargesfinancieres);
-      impotsTaxesVersementsAssimilesController = TextEditingController(
-          text: widget.compteResulatsModel.impotsTaxesVersementsAssimiles);
-      renumerationPersonnelController = TextEditingController(
-          text: widget.compteResulatsModel.renumerationPersonnel);
-      chargesSocialasController = TextEditingController(
-          text: widget.compteResulatsModel.chargesSocialas);
-      dotatiopnsProvisionsController = TextEditingController(
-          text: widget.compteResulatsModel.dotatiopnsProvisions);
-      autresChargesController =
-          TextEditingController(text: widget.compteResulatsModel.autresCharges);
-      chargesExptionnellesController = TextEditingController(
-          text: widget.compteResulatsModel.chargesExptionnelles);
-      impotSurbeneficesController = TextEditingController(
-          text: widget.compteResulatsModel.impotSurbenefices);
-      soldeCrediteurController = TextEditingController(
-          text: widget.compteResulatsModel.soldeCrediteur);
-      ventesMarchandisesController = TextEditingController(
-          text: widget.compteResulatsModel.ventesMarchandises);
-
-      productionVendueBienEtSericesController = TextEditingController(
-          text: widget.compteResulatsModel.productionVendueBienEtSerices);
-      productionStockeeController = TextEditingController(
-          text: widget.compteResulatsModel.productionStockee);
-      productionImmobiliseeController = TextEditingController(
-          text: widget.compteResulatsModel.productionImmobilisee);
-      subventionExploitationController = TextEditingController(
-          text: widget.compteResulatsModel.subventionExploitation);
-      autreProduitsController =
-          TextEditingController(text: widget.compteResulatsModel.autreProduits);
-      montantExportationController = TextEditingController(
-          text: widget.compteResulatsModel.montantExportation);
-      produitfinancieresController = TextEditingController(
-          text: widget.compteResulatsModel.produitfinancieres);
-      produitExceptionnelsController = TextEditingController(
-          text: widget.compteResulatsModel.produitExceptionnels);
-      soldeDebiteurController =
-          TextEditingController(text: widget.compteResulatsModel.soldeDebiteur);
+      
     });
 
     super.initState();
@@ -166,6 +115,60 @@ class _UpdateCompteResultatState extends State<UpdateCompteResultat> {
 
   @override
   Widget build(BuildContext context) {
+    final data = ModalRoute.of(context)!.settings.arguments as CompteResulatsModel;
+
+    intituleController =
+        TextEditingController(text: data.intitule);
+    achatMarchandisesController = TextEditingController(
+        text: data.achatMarchandises);
+    variationStockMarchandisesController = TextEditingController(
+        text: data.variationStockMarchandises);
+    achatApprovionnementsController = TextEditingController(
+        text: data.achatApprovionnements);
+    variationApprovionnementsController = TextEditingController(
+        text: data.variationApprovionnements);
+    autresChargesExterneController = TextEditingController(
+        text: data.autresChargesExterne);
+    chargesfinancieresController = TextEditingController(
+        text: data.chargesfinancieres);
+    impotsTaxesVersementsAssimilesController = TextEditingController(
+        text: data.impotsTaxesVersementsAssimiles);
+    renumerationPersonnelController = TextEditingController(
+        text: data.renumerationPersonnel);
+    chargesSocialasController =
+        TextEditingController(text: data.chargesSocialas);
+    dotatiopnsProvisionsController = TextEditingController(
+        text: data.dotatiopnsProvisions);
+    autresChargesController =
+        TextEditingController(text: data.autresCharges);
+    chargesExptionnellesController = TextEditingController(
+        text: data.chargesExptionnelles);
+    impotSurbeneficesController = TextEditingController(
+        text: data.impotSurbenefices);
+    soldeCrediteurController =
+        TextEditingController(text: data.soldeCrediteur);
+    ventesMarchandisesController = TextEditingController(
+        text: data.ventesMarchandises);
+
+    productionVendueBienEtSericesController = TextEditingController(
+        text: data.productionVendueBienEtSerices);
+    productionStockeeController = TextEditingController(
+        text: data.productionStockee);
+    productionImmobiliseeController = TextEditingController(
+        text: data.productionImmobilisee);
+    subventionExploitationController = TextEditingController(
+        text: data.subventionExploitation);
+    autreProduitsController =
+        TextEditingController(text: data.autreProduits);
+    montantExportationController = TextEditingController(
+        text: data.montantExportation);
+    produitfinancieresController = TextEditingController(
+        text: data.produitfinancieres);
+    produitExceptionnelsController = TextEditingController(
+        text: data.produitExceptionnels);
+    soldeDebiteurController =
+        TextEditingController(text: data.soldeDebiteur);
+
     return Scaffold(
         key: _key,
         drawer: const DrawerMenu(),
@@ -201,7 +204,7 @@ class _UpdateCompteResultatState extends State<UpdateCompteResultat> {
                         ],
                       ),
                       Expanded(
-                          child: SingleChildScrollView(child: addPageWidget()))
+                          child: SingleChildScrollView(child: addPageWidget(data)))
                     ],
                   ),
                 ),
@@ -211,7 +214,7 @@ class _UpdateCompteResultatState extends State<UpdateCompteResultat> {
         ));
   }
 
-  Widget addPageWidget() {
+  Widget addPageWidget(CompteResulatsModel data) {
     return Form(
       key: _formKey,
       child: Row(
@@ -264,7 +267,7 @@ class _UpdateCompteResultatState extends State<UpdateCompteResultat> {
                       press: () {
                         final form = _formKey.currentState!;
                         if (form.validate()) {
-                          submit();
+                          submit(data);
                           form.reset();
                         }
                       })
@@ -850,7 +853,7 @@ class _UpdateCompteResultatState extends State<UpdateCompteResultat> {
         ));
   }
 
-  Future<void> submit() async {
+  Future<void> submit(CompteResulatsModel data) async {
     final compteResulatsModel = CompteResulatsModel(
         intitule: intituleController.text,
         achatMarchandises: achatMarchandisesController.text,
@@ -880,6 +883,7 @@ class _UpdateCompteResultatState extends State<UpdateCompteResultat> {
         produitExceptionnels: produitExceptionnelsController.text,
         soldeDebiteur: soldeDebiteurController.text,
         signature: user!.matricule.toString(),
+        createdRef: data.createdRef,
         created: DateTime.now());
     await CompteResultatApi().insertData(compteResulatsModel);
     Navigator.of(context).pop();

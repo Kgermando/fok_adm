@@ -297,6 +297,7 @@ class _AddMobilerMaterielState extends State<AddMobilerMateriel> {
         descriptionMobilier: descriptionMobilierController.text,
         nombre: nombreController.text,
         signature: signature.toString(),
+        createdRef: DateTime.now(),
         created: DateTime.now());
     await MobilierApi().insertData(mobilierModel);
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(

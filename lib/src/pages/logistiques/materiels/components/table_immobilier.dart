@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:fokad_admin/src/api/logistiques/immobiler_api.dart';
 import 'package:fokad_admin/src/models/logistiques/immobilier_model.dart';
 import 'package:fokad_admin/src/pages/logistiques/materiels/components/detail_immobilier.dart';
+import 'package:fokad_admin/src/routes/routes.dart';
 import 'package:fokad_admin/src/utils/class_implemented.dart';
 import 'package:fokad_admin/src/widgets/print_widget.dart';
 import 'package:intl/intl.dart';
@@ -37,9 +38,8 @@ class _TableImmobilierState extends State<TableImmobilier> {
       onRowDoubleTap: (PlutoGridOnRowDoubleTapEvent tapEvent) {
         final dataList = tapEvent.row!.cells.values;
         final idPlutoRow = dataList.elementAt(0);
-
-        Navigator.of(context).push(MaterialPageRoute(
-            builder: (context) => DetailImmobilier(id: idPlutoRow.value)));
+        Navigator.pushNamed(context, LogistiqueRoutes.logImmobilierMaterielDetail,
+            arguments: idPlutoRow.value);  
       },
       onLoaded: (PlutoGridOnLoadedEvent event) {
         stateManager = event.stateManager;
@@ -49,7 +49,14 @@ class _TableImmobilierState extends State<TableImmobilier> {
       createHeader: (PlutoGridStateManager header) {
         return Row(
           mainAxisAlignment: MainAxisAlignment.end,
-          children: [PrintWidget(onPressed: () {})],
+          children: [
+            IconButton(
+                onPressed: () {
+                  Navigator.pushNamed(
+                      context, LogistiqueRoutes.logImmobilierMateriel);
+                },
+                icon: Icon(Icons.refresh, color: Colors.green.shade700)),
+            PrintWidget(onPressed: () {})],
         );
       },
       configuration: PlutoGridConfiguration(

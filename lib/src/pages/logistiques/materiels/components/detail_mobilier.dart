@@ -15,8 +15,7 @@ import 'package:fokad_admin/src/widgets/title_widget.dart';
 import 'package:intl/intl.dart';
 
 class DetailMobilier extends StatefulWidget {
-  const DetailMobilier({Key? key, this.id}) : super(key: key);
-  final int? id;
+  const DetailMobilier({Key? key}) : super(key: key);
 
   @override
   State<DetailMobilier> createState() => _DetailMobilierState();
@@ -77,6 +76,7 @@ class _DetailMobilierState extends State<DetailMobilier> {
 
   @override
   Widget build(BuildContext context) {
+    final id = ModalRoute.of(context)!.settings.arguments as int;
     return Scaffold(
         key: _key,
         drawer: const DrawerMenu(),
@@ -93,7 +93,7 @@ class _DetailMobilierState extends State<DetailMobilier> {
                 child: Padding(
                     padding: const EdgeInsets.all(p10),
                     child: FutureBuilder<MobilierModel>(
-                        future: MobilierApi().getOneData(widget.id!),
+                        future: MobilierApi().getOneData(id),
                         builder: (BuildContext context,
                             AsyncSnapshot<MobilierModel> snapshot) {
                           if (snapshot.hasData) {

@@ -451,44 +451,6 @@ class _PaiementBulletinState extends State<PaiementBulletin> {
           children: [
             Expanded(
               child: Text(
-                'Ligne Budgtaire',
-                style: bodyMedium.copyWith(fontWeight: FontWeight.bold),
-              ),
-            ),
-            const SizedBox(
-              width: p10,
-            ),
-            Expanded(
-                child: SelectableText(
-              data.ligneBudgtaire,
-              style: bodyMedium,
-            ))
-          ],
-        ),
-        Divider(color: Colors.amber.shade700),
-        Row(
-          children: [
-            Expanded(
-              child: Text(
-                'Resources',
-                style: bodyMedium.copyWith(fontWeight: FontWeight.bold),
-              ),
-            ),
-            const SizedBox(
-              width: p10,
-            ),
-            Expanded(
-                child: SelectableText(
-              data.resources,
-              style: bodyMedium,
-            ))
-          ],
-        ),
-        Divider(color: Colors.amber.shade700),
-        Row(
-          children: [
-            Expanded(
-              child: Text(
                 'Observation',
                 style: bodyMedium.copyWith(fontWeight: FontWeight.bold),
               ),
@@ -1811,8 +1773,6 @@ class _PaiementBulletinState extends State<PaiementBulletin> {
         observation: isChecked,
         modePaiement: data.modePaiement,
         createdAt: data.createdAt,
-        ligneBudgtaire: data.ligneBudgtaire,
-        resources: data.resources,
         tauxJourHeureMoisSalaire: data.tauxJourHeureMoisSalaire,
         joursHeuresPayeA100PourecentSalaire:
             data.joursHeuresPayeA100PourecentSalaire,

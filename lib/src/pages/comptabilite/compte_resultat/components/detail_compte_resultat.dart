@@ -11,13 +11,13 @@ import 'package:fokad_admin/src/models/users/user_model.dart';
 import 'package:fokad_admin/src/navigation/drawer/drawer_menu.dart';
 import 'package:fokad_admin/src/navigation/header/custom_appbar.dart';
 import 'package:fokad_admin/src/pages/comptabilite/compte_resultat/components/update_compte_resultat.dart';
+import 'package:fokad_admin/src/routes/routes.dart';
 import 'package:fokad_admin/src/widgets/print_widget.dart';
 import 'package:fokad_admin/src/widgets/title_widget.dart';
 import 'package:intl/intl.dart';
 
 class DetailCompteResultat extends StatefulWidget {
-  const DetailCompteResultat({Key? key, required this.id}) : super(key: key);
-  final int id;
+  const DetailCompteResultat({Key? key}) : super(key: key);
 
   @override
   State<DetailCompteResultat> createState() => _DetailCompteResultatState();
@@ -84,6 +84,7 @@ class _DetailCompteResultatState extends State<DetailCompteResultat> {
 
   @override
   Widget build(BuildContext context) {
+    final id = ModalRoute.of(context)!.settings.arguments as int;
     return Scaffold(
         key: _key,
         drawer: const DrawerMenu(),
@@ -100,7 +101,7 @@ class _DetailCompteResultatState extends State<DetailCompteResultat> {
                 child: Padding(
                     padding: const EdgeInsets.all(p10),
                     child: FutureBuilder<CompteResulatsModel>(
-                        future: CompteResultatApi().getOneData(widget.id),
+                        future: CompteResultatApi().getOneData(id),
                         builder: (BuildContext context,
                             AsyncSnapshot<CompteResulatsModel> snapshot) {
                           if (snapshot.hasData) {
@@ -226,7 +227,7 @@ class _DetailCompteResultatState extends State<DetailCompteResultat> {
                         ],
                       ),
                       SelectableText(
-                          DateFormat("dd-MM-yy HH:mm").format(data.created),
+                          DateFormat("dd-MM-yyyy HH:mm").format(data.created),
                           textAlign: TextAlign.start),
                     ],
                   )
@@ -255,10 +256,10 @@ class _DetailCompteResultatState extends State<DetailCompteResultat> {
               child: const Text('Annuler'),
             ),
             TextButton(
-              onPressed: () async {
-                Navigator.of(context).push(MaterialPageRoute(
-                    builder: (context) =>
-                        UpdateCompteResultat(compteResulatsModel: data)));
+              onPressed: () {
+                 Navigator.pushNamed(context,
+                    ComptabiliteRoutes.comptabiliteCompteResultatUpdate,
+                    arguments: data);  
               },
               child: const Text('OK'),
             ),

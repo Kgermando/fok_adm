@@ -666,35 +666,6 @@ class _DetailAgentPageState extends State<DetailAgentPage> {
                   width: 200,
                   child: Column(
                     children: [
-                      // Switch(
-                      //     activeColor: Colors.green,
-                      //     splashRadius: p50,
-                      //     value: statutAgent,
-                      //     onChanged: (val) {
-                      //       setState(() {
-                      //         statutAgent = val;
-                      //         print("statutAgent $statutAgent");
-                      //         if (statutAgent == true) {
-                      //           createUser(
-                      //               agentModel.nom,
-                      //               agentModel.prenom,
-                      //               agentModel.email,
-                      //               agentModel.telephone,
-                      //               agentModel.matricule,
-                      //               agentModel.departement,
-                      //               agentModel.servicesAffectation,
-                      //               agentModel.fonctionOccupe,
-                      //               agentModel.role);
-                      //           updateAgent(agentModel);
-                      //           // isLoading == false;
-                      //         } else {
-                      //           deleteUser(agentModel);
-                      //           updateAgent(agentModel);
-                      //           // isLoading == false;
-                      //         }
-                      //       });
-                      //     }),
-
                       FlutterSwitch(
                         width: 225.0,
                         height: 55.0,
@@ -776,7 +747,7 @@ class _DetailAgentPageState extends State<DetailAgentPage> {
         dateFinContrat: agentModel.dateFinContrat,
         fonctionOccupe: agentModel.fonctionOccupe,
         statutAgent: statutAgent,
-        createdAt: DateTime.now(),
+        createdAt: agentModel.createdAt,
         photo: agentModel.photo,
         salaire: agentModel.salaire,
         signature: user.matricule,

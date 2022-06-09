@@ -1331,8 +1331,6 @@ class _AddPaiementSalaireState extends State<AddPaiementSalaire> {
       observation: false, // Finance
       modePaiement: '-',
       createdAt: DateTime.now(),
-      ligneBudgtaire: '-',
-      resources: '-',
       tauxJourHeureMoisSalaire:
           (tauxJourHeureMoisSalaire == '' || tauxJourHeureMoisSalaire == null)
               ? '-'

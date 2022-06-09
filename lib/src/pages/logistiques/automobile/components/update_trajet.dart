@@ -12,8 +12,7 @@ import 'package:fokad_admin/src/widgets/print_widget.dart';
 
 
 class UpdateTrajet extends StatefulWidget {
-  const UpdateTrajet({Key? key, required this.trajetModel}) : super(key: key);
-  final TrajetModel trajetModel;
+  const UpdateTrajet({Key? key}) : super(key: key);
 
   @override
   State<UpdateTrajet> createState() => _UpdateTrajetState();
@@ -36,16 +35,7 @@ class _UpdateTrajetState extends State<UpdateTrajet> {
   @override
   initState() {
     getData();
-    nomeroEntrepriseController =
-        TextEditingController(text: widget.trajetModel.nomeroEntreprise);
-    nomUtilisateurController =
-        TextEditingController(text: widget.trajetModel.nomUtilisateur);
-    trajetDeController =
-        TextEditingController(text: widget.trajetModel.trajetDe);
-    trajetAController = TextEditingController(text: widget.trajetModel.trajetA);
-    missionController = TextEditingController(text: widget.trajetModel.mission);
-    kilometrageSoriteController =
-        TextEditingController(text: widget.trajetModel.kilometrageSorite);
+    
     super.initState();
   }
 
@@ -74,6 +64,17 @@ class _UpdateTrajetState extends State<UpdateTrajet> {
 
   @override
   Widget build(BuildContext context) {
+    final data = ModalRoute.of(context)!.settings.arguments as TrajetModel;
+    nomeroEntrepriseController =
+        TextEditingController(text: data.nomeroEntreprise);
+    nomUtilisateurController =
+        TextEditingController(text: data.nomUtilisateur);
+    trajetDeController =
+        TextEditingController(text: data.trajetDe);
+    trajetAController = TextEditingController(text: data.trajetA);
+    missionController = TextEditingController(text: data.mission);
+    kilometrageSoriteController =
+        TextEditingController(text: data.kilometrageSorite);
     return Scaffold(
         key: _key,
         drawer: const DrawerMenu(),
@@ -114,7 +115,7 @@ class _UpdateTrajetState extends State<UpdateTrajet> {
                       Expanded(
                           child: Scrollbar(
                         controller: _controllerScroll,
-                        child: addAgentWidget(),
+                        child: addAgentWidget(data),
                       ))
                     ],
                   ),
@@ -125,7 +126,7 @@ class _UpdateTrajetState extends State<UpdateTrajet> {
         ));
   }
 
-  Widget addAgentWidget() {
+  Widget addAgentWidget(TrajetModel data) {
     return Form(
       key: _formKey,
       child: Row(
@@ -186,7 +187,7 @@ class _UpdateTrajetState extends State<UpdateTrajet> {
                         press: () {
                           final form = _formKey.currentState!;
                           if (form.validate()) {
-                            submit();
+                            submit(data);
                             form.reset();
                           }
                         })
@@ -362,18 +363,19 @@ class _UpdateTrajetState extends State<UpdateTrajet> {
         ));
   }
 
-  Future<void> submit() async {
+  Future<void> submit(TrajetModel data) async {
     final trajetModel = TrajetModel(
-        nomeroEntreprise: widget.trajetModel.nomeroEntreprise,
-        nomUtilisateur: widget.trajetModel.nomUtilisateur,
-        trajetDe: widget.trajetModel.trajetDe,
-        trajetA: widget.trajetModel.trajetA,
-        mission: widget.trajetModel.mission,
-        kilometrageSorite: widget.trajetModel.kilometrageSorite,
+        nomeroEntreprise: data.nomeroEntreprise,
+        nomUtilisateur: data.nomUtilisateur,
+        trajetDe: data.trajetDe,
+        trajetA: data.trajetA,
+        mission: data.mission,
+        kilometrageSorite: data.kilometrageSorite,
         kilometrageRetour: kilometrageRetourController.text,
         signature: signature.toString(),
+        createdRef: data.createdRef,
         created: DateTime.now());
-    await TrajetApi().updateData(widget.trajetModel.id!, trajetModel);
+    await TrajetApi().updateData(data.id!, trajetModel);
     Navigator.of(context).pop();
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
       content: const Text("Enregistrer avec succès!"),

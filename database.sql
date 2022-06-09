@@ -310,7 +310,7 @@ CREATE TABLE "public"."campaigns" (
     "coutCampaign" character varying NOT NULL,
     "lieuCible" character varying NOT NULL,
     "promotion" character varying NOT NULL,
-    "objetctifs" character varying NOT NULL,
+    "objectifs" character varying NOT NULL,
     "ligneBudgtaire" character varying NOT NULL,
     "resources" character varying NOT NULL,
     "observation" boolean NOT NULL,

@@ -15,8 +15,7 @@ import 'package:fokad_admin/src/widgets/title_widget.dart';
 import 'package:intl/intl.dart';
 
 class DetailBalance extends StatefulWidget {
-  const DetailBalance({Key? key, required this.id}) : super(key: key);
-  final int id;
+  const DetailBalance({Key? key}) : super(key: key);
 
   @override
   State<DetailBalance> createState() => _DetailBalanceState();
@@ -74,6 +73,7 @@ class _DetailBalanceState extends State<DetailBalance> {
 
   @override
   Widget build(BuildContext context) {
+    final id = ModalRoute.of(context)!.settings.arguments as int;
     return Scaffold(
         key: _key,
         drawer: const DrawerMenu(),
@@ -90,15 +90,16 @@ class _DetailBalanceState extends State<DetailBalance> {
                 child: Padding(
                     padding: const EdgeInsets.all(p10),
                     child: FutureBuilder<BalanceCompteModel>(
-                        future: BalanceCompteApi().getOneData(widget.id),
+                        future: BalanceCompteApi().getOneData(id),
                         builder: (BuildContext context,
                             AsyncSnapshot<BalanceCompteModel> snapshot) {
                           if (snapshot.hasData) {
                             BalanceCompteModel? data = snapshot.data;
                             approbationData = approbList
-                                .where(
-                                    (element) => element.reference.microsecondsSinceEpoch == data!.created.microsecondsSinceEpoch)
-                                .toList();
+                              .where(
+                                  (element) => element.reference.microsecondsSinceEpoch 
+                                  == data!.created.microsecondsSinceEpoch)
+                              .toList();
 
                             if (approbationData.isNotEmpty) {
                               approb = approbationData.first;
@@ -212,10 +213,10 @@ class _DetailBalanceState extends State<DetailBalance> {
     double totalSolde = 0.0;
 
     List<CompteBalance> dataList = [];
-    var comptesList = data.comptes.toList();
-    for (var item in comptesList) {
-      dataList.add(CompteBalance.fromJson(item));
-    }
+    // var comptesList = data.comptes.toList();
+    // for (var item in comptesList) {
+    //   dataList.add(CompteBalance.fromJson(item));
+    // }
 
     for (var item in dataList) {
       totalDebit += double.parse(item.debit);
@@ -378,7 +379,7 @@ class _DetailBalanceState extends State<DetailBalance> {
                     ),
                     Divider(color: Colors.amber.shade700),
                     const SizedBox(height: p30),
-                    compteWidget(data)
+                    // compteWidget(data)
                   ],
                 ),
               ),
@@ -389,88 +390,88 @@ class _DetailBalanceState extends State<DetailBalance> {
     );
   }
 
-  Widget compteWidget(BalanceCompteModel data) {
-    final bodyMedium = Theme.of(context).textTheme.bodyMedium;
+  // Widget compteWidget(BalanceCompteModel data) {
+  //   final bodyMedium = Theme.of(context).textTheme.bodyMedium;
 
-    List<CompteBalance> dataList = [];
-    var comptesList = data.comptes.toList();
-    for (var item in comptesList) {
-      dataList.add(CompteBalance.fromJson(item));
-    }
-    return SizedBox(
-      height: MediaQuery.of(context).size.height / 1.5,
-      child: ListView.builder(
-        itemCount: dataList.length,
-        itemBuilder: (context, index) {
-          final compte = dataList[index];
-          return Column(
-            children: [
-              Row(
-                children: [
-                  Expanded(
-                    flex: 3,
-                    child: SelectableText(compte.comptes,
-                        textAlign: TextAlign.start, style: bodyMedium),
-                  ),
-                  Expanded(
-                    flex: 1,
-                    child: Container(
-                      decoration: BoxDecoration(
-                          border: Border(
-                        left: BorderSide(
-                          color: Colors.amber.shade700,
-                          width: 2,
-                        ),
-                      )),
-                      child: SelectableText(
-                          "${NumberFormat.decimalPattern('fr').format(double.parse(compte.debit))} \$",
-                          textAlign: TextAlign.center,
-                          style: bodyMedium),
-                    ),
-                  ),
-                  Expanded(
-                    flex: 1,
-                    child: Container(
-                      decoration: BoxDecoration(
-                          border: Border(
-                        left: BorderSide(
-                          color: Colors.amber.shade700,
-                          width: 2,
-                        ),
-                      )),
-                      child: SelectableText(
-                          "${NumberFormat.decimalPattern('fr').format(double.parse(compte.credit))} \$",
-                          textAlign: TextAlign.center,
-                          style: bodyMedium),
-                    ),
-                  ),
-                  Expanded(
-                    flex: 1,
-                    child: Container(
-                      decoration: BoxDecoration(
-                          border: Border(
-                        left: BorderSide(
-                          color: Colors.amber.shade700,
-                          width: 2,
-                        ),
-                      )),
-                      child: SelectableText(
-                          "${NumberFormat.decimalPattern('fr').format(compte.solde)} \$",
-                          textAlign: TextAlign.center,
-                          style: bodyMedium),
-                    ),
-                  )
-                ],
-              ),
-              Divider(
-                color: Colors.amber.shade700,
-              ),
-            ],
-          );
-        },
-      ),
-    );
-  }
+  //   // List<CompteBalance> dataList = [];
+  //   // var comptesList = data.comptes.toList();
+  //   // for (var item in comptesList) {
+  //   //   dataList.add(CompteBalance.fromJson(item));
+  //   // }
+  //   return SizedBox(
+  //     height: MediaQuery.of(context).size.height / 1.5,
+  //     child: ListView.builder(
+  //       itemCount: dataList.length,
+  //       itemBuilder: (context, index) {
+  //         final compte = dataList[index];
+  //         return Column(
+  //           children: [
+  //             Row(
+  //               children: [
+  //                 Expanded(
+  //                   flex: 3,
+  //                   child: SelectableText(compte.comptes,
+  //                       textAlign: TextAlign.start, style: bodyMedium),
+  //                 ),
+  //                 Expanded(
+  //                   flex: 1,
+  //                   child: Container(
+  //                     decoration: BoxDecoration(
+  //                         border: Border(
+  //                       left: BorderSide(
+  //                         color: Colors.amber.shade700,
+  //                         width: 2,
+  //                       ),
+  //                     )),
+  //                     child: SelectableText(
+  //                         "${NumberFormat.decimalPattern('fr').format(double.parse(compte.debit))} \$",
+  //                         textAlign: TextAlign.center,
+  //                         style: bodyMedium),
+  //                   ),
+  //                 ),
+  //                 Expanded(
+  //                   flex: 1,
+  //                   child: Container(
+  //                     decoration: BoxDecoration(
+  //                         border: Border(
+  //                       left: BorderSide(
+  //                         color: Colors.amber.shade700,
+  //                         width: 2,
+  //                       ),
+  //                     )),
+  //                     child: SelectableText(
+  //                         "${NumberFormat.decimalPattern('fr').format(double.parse(compte.credit))} \$",
+  //                         textAlign: TextAlign.center,
+  //                         style: bodyMedium),
+  //                   ),
+  //                 ),
+  //                 Expanded(
+  //                   flex: 1,
+  //                   child: Container(
+  //                     decoration: BoxDecoration(
+  //                         border: Border(
+  //                       left: BorderSide(
+  //                         color: Colors.amber.shade700,
+  //                         width: 2,
+  //                       ),
+  //                     )),
+  //                     child: SelectableText(
+  //                         "${NumberFormat.decimalPattern('fr').format(compte.solde)} \$",
+  //                         textAlign: TextAlign.center,
+  //                         style: bodyMedium),
+  //                   ),
+  //                 )
+  //               ],
+  //             ),
+  //             Divider(
+  //               color: Colors.amber.shade700,
+  //             ),
+  //           ],
+  //         );
+  //       },
+  //     ),
+  //   );
+  // }
 
   Widget deleteButton(BalanceCompteModel data) {
     return IconButton(
@@ -502,11 +503,12 @@ class _DetailBalanceState extends State<DetailBalance> {
 
   Future<void> submitCorbeille(BalanceCompteModel data) async {
     final balanceCompteModel = BalanceCompteModel(
-        title: data.title,
-        comptes: data.comptes,
-        statut: true,
-        signature: data.signature,
-        created: data.created);
+      title: data.title, 
+      statut: true,
+      signature: data.signature,
+      createdRef: data.createdRef,
+      created: DateTime.now()
+    );
     await BalanceCompteApi().updateData(data.id!, balanceCompteModel);
     Navigator.of(context).pop();
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
@@ -517,7 +519,6 @@ class _DetailBalanceState extends State<DetailBalance> {
 
   Widget infosEditeurWidget() {
     final bodyLarge = Theme.of(context).textTheme.bodyLarge;
-
     return SizedBox(
       height: 500,
       child: Row(

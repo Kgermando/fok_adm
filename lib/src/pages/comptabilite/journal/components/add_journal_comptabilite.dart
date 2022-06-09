@@ -549,6 +549,7 @@ class _AddJournalComptabiliteState extends State<AddJournalComptabilite> {
         tva: tvaController.text,
         remarque: remarqueController.text,
         signature: signature.toString(),
+        createdRef: DateTime.now(),
         created: DateTime.now());
     await JournalApi().insertData(journalModel);
     Navigator.pop(context);

@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:fokad_admin/src/constants/app_theme.dart';
 import 'package:fokad_admin/src/constants/responsive.dart';
 import 'package:fokad_admin/src/navigation/drawer/drawer_menu.dart';
-import 'package:fokad_admin/src/navigation/header/custom_appbar.dart';
-import 'package:fokad_admin/src/pages/comptabilite/compte_resultat/components/add_compte_resultat.dart';
+import 'package:fokad_admin/src/navigation/header/custom_appbar.dart'; 
 import 'package:fokad_admin/src/pages/comptabilite/compte_resultat/components/table_compte_resultat.dart';
+import 'package:fokad_admin/src/routes/routes.dart';
 
 class CompteResultat extends StatefulWidget {
   const CompteResultat({ Key? key }) : super(key: key);
@@ -24,10 +24,8 @@ class _CompteResultatState extends State<CompteResultat> {
         floatingActionButton: FloatingActionButton(
             child: const Icon(Icons.add),
             onPressed: () {
-              // Routemaster.of(context)
-              //     .push(ComptabiliteRoutes.comptabiliteCompteResultatAdd);
-              Navigator.of(context).push(
-                  MaterialPageRoute(builder: (context) => const AddCompteResultat()));
+              Navigator.pushNamed(
+                context, ComptabiliteRoutes.comptabiliteCompteResultatAdd); 
             }),
         body: SafeArea(
           child: Row(

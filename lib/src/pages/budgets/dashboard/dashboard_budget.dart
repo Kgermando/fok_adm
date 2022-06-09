@@ -11,6 +11,7 @@ import 'package:fokad_admin/src/api/exploitations/projets_api.dart';
 import 'package:fokad_admin/src/api/rh/paiement_salaire_api.dart';
 import 'package:fokad_admin/src/constants/app_theme.dart';
 import 'package:fokad_admin/src/constants/responsive.dart';
+import 'package:fokad_admin/src/models/approbation/approbation_model.dart';
 import 'package:fokad_admin/src/models/budgets/departement_budget_model.dart';
 import 'package:fokad_admin/src/models/budgets/ligne_budgetaire_model.dart';
 import 'package:fokad_admin/src/models/comm_maketing/campaign_model.dart';
@@ -79,6 +80,7 @@ class _DashboardBudgetState extends State<DashboardBudget> {
   List<ProjetModel> dataProjetList = [];
   List<PaiementSalaireModel> dataSalaireList = [];
   List<DepartementBudgetModel> departementsList = [];
+  List<ApprobationModel> approbationList = [];
 
   Future<void> getData() async {
     var departements = await DepeartementBudgetApi().getAllData();
@@ -91,6 +93,9 @@ class _DashboardBudgetState extends State<DashboardBudget> {
 
     if (mounted) {
       setState(() {
+        approbationList = approbations;
+
+
         departementsList = departements
             .where((element) => DateTime.now().isBefore(element.periodeFin))
             .toList();
@@ -104,28 +109,32 @@ class _DashboardBudgetState extends State<DashboardBudget> {
           for (var i in approbations) {
             dataCampaignList = campaigns
                 .where((element) =>
-                    element.created.microsecondsSinceEpoch == i.reference.microsecondsSinceEpoch &&
+                    element.created.microsecondsSinceEpoch ==
+                        i.reference.microsecondsSinceEpoch &&
                     i.fontctionOccupee == 'Directeur générale' &&
                     element.created
                         .isBefore(DateTime.parse(item.periodeBudget)))
                 .toList();
             dataDevisList = devis
                 .where((element) =>
-                    element.created.microsecondsSinceEpoch == i.reference.microsecondsSinceEpoch &&
+                    element.created.microsecondsSinceEpoch ==
+                        i.reference.microsecondsSinceEpoch &&
                     i.fontctionOccupee == 'Directeur générale' &&
                     element.created
                         .isBefore(DateTime.parse(item.periodeBudget)))
                 .toList();
             dataProjetList = projets
                 .where((element) =>
-                    element.created.microsecondsSinceEpoch == i.reference.microsecondsSinceEpoch &&
+                    element.created.microsecondsSinceEpoch ==
+                        i.reference.microsecondsSinceEpoch &&
                     i.fontctionOccupee == 'Directeur générale' &&
                     element.created
                         .isBefore(DateTime.parse(item.periodeBudget)))
                 .toList();
             dataSalaireList = salaires
                 .where((element) =>
-                    element.createdAt.microsecondsSinceEpoch == i.reference.microsecondsSinceEpoch &&
+                    element.createdAt.microsecondsSinceEpoch ==
+                        i.reference.microsecondsSinceEpoch &&
                     i.fontctionOccupee == 'Directeur générale' &&
                     element.createdAt
                         .isBefore(DateTime.parse(item.periodeBudget)))
@@ -142,80 +151,152 @@ class _DashboardBudgetState extends State<DashboardBudget> {
       coutTotal += double.parse(item.coutTotal);
     }
     for (var item in dataCampaignList) {
-      totalCampaign += double.parse(item.resources);
+      totalCampaign += double.parse(item.coutCampaign);
     }
     // for (var item in dataDevisList) {
     //   totalDevis += double.parse(item.resources);
     // }
     for (var item in dataProjetList) {
-      totalProjet += double.parse(item.resources);
+      totalProjet += double.parse(item.coutProjet);
     }
     for (var item in dataSalaireList) {
-      totalSalaire += double.parse(item.resources);
+      totalSalaire += double.parse(item.salaire);
     }
     sommeEnCours = totalCampaign + totalDevis + totalProjet + totalSalaire;
     sommeRestantes = coutTotal - sommeEnCours;
     poursentExecution = sommeRestantes * 100 / coutTotal;
+
+
     
+    for (var i in approbationList) {
 
-    for (var item in dataCampaignList.where((e) => e.resources == "caisse")) {
-      caisseCampaign += double.parse(item.resources);
-    }
-    // for (var item in dataDevisList.where((e) => e.resources == "caisse")) {
-    //   caisseetatBesion += double.parse(item.resources);
-    // }
-    for (var item in dataProjetList.where((e) => e.resources == "caisse")) {
-      caisseProjet += double.parse(item.resources);
-    }
-    for (var item in dataSalaireList.where((e) => e.resources == "caisse")) {
-      caissesalaire += double.parse(item.resources);
-    }
+      for (var item in dataCampaignList.where((element) =>
+                    element.createdRef.microsecondsSinceEpoch ==
+                        i.reference.microsecondsSinceEpoch &&
+                    i.fontctionOccupee == 'Directeur générale' && i.resources == "caisse")
+                .toList()) {
+        caisseCampaign += double.parse(item.coutCampaign);
+      }
+      // for (var item in dataDevisList.where((e) => e.resources == "caisse")) {
+      //   caisseetatBesion += double.parse(item.resources);
+      // }
+      for (var item in dataProjetList
+          .where((element) =>
+              element.createdRef.microsecondsSinceEpoch ==
+                  i.reference.microsecondsSinceEpoch &&
+              i.fontctionOccupee == 'Directeur générale' &&
+              i.resources == "caisse")
+          .toList()) {
+        caisseProjet += double.parse(item.coutProjet);
+      }
+      for (var item in dataSalaireList
+          .where((element) =>
+              element.createdAt.microsecondsSinceEpoch ==
+                  i.reference.microsecondsSinceEpoch &&
+              i.fontctionOccupee == 'Directeur générale' &&
+              i.resources == "caisse")
+          .toList()) {
+        caissesalaire += double.parse(item.salaire);
+      }
 
-    for (var item in dataCampaignList.where((e) => e.resources == "banque")) {
-      banqueCampaign += double.parse(item.resources);
-    }
-    // for (var item in dataDevisList.where((e) => e.resources == "banque")) {
-    //   banqueetatBesion += double.parse(item.resources);
-    // }
-    for (var item in dataProjetList.where((e) => e.resources == "banque")) {
-      banqueProjet += double.parse(item.resources);
-    }
-    for (var item in dataSalaireList.where((e) => e.resources == "banque")) {
-      banquesalaire += double.parse(item.resources);
-    }
+      for (var item in dataCampaignList
+          .where((element) =>
+              element.createdRef.microsecondsSinceEpoch ==
+                  i.reference.microsecondsSinceEpoch &&
+              i.fontctionOccupee == 'Directeur générale' &&
+              i.resources == "caisse")
+          .toList()) {
+        banqueCampaign += double.parse(item.coutCampaign);
+      }
+      // for (var item in dataDevisList.where((e) => e.resources == "banque")) {
+      //   banqueetatBesion += double.parse(item.resources);
+      // }
+      for (var item in dataProjetList
+          .where((element) =>
+              element.createdRef.microsecondsSinceEpoch ==
+                  i.reference.microsecondsSinceEpoch &&
+              i.fontctionOccupee == 'Directeur générale' &&
+              i.resources == "banque")
+          .toList()) {
+        banqueProjet += double.parse(item.coutProjet);
+      }
+      for (var item in dataSalaireList
+          .where((element) =>
+              element.createdAt.microsecondsSinceEpoch ==
+                  i.reference.microsecondsSinceEpoch &&
+              i.fontctionOccupee == 'Directeur générale' &&
+              i.resources == "banque")
+          .toList()) {
+        banquesalaire += double.parse(item.salaire);
+      }
 
-    for (var item
-        in dataCampaignList.where((e) => e.resources == "finPropre")) {
-      finPropreCampaign += double.parse(item.resources);
-    }
-    // for (var item in dataDevisList.where((e) => e.resources == "finPropre")) {
-    //   finPropreetatBesion += double.parse(item.resources);
-    // }
-    for (var item in dataProjetList.where((e) => e.resources == "finPropre")) {
-      finPropreProjet += double.parse(item.resources);
-    }
-    for (var item in dataSalaireList.where((e) => e.resources == "finPropre")) {
-      finPropresalaire += double.parse(item.resources);
-    }
+      for (var item
+          in dataCampaignList
+          .where((element) =>
+              element.createdRef.microsecondsSinceEpoch ==
+                  i.reference.microsecondsSinceEpoch &&
+              i.fontctionOccupee == 'Directeur générale' &&
+              i.resources == "finPropre")
+          .toList()) {
+        finPropreCampaign += double.parse(item.coutCampaign);
+      }
+      // for (var item in dataDevisList.where((e) => e.resources == "finPropre")) {
+      //   finPropreetatBesion += double.parse(item.resources);
+      // }
+      for (var item in dataProjetList
+          .where((element) =>
+              element.createdRef.microsecondsSinceEpoch ==
+                  i.reference.microsecondsSinceEpoch &&
+              i.fontctionOccupee == 'Directeur générale' &&
+              i.resources == "finPropre")
+          .toList()) {
+        finPropreProjet += double.parse(item.coutProjet);
+      }
+      for (var item in dataSalaireList
+          .where((element) =>
+              element.createdAt.microsecondsSinceEpoch ==
+                  i.reference.microsecondsSinceEpoch &&
+              i.fontctionOccupee == 'Directeur générale' &&
+              i.resources == "finPropre")
+          .toList()) {
+        finPropresalaire += double.parse(item.salaire);
+      }
 
-    for (var item
-        in dataCampaignList.where((e) => e.resources == "finExterieur")) {
-      finExterieurCampaign += double.parse(item.resources);
+      for (var item
+          in dataCampaignList
+          .where((element) =>
+              element.createdRef.microsecondsSinceEpoch ==
+                  i.reference.microsecondsSinceEpoch &&
+              i.fontctionOccupee == 'Directeur générale' &&
+              i.resources == "finExterieur")
+          .toList()) {
+        finExterieurCampaign += double.parse(item.coutCampaign);
+      }
+      // for (var item
+      //     in dataDevisList.where((e) => e.resources == "finExterieur")) {
+      //   finExterieuretatBesion += double.parse(item.resources);
+      // }
+      for (var item
+          in dataProjetList
+          .where((element) =>
+              element.createdRef.microsecondsSinceEpoch ==
+                  i.reference.microsecondsSinceEpoch &&
+              i.fontctionOccupee == 'Directeur générale' &&
+              i.resources == "finExterieur")
+          .toList()) {
+        finExterieurProjet += double.parse(item.coutProjet);
+      }
+      for (var item
+          in dataSalaireList
+          .where((element) =>
+              element.createdAt.microsecondsSinceEpoch ==
+                  i.reference.microsecondsSinceEpoch &&
+              i.fontctionOccupee == 'Directeur générale' &&
+              i.resources == "finExterieur")
+          .toList()) {
+        finExterieursalaire += double.parse(item.salaire);
+      }
     }
-    // for (var item
-    //     in dataDevisList.where((e) => e.resources == "finExterieur")) {
-    //   finExterieuretatBesion += double.parse(item.resources);
-    // }
-    for (var item
-        in dataProjetList.where((e) => e.resources == "finExterieur")) {
-      finExterieurProjet += double.parse(item.resources);
-    }
-    for (var item
-        in dataSalaireList.where((e) => e.resources == "finExterieur")) {
-      finExterieursalaire += double.parse(item.resources);
-    }
-
-    // print("poursentExecution $poursentExecution");
 
     return Scaffold(
         key: _key,

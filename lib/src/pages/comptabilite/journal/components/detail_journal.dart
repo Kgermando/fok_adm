@@ -813,16 +813,18 @@ class _DetailJournalState extends State<DetailJournal> {
 
   Future<void> submitCorbeille(JournalModel data) async {
     final journalModel = JournalModel(
-        numeroOperation: data.numeroOperation,
-        libele: data.libele,
-        compteDebit: data.compteDebit,
-        montantDebit: data.montantDebit,
-        compteCredit: data.compteCredit,
-        montantCredit: data.montantCredit,
-        tva: data.tva,
-        remarque: data.remarque,
-        signature: data.signature,
-        created: data.created);
+      numeroOperation: data.numeroOperation,
+      libele: data.libele,
+      compteDebit: data.compteDebit,
+      montantDebit: data.montantDebit,
+      compteCredit: data.compteCredit,
+      montantCredit: data.montantCredit,
+      tva: data.tva,
+      remarque: data.remarque,
+      signature: data.signature,
+      createdRef: data.created,
+      created: DateTime.now()
+    );
     await JournalApi().updateData(data.id!, journalModel);
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
       content: const Text("Mise en corbeille avec succès!"),

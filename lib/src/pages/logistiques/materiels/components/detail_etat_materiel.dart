@@ -15,8 +15,7 @@ import 'package:fokad_admin/src/widgets/title_widget.dart';
 import 'package:intl/intl.dart';
 
 class DetailEtatMateriel extends StatefulWidget {
-  const DetailEtatMateriel({Key? key, this.id}) : super(key: key);
-  final int? id;
+  const DetailEtatMateriel({Key? key}) : super(key: key);
 
   @override
   State<DetailEtatMateriel> createState() => _DetailEtatMaterielState();
@@ -78,6 +77,7 @@ class _DetailEtatMaterielState extends State<DetailEtatMateriel> {
 
   @override
   Widget build(BuildContext context) {
+    final id = ModalRoute.of(context)!.settings.arguments as int;
     return Scaffold(
         key: _key,
         drawer: const DrawerMenu(),
@@ -94,7 +94,7 @@ class _DetailEtatMaterielState extends State<DetailEtatMateriel> {
                 child: Padding(
                     padding: const EdgeInsets.all(p10),
                     child: FutureBuilder<EtatMaterielModel>(
-                        future: EtatMaterielApi().getOneData(widget.id!),
+                        future: EtatMaterielApi().getOneData(id),
                         builder: (BuildContext context,
                             AsyncSnapshot<EtatMaterielModel> snapshot) {
                           if (snapshot.hasData) {
@@ -367,6 +367,7 @@ class _DetailEtatMaterielState extends State<DetailEtatMateriel> {
         typeObjet: data.typeObjet,
         statut: typeObjet.toString(),
         signature: data.signature,
+        createdRef: data.createdRef,
         created: data.created);
     await EtatMaterielApi().updateData(data.id!, etatMaterielModel);
     Navigator.of(context).pop();

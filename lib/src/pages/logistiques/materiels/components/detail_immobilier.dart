@@ -15,8 +15,7 @@ import 'package:fokad_admin/src/widgets/title_widget.dart';
 import 'package:intl/intl.dart';
 
 class DetailImmobilier extends StatefulWidget {
-  const DetailImmobilier({Key? key, this.id}) : super(key: key);
-  final int? id;
+  const DetailImmobilier({Key? key}) : super(key: key);
 
   @override
   State<DetailImmobilier> createState() => _DetailImmobilierState();
@@ -76,6 +75,7 @@ class _DetailImmobilierState extends State<DetailImmobilier> {
 
   @override
   Widget build(BuildContext context) {
+    final id = ModalRoute.of(context)!.settings.arguments as int;
     return Scaffold(
         key: _key,
         drawer: const DrawerMenu(),
@@ -92,7 +92,7 @@ class _DetailImmobilierState extends State<DetailImmobilier> {
                 child: Padding(
                     padding: const EdgeInsets.all(p10),
                     child: FutureBuilder<ImmobilierModel>(
-                        future: ImmobilierApi().getOneData(widget.id!),
+                        future: ImmobilierApi().getOneData(id),
                         builder: (BuildContext context,
                             AsyncSnapshot<ImmobilierModel> snapshot) {
                           if (snapshot.hasData) {

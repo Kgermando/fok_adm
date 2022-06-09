@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:fokad_admin/src/constants/app_theme.dart';
 import 'package:fokad_admin/src/constants/responsive.dart';
 import 'package:fokad_admin/src/navigation/drawer/drawer_menu.dart';
-import 'package:fokad_admin/src/navigation/header/custom_appbar.dart';
-import 'package:fokad_admin/src/pages/comptabilite/balance/components/add_balance_comptabilite.dart';
+import 'package:fokad_admin/src/navigation/header/custom_appbar.dart'; 
 import 'package:fokad_admin/src/pages/comptabilite/balance/components/table_balance_comptabilite.dart';
+import 'package:fokad_admin/src/routes/routes.dart';
 
 
 class BalanceComptabilite extends StatefulWidget {
@@ -25,10 +25,8 @@ class _BalanceComptabiliteState extends State<BalanceComptabilite> {
         floatingActionButton: FloatingActionButton(
             child: const Icon(Icons.add),
             onPressed: () {
-              // Routemaster.of(context)
-              //     .push(ComptabiliteRoutes.comptabiliteBalanceAdd);
-              Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) => const AddBalanceComptabilite()));
+              Navigator.pushNamed(
+                  context, ComptabiliteRoutes.comptabiliteBalanceAdd); 
             }),
         body: SafeArea(
           child: Row(

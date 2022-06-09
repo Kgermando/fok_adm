@@ -975,6 +975,7 @@ class _AddCompteResultatState extends State<AddCompteResultat> {
         produitExceptionnels: produitExceptionnelsController.text,
         soldeDebiteur: soldeDebiteurController.text,
         signature: user!.matricule.toString(),
+        createdRef: DateTime.now(),
         created: DateTime.now());
     await CompteResultatApi().insertData(compteResulatsModel);
     Navigator.of(context).pop();

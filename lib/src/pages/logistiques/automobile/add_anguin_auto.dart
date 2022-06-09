@@ -528,6 +528,7 @@ class _AddAnguinAutoState extends State<AddAnguinAuto> {
         typeCaburant: typeCaburantController.text,
         typeMoteur: typeMoteurController.text,
         signature: signature.toString(),
+        createdRef: DateTime.now(),
         created: DateTime.now());
 
     await AnguinApi().insertData(anguinModel);

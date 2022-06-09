@@ -11,6 +11,7 @@ import 'package:fokad_admin/src/models/users/user_model.dart';
 import 'package:fokad_admin/src/navigation/drawer/drawer_menu.dart';
 import 'package:fokad_admin/src/navigation/header/custom_appbar.dart';
 import 'package:fokad_admin/src/pages/logistiques/automobile/components/update_trajet.dart';
+import 'package:fokad_admin/src/routes/routes.dart';
 import 'package:fokad_admin/src/widgets/print_widget.dart';
 import 'package:fokad_admin/src/widgets/title_widget.dart';
 import 'package:intl/intl.dart';
@@ -186,9 +187,9 @@ class _DetailTrajetState extends State<DetailTrajet> {
                           IconButton(
                               tooltip: "Ajout kilometrage retour",
                               onPressed: () {
-                                Navigator.of(context).push(MaterialPageRoute(
-                                    builder: (context) =>
-                                        UpdateTrajet(trajetModel: data)));
+                                 Navigator.pushNamed(
+                                    context, LogistiqueRoutes.logTrajetAutoUpdate,
+                                    arguments: data);
                               },
                               icon: Icon(
                                 Icons.traffic_outlined,

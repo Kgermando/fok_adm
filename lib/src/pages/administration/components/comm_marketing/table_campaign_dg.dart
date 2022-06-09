@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:fokad_admin/src/api/comm_marketing/marketing/campaign_api.dart';
 import 'package:fokad_admin/src/models/comm_maketing/campaign_model.dart';
 import 'package:fokad_admin/src/pages/comm_marketing/marketing/components/campaign/detail_campaign.dart';
+import 'package:fokad_admin/src/routes/routes.dart';
 import 'package:fokad_admin/src/utils/class_implemented.dart';
 import 'package:fokad_admin/src/widgets/print_widget.dart';
 import 'package:intl/intl.dart';
@@ -40,8 +41,9 @@ class _TableCampaignDGState extends State<TableCampaignDG> {
           final dataList = tapEvent.row!.cells.values;
           final idPlutoRow = dataList.elementAt(0);
 
-          Navigator.of(context).push(MaterialPageRoute(
-              builder: (context) => DetailCampaign(id: idPlutoRow.value)));
+          Navigator.pushNamed(
+              context, ComMarketingRoutes.comMarketingCampaignDetail,
+              arguments: idPlutoRow.value); 
         },
         onLoaded: (PlutoGridOnLoadedEvent event) {
           stateManager = event.stateManager;
@@ -74,7 +76,7 @@ class _TableCampaignDGState extends State<TableCampaignDG> {
                 return resolver<ClassFilterImplemented>() as PlutoFilterType;
               } else if (column.field == 'promotion') {
                 return resolver<ClassFilterImplemented>() as PlutoFilterType;
-              } else if (column.field == 'objetctifs') {
+              } else if (column.field == 'objectifs') {
                 return resolver<ClassFilterImplemented>() as PlutoFilterType;
               } else if (column.field == 'created') {
                 return resolver<ClassFilterImplemented>() as PlutoFilterType;
@@ -163,8 +165,8 @@ class _TableCampaignDGState extends State<TableCampaignDG> {
       ),
       PlutoColumn(
         readOnly: true,
-        title: 'Objetctifs',
-        field: 'objetctifs',
+        title: 'objectifs',
+        field: 'objectifs',
         type: PlutoColumnType.text(),
         enableRowDrag: true,
         enableContextMenu: false,
@@ -203,7 +205,7 @@ class _TableCampaignDGState extends State<TableCampaignDG> {
             'coutCampaign': PlutoCell(value: item.coutCampaign),
             'lieuCible': PlutoCell(value: item.lieuCible),
             'promotion': PlutoCell(value: item.promotion),
-            'objetctifs': PlutoCell(value: item.objetctifs),
+            'objectifs': PlutoCell(value: item.objectifs),
             'created': PlutoCell(
                 value: DateFormat("dd-MM-yy H:mm").format(item.created))
           }));

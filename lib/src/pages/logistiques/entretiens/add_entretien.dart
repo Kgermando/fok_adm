@@ -464,16 +464,15 @@ class _AddEntretienPageState extends State<AddEntretienPage> {
     );
   }
 
-  Future<void> submit() async {
-    final jsonList = _values.map((item) => jsonEncode(item)).toList();
+  Future<void> submit() async { 
     final entretienModel = EntretienModel(
         nom: nomController.text,
         modele: modeleController.text,
         marque: marqueController.text,
-        etatObjet: etatObjetController.text,
-        objetRemplace: jsonList,
+        etatObjet: etatObjetController.text, 
         dureeTravaux: dureeTravauxController.text,
         signature: signature.toString(),
+        createdRef: DateTime.now(),
         created: DateTime.now());
     await EntretienApi().insertData(entretienModel);
     Navigator.of(context).pop();

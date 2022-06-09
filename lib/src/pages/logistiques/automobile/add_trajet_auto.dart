@@ -364,6 +364,7 @@ class _AddTrajetAutoState extends State<AddTrajetAuto> {
         kilometrageSorite: kilometrageSoriteController.text,
         kilometrageRetour: '-',
         signature: signature.toString(),
+        createdRef: DateTime.now(),
         created: DateTime.now());
     await TrajetApi().insertData(trajetModel);
     Navigator.of(context).pop();

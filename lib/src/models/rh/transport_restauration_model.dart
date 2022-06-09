@@ -1,8 +1,6 @@
 class TransportRestaurationModel {
   late int? id;
   late String title;
-  // late String ligneBudgtaire;  sera dans approbation
-  // late String resources;
   late bool observation;
   late String signature; // celui qui fait le document
   late DateTime createdRef;

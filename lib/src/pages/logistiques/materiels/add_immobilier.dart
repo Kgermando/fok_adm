@@ -304,6 +304,7 @@ class _AddImmobilierMaterielState extends State<AddImmobilierMateriel> {
         superficie: superficieController.text,
         dateAcquisition: DateTime.parse(dateAcquisitionController.text),
         signature: signature.toString(),
+        createdRef: DateTime.now(),
         created: DateTime.now());
     await ImmobilierApi().insertData(immobilierModel);
     Navigator.pop(context);

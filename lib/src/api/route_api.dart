@@ -103,6 +103,9 @@ var addComptesResultatUrl = Uri.parse(
 var balanceComptessUrl = Uri.parse("$mainUrl/comptabilite/balance_comptes/");
 var addBalanceComptesUrl =
     Uri.parse("$mainUrl/comptabilite/balance_comptes/insert-new-balance-compte");
+var balanceCompteRefUrl = Uri.parse("$mainUrl/comptabilite/comptes-balance-ref/");
+var addBalanceCompteRefUrl = Uri.parse(
+    "$mainUrl/comptabilite/comptes-balance-ref/insert-new-comptes-balance-ref");
 
 
 // DEVIS
@@ -145,7 +148,8 @@ var addMobiliersUrl = Uri.parse("$mainUrl/mobiliers/insert-new-mobilier");
 var trajetsUrl = Uri.parse("$mainUrl/trajets/");
 var addTrajetssUrl = Uri.parse("$mainUrl/trajets/insert-new-trajet");
 
-
+var objetsRemplaceUrl = Uri.parse("$mainUrl/objets-remplaces/");
+var addobjetsRemplaceUrl = Uri.parse("$mainUrl/objets-remplaces/insert-new-objet-remplace");
 
 // Exploitations
 var projetsUrl = Uri.parse("$mainUrl/projets/");
@@ -160,6 +164,8 @@ var addVersementProjetsUrl = Uri.parse("$mainUrl/versements-projets/insert-new-v
 var rapporsUrl = Uri.parse("$mainUrl/rapports/");
 var addRapportsUrl = Uri.parse("$mainUrl/rapports/insert-new-rapport");
 
+var agentsRolesUrl = Uri.parse("$mainUrl/agents-roles/");
+var addagentsRolesUrl = Uri.parse("$mainUrl/agents-roles/insert-new-agent-role");
 
 
 // COMMERCIAL

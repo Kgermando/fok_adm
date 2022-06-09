@@ -39,7 +39,7 @@ class _AddCampaignState extends State<AddCampaign> {
   TextEditingController coutCampaignController = TextEditingController();
   TextEditingController lieuCibleController = TextEditingController();
   TextEditingController promotionController = TextEditingController();
-  TextEditingController objetctifsController = TextEditingController();
+  TextEditingController objectifsController = TextEditingController();
 
   String getPlageDate() {
     if (dateRange == null) {
@@ -62,7 +62,7 @@ class _AddCampaignState extends State<AddCampaign> {
     coutCampaignController.dispose();
     lieuCibleController.dispose();
     promotionController.dispose();
-    objetctifsController.dispose();
+    objectifsController.dispose();
 
     super.dispose();
   }
@@ -179,7 +179,7 @@ class _AddCampaignState extends State<AddCampaign> {
                         const SizedBox(
                           width: p10,
                         ),
-                        Expanded(child: objetctifsWidget())
+                        Expanded(child: objectifsWidget())
                       ],
                     ),
                     Text("Select Liste des agents",
@@ -366,15 +366,15 @@ class _AddCampaignState extends State<AddCampaign> {
         ));
   }
 
-  Widget objetctifsWidget() {
+  Widget objectifsWidget() {
     return Container(
         margin: const EdgeInsets.only(bottom: p20),
         child: TextFormField(
-          controller: objetctifsController,
+          controller: objectifsController,
           decoration: InputDecoration(
             border:
                 OutlineInputBorder(borderRadius: BorderRadius.circular(10.0)),
-            labelText: 'Objetctifs',
+            labelText: 'objectifs',
           ),
           keyboardType: TextInputType.text,
           style: const TextStyle(),
@@ -393,15 +393,13 @@ class _AddCampaignState extends State<AddCampaign> {
         typeProduit: typeProduitController.text,
         dateDebutEtFin:
             "Du ${DateFormat('dd/MM/yyyy').format(dateRange!.start)} - Au ${DateFormat('dd/MM/yyyy').format(dateRange!.end)}",
-        agentAffectes: multiChecked,
         coutCampaign: coutCampaignController.text,
         lieuCible: lieuCibleController.text,
         promotion: promotionController.text,
-        objetctifs: objetctifsController.text,
-        ligneBudgtaire: '-',
-        resources: '-',
+        objectifs: objectifsController.text,
         observation: false,
         signature: user!.matricule.toString(),
+        createdRef: DateTime.now(),
         created: DateTime.now());
 
     await CampaignApi().insertData(campaignModel);

@@ -293,13 +293,13 @@ class _DashboardAdministrationState extends State<DashboardAdministration> {
       coutTotal += double.parse(item.coutTotal);
     }
     for (var item in dataCampaignList) {
-      totalCampaign += double.parse(item.resources);
+      totalCampaign += double.parse(item.coutCampaign);
     }
     // for (var item in dataDevisList) {
     //   totalDevis += double.parse(item.resources);
     // }
     for (var item in dataProjetList) {
-      totalProjet += double.parse(item.resources);
+      totalProjet += double.parse(item.coutProjet);
     }
     for (var item in dataSalaireList) {
       totalSalaire += double.parse(item.salaire);
