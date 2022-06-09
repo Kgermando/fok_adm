@@ -28,7 +28,7 @@ class TransportRestaurationModel {
     return TransportRestaurationModel(
         id: json['id'],
         title: json['title'],
-        observation: json['observation'],
+        observation: bool.hasEnvironment(json['observation']),
         signature: json['signature'],
         createdRef: DateTime.parse(json['createdRef']),
         created: DateTime.parse(json['created']));

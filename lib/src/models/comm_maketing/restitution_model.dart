@@ -53,7 +53,7 @@ class RestitutionModel {
         unite: json['unite'],
         firstName: json['firstName'],
         lastName: json['lastName'],
-        accuseReception: json['accuseReception'],
+        accuseReception: bool.hasEnvironment(json['accuseReception']),
         accuseReceptionFirstName: json['accuseReceptionFirstName'],
         accuseReceptionLastName: json['accuseReceptionLastName'],
         role: json['role'],

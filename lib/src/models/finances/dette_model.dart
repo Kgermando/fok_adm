@@ -48,7 +48,7 @@ class DetteModel {
         libelle: json['libelle'],
         montant: json['montant'],
         numeroOperation: json['numeroOperation'],
-        statutPaie: json['statutPaie'],
+        statutPaie: bool.hasEnvironment(json['statutPaie']),
         signature: json['signature'],
         createdRef: DateTime.parse(json['createdRef']),
         created: DateTime.parse(json['created'])

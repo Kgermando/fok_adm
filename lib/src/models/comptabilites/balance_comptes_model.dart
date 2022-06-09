@@ -28,7 +28,7 @@ class BalanceCompteModel {
     return BalanceCompteModel(
         id: json['id'],
         title: json['title'],
-        statut: json['statut'],
+        statut: bool.hasEnvironment(json['statut']),
         signature: json['signature'],
         createdRef: DateTime.parse(json['createdRef']),
         created: DateTime.parse(json['created']));

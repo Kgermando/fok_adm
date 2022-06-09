@@ -150,7 +150,7 @@ class PaiementSalaireModel {
         matricule: json['matricule'],
         servicesAffectation: json['servicesAffectation'],
         salaire: json['salaire'],
-        observation: json['observation'],
+        observation: bool.hasEnvironment(json['observation']),
         modePaiement: json['modePaiement'],
         createdAt: DateTime.parse(json['createdAt']),
         tauxJourHeureMoisSalaire: json['tauxJourHeureMoisSalaire'],

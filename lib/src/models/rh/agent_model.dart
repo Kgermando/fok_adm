@@ -116,7 +116,7 @@ class AgentModel {
       fonctionOccupe: json["fonctionOccupe"],
       competance: json["competance"],
       experience: json["experience"],
-      statutAgent: json["statutAgent"],
+      statutAgent: bool.hasEnvironment(json['statutAgent']),
       createdAt: DateTime.parse(json["createdAt"]),
       photo: json["photo"],
       salaire: json["salaire"],

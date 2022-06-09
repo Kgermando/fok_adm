@@ -39,11 +39,11 @@ class DevisModel {
       title: json['title'],
       priority: json['priority'],
       departement: json['departement'],
-      observation: json['observation'],
+      observation: bool.hasEnvironment(json['observation']),
       signature: json['signature'],
       createdRef: DateTime.parse(json['createdRef']),
       created: DateTime.parse(json['created']),
-      isSubmit: json['isSubmit'],
+      isSubmit:  bool.hasEnvironment(json['isSubmit'])
     );
   }
 

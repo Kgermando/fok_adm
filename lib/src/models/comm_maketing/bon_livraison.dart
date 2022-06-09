@@ -74,7 +74,7 @@ class BonLivraisonModel {
       tva: json["tva"],
       remise: json["remise"],
       qtyRemise: json["qtyRemise"],
-      accuseReception: json["accuseReception"],
+      accuseReception: bool.hasEnvironment(json["accuseReception"]),
       accuseReceptionFirstName: json["accuseReceptionFirstName"],
       accuseReceptionLastName: json["accuseReceptionLastName"],
       succursale: json['succursale'],

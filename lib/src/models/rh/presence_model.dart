@@ -32,7 +32,7 @@ class PresenceModel {
     return PresenceModel(
         id: json['id'],
         remarque: json['remarque'],
-        finJournee: json['finJournee'],
+        finJournee: bool.hasEnvironment(json['finJournee']),
         signature: json['signature'],
         signatureFermeture: json['signatureFermeture'],
         createdRef: DateTime.parse(json['createdRef']),

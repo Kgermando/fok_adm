@@ -54,7 +54,7 @@ class MailModel {
         objet: json['objet'],
         message: json['message'],
         pieceJointe: json['pieceJointe'],
-        read: json['read'],
+        read: bool.hasEnvironment(json['read']),
         fullNameDest: json['fullNameDest'],
         emailDest: json['emailDest'],
         dateSend: DateTime.parse(json['dateSend']),

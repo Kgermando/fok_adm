@@ -53,7 +53,7 @@ class StocksGlobalMOdel {
       priceAchatUnit: json['priceAchatUnit'],
       prixVenteUnit: json['prixVenteUnit'],
       unite: json['unite'],
-      modeAchat: json['modeAchat'],
+      modeAchat: bool.hasEnvironment(json['modeAchat']),
       tva: json["tva"],
       qtyRavitailler: json["qtyRavitailler"],
       signature: json['signature'],
