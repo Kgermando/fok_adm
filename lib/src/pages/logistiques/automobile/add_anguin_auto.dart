@@ -2,8 +2,7 @@ import 'package:date_time_picker/date_time_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:fokad_admin/src/api/auth/auth_api.dart';
-import 'package:fokad_admin/src/api/logistiques/anguin_api.dart';
-import 'package:fokad_admin/src/api/route_api.dart';
+import 'package:fokad_admin/src/api/logistiques/anguin_api.dart'; 
 import 'package:fokad_admin/src/constants/app_theme.dart';
 import 'package:fokad_admin/src/constants/responsive.dart';
 import 'package:fokad_admin/src/models/logistiques/anguin_model.dart';
@@ -14,7 +13,6 @@ import 'package:fokad_admin/src/utils/enguins_dropdown.dart';
 import 'package:fokad_admin/src/widgets/btn_widget.dart';
 import 'package:fokad_admin/src/widgets/print_widget.dart';
 import 'package:fokad_admin/src/widgets/title_widget.dart';
-import 'package:intl/intl.dart';
 
 class AddAnguinAuto extends StatefulWidget {
   const AddAnguinAuto({Key? key}) : super(key: key);
