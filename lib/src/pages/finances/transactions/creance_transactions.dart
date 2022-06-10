@@ -130,7 +130,7 @@ class _CreanceTransactionsState extends State<CreanceTransactions> {
                               Row(
                                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                 children: [
-                                  const TitleWidget(title: 'Ajout une Créance'),
+                                  const TitleWidget(title: 'Ajout remboursement'),
                                   PrintWidget(onPressed: () {})
                                 ],
                               ),

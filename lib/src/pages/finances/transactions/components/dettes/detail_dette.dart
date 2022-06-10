@@ -248,9 +248,11 @@ class _DetailDetteState extends State<DetailDette> {
               ),
               dataWidget(data),
               totalMontant(data),
-              const SizedBox(
+              SizedBox(
                   height: 300,
-                  child: TableCreanceDette(creanceDette: 'dettes')),
+                  child: TableCreanceDette(
+                      creanceDette: 'dettes',
+                      createdRef: data.createdRef)),
             ],
           ),
         ),

@@ -267,24 +267,8 @@ class _LoginPageState extends State<LoginPage> {
                   .login(matriculeController.text, passwordController.text)
                   .then((value) async {
                 if (value) {
+                  await updateIsOnline();
                   final user = await AuthApi().getUserId();
-                  final userModel = UserModel(
-                    id: user.id,
-                    nom: user.nom,
-                    prenom: user.prenom,
-                    email: user.email,
-                    telephone: user.telephone,
-                    matricule: user.matricule,
-                    departement: user.departement,
-                    servicesAffectation: user.servicesAffectation,
-                    fonctionOccupe: user.fonctionOccupe,
-                    role: user.role,
-                    isOnline: true,
-                    createdAt: user.createdAt,
-                    passwordHash: user.passwordHash,
-                    succursale: user.succursale);
-                  await UserApi().updateData(user.id!, userModel);
-
                   if (user.departement == "Administration") {
                     if (double.parse(user.role) <= 2) {
                       Navigator.pushNamed(context, AdminRoutes.adminDashboard);
@@ -388,5 +372,25 @@ class _LoginPageState extends State<LoginPage> {
           'Besoin d\'aide?',
           style: button,
         ));
+  }
+
+  Future<void> updateIsOnline() async {
+    final user = await AuthApi().getUserId();
+    final userModel = UserModel(
+        id: user.id,
+        nom: user.nom,
+        prenom: user.prenom,
+        email: user.email,
+        telephone: user.telephone,
+        matricule: user.matricule,
+        departement: user.departement,
+        servicesAffectation: user.servicesAffectation,
+        fonctionOccupe: user.fonctionOccupe,
+        role: user.role,
+        isOnline: true,
+        createdAt: user.createdAt,
+        passwordHash: user.passwordHash,
+        succursale: user.succursale);
+    await UserApi().updateData(user.id!, userModel);
   }
 }

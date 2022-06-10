@@ -30,8 +30,7 @@ class DetailCreance extends StatefulWidget {
 }
 
 class _DetailCreanceState extends State<DetailCreance> {
-  final GlobalKey<ScaffoldState> _key = GlobalKey();
-  final ScrollController _controllerScroll = ScrollController();
+  final GlobalKey<ScaffoldState> _key = GlobalKey(); 
   final _formKey = GlobalKey<FormState>();
   bool isLoading = false;
   List<UserModel> userList = [];
@@ -208,8 +207,8 @@ class _DetailCreanceState extends State<DetailCreance> {
                               ],
                             );
                           } else {
-                            return const Center(
-                                child: CircularProgressIndicator());
+                            return Center(
+                                child: loading());
                           }
                         })),
               ),
@@ -218,7 +217,7 @@ class _DetailCreanceState extends State<DetailCreance> {
         ));
   }
 
-  Widget pageDetail(CreanceModel creanceModel) {
+  Widget pageDetail(CreanceModel data) {
     return Row(mainAxisAlignment: MainAxisAlignment.center, children: [
       Card(
         elevation: 10,
@@ -246,17 +245,21 @@ class _DetailCreanceState extends State<DetailCreance> {
                           tooltip: 'Imprimer le document', onPressed: () {}),
                       SelectableText(
                           DateFormat("dd-MM-yyyy HH:mm")
-                              .format(creanceModel.created),
+                              .format(data.created),
                           textAlign: TextAlign.start),
                     ],
                   )
                 ],
               ),
-              dataWidget(creanceModel),
-              totalMontant(creanceModel),
-              const SizedBox(
-                  height: 300,
-                  child: TableCreanceDette(creanceDette: 'creances')),
+              dataWidget(data),
+              totalMontant(data),
+              SizedBox(
+                height: 300,
+                child: TableCreanceDette(
+                  creanceDette: 'creances', 
+                  createdRef: data.createdRef
+                )
+              ),
             ],
           ),
         ),

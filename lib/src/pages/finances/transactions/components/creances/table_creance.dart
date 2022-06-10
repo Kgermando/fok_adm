@@ -1,8 +1,10 @@
 import 'dart:async';
 
-import 'package:flutter/material.dart'; 
+import 'package:flutter/material.dart';
 import 'package:fokad_admin/src/api/auth/auth_api.dart';
 import 'package:fokad_admin/src/api/finances/creance_api.dart';
+import 'package:fokad_admin/src/api/finances/creance_dette_api.dart';
+import 'package:fokad_admin/src/models/finances/creance_dette_model.dart';
 import 'package:fokad_admin/src/models/finances/creances_model.dart';
 import 'package:fokad_admin/src/models/users/user_model.dart';
 import 'package:fokad_admin/src/routes/routes.dart';
@@ -27,8 +29,8 @@ class _TableCreanceState extends State<TableCreance> {
 
   int? id;
 
-  double paye = 0.0;
-  double nonPaye = 0.0;
+  double nonPaye = 0.0; // total Créance
+  double paye = 0.0; // total creanceDette
 
   @override
   initState() {
@@ -38,18 +40,21 @@ class _TableCreanceState extends State<TableCreance> {
     super.initState();
   }
 
+  List<CreanceDetteModel> creanceDetteList = [];
+
   Future<void> getData() async {
     List<CreanceModel?> dataList = await CreanceApi().getAllData();
+    var creanceDette = await CreanceDetteApi().getAllData();
     setState(() {
-      List<CreanceModel?> payeList =
-          dataList.where((element) => element!.statutPaie == true).toList();
-      List<CreanceModel?> nonPayeList =
-          dataList.where((element) => element!.statutPaie == false).toList();
-      for (var item in payeList) {
-        paye += double.parse(item!.montant);
-      }
-      for (var item in nonPayeList) {
+      List<CreanceModel?> data = dataList.toList();
+      creanceDetteList = creanceDette;
+
+      for (var item in data) {
         nonPaye += double.parse(item!.montant);
+      }
+
+      for (var item in creanceDetteList) {
+        paye += double.parse(item.montant);
       }
     });
   }
@@ -153,7 +158,7 @@ class _TableCreanceState extends State<TableCreance> {
                     style: bodyMedium!.copyWith(
                         fontWeight: FontWeight.bold, color: Colors.white)),
                 SelectableText(
-                    '${NumberFormat.decimalPattern('fr').format(paye + nonPaye)} \$',
+                    '${NumberFormat.decimalPattern('fr').format(nonPaye)} \$',
                     style: bodyMedium.copyWith(
                         fontWeight: FontWeight.bold, color: Colors.white))
               ],
@@ -175,7 +180,7 @@ class _TableCreanceState extends State<TableCreance> {
                     style: bodyMedium.copyWith(
                         fontWeight: FontWeight.bold, color: Colors.white)),
                 SelectableText(
-                    '${NumberFormat.decimalPattern('fr').format(nonPaye)} \$',
+                    '${NumberFormat.decimalPattern('fr').format(nonPaye - paye)} \$',
                     style: bodyMedium.copyWith(
                         fontWeight: FontWeight.bold, color: Colors.white))
               ],
@@ -303,8 +308,9 @@ class _TableCreanceState extends State<TableCreance> {
             'nomComplet': PlutoCell(value: item.nomComplet),
             'pieceJustificative': PlutoCell(value: item.pieceJustificative),
             'libelle': PlutoCell(value: item.libelle),
-            'montant': PlutoCell(value: "${NumberFormat.decimalPattern('fr')
-              .format(double.parse(item.montant))} \$"),
+            'montant': PlutoCell(
+                value:
+                    "${NumberFormat.decimalPattern('fr').format(double.parse(item.montant))} \$"),
             'numeroOperation': PlutoCell(value: item.numeroOperation),
             'created': PlutoCell(
                 value: DateFormat("dd-MM-yyyy HH:mm").format(item.created))

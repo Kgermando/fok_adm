@@ -8,9 +8,10 @@ import 'package:intl/intl.dart';
 import 'package:pluto_grid/pluto_grid.dart';
 
 class TableCreanceDette extends StatefulWidget {
-  const TableCreanceDette({Key? key, required this.creanceDette})
+  const TableCreanceDette({Key? key, required this.creanceDette, required this.createdRef})
       : super(key: key);
   final String creanceDette;
+  final DateTime createdRef;
 
   @override
   State<TableCreanceDette> createState() => _TableCreanceDetteState();
@@ -183,18 +184,20 @@ class _TableCreanceDetteState extends State<TableCreanceDette> {
   Future agentsRow() async {
     List<CreanceDetteModel?> dataList = await CreanceDetteApi().getAllData();
     var data = dataList
-        .where((element) => element!.creanceDette == widget.creanceDette);
+      .where((element) => element!.creanceDette == widget.creanceDette && 
+        element.reference == widget.createdRef);
 
     if (mounted) {
       setState(() {
         for (var item in data) {
-          id = item!.id;
           rows.add(PlutoRow(cells: {
-            'id': PlutoCell(value: item.id),
+            'id': PlutoCell(value: item!.id),
             'nomComplet': PlutoCell(value: item.nomComplet),
             'pieceJustificative': PlutoCell(value: item.pieceJustificative),
             'libelle': PlutoCell(value: item.libelle),
-            'montant': PlutoCell(value: "${NumberFormat.decimalPattern('fr').format(double.parse(item.montant))} \$"),
+            'montant': PlutoCell(
+                value:
+                    "${NumberFormat.decimalPattern('fr').format(double.parse(item.montant))} \$"),
             'signature': PlutoCell(value: item.signature),
             'created': PlutoCell(
                 value: DateFormat("dd-MM-yyy HH:mm").format(item.created))

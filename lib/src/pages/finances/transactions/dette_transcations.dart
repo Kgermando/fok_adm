@@ -133,7 +133,7 @@ class _DetteTransactionsState extends State<DetteTransactions> {
                               Row(
                                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                 children: [
-                                  const TitleWidget(title: 'Ajout dette'),
+                                  const TitleWidget(title: 'Ajout payement'),
                                   PrintWidget(onPressed: () {})
                                 ],
                               ),

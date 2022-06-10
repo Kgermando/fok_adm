@@ -77,6 +77,7 @@ import 'package:fokad_admin/src/pages/exploitations/taches/tache_exp.dart';
 import 'package:fokad_admin/src/pages/exploitations/versements/add_versement_projet.dart';
 import 'package:fokad_admin/src/pages/exploitations/versements/versement_projet.dart';
 import 'package:fokad_admin/src/pages/finances/dashboard/dashboard_finance.dart';
+import 'package:fokad_admin/src/pages/finances/dd_finance/departement_fin.dart';
 import 'package:fokad_admin/src/pages/finances/etat_besoin/etat_besoin_fin_page.dart';
 import 'package:fokad_admin/src/pages/finances/transactions/banque_transactions.dart';
 import 'package:fokad_admin/src/pages/finances/transactions/caisses_transactions.dart';
@@ -403,6 +404,7 @@ final routes = <String, WidgetBuilder>{
       const EtatBesoinBudgetsPage(),
 
   // FInance
+  FinanceRoutes.finDD: (context) => const DepartementFin(), 
   FinanceRoutes.financeDashboard: (context) => const DashboardFinance(),
   FinanceRoutes.transactionsBanque: (context) => const BanqueTransactions(),
   FinanceRoutes.transactionsBanqueDetail: (context) => const DetailBanque(),
