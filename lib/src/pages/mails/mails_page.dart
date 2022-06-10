@@ -1,12 +1,10 @@
 import 'dart:async';
 
-import 'package:flutter/material.dart';
-import 'package:fokad_admin/src/api/auth/auth_api.dart';
+import 'package:flutter/material.dart'; 
 import 'package:fokad_admin/src/api/mails/mail_api.dart';
 import 'package:fokad_admin/src/constants/app_theme.dart';
 import 'package:fokad_admin/src/constants/responsive.dart';
-import 'package:fokad_admin/src/models/mail/mail_model.dart';
-import 'package:fokad_admin/src/models/users/user_model.dart';
+import 'package:fokad_admin/src/models/mail/mail_model.dart'; 
 import 'package:fokad_admin/src/navigation/drawer/drawer_menu.dart';
 import 'package:fokad_admin/src/navigation/header/custom_appbar.dart';
 import 'package:fokad_admin/src/pages/mails/components/list_mails.dart';
@@ -35,25 +33,25 @@ class MailPages extends StatefulWidget {
 class _MailPagesState extends State<MailPages> {
   final GlobalKey<ScaffoldState> _key = GlobalKey();
 
-  final Stream<List<MailModel>> _mails = (() {
-    late final StreamController<List<MailModel>> controller;
-    controller = StreamController<List<MailModel>>(
-      onListen: () async {
-        List<MailModel> mailsList = [];
-        UserModel userModel = await AuthApi().getUserId();
-        var mails = await MailApi().getAllData();
-        mailsList = mails
-            .where((element) =>
-                element.email == userModel.email ||
-                element.cc.contains(userModel.email))
-            .toList();
-        controller.add(mailsList);
-        await Future<void>.delayed(const Duration(seconds: 1));
-        await controller.close();
-      },
-    );
-    return controller.stream;
-  })();
+  // final Stream<List<MailModel>> _mails = (() {
+  //   late final StreamController<List<MailModel>> controller;
+  //   controller = StreamController<List<MailModel>>(
+  //     onListen: () async {
+  //       List<MailModel> mailsList = [];
+  //       UserModel userModel = await AuthApi().getUserId();
+  //       var mails = await MailApi().getAllData();
+  //       mailsList = mails
+  //           .where((element) =>
+  //               element.email == userModel.email ||
+  //               element.cc.contains(userModel.email))
+  //           .toList();
+  //       controller.add(mailsList);
+  //       await Future<void>.delayed(const Duration(seconds: 1));
+  //       await controller.close();
+  //     },
+  //   );
+  //   return controller.stream;
+  // })();
 
   // @override
   // void initState() {

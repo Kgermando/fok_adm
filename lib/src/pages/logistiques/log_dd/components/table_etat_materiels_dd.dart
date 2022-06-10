@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fokad_admin/src/api/logistiques/etat_materiel_api.dart';
-import 'package:fokad_admin/src/models/logistiques/etat_materiel_model.dart';
-import 'package:fokad_admin/src/pages/logistiques/materiels/components/detail_etat_materiel.dart';
+import 'package:fokad_admin/src/models/logistiques/etat_materiel_model.dart'; 
 import 'package:fokad_admin/src/routes/routes.dart';
 import 'package:fokad_admin/src/widgets/print_widget.dart';
 import 'package:fokad_admin/src/utils/class_implemented.dart';

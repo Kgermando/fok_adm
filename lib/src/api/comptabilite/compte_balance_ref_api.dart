@@ -5,19 +5,12 @@ import 'dart:convert';
 import 'package:fokad_admin/src/helpers/user_shared_pref.dart';
 import 'package:fokad_admin/src/api/auth/auth_api.dart';
 import 'package:fokad_admin/src/api/route_api.dart';
-import 'package:fokad_admin/src/models/comptabilites/balance_comptes_model.dart';
+import 'package:fokad_admin/src/models/comptabilites/balance_comptes_model.dart'; 
 import 'package:http/http.dart' as http;
 
-class BalanceCompteApi {
-  var client = http.Client();
-  // final storage = const FlutterSecureStorage();
-
-  // Future<String?> getToken() async {
-  //   final data = await storage.read(key: "accessToken");
-  //   return data;
-  // }
-
-  Future<List<BalanceCompteModel>> getAllData() async {
+class CompteBalanceRefApi {
+  var client = http.Client(); 
+  Future<List<CompteBalanceRef>> getAllData() async {
     String? token = await UserSharedPref().getAccessToken();
 
     if (token!.isNotEmpty) {
@@ -26,7 +19,7 @@ class BalanceCompteApi {
           ascii.decode(base64.decode(base64.normalize(splittedJwt[1]))));
     }
     var resp = await client.get(
-      balanceComptessUrl,
+      balanceCompteRefUrl,
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
         'Authorization': 'Bearer $token'
@@ -34,9 +27,9 @@ class BalanceCompteApi {
     );
     if (resp.statusCode == 200) {
       List<dynamic> bodyList = json.decode(resp.body);
-      List<BalanceCompteModel> data = [];
+      List<CompteBalanceRef> data = [];
       for (var u in bodyList) {
-        data.add(BalanceCompteModel.fromJson(u));
+        data.add(CompteBalanceRef.fromJson(u));
       }
       return data;
     } else {
@@ -44,7 +37,7 @@ class BalanceCompteApi {
     }
   }
 
-  Future<BalanceCompteModel> getOneData(int id) async {
+  Future<CompteBalanceRef> getOneData(int id) async {
     String? token = await UserSharedPref().getAccessToken();
 
     if (token!.isNotEmpty) {
@@ -52,7 +45,7 @@ class BalanceCompteApi {
       var payload = json.decode(
           ascii.decode(base64.decode(base64.normalize(splittedJwt[1]))));
     }
-    var getUrl = Uri.parse("$mainUrl/comptabilite/balance_comptes/$id");
+    var getUrl = Uri.parse("$mainUrl/comptabilite/comptes-balance-ref/$id");
     var resp = await client.get(
       getUrl,
       headers: <String, String>{
@@ -61,27 +54,27 @@ class BalanceCompteApi {
       },
     );
     if (resp.statusCode == 200) {
-      return BalanceCompteModel.fromJson(json.decode(resp.body));
+      return CompteBalanceRef.fromJson(json.decode(resp.body));
     } else {
       throw Exception(json.decode(resp.body)['message']);
     }
   }
 
-  Future<BalanceCompteModel> insertData(
-      BalanceCompteModel balanceCompteModel) async {
+  Future<CompteBalanceRef> insertData(
+      CompteBalanceRef balanceCompteModel) async {
     String? token = await UserSharedPref().getAccessToken();
 
     var data = balanceCompteModel.toJson();
     var body = jsonEncode(data);
 
-    var resp = await client.post(addBalanceComptesUrl,
+    var resp = await client.post(addBalanceCompteRefUrl,
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
           'Authorization': 'Bearer $token'
         },
         body: body);
     if (resp.statusCode == 200) {
-      return BalanceCompteModel.fromJson(json.decode(resp.body));
+      return CompteBalanceRef.fromJson(json.decode(resp.body));
     } else if (resp.statusCode == 401) {
       await AuthApi().refreshAccessToken();
       return insertData(balanceCompteModel);
@@ -90,14 +83,14 @@ class BalanceCompteApi {
     }
   }
 
-  Future<BalanceCompteModel> updateData(
-      int id, BalanceCompteModel balanceCompteModel) async {
+  Future<CompteBalanceRef> updateData(
+      int id, CompteBalanceRef balanceCompteModel) async {
     String? token = await UserSharedPref().getAccessToken();
 
     var data = balanceCompteModel.toJson();
     var body = jsonEncode(data);
     var updateUrl = Uri.parse(
-        "$mainUrl/comptabilite/balance_comptes/update-balance-compte/$id");
+        "$mainUrl/comptabilite/comptes-balance-ref/update-comptes-balance-ref/$id");
 
     var res = await client.put(updateUrl,
         headers: <String, String>{
@@ -106,24 +99,24 @@ class BalanceCompteApi {
         },
         body: body);
     if (res.statusCode == 200) {
-      return BalanceCompteModel.fromJson(json.decode(res.body));
+      return CompteBalanceRef.fromJson(json.decode(res.body));
     } else {
       throw Exception(json.decode(res.body)['message']);
     }
   }
 
-  Future<BalanceCompteModel> deleteData(int id) async {
+  Future<CompteBalanceRef> deleteData(int id) async {
     String? token = await UserSharedPref().getAccessToken();
 
     var deleteUrl = Uri.parse(
-        "$mainUrl/comptabilite/balance_comptes/delete-balance-compte/$id");
+        "$mainUrl/comptabilite/comptes-balance-ref/delete-comptes-balance-ref/$id");
 
     var res = await client.delete(deleteUrl, headers: <String, String>{
       'Content-Type': 'application/json; charset=UTF-8',
       'Authorization': 'Bearer $token'
     });
     if (res.statusCode == 200) {
-      return BalanceCompteModel.fromJson(json.decode(res.body)['data']);
+      return CompteBalanceRef.fromJson(json.decode(res.body)['data']);
     } else {
       throw Exception(json.decode(res.body)['message']);
     }

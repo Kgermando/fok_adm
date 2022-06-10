@@ -213,7 +213,7 @@ class _TableSalairesDDState extends State<TableSalairesDD> {
 
     if (mounted) {
       setState(() {
-        for (var item in dataList) {
+        for (var item in data) {
           rows.add(PlutoRow(cells: {
             'id': PlutoCell(value: item!.id),
             'prenom': PlutoCell(value: item.prenom),

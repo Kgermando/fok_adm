@@ -103,6 +103,7 @@ var addComptesResultatUrl = Uri.parse(
 var balanceComptessUrl = Uri.parse("$mainUrl/comptabilite/balance_comptes/");
 var addBalanceComptesUrl =
     Uri.parse("$mainUrl/comptabilite/balance_comptes/insert-new-balance-compte");
+    
 var balanceCompteRefUrl = Uri.parse("$mainUrl/comptabilite/comptes-balance-ref/");
 var addBalanceCompteRefUrl = Uri.parse(
     "$mainUrl/comptabilite/comptes-balance-ref/insert-new-comptes-balance-ref");

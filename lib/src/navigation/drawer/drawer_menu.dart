@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:fokad_admin/src/api/auth/auth_api.dart';
 import 'package:fokad_admin/src/models/users/user_model.dart';
@@ -56,7 +57,9 @@ class _DrawerMenuState extends State<DrawerMenu> {
   Widget build(BuildContext context) {
     final themeProvider = Provider.of<ThemeProvider>(context);
     String? pageCurrente = ModalRoute.of(context)!.settings.name;
-    print('pageCurrente $pageCurrente');
+    if (kDebugMode) {
+      print('pageCurrente $pageCurrente');
+    }
     return Drawer(
       backgroundColor: themeProvider.isLightMode ? Colors.amber[100] :Colors.black26,
       elevation: 10.0,

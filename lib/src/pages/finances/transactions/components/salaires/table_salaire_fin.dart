@@ -9,8 +9,7 @@ import 'package:fokad_admin/src/widgets/print_widget.dart';
 import 'package:fokad_admin/src/utils/class_implemented.dart';
 import 'package:intl/intl.dart';
 import 'package:pluto_grid/pluto_grid.dart';
-
-import 'update_paiement_salaire.dart';
+ 
 
 class TableSalaireFin extends StatefulWidget {
   const TableSalaireFin({Key? key}) : super(key: key);

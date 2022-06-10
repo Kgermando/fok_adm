@@ -212,7 +212,7 @@ class _DetailBalanceState extends State<DetailBalance> {
     double totalCredit = 0.0;
     double totalSolde = 0.0;
 
-    List<CompteBalance> dataList = [];
+    List<CompteBalanceRef> dataList = [];
     // var comptesList = data.comptes.toList();
     // for (var item in comptesList) {
     //   dataList.add(CompteBalance.fromJson(item));

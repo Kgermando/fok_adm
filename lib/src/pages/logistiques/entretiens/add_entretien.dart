@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:fokad_admin/src/api/auth/auth_api.dart';
 import 'package:fokad_admin/src/api/logistiques/entretien_api.dart';
@@ -22,34 +20,26 @@ class AddEntretienPage extends StatefulWidget {
 
 class _AddEntretienPageState extends State<AddEntretienPage> {
   final GlobalKey<ScaffoldState> _key = GlobalKey();
-  final ScrollController _controllerScroll = ScrollController();
-  final ScrollController _controllerEtatObjet = ScrollController();
+  final ScrollController _controllerScroll = ScrollController(); 
   final _formKey = GlobalKey<FormState>();
   bool isLoading = false;
+ 
 
-  late List<Map<String, dynamic>> _values;
-  late String result;
+  TextEditingController nomController = TextEditingController();
+  TextEditingController modeleController = TextEditingController();
+  TextEditingController marqueController = TextEditingController();
+  TextEditingController etatObjetController = TextEditingController();
+  TextEditingController dureeTravauxController = TextEditingController();
 
-  late int count;
-
-  final TextEditingController nomController = TextEditingController();
-  final TextEditingController modeleController = TextEditingController();
-  final TextEditingController marqueController = TextEditingController();
-  final TextEditingController etatObjetController = TextEditingController();
-  final TextEditingController dureeTravauxController = TextEditingController();
-
-  List<TextEditingController> nomObjetControllerList = [];
-  List<TextEditingController> coutControllerList = [];
-  List<TextEditingController> caracteristiqueControllerList = [];
-  List<TextEditingController> observationControllerList = [];
+  TextEditingController nomObjetController = TextEditingController();
+  TextEditingController coutController = TextEditingController();
+  TextEditingController caracteristiqueController = TextEditingController();
+  TextEditingController observationController = TextEditingController();
 
   @override
   void initState() {
     setState(() {
-      data();
-      count = 0;
-      result = '';
-      _values = [];
+      data(); 
     });
     super.initState();
   }
@@ -60,19 +50,12 @@ class _AddEntretienPageState extends State<AddEntretienPage> {
     modeleController.dispose();
     marqueController.dispose();
     etatObjetController.dispose();
-    dureeTravauxController.dispose();
-    for (final controller in nomObjetControllerList) {
-      controller.dispose();
-    }
-    for (final controller in coutControllerList) {
-      controller.dispose();
-    }
-    for (final controller in caracteristiqueControllerList) {
-      controller.dispose();
-    }
-    for (final controller in observationControllerList) {
-      controller.dispose();
-    }
+    dureeTravauxController.dispose(); 
+nomObjetController.dispose();
+    coutController.dispose();
+    caracteristiqueController.dispose();
+    observationController.dispose(); 
+
     super.dispose();
   }
 
@@ -179,31 +162,7 @@ class _AddEntretienPageState extends State<AddEntretienPage> {
                         Expanded(child: dureeTravauxWidget())
                       ],
                     ),
-                    if (count == 0)
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text("Objets remplacé",
-                              style: Theme.of(context).textTheme.bodyLarge),
-                          IconButton(
-                              icon: const Icon(Icons.add),
-                              onPressed: () {
-                                setState(() {
-                                  final nomObjet = TextEditingController();
-                                  final cout = TextEditingController();
-                                  final caracteristique =
-                                      TextEditingController();
-                                  final observation = TextEditingController();
-                                  nomObjetControllerList.add(nomObjet);
-                                  coutControllerList.add(cout);
-                                  caracteristiqueControllerList
-                                      .add(caracteristique);
-                                  observationControllerList.add(observation);
-                                  count++;
-                                });
-                              })
-                        ],
-                      ),
+                     
                     SizedBox(
                         height: 400,
                         width: double.infinity,
@@ -342,125 +301,72 @@ class _AddEntretienPageState extends State<AddEntretienPage> {
   }
 
   Widget objetRemplaceWidget() {
-    return Scrollbar(
-      controller: _controllerEtatObjet,
-      child: ListView.builder(
-          controller: _controllerEtatObjet,
-          itemCount: count,
-          shrinkWrap: true,
-          itemBuilder: (context, index) {
-            return Column(
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    SelectableText('Objet Remplacé',
-                        style: Theme.of(context).textTheme.bodyText2),
-                    Row(
-                      children: [
-                        IconButton(
-                            onPressed: () {
-                              setState(() {
-                                final nomObjet = TextEditingController();
-                                final cout = TextEditingController();
-                                final caracteristique = TextEditingController();
-                                final observation = TextEditingController();
-                                nomObjetControllerList.add(nomObjet);
-                                coutControllerList.add(cout);
-                                caracteristiqueControllerList
-                                    .add(caracteristique);
-                                observationControllerList.add(observation);
-                                count++;
-                              });
-                            },
-                            icon: const Icon(Icons.add)),
-                        if (count > 0)
-                          IconButton(
-                              onPressed: () {
-                                setState(() {
-                                  final nomObjet = TextEditingController();
-                                  final cout = TextEditingController();
-                                  final caracteristique =
-                                      TextEditingController();
-                                  final observation = TextEditingController();
-                                  nomObjetControllerList.remove(nomObjet);
-                                  coutControllerList.remove(cout);
-                                  caracteristiqueControllerList
-                                      .remove(caracteristique);
-                                  observationControllerList.remove(observation);
-                                  count--;
-                                });
-                              },
-                              icon: const Icon(Icons.close)),
-                      ],
-                    ),
-                  ],
-                ),
-                Row(
-                  children: [
-                    Expanded(
-                        child: Container(
-                            margin: const EdgeInsets.only(bottom: p20),
-                            child: TextFormField(
-                              controller: nomObjetControllerList[index],
-                              decoration: InputDecoration(
-                                border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(10.0)),
-                                labelText: '${index + 1}. Nom',
-                              ),
-                              keyboardType: TextInputType.text,
-                              style: const TextStyle(),
-                            ))),
-                    const SizedBox(width: p10),
-                    Expanded(
-                        child: Container(
-                            margin: const EdgeInsets.only(bottom: p20),
-                            child: TextFormField(
-                              controller: coutControllerList[index],
-                              decoration: InputDecoration(
-                                border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(10.0)),
-                                labelText: '${index + 1}. Coût',
-                              ),
-                              keyboardType: TextInputType.text,
-                              style: const TextStyle(),
-                            )))
-                  ],
-                ),
-                Row(
-                  children: [
-                    Expanded(
-                        child: Container(
-                            margin: const EdgeInsets.only(bottom: p20),
-                            child: TextFormField(
-                              controller: caracteristiqueControllerList[index],
-                              decoration: InputDecoration(
-                                border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(10.0)),
-                                labelText: '${index + 1}. Caracteristique',
-                              ),
-                              keyboardType: TextInputType.text,
-                              style: const TextStyle(),
-                            ))),
-                    const SizedBox(width: p10),
-                    Expanded(
-                        child: Container(
-                            margin: const EdgeInsets.only(bottom: p20),
-                            child: TextFormField(
-                              controller: observationControllerList[index],
-                              decoration: InputDecoration(
-                                border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(10.0)),
-                                labelText: '${index + 1}. Observation',
-                              ),
-                              keyboardType: TextInputType.text,
-                              style: const TextStyle(),
-                            )))
-                  ],
-                ),
-              ],
-            );
-          }),
+    return Column(
+      children: [
+        
+        Row(
+          children: [
+            Expanded(
+                child: Container(
+                    margin: const EdgeInsets.only(bottom: p20),
+                    child: TextFormField(
+                      controller: nomObjetController,
+                      decoration: InputDecoration(
+                        border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10.0)),
+                        labelText: 'Nom',
+                      ),
+                      keyboardType: TextInputType.text,
+                      style: const TextStyle(),
+                    ))),
+            const SizedBox(width: p10),
+            Expanded(
+                child: Container(
+                    margin: const EdgeInsets.only(bottom: p20),
+                    child: TextFormField(
+                      controller: coutController,
+                      decoration: InputDecoration(
+                        border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10.0)),
+                        labelText: 'Coût',
+                      ),
+                      keyboardType: TextInputType.text,
+                      style: const TextStyle(),
+                    )))
+          ],
+        ),
+        Row(
+          children: [
+            Expanded(
+                child: Container(
+                    margin: const EdgeInsets.only(bottom: p20),
+                    child: TextFormField(
+                      controller: caracteristiqueController,
+                      decoration: InputDecoration(
+                        border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10.0)),
+                        labelText: 'Caracteristique',
+                      ),
+                      keyboardType: TextInputType.text,
+                      style: const TextStyle(),
+                    ))),
+            const SizedBox(width: p10),
+            Expanded(
+                child: Container(
+                    margin: const EdgeInsets.only(bottom: p20),
+                    child: TextFormField(
+                      controller: observationController,
+                      decoration: InputDecoration(
+                        border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10.0)),
+                        labelText: 'Observation',
+                      ),
+                      keyboardType: TextInputType.text,
+                      style: const TextStyle(),
+                    )))
+          ],
+        ),
+      ],
     );
   }
 

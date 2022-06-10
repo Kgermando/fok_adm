@@ -90,8 +90,7 @@ class _BonLivraisonPageState extends State<BonLivraisonPage> {
                                               : const TextStyle(fontSize: 16),
                                         ))
                                       : Scrollbar(
-                                          controller: controllerScrollbar,
-                                          isAlwaysShown: true,
+                                          controller: controllerScrollbar, 
                                           child: ListView.builder(
                                               controller: controllerScrollbar,
                                               itemCount: dataList.length,

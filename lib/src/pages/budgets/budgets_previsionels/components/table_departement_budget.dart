@@ -167,7 +167,7 @@ class _TableDepartementBudgetState extends State<TableDepartementBudget> {
 
     if (mounted) {
       setState(() {
-        for (var item in dataList) {
+        for (var item in data) {
           rows.add(PlutoRow(cells: {
             'id': PlutoCell(value: item!.id),
             'title': PlutoCell(value: item.title),

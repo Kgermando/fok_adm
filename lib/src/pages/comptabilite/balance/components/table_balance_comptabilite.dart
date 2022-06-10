@@ -5,8 +5,7 @@ import 'package:fokad_admin/src/api/approbation/approbation_api.dart';
 import 'package:fokad_admin/src/api/auth/auth_api.dart';
 import 'package:fokad_admin/src/api/comptabilite/balance_compte_api.dart';
 import 'package:fokad_admin/src/models/comptabilites/balance_comptes_model.dart';
-import 'package:fokad_admin/src/models/users/user_model.dart';
-import 'package:fokad_admin/src/pages/comptabilite/balance/components/detail_balance.dart';
+import 'package:fokad_admin/src/models/users/user_model.dart'; 
 import 'package:fokad_admin/src/routes/routes.dart';
 import 'package:fokad_admin/src/utils/class_implemented.dart';
 import 'package:fokad_admin/src/widgets/print_widget.dart';
@@ -31,10 +30,7 @@ class _TableBilanComptabiliteState extends State<TableBilanComptabilite> {
   @override
   void initState() {
     agentsColumn();
-    Timer.periodic(const Duration(milliseconds: 500), ((timer) {
-      agentsRow();
-      timer.cancel();
-    }));
+    agentsRow();
 
     super.initState();
   }
@@ -59,7 +55,14 @@ class _TableBilanComptabiliteState extends State<TableBilanComptabilite> {
       createHeader: (PlutoGridStateManager header) {
         return Row(
           mainAxisAlignment: MainAxisAlignment.end,
-          children: [PrintWidget(onPressed: () {})],
+          children: [
+            IconButton(
+                onPressed: () {
+                  Navigator.pushNamed(
+                      context, ComptabiliteRoutes.comptabiliteBalance);
+                },
+                icon: Icon(Icons.refresh, color: Colors.green.shade700)),
+            PrintWidget(onPressed: () {})],
         );
       },
       configuration: PlutoGridConfiguration(

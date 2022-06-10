@@ -160,7 +160,7 @@ class _TableBilanState extends State<TableBilan> {
 
     if (mounted) {
       setState(() {
-        for (var item in dataList) {
+        for (var item in data) {
           rows.add(PlutoRow(cells: {
             'id': PlutoCell(value: item!.id),
             'titleBilan': PlutoCell(value: item.titleBilan),

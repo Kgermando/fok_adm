@@ -28,7 +28,7 @@ class BalanceCompteModel {
     return BalanceCompteModel(
         id: json['id'],
         title: json['title'],
-        statut: bool.hasEnvironment(json['statut']),
+        statut: json['statut'],
         signature: json['signature'],
         createdRef: DateTime.parse(json['createdRef']),
         created: DateTime.parse(json['created']));
@@ -46,24 +46,24 @@ class BalanceCompteModel {
   }
 }
 
-class CompteBalance {
+class CompteBalanceRef {
   late int? id;
-  late String reference;
+  late DateTime reference;
   late String comptes;
   late String debit;
   late String credit;
   late double solde;
 
-  CompteBalance(
-      {required this.id,
+  CompteBalanceRef(
+      {this.id,
       required this.reference,
       required this.comptes,
       required this.debit,
       required this.credit,
       required this.solde});
 
-  factory CompteBalance.fromSQL(List<dynamic> row) {
-    return CompteBalance(
+  factory CompteBalanceRef.fromSQL(List<dynamic> row) {
+    return CompteBalanceRef(
         id: row[0],
         reference: row[1],
         comptes: row[2],
@@ -72,8 +72,8 @@ class CompteBalance {
         solde: row[5]);
   }
 
-  factory CompteBalance.fromJson(Map<String, dynamic> json) {
-    return CompteBalance(
+  factory CompteBalanceRef.fromJson(Map<String, dynamic> json) {
+    return CompteBalanceRef(
         id: json['id'],
         reference: json['reference'],
         comptes: json['comptes'],
