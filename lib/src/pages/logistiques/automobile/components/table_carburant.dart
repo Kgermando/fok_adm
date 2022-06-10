@@ -32,66 +32,64 @@ class _TableCarburantState extends State<TableCarburant> {
 
   @override
   Widget build(BuildContext context) {
-    return Expanded(
-      child: PlutoGrid(
-        columns: columns,
-        rows: rows,
-        onRowDoubleTap: (PlutoGridOnRowDoubleTapEvent tapEvent) {
-          final dataList = tapEvent.row!.cells.values;
-          final idPlutoRow = dataList.elementAt(0);
-          Navigator.pushNamed(context, LogistiqueRoutes.logCarburantAutoDetail,
-              arguments: idPlutoRow.value);  
-        },
-        onLoaded: (PlutoGridOnLoadedEvent event) {
-          stateManager = event.stateManager;
-          stateManager!.setShowColumnFilter(true);
-          stateManager!.notifyListeners();
-        },
-        createHeader: (PlutoGridStateManager header) {
-          return Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              IconButton(
-                  onPressed: () {
-                    Navigator.pushNamed(
-                        context, LogistiqueRoutes.logCarburantAuto);
-                  },
-                  icon: Icon(Icons.refresh, color: Colors.green.shade700)),
-              PrintWidget(onPressed: () {})],
-          );
-        },
-        configuration: PlutoGridConfiguration(
-          columnFilterConfig: PlutoGridColumnFilterConfig(
-            filters: const [
-              ...FilterHelper.defaultFilters,
-              // custom filter
-              ClassFilterImplemented(),
-            ],
-            resolveDefaultColumnFilter: (column, resolver) {
-              if (column.field == 'id') {
-                return resolver<ClassFilterImplemented>() as PlutoFilterType;
-              } else if (column.field == 'qtyEntreSortie') {
-                return resolver<ClassFilterImplemented>() as PlutoFilterType;
-              } else if (column.field == 'typeCaburant') {
-                return resolver<ClassFilterImplemented>() as PlutoFilterType;
-              } else if (column.field == 'fournisseur') {
-                return resolver<ClassFilterImplemented>() as PlutoFilterType;
-              } else if (column.field == 'nomeroFactureAchat') {
-                return resolver<ClassFilterImplemented>() as PlutoFilterType;
-              } else if (column.field == 'prixAchatParLitre') {
-                return resolver<ClassFilterImplemented>() as PlutoFilterType;
-              } else if (column.field == 'nomReceptioniste') {
-                return resolver<ClassFilterImplemented>() as PlutoFilterType;
-              } else if (column.field == 'numeroPlaque') {
-                return resolver<ClassFilterImplemented>() as PlutoFilterType;
-              } else if (column.field == 'dateHeureSortieAnguin') {
-                return resolver<ClassFilterImplemented>() as PlutoFilterType;
-              } else if (column.field == 'created') {
-                return resolver<ClassFilterImplemented>() as PlutoFilterType;
-              }
-              return resolver<PlutoFilterTypeContains>() as PlutoFilterType;
-            },
-          ),
+    return PlutoGrid(
+      columns: columns,
+      rows: rows,
+      onRowDoubleTap: (PlutoGridOnRowDoubleTapEvent tapEvent) {
+        final dataList = tapEvent.row!.cells.values;
+        final idPlutoRow = dataList.elementAt(0);
+        Navigator.pushNamed(context, LogistiqueRoutes.logCarburantAutoDetail,
+            arguments: idPlutoRow.value);  
+      },
+      onLoaded: (PlutoGridOnLoadedEvent event) {
+        stateManager = event.stateManager;
+        stateManager!.setShowColumnFilter(true);
+        stateManager!.notifyListeners();
+      },
+      createHeader: (PlutoGridStateManager header) {
+        return Row(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: [
+            IconButton(
+                onPressed: () {
+                  Navigator.pushNamed(
+                      context, LogistiqueRoutes.logCarburantAuto);
+                },
+                icon: Icon(Icons.refresh, color: Colors.green.shade700)),
+            PrintWidget(onPressed: () {})],
+        );
+      },
+      configuration: PlutoGridConfiguration(
+        columnFilterConfig: PlutoGridColumnFilterConfig(
+          filters: const [
+            ...FilterHelper.defaultFilters,
+            // custom filter
+            ClassFilterImplemented(),
+          ],
+          resolveDefaultColumnFilter: (column, resolver) {
+            if (column.field == 'id') {
+              return resolver<ClassFilterImplemented>() as PlutoFilterType;
+            } else if (column.field == 'qtyEntreSortie') {
+              return resolver<ClassFilterImplemented>() as PlutoFilterType;
+            } else if (column.field == 'typeCaburant') {
+              return resolver<ClassFilterImplemented>() as PlutoFilterType;
+            } else if (column.field == 'fournisseur') {
+              return resolver<ClassFilterImplemented>() as PlutoFilterType;
+            } else if (column.field == 'nomeroFactureAchat') {
+              return resolver<ClassFilterImplemented>() as PlutoFilterType;
+            } else if (column.field == 'prixAchatParLitre') {
+              return resolver<ClassFilterImplemented>() as PlutoFilterType;
+            } else if (column.field == 'nomReceptioniste') {
+              return resolver<ClassFilterImplemented>() as PlutoFilterType;
+            } else if (column.field == 'numeroPlaque') {
+              return resolver<ClassFilterImplemented>() as PlutoFilterType;
+            } else if (column.field == 'dateHeureSortieAnguin') {
+              return resolver<ClassFilterImplemented>() as PlutoFilterType;
+            } else if (column.field == 'created') {
+              return resolver<ClassFilterImplemented>() as PlutoFilterType;
+            }
+            return resolver<PlutoFilterTypeContains>() as PlutoFilterType;
+          },
         ),
       ),
     );

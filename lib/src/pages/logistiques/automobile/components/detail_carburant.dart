@@ -171,8 +171,7 @@ class _DetailCaburantState extends State<DetailCaburant> {
               width: 2.0,
             ),
           ),
-          child: ListView(
-            controller: _controllerScroll,
+          child: Column( 
             children: [
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -186,7 +185,7 @@ class _DetailCaburantState extends State<DetailCaburant> {
                       PrintWidget(
                           tooltip: 'Imprimer le document', onPressed: () {}),
                       SelectableText(
-                          DateFormat("dd-MM-yy HH:mm").format(data.created),
+                          DateFormat("dd-MM-yyyy HH:mm").format(data.created),
                           textAlign: TextAlign.start),
                     ],
                   )

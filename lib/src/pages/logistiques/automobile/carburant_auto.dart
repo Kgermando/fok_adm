@@ -5,6 +5,7 @@ import 'package:fokad_admin/src/navigation/drawer/drawer_menu.dart';
 import 'package:fokad_admin/src/navigation/header/custom_appbar.dart';
 import 'package:fokad_admin/src/pages/logistiques/automobile/add_carburant.dart';
 import 'package:fokad_admin/src/pages/logistiques/automobile/components/table_carburant.dart';
+import 'package:fokad_admin/src/routes/routes.dart';
 
 
 class CarburantAuto extends StatefulWidget {
@@ -23,11 +24,8 @@ class _CarburantAutoState extends State<CarburantAuto> {
         drawer: const DrawerMenu(),
         floatingActionButton: FloatingActionButton(
             child: const Icon(Icons.add),
-            onPressed: () {
-              // Routemaster.of(context)
-              //     .push(LogistiqueRoutes.logAddCarburantAuto);
-              Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) => const AddCarburantAuto()));
+            onPressed: () { 
+              Navigator.pushNamed(context, LogistiqueRoutes.logAddCarburantAuto);  
             }),
         body: SafeArea(
           child: Row(

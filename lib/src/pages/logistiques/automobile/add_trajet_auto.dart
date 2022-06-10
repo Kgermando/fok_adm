@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:fokad_admin/src/api/auth/auth_api.dart';
 import 'package:fokad_admin/src/api/logistiques/trajet_api.dart';
 import 'package:fokad_admin/src/constants/app_theme.dart';
@@ -320,7 +321,10 @@ class _AddTrajetAutoState extends State<AddTrajetAuto> {
                 OutlineInputBorder(borderRadius: BorderRadius.circular(10.0)),
             labelText: 'Kilometrage sorite',
           ),
-          keyboardType: TextInputType.text,
+          keyboardType: TextInputType.number,
+          inputFormatters: <TextInputFormatter>[
+            FilteringTextInputFormatter.digitsOnly
+          ],
           style: const TextStyle(),
           validator: (value) {
             if (value != null && value.isEmpty) {
@@ -342,7 +346,10 @@ class _AddTrajetAutoState extends State<AddTrajetAuto> {
                 OutlineInputBorder(borderRadius: BorderRadius.circular(10.0)),
             labelText: 'kilometrage retour',
           ),
-          keyboardType: TextInputType.text,
+          keyboardType: TextInputType.number,
+          inputFormatters: <TextInputFormatter>[
+            FilteringTextInputFormatter.digitsOnly
+          ],
           style: const TextStyle(),
           validator: (value) {
             if (value != null && value.isEmpty) {

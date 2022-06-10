@@ -1,5 +1,6 @@
 import 'package:date_time_picker/date_time_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:fokad_admin/src/api/auth/auth_api.dart';
 import 'package:fokad_admin/src/api/logistiques/carburant_api.dart';
 import 'package:fokad_admin/src/constants/app_theme.dart';
@@ -324,7 +325,10 @@ class _AddCarburantAutoState extends State<AddCarburantAuto> {
                 OutlineInputBorder(borderRadius: BorderRadius.circular(10.0)),
             labelText: 'Prix Achat Par Litre',
           ),
-          keyboardType: TextInputType.text,
+          keyboardType: TextInputType.number,
+          inputFormatters: <TextInputFormatter>[
+            FilteringTextInputFormatter.digitsOnly
+          ],
           style: const TextStyle(),
           validator: (value) {
             if (operationEntreSortie == 'Entrer') {
@@ -399,7 +403,10 @@ class _AddCarburantAutoState extends State<AddCarburantAuto> {
                 OutlineInputBorder(borderRadius: BorderRadius.circular(10.0)),
             labelText: 'Quantités',
           ),
-          keyboardType: TextInputType.text,
+          keyboardType: TextInputType.number,
+          inputFormatters: <TextInputFormatter>[
+            FilteringTextInputFormatter.digitsOnly
+          ],
           style: const TextStyle(),
           validator: (value) {
             if (value != null && value.isEmpty) {
