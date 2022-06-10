@@ -40,8 +40,6 @@ class _AddAnguinAutoState extends State<AddAnguinAuto> {
   final TextEditingController dateFabricationController =
       TextEditingController();
   final TextEditingController nomeroPLaqueController = TextEditingController();
-  final TextEditingController nomeroEntrepriseController =
-      TextEditingController();
   final TextEditingController kilometrageInitialeController =
       TextEditingController();
   final TextEditingController provenanceController = TextEditingController();
@@ -74,8 +72,7 @@ class _AddAnguinAutoState extends State<AddAnguinAuto> {
     couleurController.dispose();
     qtyMaxReservoirController.dispose();
     dateFabricationController.dispose();
-    nomeroPLaqueController.dispose();
-    nomeroEntrepriseController.dispose();
+    nomeroPLaqueController.dispose(); 
     kilometrageInitialeController.dispose();
     provenanceController.dispose();
     typeCaburantController.dispose();
@@ -118,7 +115,7 @@ class _AddAnguinAutoState extends State<AddAnguinAuto> {
                           Expanded(
                               flex: 5,
                               child: CustomAppbar(
-                                  title: 'Ajout enguin',
+                                  title: 'Ajout engin',
                                   controllerMenu: () =>
                                       _key.currentState!.openDrawer())),
                         ],
@@ -533,6 +530,12 @@ class _AddAnguinAutoState extends State<AddAnguinAuto> {
   }
 
   Future<void> submit() async {
+    String numero = '';
+    if (numberPlaque < 9) {
+      numero = "0$numberPlaque";
+    } else {
+      numero = "$numberPlaque";
+    }
     final anguinModel = AnguinModel(
         nom: nomController.text,
         modele: modeleController.text,
@@ -543,7 +546,7 @@ class _AddAnguinAutoState extends State<AddAnguinAuto> {
         qtyMaxReservoir: qtyMaxReservoirController.text,
         dateFabrication: DateTime.parse(dateFabricationController.text),
         nomeroPLaque: nomeroPLaqueController.text,
-        nomeroEntreprise: nomeroEntrepriseController.text,
+        nomeroEntreprise: numero,
         kilometrageInitiale: kilometrageInitialeController.text,
         provenance: provenanceController.text,
         typeCaburant: typeCaburantController.text,

@@ -93,7 +93,7 @@ class _TableTrajetState extends State<TableTrajet> {
     columns = [
       PlutoColumn(
         readOnly: true,
-        title: 'Numero attribué',
+        title: 'Numero enguin',
         field: 'nomeroEntreprise',
         type: PlutoColumnType.number(),
         enableRowDrag: true,
@@ -112,7 +112,7 @@ class _TableTrajetState extends State<TableTrajet> {
         enableContextMenu: false,
         enableDropToResize: true,
         titleTextAlign: PlutoColumnTextAlign.left,
-        width: 150,
+        width: 200,
         minWidth: 150,
       ),
       PlutoColumn(
@@ -124,7 +124,7 @@ class _TableTrajetState extends State<TableTrajet> {
         enableContextMenu: false,
         enableDropToResize: true,
         titleTextAlign: PlutoColumnTextAlign.left,
-        width: 150,
+        width: 200,
         minWidth: 150,
       ),
       PlutoColumn(
@@ -136,7 +136,7 @@ class _TableTrajetState extends State<TableTrajet> {
         enableContextMenu: false,
         enableDropToResize: true,
         titleTextAlign: PlutoColumnTextAlign.left,
-        width: 150,
+        width: 200,
         minWidth: 150,
       ),
       PlutoColumn(
@@ -148,7 +148,7 @@ class _TableTrajetState extends State<TableTrajet> {
         enableContextMenu: false,
         enableDropToResize: true,
         titleTextAlign: PlutoColumnTextAlign.left,
-        width: 150,
+        width: 200,
         minWidth: 150,
       ),
       PlutoColumn(
@@ -160,7 +160,7 @@ class _TableTrajetState extends State<TableTrajet> {
         enableContextMenu: false,
         enableDropToResize: true,
         titleTextAlign: PlutoColumnTextAlign.left,
-        width: 150,
+        width: 200,
         minWidth: 150,
       ),
       PlutoColumn(
@@ -172,7 +172,7 @@ class _TableTrajetState extends State<TableTrajet> {
         enableContextMenu: false,
         enableDropToResize: true,
         titleTextAlign: PlutoColumnTextAlign.left,
-        width: 150,
+        width: 200,
         minWidth: 150,
       ),
       PlutoColumn(
@@ -184,7 +184,7 @@ class _TableTrajetState extends State<TableTrajet> {
         enableContextMenu: false,
         enableDropToResize: true,
         titleTextAlign: PlutoColumnTextAlign.left,
-        width: 150,
+        width: 200,
         minWidth: 150,
       ),
     ];

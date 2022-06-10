@@ -97,6 +97,7 @@ nomObjetController.dispose();
                                 },
                                 icon: const Icon(Icons.arrow_back)),
                           ),
+                          const SizedBox(width: p10),
                           Expanded(
                               flex: 5,
                               child: CustomAppbar(

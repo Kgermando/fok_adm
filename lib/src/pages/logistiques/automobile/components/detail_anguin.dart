@@ -92,8 +92,8 @@ class _DetailAnguinState extends State<DetailAnguin> {
             onPressed: () {
               Navigator.of(context).push(MaterialPageRoute(
                   builder: (context) => AddTrajetAuto(
-                        numeroMatricule: nomeroEntreprise,
-                      )));
+                    numeroMatricule: nomeroEntreprise,
+                  )));
             }),
         body: SafeArea(
           child: Row(
@@ -115,9 +115,9 @@ class _DetailAnguinState extends State<DetailAnguin> {
                             AnguinModel? data = snapshot.data;
                             approbationData = approbList
                                 .where(
-                                    (element) => element.reference.microsecondsSinceEpoch == data!.created.microsecondsSinceEpoch)
+                                    (element) => element.reference.microsecondsSinceEpoch == 
+                                    data!.created.microsecondsSinceEpoch)
                                 .toList();
-
                             if (approbationData.isNotEmpty) {
                               approb = approbationData.first;
                             }
@@ -198,7 +198,7 @@ class _DetailAnguinState extends State<DetailAnguin> {
                       PrintWidget(
                           tooltip: 'Imprimer le document', onPressed: () {}),
                       SelectableText(
-                          DateFormat("dd-MM-yy HH:mm").format(data.created),
+                          DateFormat("dd-MM-yyyy HH:mm").format(data.created),
                           textAlign: TextAlign.start),
                     ],
                   )
@@ -222,7 +222,7 @@ class _DetailAnguinState extends State<DetailAnguin> {
             children: [
               Expanded(
                 flex: 1,
-                child: Text('Type anguin :',
+                child: Text('Type engin :',
                     textAlign: TextAlign.start,
                     style: bodyMedium!.copyWith(fontWeight: FontWeight.bold)),
               ),

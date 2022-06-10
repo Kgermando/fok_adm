@@ -118,7 +118,7 @@ class _TableCarburantState extends State<TableCarburant> {
         enableContextMenu: false,
         enableDropToResize: true,
         titleTextAlign: PlutoColumnTextAlign.left,
-        width: 100,
+        width: 200,
         minWidth: 80,
       ),
       PlutoColumn(
@@ -130,7 +130,7 @@ class _TableCarburantState extends State<TableCarburant> {
         enableContextMenu: false,
         enableDropToResize: true,
         titleTextAlign: PlutoColumnTextAlign.left,
-        width: 150,
+        width: 200,
         minWidth: 150,
       ),
       PlutoColumn(
@@ -142,7 +142,7 @@ class _TableCarburantState extends State<TableCarburant> {
         enableContextMenu: false,
         enableDropToResize: true,
         titleTextAlign: PlutoColumnTextAlign.left,
-        width: 150,
+        width: 200,
         minWidth: 150,
       ),
       PlutoColumn(
@@ -154,7 +154,7 @@ class _TableCarburantState extends State<TableCarburant> {
         enableContextMenu: false,
         enableDropToResize: true,
         titleTextAlign: PlutoColumnTextAlign.left,
-        width: 150,
+        width: 200,
         minWidth: 150,
       ),
       PlutoColumn(
@@ -166,7 +166,7 @@ class _TableCarburantState extends State<TableCarburant> {
         enableContextMenu: false,
         enableDropToResize: true,
         titleTextAlign: PlutoColumnTextAlign.left,
-        width: 150,
+        width: 200,
         minWidth: 150,
       ),
       PlutoColumn(
@@ -178,7 +178,7 @@ class _TableCarburantState extends State<TableCarburant> {
         enableContextMenu: false,
         enableDropToResize: true,
         titleTextAlign: PlutoColumnTextAlign.left,
-        width: 150,
+        width: 200,
         minWidth: 150,
       ),
       PlutoColumn(
@@ -190,7 +190,7 @@ class _TableCarburantState extends State<TableCarburant> {
         enableContextMenu: false,
         enableDropToResize: true,
         titleTextAlign: PlutoColumnTextAlign.left,
-        width: 150,
+        width: 200,
         minWidth: 150,
       ),
       PlutoColumn(
@@ -202,7 +202,7 @@ class _TableCarburantState extends State<TableCarburant> {
         enableContextMenu: false,
         enableDropToResize: true,
         titleTextAlign: PlutoColumnTextAlign.left,
-        width: 150,
+        width: 200,
         minWidth: 150,
       ),
       PlutoColumn(
@@ -214,7 +214,7 @@ class _TableCarburantState extends State<TableCarburant> {
         enableContextMenu: false,
         enableDropToResize: true,
         titleTextAlign: PlutoColumnTextAlign.left,
-        width: 150,
+        width: 200,
         minWidth: 150,
       ),
     ];
