@@ -26,7 +26,6 @@ class _AddEncaissementState extends State<AddEncaissement> {
   final controller = ScrollController();
   final ScrollController _controllerBillet = ScrollController();
 
-  final _formKey = GlobalKey<FormState>();
   final _formEncaissement = GlobalKey<FormState>();
 
   bool isLoading = false;
@@ -148,7 +147,7 @@ class _AddEncaissementState extends State<AddEncaissement> {
 
   Widget addPageWidget() {
     return Form(
-      key: _formKey,
+      key: _formEncaissement,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
@@ -510,9 +509,7 @@ class _AddEncaissementState extends State<AddEncaissement> {
         pieceJustificative: pieceJustificativeController.text,
         libelle: libelleController.text,
         montant: montantController.text,
-        coupureBillet: jsonList,
-        ligneBudgtaire: '-',
-        resources: '-',
+        coupureBillet: jsonList, 
         departement: '-',
         typeOperation: 'Encaissement',
         numeroOperation: 'Transaction-Caisse-${numberItem + 1}',
@@ -521,7 +518,7 @@ class _AddEncaissementState extends State<AddEncaissement> {
     await CaisseApi().insertData(caisseModel);
     Navigator.of(context).pop();
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-      content: const Text("Enregistrer avec succès!"),
+      content: const Text("Encaissement effectué avec succès!"),
       backgroundColor: Colors.green[700],
     ));
   }

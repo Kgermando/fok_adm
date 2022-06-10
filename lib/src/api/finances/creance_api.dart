@@ -86,7 +86,7 @@ class CreanceApi {
       await AuthApi().refreshAccessToken();
       return insertData(creanceModel);
     } else {
-      throw Exception(json.decode(resp.body)['message']);
+      throw Exception(resp.statusCode);
     }
   }
 

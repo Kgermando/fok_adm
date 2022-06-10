@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_phoenix/flutter_phoenix.dart';
 import 'package:fokad_admin/src/api/auth/auth_api.dart';
+import 'package:fokad_admin/src/api/user/user_api.dart';
 import 'package:fokad_admin/src/helpers/user_shared_pref.dart';
 import 'package:fokad_admin/src/models/menu_item.dart';
+import 'package:fokad_admin/src/models/users/user_model.dart';
 import 'package:fokad_admin/src/routes/routes.dart';
 import 'package:fokad_admin/src/utils/menu_items.dart';
 
@@ -17,7 +19,7 @@ class MenuOptions with ChangeNotifier {
         ],
       ));
 
-  void onSelected(BuildContext context, MenuItemModel item) {
+  void onSelected(BuildContext context, MenuItemModel item) async {
     switch (item) {
       case MenuItems.itemProfile:
         Navigator.pushNamed(context, UserRoutes.profile);
@@ -33,6 +35,24 @@ class MenuOptions with ChangeNotifier {
 
       case MenuItems.itemLogout:
         // Remove stockage jwt here.
+        final user = await AuthApi().getUserId();
+        final userModel = UserModel(
+          id: user.id,
+          nom: user.nom,
+          prenom: user.prenom,
+          email: user.email,
+          telephone: user.telephone,
+          matricule: user.matricule,
+          departement: user.departement,
+          servicesAffectation: user.servicesAffectation,
+          fonctionOccupe: user.fonctionOccupe,
+          role: user.role,
+          isOnline: false,
+          createdAt: user.createdAt,
+          passwordHash: user.passwordHash,
+          succursale: user.succursale
+        );
+        await UserApi().updateData(user.id!, userModel);
         AuthApi().logout();
         UserSharedPref().removeIdToken();
         UserSharedPref().removeAccessToken();

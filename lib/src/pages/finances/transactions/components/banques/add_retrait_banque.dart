@@ -571,18 +571,16 @@ class _AddRetratBanqueState extends State<AddRetratBanque> {
         pieceJustificative: pieceJustificativeController.text,
         libelle: libelleController.text,
         montant: montantController.text,
-        coupureBillet: jsonList,
-        ligneBudgtaire: '-',
-        resources: '-',
+        coupureBillet: jsonList, 
         departement: departement.toString(),
         typeOperation: 'Retrait',
-        numeroOperation: 'Transaction-Banque-${numberItem + 1}',
+        numeroOperation: "Transaction-Banque-${numberItem + 1}",
         signature: matricule.toString(),
         created: DateTime.now());
     await BanqueApi().insertData(banqueModel);
     Navigator.of(context).pop();
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-      content: const Text("Retrait Soumis avec succès!"),
+      content: const Text("Retrait effectué avec succès!"),
       backgroundColor: Colors.green[700],
     ));
   }

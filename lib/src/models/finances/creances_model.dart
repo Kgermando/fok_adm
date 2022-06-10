@@ -59,7 +59,7 @@ class CreanceModel {
       'libelle': libelle,
       'montant': montant,
       'numeroOperation': numeroOperation,
-      'statutPaie': statutPaie,
+      'statutPaie': statutPaie.toString(),
       'signature': signature,
       'createdRef': createdRef.toIso8601String(),
       'created': created.toIso8601String()

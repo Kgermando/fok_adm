@@ -499,7 +499,13 @@ class _DetailDetteState extends State<DetailDette> {
                 key: _formKey,
                 child: Column(
                   children: [
-                    const Text('Ajout une dette'),
+                    Row(
+                      children: const [
+                        Text('Ajout une Dette',
+                            style: TextStyle(
+                                fontSize: 22, fontWeight: FontWeight.bold)),
+                      ],
+                    ),
                     const SizedBox(
                       height: p20,
                     ),

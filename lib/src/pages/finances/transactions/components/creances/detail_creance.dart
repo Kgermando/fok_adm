@@ -234,8 +234,7 @@ class _DetailCreanceState extends State<DetailCreance> {
               width: 2.0,
             ),
           ),
-          child: ListView(
-            controller: _controllerScroll,
+          child: Column( 
             children: [
               Row(
                 mainAxisAlignment: MainAxisAlignment.end,
@@ -487,9 +486,15 @@ class _DetailCreanceState extends State<DetailCreance> {
                 key: _formKey,
                 child: Padding(
                   padding: const EdgeInsets.all(p16),
-                  child: ListView(
+                  child: Column(
                     children: [
-                      const Text('Ajout une Créance'),
+                      Row(
+                        children: const [
+                          Text('Ajout une Créance', 
+                            style: TextStyle(fontSize: 22, 
+                              fontWeight: FontWeight.bold)),
+                        ],
+                      ),
                       const SizedBox(
                         height: p20,
                       ),

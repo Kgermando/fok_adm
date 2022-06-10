@@ -785,19 +785,20 @@ class _DetailAgentPageState extends State<DetailAgentPage> {
     String role,
   ) async {
     final userModel = UserModel(
-        nom: nom,
-        prenom: prenom,
-        email: email,
-        telephone: telephone,
-        matricule: matricule,
-        departement: departement,
-        servicesAffectation: servicesAffectation,
-        fonctionOccupe: fonctionOccupe,
-        role: role,
-        isOnline: true,
-        createdAt: DateTime.now(),
-        passwordHash: '12345678',
-        succursale: '-');
+      photo: '-',
+      nom: nom,
+      prenom: prenom,
+      email: email,
+      telephone: telephone,
+      matricule: matricule,
+      departement: departement,
+      servicesAffectation: servicesAffectation,
+      fonctionOccupe: fonctionOccupe,
+      role: role,
+      isOnline: false,
+      createdAt: DateTime.now(),
+      passwordHash: '12345678',
+      succursale: '-');
     await UserApi().insertData(userModel);
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
       content: const Text("Activation agent avec succès!"),

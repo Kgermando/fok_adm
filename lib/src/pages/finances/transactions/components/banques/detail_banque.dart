@@ -285,23 +285,7 @@ class _DetailBanqueState extends State<DetailBanque> {
                       textAlign: TextAlign.start, style: bodyMedium),
                 )
               ],
-            ),
-          if (banqueModel.typeOperation != 'Depot')
-            Divider(color: Colors.amber.shade700),
-          if (banqueModel.typeOperation != 'Depot')
-            Row(
-              children: [
-                Expanded(
-                  child: Text('Resources previsionnelle :',
-                      textAlign: TextAlign.start,
-                      style: bodyMedium.copyWith(fontWeight: FontWeight.bold)),
-                ),
-                Expanded(
-                  child: SelectableText(banqueModel.resources,
-                      textAlign: TextAlign.start, style: bodyMedium),
-                )
-              ],
-            ),
+            ), 
           Divider(color: Colors.amber.shade700),
           Row(
             children: [

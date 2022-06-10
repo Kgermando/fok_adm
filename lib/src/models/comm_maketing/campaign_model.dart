@@ -63,7 +63,7 @@ class CampaignModel {
       'lieuCible': lieuCible,
       'promotion': promotion,
       'objectifs': objectifs,
-      'observation': observation,
+      'observation': observation.toString(),
       'signature': signature,
       'createdRef': createdRef.toIso8601String(),
       'created': created.toIso8601String()

@@ -38,7 +38,7 @@ class TransportRestaurationModel {
     return {
       'id': id,
       'title': title,
-      'observation': observation,
+      'observation': observation.toString(),
       'signature': signature,
       'createdRef': createdRef.toIso8601String(),
       'created': created.toIso8601String()

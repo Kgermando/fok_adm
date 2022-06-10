@@ -33,6 +33,8 @@ class FonctionOccupee {
     // 'Directeur de departement',
     'Directeur de finance',
     'Chef de service',
+    'Transactions',
+    'Analyse et octroit des dettes',
     'Agent',
     'Expert',
     'Stagiaire professionnel',

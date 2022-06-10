@@ -5,8 +5,6 @@ class BanqueModel {
   late String libelle;
   late String montant;
   late List<dynamic> coupureBillet;
-  late String ligneBudgtaire; // somme d'affectation pour le budget
-  late String resources; // resource mis a disposition pour ce projet
   late String departement;
   late String typeOperation;
   late String numeroOperation;
@@ -21,9 +19,7 @@ class BanqueModel {
     required this.pieceJustificative,
     required this.libelle,
     required this.montant,
-    required this.coupureBillet,
-    required this.ligneBudgtaire,
-    required this.resources,
+    required this.coupureBillet, 
     required this.departement,
     required this.typeOperation,
     required this.numeroOperation,
@@ -38,14 +34,12 @@ class BanqueModel {
       pieceJustificative: row[2],
       libelle: row[3],
       montant: row[4],
-      coupureBillet: row[5],
-      ligneBudgtaire: row[6],
-      resources: row[7],
-      departement: row[8],
-      typeOperation: row[9],
-      numeroOperation: row[10],
-      signature: row[11],
-      created: row[12]
+      coupureBillet: row[5], 
+      departement: row[6],
+      typeOperation: row[7],
+      numeroOperation: row[8],
+      signature: row[9],
+      created: row[10]
     );
   }
 
@@ -56,9 +50,7 @@ class BanqueModel {
       pieceJustificative: json['pieceJustificative'],
       libelle: json['libelle'],
       montant: json['montant'],
-      coupureBillet: json['coupureBillet'],
-      ligneBudgtaire: json['ligneBudgtaire'],
-      resources: json['resources'],
+      coupureBillet: json['coupureBillet'], 
       departement: json['departement'],
       typeOperation: json['typeOperation'],
       numeroOperation: json['numeroOperation'],
@@ -74,9 +66,7 @@ class BanqueModel {
       'pieceJustificative': pieceJustificative,
       'libelle': libelle,
       'montant': montant,
-      'coupureBillet': coupureBillet,
-      'ligneBudgtaire': ligneBudgtaire,
-      'resources': resources,
+      'coupureBillet': coupureBillet, 
       'departement': departement,
       'typeOperation': typeOperation,
       'numeroOperation': numeroOperation,

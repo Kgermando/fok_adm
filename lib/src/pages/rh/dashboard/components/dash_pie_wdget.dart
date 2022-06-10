@@ -36,8 +36,9 @@ class _DashRHPieWidgetState extends State<DashRHPieWidget> {
     return SizedBox(
       // width: Responsive.isMobile(context) ? 200 : double.infinity,
       // height: Responsive.isMobile(context) ? 200 : double.infinity,
+      height: 400,
       child: Card(
-        elevation: 10.0,
+        elevation: 6,
         child: SfCircularChart(
           enableMultiSelection: true,
             title: ChartTitle(

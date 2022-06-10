@@ -43,7 +43,7 @@ class PresenceModel {
     return {
       'id': id,
       'remarque': remarque,
-      'finJournee': finJournee,
+      'finJournee': finJournee.toString(),
       'signature': signature,
       'signatureFermeture': signatureFermeture,
       'createdRef': createdRef.toIso8601String(),

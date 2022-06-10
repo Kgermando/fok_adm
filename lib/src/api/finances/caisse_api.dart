@@ -87,7 +87,7 @@ class CaisseApi {
       await AuthApi().refreshAccessToken();
       return insertData(caisseModel);
     } else {
-      throw Exception(json.decode(resp.body)['message']);
+      throw Exception(resp.statusCode);
     }
   }
 

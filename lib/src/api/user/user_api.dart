@@ -99,18 +99,18 @@ class UserApi {
 
     var data = userModel.toJson();
     var body = jsonEncode(data);
-    var updateAgentsUrl = Uri.parse("$mainUrl/user/");
+    var updateAgentsUrl = Uri.parse("$mainUrl/user/update-user/$id");
 
-    var res = await client.patch(updateAgentsUrl,
+    var resp = await client.put(updateAgentsUrl,
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
           'Authorization': 'Bearer $token'
         },
         body: body);
-    if (res.statusCode == 200) {
-      return UserModel.fromJson(json.decode(res.body)['users']);
+    if (resp.statusCode == 200) {
+      return UserModel.fromJson(json.decode(resp.body));
     } else {
-      throw Exception(json.decode(res.body)['message']);
+      throw Exception(json.decode(resp.body)['message']);
     }
   }
 

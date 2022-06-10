@@ -87,7 +87,7 @@ class BanqueApi {
       await AuthApi().refreshAccessToken();
       return insertData(banqueModel);
     } else {
-      throw Exception(json.decode(resp.body)['message']);
+      throw Exception(resp.statusCode);
     }
   }
 

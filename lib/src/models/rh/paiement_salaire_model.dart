@@ -203,7 +203,7 @@ class PaiementSalaireModel {
       'matricule': matricule,
       'servicesAffectation': servicesAffectation,
       'salaire': salaire,
-      'observation': observation,
+      'observation': observation.toString(),
       'modePaiement': modePaiement,
       'createdAt': createdAt.toIso8601String(),
       'tauxJourHeureMoisSalaire': tauxJourHeureMoisSalaire,

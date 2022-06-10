@@ -20,10 +20,7 @@ class _ArticlePlusVendusState extends State<ArticlePlusVendus> {
   @override
   void initState() {
     _tooltipBehavior = TooltipBehavior(enable: true);
-    Timer.periodic(const Duration(milliseconds: 500), (t) {
-      loadVente();
-      t.cancel();
-    });
+    loadVente();
     super.initState();
   }
 
@@ -41,7 +38,7 @@ class _ArticlePlusVendusState extends State<ArticlePlusVendus> {
   @override
   Widget build(BuildContext context) {
     return Card(
-      elevation: 10,
+      elevation: 6,
       child: SfCartesianChart(
         title: ChartTitle(
             text: 'Produits les plus vendus',

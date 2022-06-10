@@ -53,11 +53,11 @@ class DevisModel {
       'title': title,
       'priority': priority,
       'departement': departement,
-      'observation': observation,
+      'observation': observation.toString(),
       'signature': signature,
       'createdRef': createdRef.toIso8601String(),
       'created': created.toIso8601String(),
-      'isSubmit': isSubmit
+      'isSubmit': isSubmit.toString()
     };
   }
 }

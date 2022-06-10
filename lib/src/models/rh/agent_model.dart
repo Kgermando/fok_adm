@@ -149,7 +149,7 @@ class AgentModel {
       'fonctionOccupe': fonctionOccupe,
       'competance': competance,
       'experience': experience,
-      'statutAgent': statutAgent,
+      'statutAgent': statutAgent.toString(),
       'createdAt': createdAt.toIso8601String(),
       'phot': photo,
       'salaire': salaire,

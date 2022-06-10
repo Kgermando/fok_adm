@@ -404,7 +404,7 @@ class _DashboardAdministrationState extends State<DashboardAdministration> {
                                     Expanded(
                                         flex: 3,
                                         child: FlashCard(
-                                            height: 300,
+                                            height: 400,
                                             width: double.infinity,
                                             frontWidget: CourbeVenteGainYear(),
                                             backWidget:
@@ -415,7 +415,7 @@ class _DashboardAdministrationState extends State<DashboardAdministration> {
                               : Column(
                                   children: const [
                                     FlashCard(
-                                        height: 300,
+                                        height: 400,
                                         width: double.infinity,
                                         frontWidget: CourbeVenteGainYear(),
                                         backWidget: CourbeVenteGainMounth()),
