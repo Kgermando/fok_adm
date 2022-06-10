@@ -2,7 +2,9 @@ import 'dart:async';
 
 import 'package:flutter/material.dart'; 
 import 'package:fokad_admin/src/api/auth/auth_api.dart';
+import 'package:fokad_admin/src/api/finances/creance_dette_api.dart';
 import 'package:fokad_admin/src/api/finances/dette_api.dart';
+import 'package:fokad_admin/src/models/finances/creance_dette_model.dart';
 import 'package:fokad_admin/src/models/finances/dette_model.dart';
 import 'package:fokad_admin/src/models/users/user_model.dart';
 import 'package:fokad_admin/src/routes/routes.dart';
@@ -38,18 +40,21 @@ class _TableDetteState extends State<TableDette> {
     super.initState();
   }
 
+
+  List<CreanceDetteModel> creanceDetteList = [];
   Future<void> getData() async {
     List<DetteModel?> dataList = await DetteApi().getAllData();
+    var creanceDette = await CreanceDetteApi().getAllData();
     setState(() {
-      List<DetteModel?> payeList =
-          dataList.where((element) => element!.statutPaie == true).toList();
-      List<DetteModel?> nonPayeList =
-          dataList.where((element) => element!.statutPaie == false).toList();
-      for (var item in payeList) {
-        paye += double.parse(item!.montant);
-      }
-      for (var item in nonPayeList) {
+      List<DetteModel?> data = dataList.toList();
+      creanceDetteList = creanceDette
+        .where((element) => element.creanceDette == 'dettes').toList();
+      for (var item in data) {
         nonPaye += double.parse(item!.montant);
+      }
+
+      for (var item in creanceDetteList) {
+        paye += double.parse(item.montant);
       }
     });
   }
@@ -153,7 +158,7 @@ class _TableDetteState extends State<TableDette> {
                     style: bodyMedium!.copyWith(
                         fontWeight: FontWeight.bold, color: Colors.white)),
                 SelectableText(
-                    '${NumberFormat.decimalPattern('fr').format(paye + nonPaye)} \$',
+                    '${NumberFormat.decimalPattern('fr').format(nonPaye)} \$',
                     style: bodyMedium.copyWith(
                         fontWeight: FontWeight.bold, color: Colors.white))
               ],
@@ -175,7 +180,7 @@ class _TableDetteState extends State<TableDette> {
                     style: bodyMedium.copyWith(
                         fontWeight: FontWeight.bold, color: Colors.white)),
                 SelectableText(
-                    '${NumberFormat.decimalPattern('fr').format(nonPaye)} \$',
+                    '${NumberFormat.decimalPattern('fr').format(nonPaye - paye)} \$',
                     style: bodyMedium.copyWith(
                         fontWeight: FontWeight.bold, color: Colors.white))
               ],

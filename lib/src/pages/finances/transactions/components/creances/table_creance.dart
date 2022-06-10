@@ -47,7 +47,7 @@ class _TableCreanceState extends State<TableCreance> {
     var creanceDette = await CreanceDetteApi().getAllData();
     setState(() {
       List<CreanceModel?> data = dataList.toList();
-      creanceDetteList = creanceDette;
+      creanceDetteList = creanceDette.where((element) => element.creanceDette == 'creances').toList();
 
       for (var item in data) {
         nonPaye += double.parse(item!.montant);

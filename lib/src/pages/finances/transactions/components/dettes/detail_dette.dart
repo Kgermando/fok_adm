@@ -124,6 +124,7 @@ class _DetailDetteState extends State<DetailDette> {
               if (snapshot.hasData) {
                 DetteModel? data = snapshot.data;
                 return FloatingActionButton(
+                  tooltip: 'Payement',
                     child: const Icon(Icons.add),
                     onPressed: () {
                       dialongDettePayement(data!);
@@ -503,7 +504,7 @@ class _DetailDetteState extends State<DetailDette> {
                   children: [
                     Row(
                       children: const [
-                        Text('Ajout une Dette',
+                        Text('Ajout payement',
                             style: TextStyle(
                                 fontSize: 22, fontWeight: FontWeight.bold)),
                       ],

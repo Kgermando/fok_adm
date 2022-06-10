@@ -214,16 +214,21 @@ class _AddAutreFinState extends State<AddAutreFin> {
                     const SizedBox(
                       height: p20,
                     ),
-                    BtnWidget(
-                        title: 'Soumettre',
-                        isLoading: isLoading,
-                        press: () {
-                          final form = _formKey.currentState!;
-                          if (form.validate()) {
-                            submit();
-                            form.reset();
-                          }
-                        })
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        BtnWidget(
+                            title: 'Soumettre',
+                            isLoading: isLoading,
+                            press: () {
+                              final form = _formKey.currentState!;
+                              if (form.validate()) {
+                                submit();
+                                form.reset();
+                              }
+                            }),
+                      ],
+                    )
                   ],
                 ),
               ),
@@ -465,7 +470,7 @@ class _AddAutreFinState extends State<AddAutreFin> {
   }
 
   Widget typeOperationWidget() {
-    List<String> typeOperationList = ['Retrait de fond', 'Depot de fond'];
+    List<String> typeOperationList = ['Financement interne', 'Financement externe'];
     return Container(
       margin: const EdgeInsets.only(bottom: p20),
       child: DropdownButtonFormField<String>(

@@ -126,7 +126,7 @@ class _DetailCreanceState extends State<DetailCreance> {
               if (snapshot.hasData) {
                 CreanceModel? data = snapshot.data;
                 return FloatingActionButton(
-                    tooltip: 'Payement',
+                    tooltip: 'Remboursement',
                     child: const Icon(Icons.add),
                     onPressed: () {
                       dialongCreancePayement(data!);
@@ -493,7 +493,7 @@ class _DetailCreanceState extends State<DetailCreance> {
                     children: [
                       Row(
                         children: const [
-                          Text('Ajout une Créance', 
+                          Text('Ajout Remboursement', 
                             style: TextStyle(fontSize: 22, 
                               fontWeight: FontWeight.bold)),
                         ],
