@@ -25,7 +25,7 @@ class _AnguinAutoState extends State<AnguinAuto> {
             child: const Icon(Icons.car_rental),
             onPressed: () {
               Navigator.pushNamed(context, LogistiqueRoutes.logAddAnguinAuto);
-            }),
+            }), 
         body: SafeArea(
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,

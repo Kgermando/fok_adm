@@ -161,7 +161,7 @@ class _AddAnguinAutoState extends State<AddAnguinAuto> {
                     const SizedBox(
                       height: p20,
                     ),
-                    Row(
+                    Row( 
                       children: [
                         Expanded(child: nomWidget()),
                         const SizedBox(

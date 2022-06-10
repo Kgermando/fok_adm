@@ -11,6 +11,7 @@ import 'package:fokad_admin/src/models/users/user_model.dart';
 import 'package:fokad_admin/src/navigation/drawer/drawer_menu.dart';
 import 'package:fokad_admin/src/navigation/header/custom_appbar.dart';
 import 'package:fokad_admin/src/pages/logistiques/automobile/add_trajet_auto.dart';
+import 'package:fokad_admin/src/routes/routes.dart';
 import 'package:fokad_admin/src/utils/loading.dart';
 import 'package:fokad_admin/src/widgets/print_widget.dart';
 import 'package:fokad_admin/src/widgets/title_widget.dart';
@@ -83,19 +84,28 @@ class _DetailAnguinState extends State<DetailAnguin> {
     return Scaffold(
         key: _key,
         drawer: const DrawerMenu(),
-        floatingActionButton: FloatingActionButton(
-            child: Row(
-              children: const [
-                Icon(Icons.add),
-                Icon(Icons.place),
-              ],
-            ),
-            onPressed: () {
-              Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) => AddTrajetAuto(
-                    numeroMatricule: nomeroEntreprise,
-                  )));
-            }),
+        floatingActionButton: FutureBuilder<AnguinModel>(
+          future: AnguinApi().getOneData(id),
+          builder:
+              (BuildContext context, AsyncSnapshot<AnguinModel> snapshot) {
+            if (snapshot.hasData) {
+              AnguinModel? data = snapshot.data;
+              return FloatingActionButton(
+          child: Row(
+            children: const [
+              Icon(Icons.add),
+              Icon(Icons.place),
+            ],
+          ),
+          onPressed: () {
+            Navigator.pushNamed(
+              context, LogistiqueRoutes.logAddTrajetAuto,
+                          arguments: data); 
+          });
+            } else {
+              return loadingMini();
+            }
+          }),
         body: SafeArea(
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -386,14 +396,14 @@ class _DetailAnguinState extends State<DetailAnguin> {
             children: [
               Expanded(
                 flex: 1,
-                child: Text('Numéro attribué :',
+                child: Text('Numéro engin :',
                     textAlign: TextAlign.start,
                     style: bodyMedium.copyWith(fontWeight: FontWeight.bold)),
               ),
               Expanded(
                 flex: 3,
                 child: SelectableText(data.nomeroEntreprise,
-                    textAlign: TextAlign.start, style: bodyMedium),
+                    textAlign: TextAlign.start, style: bodyMedium.copyWith(color: Colors.blueGrey)),
               )
             ],
           ),

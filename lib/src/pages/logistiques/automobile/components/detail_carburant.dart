@@ -23,8 +23,7 @@ class DetailCaburant extends StatefulWidget {
 }
 
 class _DetailCaburantState extends State<DetailCaburant> {
-  final GlobalKey<ScaffoldState> _key = GlobalKey();
-  final ScrollController _controllerScroll = ScrollController();
+  final GlobalKey<ScaffoldState> _key = GlobalKey(); 
   bool isLoading = false;
 
   String approbationDGController = '-';
@@ -226,6 +225,9 @@ class _DetailCaburantState extends State<DetailCaburant> {
                         : bodyMedium.copyWith(color: Colors.red.shade700)),
               )
             ],
+          ),
+          Divider(
+            color: Colors.amber.shade700,
           ),
           Row(
             children: [

@@ -185,7 +185,7 @@ class _TableAnguinState extends State<TableAnguin> {
       PlutoColumn(
         readOnly: true,
         title: 'Numero Plaque',
-        field: 'nomeroPLaque',
+        field: 'nomeroPlaque',
         type: PlutoColumnType.text(),
         enableRowDrag: true,
         enableContextMenu: false,
@@ -228,21 +228,20 @@ class _TableAnguinState extends State<TableAnguin> {
     if (mounted) {
       setState(() {
         for (var item in data) {
-          id = item!.id;
           rows.add(PlutoRow(cells: {
-            'id': PlutoCell(value: item.id),
+            'id': PlutoCell(value: item!.id),
             'nom': PlutoCell(value: item.nom),
             'modele': PlutoCell(value: item.modele),
             'marque': PlutoCell(value: item.marque),
             'genre': PlutoCell(value: item.genre),
             'numeroChassie': PlutoCell(value: item.numeroChassie),
-            'qtyMaxReservoir': PlutoCell(value: item.qtyMaxReservoir),
+            'qtyMaxReservoir': PlutoCell(value: "${item.qtyMaxReservoir} L"),
             'dateFabrication': PlutoCell(
                 value: DateFormat("dd-MM-yyyy").format(item.dateFabrication)),
-            'nomeroPLaque': PlutoCell(value: item.nomeroPLaque),
+            'nomeroPlaque': PlutoCell(value: item.nomeroPLaque),
             'nomeroEntreprise': PlutoCell(value: item.nomeroEntreprise),
             'created': PlutoCell(
-                value: DateFormat("dd-MM-yy HH:mm").format(item.created))
+              value: DateFormat("dd-MM-yyyy HH:mm").format(item.created))
           }));
         }
         stateManager!.resetCurrentState();

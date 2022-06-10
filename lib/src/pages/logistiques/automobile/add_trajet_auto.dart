@@ -4,6 +4,7 @@ import 'package:fokad_admin/src/api/auth/auth_api.dart';
 import 'package:fokad_admin/src/api/logistiques/trajet_api.dart';
 import 'package:fokad_admin/src/constants/app_theme.dart';
 import 'package:fokad_admin/src/constants/responsive.dart';
+import 'package:fokad_admin/src/models/logistiques/anguin_model.dart';
 import 'package:fokad_admin/src/models/logistiques/trajet_model.dart';
 import 'package:fokad_admin/src/models/users/user_model.dart';
 import 'package:fokad_admin/src/navigation/drawer/drawer_menu.dart';
@@ -14,8 +15,7 @@ import 'package:fokad_admin/src/widgets/title_widget.dart';
 
 
 class AddTrajetAuto extends StatefulWidget {
-  const AddTrajetAuto({Key? key, this.numeroMatricule}) : super(key: key);
-  final String? numeroMatricule;
+  const AddTrajetAuto({Key? key}) : super(key: key);
 
   @override
   State<AddTrajetAuto> createState() => _AddTrajetAutoState();
@@ -41,14 +41,11 @@ class _AddTrajetAutoState extends State<AddTrajetAuto> {
   @override
   initState() {
     getData();
-    nomeroEntrepriseController =
-        TextEditingController(text: widget.numeroMatricule);
     super.initState();
   }
 
   @override
   void dispose() {
-    nomeroEntrepriseController.dispose();
     nomUtilisateurController.dispose();
     trajetDeController.dispose();
     trajetAController.dispose();
@@ -69,6 +66,7 @@ class _AddTrajetAutoState extends State<AddTrajetAuto> {
 
   @override
   Widget build(BuildContext context) {
+    final data = ModalRoute.of(context)!.settings.arguments as AnguinModel;
     return Scaffold(
         key: _key,
         drawer: const DrawerMenu(),
@@ -109,7 +107,7 @@ class _AddTrajetAutoState extends State<AddTrajetAuto> {
                       Expanded(
                           child: Scrollbar(
                         controller: _controllerScroll,
-                        child: addAgentWidget(),
+                        child: addAgentWidget(data),
                       ))
                     ],
                   ),
@@ -120,7 +118,7 @@ class _AddTrajetAutoState extends State<AddTrajetAuto> {
         ));
   }
 
-  Widget addAgentWidget() {
+  Widget addAgentWidget(AnguinModel data) {
     return Form(
       key: _formKey,
       child: Row(
@@ -147,15 +145,7 @@ class _AddTrajetAutoState extends State<AddTrajetAuto> {
                     const SizedBox(
                       height: p20,
                     ),
-                    Row(
-                      children: [
-                        Expanded(child: nomeroEntrepriseWidget()),
-                        const SizedBox(
-                          width: p10,
-                        ),
-                        Expanded(child: nomUtilisateurWidget())
-                      ],
-                    ),
+                    nomUtilisateurWidget(),
                     Row(
                       children: [
                         Expanded(child: trajetDeWidget()),
@@ -184,7 +174,7 @@ class _AddTrajetAutoState extends State<AddTrajetAuto> {
                         press: () {
                           final form = _formKey.currentState!;
                           if (form.validate()) {
-                            submit();
+                            submit(data);
                             form.reset();
                           }
                         })
@@ -198,28 +188,28 @@ class _AddTrajetAutoState extends State<AddTrajetAuto> {
     );
   }
 
-  Widget nomeroEntrepriseWidget() {
-    return Container(
-        margin: const EdgeInsets.only(bottom: p20),
-        child: TextFormField(
-          controller: nomeroEntrepriseController,
-          readOnly: true,
-          decoration: InputDecoration(
-            border:
-                OutlineInputBorder(borderRadius: BorderRadius.circular(10.0)),
-            labelText: 'Numero de l\'anguin',
-          ),
-          keyboardType: TextInputType.text,
-          style: const TextStyle(),
-          validator: (value) {
-            if (value != null && value.isEmpty) {
-              return 'Ce champs est obligatoire';
-            } else {
-              return null;
-            }
-          },
-        ));
-  }
+  // Widget nomeroEntrepriseWidget() {
+  //   return Container(
+  //       margin: const EdgeInsets.only(bottom: p20),
+  //       child: TextFormField(
+  //         controller: nomeroEntrepriseController,
+  //         readOnly: true,
+  //         decoration: InputDecoration(
+  //           border:
+  //               OutlineInputBorder(borderRadius: BorderRadius.circular(10.0)),
+  //           labelText: 'Numero de l\'anguin',
+  //         ),
+  //         keyboardType: TextInputType.text,
+  //         style: const TextStyle(),
+  //         validator: (value) {
+  //           if (value != null && value.isEmpty) {
+  //             return 'Ce champs est obligatoire';
+  //           } else {
+  //             return null;
+  //           }
+  //         },
+  //       ));
+  // }
 
   Widget nomUtilisateurWidget() {
     return Container(
@@ -361,9 +351,9 @@ class _AddTrajetAutoState extends State<AddTrajetAuto> {
         ));
   }
 
-  Future<void> submit() async {
+  Future<void> submit(AnguinModel data) async {
     final trajetModel = TrajetModel(
-        nomeroEntreprise: nomeroEntrepriseController.text,
+        nomeroEntreprise: data.nomeroEntreprise,
         nomUtilisateur: nomUtilisateurController.text,
         trajetDe: trajetDeController.text,
         trajetA: trajetAController.text,

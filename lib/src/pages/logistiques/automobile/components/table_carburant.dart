@@ -233,11 +233,11 @@ class _TableCarburantState extends State<TableCarburant> {
             'typeCaburant': PlutoCell(value: item.typeCaburant),
             'fournisseur': PlutoCell(value: item.fournisseur),
             'nomeroFactureAchat': PlutoCell(value: item.nomeroFactureAchat),
-            'prixAchatParLitre': PlutoCell(value: item.prixAchatParLitre),
+            'prixAchatParLitre': PlutoCell(value: "${item.prixAchatParLitre} \$"),
             'nomReceptioniste': PlutoCell(value: item.nomReceptioniste),
             'numeroPlaque': PlutoCell(value: item.numeroPlaque),
             'dateHeureSortieAnguin': PlutoCell(
-                value: DateFormat("dd-MM-yy H:mm")
+                value: DateFormat("dd-MM-yy HH:mm")
                     .format(item.dateHeureSortieAnguin)),
             'created': PlutoCell(
                 value: DateFormat("dd-MM-yy H:mm").format(item.created))
