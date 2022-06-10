@@ -11,6 +11,7 @@ import 'package:fokad_admin/src/models/logistiques/entretien_objets_remplace_mod
 import 'package:fokad_admin/src/models/users/user_model.dart';
 import 'package:fokad_admin/src/navigation/drawer/drawer_menu.dart';
 import 'package:fokad_admin/src/navigation/header/custom_appbar.dart';
+import 'package:fokad_admin/src/routes/routes.dart';
 import 'package:fokad_admin/src/utils/class_implemented.dart';
 import 'package:fokad_admin/src/widgets/print_widget.dart';
 import 'package:fokad_admin/src/widgets/title_widget.dart';
@@ -18,8 +19,7 @@ import 'package:intl/intl.dart';
 import 'package:pluto_grid/pluto_grid.dart';
 
 class DetailEntretien extends StatefulWidget {
-  const DetailEntretien({Key? key, this.id}) : super(key: key);
-  final int? id;
+  const DetailEntretien({Key? key}) : super(key: key);
 
   @override
   State<DetailEntretien> createState() => _DetailEntretienState();
@@ -104,6 +104,7 @@ class _DetailEntretienState extends State<DetailEntretien> {
 
   @override
   Widget build(BuildContext context) {
+    final id = ModalRoute.of(context)!.settings.arguments as int;
     return Scaffold(
         key: _key,
         drawer: const DrawerMenu(),
@@ -120,14 +121,15 @@ class _DetailEntretienState extends State<DetailEntretien> {
                 child: Padding(
                     padding: const EdgeInsets.all(p10),
                     child: FutureBuilder<EntretienModel>(
-                        future: EntretienApi().getOneData(widget.id!),
+                        future: EntretienApi().getOneData(id),
                         builder: (BuildContext context,
                             AsyncSnapshot<EntretienModel> snapshot) {
                           if (snapshot.hasData) {
                             EntretienModel? data = snapshot.data;
                             approbationData = approbList
-                                .where(
-                                    (element) => element.reference.microsecondsSinceEpoch == data!.created.microsecondsSinceEpoch)
+                                .where((element) =>
+                                    element.reference.microsecondsSinceEpoch ==
+                                    data!.created.microsecondsSinceEpoch)
                                 .toList();
 
                             if (approbationData.isNotEmpty) {
@@ -326,11 +328,10 @@ class _DetailEntretienState extends State<DetailEntretien> {
       columns: columns,
       rows: rows,
       onRowDoubleTap: (PlutoGridOnRowDoubleTapEvent tapEvent) {
-        final dataList = tapEvent.row!.cells.values;
-        final idPlutoRow = dataList.elementAt(0);
-
-        Navigator.of(context).push(MaterialPageRoute(
-            builder: (context) => DetailEntretien(id: idPlutoRow.value)));
+        // final dataList = tapEvent.row!.cells.values;
+        // final idPlutoRow = dataList.elementAt(0);
+        //   Navigator.pushNamed(context, LogistiqueRoutes.logEntretienDetail,
+        //     arguments: idPlutoRow.value);
       },
       onLoaded: (PlutoGridOnLoadedEvent event) {
         stateManager = event.stateManager;
@@ -340,7 +341,14 @@ class _DetailEntretienState extends State<DetailEntretien> {
       createHeader: (PlutoGridStateManager header) {
         return Row(
           mainAxisAlignment: MainAxisAlignment.end,
-          children: [PrintWidget(onPressed: () {})],
+          children: [
+            IconButton(
+                onPressed: () {
+                  Navigator.pushNamed(context, LogistiqueRoutes.logEntretien);
+                },
+                icon: Icon(Icons.refresh, color: Colors.green.shade700)),
+            PrintWidget(onPressed: () {})
+          ],
         );
       },
       configuration: PlutoGridConfiguration(

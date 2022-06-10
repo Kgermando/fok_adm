@@ -39,7 +39,7 @@ class _DetailAgentPageState extends State<DetailAgentPage> {
     super.initState();
   }
 
-  AgentModel? agentModel;
+  // AgentModel? agentModel;
   UserModel user = UserModel(
       nom: '-',
       prenom: '-',
@@ -58,11 +58,11 @@ class _DetailAgentPageState extends State<DetailAgentPage> {
     UserModel userModel = await AuthApi().getUserId();
     final data = await UserApi().getAllData();
     final id = ModalRoute.of(context)!.settings.arguments as int;
-    final agent = await AgentsApi().getOneData(id);
+    // final agent = await AgentsApi().getOneData(id);
     setState(() {
       user = userModel;
       userList = data;
-      agentModel = agent;
+      // agentModel = agent;
     });
   }
 
@@ -80,10 +80,11 @@ class _DetailAgentPageState extends State<DetailAgentPage> {
                     (BuildContext context, AsyncSnapshot<AgentModel> snapshot) {
                   if (snapshot.hasData) {
                     AgentModel? data = snapshot.data;
-                    return speedialWidget(data!);
-                    // (int.parse(agentModel!.role) <= 3)
-                    //     ? speedialWidget(agentModel)
-                    //     : Container();
+                    return 
+                    // speedialWidget(data!);
+                    (int.parse(data!.role) <= 3)
+                        ? speedialWidget(data)
+                        : Container();
                   } else {
                     return loadingMini();
                   }

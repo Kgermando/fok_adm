@@ -15,8 +15,7 @@ import 'package:fokad_admin/src/widgets/title_widget.dart';
 import 'package:intl/intl.dart';
 
 class DetailCaburant extends StatefulWidget {
-  const DetailCaburant({Key? key, this.id}) : super(key: key);
-  final int? id;
+  const DetailCaburant({Key? key}) : super(key: key);
 
   @override
   State<DetailCaburant> createState() => _DetailCaburantState();
@@ -31,8 +30,6 @@ class _DetailCaburantState extends State<DetailCaburant> {
   TextEditingController signatureJustificationDGController =
       TextEditingController();
 
-  String? ligneBudgtaire;
-  String? resource;
 
   @override
   initState() {
@@ -79,6 +76,7 @@ class _DetailCaburantState extends State<DetailCaburant> {
 
   @override
   Widget build(BuildContext context) {
+    final id = ModalRoute.of(context)!.settings.arguments as int;
     return Scaffold(
         key: _key,
         drawer: const DrawerMenu(),
@@ -95,7 +93,7 @@ class _DetailCaburantState extends State<DetailCaburant> {
                 child: Padding(
                     padding: const EdgeInsets.all(p10),
                     child: FutureBuilder<CarburantModel>(
-                        future: CarburantApi().getOneData(widget.id!),
+                        future: CarburantApi().getOneData(id),
                         builder: (BuildContext context,
                             AsyncSnapshot<CarburantModel> snapshot) {
                           if (snapshot.hasData) {

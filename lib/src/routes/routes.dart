@@ -99,10 +99,12 @@ import 'package:fokad_admin/src/pages/logistiques/automobile/add_carburant.dart'
 import 'package:fokad_admin/src/pages/logistiques/automobile/add_trajet_auto.dart';
 import 'package:fokad_admin/src/pages/logistiques/automobile/anguin_auto.dart';
 import 'package:fokad_admin/src/pages/logistiques/automobile/carburant_auto.dart';
+import 'package:fokad_admin/src/pages/logistiques/automobile/components/detail_anguin.dart';
 import 'package:fokad_admin/src/pages/logistiques/automobile/components/update_trajet.dart';
 import 'package:fokad_admin/src/pages/logistiques/automobile/trajet_auto.dart';
 import 'package:fokad_admin/src/pages/logistiques/dashboard/dashboard_log.dart';
 import 'package:fokad_admin/src/pages/logistiques/entretiens/add_entretien.dart';
+import 'package:fokad_admin/src/pages/logistiques/entretiens/components/detail_entretiien.dart';
 import 'package:fokad_admin/src/pages/logistiques/entretiens/entretien_page.dart';
 import 'package:fokad_admin/src/pages/logistiques/etat_besoin/etat_besoin_log_page.dart';
 import 'package:fokad_admin/src/pages/logistiques/log_dd/log_dd.dart';
@@ -265,14 +267,18 @@ class ComptabiliteRoutes {
 class LogistiqueRoutes {
   static const logDashboard = "/log-dashboard";
   static const logAnguinAuto = "/log-anguin-auto";
+  static const logAnguinAutoDetail = "/log-anguin-auto-detail";
   static const logAddAnguinAuto = "/log-add-anguin-auto";
   static const logAddCarburantAuto = "/log-add-carburant-auto";
   static const logCarburantAuto = "/log-carburant-auto";
+  static const logCarburantAutoDetail = "/log-carburant-auto-detail";
   static const logAddTrajetAuto = "/log-add-trajet-auto";
   static const logTrajetAuto = "/log-trajet-auto";
+  static const logTrajetAutoDetail = "/log-trajet-auto-detail";
   static const logTrajetAutoUpdate = "/log-trajet-auto-update";
   static const logAddEntretien = "/log-add-entretien";
   static const logEntretien = "/log-entretien";
+  static const logEntretienDetail = "/log-entretien-detail";
   static const logAddEtatMateriel = "/log-add-etat-materiel";
   static const logEtatMateriel = "/log-etat-materiel";
   static const logEtatMaterielDetail = "/log-etat-materiel-detail";
@@ -459,13 +465,16 @@ final routes = <String, WidgetBuilder>{
   LogistiqueRoutes.logDashboard: (context) => const DashboardLog(),
   LogistiqueRoutes.logAddAnguinAuto: (context) => const AddAnguinAuto(),
   LogistiqueRoutes.logAnguinAuto: (context) =>const AnguinAuto(),
+  LogistiqueRoutes.logAnguinAutoDetail: (context) => const DetailAnguin(),
   LogistiqueRoutes.logAddCarburantAuto: (context) => const AddCarburantAuto(),
   LogistiqueRoutes.logCarburantAuto: (context) => const CarburantAuto(),
+  LogistiqueRoutes.logCarburantAutoDetail: (context) => const CarburantAuto(),
   LogistiqueRoutes.logAddTrajetAuto: (context) => const AddTrajetAuto(),
   LogistiqueRoutes.logTrajetAuto: (context) => const TrajetAuto(),
   LogistiqueRoutes.logTrajetAutoUpdate: (context) => const UpdateTrajet(),
   LogistiqueRoutes.logAddEntretien: (context) => const AddEntretienPage(),
   LogistiqueRoutes.logEntretien: (context) => const EntretienPage(),
+  LogistiqueRoutes.logEntretienDetail: (context) => const DetailEntretien(),
   LogistiqueRoutes.logAddEtatMateriel: (context) => const AddEtatMateriel(),
   LogistiqueRoutes.logEtatMateriel: (context) => const EtatMateriel(),
   LogistiqueRoutes.logEtatMaterielDetail: (context) => const DetailEtatMateriel(),

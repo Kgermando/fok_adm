@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:fokad_admin/src/api/logistiques/trajet_api.dart';
 import 'package:fokad_admin/src/models/logistiques/trajet_model.dart';
 import 'package:fokad_admin/src/pages/logistiques/automobile/components/detail_trajet.dart';
+import 'package:fokad_admin/src/routes/routes.dart';
 import 'package:fokad_admin/src/widgets/print_widget.dart';
 import 'package:fokad_admin/src/utils/class_implemented.dart';
 import 'package:fokad_admin/src/widgets/title_widget.dart';
@@ -44,8 +45,8 @@ class _TableTrajetAnguinDGState extends State<TableTrajetAnguinDG> {
           final dataList = tapEvent.row!.cells.values;
           final idPlutoRow = dataList.elementAt(0);
 
-          Navigator.of(context).push(MaterialPageRoute(
-              builder: (context) => DetailTrajet(id: idPlutoRow.value)));
+          Navigator.pushNamed(context, LogistiqueRoutes.logTrajetAutoDetail,
+              arguments: idPlutoRow.value);  
         },
         onLoaded: (PlutoGridOnLoadedEvent event) {
           stateManager = event.stateManager;
@@ -57,7 +58,17 @@ class _TableTrajetAnguinDGState extends State<TableTrajetAnguinDG> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               const TitleWidget(title: "Trajets"),
-              PrintWidget(onPressed: () {})
+              Row(
+                children: [
+                  IconButton(
+                      onPressed: () {
+                        Navigator.pushNamed(
+                            context, LogistiqueRoutes.logTrajetAuto);
+                      },
+                      icon: Icon(Icons.refresh, color: Colors.green.shade700)),
+                  PrintWidget(onPressed: () {}),
+                ],
+              )
             ],
           );
         },

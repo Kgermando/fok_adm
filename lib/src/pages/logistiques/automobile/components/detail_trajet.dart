@@ -16,8 +16,7 @@ import 'package:fokad_admin/src/widgets/title_widget.dart';
 import 'package:intl/intl.dart';
 
 class DetailTrajet extends StatefulWidget {
-  const DetailTrajet({Key? key, this.id}) : super(key: key);
-  final int? id;
+  const DetailTrajet({Key? key}) : super(key: key);
 
   @override
   State<DetailTrajet> createState() => _DetailTrajetState();
@@ -79,6 +78,7 @@ class _DetailTrajetState extends State<DetailTrajet> {
 
   @override
   Widget build(BuildContext context) {
+    final id = ModalRoute.of(context)!.settings.arguments as int;
     return Scaffold(
         key: _key,
         drawer: const DrawerMenu(),
@@ -95,7 +95,7 @@ class _DetailTrajetState extends State<DetailTrajet> {
                 child: Padding(
                     padding: const EdgeInsets.all(p10),
                     child: FutureBuilder<TrajetModel>(
-                        future: TrajetApi().getOneData(widget.id!),
+                        future: TrajetApi().getOneData(id),
                         builder: (BuildContext context,
                             AsyncSnapshot<TrajetModel> snapshot) {
                           if (snapshot.hasData) {

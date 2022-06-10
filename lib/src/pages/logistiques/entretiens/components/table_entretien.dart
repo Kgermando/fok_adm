@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:fokad_admin/src/api/logistiques/entretien_api.dart';
 import 'package:fokad_admin/src/models/logistiques/entretien_model.dart';
 import 'package:fokad_admin/src/pages/logistiques/entretiens/components/detail_entretiien.dart';
+import 'package:fokad_admin/src/routes/routes.dart';
 import 'package:fokad_admin/src/utils/class_implemented.dart';
 import 'package:fokad_admin/src/widgets/print_widget.dart';
 import 'package:intl/intl.dart';
@@ -37,9 +38,8 @@ class _TableEntretienState extends State<TableEntretien> {
       onRowDoubleTap: (PlutoGridOnRowDoubleTapEvent tapEvent) {
         final dataList = tapEvent.row!.cells.values;
         final idPlutoRow = dataList.elementAt(0);
-
-        Navigator.of(context).push(MaterialPageRoute(
-            builder: (context) => DetailEntretien(id: idPlutoRow.value)));
+        Navigator.pushNamed(context, LogistiqueRoutes.logEntretienDetail,
+            arguments: idPlutoRow.value);  
       },
       onLoaded: (PlutoGridOnLoadedEvent event) {
         stateManager = event.stateManager;
@@ -49,7 +49,13 @@ class _TableEntretienState extends State<TableEntretien> {
       createHeader: (PlutoGridStateManager header) {
         return Row(
           mainAxisAlignment: MainAxisAlignment.end,
-          children: [PrintWidget(onPressed: () {})],
+          children: [
+            IconButton(
+                onPressed: () {
+                  Navigator.pushNamed(context, LogistiqueRoutes.logEntretien);
+                },
+                icon: Icon(Icons.refresh, color: Colors.green.shade700)),
+            PrintWidget(onPressed: () {})],
         );
       },
       configuration: PlutoGridConfiguration(

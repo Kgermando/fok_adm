@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:fokad_admin/src/api/logistiques/carburant_api.dart';
 import 'package:fokad_admin/src/models/logistiques/carburant_model.dart';
 import 'package:fokad_admin/src/pages/logistiques/automobile/components/detail_carburant.dart';
+import 'package:fokad_admin/src/routes/routes.dart';
 import 'package:fokad_admin/src/widgets/card_widget_carburant.dart';
 import 'package:fokad_admin/src/widgets/print_widget.dart';
 import 'package:fokad_admin/src/utils/class_implemented.dart';
@@ -127,9 +128,9 @@ class _TableCarburantDDState extends State<TableCarburantDD> {
           onRowDoubleTap: (PlutoGridOnRowDoubleTapEvent tapEvent) {
             final dataList = tapEvent.row!.cells.values;
             final idPlutoRow = dataList.elementAt(0);
-
-            Navigator.of(context).push(MaterialPageRoute(
-                builder: (context) => DetailCaburant(id: idPlutoRow.value)));
+            Navigator.pushNamed(
+                context, LogistiqueRoutes.logCarburantAutoDetail,
+                arguments: idPlutoRow.value);
           },
           onLoaded: (PlutoGridOnLoadedEvent event) {
             stateManager = event.stateManager;
@@ -139,7 +140,15 @@ class _TableCarburantDDState extends State<TableCarburantDD> {
           createHeader: (PlutoGridStateManager header) {
             return Row(
               mainAxisAlignment: MainAxisAlignment.end,
-              children: [PrintWidget(onPressed: () {})],
+              children: [
+                IconButton(
+                    onPressed: () {
+                      Navigator.pushNamed(
+                          context, LogistiqueRoutes.logDD);
+                    },
+                    icon: Icon(Icons.refresh, color: Colors.green.shade700)),
+                PrintWidget(onPressed: () {})
+              ],
             );
           },
           configuration: PlutoGridConfiguration(

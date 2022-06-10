@@ -1,7 +1,9 @@
 import 'package:date_time_picker/date_time_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:fokad_admin/src/api/auth/auth_api.dart';
 import 'package:fokad_admin/src/api/logistiques/anguin_api.dart';
+import 'package:fokad_admin/src/api/route_api.dart';
 import 'package:fokad_admin/src/constants/app_theme.dart';
 import 'package:fokad_admin/src/constants/responsive.dart';
 import 'package:fokad_admin/src/models/logistiques/anguin_model.dart';
@@ -12,7 +14,7 @@ import 'package:fokad_admin/src/utils/enguins_dropdown.dart';
 import 'package:fokad_admin/src/widgets/btn_widget.dart';
 import 'package:fokad_admin/src/widgets/print_widget.dart';
 import 'package:fokad_admin/src/widgets/title_widget.dart';
-
+import 'package:intl/intl.dart';
 
 class AddAnguinAuto extends StatefulWidget {
   const AddAnguinAuto({Key? key}) : super(key: key);
@@ -54,11 +56,14 @@ class _AddAnguinAutoState extends State<AddAnguinAuto> {
     super.initState();
   }
 
+  int numberPlaque = 0;
   String? signature;
   Future<void> getData() async {
     UserModel userModel = await AuthApi().getUserId();
+    var anguins = await AnguinApi().getAllData();
     setState(() {
       signature = userModel.matricule;
+      numberPlaque = anguins.length;
     });
   }
 
@@ -78,7 +83,7 @@ class _AddAnguinAutoState extends State<AddAnguinAuto> {
     typeCaburantController.dispose();
     typeMoteurController.dispose();
 
-    super.dispose(); 
+    super.dispose();
   }
 
   @override
@@ -386,7 +391,10 @@ class _AddAnguinAutoState extends State<AddAnguinAuto> {
                 OutlineInputBorder(borderRadius: BorderRadius.circular(10.0)),
             labelText: 'Quantité max reservoir en litre',
           ),
-          keyboardType: TextInputType.text,
+          keyboardType: TextInputType.number,
+          inputFormatters: <TextInputFormatter>[
+            FilteringTextInputFormatter.digitsOnly
+          ],
           style: const TextStyle(),
           validator: (value) {
             if (value != null && value.isEmpty) {
@@ -446,25 +454,37 @@ class _AddAnguinAutoState extends State<AddAnguinAuto> {
   }
 
   Widget nomeroEntrepriseWidget() {
+    String numero = '';
+    if (numberPlaque < 9) {
+      numero = "0$numberPlaque";
+    } else {
+      numero = "$numberPlaque";
+    }
     return Container(
         margin: const EdgeInsets.only(bottom: p20),
-        child: TextFormField(
-          controller: nomeroEntrepriseController,
-          decoration: InputDecoration(
-            border:
-                OutlineInputBorder(borderRadius: BorderRadius.circular(10.0)),
-            labelText: 'Numero attribué',
-          ),
-          keyboardType: TextInputType.text,
-          style: const TextStyle(),
-          validator: (value) {
-            if (value != null && value.isEmpty) {
-              return 'Ce champs est obligatoire';
-            } else {
-              return null;
-            }
-          },
-        ));
+        child: Text(
+          "N° $numero",
+          style: Theme.of(context).textTheme.headline6,
+        )
+
+        // TextFormField(
+        //   // controller: nomeroEntrepriseController,
+        //   decoration: InputDecoration(
+        //     border:
+        //         OutlineInputBorder(borderRadius: BorderRadius.circular(10.0)),
+        //     // labelText: 'Numero attribué',
+        //   ),
+        //   keyboardType: TextInputType.text,
+        //   style: const TextStyle(),
+        //   validator: (value) {
+        //     if (value != null && value.isEmpty) {
+        //       return 'Ce champs est obligatoire';
+        //     } else {
+        //       return null;
+        //     }
+        //   },
+        // )
+        );
   }
 
   Widget kilometrageInitialeWidget() {
@@ -475,9 +495,12 @@ class _AddAnguinAutoState extends State<AddAnguinAuto> {
           decoration: InputDecoration(
             border:
                 OutlineInputBorder(borderRadius: BorderRadius.circular(10.0)),
-            labelText: 'Kilometrage',
+            labelText: 'Kilometrage par heure',
           ),
-          keyboardType: TextInputType.text,
+          keyboardType: TextInputType.number,
+          inputFormatters: <TextInputFormatter>[
+            FilteringTextInputFormatter.digitsOnly
+          ],
           style: const TextStyle(),
           validator: (value) {
             if (value != null && value.isEmpty) {

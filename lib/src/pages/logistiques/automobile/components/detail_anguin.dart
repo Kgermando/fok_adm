@@ -16,8 +16,7 @@ import 'package:fokad_admin/src/widgets/title_widget.dart';
 import 'package:intl/intl.dart';
 
 class DetailAnguin extends StatefulWidget {
-  const DetailAnguin({Key? key, this.id}) : super(key: key);
-  final int? id;
+  const DetailAnguin({Key? key}) : super(key: key);
 
   @override
   State<DetailAnguin> createState() => _DetailAnguinState();
@@ -33,9 +32,6 @@ class _DetailAnguinState extends State<DetailAnguin> {
       TextEditingController();
 
   String? nomeroEntreprise;
-
-  String? ligneBudgtaire;
-  String? resource;
 
   @override
   initState() {
@@ -73,17 +69,16 @@ class _DetailAnguinState extends State<DetailAnguin> {
 
   Future<void> getData() async {
     UserModel userModel = await AuthApi().getUserId();
-    AnguinModel data = await AnguinApi().getOneData(widget.id!);
     var approbations = await ApprobationApi().getAllData();
     setState(() {
       user = userModel;
       approbList = approbations;
-      nomeroEntreprise = data.nomeroEntreprise;
     });
   }
 
   @override
   Widget build(BuildContext context) {
+    final id = ModalRoute.of(context)!.settings.arguments as int;
     return Scaffold(
         key: _key,
         drawer: const DrawerMenu(),
@@ -113,7 +108,7 @@ class _DetailAnguinState extends State<DetailAnguin> {
                 child: Padding(
                     padding: const EdgeInsets.all(p10),
                     child: FutureBuilder<AnguinModel>(
-                        future: AnguinApi().getOneData(widget.id!),
+                        future: AnguinApi().getOneData(id),
                         builder: (BuildContext context,
                             AsyncSnapshot<AnguinModel> snapshot) {
                           if (snapshot.hasData) {

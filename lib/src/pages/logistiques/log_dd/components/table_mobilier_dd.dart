@@ -55,7 +55,7 @@ class _TableMobilierDDState extends State<TableMobilierDD> {
               IconButton(
                   onPressed: () {
                     Navigator.pushNamed(
-                        context, LogistiqueRoutes.logMobilierMateriel);
+                        context, LogistiqueRoutes.logDD);
                   },
                   icon: Icon(Icons.refresh, color: Colors.green.shade700)),
               PrintWidget(onPressed: () {})

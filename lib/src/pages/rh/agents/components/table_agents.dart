@@ -42,7 +42,7 @@ class _TableAgentsState extends State<TableAgents> {
         // Navigator.of(context).push(MaterialPageRoute(
         //     builder: (context) => AgentPage(id: idPlutoRow.value)));
         Navigator.pushNamed(context, RhRoutes.rhAgentPage,
-            arguments: idPlutoRow.value);
+            arguments: idPlutoRow.value); 
       },
       onLoaded: (PlutoGridOnLoadedEvent event) {
         stateManager = event.stateManager;

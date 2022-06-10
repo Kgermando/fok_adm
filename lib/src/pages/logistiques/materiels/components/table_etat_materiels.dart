@@ -36,7 +36,7 @@ class _TableEtatMaterielState extends State<TableEtatMateriel> {
       rows: rows,
       onRowDoubleTap: (PlutoGridOnRowDoubleTapEvent tapEvent) {
         final dataList = tapEvent.row!.cells.values;
-        final idPlutoRow = dataList.elementAt(0);
+        final idPlutoRow = dataList.elementAt(0); 
 
          Navigator.pushNamed(
             context, LogistiqueRoutes.logEtatMaterielDetail,

@@ -232,7 +232,7 @@ class _NewMailState extends State<NewMail> {
               OutlineInputBorder(borderRadius: BorderRadius.circular(10.0)),
           labelText: "Email",
         ),
-        keyboardType: TextInputType.text,
+        keyboardType: TextInputType.emailAddress,
         style: const TextStyle(),
         validator: (value) => RegExpIsValide().validateEmail(value),
       )

@@ -15,6 +15,7 @@ import 'package:fokad_admin/src/utils/country.dart';
 import 'package:fokad_admin/src/utils/dropdown.dart';
 import 'package:fokad_admin/src/utils/fonction_occupe.dart';
 import 'package:fokad_admin/src/utils/loading.dart';
+import 'package:fokad_admin/src/utils/regex.dart';
 import 'package:fokad_admin/src/utils/service_affectation.dart';
 import 'package:fokad_admin/src/widgets/btn_widget.dart';
 import 'package:fokad_admin/src/widgets/title_widget.dart';
@@ -421,13 +422,7 @@ class _AddAgentState extends State<AddAgent> {
           ),
           keyboardType: TextInputType.emailAddress,
           style: const TextStyle(),
-          validator: (value) {
-            if (value != null && value.isEmpty) {
-              return 'Ce champs est obligatoire';
-            } else {
-              return null;
-            }
-          },
+          validator: (value) => RegExpIsValide().validateEmail(value),
         ));
   }
 
