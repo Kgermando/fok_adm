@@ -133,7 +133,7 @@ class _RhNavState extends State<RhNav> {
                       selected: widget.pageCurrente == RhRoutes.rhTransportRest,
                       icon: Icons.restaurant,
                       sizeIcon: 20.0,
-                      title: 'Transport & restauration',
+                      title: 'Transport & restauration | Autres frais',
                       style: bodyText1!,
                       onTap: () {
                         Navigator.pushNamed(context, RhRoutes.rhTransportRest);

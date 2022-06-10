@@ -116,7 +116,7 @@ class _TransportRestaurationPageState extends State<TransportRestaurationPage> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       CustomAppbar(
-                          title: 'Transport & Restauration',
+                          title: 'Transport & Restauration | Autres frais',
                           controllerMenu: () =>
                               _key.currentState!.openDrawer()),
                       const Expanded(child: TableTansportRestaurant())
