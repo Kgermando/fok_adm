@@ -451,35 +451,19 @@ class _AddAnguinAutoState extends State<AddAnguinAuto> {
   Widget nomeroEntrepriseWidget() {
     String numero = '';
     if (numberPlaque < 9) {
+      numero = "00$numberPlaque";
+    } else if(numberPlaque < 99) {
       numero = "0$numberPlaque";
     } else {
       numero = "$numberPlaque";
     }
     return Container(
-        margin: const EdgeInsets.only(bottom: p20),
-        child: Text(
-          "N° $numero",
-          style: Theme.of(context).textTheme.headline6,
-        )
-
-        // TextFormField(
-        //   // controller: nomeroEntrepriseController,
-        //   decoration: InputDecoration(
-        //     border:
-        //         OutlineInputBorder(borderRadius: BorderRadius.circular(10.0)),
-        //     // labelText: 'Numero attribué',
-        //   ),
-        //   keyboardType: TextInputType.text,
-        //   style: const TextStyle(),
-        //   validator: (value) {
-        //     if (value != null && value.isEmpty) {
-        //       return 'Ce champs est obligatoire';
-        //     } else {
-        //       return null;
-        //     }
-        //   },
-        // )
-        );
+      margin: const EdgeInsets.only(bottom: p20),
+      child: Text(
+        "N° $numero",
+        style: Theme.of(context).textTheme.headline6,
+      )
+    );
   }
 
   Widget kilometrageInitialeWidget() {
@@ -532,28 +516,31 @@ class _AddAnguinAutoState extends State<AddAnguinAuto> {
   Future<void> submit() async {
     String numero = '';
     if (numberPlaque < 9) {
+      numero = "00$numberPlaque";
+    } else if (numberPlaque < 99) {
       numero = "0$numberPlaque";
     } else {
       numero = "$numberPlaque";
     }
     final anguinModel = AnguinModel(
-        nom: nomController.text,
-        modele: modeleController.text,
-        marque: marqueController.text,
-        numeroChassie: numeroChassieController.text,
-        couleur: couleurController.text,
-        genre: genre.toString(),
-        qtyMaxReservoir: qtyMaxReservoirController.text,
-        dateFabrication: DateTime.parse(dateFabricationController.text),
-        nomeroPLaque: nomeroPLaqueController.text,
-        nomeroEntreprise: numero,
-        kilometrageInitiale: kilometrageInitialeController.text,
-        provenance: provenanceController.text,
-        typeCaburant: typeCaburantController.text,
-        typeMoteur: typeMoteurController.text,
-        signature: signature.toString(),
-        createdRef: DateTime.now(),
-        created: DateTime.now());
+      nom: nomController.text,
+      modele: modeleController.text,
+      marque: marqueController.text,
+      numeroChassie: numeroChassieController.text,
+      couleur: couleurController.text,
+      genre: genre.toString(),
+      qtyMaxReservoir: qtyMaxReservoirController.text,
+      dateFabrication: DateTime.parse(dateFabricationController.text),
+      nomeroPLaque: nomeroPLaqueController.text,
+      nomeroEntreprise: numero,
+      kilometrageInitiale: kilometrageInitialeController.text,
+      provenance: provenanceController.text,
+      typeCaburant: typeCaburantController.text,
+      typeMoteur: typeMoteurController.text,
+      signature: signature.toString(),
+      createdRef: DateTime.now(),
+      created: DateTime.now()
+    );
 
     await AnguinApi().insertData(anguinModel);
     Navigator.pop(context);

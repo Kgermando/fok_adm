@@ -1,18 +1,18 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:fokad_admin/src/api/auth/auth_api.dart';
-import 'package:fokad_admin/src/api/budgets/ligne_budgetaire_api.dart';
+import 'package:fokad_admin/src/api/auth/auth_api.dart'; 
 import 'package:fokad_admin/src/api/finances/caisse_api.dart';
+import 'package:fokad_admin/src/api/finances/coupure_billet_api.dart';
 import 'package:fokad_admin/src/api/user/user_api.dart';
 import 'package:fokad_admin/src/constants/app_theme.dart';
-import 'package:fokad_admin/src/constants/responsive.dart';
-import 'package:fokad_admin/src/models/budgets/ligne_budgetaire_model.dart';
+import 'package:fokad_admin/src/constants/responsive.dart'; 
 import 'package:fokad_admin/src/models/finances/caisse_model.dart';
 import 'package:fokad_admin/src/models/finances/coupure_billet_model.dart';
 import 'package:fokad_admin/src/models/users/user_model.dart';
 import 'package:fokad_admin/src/navigation/drawer/drawer_menu.dart';
 import 'package:fokad_admin/src/navigation/header/custom_appbar.dart';
+import 'package:fokad_admin/src/utils/loading.dart';
 import 'package:fokad_admin/src/widgets/print_widget.dart';
 import 'package:fokad_admin/src/widgets/title_widget.dart';
 import 'package:intl/intl.dart';
@@ -36,23 +36,14 @@ class _DetailCaisseState extends State<DetailCaisse> {
   PlutoGridStateManager? stateManager;
   PlutoGridSelectingMode gridSelectingMode = PlutoGridSelectingMode.row;
 
-  List coupureBillet = [];
-
   @override
   initState() {
-    Timer.periodic(const Duration(milliseconds: 500), ((timer) {
-      setState(() {
-        getData();
-        agentsRow();
-      });
-      timer.cancel();
-    }));
-
+    getData();
+    agentsRow();
     agentsColumn();
     super.initState();
   }
 
-  List<LigneBudgetaireModel> ligneBudgetaireList = [];
   UserModel? user = UserModel(
       nom: '-',
       prenom: '-',
@@ -68,14 +59,16 @@ class _DetailCaisseState extends State<DetailCaisse> {
       passwordHash: '-',
       succursale: '-');
 
+  List<CoupureBilletModel> coupureBilletList = [];
+  List<CoupureBilletModel> coupureBilletFilter = [];
   Future<void> getData() async {
-    UserModel userModel = await AuthApi().getUserId();
-    final ligneBudgetaire = await LIgneBudgetaireApi().getAllData();
+    UserModel userModel = await AuthApi().getUserId(); 
     final dataUser = await UserApi().getAllData();
-    setState(() {
-      ligneBudgetaireList = ligneBudgetaire;
+    var coupureBillets = await CoupureBilletApi().getAllData();
+    setState(() { 
       user = userModel;
       userList = dataUser;
+      coupureBilletFilter = coupureBillets;
     });
   }
 
@@ -103,7 +96,10 @@ class _DetailCaisseState extends State<DetailCaisse> {
                             AsyncSnapshot<CaisseModel> snapshot) {
                           if (snapshot.hasData) {
                             CaisseModel? data = snapshot.data;
-                            coupureBillet = data!.coupureBillet;
+                            coupureBilletList = coupureBilletFilter
+                                .where((element) =>
+                                    element.reference == data!.createdRef)
+                                .toList(); 
                             return Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
@@ -128,12 +124,12 @@ class _DetailCaisseState extends State<DetailCaisse> {
                                 Expanded(
                                     child: SingleChildScrollView(
                                         controller: _controllerScroll,
-                                        child: pageDetail(data)))
+                                        child: pageDetail(data!)))
                               ],
                             );
                           } else {
-                            return const Center(
-                                child: CircularProgressIndicator());
+                            return Center(
+                                child: loading());
                           }
                         })),
               ),
@@ -323,6 +319,9 @@ class _DetailCaisseState extends State<DetailCaisse> {
         stateManager!.setShowColumnFilter(true);
         stateManager!.notifyListeners();
       },
+      createHeader: (PlutoGridStateManager header) {
+        return const TitleWidget(title: 'Coupure billets');
+      },
     );
   }
 
@@ -342,7 +341,7 @@ class _DetailCaisseState extends State<DetailCaisse> {
       ),
       PlutoColumn(
         readOnly: true,
-        title: 'nombreBillet',
+        title: 'Nombre',
         field: 'nombreBillet',
         type: PlutoColumnType.text(),
         enableRowDrag: true,
@@ -354,7 +353,7 @@ class _DetailCaisseState extends State<DetailCaisse> {
       ),
       PlutoColumn(
         readOnly: true,
-        title: 'coupureBillet',
+        title: 'Coupure',
         field: 'coupureBillet',
         type: PlutoColumnType.text(),
         enableRowDrag: true,
@@ -368,14 +367,9 @@ class _DetailCaisseState extends State<DetailCaisse> {
   }
 
   Future agentsRow() async {
-    List<CoupureBilletModel> dataList = [];
-    for (var item in coupureBillet) {
-      dataList.add(CoupureBilletModel.fromJson(item));
-    }
-
     if (mounted) {
       setState(() {
-        for (var item in dataList) {
+        for (var item in coupureBilletList) {
           rows.add(PlutoRow(cells: {
             'id': PlutoCell(value: item.id),
             'nombreBillet': PlutoCell(value: item.nombreBillet),

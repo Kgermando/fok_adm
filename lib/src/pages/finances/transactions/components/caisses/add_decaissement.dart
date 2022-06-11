@@ -1,12 +1,15 @@
+import 'dart:async';
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:fokad_admin/src/api/auth/auth_api.dart';
 import 'package:fokad_admin/src/api/finances/caisse_api.dart';
+import 'package:fokad_admin/src/api/finances/coupure_billet_api.dart';
 import 'package:fokad_admin/src/constants/app_theme.dart';
 import 'package:fokad_admin/src/constants/responsive.dart';
 import 'package:fokad_admin/src/models/finances/caisse_model.dart';
+import 'package:fokad_admin/src/models/finances/coupure_billet_model.dart';
 import 'package:fokad_admin/src/navigation/drawer/drawer_menu.dart';
 import 'package:fokad_admin/src/navigation/header/custom_appbar.dart';
 import 'package:fokad_admin/src/utils/dropdown.dart';
@@ -15,47 +18,40 @@ import 'package:fokad_admin/src/widgets/btn_widget.dart';
 import 'package:fokad_admin/src/widgets/title_widget.dart';
 
 class AddDecaissement extends StatefulWidget {
-  const AddDecaissement({ Key? key }) : super(key: key);
+  const AddDecaissement({Key? key}) : super(key: key);
 
   @override
   State<AddDecaissement> createState() => _AddDecaissementState();
 }
 
 class _AddDecaissementState extends State<AddDecaissement> {
- final GlobalKey<ScaffoldState> _key = GlobalKey();
+  final GlobalKey<ScaffoldState> _key = GlobalKey();
   final controller = ScrollController();
-  final ScrollController _controllerBillet = ScrollController();
   final _formEncaissement = GlobalKey<FormState>();
+  final _coupureBillertKey = GlobalKey<FormState>();
 
   bool isLoading = false;
+  bool isCoupureBilletLoading = false;
 
-  final TextEditingController nomCompletController = TextEditingController();
-  final TextEditingController pieceJustificativeController =
-      TextEditingController();
-  final TextEditingController libelleController = TextEditingController();
-  final TextEditingController montantController = TextEditingController();
-  final TextEditingController deperatmentController = TextEditingController();
-
-  List<TextEditingController> coupureBilletControllerList = [];
-  List<TextEditingController> nombreBilletControllerList = [];
-  String? ligneBudgtaire;
+  TextEditingController nomCompletController = TextEditingController();
+  TextEditingController pieceJustificativeController = TextEditingController();
+  TextEditingController libelleController = TextEditingController();
+  TextEditingController montantController = TextEditingController();
+  TextEditingController deperatmentController = TextEditingController();
   String? departement;
-  // String? typeOperation;
+
+  TextEditingController coupureBilletController = TextEditingController();
+  TextEditingController nombreBilletController = TextEditingController();
 
   final List<String> typeCaisse = TypeOperation().typeVereCaisse;
   final List<String> departementList = Dropdown().departement;
 
-  late List<Map<String, dynamic>> _values;
-  late String result;
-  late int count;
+  Timer? timer;
 
   @override
   void initState() {
-    setState(() {
+    timer = Timer.periodic(const Duration(seconds: 1), (timer) {
       getData();
-      count = 0;
-      result = '';
-      _values = [];
     });
 
     super.initState();
@@ -63,29 +59,30 @@ class _AddDecaissementState extends State<AddDecaissement> {
 
   @override
   void dispose() {
+    timer!.cancel();
     nomCompletController.dispose();
     pieceJustificativeController.dispose();
     libelleController.dispose();
     montantController.dispose();
     deperatmentController.dispose();
-    for (final controller in coupureBilletControllerList) {
-      controller.dispose();
-    }
-    for (final controller in nombreBilletControllerList) {
-      controller.dispose();
-    }
+    coupureBilletController.dispose();
+    nombreBilletController.dispose();
     super.dispose();
   }
 
   String? matricule;
   int numberItem = 0;
-
+  List<CoupureBilletModel> coupureBilletList = [];
   Future<void> getData() async {
     final userModel = await AuthApi().getUserId();
     final data = await CaisseApi().getAllData();
+    var coupureBillets = await CoupureBilletApi().getAllData();
     setState(() {
       matricule = userModel.matricule;
       numberItem = data.length;
+      coupureBilletList = coupureBillets
+          .where((element) => element.reference == numberItem + 1)
+          .toList();
     });
   }
 
@@ -144,7 +141,6 @@ class _AddDecaissementState extends State<AddDecaissement> {
   }
 
   Widget addPageWidget() {
-    final headline6 = Theme.of(context).textTheme.headline6;
     return Form(
       key: _formEncaissement,
       child: Row(
@@ -193,25 +189,6 @@ class _AddDecaissementState extends State<AddDecaissement> {
                     const SizedBox(
                       width: p10,
                     ),
-                    if (count == 0)
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text("Coupure billet", style: headline6),
-                          IconButton(
-                              icon: const Icon(Icons.add),
-                              onPressed: () {
-                                setState(() {
-                                  final coupureBillet = TextEditingController();
-                                  final nombreBillet = TextEditingController();
-                                  nombreBilletControllerList.add(nombreBillet);
-                                  coupureBilletControllerList
-                                      .add(coupureBillet);
-                                  count++;
-                                });
-                              })
-                        ],
-                      ),
                     SizedBox(
                         height: 500,
                         width: double.infinity,
@@ -336,112 +313,79 @@ class _AddDecaissementState extends State<AddDecaissement> {
   }
 
   Widget coupureBilletWidget() {
-    return Scrollbar(
-      controller: _controllerBillet,
-      child: ListView.builder(
-          controller: _controllerBillet,
-          itemCount: count,
-          shrinkWrap: true,
-          itemBuilder: (context, index) {
-            return Column(
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    SelectableText('Coupure de billet',
-                        style: Theme.of(context).textTheme.bodyText2),
-                    Row(
-                      children: [
-                        IconButton(
-                            onPressed: () {
-                              setState(() {
-                                final coupureBillet = TextEditingController();
-                                final nombreBillet = TextEditingController();
-                                nombreBilletControllerList.add(nombreBillet);
-                                coupureBilletControllerList.add(coupureBillet);
-                                count++;
-                                onUpdate(
-                                    index,
-                                    nombreBilletControllerList[index].text,
-                                    coupureBilletControllerList[index].text);
-                              });
-                            },
-                            icon: const Icon(Icons.add)),
-                        if (count > 0)
-                          IconButton(
-                              onPressed: () {
-                                setState(() {
-                                  final coupureBillet = TextEditingController();
-                                  final nombreBillet = TextEditingController();
-                                  nombreBilletControllerList
-                                      .remove(nombreBillet);
-                                  coupureBilletControllerList
-                                      .remove(coupureBillet);
-                                  count--;
-                                });
-                              },
-                              icon: const Icon(Icons.close)),
-                      ],
-                    ),
-                  ],
+    final headline6 = Theme.of(context).textTheme.headline6;
+    return ListView(
+      children: [
+        for (var item in coupureBilletList)
+          Row(
+            children: [
+              Expanded(
+                child: Container(
+                  color: Colors.white24,
+                  child: Text(item.nombreBillet,
+                      textAlign: TextAlign.start, style: headline6),
                 ),
-                Row(
-                  children: [
-                    Expanded(
-                        child: Container(
-                            margin: const EdgeInsets.only(bottom: p20),
-                            child: TextFormField(
-                              controller: nombreBilletControllerList[index],
-                              decoration: InputDecoration(
-                                border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(10.0)),
-                                labelText: '${index + 1}. Nombre',
-                              ),
-                              keyboardType: TextInputType.text,
-                              style: const TextStyle(),
-                            ))),
-                    const SizedBox(width: p10),
-                    Expanded(
-                        child: Container(
-                            margin: const EdgeInsets.only(bottom: p20),
-                            child: TextFormField(
-                              controller: coupureBilletControllerList[index],
-                              decoration: InputDecoration(
-                                border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(10.0)),
-                                labelText: '${index + 1}. Coupure billet',
-                              ),
-                              keyboardType: TextInputType.text,
-                              style: const TextStyle(),
-                            )))
-                  ],
+              ),
+              Expanded(
+                child: Container(
+                  color: Colors.white24,
+                  child: SelectableText(item.coupureBillet,
+                      textAlign: TextAlign.start, style: headline6),
                 ),
-                if (count >= 1)
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      SizedBox(
-                        height: 50,
-                        // width: double.infinity,
-                        child: Card(
-                            elevation: 10,
-                            color: Colors.red.shade700,
-                            child: const Padding(
-                              padding: EdgeInsets.all(8.0),
-                              child: SelectableText(
-                                "Note: Ajoutez un champ en plus (+1) pour enregistrer le precedent",
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                  color: Colors.white,
-                                ),
-                              ),
-                            )),
-                      ),
-                    ],
-                  )
-              ],
-            );
-          }),
+              )
+            ],
+          ),
+        const SizedBox(height: p20),
+        Form(
+          key: _coupureBillertKey,
+          child: Row(
+            children: [
+              Expanded(
+                  child: Container(
+                      margin: const EdgeInsets.only(bottom: p20),
+                      child: TextFormField(
+                        controller: nombreBilletController,
+                        decoration: InputDecoration(
+                          border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10.0)),
+                          labelText: 'Nombre',
+                        ),
+                        keyboardType: TextInputType.text,
+                        style: const TextStyle(),
+                      ))),
+              const SizedBox(width: p10),
+              Expanded(
+                  child: Container(
+                      margin: const EdgeInsets.only(bottom: p20),
+                      child: TextFormField(
+                        controller: coupureBilletController,
+                        decoration: InputDecoration(
+                          border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10.0)),
+                          labelText: 'Coupure billet',
+                        ),
+                        keyboardType: TextInputType.text,
+                        style: const TextStyle(),
+                      ))),
+              IconButton(
+                  onPressed: () {
+                    setState(() {
+                      isCoupureBilletLoading = true;
+                    });
+                    final form = _coupureBillertKey.currentState!;
+                    if (form.validate()) {
+                      submitCoupureBillet();
+                      form.reset();
+                    }
+                    // setState(() {
+                    //   isCoupureBilletLoading = true;
+                    // });
+                  },
+                  icon: Icon(Icons.save, color: Colors.red.shade700))
+            ],
+          ),
+        ),
+      ],
     );
   }
 
@@ -472,51 +416,17 @@ class _AddDecaissementState extends State<AddDecaissement> {
     );
   }
 
-  onUpdate(int key, String nombreBillet, String coupureBillet) {
-    int foundKey = -1;
-    for (var map in _values) {
-      if (map.containsKey('id')) {
-        if (map['id'] == key) {
-          foundKey = key;
-          break;
-        }
-      }
-    }
-
-    if (-1 != foundKey) {
-      _values.removeWhere((map) {
-        return map['id'] == foundKey;
-      });
-    }
-    Map<String, dynamic> json = {
-      'id': key,
-      'nombreBillet': nombreBillet,
-      'coupureBillet': coupureBillet
-    };
-    _values.add(json);
-    setState(() {
-      result = _prettyPrint(_values);
-    });
-  }
-
-  String _prettyPrint(jsonObject) {
-    var encoder = const JsonEncoder.withIndent('  ');
-    return encoder.convert(jsonObject);
-  }
-
-
-   Future submitDecaissement() async {
-    final jsonList = _values.map((item) => jsonEncode(item)).toList();
+  Future submitDecaissement() async {
     final caisseModel = CaisseModel(
         nomComplet: nomCompletController.text,
         pieceJustificative: pieceJustificativeController.text,
         libelle: libelleController.text,
         montant: montantController.text,
-        coupureBillet: jsonList, 
         departement: '-',
         typeOperation: 'Decaissement',
         numeroOperation: 'Transaction-Caisse-${numberItem + 1}',
         signature: matricule.toString(),
+        createdRef: numberItem + 1,
         created: DateTime.now());
     await CaisseApi().insertData(caisseModel);
     Navigator.of(context).pop();
@@ -526,4 +436,15 @@ class _AddDecaissementState extends State<AddDecaissement> {
     ));
   }
 
+  Future submitCoupureBillet() async {
+    final coupureBillet = CoupureBilletModel(
+      reference: numberItem + 1,
+      nombreBillet: nombreBilletController.text,
+      coupureBillet: coupureBilletController.text);
+    await CoupureBilletApi().insertData(coupureBillet);
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      content: const Text("Ajouté!"),
+      backgroundColor: Colors.green[700],
+    ));
+  }
 }

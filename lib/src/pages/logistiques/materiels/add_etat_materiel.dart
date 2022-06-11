@@ -1,9 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:fokad_admin/src/api/auth/auth_api.dart';
+import 'package:fokad_admin/src/api/logistiques/anguin_api.dart';
 import 'package:fokad_admin/src/api/logistiques/etat_materiel_api.dart';
+import 'package:fokad_admin/src/api/logistiques/immobiler_api.dart';
+import 'package:fokad_admin/src/api/logistiques/mobilier_api.dart';
 import 'package:fokad_admin/src/constants/app_theme.dart';
 import 'package:fokad_admin/src/constants/responsive.dart';
+import 'package:fokad_admin/src/models/logistiques/anguin_model.dart';
 import 'package:fokad_admin/src/models/logistiques/etat_materiel_model.dart';
+import 'package:fokad_admin/src/models/logistiques/immobilier_model.dart';
+import 'package:fokad_admin/src/models/logistiques/mobilier_model.dart';
 import 'package:fokad_admin/src/models/users/user_model.dart';
 import 'package:fokad_admin/src/navigation/drawer/drawer_menu.dart';
 import 'package:fokad_admin/src/navigation/header/custom_appbar.dart';
@@ -24,23 +30,37 @@ class _AddEtatMaterielState extends State<AddEtatMateriel> {
   final _formKey = GlobalKey<FormState>();
   bool isLoading = false;
 
-  final TextEditingController nomController = TextEditingController();
-  final TextEditingController modeleController = TextEditingController();
-  final TextEditingController marqueController = TextEditingController();
+  // final TextEditingController nomController = TextEditingController();
+  // final TextEditingController modeleController = TextEditingController();
+  // final TextEditingController marqueController = TextEditingController();
   String? typeObjet;
+  String? nomMateriel;
   String? statut;
+
+  List<String> nomMaterielList = [];
+  List<AnguinModel> enginList = [];
+  List<MobilierModel> mobilierList = [];
+  List<ImmobilierModel> immobilierList = [];
 
   @override
   initState() {
-    date();
+    setState(() {
+      getData();
+    });
     super.initState();
   }
 
   String? signature;
-  Future<void> date() async {
+  Future<void> getData() async {
     UserModel userModel = await AuthApi().getUserId();
+    var engins = await AnguinApi().getAllData();
+    var mobiliers = await MobilierApi().getAllData();
+    var immobiliers = await ImmobilierApi().getAllData();
     setState(() {
       signature = userModel.matricule;
+      enginList = engins;
+      mobilierList = mobiliers;
+      immobilierList = immobiliers;
     });
   }
 
@@ -48,9 +68,9 @@ class _AddEtatMaterielState extends State<AddEtatMateriel> {
   void dispose() {
     _controllerScroll.dispose();
 
-    nomController.dispose();
-    modeleController.dispose();
-    marqueController.dispose();
+    // nomController.dispose();
+    // modeleController.dispose();
+    // marqueController.dispose();
 
     super.dispose();
   }
@@ -125,7 +145,7 @@ class _AddEtatMaterielState extends State<AddEtatMateriel> {
                 child: ListView(
                   controller: _controllerScroll,
                   children: [
-                   Row(
+                    Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         const TitleWidget(title: "Ajout Materiel"),
@@ -137,20 +157,11 @@ class _AddEtatMaterielState extends State<AddEtatMateriel> {
                     ),
                     Row(
                       children: [
-                        Expanded(child: nomWidget()),
+                        Expanded(child: typeObjetWidget()),
                         const SizedBox(
                           width: p10,
                         ),
-                        Expanded(child: modeleWidget())
-                      ],
-                    ),
-                    Row(
-                      children: [
-                        Expanded(child: marqueWidget()),
-                        const SizedBox(
-                          width: p10,
-                        ),
-                        Expanded(child: typeObjetWidget())
+                        Expanded(child: nomMaterielWidget())
                       ],
                     ),
                     statutListWidget(),
@@ -177,74 +188,78 @@ class _AddEtatMaterielState extends State<AddEtatMateriel> {
     );
   }
 
-  Widget nomWidget() {
-    return Container(
-        margin: const EdgeInsets.only(bottom: p20),
-        child: TextFormField(
-          controller: nomController,
-          decoration: InputDecoration(
-            border:
-                OutlineInputBorder(borderRadius: BorderRadius.circular(10.0)),
-            labelText: 'Nom',
-          ),
-          keyboardType: TextInputType.text,
-          style: const TextStyle(),
-          validator: (value) {
-            if (value != null && value.isEmpty) {
-              return 'Ce champs est obligatoire';
-            } else {
-              return null;
-            }
-          },
-        ));
-  }
+  // Widget nomWidget() {
+  //   return Container(
+  //       margin: const EdgeInsets.only(bottom: p20),
+  //       child: TextFormField(
+  //         controller: nomController,
+  //         decoration: InputDecoration(
+  //           border:
+  //               OutlineInputBorder(borderRadius: BorderRadius.circular(10.0)),
+  //           labelText: 'Nom',
+  //         ),
+  //         keyboardType: TextInputType.text,
+  //         style: const TextStyle(),
+  //         validator: (value) {
+  //           if (value != null && value.isEmpty) {
+  //             return 'Ce champs est obligatoire';
+  //           } else {
+  //             return null;
+  //           }
+  //         },
+  //       ));
+  // }
 
-  Widget modeleWidget() {
-    return Container(
-        margin: const EdgeInsets.only(bottom: p20),
-        child: TextFormField(
-          controller: modeleController,
-          decoration: InputDecoration(
-            border:
-                OutlineInputBorder(borderRadius: BorderRadius.circular(10.0)),
-            labelText: 'Modèle',
-          ),
-          keyboardType: TextInputType.text,
-          style: const TextStyle(),
-          validator: (value) {
-            if (value != null && value.isEmpty) {
-              return 'Ce champs est obligatoire';
-            } else {
-              return null;
-            }
-          },
-        ));
-  }
+  // Widget modeleWidget() {
+  //   return Container(
+  //       margin: const EdgeInsets.only(bottom: p20),
+  //       child: TextFormField(
+  //         controller: modeleController,
+  //         decoration: InputDecoration(
+  //           border:
+  //               OutlineInputBorder(borderRadius: BorderRadius.circular(10.0)),
+  //           labelText: 'Modèle',
+  //         ),
+  //         keyboardType: TextInputType.text,
+  //         style: const TextStyle(),
+  //         validator: (value) {
+  //           if (value != null && value.isEmpty) {
+  //             return 'Ce champs est obligatoire';
+  //           } else {
+  //             return null;
+  //           }
+  //         },
+  //       ));
+  // }
 
-  Widget marqueWidget() {
-    return Container(
-        margin: const EdgeInsets.only(bottom: p20),
-        child: TextFormField(
-          controller: marqueController,
-          decoration: InputDecoration(
-            border:
-                OutlineInputBorder(borderRadius: BorderRadius.circular(10.0)),
-            labelText: 'Marque',
-          ),
-          keyboardType: TextInputType.text,
-          style: const TextStyle(),
-          validator: (value) {
-            if (value != null && value.isEmpty) {
-              return 'Ce champs est obligatoire';
-            } else {
-              return null;
-            }
-          },
-        ));
-  }
+  // Widget marqueWidget() {
+  //   return Container(
+  //       margin: const EdgeInsets.only(bottom: p20),
+  //       child: TextFormField(
+  //         controller: marqueController,
+  //         decoration: InputDecoration(
+  //           border:
+  //               OutlineInputBorder(borderRadius: BorderRadius.circular(10.0)),
+  //           labelText: 'Marque',
+  //         ),
+  //         keyboardType: TextInputType.text,
+  //         style: const TextStyle(),
+  //         validator: (value) {
+  //           if (value != null && value.isEmpty) {
+  //             return 'Ce champs est obligatoire';
+  //           } else {
+  //             return null;
+  //           }
+  //         },
+  //       ));
+  // }
 
   Widget typeObjetWidget() {
-    List<String> typeObjetList = ["Anguin", "Mobilier", "Immobilier"];
+    List<String> typeObjetList = ["Engin", "Mobilier", "Immobilier"];
+    var enginsMap = enginList.map((e) => e.nom).toSet().toList();
+    var mobilierMap = mobilierList.map((e) => e.nom).toSet().toList();
+    var immobiliersMap =
+        immobilierList.map((e) => e.numeroCertificat).toSet().toList();
     return Container(
       margin: const EdgeInsets.only(bottom: p20),
       child: DropdownButtonFormField<String>(
@@ -256,15 +271,57 @@ class _AddEtatMaterielState extends State<AddEtatMateriel> {
         ),
         value: typeObjet,
         isExpanded: true,
-        items: typeObjetList.map((String value) {
-          return DropdownMenuItem<String>(
-            value: value,
-            child: Text(value),
-          );
-        }).toList(),
+        items: typeObjetList
+            .map((String value) {
+              return DropdownMenuItem<String>(
+                value: value,
+                child: Text(value),
+              );
+            })
+            .toSet()
+            .toList(),
         onChanged: (value) {
           setState(() {
             typeObjet = value!;
+            if (typeObjet == "Engin") {
+              nomMaterielList = enginsMap;
+            } else if (typeObjet == "Mobilier") {
+              nomMaterielList = mobilierMap;
+            } else if (typeObjet == "Immobilier") {
+              nomMaterielList = immobiliersMap;
+            }
+            print('nomMaterielList $nomMaterielList');
+          });
+        },
+      ),
+    );
+  }
+
+  Widget nomMaterielWidget() {
+    
+    return Container(
+      margin: const EdgeInsets.only(bottom: p20),
+      child: DropdownButtonFormField<String>(
+        decoration: InputDecoration(
+          labelText: 'Materiel',
+          labelStyle: const TextStyle(),
+          border: OutlineInputBorder(borderRadius: BorderRadius.circular(5.0)),
+          contentPadding: const EdgeInsets.only(left: 5.0),
+        ),
+        value: typeObjet,
+        isExpanded: true,
+        items: nomMaterielList
+            .map((String value) {
+              return DropdownMenuItem<String>(
+                value: value,
+                child: Text(value),
+              );
+            })
+            .toSet()
+            .toList(),
+        onChanged: (value) {
+          setState(() {
+            nomMateriel = value!;
           });
         },
       ),
@@ -301,18 +358,18 @@ class _AddEtatMaterielState extends State<AddEtatMateriel> {
 
   Future<void> submit() async {
     final etatMaterielModel = EtatMaterielModel(
-        nom: nomController.text,
-        modele: modeleController.text,
-        marque: marqueController.text,
+        nom: nomMateriel.toString(),
+        modele: '-',
+        marque: '-',
         typeObjet: typeObjet.toString(),
         statut: statut.toString(),
         signature: signature.toString(),
-        createdRef:  DateTime.now(),
+        createdRef: DateTime.now(),
         created: DateTime.now());
     await EtatMaterielApi().insertData(etatMaterielModel);
     Navigator.pop(context);
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-      content: const Text("Enregistrer avec succès!"),
+      content: const Text("Soumis avec succès!"),
       backgroundColor: Colors.green[700],
     ));
   }

@@ -4,30 +4,23 @@ class FinanceExterieurModel {
   late String pieceJustificative;
   late String libelle;
   late String montant;
-  late List<dynamic> coupureBillet;
-  late String ligneBudgtaire; // somme d'affectation pour le budget
   late String typeOperation;
   late String numeroOperation;
-  late String ressourceFin; // financement Propre ou financement exterieur
-
   late String signature; // celui qui fait le document
+  late int createdRef;
   late DateTime created;
- 
-  FinanceExterieurModel( 
-    {
-      this.id,
-    required this.nomComplet,
-    required this.pieceJustificative,
-    required this.libelle,
-    required this.montant,
-    required this.coupureBillet,
-    required this.ligneBudgtaire,
-    required this.typeOperation,
-    required this.numeroOperation,
-    required this.ressourceFin,
-    required this.signature,
-    required this.created
-  });
+
+  FinanceExterieurModel(
+      {this.id,
+      required this.nomComplet,
+      required this.pieceJustificative,
+      required this.libelle,
+      required this.montant,
+      required this.typeOperation,
+      required this.numeroOperation,
+      required this.signature,
+      required this.createdRef,
+      required this.created});
 
   factory FinanceExterieurModel.fromSQL(List<dynamic> row) {
     return FinanceExterieurModel(
@@ -36,31 +29,25 @@ class FinanceExterieurModel {
         pieceJustificative: row[2],
         libelle: row[3],
         montant: row[4],
-        coupureBillet: row[5],
-        ligneBudgtaire: row[6],
-        typeOperation: row[7],
-        numeroOperation: row[8],
-        ressourceFin: row[9],
-        signature: row[10],
-        created: row[11]
-    );
+        typeOperation: row[5],
+        numeroOperation: row[6],
+        signature: row[7],
+        createdRef: row[8],
+        created: row[9]);
   }
 
   factory FinanceExterieurModel.fromJson(Map<String, dynamic> json) {
     return FinanceExterieurModel(
-      id: json['id'],
-      nomComplet: json['nomComplet'],
-      pieceJustificative: json['pieceJustificative'],
-      libelle: json['libelle'],
-      montant: json['montant'],
-      coupureBillet: json['coupureBillet'],
-      ligneBudgtaire: json['ligneBudgtaire'],
-      typeOperation: json['typeOperation'],
-      numeroOperation: json['numeroOperation'],
-      ressourceFin: json['ressourceFin'],
-      signature: json['signature'],
-      created: DateTime.parse(json['created'])
-    );
+        id: json['id'],
+        nomComplet: json['nomComplet'],
+        pieceJustificative: json['pieceJustificative'],
+        libelle: json['libelle'],
+        montant: json['montant'],
+        typeOperation: json['typeOperation'],
+        numeroOperation: json['numeroOperation'],
+        signature: json['signature'],
+        createdRef: json['createdRef'],
+        created: DateTime.parse(json['created']));
   }
 
   Map<String, dynamic> toJson() {
@@ -70,12 +57,10 @@ class FinanceExterieurModel {
       'pieceJustificative': pieceJustificative,
       'libelle': libelle,
       'montant': montant,
-      'coupureBillet': coupureBillet,
-      'ligneBudgtaire': ligneBudgtaire,
       'typeOperation': typeOperation,
       'numeroOperation': numeroOperation,
-      'ressourceFin': ressourceFin,
       'signature': signature,
+      'createdRef': createdRef,
       'created': created.toIso8601String()
     };
   }

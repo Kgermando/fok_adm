@@ -56,6 +56,8 @@ var banqueDepotMouthUrl = Uri.parse("$mainUrl/finances/transactions/banques/char
 var banqueRetraitMountUrl = Uri.parse("$mainUrl/finances/transactions/banques/chart-month-retrait/");
 var banqueDepotYearUrl = Uri.parse("$mainUrl/finances/transactions/banques/chart-year-depot/");
 var banqueRetraitYeartUrl = Uri.parse("$mainUrl/finances/transactions/banques/chart-year-retrait/");
+var coupureBilletUrl = Uri.parse("$mainUrl/finances/coupure-billets/");
+var addCoupureBilleUrl = Uri.parse("$mainUrl/finances/coupure-billets/insert-new-coupure-billet");
 
 var caisseUrl = Uri.parse("$mainUrl/finances/transactions/caisses/");
 var addCaisseUrl = Uri.parse(

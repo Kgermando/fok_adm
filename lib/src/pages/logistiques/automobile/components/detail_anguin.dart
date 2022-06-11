@@ -346,7 +346,7 @@ class _DetailAnguinState extends State<DetailAnguin> {
               ),
               Expanded(
                 flex: 3,
-                child: SelectableText("${data.qtyMaxReservoir} \$",
+                child: SelectableText("${data.qtyMaxReservoir} L",
                     textAlign: TextAlign.start, style: bodyMedium),
               )
             ],
@@ -365,7 +365,7 @@ class _DetailAnguinState extends State<DetailAnguin> {
               Expanded(
                 flex: 3,
                 child: SelectableText(
-                    DateFormat("dd-MM-yy").format(data.created),
+                    DateFormat("dd-MM-yyyy").format(data.created),
                     textAlign: TextAlign.start,
                     style: bodyMedium),
               )
@@ -378,7 +378,7 @@ class _DetailAnguinState extends State<DetailAnguin> {
             children: [
               Expanded(
                 flex: 1,
-                child: Text('numéro plaque :',
+                child: Text('Numéro plaque :',
                     textAlign: TextAlign.start,
                     style: bodyMedium.copyWith(fontWeight: FontWeight.bold)),
               ),
@@ -420,7 +420,7 @@ class _DetailAnguinState extends State<DetailAnguin> {
               ),
               Expanded(
                 flex: 3,
-                child: SelectableText(data.kilometrageInitiale,
+                child: SelectableText("${data.kilometrageInitiale} \$",
                     textAlign: TextAlign.start, style: bodyMedium),
               )
             ],
@@ -432,7 +432,7 @@ class _DetailAnguinState extends State<DetailAnguin> {
             children: [
               Expanded(
                 flex: 1,
-                child: Text('Provenance :',
+                child: Text('Provenance (Pays) :',
                     textAlign: TextAlign.start,
                     style: bodyMedium.copyWith(fontWeight: FontWeight.bold)),
               ),
@@ -450,7 +450,7 @@ class _DetailAnguinState extends State<DetailAnguin> {
             children: [
               Expanded(
                 flex: 1,
-                child: Text('signature :',
+                child: Text('Signature :',
                     textAlign: TextAlign.start,
                     style: bodyMedium.copyWith(fontWeight: FontWeight.bold)),
               ),

@@ -99,10 +99,7 @@ class _TableFinExterieurState extends State<TableFinExterieur> {
                   } else if (column.field == 'montant') {
                     return resolver<ClassFilterImplemented>()
                         as PlutoFilterType;
-                  } else if (column.field == 'ligneBudgtaire') {
-                    return resolver<ClassFilterImplemented>()
-                        as PlutoFilterType;
-                  } else if (column.field == 'departement') {
+                  }   else if (column.field == 'departement') {
                     return resolver<ClassFilterImplemented>()
                         as PlutoFilterType;
                   } else if (column.field == 'typeOperation') {
@@ -216,19 +213,7 @@ class _TableFinExterieurState extends State<TableFinExterieur> {
         titleTextAlign: PlutoColumnTextAlign.left,
         width: 200,
         minWidth: 150,
-      ),
-      PlutoColumn(
-        readOnly: true,
-        title: 'Ligne budgtaire',
-        field: 'ligneBudgtaire',
-        type: PlutoColumnType.text(),
-        enableRowDrag: true,
-        enableContextMenu: false,
-        enableDropToResize: true,
-        titleTextAlign: PlutoColumnTextAlign.left,
-        width: 200,
-        minWidth: 150,
-      ),
+      ), 
       PlutoColumn(
         readOnly: true,
         title: 'Type d\'operation',
@@ -283,12 +268,11 @@ class _TableFinExterieurState extends State<TableFinExterieur> {
             'pieceJustificative': PlutoCell(value: item.pieceJustificative),
             'libelle': PlutoCell(value: item.libelle),
             'montant': PlutoCell(value: "${NumberFormat
-              .decimalPattern('fr').format(double.parse(item.montant))} \$"),
-            'ligneBudgtaire': PlutoCell(value: item.ligneBudgtaire),
+              .decimalPattern('fr').format(double.parse(item.montant))} \$"), 
             'typeOperation': PlutoCell(value: item.typeOperation),
             'numeroOperation': PlutoCell(value: item.numeroOperation),
             'created': PlutoCell(
-                value: DateFormat("DD-MM-yy H:mm").format(item.created))
+                value: DateFormat("dd-MM-yyyy HH:mm").format(item.created))
           }));
         }
         stateManager!.resetCurrentState();

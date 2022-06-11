@@ -2,11 +2,13 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:fokad_admin/src/api/approbation/approbation_api.dart';
 import 'package:fokad_admin/src/api/auth/auth_api.dart';
+import 'package:fokad_admin/src/api/finances/coupure_billet_api.dart';
 import 'package:fokad_admin/src/api/finances/fin_exterieur_api.dart';
 import 'package:fokad_admin/src/api/user/user_api.dart';
 import 'package:fokad_admin/src/constants/app_theme.dart';
 import 'package:fokad_admin/src/constants/responsive.dart';
 import 'package:fokad_admin/src/models/approbation/approbation_model.dart';
+import 'package:fokad_admin/src/models/finances/coupure_billet_model.dart';
 import 'package:fokad_admin/src/models/finances/fin_exterieur_model.dart';
 import 'package:fokad_admin/src/models/users/user_model.dart';
 import 'package:fokad_admin/src/navigation/drawer/drawer_menu.dart';
@@ -35,12 +37,8 @@ class _DetailFinExterieurState extends State<DetailFinExterieur> {
   List<PlutoRow> rows = [];
   PlutoGridStateManager? stateManager;
   PlutoGridSelectingMode gridSelectingMode = PlutoGridSelectingMode.row;
-
-  String approbationDGController = '-';
-  TextEditingController signatureJustificationDGController =
-      TextEditingController();
-
-  List coupureBillet = [];
+   
+  
 
   @override
   initState() {
@@ -49,20 +47,6 @@ class _DetailFinExterieurState extends State<DetailFinExterieur> {
     agentsRow();
     super.initState();
   }
-
-  List<ApprobationModel> approbList = [];
-  List<ApprobationModel> approbationData = [];
-  ApprobationModel approb = ApprobationModel(
-      reference: DateTime.now(),
-      title: '-',
-      departement: '-',
-      fontctionOccupee: '-',
-      ligneBudgtaire: '-',
-      resources: '-',
-      approbation: '-',
-      justification: '-',
-      signature: '-',
-      created: DateTime.now());
 
   UserModel user = UserModel(
       nom: '-',
@@ -79,14 +63,16 @@ class _DetailFinExterieurState extends State<DetailFinExterieur> {
       passwordHash: '-',
       succursale: '-');
 
+  List<CoupureBilletModel> coupureBilletList = [];
+  List<CoupureBilletModel> coupureBilletFilter = [];
   Future<void> getData() async {
     final dataUser = await UserApi().getAllData();
-    UserModel userModel = await AuthApi().getUserId();
-    var approbations = await ApprobationApi().getAllData();
+    UserModel userModel = await AuthApi().getUserId(); 
+    var coupureBillets = await CoupureBilletApi().getAllData();
     setState(() {
       userList = dataUser;
-      user = userModel;
-      approbList = approbations;
+      user = userModel; 
+      coupureBilletFilter = coupureBillets;
     });
   }
 
@@ -114,16 +100,10 @@ class _DetailFinExterieurState extends State<DetailFinExterieur> {
                             AsyncSnapshot<FinanceExterieurModel> snapshot) {
                           if (snapshot.hasData) {
                             FinanceExterieurModel? data = snapshot.data;
-                            coupureBillet = data!.coupureBillet;
-                            approbationData = approbList
+                             coupureBilletList = coupureBilletFilter
                                 .where((element) =>
-                                    element.reference.microsecondsSinceEpoch ==
-                                    data.created.microsecondsSinceEpoch)
-                                .toList();
-
-                            if (approbationData.isNotEmpty) {
-                              approb = approbationData.first;
-                            }
+                                    element.reference == data!.createdRef)
+                                .toList(); 
                             return Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
@@ -147,19 +127,8 @@ class _DetailFinExterieurState extends State<DetailFinExterieur> {
                                 ),
                                 Expanded(
                                     child: SingleChildScrollView(
-                                        child: Column(
-                                  children: [
-                                    pageDetail(data),
-                                    const SizedBox(height: p10),
-                                    if (approbationData.isNotEmpty)
-                                      infosEditeurWidget(),
-                                    const SizedBox(height: p10),
-                                    if (int.parse(user.role) <= 2)
-                                      if (approb.fontctionOccupee !=
-                                          user.fonctionOccupe)
-                                        approbationForm(data),
-                                  ],
-                                )))
+                                        controller: _controllerScroll,
+                                        child: pageDetail(data!)))
                               ],
                             );
                           } else {
@@ -288,37 +257,7 @@ class _DetailFinExterieurState extends State<DetailFinExterieur> {
                     textAlign: TextAlign.start, style: bodyMedium),
               )
             ],
-          ),
-          if (data.typeOperation != 'Depot de fond')
-            Divider(color: Colors.amber.shade700),
-          if (data.typeOperation != 'Depot de fond')
-            Row(
-              children: [
-                Expanded(
-                  child: Text('Ligne budgtaire :',
-                      textAlign: TextAlign.start,
-                      style: bodyMedium.copyWith(fontWeight: FontWeight.bold)),
-                ),
-                Expanded(
-                  child: SelectableText(data.ligneBudgtaire,
-                      textAlign: TextAlign.start, style: bodyMedium),
-                )
-              ],
-            ),
-          Divider(color: Colors.amber.shade700),
-          Row(
-            children: [
-              Expanded(
-                child: Text('Resources previsionnelle :',
-                    textAlign: TextAlign.start,
-                    style: bodyMedium.copyWith(fontWeight: FontWeight.bold)),
-              ),
-              Expanded(
-                child: SelectableText(data.ressourceFin,
-                    textAlign: TextAlign.start, style: bodyMedium),
-              )
-            ],
-          ),
+          ), 
           Divider(color: Colors.amber.shade700),
           Row(
             children: [
@@ -375,6 +314,9 @@ class _DetailFinExterieurState extends State<DetailFinExterieur> {
         stateManager!.setShowColumnFilter(true);
         stateManager!.notifyListeners();
       },
+      createHeader: (PlutoGridStateManager header) {
+        return const TitleWidget(title: 'Coupure billets');
+      },
     );
   }
 
@@ -394,7 +336,7 @@ class _DetailFinExterieurState extends State<DetailFinExterieur> {
       ),
       PlutoColumn(
         readOnly: true,
-        title: 'nombreBillet',
+        title: 'Nombre',
         field: 'nombreBillet',
         type: PlutoColumnType.text(),
         enableRowDrag: true,
@@ -406,7 +348,7 @@ class _DetailFinExterieurState extends State<DetailFinExterieur> {
       ),
       PlutoColumn(
         readOnly: true,
-        title: 'coupureBillet',
+        title: 'Coupure',
         field: 'coupureBillet',
         type: PlutoColumnType.text(),
         enableRowDrag: true,
@@ -422,11 +364,11 @@ class _DetailFinExterieurState extends State<DetailFinExterieur> {
   Future agentsRow() async {
     if (mounted) {
       setState(() {
-        for (var item in coupureBillet) {
+        for (var item in coupureBilletList) {
           rows.add(PlutoRow(cells: {
-            'id': PlutoCell(value: item[0]['id']),
-            'nombreBillet': PlutoCell(value: item[1]['nombreBillet']),
-            'coupureBillet': PlutoCell(value: item[2]['coupureBillet'])
+            'id': PlutoCell(value: item.id),
+            'nombreBillet': PlutoCell(value: item.nombreBillet),
+            'coupureBillet': PlutoCell(value: item.coupureBillet)
           }));
         }
         stateManager!.resetCurrentState();
@@ -688,192 +630,5 @@ class _DetailFinExterieurState extends State<DetailFinExterieur> {
     );
   }
 
-  Widget approbationForm(FinanceExterieurModel data) {
-    final bodyLarge = Theme.of(context).textTheme.bodyLarge;
-    List<String> approbationList = ['Approved', 'Unapproved', '-'];
-    return SizedBox(
-      height: 200,
-      child: Card(
-        elevation: 10,
-        child: Container(
-          margin: const EdgeInsets.all(p16),
-          width: (Responsive.isDesktop(context))
-              ? MediaQuery.of(context).size.width / 2
-              : MediaQuery.of(context).size.width,
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(p10),
-            border: Border.all(
-              color: Colors.blueGrey.shade700,
-              width: 2.0,
-            ),
-          ),
-          child: SingleChildScrollView(
-            padding: const EdgeInsets.all(p10),
-            child: Form(
-              // key: _approbationKey,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Expanded(
-                      flex: 1,
-                      child: Text(user.fonctionOccupe,
-                          style: bodyLarge!.copyWith(
-                              fontWeight: FontWeight.bold,
-                              color: Colors.blue.shade700))),
-                  Expanded(
-                    flex: 3,
-                    child: Column(
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Expanded(
-                                flex: 3,
-                                child: Column(
-                                  children: [
-                                    Text(
-                                      'Approbation',
-                                      style: bodyLarge.copyWith(
-                                          fontWeight: FontWeight.bold),
-                                    ),
-                                    const SizedBox(height: p20),
-                                    Container(
-                                      margin: const EdgeInsets.only(
-                                          bottom: p10, left: p5),
-                                      child: Row(
-                                        children: [
-                                          Expanded(
-                                            flex: 1,
-                                            child:
-                                                DropdownButtonFormField<String>(
-                                              decoration: InputDecoration(
-                                                labelText: 'Approbation',
-                                                border: OutlineInputBorder(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            5.0)),
-                                              ),
-                                              value: approbationDGController,
-                                              isExpanded: true,
-                                              items: approbationList
-                                                  .map((String value) {
-                                                return DropdownMenuItem<String>(
-                                                  value: value,
-                                                  child: Text(value),
-                                                );
-                                              }).toList(),
-                                              onChanged: (value) {
-                                                setState(() {
-                                                  approbationDGController =
-                                                      value!;
-                                                });
-                                              },
-                                            ),
-                                          ),
-                                          if (approbationDGController ==
-                                              'Approved')
-                                            Expanded(
-                                              flex: 1,
-                                              child: IconButton(
-                                                  tooltip: 'Approuvé',
-                                                  onPressed: () {
-                                                    submitApprobation(data);
-                                                  },
-                                                  icon: Icon(Icons.send,
-                                                      color:
-                                                          Colors.red.shade700)),
-                                            )
-                                        ],
-                                      ),
-                                    )
-                                  ],
-                                )),
-                            if (approbationDGController == 'Unapproved')
-                              Expanded(
-                                  flex: 3,
-                                  child: Column(
-                                    children: [
-                                      Text(
-                                        'Motif',
-                                        style: bodyLarge.copyWith(
-                                            fontWeight: FontWeight.bold),
-                                      ),
-                                      const SizedBox(height: p20),
-                                      Container(
-                                          margin: const EdgeInsets.only(
-                                              bottom: p10, left: p5),
-                                          child: Row(
-                                            children: [
-                                              Expanded(
-                                                flex: 3,
-                                                child: TextFormField(
-                                                  controller:
-                                                      signatureJustificationDGController,
-                                                  decoration: InputDecoration(
-                                                    border: OutlineInputBorder(
-                                                        borderRadius:
-                                                            BorderRadius
-                                                                .circular(
-                                                                    10.0)),
-                                                    labelText:
-                                                        'Ecrivez votre motif...',
-                                                  ),
-                                                  keyboardType:
-                                                      TextInputType.multiline,
-                                                  minLines: 2,
-                                                  maxLines: 3,
-                                                  style: const TextStyle(),
-                                                ),
-                                              ),
-                                              Expanded(
-                                                flex: 1,
-                                                child: IconButton(
-                                                    tooltip: 'Approuvé',
-                                                    onPressed: () {
-                                                      // final form =
-                                                      //     _approbationKey
-                                                      //         .currentState!;
-                                                      // if (form.validate()) {
-
-                                                      //   form.reset();
-                                                      // }
-                                                      submitApprobation(data);
-                                                    },
-                                                    icon: Icon(Icons.send,
-                                                        color: Colors
-                                                            .red.shade700)),
-                                              )
-                                            ],
-                                          )),
-                                    ],
-                                  ))
-                          ],
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-
-  Future submitApprobation(FinanceExterieurModel data) async {
-    final approbation = ApprobationModel(
-        reference: data.created,
-        title: data.nomComplet,
-        departement: 'Finances',
-        fontctionOccupee: user.fonctionOccupe,
-        ligneBudgtaire: '-',
-        resources: '-',
-        approbation: approbationDGController,
-        justification: signatureJustificationDGController.text,
-        signature: user.matricule,
-        created: DateTime.now());
-    await ApprobationApi().insertData(approbation);
-    Navigator.of(context).pop();
-  }
+  
 }

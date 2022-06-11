@@ -1,18 +1,18 @@
 import 'dart:async';
 
-import 'package:flutter/material.dart';
-import 'package:fokad_admin/src/api/approbation/approbation_api.dart';
+import 'package:flutter/material.dart'; 
 import 'package:fokad_admin/src/api/auth/auth_api.dart';
 import 'package:fokad_admin/src/api/finances/banque_api.dart';
+import 'package:fokad_admin/src/api/finances/coupure_billet_api.dart';
 import 'package:fokad_admin/src/api/user/user_api.dart';
 import 'package:fokad_admin/src/constants/app_theme.dart';
-import 'package:fokad_admin/src/constants/responsive.dart';
-import 'package:fokad_admin/src/models/approbation/approbation_model.dart';
+import 'package:fokad_admin/src/constants/responsive.dart'; 
 import 'package:fokad_admin/src/models/finances/banque_model.dart';
 import 'package:fokad_admin/src/models/finances/coupure_billet_model.dart';
 import 'package:fokad_admin/src/models/users/user_model.dart';
 import 'package:fokad_admin/src/navigation/drawer/drawer_menu.dart';
 import 'package:fokad_admin/src/navigation/header/custom_appbar.dart';
+import 'package:fokad_admin/src/utils/loading.dart';
 import 'package:fokad_admin/src/widgets/print_widget.dart';
 import 'package:fokad_admin/src/widgets/title_widget.dart';
 import 'package:intl/intl.dart';
@@ -36,8 +36,6 @@ class _DetailBanqueState extends State<DetailBanque> {
   PlutoGridStateManager? stateManager;
   PlutoGridSelectingMode gridSelectingMode = PlutoGridSelectingMode.row;
 
-  List coupureBillet = [];
-
   @override
   initState() {
     Timer.periodic(const Duration(milliseconds: 500), ((timer) {
@@ -52,21 +50,8 @@ class _DetailBanqueState extends State<DetailBanque> {
     super.initState();
   }
 
-  List listAgentEtRole = [];
-
-  List<ApprobationModel> approbList = [];
-  List<ApprobationModel> approbationData = [];
-  ApprobationModel approb = ApprobationModel(
-      reference: DateTime.now(),
-      title: '-',
-      departement: '-',
-      fontctionOccupee: '-',
-      ligneBudgtaire: '-',
-      resources: '-',
-      approbation: '-',
-      justification: '-',
-      signature: '-',
-      created: DateTime.now());
+  List<CoupureBilletModel> coupureBilletList = [];
+  List<CoupureBilletModel> coupureBilletFilter = [];
   UserModel user = UserModel(
       nom: '-',
       prenom: '-',
@@ -84,11 +69,11 @@ class _DetailBanqueState extends State<DetailBanque> {
   Future<void> getData() async {
     final dataUser = await UserApi().getAllData();
     UserModel userModel = await AuthApi().getUserId();
-    var approbations = await ApprobationApi().getAllData();
+    var coupureBillets = await CoupureBilletApi().getAllData();
     setState(() {
       userList = dataUser;
       user = userModel;
-      approbList = approbations;
+      coupureBilletFilter = coupureBillets;
     });
   }
 
@@ -116,15 +101,10 @@ class _DetailBanqueState extends State<DetailBanque> {
                             AsyncSnapshot<BanqueModel> snapshot) {
                           if (snapshot.hasData) {
                             BanqueModel? data = snapshot.data;
-                            coupureBillet = data!.coupureBillet;
-                            approbationData = approbList
-                                .where(
-                                    (element) => element.reference.microsecondsSinceEpoch == data.created.microsecondsSinceEpoch)
+                            coupureBilletList = coupureBilletFilter
+                                .where((element) =>
+                                    element.reference == data!.createdRef)
                                 .toList();
-
-                            if (approbationData.isNotEmpty) {
-                              approb = approbationData.first;
-                            }
                             return Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
@@ -149,12 +129,11 @@ class _DetailBanqueState extends State<DetailBanque> {
                                 Expanded(
                                     child: SingleChildScrollView(
                                         controller: _controllerScroll,
-                                        child: pageDetail(data)))
+                                        child: pageDetail(data!)))
                               ],
                             );
                           } else {
-                            return const Center(
-                                child: CircularProgressIndicator());
+                            return Center(child: loading());
                           }
                         })),
               ),
@@ -285,7 +264,7 @@ class _DetailBanqueState extends State<DetailBanque> {
                       textAlign: TextAlign.start, style: bodyMedium),
                 )
               ],
-            ), 
+            ),
           Divider(color: Colors.amber.shade700),
           Row(
             children: [
@@ -342,6 +321,9 @@ class _DetailBanqueState extends State<DetailBanque> {
         stateManager!.setShowColumnFilter(true);
         stateManager!.notifyListeners();
       },
+      createHeader: (PlutoGridStateManager header) {
+        return const TitleWidget(title: 'Coupure billets');
+      },
     );
   }
 
@@ -361,7 +343,7 @@ class _DetailBanqueState extends State<DetailBanque> {
       ),
       PlutoColumn(
         readOnly: true,
-        title: 'nombreBillet',
+        title: 'Nombre',
         field: 'nombreBillet',
         type: PlutoColumnType.text(),
         enableRowDrag: true,
@@ -373,7 +355,7 @@ class _DetailBanqueState extends State<DetailBanque> {
       ),
       PlutoColumn(
         readOnly: true,
-        title: 'coupureBillet',
+        title: 'Coupure',
         field: 'coupureBillet',
         type: PlutoColumnType.text(),
         enableRowDrag: true,
@@ -387,14 +369,9 @@ class _DetailBanqueState extends State<DetailBanque> {
   }
 
   Future agentsRow() async {
-    List<CoupureBilletModel> dataList = [];
-    for (var item in coupureBillet) {
-      dataList.add(CoupureBilletModel.fromJson(item));
-    }
-
     if (mounted) {
       setState(() {
-        for (var item in dataList) {
+        for (var item in coupureBilletList) {
           rows.add(PlutoRow(cells: {
             'id': PlutoCell(value: item.id),
             'nombreBillet': PlutoCell(value: item.nombreBillet),
