@@ -167,7 +167,8 @@ class _TableDepartementBudgetState extends State<TableDepartementBudget> {
                   element.created.microsecondsSinceEpoch == item.reference.microsecondsSinceEpoch &&
                   item.fontctionOccupee == 'Directeur générale' &&
                   item.approbation == "Approved" ||
-              element.signature == userModel.matricule)
+              element.signature == userModel.matricule ||
+              element.isSubmit == false)
           .toList();
     }
 
