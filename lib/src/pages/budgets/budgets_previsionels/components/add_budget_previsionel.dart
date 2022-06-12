@@ -271,12 +271,14 @@ class _AddBudgetPrevionelState extends State<AddBudgetPrevionel> {
         periodeFin: dateRange!.end,
         signature: signature.toString(),
         createdRef: DateTime.now(),
-        created: DateTime.now());
+        created: DateTime.now(),
+        isSubmit: false
+      );
 
     await DepeartementBudgetApi().insertData(departementBudgetModel);
     Navigator.of(context).pop();
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-      content: const Text("Enregistrer avec succès!"),
+      content: const Text("Crée avec succès!"),
       backgroundColor: Colors.green[700],
     ));
   }

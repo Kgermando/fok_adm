@@ -205,18 +205,6 @@ class _LogistiqueNavState extends State<LogistiqueNav> {
                   children: [
                     DrawerWidget(
                         selected: widget.pageCurrente ==
-                            LogistiqueRoutes.logEtatMateriel,
-                        icon: Icons.arrow_right,
-                        sizeIcon: 15.0,
-                        title: 'Etat materiels',
-                        style: bodyText2,
-                        onTap: () {
-                          Navigator.pushNamed(
-                              context, LogistiqueRoutes.logEtatMateriel);
-                          // Navigator.of(context).pop();
-                        }),
-                    DrawerWidget(
-                        selected: widget.pageCurrente ==
                             LogistiqueRoutes.logMobilierMateriel,
                         icon: Icons.arrow_right,
                         sizeIcon: 15.0,
@@ -237,6 +225,18 @@ class _LogistiqueNavState extends State<LogistiqueNav> {
                         onTap: () {
                           Navigator.pushNamed(
                               context, LogistiqueRoutes.logImmobilierMateriel);
+                          // Navigator.of(context).pop();
+                        }),
+                    DrawerWidget(
+                        selected: widget.pageCurrente ==
+                            LogistiqueRoutes.logEtatMateriel,
+                        icon: Icons.arrow_right,
+                        sizeIcon: 15.0,
+                        title: 'Etat materiels',
+                        style: bodyText2,
+                        onTap: () {
+                          Navigator.pushNamed(
+                              context, LogistiqueRoutes.logEtatMateriel);
                           // Navigator.of(context).pop();
                         }),
                   ],

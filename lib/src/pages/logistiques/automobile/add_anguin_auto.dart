@@ -115,7 +115,7 @@ class _AddAnguinAutoState extends State<AddAnguinAuto> {
                           Expanded(
                               flex: 5,
                               child: CustomAppbar(
-                                  title: 'Ajout engin',
+                                  title: 'Engin',
                                   controllerMenu: () =>
                                       _key.currentState!.openDrawer())),
                         ],
@@ -154,7 +154,7 @@ class _AddAnguinAutoState extends State<AddAnguinAuto> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        const TitleWidget(title: "Ajout un enguin"),
+                        const TitleWidget(title: "Ajout un engin"),
                         PrintWidget(onPressed: () {})
                       ],
                     ),
@@ -460,7 +460,7 @@ class _AddAnguinAutoState extends State<AddAnguinAuto> {
     return Container(
       margin: const EdgeInsets.only(bottom: p20),
       child: Text(
-        "N° $numero",
+        "Identifiant N° $numero",
         style: Theme.of(context).textTheme.headline6,
       )
     );

@@ -8,6 +8,7 @@ class DepartementBudgetModel {
   late String signature; // celui qui fait le document
   late DateTime createdRef;
   late DateTime created;
+  late bool isSubmit;
 
   DepartementBudgetModel(
       {this.id,
@@ -17,7 +18,8 @@ class DepartementBudgetModel {
       required this.periodeFin,
       required this.signature,
       required this.createdRef,
-      required this.created});
+      required this.created,
+      required this.isSubmit});
 
   factory DepartementBudgetModel.fromSQL(List<dynamic> row) {
     return DepartementBudgetModel(
@@ -28,7 +30,8 @@ class DepartementBudgetModel {
         periodeFin: row[4],
         signature: row[5],
         createdRef: row[6],
-        created: row[7]
+        created: row[7],
+        isSubmit: row[8]
     );
   }
 
@@ -41,7 +44,9 @@ class DepartementBudgetModel {
         periodeFin: DateTime.parse(json['periodeFin']),
         signature: json['signature'],
         createdRef: DateTime.parse(json['createdRef']),
-        created: DateTime.parse(json['created']));
+        created: DateTime.parse(json['created']),
+        isSubmit: bool.hasEnvironment(json['isSubmit']),
+    );
   }
 
   Map<String, dynamic> toJson() {
@@ -53,7 +58,9 @@ class DepartementBudgetModel {
       'periodeFin': periodeFin.toIso8601String(),
       'signature': signature,
       'createdRef': createdRef.toIso8601String(),
-      'created': created.toIso8601String()
+      'created': created.toIso8601String(),
+      'isSubmit': isSubmit.toString(),
     };
   }
 }
+ 
