@@ -43,7 +43,8 @@ class _BudgetsAdminState extends State<BudgetsAdmin> {
                     element!.periodeFin.millisecondsSinceEpoch &&
                 element.created.microsecondsSinceEpoch == item.reference.microsecondsSinceEpoch &&
                 item.fontctionOccupee == 'Directeur de budget' &&
-                item.approbation == "Approved")
+                item.approbation == "Approved"  &&
+                element.isSubmit == true)
             .length;
       }
     });

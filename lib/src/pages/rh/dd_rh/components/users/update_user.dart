@@ -419,7 +419,7 @@ class _UpdateUserState extends State<UpdateUser> {
         createdAt: widget.userModel.createdAt,
         passwordHash: widget.userModel.passwordHash,
         succursale: succursale.toString());
-    await UserApi().updateData(widget.userModel.id!, userModel);
+    await UserApi().updateData(userModel);
     Navigator.of(context).pop();
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
       content: const Text("Enregistrer agent avec succès!"),

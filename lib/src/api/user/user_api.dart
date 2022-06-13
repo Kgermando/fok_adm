@@ -93,13 +93,13 @@ class UserApi {
     }
   }
 
-  Future<UserModel> updateData(int id, UserModel userModel) async {
+  Future<UserModel> updateData(UserModel userModel) async {
     // String? token = await UserSharedPref().getAccessToken();
     String? token = await UserSharedPref().getAccessToken();
 
     var data = userModel.toJson();
     var body = jsonEncode(data);
-    var updateAgentsUrl = Uri.parse("$mainUrl/user/update-user/$id");
+    var updateAgentsUrl = Uri.parse("$mainUrl/user/update-user/");
 
     var resp = await client.put(updateAgentsUrl,
         headers: <String, String>{

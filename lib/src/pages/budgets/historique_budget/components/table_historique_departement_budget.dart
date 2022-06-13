@@ -148,9 +148,9 @@ class _HistoriqueTableDepartementBudgetState
             'departement': PlutoCell(value: item.departement),
             'periodeBudget': PlutoCell(
                 value:
-                    "${DateFormat("DD-MM-yyyy HH:mm").format(item.periodeDebut)} - ${DateFormat("DD-MM-yyyy HH:mm").format(item.periodeFin)}"),
+                    "${DateFormat("dd-MM-yyyy HH:mm").format(item.periodeDebut)} - ${DateFormat("dd-MM-yyyy HH:mm").format(item.periodeFin)}"),
             'created': PlutoCell(
-                value: DateFormat("DD-MM-yyyy HH:mm").format(item.created))
+                value: DateFormat("dd-MM-yyyy HH:mm").format(item.created))
           }));
         }
         stateManager!.resetCurrentState();

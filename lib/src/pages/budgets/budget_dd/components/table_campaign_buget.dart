@@ -55,8 +55,7 @@ class _TableCampaignBudgetState extends State<TableCampaignBudget> {
             children: [
               IconButton(
                   onPressed: () {
-                    Navigator.pushNamed(
-                        context, ComMarketingRoutes.comMarketingCampaign);
+                    Navigator.pushNamed(context, BudgetRoutes.budgetDD);
                   },
                   icon: Icon(Icons.refresh, color: Colors.green.shade700)),
               PrintWidget(onPressed: () {})

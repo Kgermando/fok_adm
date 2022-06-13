@@ -54,7 +54,13 @@ class _TableSalairesBudgetState extends State<TableSalairesBudget> {
         createHeader: (PlutoGridStateManager header) {
           return Row(
             mainAxisAlignment: MainAxisAlignment.end,
-            children: [PrintWidget(onPressed: () {})],
+            children: [
+              IconButton(
+                  onPressed: () {
+                    Navigator.pushNamed(context, BudgetRoutes.budgetDD);
+                  },
+                  icon: Icon(Icons.refresh, color: Colors.green.shade700)),
+              PrintWidget(onPressed: () {})],
           );
         },
         configuration: PlutoGridConfiguration(
@@ -212,9 +218,8 @@ class _TableSalairesBudgetState extends State<TableSalairesBudget> {
     if (mounted) {
       setState(() {
         for (var item in data) {
-          id = item!.id;
           rows.add(PlutoRow(cells: {
-            'id': PlutoCell(value: item.id),
+            'id': PlutoCell(value: item!.id),
             'prenom': PlutoCell(value: item.prenom),
             'nom': PlutoCell(value: item.nom),
             'matricule': PlutoCell(value: item.matricule),
@@ -223,7 +228,7 @@ class _TableSalairesBudgetState extends State<TableSalairesBudget> {
                 value: (item.observation == true) ? "Payé" : "Non payé"),
             'modePaiement': PlutoCell(value: item.modePaiement),
             'createdAt': PlutoCell(
-                value: DateFormat("DD-MM-yy HH:mm").format(item.createdAt))
+                value: DateFormat("dd-MM-yyyy HH:mm").format(item.createdAt))
           }));
         }
         stateManager!.resetCurrentState();

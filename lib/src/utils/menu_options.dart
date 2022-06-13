@@ -52,7 +52,7 @@ class MenuOptions with ChangeNotifier {
           passwordHash: user.passwordHash,
           succursale: user.succursale
         );
-        await UserApi().updateData(user.id!, userModel);
+        await UserApi().updateData(userModel);
         AuthApi().logout();
         UserSharedPref().removeIdToken();
         UserSharedPref().removeAccessToken();

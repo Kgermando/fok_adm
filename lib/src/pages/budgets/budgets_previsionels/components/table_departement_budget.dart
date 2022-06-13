@@ -160,21 +160,39 @@ class _TableDepartementBudgetState extends State<TableDepartementBudget> {
     List<DepartementBudgetModel?> data = [];
 
     for (var item in approbations) {
-      data = dataList
-          .where((element) =>
-              DateTime.now().millisecondsSinceEpoch <=
-                      element!.periodeFin.millisecondsSinceEpoch &&
-                  element.created.microsecondsSinceEpoch == item.reference.microsecondsSinceEpoch &&
-                  item.fontctionOccupee == 'Directeur générale' &&
-                  item.approbation == "Approved" ||
-              element.signature == userModel.matricule ||
-              element.isSubmit == false)
+      var isApproved = dataList
+          .where((element) => 
+                  element!.created.microsecondsSinceEpoch ==
+                      item.reference.microsecondsSinceEpoch)
           .toList();
+      if (isApproved.isNotEmpty) {
+        data = dataList
+        .where((element) =>
+            DateTime.now().millisecondsSinceEpoch <=
+                    element!.periodeFin.millisecondsSinceEpoch &&
+                element.created.microsecondsSinceEpoch == item.reference.microsecondsSinceEpoch &&
+                item.fontctionOccupee == 'Directeur générale' &&
+                item.approbation == "Approved" ||
+            element.signature == userModel.matricule ||
+            element.isSubmit == false)
+        .toList();
+      } else {
+        data = dataList
+            .where((element) =>
+                DateTime.now().millisecondsSinceEpoch <=
+                        element!.periodeFin.millisecondsSinceEpoch &&
+                element.signature == userModel.matricule ||
+                element.isSubmit == false)
+            .toList();
+      }
+      
     }
+
+    
 
     if (mounted) {
       setState(() {
-        for (var item in data) {
+        for (var item in dataList) {
           rows.add(PlutoRow(cells: {
             'id': PlutoCell(value: item!.id),
             'title': PlutoCell(value: item.title),

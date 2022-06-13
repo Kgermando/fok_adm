@@ -214,6 +214,7 @@ class _ChangePasswordState extends State<ChangePassword> {
 
   Future<void> submit() async {
     final userModel = UserModel(
+      id: widget.userModel.id,
         nom: widget.userModel.nom,
         prenom: widget.userModel.prenom,
         email: widget.userModel.email,
@@ -227,6 +228,6 @@ class _ChangePasswordState extends State<ChangePassword> {
         createdAt: widget.userModel.createdAt,
         passwordHash: newPasswordController.text,
         succursale: widget.userModel.succursale);
-    await UserApi().updateData(widget.userModel.id!, userModel);
+    await UserApi().updateData(userModel);
   }
 }

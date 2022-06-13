@@ -102,6 +102,7 @@ class _DetailLigneBudgetaireState extends State<DetailLigneBudgetaire> {
     var projets = await ProjetsApi().getAllData();
     var salaires = await PaiementSalaireApi().getAllData();
     var approbations = await ApprobationApi().getAllData();
+    if (!mounted) return;
     setState(() {
       user = userModel;
       approbationsList = approbations;
@@ -827,17 +828,16 @@ class _DetailLigneBudgetaireState extends State<DetailLigneBudgetaire> {
 
   Future projetRow() async {
     List<ProjetModel> dataList = [];
-    for (var item in approbationsList)  {
+    for (var item in approbationsList) {
       dataList = dataProjetList
-        .where((element) =>
-            "Exploitations" == ligneBudgetaireModel!.departement &&
-            item.ligneBudgtaire ==
-                ligneBudgetaireModel!.nomLigneBudgetaire &&
-            element.created
-                .isBefore(DateTime.parse(ligneBudgetaireModel!.periodeBudget)))
-        .toList();
+          .where((element) =>
+              "Exploitations" == ligneBudgetaireModel!.departement &&
+              item.ligneBudgtaire == ligneBudgetaireModel!.nomLigneBudgetaire &&
+              element.created.isBefore(
+                  DateTime.parse(ligneBudgetaireModel!.periodeBudget)))
+          .toList();
     }
-    
+
     if (mounted) {
       setState(() {
         for (var item in dataList) {
@@ -854,17 +854,16 @@ class _DetailLigneBudgetaireState extends State<DetailLigneBudgetaire> {
     }
   }
 
-  Future etatBesionRow() async { 
-  List<DevisModel> dataList = [];
-    for (var item in approbationsList)  {
+  Future etatBesionRow() async {
+    List<DevisModel> dataList = [];
+    for (var item in approbationsList) {
       dataList = dataDevisList
-        .where((element) =>
-            element.departement == ligneBudgetaireModel!.departement &&
-            item.ligneBudgtaire ==
-                ligneBudgetaireModel!.nomLigneBudgetaire &&
-            element.created
-                .isBefore(DateTime.parse(ligneBudgetaireModel!.periodeBudget)))
-        .toList();
+          .where((element) =>
+              element.departement == ligneBudgetaireModel!.departement &&
+              item.ligneBudgtaire == ligneBudgetaireModel!.nomLigneBudgetaire &&
+              element.created.isBefore(
+                  DateTime.parse(ligneBudgetaireModel!.periodeBudget)))
+          .toList();
     }
     if (mounted) {
       setState(() {

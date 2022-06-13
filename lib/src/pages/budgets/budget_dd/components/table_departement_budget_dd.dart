@@ -57,7 +57,16 @@ class _TableDepartementBudgetDDState extends State<TableDepartementBudgetDD> {
             children: [
               Text("Liste des budgets",
                   style: Theme.of(context).textTheme.headline6),
-              PrintWidget(onPressed: () {})
+              Row(
+                children: [
+                  IconButton(
+                      onPressed: () {
+                        Navigator.pushNamed(context, BudgetRoutes.budgetDD);
+                      },
+                      icon: Icon(Icons.refresh, color: Colors.green.shade700)),
+                  PrintWidget(onPressed: () {}),
+                ],
+              )
             ],
           );
         },
@@ -143,33 +152,24 @@ class _TableDepartementBudgetDDState extends State<TableDepartementBudgetDD> {
   Future agentsRow() async {
     List<DepartementBudgetModel?> dataList =
         await DepeartementBudgetApi().getAllData();
-    List<DepartementBudgetModel?> data = [];
-    var approbations = await ApprobationApi().getAllData();
-    for (var item in approbations) {
-      data = dataList
-          .where((element) =>
-              element!.created.microsecondsSinceEpoch  == item.reference.microsecondsSinceEpoch &&
-              item.fontctionOccupee == 'Directeur générale' &&
-              item.approbation == "Approved")
-          .toList();
-    }
 
-    if (mounted) {
-      setState(() {
-        for (var item in data) {
-          id = item!.id;
-          rows.add(PlutoRow(cells: {
-            'id': PlutoCell(value: item.id),
-            'departement': PlutoCell(value: item.departement),
-            'periodeBudget': PlutoCell(
-                value:
-                    "${DateFormat("dd-MM-yyyy").format(item.periodeDebut)} - ${DateFormat("dd-MM-yyyy").format(item.periodeFin)}"),
-            'created': PlutoCell(
-                value: DateFormat("dd-MM-yyyy HH:mm").format(item.created))
-          }));
-        }
-        stateManager!.resetCurrentState();
-      });
-    }
+    var data = dataList.where((element) => element!.isSubmit == true).toList();
+    print('data : $data');
+
+    if (!mounted) return;
+    setState(() {
+      for (var item in data) { 
+        rows.add(PlutoRow(cells: {
+          'id': PlutoCell(value: item!.id),
+          'departement': PlutoCell(value: item.departement),
+          'periodeBudget': PlutoCell(
+              value:
+                  "${DateFormat("dd-MM-yyyy").format(item.periodeDebut)} - ${DateFormat("dd-MM-yyyy").format(item.periodeFin)}"),
+          'created': PlutoCell(
+              value: DateFormat("dd-MM-yyyy HH:mm").format(item.created))
+        }));
+      }
+      stateManager!.resetCurrentState();
+    });
   }
 }

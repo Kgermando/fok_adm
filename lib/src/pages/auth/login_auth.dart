@@ -391,6 +391,6 @@ class _LoginPageState extends State<LoginPage> {
         createdAt: user.createdAt,
         passwordHash: user.passwordHash,
         succursale: user.succursale);
-    await UserApi().updateData(user.id!, userModel);
+    await UserApi().updateData(userModel);
   }
 }

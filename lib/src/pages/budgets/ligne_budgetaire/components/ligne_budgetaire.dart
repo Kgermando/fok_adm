@@ -42,10 +42,8 @@ class _LigneBudgetaireState extends State<LigneBudgetaire> {
         onRowDoubleTap: (PlutoGridOnRowDoubleTapEvent tapEvent) {
           final dataList = tapEvent.row!.cells.values;
           final idPlutoRow = dataList.elementAt(0);
-          Navigator.pushNamed(
-              context, BudgetRoutes.budgetLignebudgetaireDetail,
+          Navigator.pushNamed(context, BudgetRoutes.budgetLignebudgetaireDetail,
               arguments: idPlutoRow.value);
-            
         },
         onLoaded: (PlutoGridOnLoadedEvent event) {
           stateManager = event.stateManager;
@@ -267,47 +265,47 @@ class _LigneBudgetaireState extends State<LigneBudgetaire> {
         await LIgneBudgetaireApi().getAllData();
     var data = dataList
         .where((element) =>
-            element!.departement == widget.departementBudgetModel.departement &&
+            element!.departement == widget.departementBudgetModel.departement  &&
             DateFormat("dd-MM-yyyy")
                     .format(DateTime.parse(element.periodeBudget)) ==
                 DateFormat("dd-MM-yyyy")
-                    .format(widget.departementBudgetModel.periodeFin))
+                    .format(widget.departementBudgetModel.periodeDebut)
+                    )
         .toList();
 
-    if (mounted) {
-      setState(() {
-        for (var item in data) {
-          rows.add(PlutoRow(cells: {
-            'id': PlutoCell(value: item!.id),
-            'nomLigneBudgetaire': PlutoCell(value: item.nomLigneBudgetaire),
-            'departement': PlutoCell(value: item.departement),
-            'periodeBudget': PlutoCell(
-                value: DateFormat("dd-MM-yyyy")
-                    .format(DateTime.parse(item.periodeBudget))),
-            'uniteChoisie': PlutoCell(value: item.uniteChoisie),
-            'nombreUnite': PlutoCell(value: item.nombreUnite),
-            'coutUnitaire': PlutoCell(value: item.coutUnitaire),
-            'coutTotal': PlutoCell(
-                value:
-                    "${NumberFormat.decimalPattern('fr').format(double.parse(item.coutTotal))} \$"),
-            'caisse': PlutoCell(
-                value:
-                    "${NumberFormat.decimalPattern('fr').format(double.parse(item.caisse))} \$"),
-            'banque': PlutoCell(
-                value:
-                    "${NumberFormat.decimalPattern('fr').format(double.parse(item.banque))} \$"),
-            'finPropre': PlutoCell(
-                value:
-                    "${NumberFormat.decimalPattern('fr').format(double.parse(item.finPropre))} \$"),
-            'finExterieur': PlutoCell(
-                value:
-                    "${NumberFormat.decimalPattern('fr').format(double.parse(item.finExterieur))} \$"),
-            'created': PlutoCell(
-                value: DateFormat("dd-MM-yyyy HH:mm").format(item.created))
-          }));
-        }
-        stateManager!.resetCurrentState();
-      });
-    }
+    if (!mounted) return;
+    setState(() {
+      for (var item in data) {
+        rows.add(PlutoRow(cells: {
+          'id': PlutoCell(value: item!.id),
+          'nomLigneBudgetaire': PlutoCell(value: item.nomLigneBudgetaire),
+          'departement': PlutoCell(value: item.departement),
+          'periodeBudget': PlutoCell(
+              value: DateFormat("dd-MM-yyyy")
+                  .format(DateTime.parse(item.periodeBudget))),
+          'uniteChoisie': PlutoCell(value: item.uniteChoisie),
+          'nombreUnite': PlutoCell(value: item.nombreUnite),
+          'coutUnitaire': PlutoCell(value: item.coutUnitaire),
+          'coutTotal': PlutoCell(
+              value:
+                  "${NumberFormat.decimalPattern('fr').format(double.parse(item.coutTotal))} \$"),
+          'caisse': PlutoCell(
+              value:
+                  "${NumberFormat.decimalPattern('fr').format(double.parse(item.caisse))} \$"),
+          'banque': PlutoCell(
+              value:
+                  "${NumberFormat.decimalPattern('fr').format(double.parse(item.banque))} \$"),
+          'finPropre': PlutoCell(
+              value:
+                  "${NumberFormat.decimalPattern('fr').format(double.parse(item.finPropre))} \$"),
+          'finExterieur': PlutoCell(
+              value:
+                  "${NumberFormat.decimalPattern('fr').format(double.parse(item.finExterieur))} \$"),
+          'created': PlutoCell(
+              value: DateFormat("dd-MM-yyyy HH:mm").format(item.created))
+        }));
+      }
+      stateManager!.resetCurrentState();
+    });
   }
 }

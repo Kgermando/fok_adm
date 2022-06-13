@@ -74,6 +74,7 @@ class _BudgetDDState extends State<BudgetDD> {
             .toList()
             .length;
       }
+      
       for (var item in approbations) {
         devisCount = devis
             .where((element) =>
@@ -83,6 +84,7 @@ class _BudgetDDState extends State<BudgetDD> {
             .toList()
             .length;
       }
+
       for (var item in approbations) {
         projetCount = projets
             .where((element) =>
@@ -92,15 +94,10 @@ class _BudgetDDState extends State<BudgetDD> {
             .toList()
             .length;
       }
-      for (var item in approbations) {
-        budgetDepCount = budgetDep
-            .where((element) =>
-                element.created.microsecondsSinceEpoch == item.reference.microsecondsSinceEpoch &&
-                item.fontctionOccupee == 'Directeur générale' &&
-                item.approbation == "Approved")
-            .toList()
-            .length;
-      }
+
+      budgetDepCount = budgetDep
+          .where((element) => element.isSubmit == true)
+          .length;
     });
   }
 

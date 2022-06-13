@@ -15,9 +15,8 @@ import 'package:fokad_admin/src/widgets/title_widget.dart';
 import 'package:intl/intl.dart';
 
 class AjoutLigneBudgetaire extends StatefulWidget {
-  const AjoutLigneBudgetaire({Key? key, required this.departementBudgetModel})
+  const AjoutLigneBudgetaire({Key? key})
       : super(key: key);
-  final DepartementBudgetModel departementBudgetModel;
 
   @override
   State<AjoutLigneBudgetaire> createState() => _AjoutLigneBudgetaireState();
@@ -30,8 +29,8 @@ class _AjoutLigneBudgetaireState extends State<AjoutLigneBudgetaire> {
   bool isLoading = false;
 
   TextEditingController nomLigneBudgetaireController = TextEditingController();
-  TextEditingController departementController = TextEditingController();
-  TextEditingController periodeBudgetController = TextEditingController();
+  // TextEditingController departementController = TextEditingController();
+  // TextEditingController periodeBudgetController = TextEditingController();
   TextEditingController uniteChoisieController = TextEditingController();
   double nombreUniteController = 0.0;
   double coutUnitaireController = 0.0;
@@ -43,11 +42,11 @@ class _AjoutLigneBudgetaireState extends State<AjoutLigneBudgetaire> {
   initState() {
     getData();
     setState(() {
-      departementController = TextEditingController(
-          text: widget.departementBudgetModel.departement);
-      periodeBudgetController = TextEditingController(
-          text: DateFormat("dd-MM-yyyy")
-              .format(widget.departementBudgetModel.periodeFin));
+      // departementController = TextEditingController(
+      //     text: widget.departementBudgetModel.departement);
+      // periodeBudgetController = TextEditingController(
+      //     text: DateFormat("dd-MM-yyyy")
+      //         .format(widget.departementBudgetModel.periodeFin));
     });
     super.initState();
   }
@@ -55,8 +54,8 @@ class _AjoutLigneBudgetaireState extends State<AjoutLigneBudgetaire> {
   @override
   void dispose() {
     nomLigneBudgetaireController.dispose();
-    departementController.dispose();
-    periodeBudgetController.dispose();
+    // departementController.dispose();
+    // periodeBudgetController.dispose();
     uniteChoisieController.dispose();
 
     super.dispose();
@@ -72,6 +71,7 @@ class _AjoutLigneBudgetaireState extends State<AjoutLigneBudgetaire> {
 
   @override
   Widget build(BuildContext context) {
+    final data = ModalRoute.of(context)!.settings.arguments as DepartementBudgetModel;
     return Scaffold(
         key: _key,
         drawer: const DrawerMenu(),
@@ -112,7 +112,7 @@ class _AjoutLigneBudgetaireState extends State<AjoutLigneBudgetaire> {
                       Expanded(
                           child: Scrollbar(
                         controller: _controllerScroll,
-                        child: addPageWidget(),
+                        child: addPageWidget(data),
                       ))
                     ],
                   ),
@@ -123,7 +123,7 @@ class _AjoutLigneBudgetaireState extends State<AjoutLigneBudgetaire> {
         ));
   }
 
-  Widget addPageWidget() {
+  Widget addPageWidget(DepartementBudgetModel data) {
     return Form(
       key: _formKey,
       child: Row(
@@ -153,15 +153,6 @@ class _AjoutLigneBudgetaireState extends State<AjoutLigneBudgetaire> {
                     Row(
                       children: [
                         Expanded(child: nomLigneBudgetaireWidget()),
-                        const SizedBox(
-                          width: p10,
-                        ),
-                        Expanded(child: departementWidget())
-                      ],
-                    ),
-                    Row(
-                      children: [
-                        Expanded(child: periodeBudgetWidget()),
                         const SizedBox(
                           width: p10,
                         ),
@@ -213,7 +204,7 @@ class _AjoutLigneBudgetaireState extends State<AjoutLigneBudgetaire> {
                         press: () {
                           final form = _formKey.currentState!;
                           if (form.validate()) {
-                            submit();
+                            submit(data);
                             form.reset();
                           }
                         })
@@ -249,49 +240,49 @@ class _AjoutLigneBudgetaireState extends State<AjoutLigneBudgetaire> {
         ));
   }
 
-  Widget departementWidget() {
-    return Container(
-        margin: const EdgeInsets.only(bottom: p20),
-        child: TextFormField(
-          controller: departementController,
-          keyboardType: TextInputType.text,
-          decoration: InputDecoration(
-            border:
-                OutlineInputBorder(borderRadius: BorderRadius.circular(10.0)),
-            labelText: 'Département',
-          ),
-          style: const TextStyle(),
-          validator: (value) {
-            if (value != null && value.isEmpty) {
-              return 'Ce champs est obligatoire';
-            } else {
-              return null;
-            }
-          },
-        ));
-  }
+  // Widget departementWidget() {
+  //   return Container(
+  //       margin: const EdgeInsets.only(bottom: p20),
+  //       child: TextFormField(
+  //         controller: departementController,
+  //         keyboardType: TextInputType.text,
+  //         decoration: InputDecoration(
+  //           border:
+  //               OutlineInputBorder(borderRadius: BorderRadius.circular(10.0)),
+  //           labelText: 'Département',
+  //         ),
+  //         style: const TextStyle(),
+  //         validator: (value) {
+  //           if (value != null && value.isEmpty) {
+  //             return 'Ce champs est obligatoire';
+  //           } else {
+  //             return null;
+  //           }
+  //         },
+  //       ));
+  // }
 
-  Widget periodeBudgetWidget() {
-    return Container(
-        margin: const EdgeInsets.only(bottom: p20),
-        child: TextFormField(
-          controller: periodeBudgetController,
-          keyboardType: TextInputType.text,
-          decoration: InputDecoration(
-            border:
-                OutlineInputBorder(borderRadius: BorderRadius.circular(10.0)),
-            labelText: 'Periode de fin',
-          ),
-          style: const TextStyle(),
-          validator: (value) {
-            if (value != null && value.isEmpty) {
-              return 'Ce champs est obligatoire';
-            } else {
-              return null;
-            }
-          },
-        ));
-  }
+  // Widget periodeBudgetWidget() {
+  //   return Container(
+  //       margin: const EdgeInsets.only(bottom: p20),
+  //       child: TextFormField(
+  //         controller: periodeBudgetController,
+  //         keyboardType: TextInputType.text,
+  //         decoration: InputDecoration(
+  //           border:
+  //               OutlineInputBorder(borderRadius: BorderRadius.circular(10.0)),
+  //           labelText: 'Periode de fin',
+  //         ),
+  //         style: const TextStyle(),
+  //         validator: (value) {
+  //           if (value != null && value.isEmpty) {
+  //             return 'Ce champs est obligatoire';
+  //           } else {
+  //             return null;
+  //           }
+  //         },
+  //       ));
+  // }
 
   Widget uniteChoisieWidget() {
     return Container(
@@ -494,7 +485,7 @@ class _AjoutLigneBudgetaireState extends State<AjoutLigneBudgetaire> {
     final coutToal = nombreUniteController * coutUnitaireController;
     return Container(
         margin: const EdgeInsets.only(left: 10.0, bottom: 20.0),
-        child: Text('Coût total: ${coutToal.toStringAsFixed(2)} \$',
+        child: Text('Coût total: ${NumberFormat.decimalPattern('fr').format(double.parse(coutToal.toStringAsFixed(2)))} \$',
             style: headline6));
   }
 
@@ -505,19 +496,19 @@ class _AjoutLigneBudgetaireState extends State<AjoutLigneBudgetaire> {
     final fondsAtrouver = coutToal - fonds;
     return Container(
         margin: const EdgeInsets.only(left: 10.0, bottom: 20.0),
-        child: Text('Reste à trouver: ${fondsAtrouver.toStringAsFixed(2)} \$',
+        child: Text('Reste à trouver: ${NumberFormat.decimalPattern('fr').format(double.parse(fondsAtrouver.toStringAsFixed(2)))} \$',
             style: headline6!.copyWith(color: Colors.red.shade700)));
   }
 
-  Future<void> submit() async {
+  Future<void> submit(DepartementBudgetModel data) async {
     final coutToal = nombreUniteController * coutUnitaireController;
     final fonds = caisseController + banqueController + finPropreController;
     final fondsAtrouver = coutToal - fonds;
 
     final ligneBudgetaireModel = LigneBudgetaireModel(
         nomLigneBudgetaire: nomLigneBudgetaireController.text,
-        departement: departementController.text,
-        periodeBudget: widget.departementBudgetModel.periodeFin.toIso8601String(),
+        departement: data.departement,
+        periodeBudget: data.periodeDebut.toIso8601String(),
         uniteChoisie: uniteChoisieController.text,
         nombreUnite: nombreUniteController.toString(),
         coutUnitaire: coutUnitaireController.toString(),

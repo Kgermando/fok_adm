@@ -59,7 +59,7 @@ class _TableProjeBudgetState extends State<TableProjeBudget> {
             children: [
               IconButton(
                   onPressed: () {
-                    Navigator.pushNamed(context, ExploitationRoutes.expProjet);
+                    Navigator.pushNamed(context, BudgetRoutes.budgetDD);
                   },
                   icon: Icon(Icons.refresh, color: Colors.green.shade700)),
               PrintWidget(onPressed: () {})
@@ -212,7 +212,7 @@ class _TableProjeBudgetState extends State<TableProjeBudget> {
             'dateDebutEtFin': PlutoCell(value: item.dateDebutEtFin),
             'typeFinancement': PlutoCell(value: item.typeFinancement),
             'created': PlutoCell(
-                value: DateFormat("dd-MM-yy H:mm").format(item.created))
+                value: DateFormat("dd-MM-yyyy H:mm").format(item.created))
           }));
         }
         stateManager!.resetCurrentState();

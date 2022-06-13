@@ -93,14 +93,14 @@ class DepeartementBudgetApi {
   }
 
   Future<DepartementBudgetModel> updateData(
-      int id, DepartementBudgetModel departementBudgetModel) async {
+      DepartementBudgetModel departementBudgetModel) async {
     // String? token = await UserSharedPref().getAccessToken();
     String? token = await UserSharedPref().getAccessToken();
 
     var data = departementBudgetModel.toJson();
     var body = jsonEncode(data);
     var updateUrl = Uri.parse(
-        "$mainUrl/budgets/departements/update-departement-budget/$id");
+        "$mainUrl/budgets/departements/update-departement-budget/");
 
     var res = await client.put(updateUrl,
         headers: <String, String>{
@@ -111,7 +111,7 @@ class DepeartementBudgetApi {
     if (res.statusCode == 200) {
       return DepartementBudgetModel.fromJson(json.decode(res.body));
     } else {
-      throw Exception(json.decode(res.body)['message']);
+      throw Exception(res.statusCode);
     }
   }
 

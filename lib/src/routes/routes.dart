@@ -22,6 +22,7 @@ import 'package:fokad_admin/src/pages/budgets/budgets_previsionels/components/de
 import 'package:fokad_admin/src/pages/budgets/dashboard/dashboard_budget.dart';
 import 'package:fokad_admin/src/pages/budgets/etat_besoin/etat_besoin_budgets_page.dart';
 import 'package:fokad_admin/src/pages/budgets/historique_budget/historique_budgets_previsionnels.dart';
+import 'package:fokad_admin/src/pages/budgets/ligne_budgetaire/components/ajout_ligne_budgetaire.dart';
 import 'package:fokad_admin/src/pages/budgets/ligne_budgetaire/components/detail_ligne_budgetaire.dart';
 import 'package:fokad_admin/src/pages/comm_marketing/c_m_dd/c_m_dd.dart';
 import 'package:fokad_admin/src/pages/comm_marketing/commercial/achats/achats_page.dart';
@@ -207,6 +208,7 @@ class BudgetRoutes {
   static const budgetBudgetPrevisionel = "/budgets-previsionels";
   static const budgetBudgetPrevisionelAdd = "/budgets-previsionels-add";
   static const budgetLignebudgetaireDetail = "/budgets-ligne-budgetaire-detail";
+  static const budgetLignebudgetaireAdd = "/budgets-ligne-budgetaire-add";
   static const historiqueBudgetBudgetPrevisionel =
       "/historique-budgets-previsionels";
   static const budgetBudgetPrevisionelDetail =
@@ -404,6 +406,8 @@ final routes = <String, WidgetBuilder>{
   BudgetRoutes.budgetBudgetPrevisionelAdd: (context) => const AddBudgetPrevionel(),
   BudgetRoutes.budgetLignebudgetaireDetail: (context) =>
       const DetailLigneBudgetaire(),
+  BudgetRoutes.budgetLignebudgetaireAdd: (context) =>
+      const AjoutLigneBudgetaire(),
   BudgetRoutes.historiqueBudgetBudgetPrevisionel: (context) => const HistoriqueBudgetsPrevisionnels(),
   BudgetRoutes.budgetBudgetPrevisionelDetail: (context) =>
       const DetailDepartmentBudget(),

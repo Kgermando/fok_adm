@@ -54,7 +54,14 @@ class _TableDevisBudgetDDState extends State<TableDevisBudgetDD> {
         createHeader: (PlutoGridStateManager header) {
           return Row(
             mainAxisAlignment: MainAxisAlignment.end,
-            children: [PrintWidget(onPressed: () {})],
+            children: [
+              IconButton(
+                  onPressed: () {
+                    Navigator.pushNamed(context, BudgetRoutes.budgetDD);
+                  },
+                  icon: Icon(Icons.refresh, color: Colors.green.shade700)),
+               PrintWidget(onPressed: () {}),    
+            ],
           );
         },
         configuration: PlutoGridConfiguration(
@@ -175,7 +182,7 @@ class _TableDevisBudgetDDState extends State<TableDevisBudgetDD> {
             'priority': PlutoCell(value: item.priority),
             'departement': PlutoCell(value: item.departement),
             'created': PlutoCell(
-                value: DateFormat("dd-MM-yy HH:mm").format(item.created))
+                value: DateFormat("dd-MM-yyyy HH:mm").format(item.created))
           }));
           stateManager!.resetCurrentState();
         }

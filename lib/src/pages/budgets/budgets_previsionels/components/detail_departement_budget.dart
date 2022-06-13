@@ -20,8 +20,8 @@ import 'package:fokad_admin/src/models/rh/paiement_salaire_model.dart';
 import 'package:fokad_admin/src/models/users/user_model.dart';
 import 'package:fokad_admin/src/navigation/drawer/drawer_menu.dart';
 import 'package:fokad_admin/src/navigation/header/custom_appbar.dart';
-import 'package:fokad_admin/src/pages/budgets/ligne_budgetaire/components/ajout_ligne_budgetaire.dart';
 import 'package:fokad_admin/src/pages/budgets/ligne_budgetaire/components/ligne_budgetaire.dart';
+import 'package:fokad_admin/src/routes/routes.dart';
 import 'package:fokad_admin/src/utils/loading.dart';
 import 'package:fokad_admin/src/widgets/print_widget.dart';
 import 'package:fokad_admin/src/widgets/title_widget.dart';
@@ -98,7 +98,7 @@ class _DetailDepartmentBudgetState extends State<DetailDepartmentBudget> {
     var projets = await ProjetsApi().getAllData();
     var salaires = await PaiementSalaireApi().getAllData();
     var approbations = await ApprobationApi().getAllData();
-
+    if (!mounted) return;
     setState(() {
       user = userModel;
       ligneBudgetaireList = budgets;
@@ -148,9 +148,9 @@ class _DetailDepartmentBudgetState extends State<DetailDepartmentBudget> {
                 return FloatingActionButton(
                     child: const Icon(Icons.add),
                     onPressed: () {
-                      Navigator.of(context).push(MaterialPageRoute(
-                          builder: (context) => AjoutLigneBudgetaire(
-                              departementBudgetModel: data!)));
+                      Navigator.pushNamed(
+                          context, BudgetRoutes.budgetLignebudgetaireAdd,
+                          arguments: data);
                     });
               } else {
                 return loadingMini();
@@ -224,8 +224,7 @@ class _DetailDepartmentBudgetState extends State<DetailDepartmentBudget> {
                               ],
                             );
                           } else {
-                            return const Center(
-                                child: CircularProgressIndicator());
+                            return Center(child: loading());
                           }
                         })),
               ),
@@ -266,58 +265,107 @@ class _DetailDepartmentBudgetState extends State<DetailDepartmentBudget> {
                   TitleWidget(title: data.title),
                   Column(
                     children: [
-                      PrintWidget(
-                          tooltip: 'Imprimer le document', onPressed: () {}),
+                      Row(
+                        children: [
+                          PrintWidget(
+                              tooltip: 'Imprimer le document',
+                              onPressed: () {}),
+                          IconButton(
+                              tooltip: 'Soumettre chez le directeur du budget',
+                              onPressed: () {
+                                alertDialog(data);
+                              },
+                              icon: const Icon(Icons.send),
+                              color: Colors.green.shade700),
+                        ],
+                      ),
                       SelectableText(
                           DateFormat("dd-MM-yyyy HH:mm").format(data.created),
                           textAlign: TextAlign.start),
-                      if (panding)
-                        Row(
+                      if (data.isSubmit == 'true')
+                        Column(
                           children: [
-                            Container(
-                              width: 15,
-                              height: 15,
-                              decoration: BoxDecoration(
-                                color: Colors.orange.shade700,
-                                shape: BoxShape.circle,
+                            if (panding)
+                              Padding(
+                                padding: const EdgeInsets.all(p10),
+                                child: Row(
+                                  children: [
+                                    Container(
+                                      width: 15,
+                                      height: 15,
+                                      decoration: BoxDecoration(
+                                        color: Colors.orange.shade700,
+                                        shape: BoxShape.circle,
+                                      ),
+                                    ),
+                                    const SizedBox(width: p10),
+                                    Text("En attente...",
+                                        style: TextStyle(
+                                            color: Colors.orange.shade700))
+                                  ],
+                                ),
                               ),
-                            ),
-                            const SizedBox(width: p10),
-                            Text("En attente...",
-                                style: TextStyle(color: Colors.orange.shade700))
+                            if (biginLigneBudget)
+                              Padding(
+                                padding: const EdgeInsets.all(p10),
+                                child: Row(
+                                  children: [
+                                    Container(
+                                      width: 15,
+                                      height: 15,
+                                      decoration: BoxDecoration(
+                                        color: Colors.green.shade700,
+                                        shape: BoxShape.circle,
+                                      ),
+                                    ),
+                                    const SizedBox(width: p10),
+                                    Text("En cours...",
+                                        style: TextStyle(
+                                            color: Colors.green.shade700))
+                                  ],
+                                ),
+                              ),
+                            if (expiredLigneBudget)
+                              Padding(
+                                padding: const EdgeInsets.all(p10),
+                                child: Row(
+                                  children: [
+                                    Container(
+                                      width: 15,
+                                      height: 15,
+                                      decoration: BoxDecoration(
+                                        color: Colors.red.shade700,
+                                        shape: BoxShape.circle,
+                                      ),
+                                    ),
+                                    const SizedBox(width: p10),
+                                    Text("Obsolète!",
+                                        style: TextStyle(
+                                            color: Colors.red.shade700))
+                                  ],
+                                ),
+                              ),
                           ],
                         ),
-                      if (biginLigneBudget)
-                        Row(
-                          children: [
-                            Container(
-                              width: 15,
-                              height: 15,
-                              decoration: BoxDecoration(
-                                color: Colors.green.shade700,
-                                shape: BoxShape.circle,
+                      if (data.isSubmit == 'false')
+                        Padding(
+                          padding: const EdgeInsets.all(p10),
+                          child: Row(
+                            children: [
+                              Container(
+                                width: 15,
+                                height: 15,
+                                decoration: BoxDecoration(
+                                  color: Colors.purple.shade700,
+                                  shape: BoxShape.circle,
+                                ),
                               ),
-                            ),
-                            const SizedBox(width: p10),
-                            Text("En cours...",
-                                style: TextStyle(color: Colors.green.shade700))
-                          ],
-                        ),
-                      if (expiredLigneBudget)
-                        Row(
-                          children: [
-                            Container(
-                              width: 15,
-                              height: 15,
-                              decoration: BoxDecoration(
-                                color: Colors.red.shade700,
-                                shape: BoxShape.circle,
-                              ),
-                            ),
-                            const SizedBox(width: p10),
-                            Text("Obsolète!",
-                                style: TextStyle(color: Colors.red.shade700))
-                          ],
+                              const SizedBox(width: p10),
+                              Text("En constitution...",
+                                  style:
+                                      TextStyle(color: Colors.purple.shade700))
+                            ],
+                          ),
                         )
                     ],
                   )
@@ -518,29 +566,29 @@ class _DetailDepartmentBudgetState extends State<DetailDepartmentBudget> {
     List<ProjetModel> projetfinExterieurList = [];
     for (var item in approbList) {
       projetcaisseList = dataProjetList
-        .where((element) =>
-            "Exploitations" == data.departement &&
-            element.created.isBefore(data.periodeFin) &&
-            item.resources == "caisse")
-        .toList();
+          .where((element) =>
+              "Exploitations" == data.departement &&
+              element.created.isBefore(data.periodeFin) &&
+              item.resources == "caisse")
+          .toList();
       projetbanqueList = dataProjetList
-        .where((element) =>
-            "Exploitations" == data.departement &&
-            element.created.isBefore(data.periodeFin) &&
-            item.resources == "banque")
-        .toList();
+          .where((element) =>
+              "Exploitations" == data.departement &&
+              element.created.isBefore(data.periodeFin) &&
+              item.resources == "banque")
+          .toList();
       projetfinPropreList = dataProjetList
-        .where((element) =>
-            "Exploitations" == data.departement &&
-            element.created.isBefore(data.periodeFin) &&
-            item.resources == "finPropre")
-        .toList();
+          .where((element) =>
+              "Exploitations" == data.departement &&
+              element.created.isBefore(data.periodeFin) &&
+              item.resources == "finPropre")
+          .toList();
       projetfinExterieurList = dataProjetList
-        .where((element) =>
-            "Exploitations" == data.departement &&
-            element.created.isBefore(data.periodeFin) &&
-            item.resources == "finExterieur")
-        .toList();
+          .where((element) =>
+              "Exploitations" == data.departement &&
+              element.created.isBefore(data.periodeFin) &&
+              item.resources == "finExterieur")
+          .toList();
     }
 
     for (var item in projetcaisseList) {
@@ -640,9 +688,10 @@ class _DetailDepartmentBudgetState extends State<DetailDepartmentBudget> {
         child: Column(
           children: [
             const Text("Caisse", style: TextStyle(fontWeight: FontWeight.bold)),
-            SelectableText(
+            AutoSizeText(
                 "${NumberFormat.decimalPattern('fr').format(caisseSolde)} \$",
                 textAlign: TextAlign.center,
+                maxLines: 1,
                 style: headline6),
           ],
         ),
@@ -659,9 +708,10 @@ class _DetailDepartmentBudgetState extends State<DetailDepartmentBudget> {
         child: Column(
           children: [
             const Text("Banque", style: TextStyle(fontWeight: FontWeight.bold)),
-            SelectableText(
+            AutoSizeText(
                 "${NumberFormat.decimalPattern('fr').format(banqueSolde)} \$",
                 textAlign: TextAlign.center,
+                maxLines: 1,
                 style: headline6),
           ],
         ),
@@ -679,9 +729,10 @@ class _DetailDepartmentBudgetState extends State<DetailDepartmentBudget> {
           children: [
             const Text("Fonds Propres",
                 style: TextStyle(fontWeight: FontWeight.bold)),
-            SelectableText(
+            AutoSizeText(
                 "${NumberFormat.decimalPattern('fr').format(finPropreSolde)} \$",
                 textAlign: TextAlign.center,
+                maxLines: 1,
                 style: headline6),
           ],
         ),
@@ -699,9 +750,10 @@ class _DetailDepartmentBudgetState extends State<DetailDepartmentBudget> {
           children: [
             const Text("Reste à trouver",
                 style: TextStyle(fontWeight: FontWeight.bold)),
-            SelectableText(
+            AutoSizeText(
                 "${NumberFormat.decimalPattern('fr').format(finExterieurSolde)} \$",
                 textAlign: TextAlign.center,
+                maxLines: 1,
                 style: headline6!.copyWith(color: Colors.red.shade700)),
           ],
         ),
@@ -950,8 +1002,7 @@ class _DetailDepartmentBudgetState extends State<DetailDepartmentBudget> {
                                             ));
                                       });
                             } else {
-                              return const Center(
-                                  child: CircularProgressIndicator());
+                              return Center(child: loading());
                             }
                           }),
                     ),
@@ -1232,5 +1283,59 @@ class _DetailDepartmentBudgetState extends State<DetailDepartmentBudget> {
         created: DateTime.now());
     await ApprobationApi().insertData(approbation);
     Navigator.of(context).pop();
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      content: const Text("Approuvé avec succès!"),
+      backgroundColor: Colors.green[700],
+    ));
+  }
+
+  alertDialog(DepartementBudgetModel data) {
+    return showDialog(
+        context: context,
+        barrierDismissible: true,
+        builder: (context) {
+          return StatefulBuilder(builder: (context, StateSetter setState) {
+            return AlertDialog(
+              title: const Text('Etes-vous sûr de vouloir faire ceci ?'),
+              content: const SizedBox(
+                  height: 100,
+                  width: 100,
+                  child: Text(
+                      "Cette action permet de soumettre le document sur le bureau du direteur du budget previsionnel")),
+              actions: <Widget>[
+                TextButton(
+                  onPressed: () => Navigator.pop(context, 'Cancel'),
+                  child: const Text('Annuler'),
+                ),
+                TextButton(
+                  onPressed: () {
+                    submitToDD(data);
+                  },
+                  child: const Text('OK'),
+                ),
+              ],
+            );
+          });
+        });
+  }
+
+  Future<void> submitToDD(DepartementBudgetModel data) async {
+    final departementBudgetModel = DepartementBudgetModel(
+      id: data.id,
+      title: data.title,
+      departement: data.departement,
+      periodeDebut: data.periodeDebut,
+      periodeFin: data.periodeFin,
+      signature: data.signature,
+      createdRef: data.createdRef,
+      created: data.created,
+      isSubmit: true
+    );
+    await DepeartementBudgetApi().updateData(departementBudgetModel);
+    Navigator.of(context).pop();
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      content: const Text("Soumis avec succès!"),
+      backgroundColor: Colors.green[700],
+    ));
   }
 }
