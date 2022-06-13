@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:fokad_admin/src/api/approbation/approbation_api.dart';
+import 'package:fokad_admin/src/api/auth/auth_api.dart';
 import 'package:fokad_admin/src/api/comm_marketing/marketing/campaign_api.dart';
-import 'package:fokad_admin/src/models/comm_maketing/campaign_model.dart'; 
+import 'package:fokad_admin/src/models/approbation/approbation_model.dart';
+import 'package:fokad_admin/src/models/comm_maketing/campaign_model.dart';
+import 'package:fokad_admin/src/models/users/user_model.dart'; 
 import 'package:fokad_admin/src/routes/routes.dart';
 import 'package:fokad_admin/src/widgets/print_widget.dart';
 import 'package:fokad_admin/src/utils/class_implemented.dart';
@@ -193,14 +196,40 @@ class _TableCampaignState extends State<TableCampaign> {
 
   Future agentsRow() async {
     List<CampaignModel?> dataList = await CampaignApi().getAllData();
+    UserModel userModel = await AuthApi().getUserId();
     var approbations = await ApprobationApi().getAllData();
     List<CampaignModel?> data = [];
-    for (var item in approbations) {
+    // Verifie les approbation si c'est la list es vide
+    if (approbations.isNotEmpty) {
+      List<ApprobationModel> isApproved = [];
+      for (var item in dataList) {
+        isApproved = approbations
+            .where((element) =>
+                element.reference.microsecondsSinceEpoch ==
+                item!.createdRef.microsecondsSinceEpoch)
+            .toList();
+      }
+      // FIltre si le filtre donne des elements
+      if (isApproved.isNotEmpty) {
+        for (var item in approbations) {
+          data = dataList
+              .where((element) =>
+                element!.createdRef.microsecondsSinceEpoch ==
+                          item.reference.microsecondsSinceEpoch &&
+                      item.fontctionOccupee == 'Directeur générale' &&
+                      item.approbation == "Approved" ||
+                  element.signature == userModel.matricule )
+              .toList();
+        }
+      } else {
+        data = dataList
+            .where((element) => element!.signature == userModel.matricule)
+            .toList();
+      }
+    } else {
       data = dataList
           .where((element) =>
-              element!.created.microsecondsSinceEpoch ==
-                  item.reference.microsecondsSinceEpoch &&
-              item.fontctionOccupee == 'Directeur générale')
+            element!.signature == userModel.matricule )
           .toList();
     }
 

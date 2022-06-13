@@ -74,8 +74,10 @@ import 'package:fokad_admin/src/pages/exploitations/projets/components/detail_pr
 import 'package:fokad_admin/src/pages/exploitations/projets/components/update_projet.dart';
 import 'package:fokad_admin/src/pages/exploitations/projets/projets_expo.dart';
 import 'package:fokad_admin/src/pages/exploitations/taches/add_tache_exp.dart';
+import 'package:fokad_admin/src/pages/exploitations/taches/components/detail_tache.dart';
 import 'package:fokad_admin/src/pages/exploitations/taches/tache_exp.dart';
 import 'package:fokad_admin/src/pages/exploitations/versements/add_versement_projet.dart';
+import 'package:fokad_admin/src/pages/exploitations/versements/components/detail_versement_projet.dart';
 import 'package:fokad_admin/src/pages/exploitations/versements/versement_projet.dart';
 import 'package:fokad_admin/src/pages/finances/dashboard/dashboard_finance.dart';
 import 'package:fokad_admin/src/pages/finances/dd_finance/departement_fin.dart';
@@ -303,8 +305,10 @@ class ExploitationRoutes {
   static const expProjetDetail = "/exploitation-projets-detail";
   static const expTacheAdd = "/exploitation-taches-add";
   static const expTache = "/exploitation-taches"; 
+  static const expTacheDetail = "/exploitation-taches-detail"; 
   static const expVersement = "/exploitation-virement";
   static const expVersementAdd = "/exploitation-virement-add";
+  static const expVersementDetail = "/exploitation-virement-detail";
   static const expDD = "/exp-dd";
   static const exploitationEtatBesoin = "/exploitation-etat-besoin";
 }
@@ -500,9 +504,11 @@ final routes = <String, WidgetBuilder>{
   ExploitationRoutes.expProjetUpdate: (context) => const UpdateProjet(),
   ExploitationRoutes.expProjetDetail: (context) => const DetailProjet(),
   ExploitationRoutes.expVersement: (context) => const VersementProjet(),
+  ExploitationRoutes.expVersementDetail: (context) => const DetailVersementProjet(),
   ExploitationRoutes.expVersementAdd: (context) => const AddVersementProjet(),
   ExploitationRoutes.expTache: (context) => const TacheExp(),
   ExploitationRoutes.expTacheAdd: (context) => const AddTacheExp(),
+  ExploitationRoutes.expTacheDetail: (context) => const DetailTache(),
   ExploitationRoutes.exploitationEtatBesoin: (context) => const EtatBesoinExploitationsPage(),
 
   // Marketing

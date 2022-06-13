@@ -1,4 +1,3 @@
-import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:fokad_admin/src/api/auth/auth_api.dart';
 import 'package:fokad_admin/src/api/budgets/departement_budget_api.dart';
@@ -7,12 +6,10 @@ import 'package:fokad_admin/src/constants/responsive.dart';
 import 'package:fokad_admin/src/models/budgets/departement_budget_model.dart';
 import 'package:fokad_admin/src/models/users/user_model.dart';
 import 'package:fokad_admin/src/navigation/drawer/drawer_menu.dart';
-import 'package:fokad_admin/src/navigation/header/custom_appbar.dart';
-import 'package:fokad_admin/src/pages/budgets/budgets_previsionels/components/add_budget_previsionel.dart';
+import 'package:fokad_admin/src/navigation/header/custom_appbar.dart'; 
 import 'package:fokad_admin/src/pages/budgets/budgets_previsionels/components/table_departement_budget.dart';
 import 'package:fokad_admin/src/utils/dropdown.dart';
-import 'package:fokad_admin/src/utils/loading.dart';
-import 'package:fokad_admin/src/widgets/btn_widget.dart';
+import 'package:fokad_admin/src/utils/loading.dart'; 
 import 'package:fokad_admin/src/widgets/button_widget.dart';
 import 'package:intl/intl.dart';
 
