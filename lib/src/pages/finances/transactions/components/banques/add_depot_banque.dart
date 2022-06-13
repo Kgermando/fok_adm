@@ -1,4 +1,4 @@
-import 'dart:async'; 
+import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -321,85 +321,91 @@ class _AddDepotBanqueState extends State<AddDepotBanque> {
       child: ListView(
         children: [
           Table(
-              border: TableBorder.all(color: Colors.amber.shade700),
-              children: [
-                TableRow(children: [
-                  Container(
-                    padding: const EdgeInsets.all(p8),
-                    child: Text("Nombre",
-                        textAlign: TextAlign.center, style: headline6),
-                  ),
-                  Container(
-                    padding: const EdgeInsets.all(p8),
-                    child: Text("Billet",
-                        textAlign: TextAlign.center, style: headline6),
-                  ),
-                  Container(
-                    padding: const EdgeInsets.all(p8),
-                    child: Text("Retirer",
-                        textAlign: TextAlign.center, style: headline6),
-                  ),
-                ]),
-                for (var item in coupureBilletList)
-                  TableRow(children: [
-                    Container(
-                      padding: const EdgeInsets.all(p8),
-                      child: Text(item.nombreBillet,
-                          textAlign: TextAlign.center, style: bodyLarge),
-                    ),
-                    Container(
-                      padding: const EdgeInsets.all(p8),
-                      child: Text("${item.coupureBillet} \$",
-                          textAlign: TextAlign.center, style: bodyLarge),
-                    ),
-                    Container(
-                        padding: const EdgeInsets.all(p8),
-                        child: (isLoadingDelete)
-                            ? SizedBox(height: p20, width: p20, child: loadingMini())
-                            : IconButton(
-                                onPressed: () async {
-                                  setState(() {
-                                    isLoadingDelete = true;
-                                  });
-                                  await CoupureBilletApi().deleteData(item.id!);
-                                },
-                                icon: const Icon(Icons.close, color: Colors.red)))
-                  ]),
-                TableRow(children: [
+            border: TableBorder.all(color: Colors.amber.shade700),
+            children: [
+              TableRow(children: [
                 Container(
                   padding: const EdgeInsets.all(p8),
-                  child: TextFormField(
-                    controller: nombreBilletController,
-                    decoration: InputDecoration(
-                      border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10.0)),
-                      labelText: 'Ajoutez le nombre ici',
-                    ), 
-                    keyboardType: TextInputType.number,
-                    inputFormatters: <TextInputFormatter>[
-                      FilteringTextInputFormatter.digitsOnly
-                    ],
-                    style: const TextStyle(),
-                  )
+                  child: Text("Nombre",
+                      textAlign: TextAlign.center, style: headline6),
                 ),
                 Container(
                   padding: const EdgeInsets.all(p8),
-                  child: TextFormField(
-                    controller: coupureBilletController,
-                    decoration: InputDecoration(
-                      border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10.0)),
-                      labelText: 'Ajoutez la coupure de billet ici',
-                    ),
-                    keyboardType: TextInputType.number,
-                    inputFormatters: <TextInputFormatter>[
-                      FilteringTextInputFormatter.digitsOnly
-                    ],
-                    style: const TextStyle(),
-                  )),
+                  child: Text("Billet",
+                      textAlign: TextAlign.center, style: headline6),
+                ),
                 Container(
                   padding: const EdgeInsets.all(p8),
-                  child: IconButton(
+                  child: Text("Retirer",
+                      textAlign: TextAlign.center, style: headline6),
+                ),
+              ]),
+              for (var item in coupureBilletList)
+                TableRow(children: [
+                  Container(
+                    padding: const EdgeInsets.all(p8),
+                    child: Text(item.nombreBillet,
+                        textAlign: TextAlign.center, style: bodyLarge),
+                  ),
+                  Container(
+                    padding: const EdgeInsets.all(p8),
+                    child: Text("${item.coupureBillet} \$",
+                        textAlign: TextAlign.center, style: bodyLarge),
+                  ),
+                  Container(
+                      padding: const EdgeInsets.all(p8),
+                      child: (isLoadingDelete)
+                          ? SizedBox(
+                              height: p20, width: p20, child: loadingMini())
+                          : IconButton(
+                              onPressed: () async {
+                                setState(() {
+                                  isLoadingDelete = true;
+                                });
+                                await CoupureBilletApi()
+                                    .deleteData(item.id!)
+                                    .then((value) {
+                                  setState(() {
+                                    isLoadingDelete = false;
+                                  });
+                                });
+                              },
+                              icon: const Icon(Icons.close, color: Colors.red)))
+                ]),
+              TableRow(children: [
+                Container(
+                    padding: const EdgeInsets.all(p8),
+                    child: TextFormField(
+                      controller: nombreBilletController,
+                      decoration: InputDecoration(
+                        border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10.0)),
+                        labelText: 'Ajoutez le nombre ici',
+                      ),
+                      keyboardType: TextInputType.number,
+                      inputFormatters: <TextInputFormatter>[
+                        FilteringTextInputFormatter.digitsOnly
+                      ],
+                      style: const TextStyle(),
+                    )),
+                Container(
+                    padding: const EdgeInsets.all(p8),
+                    child: TextFormField(
+                      controller: coupureBilletController,
+                      decoration: InputDecoration(
+                        border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10.0)),
+                        labelText: 'Ajoutez la coupure de billet ici',
+                      ),
+                      keyboardType: TextInputType.number,
+                      inputFormatters: <TextInputFormatter>[
+                        FilteringTextInputFormatter.digitsOnly
+                      ],
+                      style: const TextStyle(),
+                    )),
+                Container(
+                    padding: const EdgeInsets.all(p8),
+                    child: IconButton(
                         onPressed: () {
                           setState(() {
                             isCoupureBilletLoading = true;
@@ -411,11 +417,10 @@ class _AddDepotBanqueState extends State<AddDepotBanque> {
                           }
                         },
                         icon: Icon(Icons.save,
-                            size: 40.0, color: Colors.red.shade700))
-                ),
+                            size: 40.0, color: Colors.red.shade700))),
               ]),
-              ],
-            ),
+            ],
+          ),
           const SizedBox(height: p20),
         ],
       ),

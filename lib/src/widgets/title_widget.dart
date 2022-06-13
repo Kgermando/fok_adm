@@ -4,8 +4,9 @@ import 'package:fokad_admin/src/constants/app_theme.dart';
 import 'package:fokad_admin/src/constants/responsive.dart';
 
 class TitleWidget extends StatelessWidget {
-  const TitleWidget({Key? key, required this.title}) : super(key: key);
+  const TitleWidget({Key? key, required this.title, this.overflow}) : super(key: key);
   final String title;
+  final TextOverflow? overflow;
 
   @override
   Widget build(BuildContext context) {
@@ -18,8 +19,9 @@ class TitleWidget extends StatelessWidget {
         children: [
           AutoSizeText(
             title,
-            maxLines: 1,
+            maxLines: 3,
             textAlign: TextAlign.center,
+            overflow: overflow,
             style:  Responsive.isDesktop(context) 
               ? headlineMedium!.copyWith(fontWeight: FontWeight.bold)
               : headline6!.copyWith(fontWeight: FontWeight.bold)

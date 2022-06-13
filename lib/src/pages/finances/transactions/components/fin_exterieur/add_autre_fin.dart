@@ -74,6 +74,7 @@ class _AddAutreFinState extends State<AddAutreFin> {
     final userModel = await AuthApi().getUserId();
     final data = await FinExterieurApi().getAllData();
     var coupureBillets = await CoupureBilletApi().getAllData();
+    if (!mounted) return;
     setState(() {
       matricule = userModel.matricule;
       numberItem = data.length;
@@ -137,8 +138,7 @@ class _AddAutreFinState extends State<AddAutreFin> {
         ));
   }
 
-  Widget addPageWidget() {
-    final headline6 = Theme.of(context).textTheme.headline6;
+  Widget addPageWidget() { 
     return Form(
       key: _formKey,
       child: Row(
@@ -159,7 +159,7 @@ class _AddAutreFinState extends State<AddAutreFin> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: const [
-                        TitleWidget(title: "Ajout Fin."),
+                        TitleWidget(title: "Ajout Financement Interne/ Externe"),
                       ],
                     ),
                     const SizedBox(
@@ -356,7 +356,11 @@ class _AddAutreFinState extends State<AddAutreFin> {
                                 setState(() {
                                   isLoadingDelete = true;
                                 });
-                                await CoupureBilletApi().deleteData(item.id!);
+                                await CoupureBilletApi().deleteData(item.id!).then((value) {
+                                   setState(() {
+                                    isLoadingDelete = false;
+                                  });
+                                });
                               },
                               icon: const Icon(Icons.close, color: Colors.red)))
                 ]),

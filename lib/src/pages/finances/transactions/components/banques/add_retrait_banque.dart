@@ -363,7 +363,13 @@ class _AddRetratBanqueState extends State<AddRetratBanque> {
                                 setState(() {
                                   isLoadingDelete = true;
                                 });
-                                await CoupureBilletApi().deleteData(item.id!);
+                                await CoupureBilletApi().deleteData(item.id!)
+                                    .then((value) {
+                                  setState(() {
+                                    isLoadingDelete = false;
+                                  });
+                                });
+                                ;
                               },
                               icon: const Icon(Icons.close, color: Colors.red)))
                 ]),

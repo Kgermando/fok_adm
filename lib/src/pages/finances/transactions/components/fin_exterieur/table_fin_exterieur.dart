@@ -59,7 +59,6 @@ class _TableFinExterieurState extends State<TableFinExterieur> {
               final idPlutoRow = dataList.elementAt(0);
               Navigator.pushNamed(context, FinanceRoutes.transactionsFinancementExterneDetail,
                   arguments: idPlutoRow.value);
-              
             },
             onLoaded: (PlutoGridOnLoadedEvent event) {
               stateManager = event.stateManager;

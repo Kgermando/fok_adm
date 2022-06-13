@@ -28,7 +28,6 @@ class DetailFinExterieur extends StatefulWidget {
 
 class _DetailFinExterieurState extends State<DetailFinExterieur> {
   final GlobalKey<ScaffoldState> _key = GlobalKey();
-  final ScrollController _controllerScroll = ScrollController();
   bool isLoading = false;
   List<UserModel> userList = [];
 
@@ -126,7 +125,6 @@ class _DetailFinExterieurState extends State<DetailFinExterieur> {
                                 ),
                                 Expanded(
                                     child: SingleChildScrollView(
-                                        controller: _controllerScroll,
                                         child: pageDetail(data!)))
                               ],
                             );
@@ -157,21 +155,19 @@ class _DetailFinExterieurState extends State<DetailFinExterieur> {
               width: 2.0,
             ),
           ),
-          child: ListView(
-            controller: _controllerScroll,
+          child: Column(
             children: [
               Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                mainAxisAlignment: MainAxisAlignment.end,
                 children: [
-                  TitleWidget(title: data.libelle),
                   Column(
                     children: [
                       Row(
                         children: [
-                          IconButton(
-                              tooltip: 'Modifier',
-                              onPressed: () {},
-                              icon: const Icon(Icons.edit)),
+                          // IconButton(
+                          //     tooltip: 'Modifier',
+                          //     onPressed: () {},
+                          //     icon: const Icon(Icons.edit)),
                           PrintWidget(
                               tooltip: 'Imprimer le document', onPressed: () {})
                         ],
@@ -252,8 +248,9 @@ class _DetailFinExterieurState extends State<DetailFinExterieur> {
                     style: bodyMedium.copyWith(fontWeight: FontWeight.bold)),
               ),
               Expanded(
-                child: SelectableText(data.montant,
-                    textAlign: TextAlign.start, style: bodyMedium),
+                child: SelectableText(
+                  "${NumberFormat.decimalPattern('fr').format(double.parse(data.montant))} \$",
+                  textAlign: TextAlign.start, style: bodyMedium),
               )
             ],
           ), 
