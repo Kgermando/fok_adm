@@ -90,13 +90,13 @@ class DetteApi {
     }
   }
 
-  Future<DetteModel> updateData(int id, DetteModel detteModel) async {
+  Future<DetteModel> updateData(DetteModel detteModel) async {
     String? token = await UserSharedPref().getAccessToken();
 
     var data = detteModel.toJson();
     var body = jsonEncode(data);
     var updateUrl = Uri.parse(
-        "$mainUrl/finances/transactions/banques/update-transaction-dette/$id");
+        "$mainUrl/finances/transactions/banques/update-transaction-dette/");
 
     var res = await client.put(updateUrl,
         headers: <String, String>{

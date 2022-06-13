@@ -255,7 +255,7 @@ class _TableCaisseState extends State<TableCaisse> {
       ),
       PlutoColumn(
         readOnly: true,
-        title: 'departement',
+        title: 'Département',
         field: 'departement',
         type: PlutoColumnType.text(),
         enableRowDrag: true,

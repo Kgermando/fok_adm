@@ -1,5 +1,4 @@
-import 'dart:async';
-import 'dart:convert';
+import 'dart:async'; 
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -13,12 +12,13 @@ import 'package:fokad_admin/src/models/finances/coupure_billet_model.dart';
 import 'package:fokad_admin/src/navigation/drawer/drawer_menu.dart';
 import 'package:fokad_admin/src/navigation/header/custom_appbar.dart';
 import 'package:fokad_admin/src/utils/dropdown.dart';
+import 'package:fokad_admin/src/utils/loading.dart';
 import 'package:fokad_admin/src/utils/type_operation.dart';
 import 'package:fokad_admin/src/widgets/btn_widget.dart';
 import 'package:fokad_admin/src/widgets/title_widget.dart';
 
 class AddDepotBanque extends StatefulWidget {
-  const AddDepotBanque({ Key? key }) : super(key: key);
+  const AddDepotBanque({Key? key}) : super(key: key);
 
   @override
   State<AddDepotBanque> createState() => _AddDepotBanqueState();
@@ -26,12 +26,13 @@ class AddDepotBanque extends StatefulWidget {
 
 class _AddDepotBanqueState extends State<AddDepotBanque> {
   final GlobalKey<ScaffoldState> _key = GlobalKey();
-  final controller = ScrollController(); 
+  final controller = ScrollController();
   final _formKey = GlobalKey<FormState>();
-   final _coupureBillertKey = GlobalKey<FormState>();
+  final _coupureBillertKey = GlobalKey<FormState>();
 
   bool isLoading = false;
   bool isCoupureBilletLoading = false;
+  bool isLoadingDelete = false;
 
   TextEditingController nomCompletController = TextEditingController();
   TextEditingController pieceJustificativeController = TextEditingController();
@@ -48,8 +49,7 @@ class _AddDepotBanqueState extends State<AddDepotBanque> {
       TypeOperation().typeBanqueRetraitDepot;
   final List<String> departementList = Dropdown().departement;
 
-  
-Timer? timer;
+  Timer? timer;
 
   @override
   void initState() {
@@ -73,7 +73,6 @@ Timer? timer;
     super.dispose();
   }
 
-
   String? matricule;
   int numberItem = 0;
   List<CoupureBilletModel> coupureBilletList = [];
@@ -81,6 +80,7 @@ Timer? timer;
     final userModel = await AuthApi().getUserId();
     final data = await BanqueApi().getAllData();
     var coupureBillets = await CoupureBilletApi().getAllData();
+    if (!mounted) return;
     setState(() {
       matricule = userModel.matricule;
       numberItem = data.length;
@@ -90,9 +90,7 @@ Timer? timer;
     });
   }
 
-
-    
-@override
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
         key: _key,
@@ -191,7 +189,7 @@ Timer? timer;
                         Expanded(child: montantWidget())
                       ],
                     ),
-                    deperatmentWidget(), 
+                    deperatmentWidget(),
                     SizedBox(
                         height: 500,
                         width: double.infinity,
@@ -223,7 +221,6 @@ Timer? timer;
       ),
     );
   }
-
 
   Widget nomCompletWidget() {
     return Container(
@@ -318,80 +315,113 @@ Timer? timer;
 
   Widget coupureBilletWidget() {
     final headline6 = Theme.of(context).textTheme.headline6;
-    return ListView(
-      children: [
-        for (var item in coupureBilletList)
-          Row(
-            children: [
-              Expanded(
-                child: Container(
-                  color: Colors.white24,
-                  child: Text(item.nombreBillet,
-                      textAlign: TextAlign.start, style: headline6),
+    final bodyLarge = Theme.of(context).textTheme.bodyLarge;
+    return Form(
+      key: _coupureBillertKey,
+      child: ListView(
+        children: [
+          Table(
+              border: TableBorder.all(color: Colors.amber.shade700),
+              children: [
+                TableRow(children: [
+                  Container(
+                    padding: const EdgeInsets.all(p8),
+                    child: Text("Nombre",
+                        textAlign: TextAlign.center, style: headline6),
+                  ),
+                  Container(
+                    padding: const EdgeInsets.all(p8),
+                    child: Text("Billet",
+                        textAlign: TextAlign.center, style: headline6),
+                  ),
+                  Container(
+                    padding: const EdgeInsets.all(p8),
+                    child: Text("Retirer",
+                        textAlign: TextAlign.center, style: headline6),
+                  ),
+                ]),
+                for (var item in coupureBilletList)
+                  TableRow(children: [
+                    Container(
+                      padding: const EdgeInsets.all(p8),
+                      child: Text(item.nombreBillet,
+                          textAlign: TextAlign.center, style: bodyLarge),
+                    ),
+                    Container(
+                      padding: const EdgeInsets.all(p8),
+                      child: Text("${item.coupureBillet} \$",
+                          textAlign: TextAlign.center, style: bodyLarge),
+                    ),
+                    Container(
+                        padding: const EdgeInsets.all(p8),
+                        child: (isLoadingDelete)
+                            ? SizedBox(height: p20, width: p20, child: loadingMini())
+                            : IconButton(
+                                onPressed: () async {
+                                  setState(() {
+                                    isLoadingDelete = true;
+                                  });
+                                  await CoupureBilletApi().deleteData(item.id!);
+                                },
+                                icon: const Icon(Icons.close, color: Colors.red)))
+                  ]),
+                TableRow(children: [
+                Container(
+                  padding: const EdgeInsets.all(p8),
+                  child: TextFormField(
+                    controller: nombreBilletController,
+                    decoration: InputDecoration(
+                      border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10.0)),
+                      labelText: 'Ajoutez le nombre ici',
+                    ), 
+                    keyboardType: TextInputType.number,
+                    inputFormatters: <TextInputFormatter>[
+                      FilteringTextInputFormatter.digitsOnly
+                    ],
+                    style: const TextStyle(),
+                  )
                 ),
-              ),
-              Expanded(
-                child: Container(
-                  color: Colors.white24,
-                  child: SelectableText(item.coupureBillet,
-                      textAlign: TextAlign.start, style: headline6),
+                Container(
+                  padding: const EdgeInsets.all(p8),
+                  child: TextFormField(
+                    controller: coupureBilletController,
+                    decoration: InputDecoration(
+                      border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10.0)),
+                      labelText: 'Ajoutez la coupure de billet ici',
+                    ),
+                    keyboardType: TextInputType.number,
+                    inputFormatters: <TextInputFormatter>[
+                      FilteringTextInputFormatter.digitsOnly
+                    ],
+                    style: const TextStyle(),
+                  )),
+                Container(
+                  padding: const EdgeInsets.all(p8),
+                  child: IconButton(
+                        onPressed: () {
+                          setState(() {
+                            isCoupureBilletLoading = true;
+                          });
+                          final form = _coupureBillertKey.currentState!;
+                          if (form.validate()) {
+                            submitCoupureBillet();
+                            form.reset();
+                          }
+                        },
+                        icon: Icon(Icons.save,
+                            size: 40.0, color: Colors.red.shade700))
                 ),
-              )
-            ],
-          ),
-        const SizedBox(height: p20),
-        Form(
-          key: _coupureBillertKey,
-          child: Row(
-            children: [
-              Expanded(
-                  child: Container(
-                      margin: const EdgeInsets.only(bottom: p20),
-                      child: TextFormField(
-                        controller: nombreBilletController,
-                        decoration: InputDecoration(
-                          border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10.0)),
-                          labelText: 'Nombre',
-                        ),
-                        keyboardType: TextInputType.text,
-                        style: const TextStyle(),
-                      ))),
-              const SizedBox(width: p10),
-              Expanded(
-                  child: Container(
-                      margin: const EdgeInsets.only(bottom: p20),
-                      child: TextFormField(
-                        controller: coupureBilletController,
-                        decoration: InputDecoration(
-                          border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10.0)),
-                          labelText: 'Coupure billet',
-                        ),
-                        keyboardType: TextInputType.text,
-                        style: const TextStyle(),
-                      ))),
-              IconButton(
-                  onPressed: () {
-                    setState(() {
-                      isCoupureBilletLoading = true;
-                    });
-                    final form = _coupureBillertKey.currentState!;
-                    if (form.validate()) {
-                      submitCoupureBillet();
-                      form.reset();
-                    }
-                    // setState(() {
-                    //   isCoupureBilletLoading = true;
-                    // });
-                  },
-                  icon: Icon(Icons.save, color: Colors.red.shade700))
-            ],
-          ),
-        ),
-      ],
+              ]),
+              ],
+            ),
+          const SizedBox(height: p20),
+        ],
+      ),
     );
   }
+
   Widget deperatmentWidget() {
     return Container(
       margin: const EdgeInsets.only(bottom: p20),
@@ -419,13 +449,12 @@ Timer? timer;
     );
   }
 
-
-  Future submitDepot() async { 
+  Future submitDepot() async {
     final banqueModel = BanqueModel(
         nomComplet: nomCompletController.text,
         pieceJustificative: pieceJustificativeController.text,
         libelle: libelleController.text,
-        montant: montantController.text, 
+        montant: montantController.text,
         departement: '-',
         typeOperation: 'Depot',
         numeroOperation: 'FOKAD-Banque-${numberItem + 1}',
@@ -440,7 +469,6 @@ Timer? timer;
     ));
   }
 
-  
   Future submitCoupureBillet() async {
     final coupureBillet = CoupureBilletModel(
         reference: numberItem + 1,
@@ -452,5 +480,4 @@ Timer? timer;
       backgroundColor: Colors.green[700],
     ));
   }
-
 }

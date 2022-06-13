@@ -13,6 +13,7 @@ import 'package:fokad_admin/src/models/finances/fin_exterieur_model.dart';
 import 'package:fokad_admin/src/models/users/user_model.dart';
 import 'package:fokad_admin/src/navigation/drawer/drawer_menu.dart';
 import 'package:fokad_admin/src/navigation/header/custom_appbar.dart';
+import 'package:fokad_admin/src/pages/finances/transactions/components/coupure_billet/table_coupure_billet.dart';
 import 'package:fokad_admin/src/widgets/print_widget.dart';
 import 'package:fokad_admin/src/widgets/title_widget.dart';
 import 'package:intl/intl.dart';
@@ -42,9 +43,7 @@ class _DetailFinExterieurState extends State<DetailFinExterieur> {
 
   @override
   initState() {
-    getData();
-    agentsColumn();
-    agentsRow();
+    getData(); 
     super.initState();
   }
 
@@ -188,7 +187,7 @@ class _DetailFinExterieurState extends State<DetailFinExterieur> {
               SizedBox(
                 height: 300,
                 width: double.infinity,
-                child: tableauList(),
+                child: TableCoupureBillet(createdRef: data.createdRef),
               ),
             ],
           ),
@@ -305,76 +304,7 @@ class _DetailFinExterieurState extends State<DetailFinExterieur> {
     );
   }
 
-  Widget tableauList() {
-    return PlutoGrid(
-      columns: columns,
-      rows: rows,
-      onLoaded: (PlutoGridOnLoadedEvent event) {
-        stateManager = event.stateManager;
-        stateManager!.setShowColumnFilter(true);
-        stateManager!.notifyListeners();
-      },
-      createHeader: (PlutoGridStateManager header) {
-        return const TitleWidget(title: 'Coupure billets');
-      },
-    );
-  }
-
-  void agentsColumn() {
-    columns = [
-      PlutoColumn(
-        readOnly: true,
-        title: 'N°',
-        field: 'id',
-        type: PlutoColumnType.number(),
-        enableRowDrag: true,
-        enableContextMenu: false,
-        enableDropToResize: true,
-        titleTextAlign: PlutoColumnTextAlign.left,
-        width: 100,
-        minWidth: 80,
-      ),
-      PlutoColumn(
-        readOnly: true,
-        title: 'Nombre',
-        field: 'nombreBillet',
-        type: PlutoColumnType.text(),
-        enableRowDrag: true,
-        enableContextMenu: false,
-        enableDropToResize: true,
-        titleTextAlign: PlutoColumnTextAlign.left,
-        width: 150,
-        minWidth: 150,
-      ),
-      PlutoColumn(
-        readOnly: true,
-        title: 'Coupure',
-        field: 'coupureBillet',
-        type: PlutoColumnType.text(),
-        enableRowDrag: true,
-        enableContextMenu: false,
-        enableDropToResize: true,
-        titleTextAlign: PlutoColumnTextAlign.left,
-        width: 150,
-        minWidth: 150,
-      ),
-    ];
-  }
-
-  Future agentsRow() async {
-    if (mounted) {
-      setState(() {
-        for (var item in coupureBilletList) {
-          rows.add(PlutoRow(cells: {
-            'id': PlutoCell(value: item.id),
-            'nombreBillet': PlutoCell(value: item.nombreBillet),
-            'coupureBillet': PlutoCell(value: item.coupureBillet)
-          }));
-        }
-        stateManager!.resetCurrentState();
-      });
-    }
-  }
+  
 
   Widget infosEditeurWidget() {
     final bodyLarge = Theme.of(context).textTheme.bodyLarge;

@@ -12,6 +12,7 @@ import 'package:fokad_admin/src/models/finances/coupure_billet_model.dart';
 import 'package:fokad_admin/src/models/users/user_model.dart';
 import 'package:fokad_admin/src/navigation/drawer/drawer_menu.dart';
 import 'package:fokad_admin/src/navigation/header/custom_appbar.dart';
+import 'package:fokad_admin/src/pages/finances/transactions/components/coupure_billet/table_coupure_billet.dart';
 import 'package:fokad_admin/src/utils/loading.dart';
 import 'package:fokad_admin/src/widgets/print_widget.dart';
 import 'package:fokad_admin/src/widgets/title_widget.dart';
@@ -26,8 +27,7 @@ class DetailCaisse extends StatefulWidget {
 }
 
 class _DetailCaisseState extends State<DetailCaisse> {
-  final GlobalKey<ScaffoldState> _key = GlobalKey();
-  final ScrollController _controllerScroll = ScrollController();
+  final GlobalKey<ScaffoldState> _key = GlobalKey(); 
   bool isLoading = false;
   List<UserModel> userList = [];
 
@@ -38,9 +38,7 @@ class _DetailCaisseState extends State<DetailCaisse> {
 
   @override
   initState() {
-    getData();
-    agentsRow();
-    agentsColumn();
+    getData(); 
     super.initState();
   }
 
@@ -122,8 +120,7 @@ class _DetailCaisseState extends State<DetailCaisse> {
                                   ],
                                 ),
                                 Expanded(
-                                    child: SingleChildScrollView(
-                                        controller: _controllerScroll,
+                                    child: SingleChildScrollView( 
                                         child: pageDetail(data!)))
                               ],
                             );
@@ -138,7 +135,7 @@ class _DetailCaisseState extends State<DetailCaisse> {
         ));
   }
 
-  Widget pageDetail(CaisseModel caisseModel) {
+  Widget pageDetail(CaisseModel data) {
     return Row(mainAxisAlignment: MainAxisAlignment.center, children: [
       Card(
         elevation: 10,
@@ -154,30 +151,29 @@ class _DetailCaisseState extends State<DetailCaisse> {
               width: 2.0,
             ),
           ),
-          child: ListView(
-            controller: _controllerScroll,
+          child: Column( 
             children: [
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  TitleWidget(title: caisseModel.typeOperation),
+                  TitleWidget(title: data.typeOperation),
                   Column(
                     children: [
                       PrintWidget(
                           tooltip: 'Imprimer le document', onPressed: () {}),
                       SelectableText(
                           DateFormat("dd-MM-yyyy HH:mm")
-                              .format(caisseModel.created),
+                              .format(data.created),
                           textAlign: TextAlign.start),
                     ],
                   )
                 ],
               ),
-              dataWidget(caisseModel),
+              dataWidget(data),
               SizedBox(
-                height: 300,
+                height: 500,
                 width: double.infinity,
-                child: tableauList(),
+                child: TableCoupureBillet(createdRef: data.createdRef),
               ),
             ],
           ),
@@ -186,7 +182,7 @@ class _DetailCaisseState extends State<DetailCaisse> {
     ]);
   }
 
-  Widget dataWidget(CaisseModel caisseModel) {
+  Widget dataWidget(CaisseModel data) {
     final bodyMedium = Theme.of(context).textTheme.bodyMedium;
     return Padding(
       padding: const EdgeInsets.all(p10),
@@ -200,7 +196,7 @@ class _DetailCaisseState extends State<DetailCaisse> {
                     style: bodyMedium!.copyWith(fontWeight: FontWeight.bold)),
               ),
               Expanded(
-                child: SelectableText(caisseModel.nomComplet,
+                child: SelectableText(data.nomComplet,
                     textAlign: TextAlign.start, style: bodyMedium),
               )
             ],
@@ -214,7 +210,7 @@ class _DetailCaisseState extends State<DetailCaisse> {
                     style: bodyMedium.copyWith(fontWeight: FontWeight.bold)),
               ),
               Expanded(
-                child: SelectableText(caisseModel.pieceJustificative,
+                child: SelectableText(data.pieceJustificative,
                     textAlign: TextAlign.start, style: bodyMedium),
               )
             ],
@@ -228,7 +224,7 @@ class _DetailCaisseState extends State<DetailCaisse> {
                     style: bodyMedium.copyWith(fontWeight: FontWeight.bold)),
               ),
               Expanded(
-                child: SelectableText(caisseModel.libelle,
+                child: SelectableText(data.libelle,
                     textAlign: TextAlign.start, style: bodyMedium),
               )
             ],
@@ -242,14 +238,14 @@ class _DetailCaisseState extends State<DetailCaisse> {
                     style: bodyMedium.copyWith(fontWeight: FontWeight.bold)),
               ),
               Expanded(
-                child: SelectableText(caisseModel.montant,
+                child: SelectableText("${NumberFormat.decimalPattern('fr').format(double.parse(data.montant))} \$",
                     textAlign: TextAlign.start, style: bodyMedium),
               )
             ],
           ),
-          if (caisseModel.typeOperation != 'Depot')
+          if (data.typeOperation != 'Depot')
             Divider(color: Colors.amber.shade700),
-          if (caisseModel.typeOperation != 'Depot')
+          if (data.typeOperation != 'Depot')
             Row(
               children: [
                 Expanded(
@@ -258,7 +254,7 @@ class _DetailCaisseState extends State<DetailCaisse> {
                       style: bodyMedium.copyWith(fontWeight: FontWeight.bold)),
                 ),
                 Expanded(
-                  child: SelectableText(caisseModel.departement,
+                  child: SelectableText(data.departement,
                       textAlign: TextAlign.start, style: bodyMedium),
                 )
               ],
@@ -272,7 +268,7 @@ class _DetailCaisseState extends State<DetailCaisse> {
                     style: bodyMedium.copyWith(fontWeight: FontWeight.bold)),
               ),
               Expanded(
-                child: SelectableText(caisseModel.typeOperation,
+                child: SelectableText(data.typeOperation,
                     textAlign: TextAlign.start, style: bodyMedium),
               )
             ],
@@ -286,7 +282,7 @@ class _DetailCaisseState extends State<DetailCaisse> {
                     style: bodyMedium.copyWith(fontWeight: FontWeight.bold)),
               ),
               Expanded(
-                child: SelectableText(caisseModel.numeroOperation,
+                child: SelectableText(data.numeroOperation,
                     textAlign: TextAlign.start, style: bodyMedium),
               )
             ],
@@ -300,7 +296,7 @@ class _DetailCaisseState extends State<DetailCaisse> {
                     style: bodyMedium.copyWith(fontWeight: FontWeight.bold)),
               ),
               Expanded(
-                child: SelectableText(caisseModel.signature,
+                child: SelectableText(data.signature,
                     textAlign: TextAlign.start, style: bodyMedium),
               )
             ],
@@ -309,75 +305,5 @@ class _DetailCaisseState extends State<DetailCaisse> {
       ),
     );
   }
-
-  Widget tableauList() {
-    return PlutoGrid(
-      columns: columns,
-      rows: rows,
-      onLoaded: (PlutoGridOnLoadedEvent event) {
-        stateManager = event.stateManager;
-        stateManager!.setShowColumnFilter(true);
-        stateManager!.notifyListeners();
-      },
-      createHeader: (PlutoGridStateManager header) {
-        return const TitleWidget(title: 'Coupure billets');
-      },
-    );
-  }
-
-  void agentsColumn() {
-    columns = [
-      PlutoColumn(
-        readOnly: true,
-        title: 'N°',
-        field: 'id',
-        type: PlutoColumnType.number(),
-        enableRowDrag: true,
-        enableContextMenu: false,
-        enableDropToResize: true,
-        titleTextAlign: PlutoColumnTextAlign.left,
-        width: 100,
-        minWidth: 80,
-      ),
-      PlutoColumn(
-        readOnly: true,
-        title: 'Nombre',
-        field: 'nombreBillet',
-        type: PlutoColumnType.text(),
-        enableRowDrag: true,
-        enableContextMenu: false,
-        enableDropToResize: true,
-        titleTextAlign: PlutoColumnTextAlign.left,
-        width: 150,
-        minWidth: 150,
-      ),
-      PlutoColumn(
-        readOnly: true,
-        title: 'Coupure',
-        field: 'coupureBillet',
-        type: PlutoColumnType.text(),
-        enableRowDrag: true,
-        enableContextMenu: false,
-        enableDropToResize: true,
-        titleTextAlign: PlutoColumnTextAlign.left,
-        width: 150,
-        minWidth: 150,
-      ),
-    ];
-  }
-
-  Future agentsRow() async {
-    if (mounted) {
-      setState(() {
-        for (var item in coupureBilletList) {
-          rows.add(PlutoRow(cells: {
-            'id': PlutoCell(value: item.id),
-            'nombreBillet': PlutoCell(value: item.nombreBillet),
-            'coupureBillet': PlutoCell(value: item.coupureBillet)
-          }));
-        }
-        stateManager!.resetCurrentState();
-      });
-    }
-  }
+ 
 }

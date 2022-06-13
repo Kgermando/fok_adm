@@ -30,14 +30,8 @@ class _TableBanqueState extends State<TableBanque> {
 
   @override
   initState() {
-    Timer.periodic(const Duration(milliseconds: 500), ((timer) {
-      setState(() {
-        getData();
-        agentsRow();
-      });
-      timer.cancel();
-    }));
-
+   getData();
+    agentsRow();
     agentsColumn();
     super.initState();
   }
@@ -256,7 +250,7 @@ class _TableBanqueState extends State<TableBanque> {
       ),
       PlutoColumn(
         readOnly: true,
-        title: 'departement',
+        title: 'Département',
         field: 'departement',
         type: PlutoColumnType.text(),
         enableRowDrag: true,
@@ -312,9 +306,8 @@ class _TableBanqueState extends State<TableBanque> {
     if (mounted) {
       setState(() {
         for (var item in data) {
-          id = item!.id;
           rows.add(PlutoRow(cells: {
-            'id': PlutoCell(value: item.id),
+            'id': PlutoCell(value: item!.id),
             'nomComplet': PlutoCell(value: item.nomComplet),
             'pieceJustificative': PlutoCell(value: item.pieceJustificative),
             'libelle': PlutoCell(value: item.libelle),

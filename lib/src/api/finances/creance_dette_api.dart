@@ -91,13 +91,12 @@ class CreanceDetteApi {
     }
   }
 
-  Future<CreanceDetteModel> updateData(
-      int id, CreanceDetteModel creanceDetteModel) async {
+  Future<CreanceDetteModel> updateData(CreanceDetteModel creanceDetteModel) async {
     String? token = await UserSharedPref().getAccessToken();
 
     var data = creanceDetteModel.toJson();
     var body = jsonEncode(data);
-    var updateUrl = Uri.parse("$mainUrl/finances/update-creance-dette/$id");
+    var updateUrl = Uri.parse("$mainUrl/finances/update-creance-dette/");
 
     var res = await client.put(updateUrl,
         headers: <String, String>{

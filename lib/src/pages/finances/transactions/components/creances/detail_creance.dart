@@ -539,6 +539,7 @@ class _DetailCreanceState extends State<DetailCreance> {
 
   Future<void> submitobservation(CreanceModel data) async {
     final creanceModel = CreanceModel(
+      id: data.id,
         nomComplet: data.nomComplet,
         pieceJustificative: data.pieceJustificative,
         libelle: data.libelle,
@@ -548,7 +549,7 @@ class _DetailCreanceState extends State<DetailCreance> {
         signature: data.signature,
         createdRef: data.createdRef,
         created: DateTime.now());
-    await CreanceApi().updateData(data.id!, creanceModel);
+    await CreanceApi().updateData(creanceModel);
     Navigator.of(context).pop();
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
       content: const Text("Créance payé avec succès!"),
@@ -561,6 +562,7 @@ class _DetailCreanceState extends State<DetailCreance> {
         margin: const EdgeInsets.only(bottom: p20),
         child: TextFormField(
           controller: nomCompletController,
+          maxLength: 100,
           decoration: InputDecoration(
             border:
                 OutlineInputBorder(borderRadius: BorderRadius.circular(10.0)),
@@ -629,7 +631,7 @@ class _DetailCreanceState extends State<DetailCreance> {
                     border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(10.0)),
                     labelText: 'Montant',
-                    hintText: 'Restant $total \$'),
+                    hintText: 'Restant ${NumberFormat.decimalPattern('fr').format(total)} \$'),
                 validator: (value) => value != null && value.isEmpty
                     ? 'Ce champs est obligatoire.'
                     : null,

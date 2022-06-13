@@ -133,7 +133,7 @@ class _DetteTransactionsState extends State<DetteTransactions> {
                               Row(
                                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                 children: [
-                                  const TitleWidget(title: 'Ajout payement'),
+                                  const TitleWidget(title: 'Ajout dette'),
                                   PrintWidget(onPressed: () {})
                                 ],
                               ),
@@ -187,6 +187,7 @@ class _DetteTransactionsState extends State<DetteTransactions> {
         margin: const EdgeInsets.only(bottom: p20),
         child: TextFormField(
           controller: nomCompletController,
+          maxLength: 100,
           decoration: InputDecoration(
             border:
                 OutlineInputBorder(borderRadius: BorderRadius.circular(10.0)),

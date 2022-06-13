@@ -1,17 +1,16 @@
 import 'dart:async';
 
-import 'package:flutter/material.dart'; 
+import 'package:flutter/material.dart';
 import 'package:fokad_admin/src/api/auth/auth_api.dart';
 import 'package:fokad_admin/src/api/finances/banque_api.dart';
-import 'package:fokad_admin/src/api/finances/coupure_billet_api.dart';
 import 'package:fokad_admin/src/api/user/user_api.dart';
 import 'package:fokad_admin/src/constants/app_theme.dart';
-import 'package:fokad_admin/src/constants/responsive.dart'; 
+import 'package:fokad_admin/src/constants/responsive.dart';
 import 'package:fokad_admin/src/models/finances/banque_model.dart';
-import 'package:fokad_admin/src/models/finances/coupure_billet_model.dart';
 import 'package:fokad_admin/src/models/users/user_model.dart';
 import 'package:fokad_admin/src/navigation/drawer/drawer_menu.dart';
 import 'package:fokad_admin/src/navigation/header/custom_appbar.dart';
+import 'package:fokad_admin/src/pages/finances/transactions/components/coupure_billet/table_coupure_billet.dart';
 import 'package:fokad_admin/src/utils/loading.dart';
 import 'package:fokad_admin/src/widgets/print_widget.dart';
 import 'package:fokad_admin/src/widgets/title_widget.dart';
@@ -27,7 +26,6 @@ class DetailBanque extends StatefulWidget {
 
 class _DetailBanqueState extends State<DetailBanque> {
   final GlobalKey<ScaffoldState> _key = GlobalKey();
-  final ScrollController _controllerScroll = ScrollController();
   bool isLoading = false;
   List<UserModel> userList = [];
 
@@ -38,20 +36,11 @@ class _DetailBanqueState extends State<DetailBanque> {
 
   @override
   initState() {
-    Timer.periodic(const Duration(milliseconds: 500), ((timer) {
-      setState(() {
-        getData();
-        agentsRow();
-      });
-      timer.cancel();
-    }));
-
-    agentsColumn();
+    getData();
     super.initState();
   }
 
-  List<CoupureBilletModel> coupureBilletList = [];
-  List<CoupureBilletModel> coupureBilletFilter = [];
+ 
   UserModel user = UserModel(
       nom: '-',
       prenom: '-',
@@ -68,12 +57,10 @@ class _DetailBanqueState extends State<DetailBanque> {
       succursale: '-');
   Future<void> getData() async {
     final dataUser = await UserApi().getAllData();
-    UserModel userModel = await AuthApi().getUserId();
-    var coupureBillets = await CoupureBilletApi().getAllData();
+    UserModel userModel = await AuthApi().getUserId(); 
     setState(() {
       userList = dataUser;
-      user = userModel;
-      coupureBilletFilter = coupureBillets;
+      user = userModel; 
     });
   }
 
@@ -101,10 +88,7 @@ class _DetailBanqueState extends State<DetailBanque> {
                             AsyncSnapshot<BanqueModel> snapshot) {
                           if (snapshot.hasData) {
                             BanqueModel? data = snapshot.data;
-                            coupureBilletList = coupureBilletFilter
-                                .where((element) =>
-                                    element.reference == data!.createdRef)
-                                .toList();
+                           
                             return Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
@@ -128,7 +112,6 @@ class _DetailBanqueState extends State<DetailBanque> {
                                 ),
                                 Expanded(
                                     child: SingleChildScrollView(
-                                        controller: _controllerScroll,
                                         child: pageDetail(data!)))
                               ],
                             );
@@ -158,8 +141,7 @@ class _DetailBanqueState extends State<DetailBanque> {
               width: 2.0,
             ),
           ),
-          child: ListView(
-            controller: _controllerScroll,
+          child: Column(
             children: [
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -178,9 +160,9 @@ class _DetailBanqueState extends State<DetailBanque> {
               ),
               dataWidget(data),
               SizedBox(
-                height: 300,
+                height: 500,
                 width: double.infinity,
-                child: tableauList(),
+                child: TableCoupureBillet(createdRef: data.createdRef),
               ),
             ],
           ),
@@ -189,7 +171,7 @@ class _DetailBanqueState extends State<DetailBanque> {
     ]);
   }
 
-  Widget dataWidget(BanqueModel banqueModel) {
+  Widget dataWidget(BanqueModel data) {
     final bodyMedium = Theme.of(context).textTheme.bodyMedium;
     return Padding(
       padding: const EdgeInsets.all(p10),
@@ -203,7 +185,7 @@ class _DetailBanqueState extends State<DetailBanque> {
                     style: bodyMedium!.copyWith(fontWeight: FontWeight.bold)),
               ),
               Expanded(
-                child: SelectableText(banqueModel.nomComplet,
+                child: SelectableText(data.nomComplet,
                     textAlign: TextAlign.start, style: bodyMedium),
               )
             ],
@@ -217,7 +199,7 @@ class _DetailBanqueState extends State<DetailBanque> {
                     style: bodyMedium.copyWith(fontWeight: FontWeight.bold)),
               ),
               Expanded(
-                child: SelectableText(banqueModel.pieceJustificative,
+                child: SelectableText(data.pieceJustificative,
                     textAlign: TextAlign.start, style: bodyMedium),
               )
             ],
@@ -231,7 +213,7 @@ class _DetailBanqueState extends State<DetailBanque> {
                     style: bodyMedium.copyWith(fontWeight: FontWeight.bold)),
               ),
               Expanded(
-                child: SelectableText(banqueModel.libelle,
+                child: SelectableText(data.libelle,
                     textAlign: TextAlign.start, style: bodyMedium),
               )
             ],
@@ -245,13 +227,13 @@ class _DetailBanqueState extends State<DetailBanque> {
                     style: bodyMedium.copyWith(fontWeight: FontWeight.bold)),
               ),
               Expanded(
-                child: SelectableText(banqueModel.montant,
+                child: SelectableText("${NumberFormat.decimalPattern('fr').format(double.parse(data.montant))} \$",
                     textAlign: TextAlign.start, style: bodyMedium),
               )
-            ],
+            ], 
           ),
           Divider(color: Colors.amber.shade700),
-          if (banqueModel.typeOperation != 'Depot')
+          if (data.typeOperation != 'Depot')
             Row(
               children: [
                 Expanded(
@@ -260,7 +242,7 @@ class _DetailBanqueState extends State<DetailBanque> {
                       style: bodyMedium.copyWith(fontWeight: FontWeight.bold)),
                 ),
                 Expanded(
-                  child: SelectableText(banqueModel.departement,
+                  child: SelectableText(data.departement,
                       textAlign: TextAlign.start, style: bodyMedium),
                 )
               ],
@@ -274,7 +256,7 @@ class _DetailBanqueState extends State<DetailBanque> {
                     style: bodyMedium.copyWith(fontWeight: FontWeight.bold)),
               ),
               Expanded(
-                child: SelectableText(banqueModel.typeOperation,
+                child: SelectableText(data.typeOperation,
                     textAlign: TextAlign.start, style: bodyMedium),
               )
             ],
@@ -288,7 +270,7 @@ class _DetailBanqueState extends State<DetailBanque> {
                     style: bodyMedium.copyWith(fontWeight: FontWeight.bold)),
               ),
               Expanded(
-                child: SelectableText(banqueModel.numeroOperation,
+                child: SelectableText(data.numeroOperation,
                     textAlign: TextAlign.start, style: bodyMedium),
               )
             ],
@@ -302,7 +284,7 @@ class _DetailBanqueState extends State<DetailBanque> {
                     style: bodyMedium.copyWith(fontWeight: FontWeight.bold)),
               ),
               Expanded(
-                child: SelectableText(banqueModel.signature,
+                child: SelectableText(data.signature,
                     textAlign: TextAlign.start, style: bodyMedium),
               )
             ],
@@ -310,76 +292,5 @@ class _DetailBanqueState extends State<DetailBanque> {
         ],
       ),
     );
-  }
-
-  Widget tableauList() {
-    return PlutoGrid(
-      columns: columns,
-      rows: rows,
-      onLoaded: (PlutoGridOnLoadedEvent event) {
-        stateManager = event.stateManager;
-        stateManager!.setShowColumnFilter(true);
-        stateManager!.notifyListeners();
-      },
-      createHeader: (PlutoGridStateManager header) {
-        return const TitleWidget(title: 'Coupure billets');
-      },
-    );
-  }
-
-  void agentsColumn() {
-    columns = [
-      PlutoColumn(
-        readOnly: true,
-        title: 'N°',
-        field: 'id',
-        type: PlutoColumnType.number(),
-        enableRowDrag: true,
-        enableContextMenu: false,
-        enableDropToResize: true,
-        titleTextAlign: PlutoColumnTextAlign.left,
-        width: 100,
-        minWidth: 80,
-      ),
-      PlutoColumn(
-        readOnly: true,
-        title: 'Nombre',
-        field: 'nombreBillet',
-        type: PlutoColumnType.text(),
-        enableRowDrag: true,
-        enableContextMenu: false,
-        enableDropToResize: true,
-        titleTextAlign: PlutoColumnTextAlign.left,
-        width: 150,
-        minWidth: 150,
-      ),
-      PlutoColumn(
-        readOnly: true,
-        title: 'Coupure',
-        field: 'coupureBillet',
-        type: PlutoColumnType.text(),
-        enableRowDrag: true,
-        enableContextMenu: false,
-        enableDropToResize: true,
-        titleTextAlign: PlutoColumnTextAlign.left,
-        width: 150,
-        minWidth: 150,
-      ),
-    ];
-  }
-
-  Future agentsRow() async {
-    if (mounted) {
-      setState(() {
-        for (var item in coupureBilletList) {
-          rows.add(PlutoRow(cells: {
-            'id': PlutoCell(value: item.id),
-            'nombreBillet': PlutoCell(value: item.nombreBillet),
-            'coupureBillet': PlutoCell(value: item.coupureBillet)
-          }));
-        }
-        stateManager!.resetCurrentState();
-      });
-    }
   }
 }

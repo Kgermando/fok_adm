@@ -105,7 +105,7 @@ class CoupureBilletApi {
     }
   }
 
-  Future<CoupureBilletModel> deleteData(int id) async {
+  Future<void> deleteData(int id) async {
     String? token = await UserSharedPref().getAccessToken();
 
     var deleteUrl = Uri.parse(
@@ -116,7 +116,7 @@ class CoupureBilletApi {
       'Authorization': 'Bearer $token'
     });
     if (res.statusCode == 200) {
-      return CoupureBilletModel.fromJson(json.decode(res.body));
+      // return CoupureBilletModel.fromJson(json.decode(res.body));
     } else {
       throw Exception(res.statusCode);
     }

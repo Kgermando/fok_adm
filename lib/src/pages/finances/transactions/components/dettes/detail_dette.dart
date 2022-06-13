@@ -472,6 +472,7 @@ class _DetailDetteState extends State<DetailDette> {
 
   Future<void> submitobservation(DetteModel data) async {
     final detteModel = DetteModel(
+      id: data.id,
         nomComplet: data.nomComplet,
         pieceJustificative: data.pieceJustificative,
         libelle: data.libelle,
@@ -481,7 +482,7 @@ class _DetailDetteState extends State<DetailDette> {
         signature: data.signature,
         createdRef: data.createdRef,
         created: DateTime.now());
-    await DetteApi().updateData(data.id!, detteModel);
+    await DetteApi().updateData(detteModel);
     Navigator.of(context).pop();
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
       content: const Text("Soumis avec succès!"),
@@ -552,6 +553,7 @@ class _DetailDetteState extends State<DetailDette> {
         margin: const EdgeInsets.only(bottom: p20),
         child: TextFormField(
           controller: nomCompletController,
+          maxLength: 100,
           decoration: InputDecoration(
             border:
                 OutlineInputBorder(borderRadius: BorderRadius.circular(10.0)),
@@ -620,7 +622,8 @@ class _DetailDetteState extends State<DetailDette> {
                     border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(10.0)),
                     labelText: 'Montant',
-                    hintText: 'Restant $total \$'),
+                    hintText: 'Restant ${NumberFormat.decimalPattern('fr').format(total)} \$'
+                ),
                 validator: (value) => value != null && value.isEmpty
                     ? 'Ce champs est obligatoire.'
                     : null,

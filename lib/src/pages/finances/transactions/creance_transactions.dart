@@ -130,7 +130,7 @@ class _CreanceTransactionsState extends State<CreanceTransactions> {
                               Row(
                                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                 children: [
-                                  const TitleWidget(title: 'Ajout remboursement'),
+                                  const TitleWidget(title: 'Ajout Créance'),
                                   PrintWidget(onPressed: () {})
                                 ],
                               ),
@@ -184,6 +184,7 @@ class _CreanceTransactionsState extends State<CreanceTransactions> {
         margin: const EdgeInsets.only(bottom: p20),
         child: TextFormField(
           controller: nomCompletController,
+          maxLength: 100,
           decoration: InputDecoration(
             border:
                 OutlineInputBorder(borderRadius: BorderRadius.circular(10.0)),
