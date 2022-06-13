@@ -1,9 +1,11 @@
 import 'dart:async';
 
-import 'package:flutter/material.dart'; 
+import 'package:flutter/material.dart';
+import 'package:fokad_admin/src/api/approbation/approbation_api.dart'; 
 import 'package:fokad_admin/src/api/auth/auth_api.dart';
 import 'package:fokad_admin/src/api/finances/creance_dette_api.dart';
 import 'package:fokad_admin/src/api/finances/dette_api.dart';
+import 'package:fokad_admin/src/models/approbation/approbation_model.dart';
 import 'package:fokad_admin/src/models/finances/creance_dette_model.dart';
 import 'package:fokad_admin/src/models/finances/dette_model.dart';
 import 'package:fokad_admin/src/models/users/user_model.dart';
@@ -283,25 +285,47 @@ class _TableDetteState extends State<TableDette> {
     ];
   }
 
-  Future agentsRow() async {
-    UserModel userModel = await AuthApi().getUserId();
+  Future agentsRow() async { 
     List<DetteModel?> dataList = await DetteApi().getAllData();
-    // List<DetteModel?> data = [];
-    // var approbations = await ApprobationApi().getAllData();
-    // for (var item in approbations) {
-    //   data = dataList
-    //       .where((element) =>
-    //           element!.created.microsecondsSinceEpoch ==
-    //                   item.reference.microsecondsSinceEpoch &&
-    //               item.fontctionOccupee == 'Directeur générale' &&
-    //               item.approbation == "Approved" ||
-    //           element.signature == userModel.matricule)
-    //       .toList();
-    // }
+    UserModel userModel = await AuthApi().getUserId();
+    var approbations = await ApprobationApi().getAllData();
+    List<DetteModel?> data = [];
+    // Verifie les approbation si c'est la list es vide
+    if (approbations.isNotEmpty) {
+      List<ApprobationModel> isApproved = [];
+      for (var item in dataList) {
+        isApproved = approbations
+            .where((element) =>
+                element.reference.microsecondsSinceEpoch ==
+                item!.createdRef.microsecondsSinceEpoch)
+            .toList();
+      }
+      // FIltre si le filtre donne des elements
+      if (isApproved.isNotEmpty) {
+        for (var item in approbations) {
+          data = dataList
+              .where((element) =>
+                  element!.createdRef.microsecondsSinceEpoch ==
+                          item.reference.microsecondsSinceEpoch &&
+                      item.fontctionOccupee == 'Directeur générale' &&
+                      item.approbation == "Approved" ||
+                  element.signature == userModel.matricule)
+              .toList();
+        }
+      } else {
+        data = dataList
+            .where((element) => element!.signature == userModel.matricule)
+            .toList();
+      }
+    } else {
+      data = dataList
+          .where((element) => element!.signature == userModel.matricule)
+          .toList();
+    }
 
     if (mounted) {
       setState(() {
-        for (var item in dataList) {
+        for (var item in data) {
           id = item!.id;
           rows.add(PlutoRow(cells: {
             'id': PlutoCell(value: item.id),
