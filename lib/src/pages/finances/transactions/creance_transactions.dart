@@ -278,7 +278,7 @@ class _CreanceTransactionsState extends State<CreanceTransactions> {
         libelle: libelleController.text,
         montant: montantController.text,
         numeroOperation: 'Transaction-Creance-${numberItem + 1}',
-        statutPaie: false,
+        statutPaie: 'false',
         signature: matricule.toString(),
         createdRef: DateTime.now(),
         created: DateTime.now());

@@ -248,7 +248,7 @@ class _TransfertMailState extends State<TransfertMail> {
         objet: objetController.text,
         message: messageController.text,
         pieceJointe: data.pieceJointe,
-        read: read,
+        read: 'false',
         fullNameDest: "${user.prenom} ${user.nom}",
         emailDest: user.email,
         dateSend: DateTime.now(),

@@ -58,9 +58,9 @@ class _CustomAppbarState extends State<CustomAppbar> {
         cartCount = cartList.length;
 
         mailsCount = mails
-            .where((element) => element.read == false &&
+            .where((element) => element.read == 'false' &&
                 element.email == userModel.email ||
-                element.read == false &&
+                element.read == 'false' &&
                 element.cc.contains(userModel.email))
             .length;
 

@@ -315,10 +315,10 @@ class _DetailDevisState extends State<DetailDevis> {
               const SizedBox(
                 width: p10,
               ),
-              if (!data.observation && user.departement == "Finances")
+              if (data.observation == 'false' && user.departement == "Finances")
                 Expanded(child: checkboxRead(data)),
               Expanded(
-                  child: (data.observation)
+                  child: (data.observation == 'true')
                       ? SelectableText(
                           'Payé',
                           style: bodyMedium.copyWith(
@@ -350,7 +350,7 @@ class _DetailDevisState extends State<DetailDevis> {
   }
 
   checkboxRead(DevisModel data) {
-    isChecked = data.observation;
+    isChecked = data.observation == 'true';
     return ListTile(
       leading: Checkbox(
         checkColor: Colors.white,
@@ -1179,11 +1179,11 @@ class _DetailDevisState extends State<DetailDevis> {
         title: data.title,
         priority: data.priority,
         departement: data.departement,
-        observation: isChecked,
+        observation: 'true',
         signature: data.signature,
         createdRef: data.createdRef,
         created: DateTime.now(),
-        isSubmit: false);
+        isSubmit: data.isSubmit);
     await DevisAPi().updateData(data.id!, devisModel);
     Navigator.of(context).pop();
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
@@ -1197,11 +1197,11 @@ class _DetailDevisState extends State<DetailDevis> {
         title: data.title,
         priority: data.priority,
         departement: data.departement,
-        observation: isChecked,
+        observation: 'false',
         signature: data.signature,
         createdRef: data.createdRef,
         created: DateTime.now(),
-        isSubmit: true);
+        isSubmit: 'true');
     await DevisAPi().updateData(data.id!, devisModel);
     Navigator.of(context).pop();
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(

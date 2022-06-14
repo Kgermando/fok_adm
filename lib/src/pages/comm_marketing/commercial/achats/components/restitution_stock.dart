@@ -296,7 +296,7 @@ class _RestitutionStockState extends State<RestitutionStock> {
         unite: widget.achat.unite,
         firstName: user.nom.toString(),
         lastName: user.prenom.toString(),
-        accuseReception: false,
+        accuseReception: 'false',
         accuseReceptionFirstName: '-',
         accuseReceptionLastName: '-',
         role: user.role,

@@ -463,7 +463,7 @@ class _LivraisonStockState extends State<LivraisonStock> {
         tva: widget.stocksGlobalMOdel.tva,
         remise: remisePourcentToMontant.toString(),
         qtyRemise: qtyRemise.toString(),
-        accuseReception: false,
+        accuseReception: 'false',
         accuseReceptionFirstName: '-',
         accuseReceptionLastName: '-',
         succursale: succursale.toString(),

@@ -45,7 +45,7 @@ class _EntrerPresenceState extends State<EntrerPresence> {
   List<PresenceEntrerModel> presenceAgentEntrerList = []; // prence agent sortie
   UserModel? user;
   Future<void> getData() async {
-    UserModel userModel = await AuthApi().getUserId(); 
+    UserModel userModel = await AuthApi().getUserId();
     var presenceEntrers = await PresenceEntrerApi().getAllData();
     setState(() {
       user = userModel;
@@ -156,12 +156,9 @@ class _EntrerPresenceState extends State<EntrerPresence> {
 
     // Verification de l'agent s'il est deja entrer aujourd'hui
     var presenceEntrerTodayList = presenceAgentEntrerList
-        .where((element) =>
-            element.reference.day ==
-            data.createdRef.day)
+        .where((element) => element.reference.day == data.createdRef.day)
         .toList();
 
-    
     return FutureBuilder<List<UserModel>>(
         future: UserApi().getAllData(),
         builder:
@@ -169,59 +166,59 @@ class _EntrerPresenceState extends State<EntrerPresence> {
           if (snapshot.hasData) {
             List<UserModel>? agentList = snapshot.data;
 
-          presenceUserList = agentList!
-              .toSet()
-              .difference(presenceEntrerTodayList.toSet())
-              .toList();
+            presenceUserList = agentList!
+                .toSet()
+                .difference(presenceEntrerTodayList.toSet())
+                .toList();
 
-          return agentList.isEmpty
-              ? Center(
-                  child: Text(
-                    'Aucun agent dans la liste.',
-                    style: Responsive.isDesktop(context)
-                        ? const TextStyle(fontSize: 24)
-                        : const TextStyle(fontSize: 16),
-                  ),
-                )
-              : SizedBox(
-              height: MediaQuery.of(context).size.height / 1.5,
-              child: ListView.builder(
-                  itemCount: presenceUserList.length,
-                  itemBuilder: (context, index) {
-                    var agent = presenceUserList[index];
-                    return dataListWidget(agent);
-                  }));
+            return agentList.isEmpty
+                ? Center(
+                    child: Text(
+                      'Aucun agent dans la liste.',
+                      style: Responsive.isDesktop(context)
+                          ? const TextStyle(fontSize: 24)
+                          : const TextStyle(fontSize: 16),
+                    ),
+                  )
+                : SizedBox(
+                    height: MediaQuery.of(context).size.height / 1.5,
+                    child: ListView.builder(
+                        itemCount: presenceUserList.length,
+                        itemBuilder: (context, index) {
+                          var agent = presenceUserList[index];
+                          return dataListWidget(agent);
+                        }));
           } else {
             return Center(child: loading());
           }
-          
         });
   }
 
   Widget dataListWidget(UserModel agent) {
-    return Card(
-      elevation: 10,
-      child: ListTile(
-        style: ListTileStyle.list,
-        leading: const Icon(Icons.person_pin, size: 40.0),
-        title: Text("${agent.nom} ${agent.prenom}"),
-        subtitle: Text(agent.matricule),
-        onLongPress: () {
-          detailAgentDialog(agent);
-        },
-        trailing: isLoading
-            ? loadingMini()
-            : IconButton(
-                tooltip: "Validez l'entrer",
-                onPressed: () {
-                  setState(() {
-                    isLoading = true;
-                  });
-                  submit(agent).then((value) => setState(() {
-                        isLoading = false;
-                      }));
-                },
-                icon: Icon(Icons.send, color: Colors.amber.shade700)),
+    return GestureDetector(
+      onDoubleTap: (() => detailAgentDialog(agent)),
+      child: Card(
+        elevation: 10,
+        child: ListTile(
+          style: ListTileStyle.list,
+          leading: const Icon(Icons.person_pin, size: 40.0),
+          title: Text("${agent.nom} ${agent.prenom}"),
+          subtitle: Text(agent.matricule),
+          trailing: Text(DateFormat("HH:mm").format(DateTime.now())),
+          // trailing: isLoading
+          //     ? loadingMini()
+          //     : IconButton(
+          //         tooltip: "Validez l'entrer",
+          //         onPressed: () {
+          //           setState(() {
+          //             isLoading = true;
+          //           });
+          //           submit(agent).then((value) => setState(() {
+          //                 isLoading = false;
+          //               }));
+          //         },
+          //         icon: Icon(Icons.send, color: Colors.amber.shade700)),
+        ),
       ),
     );
   }
@@ -233,12 +230,51 @@ class _EntrerPresenceState extends State<EntrerPresence> {
         builder: (context) {
           return StatefulBuilder(builder: (context, StateSetter setState) {
             return AlertDialog(
-              title: Text('Remarque sur ${agent.nom} ${agent.prenom}'),
-              content:
-                  SizedBox(height: 100, width: 100, child: noteWidget(agent)),
+              title: Text(
+                  "Heure d'arriver ${DateFormat("HH:mm").format(DateTime.now())}"),
+              titleTextStyle: TextStyle(color: Colors.green.shade700),
+              content: SizedBox(
+                  height: 300,
+                  width: 100,
+                  child: Column(
+                    children: [
+                      Row(
+                        children: [
+                          const Expanded(child: Text("Prénom")),
+                          const SizedBox(width: p10),
+                          Expanded(child: Text(agent.prenom))
+                        ],
+                      ),
+                      const SizedBox(height: p10),
+                      Row(
+                        children: [
+                          const Expanded(child: Text("Nom")),
+                          const SizedBox(width: p10),
+                          Expanded(child: Text(agent.nom))
+                        ],
+                      ),
+                      const SizedBox(height: p10),
+                      Row(
+                        children: [
+                          const Expanded(child: Text("Matricule")),
+                          const SizedBox(width: p10),
+                          Expanded(child: Text(agent.matricule))
+                        ],
+                      ),
+                      const SizedBox(height: p10),
+                      Expanded(child: noteWidget(agent)),
+                    ],
+                  )),
               actions: <Widget>[
                 TextButton(
-                  onPressed: () => Navigator.pop(context, 'OK'),
+                  onPressed: () => Navigator.pop(context, 'Cancel'),
+                  child: const Text('Annuler'),
+                ),
+                TextButton(
+                  onPressed: () {
+                    submit(agent);
+                    Navigator.pop(context, 'OK');
+                  },
                   child: const Text('OK'),
                 ),
               ],

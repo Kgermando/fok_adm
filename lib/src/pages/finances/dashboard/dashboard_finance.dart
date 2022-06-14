@@ -115,7 +115,7 @@ class _DashboardFinanceState extends State<DashboardFinance> {
 
         List<CreanceModel?> nonPayeCreanceList = dataCreanceList
             .where((element) =>
-                element!.statutPaie == false &&
+                element!.statutPaie == 'false' &&
                 element.created.microsecondsSinceEpoch == item.reference.microsecondsSinceEpoch &&
                 item.fontctionOccupee == 'Directeur générale')
             .toList();
@@ -132,7 +132,7 @@ class _DashboardFinanceState extends State<DashboardFinance> {
             creanceDettes.where((element) => element.creanceDette == 'dettes');
         List<DetteModel?> nonPayeDetteList = dataDetteList
             .where((element) =>
-                element!.statutPaie == false &&
+                element!.statutPaie == 'false' &&
                 element.created.microsecondsSinceEpoch == item.reference.microsecondsSinceEpoch &&
                 item.fontctionOccupee == 'Directeur générale')
             .toList();

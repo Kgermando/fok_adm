@@ -244,11 +244,11 @@ class _DetailTransportRestaurantState extends State<DetailTransportRestaurant> {
               const SizedBox(
                 width: p10,
               ),
-              if (!data.observation && user.departement == "Finances")
+              if (data.observation == 'false' && user.departement == "Finances")
                 Expanded(flex: 3, child: checkboxRead(data)),
               Expanded(
                   flex: 3,
-                  child: (data.observation)
+                  child: (data.observation == 'true')
                       ? SelectableText(
                           'Payé',
                           style: bodyMedium.copyWith(
@@ -300,7 +300,7 @@ class _DetailTransportRestaurantState extends State<DetailTransportRestaurant> {
   }
 
   checkboxRead(TransportRestaurationModel data) {
-    isChecked = data.observation;
+    isChecked = data.observation == 'true';
     return ListTile(
       leading: Checkbox(
         checkColor: Colors.white,
@@ -526,7 +526,7 @@ class _DetailTransportRestaurantState extends State<DetailTransportRestaurant> {
   Future<void> submitObservation(TransportRestaurationModel data) async {
     final transRest = TransportRestaurationModel(
         title: data.title,
-        observation: isChecked,
+        observation: 'true',
         signature: data.signature,
         createdRef: data.createdRef,
         created: DateTime.now());

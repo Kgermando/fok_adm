@@ -259,11 +259,11 @@ class _EtatBesoinAdminState extends State<EtatBesoinAdmin> {
         title: titleController.text,
         priority: priority.toString(),
         departement: "Administration",
-        observation: false,
+        observation: 'false',
         signature: matricule.toString(),
         createdRef: DateTime.now(),
         created: DateTime.now(),
-        isSubmit: false);
+        isSubmit: 'false');
     await DevisAPi().insertData(devisModel);
     Navigator.pop(context);
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(

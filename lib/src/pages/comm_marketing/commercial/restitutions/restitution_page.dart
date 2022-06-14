@@ -87,7 +87,7 @@ class _RestitutionPageState extends State<RestitutionPage> {
 
   Widget restitutionItemWidget(RestitutionModel restitutionModel) {
     Color? nonRecu;
-    if (!restitutionModel.accuseReception) {
+    if (restitutionModel.accuseReception == 'false') {
       nonRecu = const Color(0xFFa4adbe);
     }
     return GestureDetector(

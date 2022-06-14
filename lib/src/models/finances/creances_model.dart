@@ -5,7 +5,7 @@ class CreanceModel {
   late String libelle;
   late String montant;
   late String numeroOperation;
-  late bool statutPaie;
+  late String statutPaie;
 
   late String signature; // celui qui fait le document
   late DateTime createdRef;
@@ -45,7 +45,7 @@ class CreanceModel {
         libelle: json['libelle'],
         montant: json['montant'],
         numeroOperation: json['numeroOperation'],
-        statutPaie: bool.hasEnvironment(json['statutPaie']),
+        statutPaie: json['statutPaie'],
         signature: json['signature'],
         createdRef: DateTime.parse(json['createdRef']),
         created: DateTime.parse(json['created']));

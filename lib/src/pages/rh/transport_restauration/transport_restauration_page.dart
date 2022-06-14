@@ -78,19 +78,18 @@ class _TransportRestaurationPageState extends State<TransportRestaurationPage> {
                           height: p20,
                         ),
                         BtnWidget(
-                          title: 'Crée maintenant', 
-                          press: () {
-                            setState(() {
-                              isLoading = true;
-                            });
-                            final form = _formKey.currentState!;
-                            if (form.validate()) {
-                              submit();
-                              form.reset();
-                            }
-                          }, 
-                          isLoading: isLoading
-                        )
+                            title: 'Crée maintenant',
+                            press: () {
+                              setState(() {
+                                isLoading = true;
+                              });
+                              final form = _formKey.currentState!;
+                              if (form.validate()) {
+                                submit();
+                                form.reset();
+                              }
+                            },
+                            isLoading: isLoading)
                       ],
                     ),
                   ),
@@ -152,12 +151,11 @@ class _TransportRestaurationPageState extends State<TransportRestaurationPage> {
 
   Future submit() async {
     final transRest = TransportRestaurationModel(
-      title: titleController.text,
-      observation: false,
-      signature: matricule.toString(),
-      createdRef: DateTime.now(),
-      created: DateTime.now()
-    );
+        title: titleController.text,
+        observation: 'false',
+        signature: matricule.toString(),
+        createdRef: DateTime.now(),
+        created: DateTime.now());
     await TransportRestaurationApi().insertData(transRest);
     Navigator.pop(context);
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(

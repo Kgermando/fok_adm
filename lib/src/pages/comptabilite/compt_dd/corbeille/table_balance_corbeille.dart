@@ -140,7 +140,7 @@ Navigator.pushNamed(
 
   Future agentsRow() async {
     List<BalanceCompteModel?> dataList = await BalanceCompteApi().getAllData();
-    var data = dataList.where((element) => element!.statut == true);
+    var data = dataList.where((element) => element!.statut == 'true');
 
     if (mounted) {
       setState(() {

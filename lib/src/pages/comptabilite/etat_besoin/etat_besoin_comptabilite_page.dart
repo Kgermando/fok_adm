@@ -15,10 +15,12 @@ class EtatBesoinComptabilitePage extends StatefulWidget {
   const EtatBesoinComptabilitePage({Key? key}) : super(key: key);
 
   @override
-  State<EtatBesoinComptabilitePage> createState() => _EtatBesoinComptabilitePageState();
+  State<EtatBesoinComptabilitePage> createState() =>
+      _EtatBesoinComptabilitePageState();
 }
 
-class _EtatBesoinComptabilitePageState extends State<EtatBesoinComptabilitePage> {
+class _EtatBesoinComptabilitePageState
+    extends State<EtatBesoinComptabilitePage> {
   final GlobalKey<ScaffoldState> _key = GlobalKey();
 
   final _formKey = GlobalKey<FormState>();
@@ -190,11 +192,11 @@ class _EtatBesoinComptabilitePageState extends State<EtatBesoinComptabilitePage>
         title: titleController.text,
         priority: priority.toString(),
         departement: "Comptabilites",
-        observation: false,
+        observation: 'false',
         signature: matricule.toString(),
         createdRef: DateTime.now(),
         created: DateTime.now(),
-        isSubmit: false);
+        isSubmit: 'false');
     await DevisAPi().insertData(devisModel);
     Navigator.pop(context);
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(

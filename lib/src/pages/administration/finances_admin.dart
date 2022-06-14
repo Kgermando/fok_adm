@@ -40,10 +40,10 @@ class _FinancesAdminState extends State<FinancesAdmin> {
     
     setState(() {
        nbrCreance = dataCreanceList
-          .where((element) => element.statutPaie == false)
+          .where((element) => element.statutPaie == 'false')
           .length;
       nbrDette = dataDetteList
-          .where((element) =>  element.statutPaie == false)
+          .where((element) =>  element.statutPaie == 'false')
           .length;
     });
   }

@@ -91,16 +91,15 @@ class _EtatBesoinRHPageState extends State<EtatBesoinRHPage> {
                             height: p20,
                           ),
                           BtnWidget(
-                            title: 'Crée maintenant', 
-                            press: () {
-                              final form = _formKey.currentState!;
-                              if (form.validate()) {
-                                submit();
-                                form.reset();
-                              }
-                            }, 
-                            isLoading: isLoading
-                          )
+                              title: 'Crée maintenant',
+                              press: () {
+                                final form = _formKey.currentState!;
+                                if (form.validate()) {
+                                  submit();
+                                  form.reset();
+                                }
+                              },
+                              isLoading: isLoading)
                         ],
                       ),
                     ),
@@ -191,11 +190,11 @@ class _EtatBesoinRHPageState extends State<EtatBesoinRHPage> {
         title: titleController.text,
         priority: priority.toString(),
         departement: "Ressources Humaines",
-        observation: false,
+        observation: 'false',
         signature: matricule.toString(),
         createdRef: DateTime.now(),
         created: DateTime.now(),
-        isSubmit: false);
+        isSubmit: 'false');
     await DevisAPi().insertData(devisModel);
     Navigator.pop(context);
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(

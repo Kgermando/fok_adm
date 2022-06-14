@@ -504,7 +504,7 @@ class _DetailBalanceState extends State<DetailBalance> {
   Future<void> submitCorbeille(BalanceCompteModel data) async {
     final balanceCompteModel = BalanceCompteModel(
         title: data.title,
-        statut: true,
+        statut: 'true',
         signature: data.signature,
         createdRef: data.createdRef,
         created: DateTime.now());

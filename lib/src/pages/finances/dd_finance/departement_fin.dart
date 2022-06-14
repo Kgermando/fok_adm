@@ -58,7 +58,7 @@ class _DepartementFinState extends State<DepartementFin> {
       for (var item in approbations) {
         creanceCount = creances
             .where((element) =>
-                element.statutPaie == false &&
+                element.statutPaie == 'false' &&
                 element.created.microsecondsSinceEpoch == item.reference.microsecondsSinceEpoch &&
                 item.fontctionOccupee == 'Directeur budget')
             .toList()
@@ -68,7 +68,7 @@ class _DepartementFinState extends State<DepartementFin> {
       for (var item in approbations) {
         detteCount = dettes
             .where((element) =>
-                element.statutPaie == false &&
+                element.statutPaie == 'false' &&
                 element.created.microsecondsSinceEpoch == item.reference.microsecondsSinceEpoch &&
                 item.fontctionOccupee == 'Directeur budget')
             .toList()

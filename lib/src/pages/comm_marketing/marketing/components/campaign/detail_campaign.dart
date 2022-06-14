@@ -362,10 +362,10 @@ class _DetailCampaignState extends State<DetailCampaign> {
               const SizedBox(
                 width: p10,
               ),
-              if (!data.observation && user.departement == "Finances")
+              if (data.observation == 'false' && user.departement == "Finances")
                 Expanded(child: checkboxRead(data)),
               Expanded(
-                  child: (data.observation)
+                  child: (data.observation == 'true')
                       ? SelectableText(
                           'Payé',
                           style: bodyMedium.copyWith(
@@ -397,7 +397,7 @@ class _DetailCampaignState extends State<DetailCampaign> {
   }
 
   checkboxRead(CampaignModel data) {
-    isChecked = data.observation;
+    isChecked = data.observation == 'true';
     return ListTile(
       leading: Checkbox(
         checkColor: Colors.white,
@@ -953,7 +953,7 @@ class _DetailCampaignState extends State<DetailCampaign> {
         lieuCible: data.lieuCible,
         promotion: data.promotion,
         objectifs: data.objectifs,
-        observation: isChecked,
+        observation: 'true',
         signature: data.signature,
         createdRef: data.createdRef,
         created: DateTime.now());

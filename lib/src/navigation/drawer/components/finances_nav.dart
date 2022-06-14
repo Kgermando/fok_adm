@@ -71,7 +71,7 @@ class _FinancesNavState extends State<FinancesNav> {
         for (var item in approbations) {
           creanceCount = creances
               .where((element) =>
-                  element.statutPaie == false &&
+                  element.statutPaie == 'false' &&
                   element.created.microsecondsSinceEpoch ==
                       item.reference.microsecondsSinceEpoch &&
                   item.fontctionOccupee == 'Directeur budget')
@@ -82,7 +82,7 @@ class _FinancesNavState extends State<FinancesNav> {
         for (var item in approbations) {
           detteCount = dettes
               .where((element) =>
-                  element.statutPaie == false &&
+                  element.statutPaie == 'false' &&
                   element.created.microsecondsSinceEpoch ==
                       item.reference.microsecondsSinceEpoch &&
                   item.fontctionOccupee == 'Directeur budget')

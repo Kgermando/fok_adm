@@ -3,11 +3,11 @@ class DevisModel {
   late String title;
   late String priority;
   late String departement;
-  late bool observation;
+  late String observation;
   late String signature; // celui qui fait le document
   late DateTime createdRef; // Date de reference
   late DateTime created;
-  late bool isSubmit; // soumettre chez le chef
+  late String isSubmit; // soumettre chez le chef
 
   DevisModel(
       {this.id,
@@ -35,16 +35,15 @@ class DevisModel {
 
   factory DevisModel.fromJson(Map<String, dynamic> json) {
     return DevisModel(
-      id: json['id'],
-      title: json['title'],
-      priority: json['priority'],
-      departement: json['departement'],
-      observation: bool.hasEnvironment(json['observation']),
-      signature: json['signature'],
-      createdRef: DateTime.parse(json['createdRef']),
-      created: DateTime.parse(json['created']),
-      isSubmit:  bool.hasEnvironment(json['isSubmit'])
-    );
+        id: json['id'],
+        title: json['title'],
+        priority: json['priority'],
+        departement: json['departement'],
+        observation: json['observation'],
+        signature: json['signature'],
+        createdRef: DateTime.parse(json['createdRef']),
+        created: DateTime.parse(json['created']),
+        isSubmit: json['isSubmit']);
   }
 
   Map<String, dynamic> toJson() {

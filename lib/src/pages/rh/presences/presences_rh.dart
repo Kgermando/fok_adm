@@ -133,7 +133,7 @@ class _PresenceRhState extends State<PresenceRh> {
   Future<void> submit() async {
     final presenceModel = PresenceModel(
         remarque: '-',
-        finJournee: false,
+        finJournee: 'false',
         signature: user!.matricule,
         signatureFermeture: '-',
         createdRef: DateTime.now(),

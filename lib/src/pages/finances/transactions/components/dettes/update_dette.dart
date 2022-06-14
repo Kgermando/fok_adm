@@ -241,7 +241,7 @@ class _UpdateDetteState extends State<UpdateDette> {
         libelle: libelleController.text,
         montant: montantController.text,
         numeroOperation: 'Transaction-Dette-${numberItem + 1}',
-        statutPaie: true,
+        statutPaie: 'true',
         signature: matricule.toString(),
         createdRef: DateTime.now(),
         created: DateTime.now());

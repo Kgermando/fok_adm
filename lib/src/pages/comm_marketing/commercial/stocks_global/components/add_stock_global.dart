@@ -485,7 +485,7 @@ class _AddStockGlobalState extends State<AddStockGlobal> {
         priceAchatUnit: priceAchatUnit.toString(),
         prixVenteUnit: prixVenteUnit.toString(),
         unite: unite.toString(),
-        modeAchat: modeAchat,
+        modeAchat: 'false',
         tva: tva.toString(),
         qtyRavitailler: quantityAchat.toString(),
         signature: signature.toString(),

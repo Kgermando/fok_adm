@@ -327,7 +327,7 @@ class _RepondreMailState extends State<RepondreMail> {
         objet: objetController.text,
         message: messageController.text,
         pieceJointe: data.pieceJointe,
-        read: read,
+        read: 'false',
         fullNameDest: "${user.prenom} ${user.nom}",
         emailDest: user.email,
         dateSend: DateTime.now(),

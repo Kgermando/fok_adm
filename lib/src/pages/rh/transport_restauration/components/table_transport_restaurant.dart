@@ -190,7 +190,7 @@ class _TableTansportRestaurantState extends State<TableTansportRestaurant> {
             'id': PlutoCell(value: item.id),
             'title': PlutoCell(value: item.title),
             'observation': PlutoCell(
-                value: (item.observation == true) ? "Payé" : "Non payé"),
+                value: (item.observation == 'true') ? "Payé" : "Non payé"),
             'signature': PlutoCell(value: item.signature),
             'created': PlutoCell(
                 value: DateFormat("dd-MM-yyyy HH:mm").format(item.created))

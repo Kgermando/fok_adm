@@ -190,11 +190,11 @@ class _EtatBesoinLogPageState extends State<EtatBesoinLogPage> {
         title: titleController.text,
         priority: priority.toString(),
         departement: "Logistique",
-        observation: false,
+        observation: 'false',
         signature: matricule.toString(),
         createdRef: DateTime.now(),
         created: DateTime.now(),
-        isSubmit: false);
+        isSubmit: 'false');
     await DevisAPi().insertData(devisModel);
     Navigator.pop(context);
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(

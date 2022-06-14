@@ -412,9 +412,9 @@ class _DetailCreanceState extends State<DetailCreance> {
               const SizedBox(
                 width: p10,
               ),
-              if (!creanceModel.statutPaie && user.departement == "Finances")
+              if (creanceModel.statutPaie == 'false' && user.departement == "Finances")
                 Expanded(child: checkboxRead(creanceModel)),
-              (creanceModel.statutPaie)
+              (creanceModel.statutPaie == 'true')
                   ? Expanded(
                       child: SelectableText('Payé',
                           textAlign: TextAlign.start,
@@ -448,7 +448,7 @@ class _DetailCreanceState extends State<DetailCreance> {
   }
 
   checkboxRead(CreanceModel data) {
-    isChecked = data.statutPaie;
+    isChecked = data.statutPaie == 'true';
     return ListTile(
       leading: Checkbox(
         checkColor: Colors.white,
@@ -540,7 +540,7 @@ class _DetailCreanceState extends State<DetailCreance> {
         libelle: data.libelle,
         montant: data.montant,
         numeroOperation: data.numeroOperation,
-        statutPaie: isChecked,
+        statutPaie: 'true',
         signature: data.signature,
         createdRef: data.createdRef,
         created: DateTime.now());

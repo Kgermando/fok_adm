@@ -5,7 +5,7 @@ class RestitutionModel {
   late String unite;
   late String firstName;
   late String lastName;
-  late bool accuseReception;
+  late String accuseReception;
   late String accuseReceptionFirstName;
   late String accuseReceptionLastName;
   late String role;
@@ -53,7 +53,7 @@ class RestitutionModel {
         unite: json['unite'],
         firstName: json['firstName'],
         lastName: json['lastName'],
-        accuseReception: bool.hasEnvironment(json['accuseReception']),
+        accuseReception: json['accuseReception'],
         accuseReceptionFirstName: json['accuseReceptionFirstName'],
         accuseReceptionLastName: json['accuseReceptionLastName'],
         role: json['role'],

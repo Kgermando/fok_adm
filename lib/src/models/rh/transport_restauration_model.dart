@@ -1,7 +1,7 @@
 class TransportRestaurationModel {
   late int? id;
   late String title;
-  late bool observation;
+  late String observation;
   late String signature; // celui qui fait le document
   late DateTime createdRef;
   late DateTime created;
@@ -28,7 +28,7 @@ class TransportRestaurationModel {
     return TransportRestaurationModel(
         id: json['id'],
         title: json['title'],
-        observation: bool.hasEnvironment(json['observation']),
+        observation: json['observation'],
         signature: json['signature'],
         createdRef: DateTime.parse(json['createdRef']),
         created: DateTime.parse(json['created']));

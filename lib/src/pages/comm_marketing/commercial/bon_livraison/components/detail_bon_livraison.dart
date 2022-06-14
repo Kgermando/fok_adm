@@ -356,7 +356,7 @@ class _DetailBonLivraisonState extends State<DetailBonLivraison> {
                 const SizedBox(
                   width: 10.0,
                 ),
-                (!data.accuseReception)
+                (data.accuseReception == 'false')
                     ? (isLoading)
                         ? loadingMini()
                         : checkboxRead(data)
@@ -386,7 +386,7 @@ class _DetailBonLivraisonState extends State<DetailBonLivraison> {
   }
 
   checkboxRead(BonLivraisonModel data) {
-    isChecked = data.accuseReception;
+    isChecked = data.accuseReception == 'true';
     return Checkbox(
       checkColor: Colors.white,
       fillColor: MaterialStateProperty.resolveWith(getColor),
@@ -420,7 +420,7 @@ class _DetailBonLivraisonState extends State<DetailBonLivraison> {
         tva: data.tva,
         remise: data.remise,
         qtyRemise: data.qtyRemise,
-        accuseReception: isChecked,
+        accuseReception: 'true',
         accuseReceptionFirstName: user.nom.toString(),
         accuseReceptionLastName: user.prenom.toString(),
         succursale: data.succursale,

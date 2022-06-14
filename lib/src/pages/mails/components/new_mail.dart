@@ -388,7 +388,7 @@ class _NewMailState extends State<NewMail> {
         pieceJointe: (uploadedFileUrl == '')
             ? '-'
             : uploadedFileUrl.toString(),
-        read: read,
+        read: 'false',
         fullNameDest: "${user!.prenom} ${user!.nom}",
         emailDest: user!.email,
         dateSend: DateTime.now(),

@@ -186,7 +186,7 @@ class _MailPagesState extends State<MailPages> {
         objet: mail.objet,
         message: mail.message,
         pieceJointe: mail.pieceJointe,
-        read: true,
+        read: 'true',
         fullNameDest: mail.fullNameDest,
         emailDest: mail.emailDest,
         dateSend: mail.dateSend,

@@ -1,7 +1,7 @@
 class BalanceCompteModel {
   late int? id;
   late String title;
-  late bool statut; // A defaut de modifier il vont déclaser le fichier
+  late String statut; // A defaut de modifier il vont déclaser le fichier
   late String signature;
   late DateTime createdRef;
   late DateTime created;

@@ -151,11 +151,11 @@ class _TablePresenceState extends State<TablePresence> {
             'arrive': PlutoCell(
                 value: DateFormat("dd-MM-yyyy HH:mm").format(item.created)),
             'sortie': PlutoCell(
-                value: (item.finJournee)
+                value: (item.finJournee == 'true')
                     ? DateFormat("dd-MM-yyyy HH:mm").format(item.createdRef)
                     : "-"),
             'finJournee': PlutoCell(
-                value: (item.finJournee) ? "Journée fini" : 'Journée en cours'),
+                value: (item.finJournee == 'true') ? "Journée fini" : 'Journée en cours'),
           }));
         }
         stateManager!.resetCurrentState();

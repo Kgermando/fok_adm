@@ -348,7 +348,7 @@ class _AddBalanceComptabiliteState extends State<AddBalanceComptabilite> {
   Future<void> submit() async { 
     final balance = BalanceCompteModel(
         title: titleController.text,
-        statut: statut,
+        statut: 'false',
         signature: user!.matricule.toString(),
         createdRef: DateTime.now(),
         created: DateTime.now());

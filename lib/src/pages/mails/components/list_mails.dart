@@ -17,7 +17,7 @@ class ListMails extends StatefulWidget {
   final String email;
   final List cc;
   final String objet;
-  final bool read;
+  final String read;
   final DateTime dateSend;
   final Color color;
 
@@ -32,7 +32,7 @@ class _ListMailsState extends State<ListMails> {
     final String firstLettter = widget.fullName[0];
 
     return Material(
-        color: (widget.read) ? Colors.white : Colors.amber.shade200,
+        color: (widget.read == 'true') ? Colors.white : Colors.amber.shade200,
         child: ListTile(
           leading: SizedBox(
             width: 50,
@@ -55,7 +55,7 @@ class _ListMailsState extends State<ListMails> {
               SelectableText(
                   timeago.format(widget.dateSend, locale: 'fr_short'),
                   textAlign: TextAlign.start),
-              (!widget.read)
+              (widget.read == 'false')
                   ? const Icon(Icons.mail)
                   : const Icon(Icons.mark_email_read)
             ],

@@ -131,11 +131,11 @@ class _AdministrationNavState extends State<AdministrationNav> {
 
         // Finances
         creanceCount = creances
-            .where((element) => element.statutPaie == false)
+            .where((element) => element.statutPaie == 'false')
             .toList()
             .length;
         detteCount = dettes
-            .where((element) => element.statutPaie == false)
+            .where((element) => element.statutPaie == 'false')
             .toList()
             .length;
 

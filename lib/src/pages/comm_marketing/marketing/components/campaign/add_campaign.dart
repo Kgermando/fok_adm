@@ -397,7 +397,7 @@ class _AddCampaignState extends State<AddCampaign> {
         lieuCible: lieuCibleController.text,
         promotion: promotionController.text,
         objectifs: objectifsController.text,
-        observation: false,
+        observation: 'false',
         signature: user!.matricule.toString(),
         createdRef: DateTime.now(),
         created: DateTime.now());

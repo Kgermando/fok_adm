@@ -465,7 +465,7 @@ class _RavitailleemntStockState extends State<RavitailleemntStock> {
         priceAchatUnit: controllerpriceAchatUnit.text,
         prixVenteUnit: pavTVA.toString(),
         unite: widget.stocksGlobalMOdel.unite,
-        modeAchat: modeAchat,
+        modeAchat: 'true',
         tva: widget.stocksGlobalMOdel.tva,
         qtyRavitailler: widget.stocksGlobalMOdel.qtyRavitailler,
         signature: user!.matricule.toString(),

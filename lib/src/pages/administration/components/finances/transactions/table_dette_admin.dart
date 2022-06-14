@@ -40,9 +40,9 @@ class _TableDetteAdminState extends State<TableDetteAdmin> {
     List<DetteModel?> dataList = await DetteApi().getAllData();
     setState(() {
       List<DetteModel?> payeList =
-          dataList.where((element) => element!.statutPaie == true).toList();
+          dataList.where((element) => element!.statutPaie == 'true').toList();
       List<DetteModel?> nonPayeList =
-          dataList.where((element) => element!.statutPaie == false).toList();
+          dataList.where((element) => element!.statutPaie == 'false').toList();
       for (var item in payeList) {
         paye += double.parse(item!.montant);
       }

@@ -16,8 +16,7 @@ import 'package:fokad_admin/src/widgets/title_widget.dart';
 import 'package:intl/intl.dart';
 
 class UpdateCampaign extends StatefulWidget {
-  const UpdateCampaign({Key? key})
-      : super(key: key);
+  const UpdateCampaign({Key? key}) : super(key: key);
 
   @override
   State<UpdateCampaign> createState() => _UpdateCampaignState();
@@ -51,9 +50,7 @@ class _UpdateCampaignState extends State<UpdateCampaign> {
   @override
   initState() {
     getData();
-    setState(() {
-     
-    });
+    setState(() {});
     super.initState();
   }
 
@@ -83,18 +80,13 @@ class _UpdateCampaignState extends State<UpdateCampaign> {
   }
 
   @override
-  Widget build(BuildContext context) {  
-  final data = ModalRoute.of(context)!.settings.arguments as CampaignModel;
-     typeProduitController =
-          TextEditingController(text: data.typeProduit);
-      coutCampaignController =
-          TextEditingController(text: data.coutCampaign);
-      lieuCibleController =
-          TextEditingController(text: data.lieuCible);
-      promotionController =
-          TextEditingController(text: data.promotion);
-      objectifsController =
-          TextEditingController(text: data.objectifs);
+  Widget build(BuildContext context) {
+    final data = ModalRoute.of(context)!.settings.arguments as CampaignModel;
+    typeProduitController = TextEditingController(text: data.typeProduit);
+    coutCampaignController = TextEditingController(text: data.coutCampaign);
+    lieuCibleController = TextEditingController(text: data.lieuCible);
+    promotionController = TextEditingController(text: data.promotion);
+    objectifsController = TextEditingController(text: data.objectifs);
 
     return Scaffold(
         key: _key,
@@ -410,7 +402,7 @@ class _UpdateCampaignState extends State<UpdateCampaign> {
         lieuCible: lieuCibleController.text,
         promotion: promotionController.text,
         objectifs: objectifsController.text,
-        observation: false,
+        observation: 'false',
         signature: user!.matricule.toString(),
         createdRef: data.createdRef,
         created: DateTime.now());

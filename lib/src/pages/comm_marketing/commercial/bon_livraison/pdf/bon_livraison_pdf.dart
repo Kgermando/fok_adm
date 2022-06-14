@@ -82,7 +82,7 @@ class BonLivraisonPDF {
       DateFormat("dd/MM/yy HH:mm").format(bonLivraisonModel.created),
       '${bonLivraisonModel.firstName} ${bonLivraisonModel.lastName}',
       bonLivraisonModel.signature,
-      (bonLivraisonModel.accuseReception) 
+      (bonLivraisonModel.accuseReception == 'true') 
         ? '${bonLivraisonModel.accuseReceptionFirstName} ${bonLivraisonModel.accuseReceptionLastName}' 
         : '-',
     ];

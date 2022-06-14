@@ -8,9 +8,9 @@ class MailModel {
   late String objet;
   late String message;
   late String pieceJointe;
-  late bool read;
+  late String read;
   // Celui qui ecrit le mail
-  late String fullNameDest; 
+  late String fullNameDest;
   late String emailDest;
   late DateTime dateSend;
   late DateTime dateRead;
@@ -54,7 +54,7 @@ class MailModel {
         objet: json['objet'],
         message: json['message'],
         pieceJointe: json['pieceJointe'],
-        read: bool.hasEnvironment(json['read']),
+        read: json['read'],
         fullNameDest: json['fullNameDest'],
         emailDest: json['emailDest'],
         dateSend: DateTime.parse(json['dateSend']),

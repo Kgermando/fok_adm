@@ -153,7 +153,7 @@ class _TableBilanComptabiliteState extends State<TableBilanComptabilite> {
               element!.created.microsecondsSinceEpoch == item.reference.microsecondsSinceEpoch &&
               item.fontctionOccupee == 'Directeur générale' &&
               item.approbation == "Approved" ||
-              element.statut == false &&
+              element.statut == 'false' &&
                   element.signature == userModel.matricule)
           .toList();
     }

@@ -6,7 +6,7 @@ class CampaignModel {
   late String lieuCible;
   late String promotion;
   late String objectifs;
-  late bool observation;
+  late String observation;
   late String signature;
   late DateTime createdRef;
   late DateTime created;
@@ -48,7 +48,7 @@ class CampaignModel {
         lieuCible: json['lieuCible'],
         promotion: json['promotion'],
         objectifs: json['objectifs'],
-        observation: bool.hasEnvironment(json["observation"]),
+        observation: json["observation"],
         signature: json['signature'],
         createdRef: DateTime.parse(json['createdRef']),
         created: DateTime.parse(json['created']));

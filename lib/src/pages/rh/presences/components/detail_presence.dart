@@ -66,7 +66,7 @@ class _DetailPresenceState extends State<DetailPresence> {
               if (snapshot.hasData) {
                 PresenceModel? data = snapshot.data;
                 return (data != null)
-                    ? (data.finJournee)
+                    ? (data.finJournee == 'true')
                         ? Container()
                         : speedialWidget(data)
                     : Container();
@@ -163,7 +163,7 @@ class _DetailPresenceState extends State<DetailPresence> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
-                  (data.finJournee)
+                  (data.finJournee == 'true')
                       ? SelectableText("Journée fini.",
                           style:
                               bodyMedium!.copyWith(color: Colors.red.shade700))
@@ -203,7 +203,7 @@ class _DetailPresenceState extends State<DetailPresence> {
                   Expanded(child: presenceSortieWidget(data))
                 ],
               ),
-              if (data.finJournee) dataWidget(data),
+              if (data.finJournee == 'true') dataWidget(data),
             ],
           ),
         ),
@@ -253,7 +253,7 @@ class _DetailPresenceState extends State<DetailPresence> {
   }
 
   checkboxRead(PresenceModel data) {
-    finJournee = data.finJournee;
+    finJournee = data.finJournee == 'true';
     return isLoading
         ? loadingMini()
         : ListTile(
@@ -450,7 +450,7 @@ class _DetailPresenceState extends State<DetailPresence> {
   Future<void> submit(PresenceModel data) async {
     final presence = PresenceModel(
         remarque: remarqueController.text,
-        finJournee: finJournee,
+        finJournee: 'true',
         signature: data.signature,
         signatureFermeture: user!.matricule,
         createdRef: data.createdRef,

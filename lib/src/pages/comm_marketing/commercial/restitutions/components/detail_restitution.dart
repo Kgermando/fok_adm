@@ -247,7 +247,7 @@ class _DetailRestitutionState extends State<DetailRestitution> {
                 const SizedBox(
                   width: 10.0,
                 ),
-                (!data.accuseReception)
+                (data.accuseReception == 'false')
                     ? (isLoading)
                         ? loadingMini()
                         : checkboxRead(data)
@@ -277,7 +277,7 @@ class _DetailRestitutionState extends State<DetailRestitution> {
   }
 
   checkboxRead(RestitutionModel data) {
-    isChecked = data.accuseReception;
+    isChecked = data.accuseReception == 'true';
     return Checkbox(
       checkColor: Colors.white,
       fillColor: MaterialStateProperty.resolveWith(getColor),
@@ -334,7 +334,7 @@ class _DetailRestitutionState extends State<DetailRestitution> {
         unite: data.unite,
         firstName: data.firstName,
         lastName: data.lastName,
-        accuseReception: true,
+        accuseReception: 'true',
         accuseReceptionFirstName: user.nom.toString(),
         accuseReceptionLastName: user.prenom.toString(),
         role: user.role.toString(),

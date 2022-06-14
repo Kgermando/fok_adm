@@ -410,9 +410,9 @@ class _DetailDetteState extends State<DetailDette> {
               const SizedBox(
                 width: p10,
               ),
-              if (!detteModel.statutPaie && user.departement == "Finances")
+              if (detteModel.statutPaie == 'false' && user.departement == "Finances")
                 Expanded(child: checkboxRead(detteModel)),
-              (detteModel.statutPaie)
+              (detteModel.statutPaie == 'true')
                   ? Expanded(
                       child: SelectableText('Payé',
                           textAlign: TextAlign.start,
@@ -446,7 +446,7 @@ class _DetailDetteState extends State<DetailDette> {
   }
 
   checkboxRead(DetteModel data) {
-    isChecked = data.statutPaie;
+    isChecked = data.statutPaie == 'true';
     return ListTile(
       leading: Checkbox(
         checkColor: Colors.white,
@@ -477,7 +477,7 @@ class _DetailDetteState extends State<DetailDette> {
         libelle: data.libelle,
         montant: data.montant,
         numeroOperation: data.numeroOperation,
-        statutPaie: isChecked,
+        statutPaie: 'true',
         signature: data.signature,
         createdRef: data.createdRef,
         created: DateTime.now());

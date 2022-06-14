@@ -40,9 +40,9 @@ class _TableCreanceAdminState extends State<TableCreanceAdmin> {
     List<CreanceModel?> dataList = await CreanceApi().getAllData();
     setState(() {
       List<CreanceModel?> payeList =
-          dataList.where((element) => element!.statutPaie == true).toList();
+          dataList.where((element) => element!.statutPaie == 'true').toList();
       List<CreanceModel?> nonPayeList =
-          dataList.where((element) => element!.statutPaie == false).toList();
+          dataList.where((element) => element!.statutPaie == 'false').toList();
       for (var item in payeList) {
         paye += double.parse(item!.montant);
       }

@@ -116,7 +116,7 @@ class _BonLivraisonPageState extends State<BonLivraisonPage> {
 
   Widget bonLivraisonItemWidget(BonLivraisonModel bonLivraisonModel) {
     Color? nonRecu;
-    if (!bonLivraisonModel.accuseReception) {
+    if (bonLivraisonModel.accuseReception == 'false') {
       nonRecu = const Color(0xFFFFC400);
     }
     return GestureDetector(
