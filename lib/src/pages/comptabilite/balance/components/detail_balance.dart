@@ -45,7 +45,7 @@ class _DetailBalanceState extends State<DetailBalance> {
       servicesAffectation: '-',
       fonctionOccupe: '-',
       role: '5',
-      isOnline: false,
+      isOnline: 'false',
       createdAt: DateTime.now(),
       passwordHash: '-',
       succursale: '-');
@@ -96,10 +96,10 @@ class _DetailBalanceState extends State<DetailBalance> {
                           if (snapshot.hasData) {
                             BalanceCompteModel? data = snapshot.data;
                             approbationData = approbList
-                              .where(
-                                  (element) => element.reference.microsecondsSinceEpoch 
-                                  == data!.created.microsecondsSinceEpoch)
-                              .toList();
+                                .where((element) =>
+                                    element.reference.microsecondsSinceEpoch ==
+                                    data!.created.microsecondsSinceEpoch)
+                                .toList();
 
                             if (approbationData.isNotEmpty) {
                               approb = approbationData.first;
@@ -503,12 +503,11 @@ class _DetailBalanceState extends State<DetailBalance> {
 
   Future<void> submitCorbeille(BalanceCompteModel data) async {
     final balanceCompteModel = BalanceCompteModel(
-      title: data.title, 
-      statut: true,
-      signature: data.signature,
-      createdRef: data.createdRef,
-      created: DateTime.now()
-    );
+        title: data.title,
+        statut: true,
+        signature: data.signature,
+        createdRef: data.createdRef,
+        created: DateTime.now());
     await BalanceCompteApi().updateData(data.id!, balanceCompteModel);
     Navigator.of(context).pop();
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(

@@ -380,7 +380,7 @@ class AgentDataSource extends DataGridSource {
                   columnName: 'Formation', value: e.competance),
               DataGridCell<String>(
                   columnName: 'Experience', value: e.experience),
-              DataGridCell<bool>(
+              DataGridCell<String>(
                   columnName: 'Statut Agent', value: e.statutAgent),
               DataGridCell<DateTime>(
                   columnName: 'Date de Creation', value: e.createdAt),

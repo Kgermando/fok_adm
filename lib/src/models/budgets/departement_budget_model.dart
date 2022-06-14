@@ -8,7 +8,7 @@ class DepartementBudgetModel {
   late String signature; // celui qui fait le document
   late DateTime createdRef;
   late DateTime created;
-  late bool isSubmit;
+  late String isSubmit;
 
   DepartementBudgetModel(
       {this.id,
@@ -45,7 +45,7 @@ class DepartementBudgetModel {
         signature: json['signature'],
         createdRef: DateTime.parse(json['createdRef']),
         created: DateTime.parse(json['created']),
-        isSubmit: bool.hasEnvironment(json['isSubmit']),
+        isSubmit: json['isSubmit'],
     );
   }
 

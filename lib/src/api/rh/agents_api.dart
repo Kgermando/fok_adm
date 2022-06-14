@@ -177,12 +177,12 @@ class AgentsApi extends ChangeNotifier {
     }
   }
 
-  Future<AgentModel> updateData(int id, AgentModel agentModel) async {
+  Future<AgentModel> updateData(AgentModel agentModel) async {
     String? token = await UserSharedPref().getAccessToken();
 
     var data = agentModel.toJson();
     var body = jsonEncode(data);
-    var updateUrl = Uri.parse("$mainUrl/rh/agents/update-agent/$id");
+    var updateUrl = Uri.parse("$mainUrl/rh/agents/update-agent/");
 
     var res = await client.put(updateUrl,
         headers: <String, String>{

@@ -40,7 +40,7 @@ class _DetailMailState extends State<DetailMail> {
       servicesAffectation: '-',
       fonctionOccupe: '-',
       role: '5',
-      isOnline: false,
+      isOnline: 'false',
       createdAt: DateTime.now(),
       passwordHash: '-',
       succursale: '-');
@@ -104,8 +104,7 @@ class _DetailMailState extends State<DetailMail> {
                               ],
                             );
                           } else {
-                            return Center(
-                                child: loading());
+                            return Center(child: loading());
                           }
                         })),
               ),

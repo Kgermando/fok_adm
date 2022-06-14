@@ -33,7 +33,7 @@ class _DetailBilanState extends State<DetailBilan> {
 
   String approbationDGController = '-';
   TextEditingController signatureJustificationDGController =
-    TextEditingController();
+      TextEditingController();
 
   @override
   initState() {
@@ -46,17 +46,16 @@ class _DetailBilanState extends State<DetailBilan> {
   List<ApprobationModel> approbList = [];
   List<ApprobationModel> approbationData = [];
   ApprobationModel approb = ApprobationModel(
-    reference: DateTime.now(),
-    title: '-',
-    departement: '-',
-    fontctionOccupee: '-',
-    ligneBudgtaire: '-',
-    resources: '-',
-    approbation: '-',
-    justification: '-',
-    signature: '-',
-    created: DateTime.now()
-  );
+      reference: DateTime.now(),
+      title: '-',
+      departement: '-',
+      fontctionOccupee: '-',
+      ligneBudgtaire: '-',
+      resources: '-',
+      approbation: '-',
+      justification: '-',
+      signature: '-',
+      created: DateTime.now());
 
   UserModel user = UserModel(
       nom: '-',
@@ -68,7 +67,7 @@ class _DetailBilanState extends State<DetailBilan> {
       servicesAffectation: '-',
       fonctionOccupe: '-',
       role: '5',
-      isOnline: false,
+      isOnline: 'false',
       createdAt: DateTime.now(),
       passwordHash: '-',
       succursale: '-');
@@ -77,7 +76,7 @@ class _DetailBilanState extends State<DetailBilan> {
     var compteActif = await CompteActifApi().getAllData();
     var compatePassif = await ComptePassifApi().getAllData();
     var approbations = await ApprobationApi().getAllData();
-    if(mounted) {
+    if (mounted) {
       setState(() {
         user = userModel;
         compteActifList = compteActif;
@@ -100,12 +99,12 @@ class _DetailBilanState extends State<DetailBilan> {
               if (snapshot.hasData) {
                 BilanModel? data = snapshot.data;
                 return FloatingActionButton(
-                  child: const Icon(Icons.add),
-                  onPressed: () {
-                  Navigator.pushReplacementNamed(
-                      context, ComptabiliteRoutes.comptabiliteBilanAdd,
-                      arguments: data);
-                });
+                    child: const Icon(Icons.add),
+                    onPressed: () {
+                      Navigator.pushReplacementNamed(
+                          context, ComptabiliteRoutes.comptabiliteBilanAdd,
+                          arguments: data);
+                    });
               } else {
                 return loadingMini();
               }
@@ -115,76 +114,72 @@ class _DetailBilanState extends State<DetailBilan> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               if (Responsive.isDesktop(context))
-              const Expanded(
-                child: DrawerMenu(),
-              ),
+                const Expanded(
+                  child: DrawerMenu(),
+                ),
               Expanded(
                 flex: 5,
                 child: Padding(
-                  padding: const EdgeInsets.all(p10),
-                  child: FutureBuilder<BilanModel>(
-                    future: BilanApi().getOneData(id),
-                    builder: (BuildContext context,
-                        AsyncSnapshot<BilanModel> snapshot) {
-                      if (snapshot.hasData) {
-                        BilanModel? data = snapshot.data;
-                        approbationData = approbList
-                            .where((element) =>
-                              element.reference.microsecondsSinceEpoch ==
-                              data!.createdRef.microsecondsSinceEpoch)
-                            .toList();
+                    padding: const EdgeInsets.all(p10),
+                    child: FutureBuilder<BilanModel>(
+                        future: BilanApi().getOneData(id),
+                        builder: (BuildContext context,
+                            AsyncSnapshot<BilanModel> snapshot) {
+                          if (snapshot.hasData) {
+                            BilanModel? data = snapshot.data;
+                            approbationData = approbList
+                                .where((element) =>
+                                    element.reference.microsecondsSinceEpoch ==
+                                    data!.createdRef.microsecondsSinceEpoch)
+                                .toList();
 
-                        if (approbationData.isNotEmpty) {
-                          approb = approbationData.first;
-                        }
-                        return Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Row(
+                            if (approbationData.isNotEmpty) {
+                              approb = approbationData.first;
+                            }
+                            return Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                SizedBox(
-                                  width: p20,
-                                  child: IconButton(
-                                      onPressed: () =>
-                                          Navigator.pop(context),
-                                      icon: const Icon(Icons.arrow_back)),
+                                Row(
+                                  children: [
+                                    SizedBox(
+                                      width: p20,
+                                      child: IconButton(
+                                          onPressed: () =>
+                                              Navigator.pop(context),
+                                          icon: const Icon(Icons.arrow_back)),
+                                    ),
+                                    const SizedBox(width: p10),
+                                    Expanded(
+                                      child: CustomAppbar(
+                                          title: "Bilan",
+                                          controllerMenu: () =>
+                                              _key.currentState!.openDrawer()),
+                                    ),
+                                  ],
                                 ),
-                                const SizedBox(width: p10),
                                 Expanded(
-                                  child: CustomAppbar(
-                                      title: "Bilan",
-                                      controllerMenu: () =>
-                                          _key.currentState!.openDrawer()),
-                                ),
+                                    child: SingleChildScrollView(
+                                  child: Column(
+                                    children: [
+                                      pageDetail(data!),
+                                      const SizedBox(height: p10),
+                                      if (approbationData.isNotEmpty)
+                                        infosEditeurWidget(),
+                                      const SizedBox(height: p10),
+                                      if (int.parse(user.role) == 1 ||
+                                          int.parse(user.role) < 2)
+                                        if (approb.fontctionOccupee !=
+                                            user.fonctionOccupe)
+                                          approbationForm(data),
+                                    ],
+                                  ),
+                                ))
                               ],
-                            ),
-                            Expanded(
-                                child: SingleChildScrollView(
-                              child: Column(
-                                children: [
-                                  pageDetail(data!),
-                                  const SizedBox(height: p10),
-                                  if (approbationData.isNotEmpty)
-                                    infosEditeurWidget(),
-                                  const SizedBox(height: p10),
-                                  if (int.parse(user.role) == 1 ||
-                                      int.parse(user.role) < 2)
-                                    if (approb.fontctionOccupee !=
-                                        user.fonctionOccupe)
-                                      approbationForm(data),
-                                ],
-                              ),
-                            ))
-                          ],
-                        );
-                      } else {
-                        return Center(
-                          child: loading()
-                        );
-                      }
-                    }
-                  )
-                ),
+                            );
+                          } else {
+                            return Center(child: loading());
+                          }
+                        })),
               ),
             ],
           ),
@@ -198,8 +193,8 @@ class _DetailBilanState extends State<DetailBilan> {
         child: Container(
           margin: const EdgeInsets.all(p16),
           width: (Responsive.isDesktop(context))
-            ? MediaQuery.of(context).size.width / 2
-            : MediaQuery.of(context).size.width,
+              ? MediaQuery.of(context).size.width / 2
+              : MediaQuery.of(context).size.width,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(p10),
             border: Border.all(
@@ -375,7 +370,7 @@ class _DetailBilanState extends State<DetailBilan> {
                     const SizedBox(height: p30),
                     SizedBox(
                         height: MediaQuery.of(context).size.height / 1.5,
-                      child: compteActifWidget(data))
+                        child: compteActifWidget(data))
                   ],
                 ),
               ),
@@ -415,8 +410,8 @@ class _DetailBilanState extends State<DetailBilan> {
                       ),
                       const SizedBox(height: p30),
                       SizedBox(
-                        height: MediaQuery.of(context).size.height / 1.5,
-                        child: comptePassifWidget(data))
+                          height: MediaQuery.of(context).size.height / 1.5,
+                          child: comptePassifWidget(data))
                     ],
                   ),
                 ),
@@ -431,58 +426,55 @@ class _DetailBilanState extends State<DetailBilan> {
   Widget compteActifWidget(BilanModel data) {
     final bodyMedium = Theme.of(context).textTheme.bodyMedium;
     return FutureBuilder<List<CompteActifModel>>(
-      future: CompteActifApi().getAllData(),
-      builder: (BuildContext context,
-          AsyncSnapshot<List<CompteActifModel>> snapshot) {
-        if (snapshot.hasData) {
-          List<CompteActifModel>? dataList = snapshot.data!
-            .where((element) =>
-              element.reference.microsecondsSinceEpoch ==
-              data.createdRef.microsecondsSinceEpoch)
-            .toList();
-          return ListView.builder(
-            itemCount: dataList.length,
-            itemBuilder: (context, index) {
-              final actif = dataList[index];
-              return Column(
-                children: [
-                  Row(
-                    children: [
-                      Expanded(
-                        flex: 3,
-                        child: SelectableText(actif.comptes,
-                            textAlign: TextAlign.start, style: bodyMedium),
-                      ),
-                      Expanded(
-                        flex: 1,
-                        child: Container(
-                          decoration: BoxDecoration(
-                              border: Border(
-                            left: BorderSide(
-                              color: Colors.amber.shade700,
-                              width: 2,
-                            ),
-                          )),
-                          child: SelectableText(
-                              "${NumberFormat.decimalPattern('fr').format(double.parse(actif.montant))} \$",
-                              textAlign: TextAlign.center,
-                              style: bodyMedium),
+        future: CompteActifApi().getAllData(),
+        builder: (BuildContext context,
+            AsyncSnapshot<List<CompteActifModel>> snapshot) {
+          if (snapshot.hasData) {
+            List<CompteActifModel>? dataList = snapshot.data!
+                .where((element) =>
+                    element.reference.microsecondsSinceEpoch ==
+                    data.createdRef.microsecondsSinceEpoch)
+                .toList();
+            return ListView.builder(
+              itemCount: dataList.length,
+              itemBuilder: (context, index) {
+                final actif = dataList[index];
+                return Column(
+                  children: [
+                    Row(
+                      children: [
+                        Expanded(
+                          flex: 3,
+                          child: SelectableText(actif.comptes,
+                              textAlign: TextAlign.start, style: bodyMedium),
                         ),
-                      )
-                    ],
-                  ),
-                  Divider(
-                    color: Colors.amber.shade700
-                  ),
-                ],
-              );
-            },
-          );
-        } else {
-          return Center(child: loading());
-        }
-      }
-    );
+                        Expanded(
+                          flex: 1,
+                          child: Container(
+                            decoration: BoxDecoration(
+                                border: Border(
+                              left: BorderSide(
+                                color: Colors.amber.shade700,
+                                width: 2,
+                              ),
+                            )),
+                            child: SelectableText(
+                                "${NumberFormat.decimalPattern('fr').format(double.parse(actif.montant))} \$",
+                                textAlign: TextAlign.center,
+                                style: bodyMedium),
+                          ),
+                        )
+                      ],
+                    ),
+                    Divider(color: Colors.amber.shade700),
+                  ],
+                );
+              },
+            );
+          } else {
+            return Center(child: loading());
+          }
+        });
   }
 
   Widget comptePassifWidget(BilanModel data) {
@@ -522,10 +514,9 @@ class _DetailBilanState extends State<DetailBilan> {
                               ),
                             )),
                             child: SelectableText(
-                              "${NumberFormat.decimalPattern('fr').format(double.parse(passif.montant))} \$",
-                              textAlign: TextAlign.center,
-                              style: bodyMedium
-                            ),
+                                "${NumberFormat.decimalPattern('fr').format(double.parse(passif.montant))} \$",
+                                textAlign: TextAlign.center,
+                                style: bodyMedium),
                           ),
                         )
                       ],
@@ -542,7 +533,6 @@ class _DetailBilanState extends State<DetailBilan> {
           }
         });
   }
-
 
   Future<void> updateSubmit(BilanModel data) async {
     final bilanModel = BilanModel(

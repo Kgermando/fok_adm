@@ -37,12 +37,10 @@ class _DetailFinExterieurState extends State<DetailFinExterieur> {
   List<PlutoRow> rows = [];
   PlutoGridStateManager? stateManager;
   PlutoGridSelectingMode gridSelectingMode = PlutoGridSelectingMode.row;
-   
-  
 
   @override
   initState() {
-    getData(); 
+    getData();
     super.initState();
   }
 
@@ -56,7 +54,7 @@ class _DetailFinExterieurState extends State<DetailFinExterieur> {
       servicesAffectation: '-',
       fonctionOccupe: '-',
       role: '5',
-      isOnline: false,
+      isOnline: 'false',
       createdAt: DateTime.now(),
       passwordHash: '-',
       succursale: '-');
@@ -65,11 +63,11 @@ class _DetailFinExterieurState extends State<DetailFinExterieur> {
   List<CoupureBilletModel> coupureBilletFilter = [];
   Future<void> getData() async {
     final dataUser = await UserApi().getAllData();
-    UserModel userModel = await AuthApi().getUserId(); 
+    UserModel userModel = await AuthApi().getUserId();
     var coupureBillets = await CoupureBilletApi().getAllData();
     setState(() {
       userList = dataUser;
-      user = userModel; 
+      user = userModel;
       coupureBilletFilter = coupureBillets;
     });
   }
@@ -98,10 +96,10 @@ class _DetailFinExterieurState extends State<DetailFinExterieur> {
                             AsyncSnapshot<FinanceExterieurModel> snapshot) {
                           if (snapshot.hasData) {
                             FinanceExterieurModel? data = snapshot.data;
-                             coupureBilletList = coupureBilletFilter
+                            coupureBilletList = coupureBilletFilter
                                 .where((element) =>
                                     element.reference == data!.createdRef)
-                                .toList(); 
+                                .toList();
                             return Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
@@ -249,11 +247,12 @@ class _DetailFinExterieurState extends State<DetailFinExterieur> {
               ),
               Expanded(
                 child: SelectableText(
-                  "${NumberFormat.decimalPattern('fr').format(double.parse(data.montant))} \$",
-                  textAlign: TextAlign.start, style: bodyMedium),
+                    "${NumberFormat.decimalPattern('fr').format(double.parse(data.montant))} \$",
+                    textAlign: TextAlign.start,
+                    style: bodyMedium),
               )
             ],
-          ), 
+          ),
           Divider(color: Colors.amber.shade700),
           Row(
             children: [
@@ -300,8 +299,6 @@ class _DetailFinExterieurState extends State<DetailFinExterieur> {
       ),
     );
   }
-
-  
 
   Widget infosEditeurWidget() {
     final bodyLarge = Theme.of(context).textTheme.bodyLarge;
@@ -556,6 +553,4 @@ class _DetailFinExterieurState extends State<DetailFinExterieur> {
       ),
     );
   }
-
-  
 }

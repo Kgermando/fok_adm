@@ -37,21 +37,20 @@ class MenuOptions with ChangeNotifier {
         // Remove stockage jwt here.
         final user = await AuthApi().getUserId();
         final userModel = UserModel(
-          id: user.id,
-          nom: user.nom,
-          prenom: user.prenom,
-          email: user.email,
-          telephone: user.telephone,
-          matricule: user.matricule,
-          departement: user.departement,
-          servicesAffectation: user.servicesAffectation,
-          fonctionOccupe: user.fonctionOccupe,
-          role: user.role,
-          isOnline: false,
-          createdAt: user.createdAt,
-          passwordHash: user.passwordHash,
-          succursale: user.succursale
-        );
+            id: user.id,
+            nom: user.nom,
+            prenom: user.prenom,
+            email: user.email,
+            telephone: user.telephone,
+            matricule: user.matricule,
+            departement: user.departement,
+            servicesAffectation: user.servicesAffectation,
+            fonctionOccupe: user.fonctionOccupe,
+            role: user.role,
+            isOnline: 'false',
+            createdAt: user.createdAt,
+            passwordHash: user.passwordHash,
+            succursale: user.succursale);
         await UserApi().updateData(userModel);
         AuthApi().logout();
         UserSharedPref().removeIdToken();

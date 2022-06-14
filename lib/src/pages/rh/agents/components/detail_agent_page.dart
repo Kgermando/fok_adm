@@ -50,14 +50,13 @@ class _DetailAgentPageState extends State<DetailAgentPage> {
       servicesAffectation: '-',
       fonctionOccupe: '-',
       role: '5',
-      isOnline: false,
+      isOnline: 'false',
       createdAt: DateTime.now(),
       passwordHash: '-',
       succursale: '-');
   Future<void> getData(BuildContext context) async {
     UserModel userModel = await AuthApi().getUserId();
-    final data = await UserApi().getAllData();
-    final id = ModalRoute.of(context)!.settings.arguments as int;
+    final data = await UserApi().getAllData(); 
     // final agent = await AgentsApi().getOneData(id);
     setState(() {
       user = userModel;
@@ -80,11 +79,11 @@ class _DetailAgentPageState extends State<DetailAgentPage> {
                     (BuildContext context, AsyncSnapshot<AgentModel> snapshot) {
                   if (snapshot.hasData) {
                     AgentModel? data = snapshot.data;
-                    return 
-                    // speedialWidget(data!);
-                    (int.parse(data!.role) <= 3)
-                        ? speedialWidget(data)
-                        : Container();
+                    return
+                        // speedialWidget(data!);
+                        (int.parse(data!.role) <= 3)
+                            ? speedialWidget(data)
+                            : Container();
                   } else {
                     return loadingMini();
                   }
@@ -288,7 +287,7 @@ class _DetailAgentPageState extends State<DetailAgentPage> {
                           textAlign: TextAlign.start,
                           style: bodyMedium!
                               .copyWith(fontWeight: FontWeight.bold)),
-                      (agentModel.statutAgent)
+                      (agentModel.statutAgent == 'true')
                           ? Text('Actif',
                               textAlign: TextAlign.start,
                               style: bodyMedium.copyWith(
@@ -653,7 +652,7 @@ class _DetailAgentPageState extends State<DetailAgentPage> {
   }
 
   agentStatutDialog(AgentModel agentModel) {
-    statutAgent = agentModel.statutAgent;
+    // statutAgent = agentModel.statutAgent;
     return showDialog(
         context: context,
         barrierDismissible: true,
@@ -747,13 +746,13 @@ class _DetailAgentPageState extends State<DetailAgentPage> {
         dateDebutContrat: agentModel.dateDebutContrat,
         dateFinContrat: agentModel.dateFinContrat,
         fonctionOccupe: agentModel.fonctionOccupe,
-        statutAgent: statutAgent,
+        statutAgent: 'true',
         createdAt: agentModel.createdAt,
         photo: agentModel.photo,
         salaire: agentModel.salaire,
         signature: user.matricule,
         created: DateTime.now());
-    await AgentsApi().updateData(agentModel.id!, agent);
+    await AgentsApi().updateData(agent);
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
       content: const Text("Mise à statut agent succès!"),
       backgroundColor: Colors.blue[700],
@@ -786,20 +785,20 @@ class _DetailAgentPageState extends State<DetailAgentPage> {
     String role,
   ) async {
     final userModel = UserModel(
-      photo: '-',
-      nom: nom,
-      prenom: prenom,
-      email: email,
-      telephone: telephone,
-      matricule: matricule,
-      departement: departement,
-      servicesAffectation: servicesAffectation,
-      fonctionOccupe: fonctionOccupe,
-      role: role,
-      isOnline: false,
-      createdAt: DateTime.now(),
-      passwordHash: '12345678',
-      succursale: '-');
+        photo: '-',
+        nom: nom,
+        prenom: prenom,
+        email: email,
+        telephone: telephone,
+        matricule: matricule,
+        departement: departement,
+        servicesAffectation: servicesAffectation,
+        fonctionOccupe: fonctionOccupe,
+        role: role,
+        isOnline: 'false',
+        createdAt: DateTime.now(),
+        passwordHash: '12345678',
+        succursale: '-');
     await UserApi().insertData(userModel);
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
       content: const Text("Activation agent avec succès!"),

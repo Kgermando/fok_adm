@@ -30,7 +30,7 @@ class DetailCreance extends StatefulWidget {
 }
 
 class _DetailCreanceState extends State<DetailCreance> {
-  final GlobalKey<ScaffoldState> _key = GlobalKey(); 
+  final GlobalKey<ScaffoldState> _key = GlobalKey();
   final _formKey = GlobalKey<FormState>();
   bool isLoading = false;
   List<UserModel> userList = [];
@@ -95,7 +95,7 @@ class _DetailCreanceState extends State<DetailCreance> {
       servicesAffectation: '-',
       fonctionOccupe: '-',
       role: '5',
-      isOnline: false,
+      isOnline: 'false',
       createdAt: DateTime.now(),
       passwordHash: '-',
       succursale: '-');
@@ -154,11 +154,11 @@ class _DetailCreanceState extends State<DetailCreance> {
                           if (snapshot.hasData) {
                             CreanceModel? data = snapshot.data;
                             creanceDetteList = creanceDetteFilter
-                            .where((element) =>
-                                element.creanceDette == 'creances' &&
-                            element.reference.microsecondsSinceEpoch ==
-                                    data!.createdRef.microsecondsSinceEpoch
-                            ).toList();
+                                .where((element) =>
+                                    element.creanceDette == 'creances' &&
+                                    element.reference.microsecondsSinceEpoch ==
+                                        data!.createdRef.microsecondsSinceEpoch)
+                                .toList();
                             approbationData = approbList
                                 .where((element) =>
                                     element.reference.microsecondsSinceEpoch ==
@@ -207,8 +207,7 @@ class _DetailCreanceState extends State<DetailCreance> {
                               ],
                             );
                           } else {
-                            return Center(
-                                child: loading());
+                            return Center(child: loading());
                           }
                         })),
               ),
@@ -233,7 +232,7 @@ class _DetailCreanceState extends State<DetailCreance> {
               width: 2.0,
             ),
           ),
-          child: Column( 
+          child: Column(
             children: [
               Row(
                 mainAxisAlignment: MainAxisAlignment.end,
@@ -244,8 +243,7 @@ class _DetailCreanceState extends State<DetailCreance> {
                       PrintWidget(
                           tooltip: 'Imprimer le document', onPressed: () {}),
                       SelectableText(
-                          DateFormat("dd-MM-yyyy HH:mm")
-                              .format(data.created),
+                          DateFormat("dd-MM-yyyy HH:mm").format(data.created),
                           textAlign: TextAlign.start),
                     ],
                   )
@@ -254,12 +252,9 @@ class _DetailCreanceState extends State<DetailCreance> {
               dataWidget(data),
               totalMontant(data),
               SizedBox(
-                height: 300,
-                child: TableCreanceDette(
-                  creanceDette: 'creances', 
-                  createdRef: data.createdRef
-                )
-              ),
+                  height: 300,
+                  child: TableCreanceDette(
+                      creanceDette: 'creances', createdRef: data.createdRef)),
             ],
           ),
         ),
@@ -493,9 +488,9 @@ class _DetailCreanceState extends State<DetailCreance> {
                     children: [
                       Row(
                         children: const [
-                          Text('Ajout Remboursement', 
-                            style: TextStyle(fontSize: 22, 
-                              fontWeight: FontWeight.bold)),
+                          Text('Ajout Remboursement',
+                              style: TextStyle(
+                                  fontSize: 22, fontWeight: FontWeight.bold)),
                         ],
                       ),
                       const SizedBox(
@@ -539,7 +534,7 @@ class _DetailCreanceState extends State<DetailCreance> {
 
   Future<void> submitobservation(CreanceModel data) async {
     final creanceModel = CreanceModel(
-      id: data.id,
+        id: data.id,
         nomComplet: data.nomComplet,
         pieceJustificative: data.pieceJustificative,
         libelle: data.libelle,
@@ -631,7 +626,8 @@ class _DetailCreanceState extends State<DetailCreance> {
                     border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(10.0)),
                     labelText: 'Montant',
-                    hintText: 'Restant ${NumberFormat.decimalPattern('fr').format(total)} \$'),
+                    hintText:
+                        'Restant ${NumberFormat.decimalPattern('fr').format(total)} \$'),
                 validator: (value) => value != null && value.isEmpty
                     ? 'Ce champs est obligatoire.'
                     : null,

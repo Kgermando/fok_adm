@@ -23,13 +23,12 @@ class DetailCaburant extends StatefulWidget {
 }
 
 class _DetailCaburantState extends State<DetailCaburant> {
-  final GlobalKey<ScaffoldState> _key = GlobalKey(); 
+  final GlobalKey<ScaffoldState> _key = GlobalKey();
   bool isLoading = false;
 
   String approbationDGController = '-';
   TextEditingController signatureJustificationDGController =
       TextEditingController();
-
 
   @override
   initState() {
@@ -60,7 +59,7 @@ class _DetailCaburantState extends State<DetailCaburant> {
       servicesAffectation: '-',
       fonctionOccupe: '-',
       role: '5',
-      isOnline: false,
+      isOnline: 'false',
       createdAt: DateTime.now(),
       passwordHash: '-',
       succursale: '-');
@@ -99,8 +98,9 @@ class _DetailCaburantState extends State<DetailCaburant> {
                           if (snapshot.hasData) {
                             CarburantModel? data = snapshot.data;
                             approbationData = approbList
-                                .where(
-                                    (element) => element.reference.microsecondsSinceEpoch == data!.created.microsecondsSinceEpoch)
+                                .where((element) =>
+                                    element.reference.microsecondsSinceEpoch ==
+                                    data!.created.microsecondsSinceEpoch)
                                 .toList();
 
                             if (approbationData.isNotEmpty) {
@@ -145,8 +145,7 @@ class _DetailCaburantState extends State<DetailCaburant> {
                               ],
                             );
                           } else {
-                            return Center(
-                                child: loading());
+                            return Center(child: loading());
                           }
                         })),
               ),
@@ -171,7 +170,7 @@ class _DetailCaburantState extends State<DetailCaburant> {
               width: 2.0,
             ),
           ),
-          child: Column( 
+          child: Column(
             children: [
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,

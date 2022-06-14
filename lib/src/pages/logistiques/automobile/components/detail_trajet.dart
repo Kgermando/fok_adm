@@ -9,7 +9,7 @@ import 'package:fokad_admin/src/models/approbation/approbation_model.dart';
 import 'package:fokad_admin/src/models/logistiques/trajet_model.dart';
 import 'package:fokad_admin/src/models/users/user_model.dart';
 import 'package:fokad_admin/src/navigation/drawer/drawer_menu.dart';
-import 'package:fokad_admin/src/navigation/header/custom_appbar.dart'; 
+import 'package:fokad_admin/src/navigation/header/custom_appbar.dart';
 import 'package:fokad_admin/src/routes/routes.dart';
 import 'package:fokad_admin/src/utils/loading.dart';
 import 'package:fokad_admin/src/widgets/print_widget.dart';
@@ -64,7 +64,7 @@ class _DetailTrajetState extends State<DetailTrajet> {
       servicesAffectation: '-',
       fonctionOccupe: '-',
       role: '5',
-      isOnline: false,
+      isOnline: 'false',
       createdAt: DateTime.now(),
       passwordHash: '-',
       succursale: '-');
@@ -102,8 +102,9 @@ class _DetailTrajetState extends State<DetailTrajet> {
                           if (snapshot.hasData) {
                             TrajetModel? data = snapshot.data;
                             approbationData = approbList
-                                .where(
-                                    (element) => element.reference.microsecondsSinceEpoch == data!.created.microsecondsSinceEpoch)
+                                .where((element) =>
+                                    element.reference.microsecondsSinceEpoch ==
+                                    data!.created.microsecondsSinceEpoch)
                                 .toList();
 
                             if (approbationData.isNotEmpty) {
@@ -147,8 +148,7 @@ class _DetailTrajetState extends State<DetailTrajet> {
                               ],
                             );
                           } else {
-                            return Center(
-                              child: loading());
+                            return Center(child: loading());
                           }
                         })),
               ),
@@ -187,8 +187,8 @@ class _DetailTrajetState extends State<DetailTrajet> {
                           IconButton(
                               tooltip: "Ajout kilometrage retour",
                               onPressed: () {
-                                 Navigator.pushNamed(
-                                    context, LogistiqueRoutes.logTrajetAutoUpdate,
+                                Navigator.pushNamed(context,
+                                    LogistiqueRoutes.logTrajetAutoUpdate,
                                     arguments: data);
                               },
                               icon: Icon(

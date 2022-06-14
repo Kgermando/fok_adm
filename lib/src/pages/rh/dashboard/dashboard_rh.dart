@@ -47,16 +47,16 @@ class _DashboardRhState extends State<DashboardRh> {
     setState(() {
       agentsCount = agents.length;
       agentActifCount =
-          agents.where((element) => element.statutAgent == true).length;
+          agents.where((element) => element.statutAgent == 'true').length;
       agentInactifCount =
-          agents.where((element) => element.statutAgent == false).length;
+          agents.where((element) => element.statutAgent == 'false').length;
       agentFemmeCount =
           agents.where((element) => element.sexe == 'Femme').length;
       agentHommeCount =
           agents.where((element) => element.sexe == 'Homme').length;
       agentNonPaye = salaires
           .where((element) =>
-              element.observation == false &&
+              element.observation == 'false' &&
               element.createdAt.month == DateTime.now().month &&
               element.createdAt.year == DateTime.now().year)
           .length;

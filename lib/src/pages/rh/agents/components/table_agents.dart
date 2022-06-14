@@ -290,7 +290,7 @@ class _TableAgentsState extends State<TableAgents> {
             'departement': PlutoCell(value: item.departement),
             'servicesAffectation': PlutoCell(value: item.servicesAffectation),
             'statutAgent': PlutoCell(
-                value: (item.statutAgent) ? 'Agent actif' : 'Agent inactif')
+                value: (item.statutAgent == "true") ? 'Agent actif' : 'Agent inactif')
           }));
         }
         stateManager!.resetCurrentState();

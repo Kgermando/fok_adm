@@ -126,14 +126,14 @@ class _DashboardAdministrationState extends State<DashboardAdministration> {
     var dataDetteList = await DetteApi().getAllData();
     var creanceDettes = await CreanceDetteApi().getAllData();
     var dataFinanceExterieurList = await FinExterieurApi().getAllData();
-    var dataDevisList = await DevisAPi().getAllData();
+    // var dataDevisList = await DevisAPi().getAllData();
     var approbations = await ApprobationApi().getAllData();
 
     if (mounted) {
       setState(() {
         agentsCount = agents.length;
         agentActifCount =
-            agents.where((element) => element.statutAgent == true).length;
+            agents.where((element) => element.statutAgent == 'true').length;
 
         // Exploitations
         for (var item in approbations) {
@@ -269,7 +269,7 @@ class _DashboardAdministrationState extends State<DashboardAdministration> {
           cumulFinanceExterieur += double.parse(item!.montant);
         }
 
-        List<DevisModel?> devisList = dataDevisList;
+        // List<DevisModel?> devisList = dataDevisList;
 
         // for (var item in devisList) {
         //   for (var i in item!.list) {

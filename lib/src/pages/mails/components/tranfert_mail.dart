@@ -13,7 +13,6 @@ import 'package:fokad_admin/src/utils/regex.dart';
 import 'package:fokad_admin/src/widgets/btn_widget.dart';
 import 'package:fokad_admin/src/widgets/title_widget.dart';
 
-
 class TransfertMail extends StatefulWidget {
   const TransfertMail({Key? key}) : super(key: key);
 
@@ -25,13 +24,12 @@ class _TransfertMailState extends State<TransfertMail> {
   final GlobalKey<ScaffoldState> _key = GlobalKey();
   final _formKey = GlobalKey<FormState>();
   bool isLoading = false;
-  
+
   TextEditingController emailController = TextEditingController();
   TextEditingController objetController = TextEditingController();
   TextEditingController messageController = TextEditingController();
   TextEditingController pieceJointeController = TextEditingController();
   bool read = false;
-
 
   @override
   initState() {
@@ -49,11 +47,11 @@ class _TransfertMailState extends State<TransfertMail> {
       servicesAffectation: '-',
       fonctionOccupe: '-',
       role: '5',
-      isOnline: false,
+      isOnline: 'false',
       createdAt: DateTime.now(),
       passwordHash: '-',
       succursale: '-');
-      
+
   List<UserModel> userList = [];
   Future<void> getData() async {
     UserModel userModel = await AuthApi().getUserId();
@@ -116,13 +114,11 @@ class _TransfertMailState extends State<TransfertMail> {
                                 ),
                                 Expanded(
                                     child: SingleChildScrollView(
-                                        child:
-                                            pageDetail(data!)))
+                                        child: pageDetail(data!)))
                               ],
                             );
                           } else {
-                            return Center(
-                                child: loading());
+                            return Center(child: loading());
                           }
                         })),
               ),
@@ -183,19 +179,18 @@ class _TransfertMailState extends State<TransfertMail> {
 
   Widget emailWidget() {
     return Container(
-      margin: const EdgeInsets.only(bottom: p20),
-      child: TextFormField(
-        controller: emailController,
-        decoration: InputDecoration(
-          border:
-              OutlineInputBorder(borderRadius: BorderRadius.circular(10.0)),
-          labelText: "Email",
-        ),
-        keyboardType: TextInputType.text,
-        style: const TextStyle(),
-        validator: (value) => RegExpIsValide().validateEmail(value),
-      )
-    );
+        margin: const EdgeInsets.only(bottom: p20),
+        child: TextFormField(
+          controller: emailController,
+          decoration: InputDecoration(
+            border:
+                OutlineInputBorder(borderRadius: BorderRadius.circular(10.0)),
+            labelText: "Email",
+          ),
+          keyboardType: TextInputType.text,
+          style: const TextStyle(),
+          validator: (value) => RegExpIsValide().validateEmail(value),
+        ));
   }
 
   Widget objetWidget() {
@@ -244,7 +239,6 @@ class _TransfertMailState extends State<TransfertMail> {
           },
         ));
   }
-
 
   Future<void> send(MailModel data) async {
     final mailModel = MailModel(

@@ -47,7 +47,7 @@ class _ComptabiliteNavState extends State<ComptabiliteNav> {
       servicesAffectation: '-',
       fonctionOccupe: '-',
       role: '5',
-      isOnline: false,
+      isOnline: 'false',
       createdAt: DateTime.now(),
       passwordHash: '-',
       succursale: '-');
@@ -85,7 +85,8 @@ class _ComptabiliteNavState extends State<ComptabiliteNav> {
               leading: const Icon(Icons.table_view, size: 30.0),
               title:
                   AutoSizeText('Comptabilités', maxLines: 1, style: bodyLarge),
-              initiallyExpanded: (user.departement == 'Comptabilites') ? true : false,
+              initiallyExpanded:
+                  (user.departement == 'Comptabilites') ? true : false,
               onExpansionChanged: (val) {
                 setState(() {
                   isOpenComptabilite = !val;
@@ -189,13 +190,15 @@ class _ComptabiliteNavState extends State<ComptabiliteNav> {
                     }),
                 if (userRole <= 2)
                   DrawerWidget(
-                      selected: widget.pageCurrente == ComptabiliteRoutes.comptabiliteEtatBesoin,
+                      selected: widget.pageCurrente ==
+                          ComptabiliteRoutes.comptabiliteEtatBesoin,
                       icon: Icons.note_alt,
                       sizeIcon: 20.0,
                       title: 'Etat besoin',
                       style: bodyText1!,
                       onTap: () {
-                        Navigator.pushNamed(context, ComptabiliteRoutes.comptabiliteEtatBesoin);
+                        Navigator.pushNamed(
+                            context, ComptabiliteRoutes.comptabiliteEtatBesoin);
                         // Navigator.of(context).pop();
                       }),
                 DrawerWidget(

@@ -1328,7 +1328,7 @@ class _AddPaiementSalaireState extends State<AddPaiementSalaire> {
       matricule: agentModel.matricule,
       servicesAffectation: agentModel.servicesAffectation,
       salaire: agentModel.salaire,
-      observation: false, // Finance
+      observation: 'false', // Finance
       modePaiement: '-',
       createdAt: DateTime.now(),
       tauxJourHeureMoisSalaire:

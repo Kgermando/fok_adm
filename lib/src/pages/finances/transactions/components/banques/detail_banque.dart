@@ -40,7 +40,6 @@ class _DetailBanqueState extends State<DetailBanque> {
     super.initState();
   }
 
- 
   UserModel user = UserModel(
       nom: '-',
       prenom: '-',
@@ -51,16 +50,16 @@ class _DetailBanqueState extends State<DetailBanque> {
       servicesAffectation: '-',
       fonctionOccupe: '-',
       role: '5',
-      isOnline: false,
+      isOnline: 'false',
       createdAt: DateTime.now(),
       passwordHash: '-',
       succursale: '-');
   Future<void> getData() async {
     final dataUser = await UserApi().getAllData();
-    UserModel userModel = await AuthApi().getUserId(); 
+    UserModel userModel = await AuthApi().getUserId();
     setState(() {
       userList = dataUser;
-      user = userModel; 
+      user = userModel;
     });
   }
 
@@ -88,7 +87,7 @@ class _DetailBanqueState extends State<DetailBanque> {
                             AsyncSnapshot<BanqueModel> snapshot) {
                           if (snapshot.hasData) {
                             BanqueModel? data = snapshot.data;
-                           
+
                             return Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
@@ -227,10 +226,12 @@ class _DetailBanqueState extends State<DetailBanque> {
                     style: bodyMedium.copyWith(fontWeight: FontWeight.bold)),
               ),
               Expanded(
-                child: SelectableText("${NumberFormat.decimalPattern('fr').format(double.parse(data.montant))} \$",
-                    textAlign: TextAlign.start, style: bodyMedium),
+                child: SelectableText(
+                    "${NumberFormat.decimalPattern('fr').format(double.parse(data.montant))} \$",
+                    textAlign: TextAlign.start,
+                    style: bodyMedium),
               )
-            ], 
+            ],
           ),
           Divider(color: Colors.amber.shade700),
           if (data.typeOperation != 'Depot')

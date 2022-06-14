@@ -43,7 +43,7 @@ class _BudgetNavState extends State<BudgetNav> {
       servicesAffectation: '-',
       fonctionOccupe: '-',
       role: '5',
-      isOnline: false,
+      isOnline: 'false',
       createdAt: DateTime.now(),
       passwordHash: '-',
       succursale: '-');
@@ -201,13 +201,15 @@ class _BudgetNavState extends State<BudgetNav> {
                     }),
                 if (userRole <= 2)
                   DrawerWidget(
-                      selected: widget.pageCurrente == BudgetRoutes.budgetEtatBesoin,
+                      selected:
+                          widget.pageCurrente == BudgetRoutes.budgetEtatBesoin,
                       icon: Icons.note_alt,
                       sizeIcon: 20.0,
                       title: 'Etat besoin',
                       style: bodyText1,
                       onTap: () {
-                        Navigator.pushNamed(context, BudgetRoutes.budgetEtatBesoin);
+                        Navigator.pushNamed(
+                            context, BudgetRoutes.budgetEtatBesoin);
                         // Navigator.of(context).pop();
                       }),
                 DrawerWidget(
@@ -234,10 +236,7 @@ class _BudgetNavState extends State<BudgetNav> {
             );
           } else {
             return Column(
-              children: [
-                loading(),
-                const SizedBox(height: p20)
-              ],
+              children: [loading(), const SizedBox(height: p20)],
             );
           }
         });

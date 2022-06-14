@@ -221,7 +221,7 @@ class _TableSalairesDDState extends State<TableSalairesDD> {
             'matricule': PlutoCell(value: item.matricule),
             'departement': PlutoCell(value: item.departement),
             'observation': PlutoCell(
-                value: (item.observation == true) ? "Payé" : "Non payé"),
+                value: (item.observation == 'true') ? "Payé" : "Non payé"),
             'modePaiement': PlutoCell(value: item.modePaiement),
             'createdAt': PlutoCell(
                 value: DateFormat("dd-MM-yyyy HH:mm").format(item.createdAt))

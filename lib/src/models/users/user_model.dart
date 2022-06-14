@@ -10,7 +10,7 @@ class UserModel {
   late String servicesAffectation;
   late String fonctionOccupe;
   late String role; // Acces user de 1 à 5
-  late bool isOnline; // Agent connecté
+  late String isOnline; // Agent connecté
   late DateTime createdAt;
   late String passwordHash;
   late String succursale;
@@ -66,7 +66,7 @@ class UserModel {
         servicesAffectation: json["servicesAffectation"],
         fonctionOccupe: json["fonctionOccupe"],
         role: json["role"],
-        isOnline: bool.hasEnvironment(json["isOnline"]),
+        isOnline: json["isOnline"],
         createdAt: DateTime.parse(json["createdAt"]),
         passwordHash: json["passwordHash"],
         succursale: json["succursale"]);

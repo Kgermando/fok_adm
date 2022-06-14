@@ -969,7 +969,7 @@ class _AddAgentState extends State<AddAgent> {
             (competanceController.text == '') ? '-' : competanceController.text,
         experience:
             (experienceController.text == '') ? '-' : experienceController.text,
-        statutAgent: false,
+        statutAgent: 'false',
         createdAt: DateTime.now(),
         photo: '-',
         salaire: (salaireController.text == '') ? '-' : salaireController.text,

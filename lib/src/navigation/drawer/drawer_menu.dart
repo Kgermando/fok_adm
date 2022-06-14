@@ -40,7 +40,7 @@ class _DrawerMenuState extends State<DrawerMenu> {
       servicesAffectation: '-',
       fonctionOccupe: '-',
       role: '0',
-      isOnline: false,
+      isOnline: 'false',
       createdAt: DateTime.now(),
       passwordHash: '-',
       succursale: '-');
@@ -61,7 +61,8 @@ class _DrawerMenuState extends State<DrawerMenu> {
       print('pageCurrente $pageCurrente');
     }
     return Drawer(
-      backgroundColor: themeProvider.isLightMode ? Colors.amber[100] :Colors.black26,
+      backgroundColor:
+          themeProvider.isLightMode ? Colors.amber[100] : Colors.black26,
       elevation: 10.0,
       child: Scrollbar(
         controller: controller,

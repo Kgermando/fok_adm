@@ -69,7 +69,7 @@ class _VentesPageState extends State<VentesPage> {
                                   return achats!.isEmpty
                                       ? Center(
                                           child: Text(
-                                            'Pas encore d\'articles à vendre.',
+                                            'Ajoutez en des articles à vendre.',
                                             style: Responsive.isDesktop(context)
                                                 ? const TextStyle(fontSize: 24)
                                                 : const TextStyle(fontSize: 16),

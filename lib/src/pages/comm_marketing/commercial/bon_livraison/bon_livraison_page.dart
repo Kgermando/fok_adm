@@ -36,7 +36,7 @@ class _BonLivraisonPageState extends State<BonLivraisonPage> {
       servicesAffectation: '-',
       fonctionOccupe: '-',
       role: '5',
-      isOnline: false,
+      isOnline: 'false',
       createdAt: DateTime.now(),
       passwordHash: '-',
       succursale: '-');
@@ -90,7 +90,7 @@ class _BonLivraisonPageState extends State<BonLivraisonPage> {
                                               : const TextStyle(fontSize: 16),
                                         ))
                                       : Scrollbar(
-                                          controller: controllerScrollbar, 
+                                          controller: controllerScrollbar,
                                           child: ListView.builder(
                                               controller: controllerScrollbar,
                                               itemCount: dataList.length,

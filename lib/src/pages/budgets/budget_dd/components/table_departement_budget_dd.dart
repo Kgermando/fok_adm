@@ -1,5 +1,4 @@
-import 'package:flutter/material.dart';
-import 'package:fokad_admin/src/api/approbation/approbation_api.dart';
+import 'package:flutter/material.dart'; 
 import 'package:fokad_admin/src/api/budgets/departement_budget_api.dart';
 import 'package:fokad_admin/src/models/budgets/departement_budget_model.dart';
 import 'package:fokad_admin/src/routes/routes.dart';
@@ -153,8 +152,7 @@ class _TableDepartementBudgetDDState extends State<TableDepartementBudgetDD> {
     List<DepartementBudgetModel?> dataList =
         await DepeartementBudgetApi().getAllData();
 
-    var data = dataList.where((element) => element!.isSubmit == true).toList();
-    print('data : $data');
+    var data = dataList.where((element) => element!.isSubmit == 'true').toList();
 
     if (!mounted) return;
     setState(() {

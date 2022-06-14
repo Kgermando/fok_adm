@@ -94,7 +94,7 @@ class _DetailDetteState extends State<DetailDette> {
       servicesAffectation: '-',
       fonctionOccupe: '-',
       role: '5',
-      isOnline: false,
+      isOnline: 'false',
       createdAt: DateTime.now(),
       passwordHash: '-',
       succursale: '-');
@@ -124,7 +124,7 @@ class _DetailDetteState extends State<DetailDette> {
               if (snapshot.hasData) {
                 DetteModel? data = snapshot.data;
                 return FloatingActionButton(
-                  tooltip: 'Payement',
+                    tooltip: 'Payement',
                     child: const Icon(Icons.add),
                     onPressed: () {
                       dialongDettePayement(data!);
@@ -252,8 +252,7 @@ class _DetailDetteState extends State<DetailDette> {
               SizedBox(
                   height: 300,
                   child: TableCreanceDette(
-                      creanceDette: 'dettes',
-                      createdRef: data.createdRef)),
+                      creanceDette: 'dettes', createdRef: data.createdRef)),
             ],
           ),
         ),
@@ -472,7 +471,7 @@ class _DetailDetteState extends State<DetailDette> {
 
   Future<void> submitobservation(DetteModel data) async {
     final detteModel = DetteModel(
-      id: data.id,
+        id: data.id,
         nomComplet: data.nomComplet,
         pieceJustificative: data.pieceJustificative,
         libelle: data.libelle,
@@ -622,8 +621,8 @@ class _DetailDetteState extends State<DetailDette> {
                     border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(10.0)),
                     labelText: 'Montant',
-                    hintText: 'Restant ${NumberFormat.decimalPattern('fr').format(total)} \$'
-                ),
+                    hintText:
+                        'Restant ${NumberFormat.decimalPattern('fr').format(total)} \$'),
                 validator: (value) => value != null && value.isEmpty
                     ? 'Ce champs est obligatoire.'
                     : null,

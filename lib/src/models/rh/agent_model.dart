@@ -21,7 +21,7 @@ class AgentModel {
   late String fonctionOccupe; // Fonction occupé
   late String? competance;
   late String? experience;
-  late bool statutAgent;
+  late String statutAgent;
   late DateTime createdAt;
   late String? photo;
   late String salaire;
@@ -116,7 +116,7 @@ class AgentModel {
       fonctionOccupe: json["fonctionOccupe"],
       competance: json["competance"],
       experience: json["experience"],
-      statutAgent: bool.hasEnvironment(json['statutAgent']),
+      statutAgent: json['statutAgent'],
       createdAt: DateTime.parse(json["createdAt"]),
       photo: json["photo"],
       salaire: json["salaire"],

@@ -86,7 +86,7 @@ class _DetailDepartmentBudgetState extends State<DetailDepartmentBudget> {
       servicesAffectation: '-',
       fonctionOccupe: '-',
       role: '5',
-      isOnline: false,
+      isOnline: 'false',
       createdAt: DateTime.now(),
       passwordHash: '-',
       succursale: '-');
@@ -1321,16 +1321,15 @@ class _DetailDepartmentBudgetState extends State<DetailDepartmentBudget> {
 
   Future<void> submitToDD(DepartementBudgetModel data) async {
     final departementBudgetModel = DepartementBudgetModel(
-      id: data.id,
-      title: data.title,
-      departement: data.departement,
-      periodeDebut: data.periodeDebut,
-      periodeFin: data.periodeFin,
-      signature: data.signature,
-      createdRef: data.createdRef,
-      created: data.created,
-      isSubmit: true
-    );
+        id: data.id,
+        title: data.title,
+        departement: data.departement,
+        periodeDebut: data.periodeDebut,
+        periodeFin: data.periodeFin,
+        signature: data.signature,
+        createdRef: data.createdRef,
+        created: data.created,
+        isSubmit: 'true');
     await DepeartementBudgetApi().updateData(departementBudgetModel);
     Navigator.of(context).pop();
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(

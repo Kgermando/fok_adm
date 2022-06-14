@@ -77,8 +77,6 @@ class _RepondreMailState extends State<RepondreMail> {
     }
   }
 
-
-
   @override
   initState() {
     getData();
@@ -95,7 +93,7 @@ class _RepondreMailState extends State<RepondreMail> {
       servicesAffectation: '-',
       fonctionOccupe: '-',
       role: '5',
-      isOnline: false,
+      isOnline: 'false',
       createdAt: DateTime.now(),
       passwordHash: '-',
       succursale: '-');
@@ -154,13 +152,11 @@ class _RepondreMailState extends State<RepondreMail> {
                                 ),
                                 Expanded(
                                     child: SingleChildScrollView(
-                                        child:
-                                            pageDetail(data!)))
+                                        child: pageDetail(data!)))
                               ],
                             );
                           } else {
-                            return Center(
-                                child: loading());
+                            return Center(child: loading());
                           }
                         })),
               ),
@@ -169,7 +165,7 @@ class _RepondreMailState extends State<RepondreMail> {
         ));
   }
 
-Widget pageDetail(MailModel data) {
+  Widget pageDetail(MailModel data) {
     return Form(
       key: _formKey,
       child: Row(
@@ -234,10 +230,6 @@ Widget pageDetail(MailModel data) {
           validator: (value) => RegExpIsValide().validateEmail(value),
         ));
   }
-
-
-
-
 
   Widget objetWidget() {
     return Container(
@@ -327,7 +319,6 @@ Widget pageDetail(MailModel data) {
                         style: Theme.of(context).textTheme.bodyLarge)));
   }
 
-
   Future<void> send(MailModel data) async {
     final mailModel = MailModel(
         fullName: data.fullName,
@@ -348,5 +339,4 @@ Widget pageDetail(MailModel data) {
       backgroundColor: Colors.green[700],
     ));
   }
-
 }

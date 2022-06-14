@@ -26,7 +26,7 @@ class _DetailUserState extends State<DetailUser> {
   final ScrollController _controllerScroll = ScrollController();
   bool isLoading = false;
 
-  bool statutAgent = false;
+  // bool statutAgent = false;
 
   List<PlutoColumn> columns = [];
   List<PlutoRow> rows = [];
@@ -49,7 +49,7 @@ class _DetailUserState extends State<DetailUser> {
       servicesAffectation: '-',
       fonctionOccupe: '-',
       role: '5',
-      isOnline: false,
+      isOnline: 'false',
       createdAt: DateTime.now(),
       passwordHash: '-',
       succursale: '-');
@@ -366,37 +366,37 @@ class _DetailUserState extends State<DetailUser> {
 
   // Delete user login accès
   Future<void> deleteUser(UserModel data) async {
-    final agentModel = agentList
-        .where((element) => element.matricule == data.matricule).first;
+    final agentModel =
+        agentList.where((element) => element.matricule == data.matricule).first;
 
     final agent = AgentModel(
-      id: agentModel.id,
-      nom: agentModel.nom,
-      postNom: agentModel.postNom,
-      prenom: agentModel.prenom,
-      email: agentModel.email,
-      telephone: agentModel.telephone,
-      adresse: agentModel.adresse,
-      sexe: agentModel.sexe,
-      role: agentModel.role,
-      matricule: agentModel.matricule,
-      numeroSecuriteSociale: agentModel.numeroSecuriteSociale,
-      dateNaissance: agentModel.dateNaissance,
-      lieuNaissance: agentModel.lieuNaissance,
-      nationalite: agentModel.nationalite,
-      typeContrat: agentModel.typeContrat,
-      departement: agentModel.departement,
-      servicesAffectation: agentModel.servicesAffectation,
-      dateDebutContrat: agentModel.dateDebutContrat,
-      dateFinContrat: agentModel.dateFinContrat,
-      fonctionOccupe: agentModel.fonctionOccupe,
-      statutAgent: statutAgent,
-      createdAt: DateTime.now(),
-      photo: agentModel.photo,
-      salaire: agentModel.salaire,
-      signature: agentModel.matricule,
-      created: DateTime.now());
-    await AgentsApi().updateData(agentModel.id!, agent);
+        id: agentModel.id,
+        nom: agentModel.nom,
+        postNom: agentModel.postNom,
+        prenom: agentModel.prenom,
+        email: agentModel.email,
+        telephone: agentModel.telephone,
+        adresse: agentModel.adresse,
+        sexe: agentModel.sexe,
+        role: agentModel.role,
+        matricule: agentModel.matricule,
+        numeroSecuriteSociale: agentModel.numeroSecuriteSociale,
+        dateNaissance: agentModel.dateNaissance,
+        lieuNaissance: agentModel.lieuNaissance,
+        nationalite: agentModel.nationalite,
+        typeContrat: agentModel.typeContrat,
+        departement: agentModel.departement,
+        servicesAffectation: agentModel.servicesAffectation,
+        dateDebutContrat: agentModel.dateDebutContrat,
+        dateFinContrat: agentModel.dateFinContrat,
+        fonctionOccupe: agentModel.fonctionOccupe,
+        statutAgent: 'false',
+        createdAt: DateTime.now(),
+        photo: agentModel.photo,
+        salaire: agentModel.salaire,
+        signature: agentModel.matricule,
+        created: DateTime.now());
+    await AgentsApi().updateData(agent);
 
     await UserApi().deleteData(data.id!);
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(

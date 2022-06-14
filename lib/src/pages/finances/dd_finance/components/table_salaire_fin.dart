@@ -216,7 +216,7 @@ class _TableSalairesFINState extends State<TableSalairesFIN> {
             'matricule': PlutoCell(value: item.matricule),
             'departement': PlutoCell(value: item.departement),
             'observation': PlutoCell(
-                value: (item.observation == true) ? "Payé" : "Non payé"),
+                value: (item.observation == 'true') ? "Payé" : "Non payé"),
             'modePaiement': PlutoCell(value: item.modePaiement),
             'createdAt': PlutoCell(
                 value: DateFormat("DD-MM-yy HH:mm").format(item.createdAt))

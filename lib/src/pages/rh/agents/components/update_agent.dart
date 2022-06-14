@@ -87,7 +87,7 @@ class _UpdateAgentState extends State<UpdateAgent> {
   String servicesAffectation = "";
   String fonctionOccupe = "";
   DateTime createdAt = DateTime.now();
-  bool statutAgent = false;
+  String statutAgent = "";
   String photo = "";
 
   List<String> servAffectList = [];
@@ -131,7 +131,7 @@ class _UpdateAgentState extends State<UpdateAgent> {
       servicesAffectation: '-',
       fonctionOccupe: '-',
       role: '5',
-      isOnline: false,
+      isOnline: 'false',
       createdAt: DateTime.now(),
       passwordHash: '-',
       succursale: '-');
@@ -945,36 +945,36 @@ class _UpdateAgentState extends State<UpdateAgent> {
 
   Future submit(AgentModel data) async {
     final agentModel = AgentModel(
-      // id: data.id,
-      nom: nomController.text,
-      postNom: postNomController.text,
-      prenom: prenomController.text,
-      email: emailController.text,
-      telephone: telephoneController.text,
-      adresse: adresseController.text,
-      sexe: sexe.toString(),
-      role: role.toString(),
-      matricule: matricule,
-      numeroSecuriteSociale: numeroSecuriteSocialeController.text,
-      dateNaissance: DateTime.parse(dateNaissanceController.text),
-      lieuNaissance: lieuNaissanceController.text,
-      nationalite: nationalite.toString(),
-      typeContrat: typeContrat.toString(),
-      departement: departement.toString(),
-      servicesAffectation: servicesAffectation.toString(),
-      dateDebutContrat: DateTime.parse(dateDebutContratController.text),
-      dateFinContrat: DateTime.parse(dateFinContratController.text),
-      fonctionOccupe: fonctionOccupe.toString(),
-      competance: competanceController.text,
-      experience: experienceController.text,
-      statutAgent: false,
-      createdAt: data.createdAt,
-      photo: '-',
-      salaire: salaireController.text,
-      signature: user.matricule.toString(),
-      created: DateTime.now());
+        id: data.id,
+        nom: nomController.text,
+        postNom: postNomController.text,
+        prenom: prenomController.text,
+        email: emailController.text,
+        telephone: telephoneController.text,
+        adresse: adresseController.text,
+        sexe: sexe.toString(),
+        role: role.toString(),
+        matricule: matricule,
+        numeroSecuriteSociale: numeroSecuriteSocialeController.text,
+        dateNaissance: DateTime.parse(dateNaissanceController.text),
+        lieuNaissance: lieuNaissanceController.text,
+        nationalite: nationalite.toString(),
+        typeContrat: typeContrat.toString(),
+        departement: departement.toString(),
+        servicesAffectation: servicesAffectation.toString(),
+        dateDebutContrat: DateTime.parse(dateDebutContratController.text),
+        dateFinContrat: DateTime.parse(dateFinContratController.text),
+        fonctionOccupe: fonctionOccupe.toString(),
+        competance: competanceController.text,
+        experience: experienceController.text,
+        statutAgent: 'false',
+        createdAt: data.createdAt,
+        photo: '-',
+        salaire: salaireController.text,
+        signature: user.matricule.toString(),
+        created: DateTime.now());
 
-    await AgentsApi().updateData(data.id!, agentModel);
+    await AgentsApi().updateData(agentModel);
     Navigator.of(context).pop();
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
       content: const Text("Mis a jour agent avec succès!"),

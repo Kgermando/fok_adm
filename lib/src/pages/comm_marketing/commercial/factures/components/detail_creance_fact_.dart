@@ -53,7 +53,7 @@ class _DetailCreanceFactState extends State<DetailCreanceFact> {
       servicesAffectation: '-',
       fonctionOccupe: '-',
       role: '5',
-      isOnline: false,
+      isOnline: 'false',
       createdAt: DateTime.now(),
       passwordHash: '-',
       succursale: '-');

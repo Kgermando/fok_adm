@@ -1,12 +1,12 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:fokad_admin/src/api/auth/auth_api.dart'; 
+import 'package:fokad_admin/src/api/auth/auth_api.dart';
 import 'package:fokad_admin/src/api/finances/caisse_api.dart';
 import 'package:fokad_admin/src/api/finances/coupure_billet_api.dart';
 import 'package:fokad_admin/src/api/user/user_api.dart';
 import 'package:fokad_admin/src/constants/app_theme.dart';
-import 'package:fokad_admin/src/constants/responsive.dart'; 
+import 'package:fokad_admin/src/constants/responsive.dart';
 import 'package:fokad_admin/src/models/finances/caisse_model.dart';
 import 'package:fokad_admin/src/models/finances/coupure_billet_model.dart';
 import 'package:fokad_admin/src/models/users/user_model.dart';
@@ -27,7 +27,7 @@ class DetailCaisse extends StatefulWidget {
 }
 
 class _DetailCaisseState extends State<DetailCaisse> {
-  final GlobalKey<ScaffoldState> _key = GlobalKey(); 
+  final GlobalKey<ScaffoldState> _key = GlobalKey();
   bool isLoading = false;
   List<UserModel> userList = [];
 
@@ -38,7 +38,7 @@ class _DetailCaisseState extends State<DetailCaisse> {
 
   @override
   initState() {
-    getData(); 
+    getData();
     super.initState();
   }
 
@@ -52,7 +52,7 @@ class _DetailCaisseState extends State<DetailCaisse> {
       servicesAffectation: '-',
       fonctionOccupe: '-',
       role: '5',
-      isOnline: false,
+      isOnline: 'false',
       createdAt: DateTime.now(),
       passwordHash: '-',
       succursale: '-');
@@ -60,10 +60,10 @@ class _DetailCaisseState extends State<DetailCaisse> {
   List<CoupureBilletModel> coupureBilletList = [];
   List<CoupureBilletModel> coupureBilletFilter = [];
   Future<void> getData() async {
-    UserModel userModel = await AuthApi().getUserId(); 
+    UserModel userModel = await AuthApi().getUserId();
     final dataUser = await UserApi().getAllData();
     var coupureBillets = await CoupureBilletApi().getAllData();
-    setState(() { 
+    setState(() {
       user = userModel;
       userList = dataUser;
       coupureBilletFilter = coupureBillets;
@@ -97,7 +97,7 @@ class _DetailCaisseState extends State<DetailCaisse> {
                             coupureBilletList = coupureBilletFilter
                                 .where((element) =>
                                     element.reference == data!.createdRef)
-                                .toList(); 
+                                .toList();
                             return Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
@@ -120,13 +120,12 @@ class _DetailCaisseState extends State<DetailCaisse> {
                                   ],
                                 ),
                                 Expanded(
-                                    child: SingleChildScrollView( 
+                                    child: SingleChildScrollView(
                                         child: pageDetail(data!)))
                               ],
                             );
                           } else {
-                            return Center(
-                                child: loading());
+                            return Center(child: loading());
                           }
                         })),
               ),
@@ -151,7 +150,7 @@ class _DetailCaisseState extends State<DetailCaisse> {
               width: 2.0,
             ),
           ),
-          child: Column( 
+          child: Column(
             children: [
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -162,8 +161,7 @@ class _DetailCaisseState extends State<DetailCaisse> {
                       PrintWidget(
                           tooltip: 'Imprimer le document', onPressed: () {}),
                       SelectableText(
-                          DateFormat("dd-MM-yyyy HH:mm")
-                              .format(data.created),
+                          DateFormat("dd-MM-yyyy HH:mm").format(data.created),
                           textAlign: TextAlign.start),
                     ],
                   )
@@ -238,8 +236,10 @@ class _DetailCaisseState extends State<DetailCaisse> {
                     style: bodyMedium.copyWith(fontWeight: FontWeight.bold)),
               ),
               Expanded(
-                child: SelectableText("${NumberFormat.decimalPattern('fr').format(double.parse(data.montant))} \$",
-                    textAlign: TextAlign.start, style: bodyMedium),
+                child: SelectableText(
+                    "${NumberFormat.decimalPattern('fr').format(double.parse(data.montant))} \$",
+                    textAlign: TextAlign.start,
+                    style: bodyMedium),
               )
             ],
           ),
@@ -305,5 +305,4 @@ class _DetailCaisseState extends State<DetailCaisse> {
       ),
     );
   }
- 
 }

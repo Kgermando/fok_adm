@@ -82,7 +82,7 @@ class _DetailDevisState extends State<DetailDevis> {
       servicesAffectation: '-',
       fonctionOccupe: '-',
       role: '5',
-      isOnline: false,
+      isOnline: 'false',
       createdAt: DateTime.now(),
       passwordHash: '-',
       succursale: '-');
@@ -138,13 +138,14 @@ class _DetailDevisState extends State<DetailDevis> {
                             DevisModel? data = snapshot.data;
                             devisObjetList = devObjetList
                                 .where((element) =>
-                                    element.referenceDate.microsecondsSinceEpoch ==
+                                    element
+                                        .referenceDate.microsecondsSinceEpoch ==
                                     data!.createdRef.microsecondsSinceEpoch)
                                 .toList();
                             approbationData = approbList
-                                .where(
-                                  (element) => element.reference.microsecondsSinceEpoch 
-                                    == data!.created.microsecondsSinceEpoch)
+                                .where((element) =>
+                                    element.reference.microsecondsSinceEpoch ==
+                                    data!.created.microsecondsSinceEpoch)
                                 .toList();
 
                             if (approbationData.isNotEmpty) {
@@ -189,8 +190,7 @@ class _DetailDevisState extends State<DetailDevis> {
                               ],
                             );
                           } else {
-                            return Center(
-                                child: loading());
+                            return Center(child: loading());
                           }
                         })),
               ),
@@ -417,100 +417,102 @@ class _DetailDevisState extends State<DetailDevis> {
               width: 500,
               child: isLoadingBtn
                   ? loading()
-                  :  Form(
-                key: _formKey,
-                child: Column(
-                  children: [
-                    Row(
-                      children: [
-                        Expanded(
-                          flex: 1,
-                          child: Container(
-                              margin:
-                                  const EdgeInsets.only(bottom: p20, left: p20),
-                              child: TextFormField(
-                                decoration: InputDecoration(
-                                  border: OutlineInputBorder(
-                                      borderRadius:
-                                          BorderRadius.circular(10.0)),
-                                  labelText: 'Quantité',
-                                ),
-                                keyboardType: TextInputType.number,
-                                inputFormatters: <TextInputFormatter>[
-                                  FilteringTextInputFormatter.digitsOnly
-                                ],
-                                onChanged: (value) {
-                                  setState(() {
-                                    quantity =
-                                        (value == "") ? 1 : double.parse(value);
-                                  });
-                                },
-                              )),
-                        ),
-                        Expanded(
-                          flex: 3,
-                          child: Container(
-                              margin:
-                                  const EdgeInsets.only(bottom: p20, left: p20),
-                              child: TextFormField(
-                                controller: designationController,
-                                decoration: InputDecoration(
-                                  border: OutlineInputBorder(
-                                      borderRadius:
-                                          BorderRadius.circular(10.0)),
-                                  labelText: 'Désignation',
-                                ),
-                                keyboardType: TextInputType.text,
-                              )),
-                        ),
-                      ],
+                  : Form(
+                      key: _formKey,
+                      child: Column(
+                        children: [
+                          Row(
+                            children: [
+                              Expanded(
+                                flex: 1,
+                                child: Container(
+                                    margin: const EdgeInsets.only(
+                                        bottom: p20, left: p20),
+                                    child: TextFormField(
+                                      decoration: InputDecoration(
+                                        border: OutlineInputBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(10.0)),
+                                        labelText: 'Quantité',
+                                      ),
+                                      keyboardType: TextInputType.number,
+                                      inputFormatters: <TextInputFormatter>[
+                                        FilteringTextInputFormatter.digitsOnly
+                                      ],
+                                      onChanged: (value) {
+                                        setState(() {
+                                          quantity = (value == "")
+                                              ? 1
+                                              : double.parse(value);
+                                        });
+                                      },
+                                    )),
+                              ),
+                              Expanded(
+                                flex: 3,
+                                child: Container(
+                                    margin: const EdgeInsets.only(
+                                        bottom: p20, left: p20),
+                                    child: TextFormField(
+                                      controller: designationController,
+                                      decoration: InputDecoration(
+                                        border: OutlineInputBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(10.0)),
+                                        labelText: 'Désignation',
+                                      ),
+                                      keyboardType: TextInputType.text,
+                                    )),
+                              ),
+                            ],
+                          ),
+                          Row(
+                            children: [
+                              Expanded(
+                                child: Container(
+                                    margin: const EdgeInsets.only(
+                                        bottom: p20, left: p20),
+                                    child: TextFormField(
+                                      decoration: InputDecoration(
+                                        border: OutlineInputBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(10.0)),
+                                        labelText: 'Montant unitaire',
+                                      ),
+                                      keyboardType: TextInputType.number,
+                                      inputFormatters: <TextInputFormatter>[
+                                        FilteringTextInputFormatter.digitsOnly
+                                      ],
+                                      onChanged: (value) {
+                                        setState(() {
+                                          montantUnitaire = (value == "")
+                                              ? 1
+                                              : double.parse(value);
+                                        });
+                                      },
+                                    )),
+                              ),
+                              Expanded(
+                                child: Container(
+                                    margin: const EdgeInsets.only(
+                                        bottom: p20, left: p20),
+                                    child: Column(
+                                      children: [
+                                        Text("Montant global",
+                                            style: TextStyle(
+                                                color: Colors.red.shade700)),
+                                        Text(
+                                            "${NumberFormat.decimalPattern('fr').format(double.parse(montantGlobal.toStringAsFixed(2)))} \$",
+                                            style: TextStyle(
+                                                color: Colors.red.shade700)),
+                                      ],
+                                    )),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
                     ),
-                    Row(
-                      children: [
-                        Expanded(
-                          child: Container(
-                              margin:
-                                  const EdgeInsets.only(bottom: p20, left: p20),
-                              child: TextFormField(
-                                decoration: InputDecoration(
-                                  border: OutlineInputBorder(
-                                      borderRadius:
-                                          BorderRadius.circular(10.0)),
-                                  labelText: 'Montant unitaire',
-                                ),
-                                keyboardType: TextInputType.number,
-                                inputFormatters: <TextInputFormatter>[
-                                  FilteringTextInputFormatter.digitsOnly
-                                ],
-                                onChanged: (value) {
-                                  setState(() {
-                                    montantUnitaire =
-                                        (value == "") ? 1 : double.parse(value);
-                                  });
-                                },
-                              )),
-                        ),
-                        Expanded(
-                          child: Container(
-                              margin:
-                                  const EdgeInsets.only(bottom: p20, left: p20),
-                              child: Column(
-                                children: [
-                                  Text("Montant global",
-                                      style: TextStyle(
-                                          color: Colors.red.shade700)),
-                                  Text(
-                                      "${NumberFormat.decimalPattern('fr').format(double.parse(montantGlobal.toStringAsFixed(2)))} \$",
-                                      style: TextStyle(
-                                          color: Colors.red.shade700)),
-                                ],
-                              )),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-              ),
             );
           }),
           actions: <Widget>[
@@ -521,13 +523,13 @@ class _DetailDevisState extends State<DetailDevis> {
             TextButton(
               onPressed: () {
                 setState(() => isLoadingBtn = true);
-                 submitObjet(data);
+                submitObjet(data);
               },
               child: isLoadingBtn ? loadingMini() : const Text('OK'),
             ),
           ],
         ),
-      ), 
+      ),
     );
   }
 

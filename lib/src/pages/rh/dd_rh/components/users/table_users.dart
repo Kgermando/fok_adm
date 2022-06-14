@@ -263,10 +263,9 @@ class _TableUsersState extends State<TableUsers> {
 
     if (mounted) {
       setState(() {
-        for (var item in data) {
-          id = item!.id;
+        for (var item in data) { 
           rows.add(PlutoRow(cells: {
-            'id': PlutoCell(value: item.id),
+            'id': PlutoCell(value: item!.id),
             'nom': PlutoCell(value: item.nom),
             'prenom': PlutoCell(value: item.prenom),
             'matricule': PlutoCell(value: item.matricule),
@@ -278,9 +277,9 @@ class _TableUsersState extends State<TableUsers> {
             'role': PlutoCell(value: item.role),
             'succursale': PlutoCell(value: item.succursale),
             'isOnline':
-                PlutoCell(value: (item.isOnline) ? "En ligne" : "Offline"),
+                PlutoCell(value: (item.isOnline == 'true') ? "En ligne" : "Offline"),
             'createdAt': PlutoCell(
-                value: DateFormat("dd-MM-yy H:mm").format(item.createdAt))
+                value: DateFormat("dd-MM-yyyy HH:mm").format(item.createdAt))
           }));
         }
         stateManager!.resetCurrentState();

@@ -11,26 +11,26 @@ import 'package:fokad_admin/src/routes/routes.dart';
 import 'package:provider/provider.dart';
 import 'package:timeago/timeago.dart' as timeago;
 import 'package:url_strategy/url_strategy.dart';
-  
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   setPathUrlStrategy();
   timeago.setLocaleMessages('fr_short', timeago.FrShortMessages());
 
   UserModel user = UserModel(
-    nom: '-',
-    prenom: '-',
-    email: '-',
-    telephone: '-',
-    matricule: '-',
-    departement: '-',
-    servicesAffectation: '-',
-    fonctionOccupe: '-',
-    role: '5',
-    isOnline: false,
-    createdAt: DateTime.now(),
-    passwordHash: '-',
-    succursale: '-');
+      nom: '-',
+      prenom: '-',
+      email: '-',
+      telephone: '-',
+      matricule: '-',
+      departement: '-',
+      servicesAffectation: '-',
+      fonctionOccupe: '-',
+      role: '5',
+      isOnline: 'false',
+      createdAt: DateTime.now(),
+      passwordHash: '-',
+      succursale: '-');
   // final user = await AuthApi().getUserId();
 
   runApp(Phoenix(child: MyApp(user: user)));
@@ -42,7 +42,7 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-     String homeRoute = UserRoutes.login;
+    String homeRoute = UserRoutes.login;
 
     if (user.departement == "Administration") {
       if (double.parse(user.role) <= 2) {

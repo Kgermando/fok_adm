@@ -96,7 +96,7 @@ class _BudgetDDState extends State<BudgetDD> {
       }
 
       budgetDepCount = budgetDep
-          .where((element) => element.isSubmit == true)
+          .where((element) => element.isSubmit == 'true')
           .length;
     });
   }

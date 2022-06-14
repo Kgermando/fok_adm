@@ -80,7 +80,7 @@ class _PaiementBulletinState extends State<PaiementBulletin> {
       servicesAffectation: '-',
       fonctionOccupe: '-',
       role: '5',
-      isOnline: false,
+      isOnline: 'false',
       createdAt: DateTime.now(),
       passwordHash: '-',
       succursale: '-');
@@ -121,8 +121,9 @@ class _PaiementBulletinState extends State<PaiementBulletin> {
                     if (snapshot.hasData) {
                       PaiementSalaireModel? data = snapshot.data;
                       approbationData = approbList
-                          .where((element) => element.reference.microsecondsSinceEpoch == 
-                            data!.createdAt.microsecondsSinceEpoch)
+                          .where((element) =>
+                              element.reference.microsecondsSinceEpoch ==
+                              data!.createdAt.microsecondsSinceEpoch)
                           .toList();
 
                       if (approbationData.isNotEmpty) {
@@ -458,10 +459,10 @@ class _PaiementBulletinState extends State<PaiementBulletin> {
             const SizedBox(
               width: p10,
             ),
-            if (!data.observation && user.departement == "Finances")
+            if (data.observation == 'false' && user.departement == "Finances")
               Expanded(child: checkboxRead(data)),
             Expanded(
-                child: (data.observation)
+                child: (data.observation == 'true')
                     ? SelectableText(
                         'Payé',
                         style: bodyMedium.copyWith(
@@ -510,7 +511,7 @@ class _PaiementBulletinState extends State<PaiementBulletin> {
   }
 
   checkboxRead(PaiementSalaireModel data) {
-    isChecked = data.observation;
+    isChecked = false;
     return ListTile(
       leading: Checkbox(
         checkColor: Colors.white,
@@ -1770,7 +1771,7 @@ class _PaiementBulletinState extends State<PaiementBulletin> {
         matricule: data.matricule,
         servicesAffectation: data.servicesAffectation,
         salaire: data.salaire,
-        observation: isChecked,
+        observation: 'true',
         modePaiement: data.modePaiement,
         createdAt: data.createdAt,
         tauxJourHeureMoisSalaire: data.tauxJourHeureMoisSalaire,

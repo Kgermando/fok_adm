@@ -234,7 +234,7 @@ class _BudgetsPrevisionnelsState extends State<BudgetsPrevisionnels> {
       signature: signature.toString(),
       createdRef: DateTime.now(),
       created: DateTime.now(),
-      isSubmit: false
+      isSubmit: 'false'
     );
 
     await DepeartementBudgetApi().insertData(departementBudgetModel);

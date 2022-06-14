@@ -259,7 +259,7 @@ class _TableAgentAdminState extends State<TableAgentAdmin> {
 
   Future<void> agentsRow() async {
     List<AgentModel?> dataList = await AgentsApi().getAllData();
-    var data = dataList.where((element) => element!.statutAgent == false).toList();
+    var data = dataList.where((element) => element!.statutAgent == 'false').toList();
     if (mounted) {
       setState(() {
         for (var item in data) {
@@ -278,7 +278,7 @@ class _TableAgentAdminState extends State<TableAgentAdmin> {
             'departement': PlutoCell(value: item.departement),
             'servicesAffectation': PlutoCell(value: item.servicesAffectation),
             'statutAgent': PlutoCell(
-                value: (item.statutAgent)
+                value: (item.statutAgent == 'true')
                     ? Text('Actif',
                         style: TextStyle(color: Colors.green.shade700))
                     : Text('Inactif',

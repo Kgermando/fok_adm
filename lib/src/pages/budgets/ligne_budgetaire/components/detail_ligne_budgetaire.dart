@@ -89,7 +89,7 @@ class _DetailLigneBudgetaireState extends State<DetailLigneBudgetaire> {
       servicesAffectation: '-',
       fonctionOccupe: '-',
       role: '5',
-      isOnline: false,
+      isOnline: 'false',
       createdAt: DateTime.now(),
       passwordHash: '-',
       succursale: '-');

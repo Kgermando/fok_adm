@@ -41,16 +41,15 @@ class _EntrerPresenceState extends State<EntrerPresence> {
     super.dispose();
   }
 
-  List<UserModel> agentList = []; // User enregistrer dans le systeme
+  // List<UserModel> agentList = []; // User enregistrer dans le systeme
   List<PresenceEntrerModel> presenceAgentEntrerList = []; // prence agent sortie
   UserModel? user;
   Future<void> getData() async {
-    UserModel userModel = await AuthApi().getUserId();
-    var agents = await UserApi().getAllData();
+    UserModel userModel = await AuthApi().getUserId(); 
     var presenceEntrers = await PresenceEntrerApi().getAllData();
     setState(() {
       user = userModel;
-      agentList = agents;
+      // agentList = agents;
       presenceAgentEntrerList = presenceEntrers;
     });
   }
@@ -155,26 +154,48 @@ class _EntrerPresenceState extends State<EntrerPresence> {
     // Agents qui ne sont pas encore entrer
     List<UserModel> presenceUserList = [];
 
-    // Verification de l'agent si il est deja entrer aujourd'hui
+    // Verification de l'agent s'il est deja entrer aujourd'hui
     var presenceEntrerTodayList = presenceAgentEntrerList
         .where((element) =>
-            element.reference.microsecondsSinceEpoch ==
-            data.createdRef.microsecondsSinceEpoch)
+            element.reference.day ==
+            data.createdRef.day)
         .toList();
 
-    presenceUserList =
-        agentList.toSet().difference(presenceEntrerTodayList.toSet()).toList();
+    
+    return FutureBuilder<List<UserModel>>(
+        future: UserApi().getAllData(),
+        builder:
+            (BuildContext context, AsyncSnapshot<List<UserModel>> snapshot) {
+          if (snapshot.hasData) {
+            List<UserModel>? agentList = snapshot.data;
 
-    return SizedBox(
-      height: MediaQuery.of(context).size.height / 1.5,
-      child: ListView.builder(
-        itemCount: presenceUserList.length,
-        itemBuilder: (context, index) {
-          var agent = presenceUserList[index];
-          return dataListWidget(agent);
-        }
-      )
-    );
+          presenceUserList = agentList!
+              .toSet()
+              .difference(presenceEntrerTodayList.toSet())
+              .toList();
+
+          return agentList.isEmpty
+              ? Center(
+                  child: Text(
+                    'Aucun agent dans la liste.',
+                    style: Responsive.isDesktop(context)
+                        ? const TextStyle(fontSize: 24)
+                        : const TextStyle(fontSize: 16),
+                  ),
+                )
+              : SizedBox(
+              height: MediaQuery.of(context).size.height / 1.5,
+              child: ListView.builder(
+                  itemCount: presenceUserList.length,
+                  itemBuilder: (context, index) {
+                    var agent = presenceUserList[index];
+                    return dataListWidget(agent);
+                  }));
+          } else {
+            return Center(child: loading());
+          }
+          
+        });
   }
 
   Widget dataListWidget(UserModel agent) {
@@ -189,16 +210,18 @@ class _EntrerPresenceState extends State<EntrerPresence> {
           detailAgentDialog(agent);
         },
         trailing: isLoading
-          ? loadingMini()
-          : IconButton(
-              tooltip: "Validez l'entrer",
-              onPressed: () {
-                setState(() {
-                  isLoading = true;
-                });
-                submit(agent);
-              },
-              icon: Icon(Icons.send, color: Colors.amber.shade700)),
+            ? loadingMini()
+            : IconButton(
+                tooltip: "Validez l'entrer",
+                onPressed: () {
+                  setState(() {
+                    isLoading = true;
+                  });
+                  submit(agent).then((value) => setState(() {
+                        isLoading = false;
+                      }));
+                },
+                icon: Icon(Icons.send, color: Colors.amber.shade700)),
       ),
     );
   }

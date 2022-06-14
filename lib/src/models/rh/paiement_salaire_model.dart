@@ -10,7 +10,7 @@ class PaiementSalaireModel {
   late String matricule;
   late String servicesAffectation;
   late String salaire;
-  late bool observation; // Payé ou non Payé  // pour Finance
+  late String observation; // Payé ou non Payé  // pour Finance
   late String modePaiement; // mode depayement
   late DateTime createdAt; 
   late String tauxJourHeureMoisSalaire;
@@ -150,7 +150,7 @@ class PaiementSalaireModel {
         matricule: json['matricule'],
         servicesAffectation: json['servicesAffectation'],
         salaire: json['salaire'],
-        observation: bool.hasEnvironment(json['observation']),
+        observation: json['observation'],
         modePaiement: json['modePaiement'],
         createdAt: DateTime.parse(json['createdAt']),
         tauxJourHeureMoisSalaire: json['tauxJourHeureMoisSalaire'],

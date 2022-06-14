@@ -10,7 +10,6 @@ import 'package:fokad_admin/src/navigation/header/custom_appbar.dart';
 import 'package:fokad_admin/src/pages/comm_marketing/commercial/stocks_global/components/list_stock_global.dart';
 import 'package:fokad_admin/src/routes/routes.dart';
 
-
 class StockGlobalPage extends StatefulWidget {
   const StockGlobalPage({Key? key}) : super(key: key);
 
@@ -38,11 +37,11 @@ class _StockGlobalPageState extends State<StockGlobalPage> {
       servicesAffectation: '-',
       fonctionOccupe: '-',
       role: '5',
-      isOnline: false,
+      isOnline: 'false',
       createdAt: DateTime.now(),
       passwordHash: '-',
       succursale: '-');
-      
+
   Future<void> getData() async {
     UserModel userModel = await AuthApi().getUserId();
     setState(() {

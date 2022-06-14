@@ -387,7 +387,7 @@ class _LoginPageState extends State<LoginPage> {
         servicesAffectation: user.servicesAffectation,
         fonctionOccupe: user.fonctionOccupe,
         role: user.role,
-        isOnline: true,
+        isOnline: 'true',
         createdAt: user.createdAt,
         passwordHash: user.passwordHash,
         succursale: user.succursale);

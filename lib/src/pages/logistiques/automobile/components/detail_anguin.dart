@@ -9,7 +9,7 @@ import 'package:fokad_admin/src/models/approbation/approbation_model.dart';
 import 'package:fokad_admin/src/models/logistiques/anguin_model.dart';
 import 'package:fokad_admin/src/models/users/user_model.dart';
 import 'package:fokad_admin/src/navigation/drawer/drawer_menu.dart';
-import 'package:fokad_admin/src/navigation/header/custom_appbar.dart'; 
+import 'package:fokad_admin/src/navigation/header/custom_appbar.dart';
 import 'package:fokad_admin/src/routes/routes.dart';
 import 'package:fokad_admin/src/utils/loading.dart';
 import 'package:fokad_admin/src/widgets/print_widget.dart';
@@ -24,7 +24,7 @@ class DetailAnguin extends StatefulWidget {
 }
 
 class _DetailAnguinState extends State<DetailAnguin> {
-  final GlobalKey<ScaffoldState> _key = GlobalKey(); 
+  final GlobalKey<ScaffoldState> _key = GlobalKey();
   bool isLoading = false;
 
   String approbationDGController = '-';
@@ -62,7 +62,7 @@ class _DetailAnguinState extends State<DetailAnguin> {
       servicesAffectation: '-',
       fonctionOccupe: '-',
       role: '5',
-      isOnline: false,
+      isOnline: 'false',
       createdAt: DateTime.now(),
       passwordHash: '-',
       succursale: '-');
@@ -83,27 +83,27 @@ class _DetailAnguinState extends State<DetailAnguin> {
         key: _key,
         drawer: const DrawerMenu(),
         floatingActionButton: FutureBuilder<AnguinModel>(
-          future: AnguinApi().getOneData(id),
-          builder:
-              (BuildContext context, AsyncSnapshot<AnguinModel> snapshot) {
-            if (snapshot.hasData) {
-              AnguinModel? data = snapshot.data;
-              return FloatingActionButton(
-          child: Row(
-            children: const [
-              Icon(Icons.add),
-              Icon(Icons.place),
-            ],
-          ),
-          onPressed: () {
-            Navigator.pushNamed(
-              context, LogistiqueRoutes.logAddTrajetAuto,
-                          arguments: data); 
-          });
-            } else {
-              return loadingMini();
-            }
-          }),
+            future: AnguinApi().getOneData(id),
+            builder:
+                (BuildContext context, AsyncSnapshot<AnguinModel> snapshot) {
+              if (snapshot.hasData) {
+                AnguinModel? data = snapshot.data;
+                return FloatingActionButton(
+                    child: Row(
+                      children: const [
+                        Icon(Icons.add),
+                        Icon(Icons.place),
+                      ],
+                    ),
+                    onPressed: () {
+                      Navigator.pushNamed(
+                          context, LogistiqueRoutes.logAddTrajetAuto,
+                          arguments: data);
+                    });
+              } else {
+                return loadingMini();
+              }
+            }),
         body: SafeArea(
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -123,8 +123,8 @@ class _DetailAnguinState extends State<DetailAnguin> {
                           if (snapshot.hasData) {
                             AnguinModel? data = snapshot.data;
                             approbationData = approbList
-                                .where(
-                                    (element) => element.reference.microsecondsSinceEpoch == 
+                                .where((element) =>
+                                    element.reference.microsecondsSinceEpoch ==
                                     data!.created.microsecondsSinceEpoch)
                                 .toList();
                             if (approbationData.isNotEmpty) {
@@ -169,8 +169,7 @@ class _DetailAnguinState extends State<DetailAnguin> {
                               ],
                             );
                           } else {
-                            return Center(
-                                child: loading());
+                            return Center(child: loading());
                           }
                         })),
               ),
@@ -195,7 +194,7 @@ class _DetailAnguinState extends State<DetailAnguin> {
               width: 2.0,
             ),
           ),
-          child: Column( 
+          child: Column(
             children: [
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -401,7 +400,8 @@ class _DetailAnguinState extends State<DetailAnguin> {
               Expanded(
                 flex: 3,
                 child: SelectableText(data.nomeroEntreprise,
-                    textAlign: TextAlign.start, style: bodyMedium.copyWith(color: Colors.blueGrey)),
+                    textAlign: TextAlign.start,
+                    style: bodyMedium.copyWith(color: Colors.blueGrey)),
               )
             ],
           ),

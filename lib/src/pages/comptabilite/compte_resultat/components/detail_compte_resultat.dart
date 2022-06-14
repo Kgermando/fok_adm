@@ -9,7 +9,7 @@ import 'package:fokad_admin/src/models/approbation/approbation_model.dart';
 import 'package:fokad_admin/src/models/comptabilites/compte_resultat_model.dart';
 import 'package:fokad_admin/src/models/users/user_model.dart';
 import 'package:fokad_admin/src/navigation/drawer/drawer_menu.dart';
-import 'package:fokad_admin/src/navigation/header/custom_appbar.dart'; 
+import 'package:fokad_admin/src/navigation/header/custom_appbar.dart';
 import 'package:fokad_admin/src/routes/routes.dart';
 import 'package:fokad_admin/src/widgets/print_widget.dart';
 import 'package:fokad_admin/src/widgets/title_widget.dart';
@@ -68,7 +68,7 @@ class _DetailCompteResultatState extends State<DetailCompteResultat> {
       servicesAffectation: '-',
       fonctionOccupe: '-',
       role: '5',
-      isOnline: false,
+      isOnline: 'false',
       createdAt: DateTime.now(),
       passwordHash: '-',
       succursale: '-');
@@ -256,9 +256,9 @@ class _DetailCompteResultatState extends State<DetailCompteResultat> {
             ),
             TextButton(
               onPressed: () {
-                 Navigator.pushNamed(context,
+                Navigator.pushNamed(context,
                     ComptabiliteRoutes.comptabiliteCompteResultatUpdate,
-                    arguments: data);  
+                    arguments: data);
               },
               child: const Text('OK'),
             ),

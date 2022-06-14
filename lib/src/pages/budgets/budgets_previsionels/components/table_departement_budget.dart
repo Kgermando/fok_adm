@@ -184,7 +184,7 @@ class _TableDepartementBudgetState extends State<TableDepartementBudget> {
                       item.fontctionOccupee == 'Directeur générale' &&
                       item.approbation == "Approved" ||
                   element.signature == userModel.matricule ||
-                  element.isSubmit == false)
+                  element.isSubmit == 'false')
               .toList();
         }
       } else {
@@ -193,7 +193,7 @@ class _TableDepartementBudgetState extends State<TableDepartementBudget> {
                 DateTime.now().millisecondsSinceEpoch <=
                         element!.periodeFin.millisecondsSinceEpoch &&
                     element.signature == userModel.matricule ||
-                element.isSubmit == false)
+                element.isSubmit == 'false')
             .toList();
       }
     } else {
@@ -202,7 +202,7 @@ class _TableDepartementBudgetState extends State<TableDepartementBudget> {
               DateTime.now().millisecondsSinceEpoch <=
                       element!.periodeFin.millisecondsSinceEpoch &&
                   element.signature == userModel.matricule ||
-              element.isSubmit == false)
+              element.isSubmit == 'false')
           .toList();
     }
 

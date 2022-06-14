@@ -48,7 +48,7 @@ class _DetailJournalState extends State<DetailJournal> {
       servicesAffectation: '-',
       fonctionOccupe: '-',
       role: '5',
-      isOnline: false,
+      isOnline: 'false',
       createdAt: DateTime.now(),
       passwordHash: '-',
       succursale: '-');
@@ -98,8 +98,9 @@ class _DetailJournalState extends State<DetailJournal> {
                           if (snapshot.hasData) {
                             JournalModel? data = snapshot.data;
                             approbationData = approbList
-                                .where(
-                                    (element) => element.reference.microsecondsSinceEpoch == data!.created.microsecondsSinceEpoch)
+                                .where((element) =>
+                                    element.reference.microsecondsSinceEpoch ==
+                                    data!.created.microsecondsSinceEpoch)
                                 .toList();
 
                             if (approbationData.isNotEmpty) {
@@ -813,18 +814,17 @@ class _DetailJournalState extends State<DetailJournal> {
 
   Future<void> submitCorbeille(JournalModel data) async {
     final journalModel = JournalModel(
-      numeroOperation: data.numeroOperation,
-      libele: data.libele,
-      compteDebit: data.compteDebit,
-      montantDebit: data.montantDebit,
-      compteCredit: data.compteCredit,
-      montantCredit: data.montantCredit,
-      tva: data.tva,
-      remarque: data.remarque,
-      signature: data.signature,
-      createdRef: data.created,
-      created: DateTime.now()
-    );
+        numeroOperation: data.numeroOperation,
+        libele: data.libele,
+        compteDebit: data.compteDebit,
+        montantDebit: data.montantDebit,
+        compteCredit: data.compteCredit,
+        montantCredit: data.montantCredit,
+        tva: data.tva,
+        remarque: data.remarque,
+        signature: data.signature,
+        createdRef: data.created,
+        created: DateTime.now());
     await JournalApi().updateData(data.id!, journalModel);
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
       content: const Text("Mise en corbeille avec succès!"),

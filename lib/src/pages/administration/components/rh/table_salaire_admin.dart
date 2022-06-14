@@ -209,7 +209,7 @@ class _TableSalaireAdminState extends State<TableSalaireAdmin> {
     List<PaiementSalaireModel?> dataList =
         await PaiementSalaireApi().getAllData();
     var data = dataList
-        .where((element) => element!.observation == false)
+        .where((element) => element!.observation == 'false')
         .toList();
 
     if (mounted) {
@@ -224,7 +224,7 @@ class _TableSalaireAdminState extends State<TableSalaireAdmin> {
             'departement': PlutoCell(value: item.departement),
             'salaire': PlutoCell(value: item.salaire),
             'observation': PlutoCell(
-                value: (item.observation == true) ? "Payé" : "Non payé"),
+                value: (item.observation == 'true') ? "Payé" : "Non payé"),
             'modePaiement': PlutoCell(value: item.modePaiement),
             'createdAt': PlutoCell(
                 value: DateFormat("DD-MM-yy HH:mm").format(item.createdAt))

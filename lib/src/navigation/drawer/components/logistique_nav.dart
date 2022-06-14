@@ -54,7 +54,7 @@ class _LogistiqueNavState extends State<LogistiqueNav> {
       servicesAffectation: '-',
       fonctionOccupe: '-',
       role: '5',
-      isOnline: false,
+      isOnline: 'false',
       createdAt: DateTime.now(),
       passwordHash: '-',
       succursale: '-');
@@ -105,7 +105,8 @@ class _LogistiqueNavState extends State<LogistiqueNav> {
             return ExpansionTile(
               leading: const Icon(Icons.brightness_low, size: 30.0),
               title: AutoSizeText('Logistique', maxLines: 1, style: bodyLarge),
-              initiallyExpanded: (user.departement == 'Logistique') ? true : false,
+              initiallyExpanded:
+                  (user.departement == 'Logistique') ? true : false,
               onExpansionChanged: (val) {
                 setState(() {
                   isOpen = !val;
@@ -267,13 +268,15 @@ class _LogistiqueNavState extends State<LogistiqueNav> {
                 ),
                 if (userRole <= 2)
                   DrawerWidget(
-                      selected: widget.pageCurrente == LogistiqueRoutes.logEtatBesoin,
+                      selected:
+                          widget.pageCurrente == LogistiqueRoutes.logEtatBesoin,
                       icon: Icons.note_alt,
                       sizeIcon: 20.0,
                       title: 'Etat besoin',
                       style: bodyText1!,
                       onTap: () {
-                        Navigator.pushNamed(context, LogistiqueRoutes.logEtatBesoin);
+                        Navigator.pushNamed(
+                            context, LogistiqueRoutes.logEtatBesoin);
                         // Navigator.of(context).pop();
                       }),
                 DrawerWidget(

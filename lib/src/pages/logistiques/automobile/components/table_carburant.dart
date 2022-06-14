@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fokad_admin/src/api/logistiques/carburant_api.dart';
-import 'package:fokad_admin/src/models/logistiques/carburant_model.dart';
-import 'package:fokad_admin/src/pages/logistiques/automobile/components/detail_carburant.dart';
+import 'package:fokad_admin/src/models/logistiques/carburant_model.dart'; 
 import 'package:fokad_admin/src/routes/routes.dart';
 import 'package:fokad_admin/src/utils/class_implemented.dart';
 import 'package:fokad_admin/src/widgets/print_widget.dart';

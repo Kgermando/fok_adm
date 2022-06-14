@@ -44,7 +44,7 @@ class _ComMarketingState extends State<ComMarketing> {
       servicesAffectation: '-',
       fonctionOccupe: '-',
       role: '5',
-      isOnline: false,
+      isOnline: 'false',
       createdAt: DateTime.now(),
       passwordHash: '-',
       succursale: '-');
@@ -80,7 +80,9 @@ class _ComMarketingState extends State<ComMarketing> {
               leading: const Icon(Icons.store, size: 30.0),
               title: AutoSizeText('Comm. & Marketing',
                   maxLines: 1, style: bodyLarge),
-              initiallyExpanded: (user.departement == 'Commercial et Marketing') ? true : false,
+              initiallyExpanded: (user.departement == 'Commercial et Marketing')
+                  ? true
+                  : false,
               onExpansionChanged: (val) {
                 setState(() {
                   isOpenComMarketing1 = !val;
@@ -328,15 +330,18 @@ class _ComMarketingState extends State<ComMarketing> {
                           // Navigator.of(context).pop();
                         }),
                   ],
-                ),if (userRole <= 2)
+                ),
+                if (userRole <= 2)
                   DrawerWidget(
-                      selected: widget.pageCurrente == ComMarketingRoutes.comMarketingEtatBesoin,
+                      selected: widget.pageCurrente ==
+                          ComMarketingRoutes.comMarketingEtatBesoin,
                       icon: Icons.note_alt,
                       sizeIcon: 20.0,
                       title: 'Etat besoin',
                       style: bodyText1!,
                       onTap: () {
-                        Navigator.pushNamed(context, ComMarketingRoutes.comMarketingEtatBesoin);
+                        Navigator.pushNamed(
+                            context, ComMarketingRoutes.comMarketingEtatBesoin);
                         // Navigator.of(context).pop();
                       }),
                 DrawerWidget(

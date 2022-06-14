@@ -125,9 +125,9 @@ class _AdministrationNavState extends State<AdministrationNav> {
 
         // RH
         agentInactifs =
-            agents.where((element) => element.statutAgent == false).length;
+            agents.where((element) => element.statutAgent == 'false').length;
         salaireCount =
-            salaires.where((element) => element.observation == false).length;
+            salaires.where((element) => element.observation == 'false').length;
 
         // Finances
         creanceCount = creances

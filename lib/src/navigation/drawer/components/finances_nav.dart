@@ -52,7 +52,7 @@ class _FinancesNavState extends State<FinancesNav> {
       servicesAffectation: '-',
       fonctionOccupe: '-',
       role: '5',
-      isOnline: false,
+      isOnline: 'false',
       createdAt: DateTime.now(),
       passwordHash: '-',
       succursale: '-');
@@ -152,7 +152,8 @@ class _FinancesNavState extends State<FinancesNav> {
             return ExpansionTile(
               leading: const Icon(Icons.account_balance, size: 30.0),
               title: AutoSizeText('Finances', maxLines: 1, style: bodyLarge),
-              initiallyExpanded: (user.departement == 'Finances') ? true : false,
+              initiallyExpanded:
+                  (user.departement == 'Finances') ? true : false,
               onExpansionChanged: (val) {
                 setState(() {
                   isOpen = !val;
@@ -268,13 +269,15 @@ class _FinancesNavState extends State<FinancesNav> {
                 ),
                 if (userRole <= 2)
                   DrawerWidget(
-                      selected: widget.pageCurrente == FinanceRoutes.finEtatBesoin,
+                      selected:
+                          widget.pageCurrente == FinanceRoutes.finEtatBesoin,
                       icon: Icons.note_alt,
                       sizeIcon: 20.0,
                       title: 'Etat besoin',
                       style: bodyText1!,
                       onTap: () {
-                        Navigator.pushNamed(context, FinanceRoutes.finEtatBesoin);
+                        Navigator.pushNamed(
+                            context, FinanceRoutes.finEtatBesoin);
                         // Navigator.of(context).pop();
                       }),
                 DrawerWidget(
