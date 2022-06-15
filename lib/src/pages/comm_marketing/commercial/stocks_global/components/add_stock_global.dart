@@ -60,12 +60,14 @@ class _AddStockGlobalState extends State<AddStockGlobal> {
     var stockGlobal = await StockGlobalApi().getAllData();
     var approbations = await ApprobationApi().getAllData();
 
+    if (!mounted) return;
     setState(() {
       signature = userModel.matricule;
       for (var item in approbations) {
         idProductDropdown = produitModel
             .where((element) =>
-                element.created.microsecondsSinceEpoch == item.reference.microsecondsSinceEpoch &&
+                element.created.microsecondsSinceEpoch ==
+                    item.reference.microsecondsSinceEpoch &&
                 item.approbation == 'Approved')
             .toList();
       }

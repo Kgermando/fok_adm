@@ -183,6 +183,18 @@ class _ComMarketingState extends State<ComMarketing> {
                   },
                   children: [
                     DrawerWidget(
+                      selected: widget.pageCurrente ==
+                          ComMarketingRoutes.comMarketingSuccursale,
+                      icon: Icons.arrow_right,
+                      sizeIcon: 15.0,
+                      title: 'Succursale',
+                      style: bodyText2,
+                      onTap: () {
+                        Navigator.pushNamed(context,
+                            ComMarketingRoutes.comMarketingSuccursale);
+                        // Navigator.of(context).pop();
+                      }),
+                    DrawerWidget(
                         selected: widget.pageCurrente ==
                             ComMarketingRoutes.comMarketingProduitModel,
                         icon: Icons.arrow_right,
@@ -204,18 +216,6 @@ class _ComMarketingState extends State<ComMarketing> {
                         onTap: () {
                           Navigator.pushNamed(context,
                               ComMarketingRoutes.comMarketingStockGlobal);
-                          // Navigator.of(context).pop();
-                        }),
-                    DrawerWidget(
-                        selected: widget.pageCurrente ==
-                            ComMarketingRoutes.comMarketingSuccursale,
-                        icon: Icons.arrow_right,
-                        sizeIcon: 15.0,
-                        title: 'Succursale',
-                        style: bodyText2,
-                        onTap: () {
-                          Navigator.pushNamed(context,
-                              ComMarketingRoutes.comMarketingSuccursale);
                           // Navigator.of(context).pop();
                         }),
                     DrawerWidget(

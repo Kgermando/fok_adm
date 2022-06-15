@@ -38,6 +38,7 @@ import 'package:fokad_admin/src/pages/comm_marketing/commercial/restitutions/res
 import 'package:fokad_admin/src/pages/comm_marketing/commercial/stocks_global/components/add_stock_global.dart';
 import 'package:fokad_admin/src/pages/comm_marketing/commercial/stocks_global/stocks_global_page.dart';
 import 'package:fokad_admin/src/pages/comm_marketing/commercial/succursale/components/add_succursale.dart';
+import 'package:fokad_admin/src/pages/comm_marketing/commercial/succursale/components/detail_succurssale.dart';
 import 'package:fokad_admin/src/pages/comm_marketing/commercial/succursale/succursale_page.dart';
 import 'package:fokad_admin/src/pages/comm_marketing/commercial/ventes/ventes_page.dart';
 import 'package:fokad_admin/src/pages/comm_marketing/dashboard/dashboard_com_marketing.dart';
@@ -346,6 +347,7 @@ class ComMarketingRoutes {
   static const comMarketingStockGlobal = "/com-marketing-stock-global";
   static const comMarketingStockGlobalAdd = "/com-marketing-stock-global-add";
   static const comMarketingSuccursale = "/com-marketing-succursale";
+  static const comMarketingSuccursaleDetail = "/com-marketing-succursale-detail";
   static const comMarketingSuccursaleAdd = "/com-marketing-succursale-add";
   static const comMarketingAchat = "/com-marketing-achat";
   static const comMarketingBonLivraison = "/com-marketing-bon-livraison";
@@ -558,6 +560,8 @@ final routes = <String, WidgetBuilder>{
   ComMarketingRoutes.comMarketingStockGlobalAdd: (context) =>const AddStockGlobal(),
   ComMarketingRoutes.comMarketingSuccursale: (context) =>const SuccursalePage(),
   ComMarketingRoutes.comMarketingSuccursaleAdd: (context) =>const AddSurrsale(),
+  ComMarketingRoutes.comMarketingSuccursaleDetail: (context) =>
+      const DetailSuccursale(),
   ComMarketingRoutes.comMarketingAchat: (context) =>const AchatsPage(),
   ComMarketingRoutes.comMarketingBonLivraison: (context) =>const BonLivraisonPage(),
   ComMarketingRoutes.comMarketingRestitution: (context) =>const RestitutionPage(),

@@ -20,21 +20,20 @@ import 'package:fokad_admin/src/models/users/user_model.dart';
 import 'package:fokad_admin/src/navigation/drawer/drawer_menu.dart';
 import 'package:fokad_admin/src/navigation/header/custom_appbar.dart';
 import 'package:fokad_admin/src/pages/comm_marketing/commercial/succursale/components/stats_succusale.dart';
+import 'package:fokad_admin/src/utils/loading.dart';
 import 'package:fokad_admin/src/widgets/print_widget.dart';
 import 'package:fokad_admin/src/widgets/title_widget.dart';
 import 'package:intl/intl.dart';
 
 class DetailSuccursale extends StatefulWidget {
-  const DetailSuccursale({Key? key, required this.id}) : super(key: key);
-  final int id;
+  const DetailSuccursale({Key? key}) : super(key: key);
 
   @override
   State<DetailSuccursale> createState() => _DetailSuccursaleState();
 }
 
 class _DetailSuccursaleState extends State<DetailSuccursale> {
-  final GlobalKey<ScaffoldState> _key = GlobalKey();
-  final ScrollController _controllerScroll = ScrollController();
+  final GlobalKey<ScaffoldState> _key = GlobalKey(); 
   bool isLoading = false;
 
   DateTimeRange? dateRange;
@@ -127,6 +126,7 @@ class _DetailSuccursaleState extends State<DetailSuccursale> {
 
   @override
   Widget build(BuildContext context) {
+    SuccursaleModel succursaleModel = ModalRoute.of(context)!.settings.arguments as SuccursaleModel;
     return Scaffold(
         key: _key,
         drawer: const DrawerMenu(),
@@ -143,7 +143,7 @@ class _DetailSuccursaleState extends State<DetailSuccursale> {
                 child: Padding(
                     padding: const EdgeInsets.all(p10),
                     child: FutureBuilder<SuccursaleModel>(
-                        future: SuccursaleApi().getOneData(widget.id),
+                        future: SuccursaleApi().getOneData(succursaleModel.id!),
                         builder: (BuildContext context,
                             AsyncSnapshot<SuccursaleModel> snapshot) {
                           if (snapshot.hasData) {
@@ -198,8 +198,8 @@ class _DetailSuccursaleState extends State<DetailSuccursale> {
                               ],
                             );
                           } else {
-                            return const Center(
-                                child: CircularProgressIndicator());
+                            return Center(
+                                child: loading());
                           }
                         })),
               ),
@@ -224,8 +224,7 @@ class _DetailSuccursaleState extends State<DetailSuccursale> {
               width: 2.0,
             ),
           ),
-          child: ListView(
-            controller: _controllerScroll,
+          child: Column( 
             children: [
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -237,7 +236,7 @@ class _DetailSuccursaleState extends State<DetailSuccursale> {
                         children: [
                           PrintWidget(
                             tooltip: 'Imprimer le document',
-                            onPressed: () async {},
+                            onPressed: () {},
                           )
                         ],
                       ),
