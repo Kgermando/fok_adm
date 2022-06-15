@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:fokad_admin/src/api/approbation/approbation_api.dart';
 import 'package:fokad_admin/src/api/auth/auth_api.dart';
 import 'package:fokad_admin/src/api/comptabilite/balance_compte_api.dart';
+import 'package:fokad_admin/src/api/comptabilite/compte_balance_ref_api.dart';
 import 'package:fokad_admin/src/constants/app_theme.dart';
 import 'package:fokad_admin/src/constants/responsive.dart';
 import 'package:fokad_admin/src/models/approbation/approbation_model.dart';
@@ -10,6 +11,8 @@ import 'package:fokad_admin/src/models/comptabilites/balance_comptes_model.dart'
 import 'package:fokad_admin/src/models/users/user_model.dart';
 import 'package:fokad_admin/src/navigation/drawer/drawer_menu.dart';
 import 'package:fokad_admin/src/navigation/header/custom_appbar.dart';
+import 'package:fokad_admin/src/routes/routes.dart';
+import 'package:fokad_admin/src/utils/loading.dart';
 import 'package:fokad_admin/src/widgets/print_widget.dart';
 import 'package:fokad_admin/src/widgets/title_widget.dart';
 import 'package:intl/intl.dart';
@@ -24,6 +27,8 @@ class DetailBalance extends StatefulWidget {
 class _DetailBalanceState extends State<DetailBalance> {
   final GlobalKey<ScaffoldState> _key = GlobalKey();
   bool isLoading = false;
+  bool isLoadingDelete = false;
+  bool isLoadingSend = false;
 
   String approbationDGController = '-';
   TextEditingController signatureJustificationDGController =
@@ -77,6 +82,25 @@ class _DetailBalanceState extends State<DetailBalance> {
     return Scaffold(
         key: _key,
         drawer: const DrawerMenu(),
+        floatingActionButton: FutureBuilder<BalanceCompteModel>(
+            future: BalanceCompteApi().getOneData(id),
+            builder: (BuildContext context,
+                AsyncSnapshot<BalanceCompteModel> snapshot) {
+              if (snapshot.hasData) {
+                BalanceCompteModel? data = snapshot.data;
+                return (data!.isSubmit == 'true')
+                    ? Container()
+                    : FloatingActionButton(
+                        child: const Icon(Icons.add),
+                        onPressed: () {
+                          Navigator.pushNamed(context,
+                              ComptabiliteRoutes.comptabiliteBalanceAdd,
+                              arguments: data);
+                        });
+              } else {
+                return loadingMini();
+              }
+            }),
         body: SafeArea(
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -145,8 +169,8 @@ class _DetailBalanceState extends State<DetailBalance> {
                               ],
                             );
                           } else {
-                            return const Center(
-                                child: CircularProgressIndicator());
+                            return Center(
+                                child: loading());
                           }
                         })),
               ),
@@ -181,6 +205,7 @@ class _DetailBalanceState extends State<DetailBalance> {
                     children: [
                       Row(
                         children: [
+                          sendButton(data),
                           deleteButton(data),
                           PrintWidget(
                               tooltip: 'Imprimer le document',
@@ -208,91 +233,102 @@ class _DetailBalanceState extends State<DetailBalance> {
 
   Widget totalMontant(BalanceCompteModel data) {
     final headline6 = Theme.of(context).textTheme.headline6;
-    double totalDebit = 0.0;
-    double totalCredit = 0.0;
-    double totalSolde = 0.0;
+    
+    return FutureBuilder<List<CompteBalanceRefModel>>(
+      future: CompteBalanceRefApi().getAllData(),
+      builder: (BuildContext context,
+        AsyncSnapshot<List<CompteBalanceRefModel>> snapshot) {
+          if (snapshot.hasData) {
+            List<CompteBalanceRefModel>? dataList = snapshot.data!
+                .where((element) =>
+                    element.reference.microsecondsSinceEpoch ==
+                    data.createdRef.microsecondsSinceEpoch)
+                .toList();
+            double totalDebit = 0.0;
+            double totalCredit = 0.0;
+            double totalSolde = 0.0;
 
-    List<CompteBalanceRef> dataList = [];
-    // var comptesList = data.comptes.toList();
-    // for (var item in comptesList) {
-    //   dataList.add(CompteBalance.fromJson(item));
-    // }
+            for (var item in dataList) {
+              totalDebit += double.parse(item.debit);
+              totalCredit += double.parse(item.credit);
+              totalSolde += item.solde;
+              
+              print("item.debit ${item.debit} ");
+            } 
 
-    for (var item in dataList) {
-      totalDebit += double.parse(item.debit);
-    }
-    for (var item in dataList) {
-      totalCredit += double.parse(item.credit);
-    }
-    for (var item in dataList) {
-      totalSolde += item.solde;
-    }
-
-    return Padding(
-      padding: const EdgeInsets.all(p10),
-      child: Column(
-        children: [
-          Row(
-            children: [
-              Expanded(
-                flex: 3,
-                child: Text("TOTAL :",
-                    textAlign: TextAlign.start,
-                    style: headline6!.copyWith(fontWeight: FontWeight.bold)),
+            return Padding(
+              padding: const EdgeInsets.all(p10),
+              child: Column(
+                children: [
+                  Row(
+                    children: [
+                      Expanded(
+                        flex: 3,
+                        child: Text("TOTAL :",
+                            textAlign: TextAlign.start,
+                            style: headline6!
+                                .copyWith(fontWeight: FontWeight.bold)),
+                      ),
+                      Expanded(
+                        flex: 1,
+                        child: Container(
+                          decoration: BoxDecoration(
+                              border: Border(
+                            left: BorderSide(
+                              color: Colors.amber.shade700,
+                              width: 2,
+                            ),
+                          )),
+                          child: SelectableText(
+                              "${NumberFormat.decimalPattern('fr').format(totalDebit)} \$",
+                              textAlign: TextAlign.center,
+                              style: headline6.copyWith(
+                                  fontWeight: FontWeight.bold)),
+                        ),
+                      ),
+                      Expanded(
+                        flex: 1,
+                        child: Container(
+                          decoration: BoxDecoration(
+                              border: Border(
+                            left: BorderSide(
+                              color: Colors.amber.shade700,
+                              width: 2,
+                            ),
+                          )),
+                          child: SelectableText(
+                              "${NumberFormat.decimalPattern('fr').format(totalCredit)} \$",
+                              textAlign: TextAlign.center,
+                              style: headline6.copyWith(
+                                  fontWeight: FontWeight.bold)),
+                        ),
+                      ),
+                      Expanded(
+                        flex: 1,
+                        child: Container(
+                          decoration: BoxDecoration(
+                              border: Border(
+                            left: BorderSide(
+                              color: Colors.amber.shade700,
+                              width: 2,
+                            ),
+                          )),
+                          child: SelectableText(
+                              "${NumberFormat.decimalPattern('fr').format(totalSolde)} \$",
+                              textAlign: TextAlign.center,
+                              style: headline6.copyWith(
+                                  fontWeight: FontWeight.bold)),
+                        ),
+                      )
+                    ],
+                  ),
+                ],
               ),
-              Expanded(
-                flex: 1,
-                child: Container(
-                  decoration: BoxDecoration(
-                      border: Border(
-                    left: BorderSide(
-                      color: Colors.amber.shade700,
-                      width: 2,
-                    ),
-                  )),
-                  child: SelectableText(
-                      "${NumberFormat.decimalPattern('fr').format(totalDebit)} \$",
-                      textAlign: TextAlign.center,
-                      style: headline6.copyWith(fontWeight: FontWeight.bold)),
-                ),
-              ),
-              Expanded(
-                flex: 1,
-                child: Container(
-                  decoration: BoxDecoration(
-                      border: Border(
-                    left: BorderSide(
-                      color: Colors.amber.shade700,
-                      width: 2,
-                    ),
-                  )),
-                  child: SelectableText(
-                      "${NumberFormat.decimalPattern('fr').format(totalCredit)} \$",
-                      textAlign: TextAlign.center,
-                      style: headline6.copyWith(fontWeight: FontWeight.bold)),
-                ),
-              ),
-              Expanded(
-                flex: 1,
-                child: Container(
-                  decoration: BoxDecoration(
-                      border: Border(
-                    left: BorderSide(
-                      color: Colors.amber.shade700,
-                      width: 2,
-                    ),
-                  )),
-                  child: SelectableText(
-                      "${NumberFormat.decimalPattern('fr').format(totalSolde)} \$",
-                      textAlign: TextAlign.center,
-                      style: headline6.copyWith(fontWeight: FontWeight.bold)),
-                ),
-              )
-            ],
-          ),
-        ],
-      ),
-    );
+            );
+          } else {
+            return loadingMini();
+          }
+        });
   }
 
   Widget dataWidget(BalanceCompteModel data) {
@@ -314,13 +350,7 @@ class _DetailBalanceState extends State<DetailBalance> {
                         Expanded(
                           flex: 3,
                           child: Container(
-                            decoration: BoxDecoration(
-                                border: Border(
-                              left: BorderSide(
-                                color: Colors.amber.shade700,
-                                width: 2,
-                              ),
-                            )),
+                            decoration: const BoxDecoration(),
                             child: SelectableText("Comptes",
                                 textAlign: TextAlign.start,
                                 style: bodyLarge!
@@ -379,7 +409,7 @@ class _DetailBalanceState extends State<DetailBalance> {
                     ),
                     Divider(color: Colors.amber.shade700),
                     const SizedBox(height: p30),
-                    // compteWidget(data)
+                    compteWidget(data)
                   ],
                 ),
               ),
@@ -390,88 +420,96 @@ class _DetailBalanceState extends State<DetailBalance> {
     );
   }
 
-  // Widget compteWidget(BalanceCompteModel data) {
-  //   final bodyMedium = Theme.of(context).textTheme.bodyMedium;
-
-  //   // List<CompteBalance> dataList = [];
-  //   // var comptesList = data.comptes.toList();
-  //   // for (var item in comptesList) {
-  //   //   dataList.add(CompteBalance.fromJson(item));
-  //   // }
-  //   return SizedBox(
-  //     height: MediaQuery.of(context).size.height / 1.5,
-  //     child: ListView.builder(
-  //       itemCount: dataList.length,
-  //       itemBuilder: (context, index) {
-  //         final compte = dataList[index];
-  //         return Column(
-  //           children: [
-  //             Row(
-  //               children: [
-  //                 Expanded(
-  //                   flex: 3,
-  //                   child: SelectableText(compte.comptes,
-  //                       textAlign: TextAlign.start, style: bodyMedium),
-  //                 ),
-  //                 Expanded(
-  //                   flex: 1,
-  //                   child: Container(
-  //                     decoration: BoxDecoration(
-  //                         border: Border(
-  //                       left: BorderSide(
-  //                         color: Colors.amber.shade700,
-  //                         width: 2,
-  //                       ),
-  //                     )),
-  //                     child: SelectableText(
-  //                         "${NumberFormat.decimalPattern('fr').format(double.parse(compte.debit))} \$",
-  //                         textAlign: TextAlign.center,
-  //                         style: bodyMedium),
-  //                   ),
-  //                 ),
-  //                 Expanded(
-  //                   flex: 1,
-  //                   child: Container(
-  //                     decoration: BoxDecoration(
-  //                         border: Border(
-  //                       left: BorderSide(
-  //                         color: Colors.amber.shade700,
-  //                         width: 2,
-  //                       ),
-  //                     )),
-  //                     child: SelectableText(
-  //                         "${NumberFormat.decimalPattern('fr').format(double.parse(compte.credit))} \$",
-  //                         textAlign: TextAlign.center,
-  //                         style: bodyMedium),
-  //                   ),
-  //                 ),
-  //                 Expanded(
-  //                   flex: 1,
-  //                   child: Container(
-  //                     decoration: BoxDecoration(
-  //                         border: Border(
-  //                       left: BorderSide(
-  //                         color: Colors.amber.shade700,
-  //                         width: 2,
-  //                       ),
-  //                     )),
-  //                     child: SelectableText(
-  //                         "${NumberFormat.decimalPattern('fr').format(compte.solde)} \$",
-  //                         textAlign: TextAlign.center,
-  //                         style: bodyMedium),
-  //                   ),
-  //                 )
-  //               ],
-  //             ),
-  //             Divider(
-  //               color: Colors.amber.shade700,
-  //             ),
-  //           ],
-  //         );
-  //       },
-  //     ),
-  //   );
-  // }
+  Widget compteWidget(BalanceCompteModel data) {
+    final bodyMedium = Theme.of(context).textTheme.bodyMedium;
+    return FutureBuilder<List<CompteBalanceRefModel>>(
+        future: CompteBalanceRefApi().getAllData(),
+        builder: (BuildContext context,
+            AsyncSnapshot<List<CompteBalanceRefModel>> snapshot) {
+          if (snapshot.hasData) {
+            List<CompteBalanceRefModel>? dataList = snapshot.data!
+                .where((element) =>
+                    element.reference.microsecondsSinceEpoch ==
+                    data.createdRef.microsecondsSinceEpoch)
+                .toList();
+            return SizedBox(
+              height: MediaQuery.of(context).size.height / 1.5,
+              child: ListView.builder(
+                itemCount: dataList.length,
+                itemBuilder: (context, index) {
+                  final compte = dataList[index];
+                  return Column(
+                    children: [
+                      Row(
+                        children: [
+                          Expanded(
+                            flex: 3,
+                            child: SelectableText(compte.comptes,
+                                textAlign: TextAlign.start, style: bodyMedium),
+                          ),
+                          Expanded(
+                            flex: 1,
+                            child: Container(
+                              decoration: BoxDecoration(
+                                  border: Border(
+                                left: BorderSide(
+                                  color: Colors.amber.shade700,
+                                  width: 2,
+                                ),
+                              )),
+                              child: SelectableText(
+                                  "${NumberFormat.decimalPattern('fr').format(double.parse(compte.debit))} \$",
+                                  textAlign: TextAlign.center,
+                                  style: bodyMedium),
+                            ),
+                          ),
+                          Expanded(
+                            flex: 1,
+                            child: Container(
+                              decoration: BoxDecoration(
+                                  border: Border(
+                                left: BorderSide(
+                                  color: Colors.amber.shade700,
+                                  width: 2,
+                                ),
+                              )),
+                              child: SelectableText(
+                                  "${NumberFormat.decimalPattern('fr').format(double.parse(compte.credit))} \$",
+                                  textAlign: TextAlign.center,
+                                  style: bodyMedium),
+                            ),
+                          ),
+                          Expanded(
+                            flex: 1,
+                            child: Container(
+                              decoration: BoxDecoration(
+                                  border: Border(
+                                left: BorderSide(
+                                  color: Colors.amber.shade700,
+                                  width: 2,
+                                ),
+                              )),
+                              child: SelectableText(
+                                  "${NumberFormat.decimalPattern('fr').format(compte.solde)} \$",
+                                  textAlign: TextAlign.center,
+                                  style: bodyMedium),
+                            ),
+                          )
+                        ],
+                      ),
+                      Divider(
+                        color: Colors.amber.shade700,
+                      ),
+                    ],
+                  );
+                },
+              ),
+            );
+          } else {
+            return loading();
+          }
+        });
+  }
 
   Widget deleteButton(BalanceCompteModel data) {
     return IconButton(
@@ -489,8 +527,12 @@ class _DetailBalanceState extends State<DetailBalance> {
               child: const Text('Annuler'),
             ),
             TextButton(
-              onPressed: () {
-                submitCorbeille(data);
+              onPressed: () async {
+                await BalanceCompteApi().deleteData(data.id!).then((value) {
+                  setState(() {
+                    isLoadingDelete = false;
+                  });
+                });
                 // Navigator.of(context).pop();
               },
               child: const Text('OK'),
@@ -501,14 +543,48 @@ class _DetailBalanceState extends State<DetailBalance> {
     );
   }
 
-  Future<void> submitCorbeille(BalanceCompteModel data) async {
+  Widget sendButton(BalanceCompteModel data) {
+    return IconButton(
+      icon: Icon(Icons.send, color: Colors.green.shade700),
+      tooltip: "Soumettre chez le directeur de departement",
+      onPressed: () => showDialog<String>(
+        context: context,
+        builder: (BuildContext context) => AlertDialog(
+          title: const Text('Etes-vous pour soumettre ce document ?'),
+          content: (isLoadingSend)
+              ? loading()
+              : const Text(
+                  'Cette action permet de soumettre ce document chez le directeur de departement.'),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () => Navigator.pop(context),
+              child: const Text('Annuler'),
+            ),
+            TextButton(
+              onPressed: () async {
+                submitDD(data).then((value) {
+                  setState(() {
+                    isLoadingSend = false;
+                  });
+                });
+              },
+              child: const Text('OK'),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Future<void> submitDD(BalanceCompteModel data) async {
     final balanceCompteModel = BalanceCompteModel(
         title: data.title,
         statut: 'true',
         signature: data.signature,
         createdRef: data.createdRef,
-        created: DateTime.now());
-    await BalanceCompteApi().updateData(data.id!, balanceCompteModel);
+        created: DateTime.now(),
+        isSubmit: 'true');
+    await BalanceCompteApi().updateData(balanceCompteModel);
     Navigator.of(context).pop();
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
       content: const Text("Mis en corbeille avec succès!"),

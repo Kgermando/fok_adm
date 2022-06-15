@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:fokad_admin/src/api/approbation/approbation_api.dart';
 import 'package:fokad_admin/src/api/auth/auth_api.dart';
 import 'package:fokad_admin/src/api/comptabilite/balance_compte_api.dart';
+import 'package:fokad_admin/src/models/approbation/approbation_model.dart';
 import 'package:fokad_admin/src/models/comptabilites/balance_comptes_model.dart';
 import 'package:fokad_admin/src/models/users/user_model.dart'; 
 import 'package:fokad_admin/src/routes/routes.dart';
@@ -142,21 +143,44 @@ class _TableBilanComptabiliteState extends State<TableBilanComptabilite> {
     ];
   }
 
-  Future agentsRow() async {
-    UserModel userModel = await AuthApi().getUserId();
+  Future agentsRow() async { 
     List<BalanceCompteModel?> dataList = await BalanceCompteApi().getAllData();
-    List<BalanceCompteModel?> data = [];
+    UserModel userModel = await AuthApi().getUserId();
     var approbations = await ApprobationApi().getAllData();
-    for (var item in approbations) {
-      data = dataList
-          .where((element) =>
-              element!.created.microsecondsSinceEpoch == item.reference.microsecondsSinceEpoch &&
-              item.fontctionOccupee == 'Directeur générale' &&
-              item.approbation == "Approved" ||
-              element.statut == 'false' &&
+    List<BalanceCompteModel?> data = [];
+    // Verifie les approbation si c'est la list es vide
+    if (approbations.isNotEmpty) {
+      List<ApprobationModel> isApproved = [];
+      for (var item in dataList) {
+        isApproved = approbations
+            .where((element) =>
+                element.reference.microsecondsSinceEpoch ==
+                item!.createdRef.microsecondsSinceEpoch)
+            .toList();
+      }
+      // FIltre si le filtre donne des elements
+      if (isApproved.isNotEmpty) {
+        for (var item in approbations) {
+          data = dataList
+              .where((element) =>
+                  element!.createdRef.microsecondsSinceEpoch ==
+                          item.reference.microsecondsSinceEpoch &&
+                      item.fontctionOccupee == 'Directeur générale' &&
+                      item.approbation == "Approved" ||
                   element.signature == userModel.matricule)
+              .toList();
+        }
+      } else {
+        data = dataList
+            .where((element) => element!.signature == userModel.matricule)
+            .toList();
+      }
+    } else {
+      data = dataList
+          .where((element) => element!.signature == userModel.matricule)
           .toList();
     }
+
     if (mounted) {
       setState(() {
         for (var item in data) {

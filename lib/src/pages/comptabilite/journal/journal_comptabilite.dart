@@ -21,13 +21,7 @@ class _JournalComptabiliteState extends State<JournalComptabilite> {
   Widget build(BuildContext context) {
     return Scaffold(
         key: _key,
-        drawer: const DrawerMenu(),
-        // floatingActionButton: FloatingActionButton(
-        //     child: const Icon(Icons.add),
-        //     onPressed: () {
-        //       Routemaster.of(context)
-        //           .push(ComptabiliteRoutes.comptabiliteJournalAdd);
-        //     }),
+        drawer: const DrawerMenu(), 
         body: SafeArea(
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,

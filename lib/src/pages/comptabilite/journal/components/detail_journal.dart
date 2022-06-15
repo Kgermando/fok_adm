@@ -15,8 +15,7 @@ import 'package:fokad_admin/src/widgets/title_widget.dart';
 import 'package:intl/intl.dart';
 
 class DetailJournal extends StatefulWidget {
-  const DetailJournal({Key? key, required this.id}) : super(key: key);
-  final int id;
+  const DetailJournal({Key? key}) : super(key: key);
 
   @override
   State<DetailJournal> createState() => _DetailJournalState();
@@ -76,6 +75,7 @@ class _DetailJournalState extends State<DetailJournal> {
 
   @override
   Widget build(BuildContext context) {
+    final id = ModalRoute.of(context)!.settings.arguments as int;
     return Scaffold(
         key: _key,
         drawer: const DrawerMenu(),
@@ -92,7 +92,7 @@ class _DetailJournalState extends State<DetailJournal> {
                 child: Padding(
                     padding: const EdgeInsets.all(p10),
                     child: FutureBuilder<JournalModel>(
-                        future: JournalApi().getOneData(widget.id),
+                        future: JournalApi().getOneData(id),
                         builder: (BuildContext context,
                             AsyncSnapshot<JournalModel> snapshot) {
                           if (snapshot.hasData) {
@@ -121,7 +121,7 @@ class _DetailJournalState extends State<DetailJournal> {
                                     const SizedBox(width: p10),
                                     Expanded(
                                       child: CustomAppbar(
-                                          title: data!.libele,
+                                          title: "Journal",
                                           controllerMenu: () =>
                                               _key.currentState!.openDrawer()),
                                     ),
@@ -131,7 +131,7 @@ class _DetailJournalState extends State<DetailJournal> {
                                     child: SingleChildScrollView(
                                   child: Column(
                                     children: [
-                                      pageDetail(data),
+                                      pageDetail(data!),
                                       const SizedBox(height: p10),
                                       if (approbationData.isNotEmpty)
                                         infosEditeurWidget(),
@@ -176,9 +176,8 @@ class _DetailJournalState extends State<DetailJournal> {
           child: Column(
             children: [
               Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                mainAxisAlignment: MainAxisAlignment.end,
                 children: [
-                  TitleWidget(title: data.libele),
                   Column(
                     children: [
                       Row(
@@ -243,9 +242,27 @@ class _DetailJournalState extends State<DetailJournal> {
             children: [
               Expanded(
                 flex: 1,
-                child: Text('Libele :',
+                child: Text('Nomero opération :',
                     textAlign: TextAlign.start,
                     style: bodyMedium!.copyWith(fontWeight: FontWeight.bold)),
+              ),
+              Expanded(
+                flex: 3,
+                child: SelectableText(data.numeroOperation,
+                    textAlign: TextAlign.start, style: bodyMedium),
+              )
+            ],
+          ),
+          Divider(
+            color: Colors.amber.shade700,
+          ),
+          Row(
+            children: [
+              Expanded(
+                flex: 1,
+                child: Text('Libele :',
+                    textAlign: TextAlign.start,
+                    style: bodyMedium.copyWith(fontWeight: FontWeight.bold)),
               ),
               Expanded(
                 flex: 3,
@@ -261,15 +278,47 @@ class _DetailJournalState extends State<DetailJournal> {
             children: [
               Expanded(
                 flex: 1,
-                child: Text('compte Débit :',
+                child: Text('Débit :',
                     textAlign: TextAlign.start,
                     style: bodyMedium.copyWith(fontWeight: FontWeight.bold)),
               ),
               Expanded(
                 flex: 3,
-                child: SelectableText(data.compteDebit,
-                    textAlign: TextAlign.start, style: bodyMedium),
-              )
+                child: Column(
+                  children: [
+                    Row(
+                      children: [
+                        Expanded( 
+                            child: Text('Compte',
+                                textAlign: TextAlign.center,
+                                style: bodyMedium.copyWith(
+                                    fontWeight: FontWeight.bold)),
+                          ),
+                          Expanded(
+                            child: Text('Montant',
+                                textAlign: TextAlign.center,
+                                style: bodyMedium.copyWith(
+                                    fontWeight: FontWeight.bold)),
+                          ),
+                      ],
+                    ), 
+                    const SizedBox(height: p20),
+                    Row(
+                      children: [
+                        Expanded( 
+                          child: SelectableText(data.compteDebit,
+                              textAlign: TextAlign.center, style: bodyMedium),
+                        ),
+                        Expanded( 
+                          child: SelectableText("${NumberFormat.decimalPattern('fr').format(double.parse(data.montantDebit))} \$",
+                              textAlign: TextAlign.center, style: bodyMedium),
+                        ),
+                      ],
+                    ),
+                    
+                  ],
+                )
+              ), 
             ],
           ),
           Divider(
@@ -279,15 +328,46 @@ class _DetailJournalState extends State<DetailJournal> {
             children: [
               Expanded(
                 flex: 1,
-                child: Text('compte Crédit:',
+                child: Text('Crédit:',
                     textAlign: TextAlign.start,
                     style: bodyMedium.copyWith(fontWeight: FontWeight.bold)),
               ),
               Expanded(
-                flex: 3,
-                child: SelectableText(data.compteCredit,
-                    textAlign: TextAlign.start, style: bodyMedium),
-              )
+                  flex: 3,
+                  child: Column(
+                    children: [
+                      Row(
+                        children: [
+                          Expanded(
+                            child: Text('Compte',
+                                textAlign: TextAlign.center,
+                                style: bodyMedium.copyWith(
+                                    fontWeight: FontWeight.bold)),
+                          ),
+                          Expanded(
+                            child: Text('Montant',
+                                textAlign: TextAlign.center,
+                                style: bodyMedium.copyWith(
+                                    fontWeight: FontWeight.bold)),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: p20),
+                      Row(
+                        children: [
+                          Expanded(
+                            child: SelectableText(data.compteCredit,
+                                textAlign: TextAlign.center, style: bodyMedium),
+                          ),
+                          Expanded(
+                            child: SelectableText("${NumberFormat.decimalPattern('fr').format(double.parse(data.montantCredit))} \$",
+                                textAlign: TextAlign.center, style: bodyMedium),
+                          ),
+                        ],
+                      )
+                      
+                    ],
+                  )),
             ],
           ),
           Divider(
@@ -303,28 +383,8 @@ class _DetailJournalState extends State<DetailJournal> {
               ),
               Expanded(
                 flex: 3,
-                child: SelectableText("${data.montantCredit} %",
+                child: SelectableText("${data.tva} %",
                     textAlign: TextAlign.start, style: bodyMedium),
-              )
-            ],
-          ),
-          Divider(
-            color: Colors.amber.shade700,
-          ),
-          Row(
-            children: [
-              Expanded(
-                flex: 1,
-                child: Text('Montant :',
-                    textAlign: TextAlign.start,
-                    style: bodyMedium.copyWith(fontWeight: FontWeight.bold)),
-              ),
-              Expanded(
-                flex: 3,
-                child: SelectableText(
-                    "${NumberFormat.decimalPattern('fr').format(double.parse(data.montantDebit))} \$",
-                    textAlign: TextAlign.start,
-                    style: bodyMedium),
               )
             ],
           ),

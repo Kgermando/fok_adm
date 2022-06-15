@@ -5,6 +5,7 @@ class BalanceCompteModel {
   late String signature;
   late DateTime createdRef;
   late DateTime created;
+  late String isSubmit;
 
   BalanceCompteModel(
       {this.id,
@@ -12,7 +13,8 @@ class BalanceCompteModel {
       required this.statut,
       required this.signature,
       required this.createdRef,
-      required this.created});
+      required this.created,
+      required this.isSubmit});
 
   factory BalanceCompteModel.fromSQL(List<dynamic> row) {
     return BalanceCompteModel(
@@ -21,7 +23,8 @@ class BalanceCompteModel {
         statut: row[2],
         signature: row[3],
         createdRef: row[4],
-        created: row[5]);
+        created: row[5],
+        isSubmit: row[6]);
   }
 
   factory BalanceCompteModel.fromJson(Map<String, dynamic> json) {
@@ -31,7 +34,9 @@ class BalanceCompteModel {
         statut: json['statut'],
         signature: json['signature'],
         createdRef: DateTime.parse(json['createdRef']),
-        created: DateTime.parse(json['created']));
+        created: DateTime.parse(json['created']),
+      isSubmit: json['isSubmit'],
+    );
   }
 
   Map<String, dynamic> toJson() {
@@ -41,12 +46,13 @@ class BalanceCompteModel {
       'statut': statut,
       'signature': signature,
       'createdRef': createdRef.toIso8601String(),
-      'created': created.toIso8601String()
+      'created': created.toIso8601String(),
+      'isSubmit': isSubmit,
     };
   }
 }
 
-class CompteBalanceRef {
+class CompteBalanceRefModel {
   late int? id;
   late DateTime reference;
   late String comptes;
@@ -54,7 +60,7 @@ class CompteBalanceRef {
   late String credit;
   late double solde;
 
-  CompteBalanceRef(
+  CompteBalanceRefModel(
       {this.id,
       required this.reference,
       required this.comptes,
@@ -62,8 +68,8 @@ class CompteBalanceRef {
       required this.credit,
       required this.solde});
 
-  factory CompteBalanceRef.fromSQL(List<dynamic> row) {
-    return CompteBalanceRef(
+  factory CompteBalanceRefModel.fromSQL(List<dynamic> row) {
+    return CompteBalanceRefModel(
         id: row[0],
         reference: row[1],
         comptes: row[2],
@@ -72,10 +78,10 @@ class CompteBalanceRef {
         solde: row[5]);
   }
 
-  factory CompteBalanceRef.fromJson(Map<String, dynamic> json) {
-    return CompteBalanceRef(
+  factory CompteBalanceRefModel.fromJson(Map<String, dynamic> json) {
+    return CompteBalanceRefModel(
         id: json['id'],
-        reference: json['reference'],
+        reference: DateTime.parse(json['reference']),
         comptes: json['comptes'],
         debit: json['debit'],
         credit: json['credit'],
@@ -85,7 +91,7 @@ class CompteBalanceRef {
   Map<String, dynamic> toJson() {
     return {
       'id': id,
-      'reference': reference,
+      'reference': reference.toIso8601String(),
       'comptes': comptes,
       'debit': debit,
       'credit': credit,

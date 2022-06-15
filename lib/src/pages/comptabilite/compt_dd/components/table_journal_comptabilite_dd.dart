@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:fokad_admin/src/api/comptabilite/journal_api.dart';
 import 'package:fokad_admin/src/models/comptabilites/journal_model.dart';
 import 'package:fokad_admin/src/pages/comptabilite/journal/components/detail_journal.dart';
+import 'package:fokad_admin/src/routes/routes.dart';
 import 'package:fokad_admin/src/utils/class_implemented.dart';
 import 'package:fokad_admin/src/widgets/print_widget.dart';
 import 'package:intl/intl.dart';
@@ -46,8 +47,9 @@ class _TableJournalComptabiliteDDState
           final dataList = tapEvent.row!.cells.values;
           final idPlutoRow = dataList.elementAt(0);
 
-          Navigator.of(context).push(MaterialPageRoute(
-              builder: (context) => DetailJournal(id: idPlutoRow.value)));
+          Navigator.pushNamed(
+              context, ComptabiliteRoutes.comptabiliteJournalDetail,
+              arguments: idPlutoRow.value);
         },
         onLoaded: (PlutoGridOnLoadedEvent event) {
           stateManager = event.stateManager;
@@ -58,7 +60,15 @@ class _TableJournalComptabiliteDDState
         createHeader: (PlutoGridStateManager header) {
           return Row(
             mainAxisAlignment: MainAxisAlignment.end,
-            children: [PrintWidget(onPressed: () {})],
+            children: [
+              IconButton(
+                  onPressed: () {
+                    Navigator.pushNamed(
+                        context, ComptabiliteRoutes.comptabiliteDD);
+                  },
+                  icon: Icon(Icons.refresh, color: Colors.green.shade700)),
+              PrintWidget(onPressed: () {})
+            ],
           );
         },
         configuration: PlutoGridConfiguration(

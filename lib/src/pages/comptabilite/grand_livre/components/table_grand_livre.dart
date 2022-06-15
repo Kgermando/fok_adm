@@ -8,7 +8,7 @@ import 'package:fokad_admin/src/models/comptabilites/grand_livre_model.dart';
 import 'package:fokad_admin/src/models/comptabilites/journal_model.dart';
 import 'package:fokad_admin/src/navigation/drawer/drawer_menu.dart';
 import 'package:fokad_admin/src/navigation/header/custom_appbar.dart';
-import 'package:fokad_admin/src/pages/comptabilite/journal/components/detail_journal.dart';
+import 'package:fokad_admin/src/routes/routes.dart';
 import 'package:fokad_admin/src/utils/class_implemented.dart';
 import 'package:fokad_admin/src/widgets/print_widget.dart';
 import 'package:intl/intl.dart';
@@ -37,13 +37,7 @@ class _TableGrandLivreState extends State<TableGrandLivre> {
   @override
   void initState() {
     agentsColumn();
-    setState(() {
-      timer = Timer.periodic(const Duration(milliseconds: 500), ((timer) {
-        agentsRow();
-        timer.cancel();
-      }));
-    });
-
+    agentsRow();
     super.initState();
   }
 
@@ -93,9 +87,9 @@ class _TableGrandLivreState extends State<TableGrandLivre> {
                           final dataList = tapEvent.row!.cells.values;
                           final idPlutoRow = dataList.elementAt(0);
 
-                          Navigator.of(context).push(MaterialPageRoute(
-                              builder: (context) =>
-                                  DetailJournal(id: idPlutoRow.value)));
+                         Navigator.pushNamed(context,
+                              ComptabiliteRoutes.comptabiliteJournalDetail,
+                              arguments: idPlutoRow.value); 
                         },
                         onLoaded: (PlutoGridOnLoadedEvent event) {
                           stateManager = event.stateManager;

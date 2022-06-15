@@ -89,12 +89,12 @@ class BilanApi {
     }
   }
 
-  Future<BilanModel> updateData(int id, BilanModel banqueModel) async {
+  Future<BilanModel> updateData(BilanModel banqueModel) async {
     String? token = await UserSharedPref().getAccessToken();
 
     var data = banqueModel.toJson();
     var body = jsonEncode(data);
-    var updateUrl = Uri.parse("$mainUrl/comptabilite/bilans/update-bilan/$id");
+    var updateUrl = Uri.parse("$mainUrl/comptabilite/bilans/update-bilan/");
 
     var res = await client.put(updateUrl,
         headers: <String, String>{

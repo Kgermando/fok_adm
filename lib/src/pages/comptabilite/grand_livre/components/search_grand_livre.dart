@@ -4,6 +4,7 @@ import 'package:fokad_admin/src/constants/app_theme.dart';
 import 'package:fokad_admin/src/constants/responsive.dart';
 import 'package:fokad_admin/src/models/comptabilites/grand_livre_model.dart';
 import 'package:fokad_admin/src/pages/comptabilite/grand_livre/components/table_grand_livre.dart';
+import 'package:fokad_admin/src/routes/routes.dart';
 import 'package:fokad_admin/src/utils/comptes_dropdown.dart';
 import 'package:fokad_admin/src/widgets/btn_widget.dart';
 import 'package:fokad_admin/src/widgets/title_widget.dart';
@@ -16,7 +17,6 @@ class SearchGrandLivre extends StatefulWidget {
 }
 
 class _SearchGrandLivreState extends State<SearchGrandLivre> {
-
   final _formKey = GlobalKey<FormState>();
   bool isLoading = false;
 
@@ -53,7 +53,8 @@ class _SearchGrandLivreState extends State<SearchGrandLivre> {
   @override
   Widget build(BuildContext context) {
     return Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-      Expanded(
+      SizedBox(
+        height: MediaQuery.of(context).size.height / 2,
         child: Card(
           elevation: 10,
           child: Container(
@@ -104,12 +105,15 @@ class _SearchGrandLivreState extends State<SearchGrandLivre> {
                         });
                         final form = _formKey.currentState!;
                         // if (form.validate()) {
-                          // search();
-                          // form.reset();
+                        // search();
+                        // form.reset();
                         // }
-                        search();
+                        search().then((value) {
+                          setState(() {
+                            isLoading = false;
+                          });
+                        });
                         form.reset();
-                        
                       },
                       isLoading: isLoading)
                 ],
@@ -340,15 +344,19 @@ class _SearchGrandLivreState extends State<SearchGrandLivre> {
     final grandLivreModel = GrandLivreModel(
         comptedebit: (comptesDebitController == "")
             ? ""
-            :  comptesDebitController.toString(),
-        comptecredit: (comptesCreditController == "") ? " " : comptesCreditController.toString(),
+            : comptesDebitController.toString(),
+        comptecredit: (comptesCreditController == "")
+            ? " "
+            : comptesCreditController.toString(),
         dateStart: DateTime.parse((dateStartController.text == "")
             ? "2021-12-31 00:00:00"
             : dateStartController.text),
         dateEnd: DateTime.parse((dateEndController.text == "")
             ? "2099-12-31 00:00:00"
             : dateEndController.text));
-
+    Navigator.of(context).pushNamed(
+        ComptabiliteRoutes.comptabiliteGrandLivreSearch,
+        arguments: grandLivreModel);
     Navigator.of(context).push(MaterialPageRoute(
         builder: (context) =>
             TableGrandLivre(grandLivreModel: grandLivreModel)));

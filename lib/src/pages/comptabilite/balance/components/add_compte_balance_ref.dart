@@ -1,7 +1,9 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:fokad_admin/src/api/auth/auth_api.dart';
-import 'package:fokad_admin/src/api/comptabilite/balance_compte_api.dart';
+import 'package:fokad_admin/src/api/comptabilite/compte_balance_ref_api.dart';
 import 'package:fokad_admin/src/constants/app_theme.dart';
 import 'package:fokad_admin/src/constants/responsive.dart';
 import 'package:fokad_admin/src/models/comptabilites/balance_comptes_model.dart';
@@ -11,20 +13,20 @@ import 'package:fokad_admin/src/navigation/header/custom_appbar.dart';
 import 'package:fokad_admin/src/utils/comptes_dropdown.dart';
 import 'package:fokad_admin/src/widgets/btn_widget.dart';
 import 'package:fokad_admin/src/widgets/title_widget.dart';
+import 'package:intl/intl.dart';
 
-class AddBalanceComptabilite extends StatefulWidget {
-  const AddBalanceComptabilite({Key? key}) : super(key: key);
+class AddCompteBalanceRef extends StatefulWidget {
+  const AddCompteBalanceRef({Key? key}) : super(key: key);
 
   @override
-  State<AddBalanceComptabilite> createState() => _AddBalanceComptabiliteState();
+  State<AddCompteBalanceRef> createState() => _AddCompteBalanceRefState();
 }
 
-class _AddBalanceComptabiliteState extends State<AddBalanceComptabilite> {
-  final GlobalKey<ScaffoldState> _key = GlobalKey(); 
+class _AddCompteBalanceRefState extends State<AddCompteBalanceRef> {
+  final GlobalKey<ScaffoldState> _key = GlobalKey();
   final _formKey = GlobalKey<FormState>();
   bool isLoading = false;
 
-  TextEditingController titleController = TextEditingController();
   String? comptes;
   TextEditingController montantDebitController = TextEditingController();
   TextEditingController montantCreditController = TextEditingController();
@@ -44,29 +46,48 @@ class _AddBalanceComptabiliteState extends State<AddBalanceComptabilite> {
   final class8Dropdown = ComptesDropdown().classe8compte;
   final class9Dropdown = ComptesDropdown().classe9compte;
 
+  Timer? timer;
 
   @override
   initState() {
-    getData();
-    super.initState();
-  }
-
-  UserModel? user;
-  Future<void> getData() async {
-    UserModel userModel = await AuthApi().getUserId();
-    setState(() {
-      user = userModel;
+    timer = Timer.periodic(const Duration(seconds: 1), (timer) {
+      getData();
     });
+    super.initState();
   }
 
   @override
   void dispose() {
-    titleController.dispose();
+    timer!.cancel();
+    montantDebitController.dispose();
+    montantCreditController.dispose();
     super.dispose();
+  }
+
+  List<CompteBalanceRefModel> compteBalanceRefList = [];
+  List<CompteBalanceRefModel> compteBalanceRefFilter = [];
+  UserModel? user;
+  Future<void> getData() async {
+    UserModel userModel = await AuthApi().getUserId();
+    List<CompteBalanceRefModel> compteBals =
+        await CompteBalanceRefApi().getAllData();
+    if (!mounted) return;
+    setState(() {
+      user = userModel;
+      compteBalanceRefList = compteBals;
+    });
   }
 
   @override
   Widget build(BuildContext context) {
+    final balanceCompteModel =
+        ModalRoute.of(context)!.settings.arguments as BalanceCompteModel;
+
+    compteBalanceRefList = compteBalanceRefList
+        .where((element) =>
+            element.reference.microsecondsSinceEpoch ==
+            balanceCompteModel.createdRef.microsecondsSinceEpoch)
+        .toList();
     return Scaffold(
         key: _key,
         drawer: const DrawerMenu(),
@@ -108,7 +129,7 @@ class _AddBalanceComptabiliteState extends State<AddBalanceComptabilite> {
                       ),
                       Expanded(
                           child: SingleChildScrollView(
-                        child: addPageWidget(),
+                        child: addPageWidget(balanceCompteModel),
                       ))
                     ],
                   ),
@@ -119,7 +140,7 @@ class _AddBalanceComptabiliteState extends State<AddBalanceComptabilite> {
         ));
   }
 
-  Widget addPageWidget() {
+  Widget addPageWidget(BalanceCompteModel data) {
     return Form(
       key: _formKey,
       child: Row(
@@ -146,20 +167,29 @@ class _AddBalanceComptabiliteState extends State<AddBalanceComptabilite> {
                     const SizedBox(
                       height: p20,
                     ),
-                    titleBilanWidget(),
+                    tableWidget(),
+                    // const SizedBox(
+                    //   width: p30,
+                    // ),
+                    comptesBalanceWidget(),
                     const SizedBox(
                       width: p20,
                     ),
-                    BtnWidget(
-                        title: 'Soumettre',
-                        isLoading: isLoading,
-                        press: () {
-                          final form = _formKey.currentState!;
-                          if (form.validate()) {
-                            submit();
-                            form.reset();
-                          }
-                        })
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        BtnWidget(
+                            title: 'Ajouter la balance',
+                            isLoading: isLoading,
+                            press: () {
+                              final form = _formKey.currentState!;
+                              if (form.validate()) {
+                                submit(data);
+                                form.reset();
+                              }
+                            }),
+                      ],
+                    )
                   ],
                 ),
               ),
@@ -170,26 +200,70 @@ class _AddBalanceComptabiliteState extends State<AddBalanceComptabilite> {
     );
   }
 
-  Widget titleBilanWidget() {
-    return Container(
-        margin: const EdgeInsets.only(bottom: p20),
-        child: TextFormField(
-          controller: titleController,
-          decoration: InputDecoration(
-            border:
-                OutlineInputBorder(borderRadius: BorderRadius.circular(10.0)),
-            labelText: 'Titre de la balance',
-          ),
-          keyboardType: TextInputType.text,
-          style: const TextStyle(),
-          validator: (value) {
-            if (value != null && value.isEmpty) {
-              return 'Ce champs est obligatoire';
-            } else {
-              return null;
-            }
-          },
-        ));
+  Widget tableWidget() {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: p30),
+      child: Table(
+        border: TableBorder.all(color: Colors.amber.shade700),
+        columnWidths: const {
+          0: FlexColumnWidth(4),
+          1: FlexColumnWidth(1),
+          2: FlexColumnWidth(1),
+          3: FlexColumnWidth(1),
+        },
+        children: [
+          tableRowWidget(),
+          for (var item in compteBalanceRefList) tableRowDataWidget(item)
+        ],
+      ),
+    );
+  }
+
+  TableRow tableRowWidget() {
+    return TableRow(children: [
+      Container(
+        padding: const EdgeInsets.all(p10),
+        child: const Text("Comptes"),
+      ),
+      Container(
+        padding: const EdgeInsets.all(p10),
+        child: const Text("Débit"),
+      ),
+      Container(
+        padding: const EdgeInsets.all(p10),
+        child: const Text("Crédit"),
+      ),
+      Container(
+        padding: const EdgeInsets.all(p10),
+        child: const Text("Solde"),
+      ),
+    ]);
+  }
+
+  TableRow tableRowDataWidget(CompteBalanceRefModel item) {
+    final bodyMedium = Theme.of(context).textTheme.bodyMedium;
+    return TableRow(children: [
+      Container(
+        padding: const EdgeInsets.all(p10),
+        child:
+            Text(item.comptes, textAlign: TextAlign.start, style: bodyMedium),
+      ),
+      Container(
+        padding: const EdgeInsets.all(p10),
+        child: Text(
+            "${NumberFormat.decimalPattern('fr').format(double.parse(item.debit))} \$"),
+      ),
+      Container(
+        padding: const EdgeInsets.all(p10),
+        child: Text(
+            "${NumberFormat.decimalPattern('fr').format(double.parse(item.credit))} \$"),
+      ),
+      Container(
+        padding: const EdgeInsets.all(p10),
+        child:
+            Text("${NumberFormat.decimalPattern('fr').format(item.solde)} \$"),
+      ),
+    ]);
   }
 
   Widget comptesBalanceWidget() {
@@ -218,28 +292,38 @@ class _AddBalanceComptabiliteState extends State<AddBalanceComptabilite> {
                 .toList(),
             onChanged: (value) {
               if (value == "Classe_1_Comptes_de_ressources_durables") {
+                comptesList.clear();
                 comptesList = class1Dropdown;
               } else if (value == "Classe_2_Comptes_Actif_immobilise") {
+                comptesList.clear();
                 comptesList = class2Dropdown;
               } else if (value == "Classe_3_Comptes_de_stocks") {
+                comptesList.clear();
                 comptesList = class3Dropdown;
               } else if (value == "Classe_4_Comptes_de_tiers") {
+                comptesList.clear();
                 comptesList = class4Dropdown;
               } else if (value == "Classe_5_Comptes_de_tresorerie") {
+                comptesList.clear();
                 comptesList = class5Dropdown;
               } else if (value ==
                   "Classe_6_Comptes_de_charges_des_activites_ordinaires") {
+                comptesList.clear();
                 comptesList = class6Dropdown;
               } else if (value ==
                   "Classe_7_Comptes_de_produits_des_activites_ordinaires") {
+                comptesList.clear();
                 comptesList = class7Dropdown;
               } else if (value ==
                   "Classe_8_Comptes_des_autres_charges_et_des_autres_produits") {
+                comptesList.clear();
                 comptesList = class8Dropdown;
               } else if (value ==
                   "Classe_9_Comptes_des_engagements_hors_bilan_et_comptes_de_la_comptabilite_analytique_de_gestion") {
+                comptesList.clear();
                 comptesList = class9Dropdown;
               } else {
+                comptesList.clear();
                 comptesList = [];
               }
               setState(() {});
@@ -325,7 +409,7 @@ class _AddBalanceComptabiliteState extends State<AddBalanceComptabilite> {
                             decoration: InputDecoration(
                               border: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(10.0)),
-                            labelText: ' Crédit \$',
+                              labelText: ' Crédit \$',
                             ),
                             style: const TextStyle(),
                             // validator: (value) {
@@ -340,20 +424,22 @@ class _AddBalanceComptabiliteState extends State<AddBalanceComptabilite> {
                   ],
                 ))
           ],
-        ), 
+        ),
       ],
     );
   }
 
-  Future<void> submit() async { 
-    final balance = BalanceCompteModel(
-        title: titleController.text,
-        statut: 'false',
-        signature: user!.matricule.toString(),
-        createdRef: DateTime.now(),
-        created: DateTime.now());
-    await BalanceCompteApi().insertData(balance);
-    Navigator.of(context).pop();
+  Future<void> submit(BalanceCompteModel data) async {
+    var solde = double.parse(montantDebitController.text) -
+        double.parse(montantCreditController.text);
+
+    final compteBalanceRefModel = CompteBalanceRefModel(
+        reference: data.createdRef,
+        comptes: comptes.toString(),
+        debit: montantDebitController.text,
+        credit: montantCreditController.text,
+        solde: solde);
+    await CompteBalanceRefApi().insertData(compteBalanceRefModel);
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
       content: const Text("Soumis avec succès!"),
       backgroundColor: Colors.green[700],

@@ -150,7 +150,9 @@ class _BilanComptabiliteState extends State<BilanComptabilite> {
         titleBilan: titleBilanController.text,
         signature: user!.matricule,
         createdRef: DateTime.now(),
-        created: DateTime.now());
+        created: DateTime.now(),
+        isSubmit: 'false'
+    );
     await BilanApi().insertData(bilanModel);
     Navigator.of(context).pop();
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(

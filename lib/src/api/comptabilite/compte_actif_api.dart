@@ -102,7 +102,7 @@ class CompteActifApi {
     }
   }
 
-  Future<CompteActifModel> deleteData(int id) async {
+  Future<void> deleteData(int id) async {
     String? token = await UserSharedPref().getAccessToken();
 
     var deleteUrl = Uri.parse("$mainUrl/comptabilite/comptes-actif/delete-compte-actif/$id");
@@ -112,7 +112,7 @@ class CompteActifApi {
       'Authorization': 'Bearer $token'
     });
     if (res.statusCode == 200) {
-      return CompteActifModel.fromJson(json.decode(res.body)['data']);
+      // return CompteActifModel.fromJson(json.decode(res.body)['data']);
     } else {
       throw Exception(json.decode(res.body)['message']);
     }

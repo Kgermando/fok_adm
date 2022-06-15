@@ -30,6 +30,8 @@ class DetailBilan extends StatefulWidget {
 class _DetailBilanState extends State<DetailBilan> {
   final GlobalKey<ScaffoldState> _key = GlobalKey();
   bool isLoading = false;
+  bool isLoadingDelete = false;
+  bool isLoadingSend = false;
 
   String approbationDGController = '-';
   TextEditingController signatureJustificationDGController =
@@ -98,10 +100,12 @@ class _DetailBilanState extends State<DetailBilan> {
                 (BuildContext context, AsyncSnapshot<BilanModel> snapshot) {
               if (snapshot.hasData) {
                 BilanModel? data = snapshot.data;
-                return FloatingActionButton(
+                return (data!.isSubmit == 'true')
+                    ? Container()
+                    :  FloatingActionButton(
                     child: const Icon(Icons.add),
                     onPressed: () {
-                      Navigator.pushReplacementNamed(
+                      Navigator.pushNamed(
                           context, ComptabiliteRoutes.comptabiliteBilanAdd,
                           arguments: data);
                     });
@@ -212,6 +216,7 @@ class _DetailBilanState extends State<DetailBilan> {
                     children: [
                       Row(
                         children: [
+                          sendButton(data),
                           deleteButton(data),
                           PrintWidget(
                               tooltip: 'Imprimer le document',
@@ -306,20 +311,57 @@ class _DetailBilanState extends State<DetailBilan> {
   Widget deleteButton(BilanModel data) {
     return IconButton(
       icon: Icon(Icons.delete, color: Colors.blue.shade700),
-      tooltip: "Modification",
+      tooltip: "Supprimer",
       onPressed: () => showDialog<String>(
         context: context,
         builder: (BuildContext context) => AlertDialog(
           title: const Text('Etes-vous sûr de faire cette action ?'),
-          content: const Text('Cette action permet de modifier ce document.'),
+          content: (isLoadingDelete)
+              ? loading()
+              : const Text('Cette action permet de supprimer ce document.'),
           actions: <Widget>[
             TextButton(
               onPressed: () => Navigator.pop(context),
               child: const Text('Annuler'),
             ),
             TextButton(
-              onPressed: () {
-                updateSubmit(data);
+              onPressed: () async {
+                await BilanApi().deleteData(data.id!).then((value) {
+                  setState(() {
+                    isLoadingDelete = false;
+                  });
+                });
+              },
+              child: const Text('OK'),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget sendButton(BilanModel data) {
+    return IconButton(
+      icon: Icon(Icons.send, color: Colors.green.shade700),
+      tooltip: "Soumettre chez le directeur de departement",
+      onPressed: () => showDialog<String>(
+        context: context,
+        builder: (BuildContext context) => AlertDialog(
+          title: const Text('Etes-vous pour soumettre ce document ?'),
+          content: (isLoadingSend) ? loading() : const Text(
+              'Cette action permet de soumettre ce document chez le directeur de departement.'),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () => Navigator.pop(context),
+              child: const Text('Annuler'),
+            ),
+            TextButton(
+              onPressed: () async {
+                submitDD(data).then((value) {
+                  setState(() {
+                    isLoadingSend = false;
+                  });
+                });
               },
               child: const Text('OK'),
             ),
@@ -534,13 +576,15 @@ class _DetailBilanState extends State<DetailBilan> {
         });
   }
 
-  Future<void> updateSubmit(BilanModel data) async {
+  Future<void> submitDD(BilanModel data) async {
     final bilanModel = BilanModel(
+      id: data.id,
         titleBilan: data.titleBilan,
         signature: data.signature,
         createdRef: data.createdRef,
-        created: DateTime.now());
-    await BilanApi().updateData(data.id!, bilanModel);
+        created: DateTime.now(),
+        isSubmit: 'true');
+    await BilanApi().updateData(bilanModel);
     Navigator.of(context).pop();
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
       content: const Text("Mis à jour effectué avec succès!"),

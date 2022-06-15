@@ -102,7 +102,7 @@ class ComptePassifApi {
     }
   }
 
-  Future<ComptePassifModel> deleteData(int id) async {
+  Future<void> deleteData(int id) async {
     String? token = await UserSharedPref().getAccessToken();
 
     var deleteUrl = Uri.parse("$mainUrl/comptabilite/comptes-passif/delete-compte-passif/$id");
@@ -112,7 +112,7 @@ class ComptePassifApi {
       'Authorization': 'Bearer $token'
     });
     if (res.statusCode == 200) {
-      return ComptePassifModel.fromJson(json.decode(res.body)['data']);
+      // return ComptePassifModel.fromJson(json.decode(res.body)['data']);
     } else {
       throw Exception(json.decode(res.body)['message']);
     }

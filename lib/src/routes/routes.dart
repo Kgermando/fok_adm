@@ -49,7 +49,7 @@ import 'package:fokad_admin/src/pages/comm_marketing/marketing/components/campai
 import 'package:fokad_admin/src/pages/comm_marketing/marketing/components/campaign/detail_campaign.dart';
 import 'package:fokad_admin/src/pages/comm_marketing/marketing/components/campaign/update_campaign.dart';
 import 'package:fokad_admin/src/pages/comptabilite/balance/balance_comptabilite.dart';
-import 'package:fokad_admin/src/pages/comptabilite/balance/components/add_balance_comptabilite.dart';
+import 'package:fokad_admin/src/pages/comptabilite/balance/components/add_compte_balance_ref.dart';
 import 'package:fokad_admin/src/pages/comptabilite/balance/components/detail_balance.dart';
 import 'package:fokad_admin/src/pages/comptabilite/bilan/bilan_comptabilite.dart';
 import 'package:fokad_admin/src/pages/comptabilite/bilan/components/add_comptes_bilan.dart';
@@ -61,8 +61,10 @@ import 'package:fokad_admin/src/pages/comptabilite/compte_resultat/components/up
 import 'package:fokad_admin/src/pages/comptabilite/compte_resultat/compte_resultat.dart';
 import 'package:fokad_admin/src/pages/comptabilite/dashboard/dashboard_comptabilite.dart';
 import 'package:fokad_admin/src/pages/comptabilite/etat_besoin/etat_besoin_comptabilite_page.dart';
+import 'package:fokad_admin/src/pages/comptabilite/grand_livre/components/table_grand_livre.dart';
 import 'package:fokad_admin/src/pages/comptabilite/grand_livre/grand_livre_comptabilite.dart';
 import 'package:fokad_admin/src/pages/comptabilite/journal/components/add_journal_comptabilite.dart';
+import 'package:fokad_admin/src/pages/comptabilite/journal/components/detail_journal.dart';
 import 'package:fokad_admin/src/pages/comptabilite/journal/journal_comptabilite.dart';
 import 'package:fokad_admin/src/pages/devis/components/detail_devis.dart';
 import 'package:fokad_admin/src/pages/devis/devis_page.dart';
@@ -253,6 +255,7 @@ class ComptabiliteRoutes {
   static const comptabiliteBilanAdd = "/comptabilite-bilan-add";
   static const comptabiliteBilanDetail = "/comptabilite-bilan-detail";
   static const comptabiliteJournal = "/comptabilite-journal";
+  static const comptabiliteJournalDetail = "/comptabilite-journal-detail";
   static const comptabiliteJournalAdd = "/comptabilite-journal-add";
   static const comptabiliteCompteResultat = "/comptabilite-compte-resultat";
   static const comptabiliteCompteResultatAdd =
@@ -265,6 +268,7 @@ class ComptabiliteRoutes {
   static const comptabiliteBalanceAdd = "/comptabilite-balance-add";
   static const comptabiliteBalanceDetail = "/comptabilite-balance-detail";
   static const comptabiliteGrandLivre = "/comptabilite-grand-livre";
+  static const comptabiliteGrandLivreSearch = "/comptabilite-grand-livre-search";
   static const comptabiliteDD = "/comptabilite-dd";
   static const comptabiliteEtatBesoin = "/comptabilite-etat-besoin";
 }
@@ -447,6 +451,8 @@ final routes = <String, WidgetBuilder>{
   ComptabiliteRoutes.comptabiliteBilanAdd: (context) => const AddCompteBilan(),
   ComptabiliteRoutes.comptabiliteBilanDetail: (context) => const DetailBilan(), 
   ComptabiliteRoutes.comptabiliteJournal: (context) => const JournalComptabilite(),
+  ComptabiliteRoutes.comptabiliteJournalDetail: (context) =>
+      const DetailJournal(),
   ComptabiliteRoutes.comptabiliteJournalAdd: (context) => const AddJournalComptabilite(),
   ComptabiliteRoutes.comptabiliteCompteResultat: (context) =>const CompteResultat(),
   ComptabiliteRoutes.comptabiliteCompteResultatDetail: (context) =>
@@ -458,10 +464,12 @@ final routes = <String, WidgetBuilder>{
 
   ComptabiliteRoutes.comptabiliteBalance: (context) => const BalanceComptabilite(),
   ComptabiliteRoutes.comptabiliteBalanceAdd: (context) =>
-      const AddBalanceComptabilite(),
+      const AddCompteBalanceRef(),
   ComptabiliteRoutes.comptabiliteBalanceDetail: (context) =>
       const DetailBalance(), 
   ComptabiliteRoutes.comptabiliteGrandLivre: (context) => const GrandLivreComptabilite(),
+  // ComptabiliteRoutes.comptabiliteGrandLivreSearch: (context) =>
+  //     const TableGrandLivre(),
   ComptabiliteRoutes.comptabiliteEtatBesoin: (context) =>
       const EtatBesoinComptabilitePage(),
 

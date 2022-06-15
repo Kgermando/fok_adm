@@ -1,10 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:fokad_admin/src/api/auth/auth_api.dart';
+import 'package:fokad_admin/src/api/comptabilite/balance_compte_api.dart';
 import 'package:fokad_admin/src/constants/app_theme.dart';
 import 'package:fokad_admin/src/constants/responsive.dart';
+import 'package:fokad_admin/src/models/comptabilites/balance_comptes_model.dart';
+import 'package:fokad_admin/src/models/users/user_model.dart';
 import 'package:fokad_admin/src/navigation/drawer/drawer_menu.dart';
 import 'package:fokad_admin/src/navigation/header/custom_appbar.dart'; 
 import 'package:fokad_admin/src/pages/comptabilite/balance/components/table_balance_comptabilite.dart';
 import 'package:fokad_admin/src/routes/routes.dart';
+import 'package:fokad_admin/src/utils/loading.dart';
 
 
 class BalanceComptabilite extends StatefulWidget {
@@ -16,6 +21,31 @@ class BalanceComptabilite extends StatefulWidget {
 
 class _BalanceComptabiliteState extends State<BalanceComptabilite> {
   final GlobalKey<ScaffoldState> _key = GlobalKey();
+  final _formKey = GlobalKey<FormState>();
+  bool isLoading = false;
+
+  TextEditingController titleController = TextEditingController();
+
+  @override
+  initState() {
+    getData();
+    super.initState();
+  }
+
+  UserModel? user;
+  Future<void> getData() async {
+    UserModel userModel = await AuthApi().getUserId();
+    setState(() {
+      user = userModel;
+    });
+  }
+
+  @override
+  void dispose() {
+    titleController.dispose();
+    super.dispose();
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -25,8 +55,7 @@ class _BalanceComptabiliteState extends State<BalanceComptabilite> {
         floatingActionButton: FloatingActionButton(
             child: const Icon(Icons.add),
             onPressed: () {
-              Navigator.pushNamed(
-                  context, ComptabiliteRoutes.comptabiliteBalanceAdd); 
+              newFicheDialog();
             }),
         body: SafeArea(
           child: Row(
@@ -44,7 +73,7 @@ class _BalanceComptabiliteState extends State<BalanceComptabilite> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       CustomAppbar(
-                          title: 'Balance des comptes',
+                          title: 'Balance',
                           controllerMenu: () =>
                               _key.currentState!.openDrawer()),
                       const Expanded(child: TableBilanComptabilite())
@@ -55,5 +84,85 @@ class _BalanceComptabiliteState extends State<BalanceComptabilite> {
             ],
           ),
         ));
+  }
+
+   newFicheDialog() {
+    return showDialog(
+        context: context,
+        barrierDismissible: true,
+        builder: (context) {
+          return StatefulBuilder(builder: (context, StateSetter setState) {
+            return AlertDialog(
+              scrollable: true,
+              title: const Text('Génerer la balance'),
+              content: SizedBox(
+                  height: 200,
+                  width: 300,
+                  child: isLoading
+                      ? loading()
+                      : Form(
+                          key: _formKey,
+                          child: Column(
+                            children: [
+                              const SizedBox(height: 20),
+                              titleBilanWidget()
+                            ],
+                          ))),
+              actions: <Widget>[
+                TextButton(
+                  onPressed: () => Navigator.pop(context, 'Cancel'),
+                  child: const Text('Annuler'),
+                ),
+                TextButton(
+                  onPressed: () {
+                    isLoading = true;
+                    submit();
+                  },
+                  child: const Text('OK'),
+                ),
+              ],
+            );
+          });
+        });
+  }
+
+  Widget titleBilanWidget() {
+    return Container(
+        margin: const EdgeInsets.only(bottom: p20),
+        child: TextFormField(
+          controller: titleController,
+          decoration: InputDecoration(
+            border:
+                OutlineInputBorder(borderRadius: BorderRadius.circular(10.0)),
+            labelText: 'Titre du Bilan',
+          ),
+          keyboardType: TextInputType.text,
+          style: const TextStyle(),
+          validator: (value) {
+            if (value != null && value.isEmpty) {
+              return 'Ce champs est obligatoire';
+            } else {
+              return null;
+            }
+          },
+        ));
+  }
+
+  
+  
+  Future<void> submit() async {
+    final balance = BalanceCompteModel(
+        title: titleController.text,
+        statut: 'false',
+        signature: user!.matricule.toString(),
+        createdRef: DateTime.now(),
+        created: DateTime.now(),
+        isSubmit: 'false');
+    await BalanceCompteApi().insertData(balance);
+    Navigator.of(context).pop();
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      content: const Text("Soumis avec succès!"),
+      backgroundColor: Colors.green[700],
+    ));
   }
 }

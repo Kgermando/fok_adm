@@ -1,9 +1,9 @@
 import 'dart:async';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:fokad_admin/src/api/auth/auth_api.dart';
-import 'package:fokad_admin/src/api/comptabilite/bilan_api.dart';
 import 'package:fokad_admin/src/api/comptabilite/compte_actif_api.dart';
 import 'package:fokad_admin/src/api/comptabilite/compte_passif_api.dart';
 import 'package:fokad_admin/src/constants/app_theme.dart';
@@ -15,7 +15,6 @@ import 'package:fokad_admin/src/models/users/user_model.dart';
 import 'package:fokad_admin/src/navigation/drawer/drawer_menu.dart';
 import 'package:fokad_admin/src/navigation/header/custom_appbar.dart';
 import 'package:fokad_admin/src/utils/comptes_dropdown.dart';
-import 'package:fokad_admin/src/utils/loading.dart';
 import 'package:fokad_admin/src/widgets/btn_widget.dart';
 import 'package:fokad_admin/src/widgets/title_widget.dart';
 import 'package:intl/intl.dart';
@@ -32,6 +31,9 @@ class _AddCompteBilanState extends State<AddCompteBilan> {
   final _actifFormKey = GlobalKey<FormState>();
   final _passifFormKey = GlobalKey<FormState>();
   bool isLoading = false;
+  bool isLoadingActif = false;
+  bool isLoadingPassif = false;
+  bool isLoadingDelete = false;
 
   String? comptesActifValue;
   String? comptesPassifValue;
@@ -55,74 +57,54 @@ class _AddCompteBilanState extends State<AddCompteBilan> {
   final class8Dropdown = ComptesDropdown().classe8compte;
   final class9Dropdown = ComptesDropdown().classe9compte;
 
+  Timer? timer;
   @override
   initState() {
-    getData();
-    super.initState();
-  }
-
-  UserModel? user;
-  Future<void> getData() async {
-    UserModel userModel = await AuthApi().getUserId();
-    setState(() {
-      user = userModel;
+    timer = Timer.periodic(const Duration(seconds: 1), (timer) {
+      getData();
     });
+
+    super.initState();
   }
 
   @override
   void dispose() {
+    timer!.cancel();
     montantActifController.dispose();
     montantPassifController.dispose();
     super.dispose();
   }
 
-  final Stream<List<CompteActifModel>> _compteActif = (() {
-    late final StreamController<List<CompteActifModel>> controller;
-    controller = StreamController<List<CompteActifModel>>(
-      onListen: () async {
-        List<CompteActifModel> mailsList = [];
-        var bilans = await BilanApi().getAllData();
-        var compteActif = await CompteActifApi().getAllData();
-        for (var item in bilans) {
-          mailsList = compteActif
-              .where((element) =>
-                  element.reference.microsecondsSinceEpoch ==
-                  item.createdRef.microsecondsSinceEpoch)
-              .toList();
-        }
-        controller.add(mailsList);
-        await Future<void>.delayed(const Duration(seconds: 1));
-        await controller.close();
-      },
-    );
-    return controller.stream;
-  })();
-
-  final Stream<List<ComptePassifModel>> _comptePassif = (() {
-    late final StreamController<List<ComptePassifModel>> controller;
-    controller = StreamController<List<ComptePassifModel>>(
-      onListen: () async {
-        List<ComptePassifModel> mailsList = [];
-        var bilans = await BilanApi().getAllData();
-        var compteActif = await ComptePassifApi().getAllData();
-        for (var item in bilans) {
-          mailsList = compteActif
-              .where((element) =>
-                  element.reference.microsecondsSinceEpoch ==
-                  item.createdRef.microsecondsSinceEpoch)
-              .toList();
-        }
-        controller.add(mailsList);
-        await Future<void>.delayed(const Duration(seconds: 1));
-        await controller.close();
-      },
-    );
-    return controller.stream;
-  })();
+  List<CompteActifModel> compteActifList = [];
+  List<ComptePassifModel> comptePassifList = [];
+  List<CompteActifModel> compteActifFilter = [];
+  List<ComptePassifModel> comptePassifFilter = [];
+  UserModel? user;
+  Future<void> getData() async {
+    UserModel userModel = await AuthApi().getUserId();
+    var compteActif = await CompteActifApi().getAllData();
+    var comptePassif = await ComptePassifApi().getAllData();
+    if (!mounted) return;
+    setState(() {
+      user = userModel;
+      compteActifFilter = compteActif;
+      comptePassifFilter = comptePassif;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     final bilanModel = ModalRoute.of(context)!.settings.arguments as BilanModel;
+    compteActifList = compteActifFilter
+        .where((element) =>
+            element.reference.microsecondsSinceEpoch ==
+            bilanModel.createdRef.microsecondsSinceEpoch)
+        .toList();
+    comptePassifList = comptePassifFilter
+        .where((element) =>
+            element.reference.microsecondsSinceEpoch ==
+            bilanModel.createdRef.microsecondsSinceEpoch)
+        .toList();
     return Scaffold(
         key: _key,
         drawer: const DrawerMenu(),
@@ -213,92 +195,18 @@ class _AddCompteBilanState extends State<AddCompteBilan> {
                           const SizedBox(
                             height: p20,
                           ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.end,
-                            children: [
-                              IconButton(
-                                  icon: const Icon(Icons.add),
-                                  onPressed: () {
-                                    setState(() {});
-                                  })
-                            ],
-                          ),
                           SizedBox(
-                            height: MediaQuery.of(context).size.height / 1.8,
-                            width: double.infinity,
-                            child: Column(
-                              children: [
-                                StreamBuilder<List<CompteActifModel>>(
-                                      stream: _compteActif,
-                                      builder: (BuildContext context,
-                                          AsyncSnapshot<List<CompteActifModel>>
-                                              snapshot) {
-                                        List<Widget> children;
-                                        if (snapshot.hasError) {
-                                          children = <Widget>[
-                                            Padding(
-                                              padding: const EdgeInsets.only(
-                                                  top: 16),
-                                              child: Text(
-                                                  'Error: ${snapshot.error}'),
-                                            ),
-                                          ];
-                                        } else {
-                                          switch (snapshot.connectionState) {
-                                            case ConnectionState.none:
-                                              children = const <Widget>[
-                                                Icon(
-                                                  Icons.info,
-                                                  color: Colors.blue,
-                                                  size: 60,
-                                                ),
-                                              ];
-                                              break;
-                                            case ConnectionState.waiting:
-                                              children = <Widget>[loading()];
-                                              break;
-                                            case ConnectionState.active:
-                                              children = <Widget>[
-                                                Padding(
-                                                  padding:
-                                                      const EdgeInsets.only(
-                                                          top: 16),
-                                                  child: Text(
-                                                      '\$${snapshot.data}'),
-                                                ),
-                                              ];
-                                              break;
-                                            case ConnectionState.done:
-                                              children = <Widget>[
-                                                Expanded(
-                                                  child: ListView.builder(
-                                                      itemCount:
-                                                          snapshot.data!.length,
-                                                      itemBuilder:
-                                                          (context, index) {
-                                                        final dataList =
-                                                            snapshot
-                                                                .data![index];
-                                                        return detailComptes(
-                                                            dataList.comptes,
-                                                            dataList.montant);
-                                                      }),
-                                                )
-                                              ];
-                                              break;
-                                          }
-                                        }
-                                        return Expanded(
-                                          child: Column(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.center,
-                                            children: children,
-                                          ),
-                                        );
-                                      }), 
-                                compteActifWidget(data),
-                              ],
-                            )),
+                              height: MediaQuery.of(context).size.height / 1.8,
+                              width: double.infinity,
+                              child:  Column(
+                                children: [
+                                  for (var item in compteActifList)
+                                    tableWidget(
+                                        'Actif', item.comptes, item.montant),
+                                  const SizedBox(height: p20),
+                                  compteActifWidget(data),
+                                ],
+                              )),
                         ],
                       )),
                       const SizedBox(
@@ -313,86 +221,15 @@ class _AddCompteBilanState extends State<AddCompteBilan> {
                         const SizedBox(
                           height: p20,
                         ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: [
-                            IconButton(
-                                icon: const Icon(Icons.add),
-                                onPressed: () {
-                                  setState(() {});
-                                })
-                          ],
-                        ),
                         SizedBox(
                             height: MediaQuery.of(context).size.height / 1.8,
                             width: double.infinity,
                             child: Column(
                               children: [
-                                StreamBuilder<List<ComptePassifModel>>(
-                                    stream: _comptePassif,
-                                    builder: (BuildContext context,
-                                        AsyncSnapshot<List<ComptePassifModel>>
-                                            snapshot) {
-                                      List<Widget> children;
-                                      if (snapshot.hasError) {
-                                        children = <Widget>[
-                                          Padding(
-                                            padding:
-                                                const EdgeInsets.only(top: 16),
-                                            child: Text(
-                                                'Error: ${snapshot.error}'),
-                                          ),
-                                        ];
-                                      } else {
-                                        switch (snapshot.connectionState) {
-                                          case ConnectionState.none:
-                                            children = const <Widget>[
-                                              Icon(
-                                                Icons.info,
-                                                color: Colors.blue,
-                                                size: 60,
-                                              ),
-                                            ];
-                                            break;
-                                          case ConnectionState.waiting:
-                                            children = <Widget>[loading()];
-                                            break;
-                                          case ConnectionState.active:
-                                            children = <Widget>[
-                                              Padding(
-                                                padding: const EdgeInsets.only(
-                                                    top: 16),
-                                                child:
-                                                    Text('\$${snapshot.data}'),
-                                              ),
-                                            ];
-                                            break;
-                                          case ConnectionState.done:
-                                            children = <Widget>[
-                                              Expanded(
-                                                child: ListView.builder(
-                                                    itemCount:
-                                                        snapshot.data!.length,
-                                                    itemBuilder:
-                                                        (context, index) {
-                                                      final dataList =
-                                                          snapshot.data![index];
-                                                      return detailComptes(
-                                                          dataList.comptes, dataList.montant);
-                                                    }),
-                                              )
-                                            ];
-                                            break;
-                                        }
-                                      }
-                                      return Expanded(
-                                        child: Column(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                          children: children,
-                                        ),
-                                      );
-                                    }), 
+                                for (var item in comptePassifList)
+                                  tableWidget(
+                                      'Passif', item.comptes, item.montant),
+                                const SizedBox(height: p20),
                                 comptePassifWidget(data),
                               ],
                             )),
@@ -411,34 +248,71 @@ class _AddCompteBilanState extends State<AddCompteBilan> {
     );
   }
 
-  Widget detailComptes(String comptes, String montant) {
+  Widget tableWidget(String type, String comptes, String montant) {
     final bodyMedium = Theme.of(context).textTheme.bodyMedium;
-    return Row(
+    return Table(
+      border: TableBorder.all(color: Colors.amber.shade700),
+      columnWidths: const {0: FlexColumnWidth(4), 1: FlexColumnWidth(1)},
       children: [
-        Expanded(
-          flex: 3,
-          child: SelectableText(comptes,
-              textAlign: TextAlign.start, style: bodyMedium),
-        ),
-        Expanded(
-          flex: 1,
-          child: Container(
-            decoration: BoxDecoration(
-                border: Border(
-              left: BorderSide(
-                color: Colors.amber.shade700,
-                width: 2,
-              ),
-            )),
+        TableRow(children: [
+          Container(
+            padding: const EdgeInsets.all(p10),
+            child: SelectableText(comptes,
+                textAlign: TextAlign.start, style: bodyMedium),
+          ),
+          Container(
+            padding: const EdgeInsets.all(p10),
             child: SelectableText(
                 "${NumberFormat.decimalPattern('fr').format(double.parse(montant))} \$",
                 textAlign: TextAlign.center,
                 style: bodyMedium),
           ),
-        )
+        ])
       ],
     );
   }
+
+  // Widget detailComptes(String type, String comptes, String montant) {
+  //   final bodyMedium = Theme.of(context).textTheme.bodyMedium;
+  //   return Row(
+  //     children: [
+  //       Expanded(
+  //         flex: 3,
+  //         child: Container(
+  //           decoration: BoxDecoration(
+  //               border: Border(
+  //             bottom: BorderSide(
+  //               color: Colors.amber.shade700,
+  //               width: 2,
+  //             ),
+  //           )),
+  //           child: SelectableText(comptes,
+  //               textAlign: TextAlign.start, style: bodyMedium),
+  //         ),
+  //       ),
+  //       Expanded(
+  //         flex: 1,
+  //         child: Container(
+  //           decoration: BoxDecoration(
+  //               border: Border(
+  //             left: BorderSide(
+  //               color: Colors.amber.shade700,
+  //               width: 2,
+  //             ),
+  //             bottom: BorderSide(
+  //               color: Colors.amber.shade700,
+  //               width: 2,
+  //             ),
+  //           )),
+  //           child: SelectableText(
+  //               "${NumberFormat.decimalPattern('fr').format(double.parse(montant))} \$",
+  //               textAlign: TextAlign.center,
+  //               style: bodyMedium),
+  //         ),
+  //       ),
+  //     ],
+  //   );
+  // }
 
   Widget compteActifWidget(BilanModel data) {
     return Form(
@@ -564,11 +438,15 @@ class _AddCompteBilanState extends State<AddCompteBilan> {
           const SizedBox(height: p20),
           BtnWidget(
               title: "Soumettre l'actif",
-              isLoading: isLoading,
+              isLoading: isLoadingActif,
               press: () {
                 final form = _actifFormKey.currentState!;
                 if (form.validate()) {
-                  submitCompteActif(data);
+                  submitCompteActif(data).then((value) {
+                    setState(() {
+                      isLoadingActif = false;
+                    });
+                  });
                   form.reset();
                 }
               })
@@ -694,11 +572,15 @@ class _AddCompteBilanState extends State<AddCompteBilan> {
           const SizedBox(height: p20),
           BtnWidget(
               title: "Soumettre le passif",
-              isLoading: isLoading,
+              isLoading: isLoadingPassif,
               press: () {
                 final form = _passifFormKey.currentState!;
                 if (form.validate()) {
-                  submitComptePassif(data);
+                  submitComptePassif(data).then((value) {
+                    setState(() {
+                      isLoadingPassif = false;
+                    });
+                  });
                   form.reset();
                 }
               })

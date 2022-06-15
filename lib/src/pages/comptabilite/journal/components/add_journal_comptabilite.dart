@@ -204,7 +204,7 @@ class _AddJournalComptabiliteState extends State<AddJournalComptabilite> {
                           form.reset();
                         }
                       },
-                      child: const Text('Soumettre')),
+                      child: Text('Soumettre', style: Theme.of(context).textTheme.bodyLarge)),
                 ],
               ),
             )

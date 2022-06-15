@@ -10,7 +10,7 @@ import 'package:http/http.dart' as http;
 
 class CompteBalanceRefApi {
   var client = http.Client(); 
-  Future<List<CompteBalanceRef>> getAllData() async {
+  Future<List<CompteBalanceRefModel>> getAllData() async {
     String? token = await UserSharedPref().getAccessToken();
 
     if (token!.isNotEmpty) {
@@ -27,9 +27,9 @@ class CompteBalanceRefApi {
     );
     if (resp.statusCode == 200) {
       List<dynamic> bodyList = json.decode(resp.body);
-      List<CompteBalanceRef> data = [];
+      List<CompteBalanceRefModel> data = [];
       for (var u in bodyList) {
-        data.add(CompteBalanceRef.fromJson(u));
+        data.add(CompteBalanceRefModel.fromJson(u));
       }
       return data;
     } else {
@@ -37,7 +37,7 @@ class CompteBalanceRefApi {
     }
   }
 
-  Future<CompteBalanceRef> getOneData(int id) async {
+  Future<CompteBalanceRefModel> getOneData(int id) async {
     String? token = await UserSharedPref().getAccessToken();
 
     if (token!.isNotEmpty) {
@@ -54,14 +54,14 @@ class CompteBalanceRefApi {
       },
     );
     if (resp.statusCode == 200) {
-      return CompteBalanceRef.fromJson(json.decode(resp.body));
+      return CompteBalanceRefModel.fromJson(json.decode(resp.body));
     } else {
       throw Exception(json.decode(resp.body)['message']);
     }
   }
 
-  Future<CompteBalanceRef> insertData(
-      CompteBalanceRef balanceCompteModel) async {
+  Future<CompteBalanceRefModel> insertData(
+      CompteBalanceRefModel balanceCompteModel) async {
     String? token = await UserSharedPref().getAccessToken();
 
     var data = balanceCompteModel.toJson();
@@ -74,17 +74,17 @@ class CompteBalanceRefApi {
         },
         body: body);
     if (resp.statusCode == 200) {
-      return CompteBalanceRef.fromJson(json.decode(resp.body));
+      return CompteBalanceRefModel.fromJson(json.decode(resp.body));
     } else if (resp.statusCode == 401) {
       await AuthApi().refreshAccessToken();
       return insertData(balanceCompteModel);
     } else {
-      throw Exception(json.decode(resp.body)['message']);
+      throw Exception(resp.statusCode);
     }
   }
 
-  Future<CompteBalanceRef> updateData(
-      int id, CompteBalanceRef balanceCompteModel) async {
+  Future<CompteBalanceRefModel> updateData(
+      int id, CompteBalanceRefModel balanceCompteModel) async {
     String? token = await UserSharedPref().getAccessToken();
 
     var data = balanceCompteModel.toJson();
@@ -99,13 +99,13 @@ class CompteBalanceRefApi {
         },
         body: body);
     if (res.statusCode == 200) {
-      return CompteBalanceRef.fromJson(json.decode(res.body));
+      return CompteBalanceRefModel.fromJson(json.decode(res.body));
     } else {
       throw Exception(json.decode(res.body)['message']);
     }
   }
 
-  Future<CompteBalanceRef> deleteData(int id) async {
+  Future<CompteBalanceRefModel> deleteData(int id) async {
     String? token = await UserSharedPref().getAccessToken();
 
     var deleteUrl = Uri.parse(
@@ -116,7 +116,7 @@ class CompteBalanceRefApi {
       'Authorization': 'Bearer $token'
     });
     if (res.statusCode == 200) {
-      return CompteBalanceRef.fromJson(json.decode(res.body)['data']);
+      return CompteBalanceRefModel.fromJson(json.decode(res.body)['data']);
     } else {
       throw Exception(json.decode(res.body)['message']);
     }

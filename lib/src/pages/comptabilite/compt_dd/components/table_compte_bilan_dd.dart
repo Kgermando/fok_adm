@@ -5,6 +5,7 @@ import 'package:fokad_admin/src/api/comptabilite/bilan_api.dart';
 import 'package:fokad_admin/src/models/comptabilites/bilan_model.dart';
 import 'package:fokad_admin/src/routes/routes.dart';
 import 'package:fokad_admin/src/utils/class_implemented.dart';
+import 'package:fokad_admin/src/widgets/print_widget.dart';
 import 'package:intl/intl.dart';
 import 'package:pluto_grid/pluto_grid.dart';
 
@@ -49,6 +50,20 @@ class _TableCompteDDState extends State<TableCompteBilanDD> {
           stateManager = event.stateManager;
           stateManager!.setShowColumnFilter(true);
           stateManager!.notifyListeners();
+        },
+        createHeader: (PlutoGridStateManager header) {
+          return Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              IconButton(
+                  onPressed: () {
+                    Navigator.pushNamed(
+                        context, ComptabiliteRoutes.comptabiliteDD);
+                  },
+                  icon: Icon(Icons.refresh, color: Colors.green.shade700)),
+              PrintWidget(onPressed: () {})
+            ],
+          );
         },
         configuration: PlutoGridConfiguration(
           columnFilterConfig: PlutoGridColumnFilterConfig(
