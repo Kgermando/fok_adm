@@ -4,8 +4,7 @@ import 'package:fokad_admin/src/api/auth/auth_api.dart';
 import 'package:fokad_admin/src/api/comm_marketing/commerciale/produit_model_api.dart';
 import 'package:fokad_admin/src/models/approbation/approbation_model.dart';
 import 'package:fokad_admin/src/models/comm_maketing/prod_model.dart';
-import 'package:fokad_admin/src/models/users/user_model.dart';
-import 'package:fokad_admin/src/pages/comm_marketing/commercial/prod_model/components/detail_prod_model.dart';
+import 'package:fokad_admin/src/models/users/user_model.dart'; 
 import 'package:fokad_admin/src/routes/routes.dart';
 import 'package:fokad_admin/src/widgets/print_widget.dart';
 import 'package:fokad_admin/src/utils/class_implemented.dart';
@@ -208,7 +207,7 @@ class _TableProduitModelState extends State<TableProduitModel> {
         isApproved = approbations
             .where((element) =>
                 element.reference.microsecondsSinceEpoch ==
-                item!.created.microsecondsSinceEpoch)
+                item.created.microsecondsSinceEpoch)
             .toList();
       }
       // FIltre si le filtre donne des elements
@@ -216,7 +215,7 @@ class _TableProduitModelState extends State<TableProduitModel> {
         for (var item in approbations) {
           data = dataList
               .where((element) =>
-                  element!.created.microsecondsSinceEpoch ==
+                  element.created.microsecondsSinceEpoch ==
                           item.reference.microsecondsSinceEpoch &&
                       item.fontctionOccupee == 'Directeur de departement' &&
                       item.approbation == "Approved" ||
@@ -225,12 +224,12 @@ class _TableProduitModelState extends State<TableProduitModel> {
         }
       } else {
         data = dataList
-            .where((element) => element!.signature == userModel.matricule)
+            .where((element) => element.signature == userModel.matricule)
             .toList();
       }
     } else {
       data = dataList
-          .where((element) => element!.signature == userModel.matricule)
+          .where((element) => element.signature == userModel.matricule)
           .toList();
     }
 
