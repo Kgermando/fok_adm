@@ -45,6 +45,12 @@ import 'package:fokad_admin/src/pages/comm_marketing/etat_besoin/etat_besoin_cm_
 import 'package:fokad_admin/src/pages/comm_marketing/marketing/agenda_marketing.dart';
 import 'package:fokad_admin/src/pages/comm_marketing/marketing/annuaire_marketing.dart';
 import 'package:fokad_admin/src/pages/comm_marketing/marketing/campaign_marketing.dart';
+import 'package:fokad_admin/src/pages/comm_marketing/marketing/components/agenda/add_agenda.dart';
+import 'package:fokad_admin/src/pages/comm_marketing/marketing/components/agenda/detail_agenda.dart';
+import 'package:fokad_admin/src/pages/comm_marketing/marketing/components/agenda/update_agenda.dart';
+import 'package:fokad_admin/src/pages/comm_marketing/marketing/components/annuaire/add_annuaire.dart';
+import 'package:fokad_admin/src/pages/comm_marketing/marketing/components/annuaire/detail_annuaire.dart';
+import 'package:fokad_admin/src/pages/comm_marketing/marketing/components/annuaire/update_annuaire.dart';
 import 'package:fokad_admin/src/pages/comm_marketing/marketing/components/campaign/add_campaign.dart';
 import 'package:fokad_admin/src/pages/comm_marketing/marketing/components/campaign/detail_campaign.dart';
 import 'package:fokad_admin/src/pages/comm_marketing/marketing/components/campaign/update_campaign.dart';
@@ -61,7 +67,6 @@ import 'package:fokad_admin/src/pages/comptabilite/compte_resultat/components/up
 import 'package:fokad_admin/src/pages/comptabilite/compte_resultat/compte_resultat.dart';
 import 'package:fokad_admin/src/pages/comptabilite/dashboard/dashboard_comptabilite.dart';
 import 'package:fokad_admin/src/pages/comptabilite/etat_besoin/etat_besoin_comptabilite_page.dart';
-import 'package:fokad_admin/src/pages/comptabilite/grand_livre/components/table_grand_livre.dart';
 import 'package:fokad_admin/src/pages/comptabilite/grand_livre/grand_livre_comptabilite.dart';
 import 'package:fokad_admin/src/pages/comptabilite/journal/components/add_journal_comptabilite.dart';
 import 'package:fokad_admin/src/pages/comptabilite/journal/components/detail_journal.dart';
@@ -323,11 +328,18 @@ class ComMarketingRoutes {
   static const comMarketingDashboard = "/com-marketing-dashboard";
   // Marketing
   static const comMarketingAnnuaire = "/com-marketing-annuaire";
+  static const comMarketingAnnuaireAdd = "/com-marketing-annuaire-add";
+  static const comMarketingAnnuaireDetail = "/com-marketing-annuaire-detail";
+  static const comMarketingAnnuaireEdit = "/com-marketing-annuaire-edit";
   static const comMarketingAgenda = "/com-marketing-agenda";
+  static const comMarketingAgendaAdd = "/com-marketing-agenda-add";
+  static const comMarketingAgendaDetail = "/com-marketing-agenda-detail";
+  static const comMarketingAgendaUpdate = "/com-marketing-agenda-update";
   static const comMarketingCampaign = "/com-marketing-campaign";
   static const comMarketingCampaignAdd = "/com-marketing-campaign-add";
   static const comMarketingCampaignDetail = "/com-marketing-campaign-detail";
   static const comMarketingCampaignUpdate = "/com-marketing-campaign-update";
+  
   // Commercial
   static const comMarketingProduitModel = "/com-marketing-produit-model";
   static const comMarketingProduitModelAdd = "/com-marketing-produit-model-add";
@@ -525,7 +537,15 @@ final routes = <String, WidgetBuilder>{
   ComMarketingRoutes.comMarketingDD: (context) => const CMDD(),
   ComMarketingRoutes.comMarketingDashboard: (context) =>const ComMarketing(),
   ComMarketingRoutes.comMarketingAnnuaire: (context) =>const AnnuaireMarketing(),
+  ComMarketingRoutes.comMarketingAnnuaireAdd: (context) => const AddAnnuaire(),
+  ComMarketingRoutes.comMarketingAnnuaireDetail: (context) => const DetailAnnuaire(),
+  ComMarketingRoutes.comMarketingAnnuaireEdit: (context) =>
+      const UpdateAnnuaire(),
   ComMarketingRoutes.comMarketingAgenda: (context) => const AgendaMarketing(),
+  ComMarketingRoutes.comMarketingAgendaAdd: (context) => const AddAgenda(),
+  ComMarketingRoutes.comMarketingAgendaDetail: (context) => const DetailAgenda(),
+  ComMarketingRoutes.comMarketingAgendaUpdate: (context) =>
+      const UpdateAgenda(),
   ComMarketingRoutes.comMarketingCampaign: (context) =>const CampaignMarketing(),
   ComMarketingRoutes.comMarketingCampaignAdd: (context) =>const AddCampaign(),
   ComMarketingRoutes.comMarketingCampaignDetail: (context) => const DetailCampaign(),

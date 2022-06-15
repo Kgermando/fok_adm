@@ -29,11 +29,6 @@ class _AddCampaignState extends State<AddCampaign> {
   bool isLoading = false;
   DateTimeRange? dateRange;
 
-  int? id;
-  List<ProductModel> produitModelList = [];
-  List<UserModel> agentAffectesList = [];
-  List<String> multiChecked = []; // Multi checkbox
-
   TextEditingController typeProduitController = TextEditingController();
   TextEditingController dateDebutEtFinController = TextEditingController();
   TextEditingController coutCampaignController = TextEditingController();
@@ -69,15 +64,10 @@ class _AddCampaignState extends State<AddCampaign> {
 
   UserModel? user;
   Future<void> getData() async {
-    UserModel userModel = await AuthApi().getUserId();
-    var users = await UserApi().getAllData();
-    var produitModel = await ProduitModelApi().getAllData();
+    UserModel userModel = await AuthApi().getUserId();  
+    if(!mounted) return;
     setState(() {
-      user = userModel;
-      agentAffectesList = users
-          .where((element) => element.departement == "Commercial et Marketing")
-          .toList();
-      produitModelList = produitModel;
+      user = userModel; 
     });
   }
 
@@ -115,7 +105,7 @@ class _AddCampaignState extends State<AddCampaign> {
                           Expanded(
                               flex: 5,
                               child: CustomAppbar(
-                                  title: 'Nouvelle campaign',
+                                  title: 'Campagne',
                                   controllerMenu: () =>
                                       _key.currentState!.openDrawer())),
                         ],
@@ -151,7 +141,7 @@ class _AddCampaignState extends State<AddCampaign> {
                 child: ListView(
                   controller: _controllerScroll,
                   children: [
-                    const TitleWidget(title: "?ew campaign"),
+                    const TitleWidget(title: "Nouvelle campagne"),
                     const SizedBox(
                       height: p20,
                     ),
@@ -181,10 +171,7 @@ class _AddCampaignState extends State<AddCampaign> {
                         ),
                         Expanded(child: objectifsWidget())
                       ],
-                    ),
-                    Text("Select Liste des agents",
-                        style: Theme.of(context).textTheme.bodyLarge),
-                    agentAffectesWidget(),
+                    ), 
                     const SizedBox(
                       height: p20,
                     ),
@@ -258,34 +245,6 @@ class _AddCampaignState extends State<AddCampaign> {
     if (newDateRange == null) return;
 
     setState(() => dateRange = newDateRange);
-  }
-
-  Widget agentAffectesWidget() {
-    final List<String> multiChoises =
-        agentAffectesList.map((e) => e.matricule).toSet().toList();
-    return Container(
-        margin: const EdgeInsets.only(bottom: 20.0),
-        height: 200,
-        child: ListView.builder(
-            itemCount: multiChoises.length,
-            itemBuilder: (context, i) {
-              return ListTile(
-                  title: Text(multiChoises[i]),
-                  leading: Checkbox(
-                    value: multiChecked.contains(multiChoises[i]),
-                    onChanged: (val) {
-                      if (val == true) {
-                        setState(() {
-                          multiChecked.add(multiChoises[i]);
-                        });
-                      } else {
-                        setState(() {
-                          multiChecked.remove(multiChoises[i]);
-                        });
-                      }
-                    },
-                  ));
-            }));
   }
 
   Widget coutCampaignWidget() {

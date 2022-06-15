@@ -6,15 +6,12 @@ import 'package:fokad_admin/src/models/comm_maketing/agenda_model.dart';
 import 'package:fokad_admin/src/navigation/drawer/drawer_menu.dart';
 import 'package:fokad_admin/src/navigation/header/custom_appbar.dart';
 import 'package:fokad_admin/src/pages/comm_marketing/marketing/components/agenda/update_agenda.dart';
+import 'package:fokad_admin/src/routes/routes.dart';
 import 'package:fokad_admin/src/widgets/title_widget.dart';
 import 'package:intl/intl.dart';
 
-
 class DetailAgenda extends StatefulWidget {
-  const DetailAgenda({Key? key, required this.agendaModel, required this.color})
-      : super(key: key);
-  final AgendaModel agendaModel;
-  final Color color;
+  const DetailAgenda({Key? key}) : super(key: key);
 
   @override
   State<DetailAgenda> createState() => _DetailAgendaState();
@@ -24,9 +21,13 @@ class _DetailAgendaState extends State<DetailAgenda> {
   final GlobalKey<ScaffoldState> _key = GlobalKey();
   final ScrollController _controllerScroll = ScrollController();
   bool isLoading = false;
+  bool isLoadingDelete = false;
 
   @override
   Widget build(BuildContext context) {
+    AgendaColor agendaColor =
+        ModalRoute.of(context)!.settings.arguments as AgendaColor;
+
     return Scaffold(
         key: _key,
         drawer: const DrawerMenu(),
@@ -56,7 +57,7 @@ class _DetailAgendaState extends State<DetailAgenda> {
                             const SizedBox(width: p10),
                             Expanded(
                               child: CustomAppbar(
-                                  title: widget.agendaModel.title,
+                                  title: agendaColor.agendaModel.title,
                                   controllerMenu: () =>
                                       _key.currentState!.openDrawer()),
                             ),
@@ -65,7 +66,7 @@ class _DetailAgendaState extends State<DetailAgenda> {
                         Expanded(
                             child: Scrollbar(
                                 controller: _controllerScroll,
-                                child: pageDetail()))
+                                child: pageDetail(agendaColor)))
                       ],
                     )),
               ),
@@ -74,10 +75,10 @@ class _DetailAgendaState extends State<DetailAgenda> {
         ));
   }
 
-  Widget pageDetail() {
+  Widget pageDetail(AgendaColor agendaColor) {
     return Row(mainAxisAlignment: MainAxisAlignment.center, children: [
       Card(
-        color: widget.color.withOpacity(.8),
+        color: agendaColor.color.withOpacity(.8),
         elevation: 10,
         child: Container(
           margin: const EdgeInsets.all(p16),
@@ -97,24 +98,24 @@ class _DetailAgendaState extends State<DetailAgenda> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  TitleWidget(title: widget.agendaModel.title),
+                  TitleWidget(title: agendaColor.agendaModel.title),
                   Column(
                     children: [
                       Row(
                         children: [
-                          editButton(),
-                          deleteButton(),
+                          editButton(agendaColor),
+                          deleteButton(agendaColor),
                         ],
                       ),
                       SelectableText(
                           DateFormat("dd-MM-yyyy HH:mm")
-                              .format(widget.agendaModel.created),
+                              .format(agendaColor.agendaModel.created),
                           textAlign: TextAlign.start),
                     ],
                   )
                 ],
               ),
-              dataWidget(),
+              dataWidget(agendaColor),
             ],
           ),
         ),
@@ -122,7 +123,7 @@ class _DetailAgendaState extends State<DetailAgenda> {
     ]);
   }
 
-  Widget dataWidget() {
+  Widget dataWidget(AgendaColor agendaColor) {
     final bodyMedium = Theme.of(context).textTheme.bodyMedium;
     final bodyLarge = Theme.of(context).textTheme.bodyLarge;
     return Padding(
@@ -134,17 +135,17 @@ class _DetailAgendaState extends State<DetailAgenda> {
           Row(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              const Icon(Icons.date_range),
+              Icon(Icons.date_range, color: agendaColor.color),
               const SizedBox(height: p20),
               SelectableText(
-                "Rappel le ${DateFormat("dd-MM-yyyy à HH:mm").format(widget.agendaModel.dateRappel)}",
+                "Rappel le ${DateFormat("dd-MM-yyyy à HH:mm").format(agendaColor.agendaModel.dateRappel)}",
                 style: bodyMedium,
               ),
             ],
           ),
           const SizedBox(height: p20),
           SelectableText(
-            widget.agendaModel.description,
+            agendaColor.agendaModel.description,
             style: bodyLarge,
           )
         ],
@@ -152,17 +153,19 @@ class _DetailAgendaState extends State<DetailAgenda> {
     );
   }
 
-  Widget editButton() => IconButton(
+  Widget editButton(AgendaColor agendaColor) => IconButton(
       icon: const Icon(Icons.edit_outlined),
       tooltip: "Modifiaction",
       onPressed: () async {
         if (isLoading) return;
-        Navigator.of(context).push(MaterialPageRoute(
-          builder: (context) => UpdateAgenda(agendaModel: widget.agendaModel),
-        ));
+        Navigator.of(context).pushNamed(
+            ComMarketingRoutes.comMarketingAgendaUpdate,
+            arguments: AgendaColor(
+                agendaModel: agendaColor.agendaModel,
+                color: agendaColor.color));
       });
 
-  Widget deleteButton() {
+  Widget deleteButton(AgendaColor agendaColor) {
     return IconButton(
       icon: const Icon(Icons.delete),
       tooltip: "Suppression",
@@ -179,11 +182,18 @@ class _DetailAgendaState extends State<DetailAgenda> {
             ),
             TextButton(
               onPressed: () async {
-                await AgendaApi().deleteData(widget.agendaModel.id!);
+                setState(() {
+                  isLoadingDelete = true;
+                });
+                await AgendaApi().deleteData(agendaColor.agendaModel.id!).then((value) {
+                  setState(() {
+                    isLoadingDelete = false;
+                  });
+                });
                 Navigator.of(context).pop();
                 ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                   content: Text(
-                      "${widget.agendaModel.title} vient d'être supprimé!"),
+                      "${agendaColor.agendaModel.title} vient d'être supprimé!"),
                   backgroundColor: Colors.red[700],
                 ));
               },

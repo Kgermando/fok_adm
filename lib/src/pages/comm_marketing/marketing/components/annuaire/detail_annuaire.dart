@@ -5,18 +5,18 @@ import 'package:flutter/material.dart';
 import 'package:fokad_admin/src/api/comm_marketing/marketing/annuaire_api.dart';
 import 'package:fokad_admin/src/constants/app_theme.dart';
 import 'package:fokad_admin/src/constants/responsive.dart';
-import 'package:fokad_admin/src/models/comm_maketing/annuaire_model.dart';
+import 'package:fokad_admin/src/models/comm_maketing/annuaire_model.dart'; 
 import 'package:fokad_admin/src/navigation/drawer/drawer_menu.dart';
 import 'package:fokad_admin/src/navigation/header/custom_appbar.dart';
 import 'package:fokad_admin/src/pages/comm_marketing/marketing/components/annuaire/update_annuaire.dart';
+import 'package:fokad_admin/src/routes/routes.dart';
+import 'package:fokad_admin/src/utils/loading.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class DetailAnnuaire extends StatefulWidget {
   const DetailAnnuaire(
-      {Key? key, required this.annuaireModel, required this.color})
+      {Key? key})
       : super(key: key);
-  final AnnuaireModel annuaireModel;
-  final Color color;
 
   @override
   State<DetailAnnuaire> createState() => _DetailAnnuaireState();
@@ -51,6 +51,9 @@ class _DetailAnnuaireState extends State<DetailAnnuaire> {
     final headline5 = Theme.of(context).textTheme.headline5;
     final bodyText2 = Theme.of(context).textTheme.bodyText2;
 
+  AnnuaireColor annuaireColor =
+        ModalRoute.of(context)!.settings.arguments as AnnuaireColor;
+
     return Scaffold(
         key: _key,
         drawer: const DrawerMenu(),
@@ -79,17 +82,16 @@ class _DetailAnnuaireState extends State<DetailAnnuaire> {
                           const SizedBox(width: p10),
                           Expanded(
                             child: CustomAppbar(
-                                title: widget.annuaireModel.nomPostnomPrenom,
+                                title: annuaireColor.annuaireModel.nomPostnomPrenom,
                                 controllerMenu: () =>
                                     _key.currentState!.openDrawer()),
                           ),
                         ],
                       ),
                       Expanded(
-                        child: Scrollbar(
-                          controller: _controllerScroll,
+                        child: SingleChildScrollView(
                           child: isLoading
-                              ? const Center(child: CircularProgressIndicator())
+                              ? Center(child: loading())
                               : Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
@@ -112,14 +114,13 @@ class _DetailAnnuaireState extends State<DetailAnnuaire> {
                                               width: 2.0,
                                             ),
                                           ),
-                                          child: ListView(
-                                            controller: _controllerScroll,
+                                          child: Column( 
                                             children: [
                                               Stack(
                                                 clipBehavior: Clip.none,
                                                 children: [
                                                   Container(
-                                                    color: widget.color,
+                                                    color: annuaireColor.color,
                                                     height: 200,
                                                     width: double.infinity,
                                                   ),
@@ -140,12 +141,14 @@ class _DetailAnnuaireState extends State<DetailAnnuaire> {
                                                                   .amber
                                                                   .shade700)),
                                                       child: CircleAvatar(
+                                                        radius: 50,
                                                         backgroundColor:
                                                             Colors.white,
-                                                        child: Image.asset("assets/images/avatar.jpg",
-                                                        width: 100,
-                                                        height: 100, 
-                                                        fit: BoxFit.cover, centerSlice: Rect.fromCircle(center: const Offset(100, 100), radius: 50))
+                                                        child: Image.asset(
+                                                          "assets/images/avatar.jpg",
+                                                          width: 80,
+                                                          height: 80,
+                                                        )
                                                       ),
                                                     ),
                                                   ),
@@ -153,7 +156,7 @@ class _DetailAnnuaireState extends State<DetailAnnuaire> {
                                                       top: 150,
                                                       left: 180,
                                                       child: AutoSizeText(
-                                                         widget.annuaireModel.nomPostnomPrenom,
+                                                         annuaireColor.annuaireModel.nomPostnomPrenom,
                                                           maxLines: 2,
                                                           style: headline5!
                                                               .copyWith(
@@ -171,7 +174,7 @@ class _DetailAnnuaireState extends State<DetailAnnuaire> {
                                                                           setState(
                                                                               () {
                                                                             _launched =
-                                                                                _makePhoneCall(widget.annuaireModel.mobile1);
+                                                                                _makePhoneCall(annuaireColor.annuaireModel.mobile1);
                                                                           })
                                                                       : null,
                                                               icon: const Icon(
@@ -207,16 +210,30 @@ class _DetailAnnuaireState extends State<DetailAnnuaire> {
                                                 ],
                                               ),
                                               const SizedBox(height: p30),
-                                              if (!widget.annuaireModel.email
+                                              Card(
+                                                elevation: 2,
+                                                child: Row(
+                                                  mainAxisAlignment: MainAxisAlignment.end,
+                                                  children: [
+editButton(annuaireColor),
+                                                      deleteButton(
+                                                          annuaireColor)
+                                                  ],
+                                                ) 
+                                              ),
+                                              const SizedBox(height: p30),
+                                              if (!annuaireColor
+                                                  .annuaireModel.email
                                                   .contains('null'))
                                                 Card(
                                                   elevation: 2,
                                                   child: ListTile(
                                                     leading: Icon(
                                                         Icons.email_sharp,
-                                                        color: widget.color),
+                                                        color: annuaireColor
+                                                            .color),
                                                     title: Text(
-                                                      widget
+                                                      annuaireColor
                                                           .annuaireModel.email,
                                                       style: bodyText2,
                                                     ),
@@ -227,26 +244,27 @@ class _DetailAnnuaireState extends State<DetailAnnuaire> {
                                                 child: ListTile(
                                                   leading: Icon(
                                                     Icons.call,
-                                                    color: widget.color,
+                                                    color: annuaireColor.color,
                                                     size: 40,
                                                   ),
                                                   title: Text(
-                                                    widget
+                                                    annuaireColor
                                                         .annuaireModel.mobile1,
                                                     style: bodyText2,
                                                   ),
-                                                  subtitle: (!widget
+                                                  subtitle: (!annuaireColor
                                                           .annuaireModel.mobile2
                                                           .contains('null'))
                                                       ? Text(
-                                                          widget.annuaireModel
+                                                          annuaireColor
+                                                              .annuaireModel
                                                               .mobile2,
                                                           style: bodyText2,
                                                         )
                                                       : Container(),
                                                 ),
                                               ),
-                                              if (!widget
+                                              if (!annuaireColor
                                                   .annuaireModel.secteurActivite
                                                   .contains('null'))
                                                 Card(
@@ -254,15 +272,17 @@ class _DetailAnnuaireState extends State<DetailAnnuaire> {
                                                   child: ListTile(
                                                     leading: Icon(
                                                         Icons.local_activity,
-                                                        color: widget.color),
+                                                        color: annuaireColor
+                                                            .color),
                                                     title: Text(
-                                                      widget.annuaireModel
+                                                      annuaireColor
+                                                          .annuaireModel
                                                           .secteurActivite,
                                                       style: bodyText2,
                                                     ),
                                                   ),
                                                 ),
-                                              if (!widget
+                                              if (!annuaireColor
                                                   .annuaireModel.nomEntreprise
                                                   .contains('null'))
                                                 Card(
@@ -270,29 +290,31 @@ class _DetailAnnuaireState extends State<DetailAnnuaire> {
                                                   child: ListTile(
                                                     leading: Icon(
                                                         Icons.business,
-                                                        color: widget.color),
+                                                        color: annuaireColor.color),
                                                     title: Text(
-                                                      widget.annuaireModel
+                                                      annuaireColor
+                                                          .annuaireModel
                                                           .nomEntreprise,
                                                       style: bodyText2,
                                                     ),
                                                   ),
                                                 ),
-                                              if (!widget.annuaireModel.grade
+                                              if (!annuaireColor
+                                                  .annuaireModel.grade
                                                   .contains('null'))
                                                 Card(
                                                   elevation: 2,
                                                   child: ListTile(
                                                     leading: Icon(Icons.grade,
-                                                        color: widget.color),
+                                                        color: annuaireColor.color),
                                                     title: Text(
-                                                      widget
+                                                      annuaireColor
                                                           .annuaireModel.grade,
                                                       style: bodyText2,
                                                     ),
                                                   ),
                                                 ),
-                                              if (!widget.annuaireModel
+                                              if (!annuaireColor.annuaireModel
                                                   .adresseEntreprise
                                                   .contains('null'))
                                                 Card(
@@ -300,9 +322,10 @@ class _DetailAnnuaireState extends State<DetailAnnuaire> {
                                                   child: ListTile(
                                                     leading: Icon(
                                                         Icons.place_sharp,
-                                                        color: widget.color),
+                                                        color: annuaireColor.color),
                                                     title: Text(
-                                                      widget.annuaireModel
+                                                      annuaireColor
+                                                          .annuaireModel
                                                           .adresseEntreprise,
                                                       style: bodyText2,
                                                     ),
@@ -322,18 +345,18 @@ class _DetailAnnuaireState extends State<DetailAnnuaire> {
         ));
   }
 
-  Widget editButton() => IconButton(
-      icon: const Icon(Icons.edit_outlined),
-      tooltip: "Modifiaction",
-      onPressed: () async {
-        if (isLoading) return;
-        Navigator.of(context).push(MaterialPageRoute(
-          builder: (context) =>
-              UpdateAnnuaire(annuaireModel: widget.annuaireModel),
-        ));
-      });
+  Widget editButton(AnnuaireColor annuaireColor) => IconButton(
+    icon: const Icon(Icons.edit_outlined),
+    tooltip: "Modifiaction",
+    onPressed: () { 
+      Navigator.of(context).pushNamed(
+          ComMarketingRoutes.comMarketingAnnuaireEdit,
+          arguments:
+            AnnuaireColor(
+              annuaireModel: annuaireColor.annuaireModel, color: annuaireColor.color));  
+    });
 
-  Widget deleteButton() {
+  Widget deleteButton(AnnuaireColor annuaireColor) {
     return IconButton(
       icon: const Icon(Icons.delete),
       tooltip: "Suppression",
@@ -350,11 +373,11 @@ class _DetailAnnuaireState extends State<DetailAnnuaire> {
             ),
             TextButton(
               onPressed: () async {
-                await AnnuaireApi().deleteData(widget.annuaireModel.id!);
+                await AnnuaireApi().deleteData(annuaireColor.annuaireModel.id!);
                 Navigator.of(context).pop();
                 ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                   content: Text(
-                      "${widget.annuaireModel.nomPostnomPrenom} vient d'être supprimé!"),
+                      "${annuaireColor.annuaireModel.nomPostnomPrenom} vient d'être supprimé!"),
                   backgroundColor: Colors.red[700],
                 ));
               },

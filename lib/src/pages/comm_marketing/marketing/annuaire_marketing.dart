@@ -9,6 +9,8 @@ import 'package:fokad_admin/src/navigation/drawer/drawer_menu.dart';
 import 'package:fokad_admin/src/navigation/header/custom_appbar.dart';
 import 'package:fokad_admin/src/pages/comm_marketing/marketing/components/annuaire/add_annuaire.dart';
 import 'package:fokad_admin/src/pages/comm_marketing/marketing/components/annuaire/detail_annuaire.dart';
+import 'package:fokad_admin/src/routes/routes.dart';
+import 'package:fokad_admin/src/utils/loading.dart';
 import 'package:fokad_admin/src/widgets/search_widget.dart';
 
 final _lightColors = [
@@ -70,9 +72,8 @@ class _AnnuaireMarketingState extends State<AnnuaireMarketing> {
             tooltip: 'Ajout contact',
             child: const Icon(Icons.add),
             onPressed: () {
-              Navigator.of(context).push(MaterialPageRoute(
-                builder: (context) => const AddAnnuaire(),
-              ));
+              Navigator.of(context)
+                  .pushNamed(ComMarketingRoutes.comMarketingAnnuaireAdd);
             }),
         body: SafeArea(
           child: Row(
@@ -102,7 +103,7 @@ class _AnnuaireMarketingState extends State<AnnuaireMarketing> {
                                 if (snapshot.hasData) {
                                   List<AnnuaireModel>? annuaireModels =
                                       snapshot.data;
-                                  
+
                                   return annuaireModels!.isEmpty
                                       ? Column(
                                           children: [
@@ -129,13 +130,13 @@ class _AnnuaireMarketingState extends State<AnnuaireMarketing> {
                                           itemBuilder: (context, index) {
                                             final annuaireModel =
                                                 annuaireModels[index];
-                                            
+
                                             return buildAnnuaire(
                                                 annuaireModel, index);
                                           });
                                 } else {
-                                  return const Center(
-                                      child: CircularProgressIndicator());
+                                  return Center(
+                                      child: loading());
                                 }
                               })),
                     ],
@@ -167,11 +168,11 @@ class _AnnuaireMarketingState extends State<AnnuaireMarketing> {
     final bodyText2 = Theme.of(context).textTheme.bodyText2;
     final color = _lightColors[index % _lightColors.length];
     return GestureDetector(
-        onTap: () async {
-          await Navigator.of(context).push(MaterialPageRoute(
-            builder: (context) =>
-                DetailAnnuaire(annuaireModel: annuaireModel, color: color),
-          ));
+        onTap: () { 
+          Navigator.of(context).pushNamed(
+            ComMarketingRoutes.comMarketingAnnuaireDetail, 
+              arguments: AnnuaireColor(annuaireModel: annuaireModel, color: color)
+          ); 
         },
         child: Padding(
           padding: const EdgeInsets.all(8.0),

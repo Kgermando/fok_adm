@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:fokad_admin/src/constants/responsive.dart';
 import 'package:fokad_admin/src/models/comm_maketing/agenda_model.dart';
 import 'package:intl/intl.dart';
+import 'package:timeago/timeago.dart' as timeago;
 
 class AgendaCardWidget extends StatelessWidget {
   const AgendaCardWidget({
@@ -19,7 +20,7 @@ class AgendaCardWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     /// Pick colors from the accent colors based on index
 
-    final time = DateFormat("dd.MM.yy HH:mm").format(agendaModel.created);
+    // final time = DateFormat("dd.MM.yy HH:mm").format(agendaModel.created);
     final minHeight = getMinHeight(index);
 
     return Card(
@@ -31,9 +32,32 @@ class AgendaCardWidget extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
-              time,
-              style: TextStyle(color: Colors.grey.shade700),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  timeago.format(agendaModel.created, locale: 'fr_short'),
+                  style: TextStyle(color: Colors.grey.shade700),
+                ),
+                if(DateTime.now().day == agendaModel.dateRappel.day)
+                Container(
+                  width: 15,
+                  height: 15,
+                  decoration: BoxDecoration(
+                    color: Colors.green.shade700,
+                    shape: BoxShape.circle,
+                  ),
+                ),
+                if (DateTime.now().day > agendaModel.dateRappel.day)
+                  Container(
+                    width: 15,
+                    height: 15,
+                    decoration: BoxDecoration(
+                      color: Colors.red.shade700,
+                      shape: BoxShape.circle,
+                    ),
+                  )
+              ],
             ),
             const SizedBox(height: 4),
             Text(

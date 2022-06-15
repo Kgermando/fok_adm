@@ -216,10 +216,6 @@ class _UpdateAgendaState extends State<UpdateAgenda> {
         dateRappel: DateTime.parse(dateRappelController.text),
         signature: user!.matricule.toString(),
         created: DateTime.now());
-    if (id != null) {
-      await AgendaApi().updateData(agendaModel);
-    } else {
-      await AgendaApi().insertData(agendaModel);
-    }
+   await AgendaApi().updateData(agendaModel);
   }
 }

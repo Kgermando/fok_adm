@@ -10,9 +10,9 @@ import 'package:fokad_admin/src/models/comm_maketing/agenda_model.dart';
 import 'package:fokad_admin/src/models/users/user_model.dart';
 import 'package:fokad_admin/src/navigation/drawer/drawer_menu.dart';
 import 'package:fokad_admin/src/navigation/header/custom_appbar.dart';
-import 'package:fokad_admin/src/pages/comm_marketing/marketing/components/agenda/add_agenda.dart';
 import 'package:fokad_admin/src/pages/comm_marketing/marketing/components/agenda/agenda_card_widget.dart';
 import 'package:fokad_admin/src/pages/comm_marketing/marketing/components/agenda/detail_agenda.dart';
+import 'package:fokad_admin/src/routes/routes.dart';
 
 final _lightColors = [
   Colors.amber.shade300,
@@ -37,7 +37,7 @@ class _AgendaMarketingState extends State<AgendaMarketing> {
 
   @override
   initState() {
-    timer = Timer.periodic(const Duration(milliseconds: 500), ((timer) {
+    timer = Timer.periodic(const Duration(seconds: 1), ((timer) {
       getData();
     }));
     super.initState();
@@ -70,11 +70,10 @@ class _AgendaMarketingState extends State<AgendaMarketing> {
         floatingActionButton: FloatingActionButton(
             tooltip: 'Nouvel agenda',
             child: const Icon(Icons.add),
-            onPressed: () => {
-                  Navigator.of(context).push(MaterialPageRoute(
-                    builder: (context) => const AddAgenda(),
-                  ))
-                }),
+            onPressed: () {
+              Navigator.of(context)
+                  .pushNamed(ComMarketingRoutes.comMarketingAgendaAdd);
+            }),
         body: SafeArea(
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -94,8 +93,7 @@ class _AgendaMarketingState extends State<AgendaMarketing> {
                           title: 'Agenda',
                           controllerMenu: () =>
                               _key.currentState!.openDrawer()),
-                      Expanded(
-                          child: buildAgenda())
+                      Expanded(child: buildAgenda())
                     ],
                   ),
                 ),
@@ -106,7 +104,9 @@ class _AgendaMarketingState extends State<AgendaMarketing> {
   }
 
   Widget buildAgenda() {
-    return StaggeredGrid.count(
+    return (agendaList.isEmpty)
+      ? const Center(child: Text("Ajouter quelque chose... 😊!"))
+      :  StaggeredGrid.count(
       crossAxisCount: 6,
       mainAxisSpacing: 16.0,
       crossAxisSpacing: 16.0,
@@ -114,11 +114,10 @@ class _AgendaMarketingState extends State<AgendaMarketing> {
         final agenda = agendaList[index];
         final color = _lightColors[index % _lightColors.length];
         return GestureDetector(
-          onTap: () async {
-            await Navigator.of(context).push(MaterialPageRoute(
-              builder: (context) =>
-                  DetailAgenda(agendaModel: agenda, color: color),
-            ));
+          onTap: () {
+            Navigator.of(context).pushNamed(
+                ComMarketingRoutes.comMarketingAgendaDetail,
+                arguments: AgendaColor(agendaModel: agenda, color: color));
           },
           child:
               AgendaCardWidget(agendaModel: agenda, index: index, color: color),

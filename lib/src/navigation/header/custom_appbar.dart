@@ -99,6 +99,7 @@ class _CustomAppbarState extends State<CustomAppbar> {
                       children: [
                         if (userModel.departement == "Commercial et Marketing")
                           IconButton(
+                            tooltip: 'Panier',
                               onPressed: () {
                                 Navigator.pushNamed(
                                     context,
@@ -111,6 +112,14 @@ class _CustomAppbarState extends State<CustomAppbar> {
                                 child: const Icon(Icons.shopping_cart),
                               )),
                         IconButton(
+                          tooltip: 'Agenda',
+                            onPressed: () {
+                              Navigator.pushNamed(
+                                  context, ComMarketingRoutes.comMarketingAgenda);
+                            },
+                            icon: Icon(Icons.note_alt_rounded, color: Colors.amber.shade700,)),
+                        IconButton(
+                          tooltip: 'Mails',
                             onPressed: () {
                               Navigator.pushNamed(context,
                                   MailRoutes.mails);
@@ -125,6 +134,7 @@ class _CustomAppbarState extends State<CustomAppbar> {
                         if (userModel.departement == "Exploitations")
                           if (tacheCount >= 1)
                             IconButton(
+                              tooltip: 'Notifications',
                                 onPressed: () {
                                   Navigator.pushNamed(
                                       context,

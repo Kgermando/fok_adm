@@ -1,3 +1,5 @@
+import 'package:flutter/material.dart';
+
 class AgendaModel {
   late int? id;
   late String title;
@@ -44,4 +46,12 @@ class AgendaModel {
       'created': created.toIso8601String()
     };
   }
+}
+
+
+class AgendaColor {
+  final AgendaModel agendaModel;
+  final Color color;
+
+  AgendaColor({required this.agendaModel, required this.color});
 }

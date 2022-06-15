@@ -20,7 +20,7 @@ class ObjetRemplaceApi {
           ascii.decode(base64.decode(base64.normalize(splittedJwt[1])))); 
     }
     var resp = await client.get(
-      mobiliersUrl,
+      objetsRemplaceUrl,
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
         'Authorization': 'Bearer $token'
@@ -47,7 +47,7 @@ class ObjetRemplaceApi {
       var payload = json.decode(
           ascii.decode(base64.decode(base64.normalize(splittedJwt[1]))));
     }
-    var getUrl = Uri.parse("$mainUrl/mobiliers/$id");
+    var getUrl = Uri.parse("$mainUrl/objets-remplaces/$id");
     var resp = await client.get(
       getUrl,
       headers: <String, String>{
@@ -68,7 +68,7 @@ class ObjetRemplaceApi {
     var data = objetRemplaceModel.toJson();
     var body = jsonEncode(data);
 
-    var resp = await client.post(addMobiliersUrl,
+    var resp = await client.post(addobjetsRemplaceUrl,
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
           'Authorization': 'Bearer $token'
@@ -90,7 +90,7 @@ class ObjetRemplaceApi {
 
     var data = objetRemplaceModel.toJson();
     var body = jsonEncode(data);
-    var updateUrl = Uri.parse("$mainUrl/mobiliers/update-mobilier/");
+    var updateUrl = Uri.parse("$mainUrl/objets-remplaces/update-objet-remplace/");
 
     var res = await client.put(updateUrl,
         headers: <String, String>{
@@ -108,7 +108,7 @@ class ObjetRemplaceApi {
   Future<ObjetRemplaceModel> deleteData(int id) async {
     String? token = await UserSharedPref().getAccessToken();
 
-    var deleteUrl = Uri.parse("$mainUrl/mobiliers/delete-mobilier/$id");
+    var deleteUrl = Uri.parse("$mainUrl/objets-remplaces/delete-objet-remplace/$id");
 
     var res = await client.delete(deleteUrl, headers: <String, String>{
       'Content-Type': 'application/json; charset=UTF-8',

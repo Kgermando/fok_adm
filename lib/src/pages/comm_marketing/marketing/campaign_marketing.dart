@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:fokad_admin/src/constants/app_theme.dart';
 import 'package:fokad_admin/src/constants/responsive.dart';
 import 'package:fokad_admin/src/navigation/drawer/drawer_menu.dart';
-import 'package:fokad_admin/src/navigation/header/custom_appbar.dart';
-import 'package:fokad_admin/src/pages/comm_marketing/marketing/components/campaign/add_campaign.dart';
+import 'package:fokad_admin/src/navigation/header/custom_appbar.dart'; 
 import 'package:fokad_admin/src/pages/comm_marketing/marketing/components/campaign/table_campaign.dart';
+import 'package:fokad_admin/src/routes/routes.dart';
 
 class CampaignMarketing extends StatefulWidget {
   const CampaignMarketing({ Key? key }) : super(key: key);
@@ -29,9 +29,8 @@ class _CampaignMarketingState extends State<CampaignMarketing> {
               ],
             ),
             onPressed: () {
-              Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) => const AddCampaign()));
-              // Routemaster.of(context).replace(ComMarketingRoutes.comMarketingCampaignAdd);
+              Navigator.of(context)
+                  .pushNamed(ComMarketingRoutes.comMarketingCampaignAdd);  
             }),
         body: SafeArea(
           child: Row(
@@ -49,7 +48,7 @@ class _CampaignMarketingState extends State<CampaignMarketing> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       CustomAppbar(
-                          title: 'Geston des campaigns',
+                          title: 'Geston des campagnes',
                           controllerMenu: () =>
                               _key.currentState!.openDrawer()),
                       const Expanded(child: TableCampaign())

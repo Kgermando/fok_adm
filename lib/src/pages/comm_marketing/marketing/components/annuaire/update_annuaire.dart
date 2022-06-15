@@ -12,9 +12,8 @@ import 'package:fokad_admin/src/widgets/title_widget.dart';
 
 
 class UpdateAnnuaire extends StatefulWidget {
-  const UpdateAnnuaire({Key? key, required this.annuaireModel})
-      : super(key: key);
-  final AnnuaireModel annuaireModel;
+  const UpdateAnnuaire({Key? key})
+      : super(key: key); 
 
   @override
   State<UpdateAnnuaire> createState() => _UpdateAnnuaireState();
@@ -41,25 +40,7 @@ class _UpdateAnnuaireState extends State<UpdateAnnuaire> {
 
   @override
   void initState() {
-    getData();
-    setState(() {
-      id = widget.annuaireModel.id;
-      categorie = widget.annuaireModel.categorie;
-      nomPostnomPrenomController =
-          TextEditingController(text: widget.annuaireModel.nomPostnomPrenom);
-      emailController = TextEditingController(text: widget.annuaireModel.email);
-      mobile1Controller =
-          TextEditingController(text: widget.annuaireModel.mobile1);
-      mobile2Controller =
-          TextEditingController(text: widget.annuaireModel.mobile2);
-      secteurActiviteController =
-          TextEditingController(text: widget.annuaireModel.secteurActivite);
-      nomEntrepriseController =
-          TextEditingController(text: widget.annuaireModel.nomEntreprise);
-      gradeController = TextEditingController(text: widget.annuaireModel.grade);
-      adresseEntrepriseController =
-          TextEditingController(text: widget.annuaireModel.adresseEntreprise);
-    });
+    getData(); 
     super.initState();
   }
 
@@ -75,8 +56,7 @@ class _UpdateAnnuaireState extends State<UpdateAnnuaire> {
   void dispose() {
     nomPostnomPrenomController.dispose();
     emailController.dispose();
-    mobile1Controller.dispose();
-    mobile1Controller.dispose();
+    mobile1Controller.dispose(); 
     mobile2Controller.dispose();
     secteurActiviteController.dispose();
     nomEntrepriseController.dispose();
@@ -87,6 +67,25 @@ class _UpdateAnnuaireState extends State<UpdateAnnuaire> {
 
   @override
   Widget build(BuildContext context) {
+    AnnuaireColor annuaireColor =
+        ModalRoute.of(context)!.settings.arguments as AnnuaireColor;
+    id = annuaireColor.annuaireModel.id;
+    categorie = annuaireColor.annuaireModel.categorie;
+    nomPostnomPrenomController =
+        TextEditingController(text: annuaireColor.annuaireModel.nomPostnomPrenom);
+    emailController = TextEditingController(text: annuaireColor.annuaireModel.email);
+    mobile1Controller =
+        TextEditingController(text: annuaireColor.annuaireModel.mobile1);
+    mobile2Controller =
+        TextEditingController(text: annuaireColor.annuaireModel.mobile2);
+    secteurActiviteController =
+        TextEditingController(text: annuaireColor.annuaireModel.secteurActivite);
+    nomEntrepriseController =
+        TextEditingController(text: annuaireColor.annuaireModel.nomEntreprise);
+    gradeController = TextEditingController(text: annuaireColor.annuaireModel.grade);
+    adresseEntrepriseController =
+        TextEditingController(text: annuaireColor.annuaireModel.adresseEntreprise);  
+
     return Scaffold(
         key: _key,
         drawer: const DrawerMenu(),
@@ -158,7 +157,7 @@ class _UpdateAnnuaireState extends State<UpdateAnnuaire> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: const [
-                        TitleWidget(title: "Ajout contact"),
+                        TitleWidget(title: "Modification contact"),
                       ],
                     ),
                     const SizedBox(

@@ -1,10 +1,10 @@
 class ObjetRemplaceModel {
   late int? id;
-  late DateTime reference;
+  late int reference;
   late String nom;
   late String cout;
   late String caracteristique;
-  late String observation;
+  late String observation;  // Point de vue de fonctionnement de l'objet
 
   ObjetRemplaceModel(
       {this.id,

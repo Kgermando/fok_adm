@@ -3,10 +3,10 @@ class EntretienModel {
   late String nom;
   late String modele;
   late String marque;
-  late String etatObjet;
+  late String etatObjet; // type de Maintenance
   late String dureeTravaux;
   late String signature; // celui qui fait le document
-  late DateTime createdRef;
+  late int createdRef;
   late DateTime created;
 
   EntretienModel(
@@ -42,7 +42,7 @@ class EntretienModel {
         etatObjet: json['etatObjet'],
         dureeTravaux: json['dureeTravaux'],
         signature: json['signature'],
-        createdRef: DateTime.parse(json['createdRef']),
+        createdRef: json['createdRef'],
         created: DateTime.parse(json['created']));
   }
 
@@ -55,7 +55,7 @@ class EntretienModel {
       'etatObjet': etatObjet,
       'dureeTravaux': dureeTravaux,
       'signature': signature,
-      'createdRef': createdRef.toIso8601String(),
+      'createdRef': createdRef,
       'created': created.toIso8601String()
     };
   }

@@ -9,6 +9,7 @@ import 'package:fokad_admin/src/models/users/user_model.dart';
 import 'package:fokad_admin/src/navigation/drawer/drawer_menu.dart';
 import 'package:fokad_admin/src/navigation/header/custom_appbar.dart';
 import 'package:fokad_admin/src/widgets/btn_widget.dart';
+import 'package:fokad_admin/src/widgets/title_widget.dart';
 
 class AddAgenda extends StatefulWidget {
   const AddAgenda({Key? key}) : super(key: key);
@@ -87,7 +88,7 @@ class _AddAgendaState extends State<AddAgenda> {
                           Expanded(
                               flex: 5,
                               child: CustomAppbar(
-                                  title: 'Ajout Note',
+                                  title: 'Votre Agenda',
                                   controllerMenu: () =>
                                       _key.currentState!.openDrawer())),
                         ],
@@ -123,6 +124,7 @@ class _AddAgendaState extends State<AddAgenda> {
                 child: ListView(
                   controller: _controllerScroll,
                   children: [
+                    const TitleWidget(title: "Nouveau agenda"),
                     const SizedBox(height: p20),
                     dateRappelWidget(),
                     const SizedBox(height: p16),
@@ -153,8 +155,8 @@ class _AddAgendaState extends State<AddAgenda> {
   }
 
   Widget buildTitle() {
-    return TextFormField(
-      maxLines: 1,
+    return TextFormField( 
+      maxLength: 50,
       controller: titleController,
       decoration: const InputDecoration(
         border: InputBorder.none,
@@ -184,13 +186,13 @@ class _AddAgendaState extends State<AddAgenda> {
           controller: dateRappelController,
           firstDate: DateTime(1930),
           lastDate: DateTime(2100),
-          validator: (value) {
-            if (value != null && value.isEmpty) {
-              return 'Ce champs est obligatoire';
-            } else {
-              return null;
-            }
-          },
+          // validator: (value) {
+          //   if (value != null && value.isEmpty) {
+          //     return 'Ce champs est obligatoire';
+          //   } else {
+          //     return null;
+          //   }
+          // },
         ));
   }
 
