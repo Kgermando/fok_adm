@@ -92,13 +92,13 @@ class LivraisonHistoryApi {
   }
 
   Future<LivraisonHistoryModel> updateData(
-      int id, LivraisonHistoryModel livraisonHistoryModel) async {
+     LivraisonHistoryModel livraisonHistoryModel) async {
     String? token = await UserSharedPref().getAccessToken();
 
     var data = livraisonHistoryModel.toJson();
     var body = jsonEncode(data);
     var updateUrl =
-        Uri.parse("$mainUrl/history-livraisons/update-history_livraison/$id");
+        Uri.parse("$mainUrl/history-livraisons/update-history_livraison/");
 
     var res = await client.put(updateUrl,
         headers: <String, String>{

@@ -525,12 +525,13 @@ class _DetailTransportRestaurantState extends State<DetailTransportRestaurant> {
 
   Future<void> submitObservation(TransportRestaurationModel data) async {
     final transRest = TransportRestaurationModel(
+      id: data.id!,
         title: data.title,
         observation: 'true',
         signature: data.signature,
         createdRef: data.createdRef,
         created: DateTime.now());
-    await TransportRestaurationApi().updateData(data.id!, transRest);
+    await TransportRestaurationApi().updateData(transRest);
     Navigator.pop(context);
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
       content: const Text("Soumis avec succès!"),

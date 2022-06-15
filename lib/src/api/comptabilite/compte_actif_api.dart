@@ -82,12 +82,13 @@ class CompteActifApi {
     }
   }
 
-  Future<CompteActifModel> updateData(int id, CompteActifModel bilanModel) async {
+  Future<CompteActifModel> updateData(CompteActifModel bilanModel) async {
     String? token = await UserSharedPref().getAccessToken();
 
     var data = bilanModel.toJson();
     var body = jsonEncode(data);
-    var updateUrl = Uri.parse("$mainUrl/comptabilite/comptes-actif/update-compte-actif/$id");
+    var updateUrl = Uri.parse(
+        "$mainUrl/comptabilite/comptes-actif/update-compte-actif/");
 
     var res = await client.put(updateUrl,
         headers: <String, String>{
@@ -105,7 +106,8 @@ class CompteActifApi {
   Future<void> deleteData(int id) async {
     String? token = await UserSharedPref().getAccessToken();
 
-    var deleteUrl = Uri.parse("$mainUrl/comptabilite/comptes-actif/delete-compte-actif/$id");
+    var deleteUrl = Uri.parse(
+        "$mainUrl/comptabilite/comptes-actif/delete-compte-actif/$id");
 
     var res = await client.delete(deleteUrl, headers: <String, String>{
       'Content-Type': 'application/json; charset=UTF-8',

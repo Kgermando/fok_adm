@@ -90,12 +90,12 @@ class CampaignApi {
     }
   }
 
-  Future<CampaignModel> updateData(int id, CampaignModel campaignModel) async {
+  Future<CampaignModel> updateData(CampaignModel campaignModel) async {
     String? token = await UserSharedPref().getAccessToken();
 
     var data = campaignModel.toJson();
     var body = jsonEncode(data);
-    var updateUrl = Uri.parse("$mainUrl/campaigns/update-campaign/$id");
+    var updateUrl = Uri.parse("$mainUrl/campaigns/update-campaign/");
 
     var res = await client.put(updateUrl,
         headers: <String, String>{

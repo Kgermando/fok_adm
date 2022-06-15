@@ -27,7 +27,6 @@ class DetailEntretien extends StatefulWidget {
 
 class _DetailEntretienState extends State<DetailEntretien> {
   final GlobalKey<ScaffoldState> _key = GlobalKey();
-  final ScrollController _controllerScroll = ScrollController();
   bool isLoading = false;
 
   List<PlutoColumn> columns = [];
@@ -200,8 +199,7 @@ class _DetailEntretienState extends State<DetailEntretien> {
               width: 2.0,
             ),
           ),
-          child: ListView(
-            controller: _controllerScroll,
+          child: Column(
             children: [
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,

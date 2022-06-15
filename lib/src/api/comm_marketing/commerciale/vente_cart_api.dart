@@ -91,12 +91,12 @@ class VenteCartApi {
   }
 
   Future<VenteCartModel> updateData(
-      int id, VenteCartModel venteCartModel) async {
+      VenteCartModel venteCartModel) async {
     String? token = await UserSharedPref().getAccessToken();
 
     var data = venteCartModel.toJson();
     var body = jsonEncode(data);
-    var updateUrl = Uri.parse("$mainUrl/ventes/update-vente/$id");
+    var updateUrl = Uri.parse("$mainUrl/ventes/update-vente/");
 
     var res = await client.put(updateUrl,
         headers: <String, String>{

@@ -459,6 +459,7 @@ class _RavitailleemntStockState extends State<RavitailleemntStock> {
 
     // Update Achat stock global
     final stocksGlobalMOdel = StocksGlobalMOdel(
+      id: widget.stocksGlobalMOdel.id!,
         idProduct: widget.stocksGlobalMOdel.idProduct,
         quantity: qtyDisponible.toString(),
         quantityAchat: qtyDisponible.toString(),
@@ -471,7 +472,7 @@ class _RavitailleemntStockState extends State<RavitailleemntStock> {
         signature: user!.matricule.toString(),
         created: DateTime.now());
     await StockGlobalApi()
-        .updateData(widget.stocksGlobalMOdel.id!, stocksGlobalMOdel);
+        .updateData(stocksGlobalMOdel);
 
     Navigator.of(context).pop();
     if (!mounted) return;

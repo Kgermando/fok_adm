@@ -2,7 +2,6 @@
 
 import 'dart:convert';
 
-
 import 'package:fokad_admin/src/helpers/user_shared_pref.dart';
 import 'package:fokad_admin/src/api/auth/auth_api.dart';
 import 'package:fokad_admin/src/api/route_api.dart';
@@ -81,16 +80,18 @@ class DevisListObjetsApi {
       await AuthApi().refreshAccessToken();
       return insertData(devisModel);
     } else {
-      throw  Exception(resp.statusCode);
+      throw Exception(resp.statusCode);
     }
   }
 
-  Future<DevisListObjetsModel> updateData(int id, DevisListObjetsModel devisModel) async {
+  Future<DevisListObjetsModel> updateData(
+      DevisListObjetsModel devisModel) async {
     String? token = await UserSharedPref().getAccessToken();
 
     var data = devisModel.toJson();
     var body = jsonEncode(data);
-    var updateUrl = Uri.parse("$mainUrl/devis-list-objets/update-devis-list-objet/$id");
+    var updateUrl =
+        Uri.parse("$mainUrl/devis-list-objets/update-devis-list-objet/");
 
     var res = await client.put(updateUrl,
         headers: <String, String>{
@@ -108,7 +109,8 @@ class DevisListObjetsApi {
   Future<void> deleteData(int id) async {
     String? token = await UserSharedPref().getAccessToken();
 
-    var deleteUrl = Uri.parse("$mainUrl/devis-list-objets/delete-devis-list-objet/$id");
+    var deleteUrl =
+        Uri.parse("$mainUrl/devis-list-objets/delete-devis-list-objet/$id");
 
     var res = await client.delete(deleteUrl, headers: <String, String>{
       'Content-Type': 'application/json; charset=UTF-8',

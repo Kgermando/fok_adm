@@ -96,13 +96,13 @@ class PresenceApi {
     }
   }
 
-  Future<PresenceModel> updateData(int id, PresenceModel presenceModel) async {
+  Future<PresenceModel> updateData(PresenceModel presenceModel) async {
     // String? token = await UserSharedPref().getAccessToken();
     String? token = await UserSharedPref().getAccessToken();
 
     var data = presenceModel.toJson();
     var body = jsonEncode(data);
-    var updateUrl = Uri.parse("$mainUrl/rh/presences/update-presence/$id");
+    var updateUrl = Uri.parse("$mainUrl/rh/presences/update-presence/");
 
     var res = await client.put(updateUrl,
         headers: <String, String>{

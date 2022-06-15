@@ -449,13 +449,14 @@ class _DetailPresenceState extends State<DetailPresence> {
 
   Future<void> submit(PresenceModel data) async {
     final presence = PresenceModel(
+      id: data.id!,
         remarque: remarqueController.text,
         finJournee: 'true',
         signature: data.signature,
         signatureFermeture: user!.matricule,
         createdRef: data.createdRef,
         created: DateTime.now());
-    await PresenceApi().updateData(data.id!, presence);
+    await PresenceApi().updateData(presence);
     Navigator.of(context).pop();
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
       content: const Text("Fermeture confirmée avec succès!"),

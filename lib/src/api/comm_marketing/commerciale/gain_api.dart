@@ -90,12 +90,12 @@ class GainApi {
     }
   }
 
-  Future<GainModel> updateData(int id, GainModel gainModel) async {
+  Future<GainModel> updateData(GainModel gainModel) async {
     String? token = await UserSharedPref().getAccessToken();
 
     var data = gainModel.toJson();
     var body = jsonEncode(data);
-    var updateUrl = Uri.parse("$mainUrl/gains/update-gain/$id");
+    var updateUrl = Uri.parse("$mainUrl/gains/update-gain/");
 
     var res = await client.put(updateUrl,
         headers: <String, String>{

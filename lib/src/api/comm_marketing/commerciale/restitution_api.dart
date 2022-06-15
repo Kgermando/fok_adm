@@ -91,12 +91,12 @@ class RestitutionApi {
   }
 
   Future<RestitutionModel> updateData(
-      int id, RestitutionModel restitutionModel) async {
+     RestitutionModel restitutionModel) async {
     String? token = await UserSharedPref().getAccessToken();
 
     var data = restitutionModel.toJson();
     var body = jsonEncode(data);
-    var updateUrl = Uri.parse("$mainUrl/restitutions/update-restitution/$id");
+    var updateUrl = Uri.parse("$mainUrl/restitutions/update-restitution/");
 
     var res = await client.put(updateUrl,
         headers: <String, String>{

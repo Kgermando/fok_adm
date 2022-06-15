@@ -91,13 +91,13 @@ class CompteResultatApi {
   }
 
   Future<CompteResulatsModel> updateData(
-      int id, CompteResulatsModel compteResulatsModel) async {
+      CompteResulatsModel compteResulatsModel) async {
     String? token = await UserSharedPref().getAccessToken();
 
     var data = compteResulatsModel.toJson();
     var body = jsonEncode(data);
     var updateUrl = Uri.parse(
-        "$mainUrl/comptabilite/comptes_resultat/update-compte-resultat/$id");
+        "$mainUrl/comptabilite/comptes_resultat/update-compte-resultat/");
 
     var res = await client.put(updateUrl,
         headers: <String, String>{

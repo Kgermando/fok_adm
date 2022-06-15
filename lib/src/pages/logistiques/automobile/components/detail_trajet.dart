@@ -24,8 +24,7 @@ class DetailTrajet extends StatefulWidget {
 }
 
 class _DetailTrajetState extends State<DetailTrajet> {
-  final GlobalKey<ScaffoldState> _key = GlobalKey();
-  final ScrollController _controllerScroll = ScrollController();
+  final GlobalKey<ScaffoldState> _key = GlobalKey(); 
   bool isLoading = false;
 
   String approbationDGController = '-';
@@ -173,8 +172,7 @@ class _DetailTrajetState extends State<DetailTrajet> {
               width: 2.0,
             ),
           ),
-          child: ListView(
-            controller: _controllerScroll,
+          child: Column( 
             children: [
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,

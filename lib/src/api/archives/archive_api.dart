@@ -10,7 +10,7 @@ import 'package:http/http.dart' as http;
 
 class ArchiveApi {
   var client = http.Client();
-  
+
   Future<List<ArchiveModel>> getAllData() async {
     String? token = await UserSharedPref().getAccessToken();
 
@@ -86,13 +86,13 @@ class ArchiveApi {
     }
   }
 
-  Future<ArchiveModel> updateData(int id, ArchiveModel archiveModel) async {
+  Future<ArchiveModel> updateData(ArchiveModel archiveModel) async {
     // String? token = await UserSharedPref().getAccessToken();
     String? token = await UserSharedPref().getAccessToken();
 
     var data = archiveModel.toJson();
     var body = jsonEncode(data);
-    var updateUrl = Uri.parse("$mainUrl/archives/update-archive/$id");
+    var updateUrl = Uri.parse("$mainUrl/archives/update-archive/");
 
     var res = await client.put(updateUrl,
         headers: <String, String>{

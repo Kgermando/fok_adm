@@ -91,13 +91,13 @@ class CaisseApi {
     }
   }
 
-  Future<CaisseModel> updateData(int id, CaisseModel caisseModel) async {
+  Future<CaisseModel> updateData(CaisseModel caisseModel) async {
     String? token = await UserSharedPref().getAccessToken();
 
     var data = caisseModel.toJson();
     var body = jsonEncode(data);
     var updateUrl = Uri.parse(
-        "$mainUrl/finances/transactions/caisses/update-transaction-caisse/$id");
+        "$mainUrl/finances/transactions/caisses/update-transaction-caisse/");
 
     var res = await client.put(updateUrl,
         headers: <String, String>{

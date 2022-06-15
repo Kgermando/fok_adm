@@ -91,13 +91,13 @@ class BanqueApi {
     }
   }
 
-  Future<BanqueModel> updateData(int id, BanqueModel banqueModel) async {
+  Future<BanqueModel> updateData(BanqueModel banqueModel) async {
     String? token = await UserSharedPref().getAccessToken();
 
     var data = banqueModel.toJson();
     var body = jsonEncode(data);
     var updateUrl = Uri.parse(
-        "$mainUrl/finances/transactions/banques/update-transaction-banque/$id");
+        "$mainUrl/finances/transactions/banques/update-transaction-banque/");
 
     var res = await client.put(updateUrl,
         headers: <String, String>{

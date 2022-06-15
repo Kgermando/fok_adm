@@ -89,12 +89,12 @@ class TrajetApi {
     }
   }
 
-  Future<TrajetModel> updateData(int id, TrajetModel trajetModel) async {
+  Future<TrajetModel> updateData(TrajetModel trajetModel) async {
     String? token = await UserSharedPref().getAccessToken();
 
     var data = trajetModel.toJson();
     var body = jsonEncode(data);
-    var updateUrl = Uri.parse("$mainUrl/trajets/update-trajet/$id");
+    var updateUrl = Uri.parse("$mainUrl/trajets/update-trajet/");
 
     var res = await client.put(updateUrl,
         headers: <String, String>{

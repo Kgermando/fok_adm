@@ -242,6 +242,7 @@ class _AchatItemWidgetState extends State<AchatItemWidget> {
     var qty = double.parse(widget.achat.quantity) -
         double.parse(controllerQuantityCart.text);
     final achatModel = AchatModel(
+      id: widget.achat.id!,
         idProduct: widget.achat.idProduct,
         quantity: qty.toString(),
         quantityAchat: widget.achat.quantityAchat,
@@ -255,7 +256,7 @@ class _AchatItemWidgetState extends State<AchatItemWidget> {
         succursale: widget.achat.succursale,
         signature: widget.achat.signature,
         created: DateTime.now());
-    await AchatApi().updateData(widget.achat.id!, achatModel);
+    await AchatApi().updateData(achatModel);
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
       content: const Text("Quantité mise à jour avec succès!"),
       backgroundColor: Colors.green.shade700,

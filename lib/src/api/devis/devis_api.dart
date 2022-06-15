@@ -134,16 +134,16 @@ class DevisAPi extends ChangeNotifier {
       await AuthApi().refreshAccessToken();
       return insertData(devisModel);
     } else {
-      throw  Exception(resp.statusCode);
+      throw Exception(resp.statusCode);
     }
   }
 
-  Future<DevisModel> updateData(int id, DevisModel devisModel) async {
+  Future<DevisModel> updateData(DevisModel devisModel) async {
     String? token = await UserSharedPref().getAccessToken();
 
     var data = devisModel.toJson();
     var body = jsonEncode(data);
-    var updateUrl = Uri.parse("$mainUrl/devis/update-devis/$id");
+    var updateUrl = Uri.parse("$mainUrl/devis/update-devis/");
 
     var res = await client.put(updateUrl,
         headers: <String, String>{

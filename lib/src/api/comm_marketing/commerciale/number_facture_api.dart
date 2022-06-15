@@ -92,12 +92,12 @@ class NumberFactureApi {
   }
 
   Future<NumberFactureModel> updateData(
-      int id, NumberFactureModel numberFactureModel) async {
+      NumberFactureModel numberFactureModel) async {
     String? token = await UserSharedPref().getAccessToken();
 
     var data = numberFactureModel.toJson();
     var body = jsonEncode(data);
-    var updateUrl = Uri.parse("$mainUrl/number-facts/update-number-fact/$id");
+    var updateUrl = Uri.parse("$mainUrl/number-facts/update-number-fact/");
 
     var res = await client.put(updateUrl,
         headers: <String, String>{

@@ -410,6 +410,7 @@ class _DetailBonLivraisonState extends State<DetailBonLivraison> {
   void bonLivraisonStock(BonLivraisonModel data) async {
     // Update Bon livraison
     final bonLivraisonModel = BonLivraisonModel(
+      id: data.id!,
         idProduct: data.idProduct,
         quantityAchat: data.quantityAchat,
         priceAchatUnit: data.priceAchatUnit,
@@ -426,7 +427,7 @@ class _DetailBonLivraisonState extends State<DetailBonLivraison> {
         succursale: data.succursale,
         signature: user.matricule,
         created: DateTime.now());
-    await BonLivraisonApi().updateData(data.id!, bonLivraisonModel);
+    await BonLivraisonApi().updateData(bonLivraisonModel);
 
     if (achatList.isNotEmpty) {
       // Filter de la QuantityAchat de stock succursale
@@ -474,6 +475,7 @@ class _DetailBonLivraisonState extends State<DetailBonLivraison> {
 
       // Update AchatModel
       final achatModel = AchatModel(
+        id: data.id!,
           idProduct: data.idProduct,
           quantity: qtyAchatDisponible.toString(),
           quantityAchat: qtyAchatDisponible
@@ -488,7 +490,7 @@ class _DetailBonLivraisonState extends State<DetailBonLivraison> {
           succursale: data.succursale,
           signature: user.matricule,
           created: DateTime.now());
-      await AchatApi().updateData(data.id!, achatModel);
+      await AchatApi().updateData(achatModel);
       // Navigator.of(context).pop();
       Navigator.of(context).pop();
       if (!mounted) return;

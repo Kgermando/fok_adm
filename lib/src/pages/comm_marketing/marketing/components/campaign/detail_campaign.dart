@@ -947,6 +947,7 @@ class _DetailCampaignState extends State<DetailCampaign> {
 
   Future<void> submitobservation(CampaignModel data) async {
     final campaignModel = CampaignModel(
+      id: data.id!,
         typeProduit: data.typeProduit,
         dateDebutEtFin: data.dateDebutEtFin,
         coutCampaign: data.coutCampaign,
@@ -957,7 +958,7 @@ class _DetailCampaignState extends State<DetailCampaign> {
         signature: data.signature,
         createdRef: data.createdRef,
         created: DateTime.now());
-    await CampaignApi().updateData(data.id!, campaignModel);
+    await CampaignApi().updateData(campaignModel);
     Navigator.of(context).pop();
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
       content: const Text("Mise à jour avec succès!"),

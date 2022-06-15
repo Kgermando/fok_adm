@@ -97,13 +97,15 @@ class PresenceEntrerApi {
     }
   }
 
-  Future<PresenceEntrerModel> updateData(int id, PresenceEntrerModel presenceModel) async {
+  Future<PresenceEntrerModel> updateData(
+      PresenceEntrerModel presenceModel) async {
     // String? token = await UserSharedPref().getAccessToken();
     String? token = await UserSharedPref().getAccessToken();
 
     var data = presenceModel.toJson();
     var body = jsonEncode(data);
-    var updateUrl = Uri.parse("$listPresenceEntrerUrl/update-presence-entrer/$id");
+    var updateUrl =
+        Uri.parse("$listPresenceEntrerUrl/update-presence-entrer/");
 
     var resp = await client.put(updateUrl,
         headers: <String, String>{
@@ -122,7 +124,8 @@ class PresenceEntrerApi {
     // String? token = await UserSharedPref().getAccessToken();
     String? token = await UserSharedPref().getAccessToken();
 
-    var deleteUrl = Uri.parse("$listPresenceEntrerUrl/delete-presence-entrer/$id");
+    var deleteUrl =
+        Uri.parse("$listPresenceEntrerUrl/delete-presence-entrer/$id");
 
     var res = await client.delete(deleteUrl, headers: <String, String>{
       'Content-Type': 'application/json; charset=UTF-8',

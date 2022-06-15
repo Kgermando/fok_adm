@@ -301,6 +301,7 @@ class _UpdateProModelState extends State<UpdateProModel> {
     final idProductform =
         "${categorieController.text}-${sousCategorie1Controller.text}-${sousCategorie2Controller.text}-${sousCategorie3Controller.text}-${sousCategorie4Controller.text}";
     final productModel = ProductModel(
+      id: id!,
         categorie: categorieController.text,
         sousCategorie1: sousCategorie1Controller.text,
         sousCategorie2: sousCategorie2Controller.text,
@@ -309,7 +310,7 @@ class _UpdateProModelState extends State<UpdateProModel> {
         idProduct: idProductform,
         signature: signature.toString(),
         created: DateTime.now());
-    await ProduitModelApi().updateData(id!, productModel);
+    await ProduitModelApi().updateData( productModel);
     Navigator.of(context).pop();
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
       content: const Text("Mis à jour avec succès!"),

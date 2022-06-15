@@ -4,12 +4,12 @@ import 'dart:convert';
 
 import 'package:fokad_admin/src/helpers/user_shared_pref.dart';
 import 'package:fokad_admin/src/api/auth/auth_api.dart';
-import 'package:fokad_admin/src/api/route_api.dart'; 
+import 'package:fokad_admin/src/api/route_api.dart';
 import 'package:fokad_admin/src/models/finances/coupure_billet_model.dart';
 import 'package:http/http.dart' as http;
 
 class CoupureBilletApi {
-  var client = http.Client(); 
+  var client = http.Client();
 
   Future<List<CoupureBilletModel>> getAllData() async {
     String? token = await UserSharedPref().getAccessToken();
@@ -62,7 +62,8 @@ class CoupureBilletApi {
     }
   }
 
-  Future<CoupureBilletModel> insertData(CoupureBilletModel coupureBillet) async {
+  Future<CoupureBilletModel> insertData(
+      CoupureBilletModel coupureBillet) async {
     String? token = await UserSharedPref().getAccessToken();
 
     var data = coupureBillet.toJson();
@@ -84,13 +85,14 @@ class CoupureBilletApi {
     }
   }
 
-  Future<CoupureBilletModel> updateData(int id, CoupureBilletModel coupureBillet) async {
+  Future<CoupureBilletModel> updateData(
+      CoupureBilletModel coupureBillet) async {
     String? token = await UserSharedPref().getAccessToken();
 
     var data = coupureBillet.toJson();
     var body = jsonEncode(data);
     var updateUrl = Uri.parse(
-        "$mainUrl/finances/coupure-billets/update-coupure-billet/$id");
+        "$mainUrl/finances/coupure-billets/update-coupure-billet/");
 
     var res = await client.put(updateUrl,
         headers: <String, String>{
@@ -121,6 +123,4 @@ class CoupureBilletApi {
       throw Exception(res.statusCode);
     }
   }
-
-  
 }

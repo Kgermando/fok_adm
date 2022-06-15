@@ -91,13 +91,13 @@ class JournalApi {
     }
   }
 
-  Future<JournalModel> updateData(int id, JournalModel journalModel) async {
+  Future<JournalModel> updateData(JournalModel journalModel) async {
     String? token = await UserSharedPref().getAccessToken();
 
     var data = journalModel.toJson();
     var body = jsonEncode(data);
     var updateUrl =
-        Uri.parse("$mainUrl/comptabilite/journals/update-journal/$id");
+        Uri.parse("$mainUrl/comptabilite/journals/update-journal/");
 
     var res = await client.put(updateUrl,
         headers: <String, String>{

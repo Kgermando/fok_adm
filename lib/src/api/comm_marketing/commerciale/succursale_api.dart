@@ -91,12 +91,12 @@ class SuccursaleApi {
   }
 
   Future<SuccursaleModel> updateData(
-      int id, SuccursaleModel succursaleModel) async {
+    SuccursaleModel succursaleModel) async {
     String? token = await UserSharedPref().getAccessToken();
 
     var data = succursaleModel.toJson();
     var body = jsonEncode(data);
-    var updateUrl = Uri.parse("$mainUrl/succursales/update-succursale/$id");
+    var updateUrl = Uri.parse("$mainUrl/succursales/update-succursale/");
 
     var res = await client.put(updateUrl,
         headers: <String, String>{

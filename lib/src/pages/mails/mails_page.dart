@@ -180,6 +180,7 @@ class _MailPagesState extends State<MailPages> {
 
   Future<void> readMail(MailModel mail) async {
     final mailModel = MailModel(
+      id: mail.id!,
         fullName: mail.fullName,
         email: mail.email,
         cc: mail.cc,
@@ -191,6 +192,6 @@ class _MailPagesState extends State<MailPages> {
         emailDest: mail.emailDest,
         dateSend: mail.dateSend,
         dateRead: DateTime.now());
-    await MailApi().updateData(mail.id!, mailModel);
+    await MailApi().updateData(mailModel);
   }
 }

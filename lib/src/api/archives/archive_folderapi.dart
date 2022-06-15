@@ -85,12 +85,13 @@ class ArchiveFolderApi {
     }
   }
 
-  Future<ArchiveFolderModel> updateData(int id, ArchiveFolderModel archiveModel) async {
+  Future<ArchiveFolderModel> updateData(ArchiveFolderModel archiveModel) async {
     String? token = await UserSharedPref().getAccessToken();
 
     var data = archiveModel.toJson();
     var body = jsonEncode(data);
-    var updateUrl = Uri.parse("$mainUrl/archives-folders/update-archive-folder/$id");
+    var updateUrl =
+        Uri.parse("$mainUrl/archives-folders/update-archive-folder/");
 
     var res = await client.put(updateUrl,
         headers: <String, String>{
@@ -109,7 +110,8 @@ class ArchiveFolderApi {
     // String? token = await UserSharedPref().getAccessToken();
     String? token = await UserSharedPref().getAccessToken();
 
-    var deleteUrl = Uri.parse("$mainUrl/archives-folders/delete-archive-folder/$id");
+    var deleteUrl =
+        Uri.parse("$mainUrl/archives-folders/delete-archive-folder/$id");
 
     var res = await client.delete(deleteUrl, headers: <String, String>{
       'Content-Type': 'application/json; charset=UTF-8',

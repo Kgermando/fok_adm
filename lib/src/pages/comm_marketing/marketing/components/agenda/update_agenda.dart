@@ -210,13 +210,14 @@ class _UpdateAgendaState extends State<UpdateAgenda> {
 
   Future<void> submit() async {
     final agendaModel = AgendaModel(
+      id: id!,
         title: titleController.text,
         description: descriptionController.text,
         dateRappel: DateTime.parse(dateRappelController.text),
         signature: user!.matricule.toString(),
         created: DateTime.now());
     if (id != null) {
-      await AgendaApi().updateData(id!, agendaModel);
+      await AgendaApi().updateData(agendaModel);
     } else {
       await AgendaApi().insertData(agendaModel);
     }

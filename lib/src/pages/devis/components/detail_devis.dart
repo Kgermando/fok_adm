@@ -1176,6 +1176,7 @@ class _DetailDevisState extends State<DetailDevis> {
 
   Future<void> submitobservation(DevisModel data) async {
     final devisModel = DevisModel(
+      id: data.id!,
         title: data.title,
         priority: data.priority,
         departement: data.departement,
@@ -1184,7 +1185,7 @@ class _DetailDevisState extends State<DetailDevis> {
         createdRef: data.createdRef,
         created: DateTime.now(),
         isSubmit: data.isSubmit);
-    await DevisAPi().updateData(data.id!, devisModel);
+    await DevisAPi().updateData(devisModel);
     Navigator.of(context).pop();
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
       content: const Text("Payement effectué avec succès!"),
@@ -1202,7 +1203,7 @@ class _DetailDevisState extends State<DetailDevis> {
         createdRef: data.createdRef,
         created: DateTime.now(),
         isSubmit: 'true');
-    await DevisAPi().updateData(data.id!, devisModel);
+    await DevisAPi().updateData(devisModel);
     Navigator.of(context).pop();
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
       content: const Text("Soumis chez le DG avec succès!"),

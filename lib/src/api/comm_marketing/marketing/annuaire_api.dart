@@ -130,12 +130,12 @@ class AnnuaireApi {
     }
   }
 
-  Future<AnnuaireModel> updateData(int id, AnnuaireModel annuaireModel) async {
+  Future<AnnuaireModel> updateData(AnnuaireModel annuaireModel) async {
     String? token = await UserSharedPref().getAccessToken();
 
     var data = annuaireModel.toJson();
     var body = jsonEncode(data);
-    var updateUrl = Uri.parse("$mainUrl/annuaires/update-annuaire/$id");
+    var updateUrl = Uri.parse("$mainUrl/annuaires/update-annuaire/");
 
     var res = await client.put(updateUrl,
         headers: <String, String>{

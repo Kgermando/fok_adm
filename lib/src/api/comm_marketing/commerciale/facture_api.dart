@@ -91,12 +91,12 @@ class FactureApi {
   }
 
   Future<FactureCartModel> updateData(
-      int id, FactureCartModel factureCartModel) async {
+      FactureCartModel factureCartModel) async {
     String? token = await UserSharedPref().getAccessToken();
 
     var data = factureCartModel.toJson();
     var body = jsonEncode(data);
-    var updateUrl = Uri.parse("$mainUrl/factures/update-facture/$id");
+    var updateUrl = Uri.parse("$mainUrl/factures/update-facture/");
 
     var res = await client.put(updateUrl,
         headers: <String, String>{

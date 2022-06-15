@@ -124,7 +124,7 @@ class _TableTrajetState extends State<TableTrajet> {
         enableContextMenu: false,
         enableDropToResize: true,
         titleTextAlign: PlutoColumnTextAlign.left,
-        width: 200,
+        width: 300,
         minWidth: 150,
       ),
       PlutoColumn(
@@ -136,7 +136,7 @@ class _TableTrajetState extends State<TableTrajet> {
         enableContextMenu: false,
         enableDropToResize: true,
         titleTextAlign: PlutoColumnTextAlign.left,
-        width: 200,
+        width: 300,
         minWidth: 150,
       ),
       PlutoColumn(
@@ -205,8 +205,8 @@ class _TableTrajetState extends State<TableTrajet> {
             'trajetDe': PlutoCell(value: item.trajetDe),
             'trajetA': PlutoCell(value: item.trajetA),
             'mission': PlutoCell(value: item.mission),
-            'kilometrageSorite': PlutoCell(value: item.kilometrageSorite),
-            'kilometrageRetour': PlutoCell(value: item.kilometrageRetour),
+            'kilometrageSorite': PlutoCell(value: "${item.kilometrageSorite} km/h"),
+            'kilometrageRetour': PlutoCell(value: "${item.kilometrageRetour} km/h"),
             'created': PlutoCell(
                 value: DateFormat("dd-MM-yy HH:mm").format(item.created))
           }));

@@ -84,13 +84,13 @@ class CompteBalanceRefApi {
   }
 
   Future<CompteBalanceRefModel> updateData(
-      int id, CompteBalanceRefModel balanceCompteModel) async {
+      CompteBalanceRefModel balanceCompteModel) async {
     String? token = await UserSharedPref().getAccessToken();
 
     var data = balanceCompteModel.toJson();
     var body = jsonEncode(data);
     var updateUrl = Uri.parse(
-        "$mainUrl/comptabilite/comptes-balance-ref/update-comptes-balance-ref/$id");
+        "$mainUrl/comptabilite/comptes-balance-ref/update-comptes-balance-ref/");
 
     var res = await client.put(updateUrl,
         headers: <String, String>{

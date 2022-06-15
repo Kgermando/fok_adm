@@ -874,6 +874,7 @@ class _DetailJournalState extends State<DetailJournal> {
 
   Future<void> submitCorbeille(JournalModel data) async {
     final journalModel = JournalModel(
+      id: data.id!,
         numeroOperation: data.numeroOperation,
         libele: data.libele,
         compteDebit: data.compteDebit,
@@ -885,7 +886,7 @@ class _DetailJournalState extends State<DetailJournal> {
         signature: data.signature,
         createdRef: data.created,
         created: DateTime.now());
-    await JournalApi().updateData(data.id!, journalModel);
+    await JournalApi().updateData(journalModel);
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
       content: const Text("Mise en corbeille avec succès!"),
       backgroundColor: Colors.red[700],

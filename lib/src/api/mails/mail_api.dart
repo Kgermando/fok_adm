@@ -93,13 +93,13 @@ class MailApi {
     }
   }
 
-  Future<MailModel> updateData(int id, MailModel mailModel) async {
+  Future<MailModel> updateData(MailModel mailModel) async {
     // String? token = await UserSharedPref().getAccessToken();
     String? token = await UserSharedPref().getAccessToken();
 
     var data = mailModel.toJson();
     var body = jsonEncode(data);
-    var updateUrl = Uri.parse("$mainUrl/mails/update-mail/$id");
+    var updateUrl = Uri.parse("$mainUrl/mails/update-mail/");
 
     var res = await client.put(updateUrl,
         headers: <String, String>{

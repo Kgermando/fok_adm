@@ -271,6 +271,7 @@ class _DetailCartState extends State<DetailCart> {
     final achatCreated = achatQtyList.map((e) => e.created).first;
 
     final achatModel = AchatModel(
+      id: achatId!,
         idProduct: achatIdProduct,
         quantity: achatQty.toString(),
         quantityAchat: achatQuantityAchat,
@@ -285,7 +286,7 @@ class _DetailCartState extends State<DetailCart> {
         signature: achatSignature,
         created: achatCreated);
 
-    await AchatApi().updateData(achatId!, achatModel);
+    await AchatApi().updateData( achatModel);
     await CartApi().deleteData(widget.cart.id!);
     Navigator.pop(context);
   }

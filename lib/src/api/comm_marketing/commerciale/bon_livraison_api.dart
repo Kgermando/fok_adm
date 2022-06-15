@@ -92,13 +92,13 @@ class BonLivraisonApi {
   }
 
   Future<BonLivraisonModel> updateData(
-      int id, BonLivraisonModel bonLivraisonModel) async {
+    BonLivraisonModel bonLivraisonModel) async {
     String? token = await UserSharedPref().getAccessToken();
 
     var data = bonLivraisonModel.toJson();
     var body = jsonEncode(data);
     var updateUrl =
-        Uri.parse("$mainUrl/bon-livraisons/update-bon-livraison/$id");
+        Uri.parse("$mainUrl/bon-livraisons/update-bon-livraison/");
 
     var res = await client.put(updateUrl,
         headers: <String, String>{

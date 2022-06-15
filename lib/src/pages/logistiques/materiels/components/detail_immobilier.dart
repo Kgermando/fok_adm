@@ -22,8 +22,7 @@ class DetailImmobilier extends StatefulWidget {
 }
 
 class _DetailImmobilierState extends State<DetailImmobilier> {
-  final GlobalKey<ScaffoldState> _key = GlobalKey();
-  final ScrollController _controllerScroll = ScrollController();
+  final GlobalKey<ScaffoldState> _key = GlobalKey(); 
   bool isLoading = false;
 
   String approbationDGController = '-';
@@ -171,8 +170,7 @@ class _DetailImmobilierState extends State<DetailImmobilier> {
               width: 2.0,
             ),
           ),
-          child: ListView(
-            controller: _controllerScroll,
+          child: Column( 
             children: [
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,

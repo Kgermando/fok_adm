@@ -94,12 +94,12 @@ class AnguinApi {
     }
   }
 
-  Future<AnguinModel> updateData(int id, AnguinModel anguinModel) async {
+  Future<AnguinModel> updateData(AnguinModel anguinModel) async {
     String? token = await UserSharedPref().getAccessToken();
 
     var data = anguinModel.toJson();
     var body = jsonEncode(data);
-    var updateUrl = Uri.parse("$mainUrl/anguins/update-anguin/$id");
+    var updateUrl = Uri.parse("$mainUrl/anguins/update-anguin/");
 
     var res = await client.put(updateUrl,
         headers: <String, String>{

@@ -92,13 +92,13 @@ class ApprobationApi {
   }
 
   Future<ApprobationModel> updateData(
-      int id, ApprobationModel devisModel) async {
+      ApprobationModel devisModel) async {
     // String? token = await UserSharedPref().getAccessToken();
     final token = await UserSharedPref().getAccessToken();
 
     var data = devisModel.toJson();
     var body = jsonEncode(data);
-    var updateUrl = Uri.parse("$mainUrl/devis/update-approbation/$id");
+    var updateUrl = Uri.parse("$mainUrl/devis/update-approbation/");
 
     var res = await client.put(updateUrl,
         headers: <String, String>{

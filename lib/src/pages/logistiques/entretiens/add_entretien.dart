@@ -189,7 +189,7 @@ nomObjetController.dispose();
         ],
       ),
     );
-  }
+  } 
 
   Widget nomWidget() {
     return Container(

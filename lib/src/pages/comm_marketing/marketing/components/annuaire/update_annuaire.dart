@@ -443,6 +443,7 @@ class _UpdateAnnuaireState extends State<UpdateAnnuaire> {
 
   Future<void> submit() async {
     final annuaireModel = AnnuaireModel(
+      id: id!,
         categorie: categorie.toString(),
         nomPostnomPrenom: nomPostnomPrenomController.text,
         email: emailController.text,
@@ -456,7 +457,7 @@ class _UpdateAnnuaireState extends State<UpdateAnnuaire> {
         signature: user!.matricule,
         created: DateTime.now());
 
-    await AnnuaireApi().updateData(id!, annuaireModel);
+    await AnnuaireApi().updateData(annuaireModel);
     Navigator.of(context).pop();
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
       content: const Text("Soumis avec succès!"),

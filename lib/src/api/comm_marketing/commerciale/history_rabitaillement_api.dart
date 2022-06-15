@@ -92,13 +92,13 @@ class HistoryRavitaillementApi {
   }
 
   Future<HistoryRavitaillementModel> updateData(
-      int id, HistoryRavitaillementModel historyRavitaillementModel) async {
+      HistoryRavitaillementModel historyRavitaillementModel) async {
     String? token = await UserSharedPref().getAccessToken();
 
     var data = historyRavitaillementModel.toJson();
     var body = jsonEncode(data);
     var updateUrl = Uri.parse(
-        "$mainUrl/history-ravitaillements/update-history-ravitaillement/$id");
+        "$mainUrl/history-ravitaillements/update-history-ravitaillement/");
 
     var res = await client.put(updateUrl,
         headers: <String, String>{

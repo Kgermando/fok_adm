@@ -93,12 +93,12 @@ class MobilierApi {
     }
   }
 
-  Future<MobilierModel> updateData(int id, MobilierModel anguinModel) async {
+  Future<MobilierModel> updateData(MobilierModel anguinModel) async {
     String? token = await UserSharedPref().getAccessToken();
 
     var data = anguinModel.toJson();
     var body = jsonEncode(data);
-    var updateUrl = Uri.parse("$mainUrl/mobiliers/update-mobilier/$id");
+    var updateUrl = Uri.parse("$mainUrl/mobiliers/update-mobilier/");
 
     var res = await client.put(updateUrl,
         headers: <String, String>{

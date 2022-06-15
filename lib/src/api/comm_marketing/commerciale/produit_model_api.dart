@@ -90,13 +90,13 @@ class ProduitModelApi {
     }
   }
 
-  Future<ProductModel> updateData(int id, ProductModel productModel) async {
+  Future<ProductModel> updateData(ProductModel productModel) async {
     String? token = await UserSharedPref().getAccessToken();
 
     var data = productModel.toJson();
     var body = jsonEncode(data);
     var updateUrl =
-        Uri.parse("$mainUrl/produit-models/update-produit-model/$id");
+        Uri.parse("$mainUrl/produit-models/update-produit-model/");
 
     var res = await client.put(updateUrl,
         headers: <String, String>{

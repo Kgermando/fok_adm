@@ -85,13 +85,15 @@ class TransRestAgentsApi {
     }
   }
 
-  Future<TransRestAgentsModel> updateData(int id, TransRestAgentsModel transRest) async {
+  Future<TransRestAgentsModel> updateData(
+      TransRestAgentsModel transRest) async {
     // String? token = await UserSharedPref().getAccessToken();
     String? token = await UserSharedPref().getAccessToken();
 
     var data = transRest.toJson();
     var body = jsonEncode(data);
-    var updateUrl = Uri.parse("$mainUrl/rh/trans-rest-agents/update-trans-rest-agent/$id");
+    var updateUrl =
+        Uri.parse("$mainUrl/rh/trans-rest-agents/update-trans-rest-agent/");
 
     var res = await client.put(updateUrl,
         headers: <String, String>{
@@ -110,7 +112,8 @@ class TransRestAgentsApi {
     // String? token = await UserSharedPref().getAccessToken();
     String? token = await UserSharedPref().getAccessToken();
 
-    var deleteUrl = Uri.parse("$mainUrl/rh/trans-rest-agents/delete-trans-rest-agent/$id");
+    var deleteUrl =
+        Uri.parse("$mainUrl/rh/trans-rest-agents/delete-trans-rest-agent/$id");
 
     var res = await client.delete(deleteUrl, headers: <String, String>{
       'Content-Type': 'application/json; charset=UTF-8',

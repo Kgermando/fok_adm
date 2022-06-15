@@ -85,13 +85,15 @@ class TransportRestaurationApi {
     }
   }
 
-  Future<TransportRestaurationModel> updateData(int id, TransportRestaurationModel transRest) async {
+  Future<TransportRestaurationModel> updateData(
+      TransportRestaurationModel transRest) async {
     // String? token = await UserSharedPref().getAccessToken();
     String? token = await UserSharedPref().getAccessToken();
 
     var data = transRest.toJson();
     var body = jsonEncode(data);
-    var updateUrl = Uri.parse("$mainUrl/rh/transport-restaurations/update-transport-restauration/$id");
+    var updateUrl = Uri.parse(
+        "$mainUrl/rh/transport-restaurations/update-transport-restauration/");
 
     var res = await client.put(updateUrl,
         headers: <String, String>{
@@ -110,14 +112,16 @@ class TransportRestaurationApi {
     // String? token = await UserSharedPref().getAccessToken();
     String? token = await UserSharedPref().getAccessToken();
 
-    var deleteUrl = Uri.parse("$mainUrl/rh/transport-restaurations/delete-transport-restauration/$id");
+    var deleteUrl = Uri.parse(
+        "$mainUrl/rh/transport-restaurations/delete-transport-restauration/$id");
 
     var res = await client.delete(deleteUrl, headers: <String, String>{
       'Content-Type': 'application/json; charset=UTF-8',
       'Authorization': 'Bearer $token'
     });
     if (res.statusCode == 200) {
-      return TransportRestaurationModel.fromJson(json.decode(res.body)['agents']);
+      return TransportRestaurationModel.fromJson(
+          json.decode(res.body)['agents']);
     } else {
       throw Exception(res.statusCode);
     }

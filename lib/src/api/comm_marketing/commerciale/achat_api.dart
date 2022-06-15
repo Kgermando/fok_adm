@@ -90,12 +90,12 @@ class AchatApi {
     }
   }
 
-  Future<AchatModel> updateData(int id, AchatModel achatModel) async {
+  Future<AchatModel> updateData(AchatModel achatModel) async {
     String? token = await UserSharedPref().getAccessToken();
 
     var data = achatModel.toJson();
     var body = jsonEncode(data);
-    var updateUrl = Uri.parse("$mainUrl/achats/update-achat/$id");
+    var updateUrl = Uri.parse("$mainUrl/achats/update-achat/");
 
     var res = await client.put(updateUrl,
         headers: <String, String>{

@@ -326,9 +326,10 @@ class _DetailRestitutionState extends State<DetailRestitution> {
         qtyRavitailler: qtyRavitaillerStock,
         signature: signatureAchat,
         created: dateAchat);
-    await StockGlobalApi().updateData(stockId!, stocksGlobalMOdel);
+    await StockGlobalApi().updateData(stocksGlobalMOdel);
 
     final restitutionModel = RestitutionModel(
+      id: data.id!,
         idProduct: data.idProduct,
         quantity: data.quantity,
         unite: data.unite,
@@ -341,7 +342,7 @@ class _DetailRestitutionState extends State<DetailRestitution> {
         succursale: data.succursale,
         signature: user.matricule.toString(),
         created: DateTime.now());
-    await RestitutionApi().updateData(data.id!, restitutionModel);
+    await RestitutionApi().updateData(restitutionModel);
     Navigator.of(context).pop();
     if (!mounted) return;
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(

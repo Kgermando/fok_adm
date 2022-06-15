@@ -395,6 +395,7 @@ class _UpdateCampaignState extends State<UpdateCampaign> {
 
   Future<void> submit(CampaignModel data) async {
     final campaignModel = CampaignModel(
+      id: data.id!,
         typeProduit: typeProduitController.text,
         dateDebutEtFin:
             "Du ${DateFormat('dd/MM/yyyy').format(dateRange!.start)} - Au ${DateFormat('dd/MM/yyyy').format(dateRange!.end)}",
@@ -407,7 +408,7 @@ class _UpdateCampaignState extends State<UpdateCampaign> {
         createdRef: data.createdRef,
         created: DateTime.now());
 
-    await CampaignApi().updateData(data.id!, campaignModel);
+    await CampaignApi().updateData(campaignModel);
     Navigator.of(context).pop();
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
       content: const Text("Soumis avec succès!"),

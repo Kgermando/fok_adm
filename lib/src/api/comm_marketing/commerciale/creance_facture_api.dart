@@ -91,13 +91,13 @@ class CreanceFactureApi {
   }
 
   Future<CreanceCartModel> updateData(
-      int id, CreanceCartModel creanceCartModel) async {
+      CreanceCartModel creanceCartModel) async {
     String? token = await UserSharedPref().getAccessToken();
 
     var data = creanceCartModel.toJson();
     var body = jsonEncode(data);
     var updateUrl =
-        Uri.parse("$mainUrl/facture-creances/update-facture-creance/$id");
+        Uri.parse("$mainUrl/facture-creances/update-facture-creance/");
 
     var res = await client.put(updateUrl,
         headers: <String, String>{

@@ -5,28 +5,22 @@ import 'dart:convert';
 import 'package:fokad_admin/src/helpers/user_shared_pref.dart';
 import 'package:fokad_admin/src/api/auth/auth_api.dart';
 import 'package:fokad_admin/src/api/route_api.dart';
-import 'package:fokad_admin/src/models/comm_maketing/agenda_model.dart';
+import 'package:fokad_admin/src/models/logistiques/objet_remplace_model.dart'; 
 import 'package:http/http.dart' as http;
 
-class AgendaApi {
-  var client = http.Client();
-  // final storage = const FlutterSecureStorage();
+class ObjetRemplaceApi {
+  var client = http.Client(); 
 
-  // Future<String?> getToken() async {
-  //   final data = await storage.read(key: "accessToken");
-  //   return data;
-  // }
-
-  Future<List<AgendaModel>> getAllData() async {
+  Future<List<ObjetRemplaceModel>> getAllData() async {
     String? token = await UserSharedPref().getAccessToken();
 
     if (token!.isNotEmpty) {
       var splittedJwt = token.split(".");
       var payload = json.decode(
-          ascii.decode(base64.decode(base64.normalize(splittedJwt[1]))));
+          ascii.decode(base64.decode(base64.normalize(splittedJwt[1])))); 
     }
     var resp = await client.get(
-      agendasUrl,
+      mobiliersUrl,
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
         'Authorization': 'Bearer $token'
@@ -35,9 +29,9 @@ class AgendaApi {
 
     if (resp.statusCode == 200) {
       List<dynamic> bodyList = json.decode(resp.body);
-      List<AgendaModel> data = [];
+      List<ObjetRemplaceModel> data = [];
       for (var u in bodyList) {
-        data.add(AgendaModel.fromJson(u));
+        data.add(ObjetRemplaceModel.fromJson(u));
       }
       return data;
     } else {
@@ -45,7 +39,7 @@ class AgendaApi {
     }
   }
 
-  Future<AgendaModel> getOneData(int id) async {
+  Future<ObjetRemplaceModel> getOneData(int id) async {
     String? token = await UserSharedPref().getAccessToken();
 
     if (token!.isNotEmpty) {
@@ -53,7 +47,7 @@ class AgendaApi {
       var payload = json.decode(
           ascii.decode(base64.decode(base64.normalize(splittedJwt[1]))));
     }
-    var getUrl = Uri.parse("$mainUrl/agendas/$id");
+    var getUrl = Uri.parse("$mainUrl/mobiliers/$id");
     var resp = await client.get(
       getUrl,
       headers: <String, String>{
@@ -62,40 +56,41 @@ class AgendaApi {
       },
     );
     if (resp.statusCode == 200) {
-      return AgendaModel.fromJson(json.decode(resp.body));
+      return ObjetRemplaceModel.fromJson(json.decode(resp.body));
     } else {
       throw Exception(json.decode(resp.body)['message']);
     }
   }
 
-  Future<AgendaModel> insertData(AgendaModel agendaModel) async {
+  Future<ObjetRemplaceModel> insertData(ObjetRemplaceModel objetRemplaceModel) async {
     String? token = await UserSharedPref().getAccessToken();
 
-    var data = agendaModel.toJson();
+    var data = objetRemplaceModel.toJson();
     var body = jsonEncode(data);
 
-    var resp = await client.post(addAgendasUrl,
+    var resp = await client.post(addMobiliersUrl,
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
           'Authorization': 'Bearer $token'
         },
         body: body);
     if (resp.statusCode == 200) {
-      return AgendaModel.fromJson(json.decode(resp.body));
+      return ObjetRemplaceModel.fromJson(json.decode(resp.body));
     } else if (resp.statusCode == 401) {
       await AuthApi().refreshAccessToken();
-      return insertData(agendaModel);
+      return insertData(objetRemplaceModel);
     } else {
       throw Exception(json.decode(resp.body)['message']);
     }
   }
 
-  Future<AgendaModel> updateData(AgendaModel agendaModel) async {
+  Future<ObjetRemplaceModel> updateData(
+      ObjetRemplaceModel objetRemplaceModel) async {
     String? token = await UserSharedPref().getAccessToken();
 
-    var data = agendaModel.toJson();
+    var data = objetRemplaceModel.toJson();
     var body = jsonEncode(data);
-    var updateUrl = Uri.parse("$mainUrl/agendas/update-agenda/");
+    var updateUrl = Uri.parse("$mainUrl/mobiliers/update-mobilier/");
 
     var res = await client.put(updateUrl,
         headers: <String, String>{
@@ -104,23 +99,23 @@ class AgendaApi {
         },
         body: body);
     if (res.statusCode == 200) {
-      return AgendaModel.fromJson(json.decode(res.body));
+      return ObjetRemplaceModel.fromJson(json.decode(res.body));
     } else {
       throw Exception(json.decode(res.body)['message']);
     }
   }
 
-  Future<AgendaModel> deleteData(int id) async {
+  Future<ObjetRemplaceModel> deleteData(int id) async {
     String? token = await UserSharedPref().getAccessToken();
 
-    var deleteUrl = Uri.parse("$mainUrl/agendas/delete-agenda/$id");
+    var deleteUrl = Uri.parse("$mainUrl/mobiliers/delete-mobilier/$id");
 
     var res = await client.delete(deleteUrl, headers: <String, String>{
       'Content-Type': 'application/json; charset=UTF-8',
       'Authorization': 'Bearer $token'
     });
     if (res.statusCode == 200) {
-      return AgendaModel.fromJson(json.decode(res.body)['data']);
+      return ObjetRemplaceModel.fromJson(json.decode(res.body)['data']);
     } else {
       throw Exception(json.decode(res.body)['message']);
     }

@@ -307,6 +307,7 @@ class _RestitutionStockState extends State<RestitutionStock> {
 
     // Update AchatModel
     final achatModel = AchatModel(
+      id: widget.achat.id!,
         idProduct: widget.achat.idProduct,
         quantity: qtyRestante!.toString(),
         quantityAchat: widget.achat.quantityAchat,
@@ -320,7 +321,7 @@ class _RestitutionStockState extends State<RestitutionStock> {
         succursale: widget.achat.succursale,
         signature: widget.achat.signature,
         created: widget.achat.created);
-    await AchatApi().updateData(widget.achat.id!, achatModel);
+    await AchatApi().updateData(achatModel);
     Navigator.of(context).pop();
     if (!mounted) return;
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(

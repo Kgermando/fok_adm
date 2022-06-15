@@ -365,6 +365,7 @@ class _UpdateTrajetState extends State<UpdateTrajet> {
 
   Future<void> submit(TrajetModel data) async {
     final trajetModel = TrajetModel(
+      id: data.id!,
         nomeroEntreprise: data.nomeroEntreprise,
         nomUtilisateur: data.nomUtilisateur,
         trajetDe: data.trajetDe,
@@ -375,7 +376,7 @@ class _UpdateTrajetState extends State<UpdateTrajet> {
         signature: signature.toString(),
         createdRef: data.createdRef,
         created: DateTime.now());
-    await TrajetApi().updateData(data.id!, trajetModel);
+    await TrajetApi().updateData(trajetModel);
     Navigator.of(context).pop();
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
       content: const Text("Enregistrer avec succès!"),

@@ -92,13 +92,13 @@ class StockGlobalApi {
   }
 
   Future<StocksGlobalMOdel> updateData(
-      int id, StocksGlobalMOdel stocksGlobalMOdel) async {
+     StocksGlobalMOdel stocksGlobalMOdel) async {
     String? token = await UserSharedPref().getAccessToken();
 
     var data = stocksGlobalMOdel.toJson();
     var body = jsonEncode(data);
     var updateUrl =
-        Uri.parse("$mainUrl/stocks-global/update-stocks-global/$id");
+        Uri.parse("$mainUrl/stocks-global/update-stocks-global/");
 
     var res = await client.put(updateUrl,
         headers: <String, String>{

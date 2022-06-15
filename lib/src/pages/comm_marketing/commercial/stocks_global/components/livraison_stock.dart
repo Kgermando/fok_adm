@@ -437,6 +437,7 @@ class _LivraisonStockState extends State<LivraisonStock> {
 
     // Update quantity stock global
     final stocksGlobalMOdel = StocksGlobalMOdel(
+      id: widget.stocksGlobalMOdel.id!,
         idProduct: widget.stocksGlobalMOdel.idProduct,
         quantity: qtyRestanteStockGlobal.toString(),
         quantityAchat: widget.stocksGlobalMOdel.quantityAchat,
@@ -449,7 +450,7 @@ class _LivraisonStockState extends State<LivraisonStock> {
         signature: widget.stocksGlobalMOdel.signature,
         created: widget.stocksGlobalMOdel.created);
     await StockGlobalApi()
-        .updateData(widget.stocksGlobalMOdel.id!, stocksGlobalMOdel);
+        .updateData( stocksGlobalMOdel);
 
     // Generer le bon de livraison pour la succursale
     final bonLivraisonModel = BonLivraisonModel(
