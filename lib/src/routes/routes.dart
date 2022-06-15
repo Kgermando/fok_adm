@@ -33,6 +33,8 @@ import 'package:fokad_admin/src/pages/comm_marketing/commercial/factures/facture
 import 'package:fokad_admin/src/pages/comm_marketing/commercial/history_livraison/history_livaison_page.dart';
 import 'package:fokad_admin/src/pages/comm_marketing/commercial/history_ravitaillement/history_ravitaillement_ipage.dart';
 import 'package:fokad_admin/src/pages/comm_marketing/commercial/prod_model/components/add_prod_model.dart';
+import 'package:fokad_admin/src/pages/comm_marketing/commercial/prod_model/components/detail_prod_model.dart';
+import 'package:fokad_admin/src/pages/comm_marketing/commercial/prod_model/components/update_prod_model.dart';
 import 'package:fokad_admin/src/pages/comm_marketing/commercial/prod_model/prod_model_page.dart';
 import 'package:fokad_admin/src/pages/comm_marketing/commercial/restitutions/restitution_page.dart';
 import 'package:fokad_admin/src/pages/comm_marketing/commercial/stocks_global/components/add_stock_global.dart';
@@ -343,7 +345,9 @@ class ComMarketingRoutes {
   
   // Commercial
   static const comMarketingProduitModel = "/com-marketing-produit-model";
+  static const comMarketingProduitModelDetail = "/com-marketing-produit-model-detail";
   static const comMarketingProduitModelAdd = "/com-marketing-produit-model-add";
+  static const comMarketingProduitModelUpdate = "/com-marketing-produit-model-update";
   static const comMarketingStockGlobal = "/com-marketing-stock-global";
   static const comMarketingStockGlobalAdd = "/com-marketing-stock-global-add";
   static const comMarketingSuccursale = "/com-marketing-succursale";
@@ -555,7 +559,11 @@ final routes = <String, WidgetBuilder>{
 
   // Commercial
   ComMarketingRoutes.comMarketingProduitModel: (context) =>const ProduitModelPage(),
+  ComMarketingRoutes.comMarketingProduitModelDetail: (context) =>
+      const DetailProdModel(),
   ComMarketingRoutes.comMarketingProduitModelAdd: (context) =>const AddProModel(),
+  ComMarketingRoutes.comMarketingProduitModelUpdate: (context) =>
+      const UpdateProModel(),
   ComMarketingRoutes.comMarketingStockGlobal: (context) =>const StockGlobalPage(),
   ComMarketingRoutes.comMarketingStockGlobalAdd: (context) =>const AddStockGlobal(),
   ComMarketingRoutes.comMarketingSuccursale: (context) =>const SuccursalePage(),

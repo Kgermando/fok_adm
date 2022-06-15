@@ -41,8 +41,9 @@ class _TableProduitModelDDState extends State<TableProduitModelDD> {
           final dataList = tapEvent.row!.cells.values;
           final idPlutoRow = dataList.elementAt(0);
 
-          Navigator.of(context).push(MaterialPageRoute(
-              builder: (context) => DetailProdModel(id: idPlutoRow.value)));
+          Navigator.pushNamed(
+              context, ComMarketingRoutes.comMarketingProduitModelDetail,
+              arguments: idPlutoRow.value);
         },
         onLoaded: (PlutoGridOnLoadedEvent event) {
           stateManager = event.stateManager;

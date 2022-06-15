@@ -13,13 +13,14 @@ import 'package:fokad_admin/src/models/users/user_model.dart';
 import 'package:fokad_admin/src/navigation/drawer/drawer_menu.dart';
 import 'package:fokad_admin/src/navigation/header/custom_appbar.dart';
 import 'package:fokad_admin/src/pages/comm_marketing/commercial/prod_model/components/update_prod_model.dart';
+import 'package:fokad_admin/src/routes/routes.dart';
+import 'package:fokad_admin/src/utils/loading.dart';
 import 'package:fokad_admin/src/widgets/print_widget.dart';
 import 'package:fokad_admin/src/widgets/title_widget.dart';
 import 'package:intl/intl.dart';
 
 class DetailProdModel extends StatefulWidget {
-  const DetailProdModel({Key? key, required this.id}) : super(key: key);
-  final int id;
+  const DetailProdModel({Key? key}) : super(key: key);
 
   @override
   State<DetailProdModel> createState() => _DetailProdModelState();
@@ -52,7 +53,6 @@ class _DetailProdModelState extends State<DetailProdModel> {
   String? ligneBudgtaire;
   String? resource;
   List<StocksGlobalMOdel> stockGlobalList = [];
-  ProductModel? productModel;
   List<ApprobationModel> approbList = [];
   List<ApprobationModel> approbationData = [];
   ApprobationModel approb = ApprobationModel(
@@ -82,11 +82,9 @@ class _DetailProdModelState extends State<DetailProdModel> {
       succursale: '-');
   Future<void> getData() async {
     UserModel userModel = await AuthApi().getUserId();
-    ProductModel data = await ProduitModelApi().getOneData(widget.id);
     List<StocksGlobalMOdel> stoksGlobal = await StockGlobalApi().getAllData();
     var approbations = await ApprobationApi().getAllData();
     setState(() {
-      productModel = data;
       stockGlobalList = stoksGlobal;
       user = userModel;
       approbList = approbations;
@@ -95,16 +93,10 @@ class _DetailProdModelState extends State<DetailProdModel> {
 
   @override
   Widget build(BuildContext context) {
+    final id = ModalRoute.of(context)!.settings.arguments as int;
     return Scaffold(
         key: _key,
-        drawer: const DrawerMenu(),
-        floatingActionButton: FloatingActionButton(
-            child: const Icon(Icons.add),
-            onPressed: () {
-              Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) =>
-                      UpdateProModel(productModel: productModel!)));
-            }),
+        drawer: const DrawerMenu(), 
         body: SafeArea(
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -118,7 +110,7 @@ class _DetailProdModelState extends State<DetailProdModel> {
                 child: Padding(
                     padding: const EdgeInsets.all(p10),
                     child: FutureBuilder<ProductModel>(
-                        future: ProduitModelApi().getOneData(widget.id),
+                        future: ProduitModelApi().getOneData(id),
                         builder: (BuildContext context,
                             AsyncSnapshot<ProductModel> snapshot) {
                           if (snapshot.hasData) {
@@ -249,8 +241,9 @@ class _DetailProdModelState extends State<DetailProdModel> {
             ),
             TextButton(
               onPressed: () async {
-                Navigator.of(context).push(MaterialPageRoute(
-                    builder: (context) => UpdateProModel(productModel: data)));
+                 Navigator.pushNamed(
+                    context, ComMarketingRoutes.comMarketingProduitModelUpdate,
+                    arguments: data);  
               },
               child: const Text('OK'),
             ),

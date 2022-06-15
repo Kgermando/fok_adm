@@ -6,14 +6,13 @@ import 'package:fokad_admin/src/constants/responsive.dart';
 import 'package:fokad_admin/src/models/comm_maketing/prod_model.dart';
 import 'package:fokad_admin/src/models/users/user_model.dart';
 import 'package:fokad_admin/src/navigation/drawer/drawer_menu.dart';
-import 'package:fokad_admin/src/navigation/header/custom_appbar.dart';
-import 'package:fokad_admin/src/widgets/btn_widget.dart';
+import 'package:fokad_admin/src/navigation/header/custom_appbar.dart'; 
+import 'package:fokad_admin/src/widgets/btn_widget.dart'; 
 import 'package:fokad_admin/src/widgets/title_widget.dart';
 
 class UpdateProModel extends StatefulWidget {
-  const UpdateProModel({Key? key, required this.productModel})
+  const UpdateProModel({Key? key})
       : super(key: key);
-  final ProductModel productModel;
 
   @override
   State<UpdateProModel> createState() => _UpdateProModelState();
@@ -36,17 +35,7 @@ class _UpdateProModelState extends State<UpdateProModel> {
   initState() {
     getData();
     setState(() {
-      id = widget.productModel.id;
-      categorieController =
-          TextEditingController(text: widget.productModel.categorie);
-      sousCategorie1Controller =
-          TextEditingController(text: widget.productModel.sousCategorie1);
-      sousCategorie2Controller =
-          TextEditingController(text: widget.productModel.sousCategorie2);
-      sousCategorie3Controller =
-          TextEditingController(text: widget.productModel.sousCategorie3);
-      sousCategorie4Controller =
-          TextEditingController(text: widget.productModel.sousCategorie4);
+      
     });
 
     super.initState();
@@ -73,6 +62,18 @@ class _UpdateProModelState extends State<UpdateProModel> {
 
   @override
   Widget build(BuildContext context) {
+    ProductModel productModel = ModalRoute.of(context)!.settings.arguments as ProductModel;
+    id = productModel.id;
+    categorieController =
+        TextEditingController(text: productModel.categorie);
+    sousCategorie1Controller =
+        TextEditingController(text: productModel.sousCategorie1);
+    sousCategorie2Controller =
+        TextEditingController(text: productModel.sousCategorie2);
+    sousCategorie3Controller =
+        TextEditingController(text: productModel.sousCategorie3);
+    sousCategorie4Controller =
+        TextEditingController(text: productModel.sousCategorie4);
     return Scaffold(
         key: _key,
         drawer: const DrawerMenu(),
@@ -105,7 +106,7 @@ class _UpdateProModelState extends State<UpdateProModel> {
                           Expanded(
                               flex: 5,
                               child: CustomAppbar(
-                                  title: 'Nouveau projet',
+                                  title: 'Modifier le modele',
                                   controllerMenu: () =>
                                       _key.currentState!.openDrawer())),
                         ],
@@ -113,7 +114,7 @@ class _UpdateProModelState extends State<UpdateProModel> {
                       Expanded(
                           child: Scrollbar(
                         controller: _controllerScroll,
-                        child: addPageWidget(),
+                        child: addPageWidget(productModel),
                       ))
                     ],
                   ),
@@ -124,7 +125,7 @@ class _UpdateProModelState extends State<UpdateProModel> {
         ));
   }
 
-  Widget addPageWidget() {
+  Widget addPageWidget(ProductModel productModel) {
     return Form(
       key: _formKey,
       child: Row(
@@ -141,7 +142,7 @@ class _UpdateProModelState extends State<UpdateProModel> {
                 child: ListView(
                   controller: _controllerScroll,
                   children: [
-                    TitleWidget(title: widget.productModel.categorie),
+                    TitleWidget(title: productModel.categorie),
                     const SizedBox(
                       height: p20,
                     ),

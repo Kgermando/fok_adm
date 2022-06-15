@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:fokad_admin/src/api/approbation/approbation_api.dart';
+import 'package:fokad_admin/src/api/auth/auth_api.dart';
 import 'package:fokad_admin/src/api/comm_marketing/commerciale/produit_model_api.dart';
+import 'package:fokad_admin/src/models/approbation/approbation_model.dart';
 import 'package:fokad_admin/src/models/comm_maketing/prod_model.dart';
+import 'package:fokad_admin/src/models/users/user_model.dart';
 import 'package:fokad_admin/src/pages/comm_marketing/commercial/prod_model/components/detail_prod_model.dart';
+import 'package:fokad_admin/src/routes/routes.dart';
 import 'package:fokad_admin/src/widgets/print_widget.dart';
 import 'package:fokad_admin/src/utils/class_implemented.dart';
 import 'package:intl/intl.dart';
@@ -38,9 +42,8 @@ class _TableProduitModelState extends State<TableProduitModel> {
       onRowDoubleTap: (PlutoGridOnRowDoubleTapEvent tapEvent) {
         final dataList = tapEvent.row!.cells.values;
         final idPlutoRow = dataList.elementAt(0);
-
-        Navigator.of(context).push(MaterialPageRoute(
-            builder: (context) => DetailProdModel(id: idPlutoRow.value)));
+        Navigator.pushNamed(
+            context, ComMarketingRoutes.comMarketingProduitModelDetail, arguments: idPlutoRow.value);
       },
       onLoaded: (PlutoGridOnLoadedEvent event) {
         stateManager = event.stateManager;
@@ -51,6 +54,12 @@ class _TableProduitModelState extends State<TableProduitModel> {
         return Row(
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
+            IconButton(
+                onPressed: () {
+                  Navigator.pushNamed(
+                      context, ComMarketingRoutes.comMarketingProduitModel);
+                },
+                icon: Icon(Icons.refresh, color: Colors.green.shade700)),
             IconButton(onPressed: () {}, icon: const Icon(Icons.download)),
             PrintWidget(onPressed: () {})
           ],
@@ -187,15 +196,41 @@ class _TableProduitModelState extends State<TableProduitModel> {
     ];
   }
 
-  Future agentsRow() async {
-    var approbations = await ApprobationApi().getAllData();
+  Future agentsRow() async { 
     List<ProductModel> dataList = await ProduitModelApi().getAllData();
+    UserModel userModel = await AuthApi().getUserId();
+    var approbations = await ApprobationApi().getAllData();
     List<ProductModel?> data = [];
-    for (var item in approbations) {
+    // Verifie les approbation si c'est la list es vide
+    if (approbations.isNotEmpty) {
+      List<ApprobationModel> isApproved = [];
+      for (var item in dataList) {
+        isApproved = approbations
+            .where((element) =>
+                element.reference.microsecondsSinceEpoch ==
+                item!.created.microsecondsSinceEpoch)
+            .toList();
+      }
+      // FIltre si le filtre donne des elements
+      if (isApproved.isNotEmpty) {
+        for (var item in approbations) {
+          data = dataList
+              .where((element) =>
+                  element!.created.microsecondsSinceEpoch ==
+                          item.reference.microsecondsSinceEpoch &&
+                      item.fontctionOccupee == 'Directeur de departement' &&
+                      item.approbation == "Approved" ||
+                  element.signature == userModel.matricule)
+              .toList();
+        }
+      } else {
+        data = dataList
+            .where((element) => element!.signature == userModel.matricule)
+            .toList();
+      }
+    } else {
       data = dataList
-          .where((element) =>
-              element.created.microsecondsSinceEpoch == item.reference.microsecondsSinceEpoch &&
-              item.approbation == 'Approved')
+          .where((element) => element!.signature == userModel.matricule)
           .toList();
     }
 
