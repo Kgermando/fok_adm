@@ -7,8 +7,7 @@ import 'package:fokad_admin/src/constants/app_theme.dart';
 import 'package:fokad_admin/src/constants/responsive.dart';
 import 'package:fokad_admin/src/models/comm_maketing/annuaire_model.dart'; 
 import 'package:fokad_admin/src/navigation/drawer/drawer_menu.dart';
-import 'package:fokad_admin/src/navigation/header/custom_appbar.dart';
-import 'package:fokad_admin/src/pages/comm_marketing/marketing/components/annuaire/update_annuaire.dart';
+import 'package:fokad_admin/src/navigation/header/custom_appbar.dart'; 
 import 'package:fokad_admin/src/routes/routes.dart';
 import 'package:fokad_admin/src/utils/loading.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -23,8 +22,7 @@ class DetailAnnuaire extends StatefulWidget {
 }
 
 class _DetailAnnuaireState extends State<DetailAnnuaire> {
-  final GlobalKey<ScaffoldState> _key = GlobalKey();
-  final ScrollController _controllerScroll = ScrollController();
+  final GlobalKey<ScaffoldState> _key = GlobalKey(); 
   bool isLoading = false;
   bool hasCallSupport = false;
   // ignore: unused_field

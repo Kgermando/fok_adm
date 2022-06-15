@@ -17,9 +17,8 @@ import 'package:fokad_admin/src/widgets/btn_widget.dart';
 import 'package:fokad_admin/src/widgets/title_widget.dart';
 
 class LivraisonStock extends StatefulWidget {
-  const LivraisonStock({Key? key, required this.stocksGlobalMOdel})
-      : super(key: key);
-  final StocksGlobalMOdel stocksGlobalMOdel;
+  const LivraisonStock({Key? key})
+      : super(key: key); 
   @override
   State<LivraisonStock> createState() => _LivraisonStockState();
 }
@@ -32,7 +31,6 @@ class _LivraisonStockState extends State<LivraisonStock> {
 
   List<SuccursaleModel> succursaleList = [];
 
-  int? id;
   String? quantityStock;
   double remise = 0.0;
   double qtyRemise = 0.0;
@@ -50,12 +48,7 @@ class _LivraisonStockState extends State<LivraisonStock> {
   @override
   void initState() {
     loadData();
-    getData();
-    setState(() {
-      id = widget.stocksGlobalMOdel.id;
-      controllerPrixVenteUnit =
-          TextEditingController(text: widget.stocksGlobalMOdel.prixVenteUnit);
-    });
+    getData(); 
     super.initState();
   }
 
@@ -82,6 +75,11 @@ class _LivraisonStockState extends State<LivraisonStock> {
 
   @override
   Widget build(BuildContext context) {
+    StocksGlobalMOdel stocksGlobalMOdel =
+        ModalRoute.of(context)!.settings.arguments as StocksGlobalMOdel;
+
+    controllerPrixVenteUnit =
+        TextEditingController(text: stocksGlobalMOdel.prixVenteUnit);
     return Scaffold(
         key: _key,
         drawer: const DrawerMenu(),
@@ -124,7 +122,7 @@ class _LivraisonStockState extends State<LivraisonStock> {
                       Expanded(
                           child: Scrollbar(
                         controller: _controllerScroll,
-                        child: addPageWidget(),
+                        child: addPageWidget(stocksGlobalMOdel),
                       ))
                     ],
                   ),
@@ -135,7 +133,7 @@ class _LivraisonStockState extends State<LivraisonStock> {
         ));
   }
 
-  Widget addPageWidget() {
+  Widget addPageWidget(StocksGlobalMOdel data) {
     return Form(
       key: _formKey,
       child: Row(
@@ -162,7 +160,7 @@ class _LivraisonStockState extends State<LivraisonStock> {
                       height: p20,
                     ),
                     succursaleField(),
-                    quantityField(),
+                    quantityField(data),
                     prixVenteField(),
                     Row(
                       children: [
@@ -186,7 +184,7 @@ class _LivraisonStockState extends State<LivraisonStock> {
                         press: () {
                           final form = _formKey.currentState!;
                           if (form.validate()) {
-                            submit();
+                            submit(data);
                             form.reset();
                           }
                         })
@@ -231,7 +229,7 @@ class _LivraisonStockState extends State<LivraisonStock> {
     );
   }
 
-  Widget quantityField() {
+  Widget quantityField(StocksGlobalMOdel data) {
     return Container(
       margin: const EdgeInsets.only(bottom: 20.0),
       child: TextFormField(
@@ -242,7 +240,7 @@ class _LivraisonStockState extends State<LivraisonStock> {
         ],
         decoration: InputDecoration(
           labelText:
-              'Qtés disponible est de ${widget.stocksGlobalMOdel.quantity} ${widget.stocksGlobalMOdel.unite}',
+              'Qtés disponible est de ${data.quantity} ${data.unite}',
           suffixStyle: const TextStyle(color: Colors.red),
           labelStyle: const TextStyle(),
           border: OutlineInputBorder(
@@ -257,7 +255,7 @@ class _LivraisonStockState extends State<LivraisonStock> {
           } else if (value.contains(RegExp(r'[A-Z]'))) {
             return 'Que les chiffres svp!';
           } else if (double.parse(value) >
-              double.parse(widget.stocksGlobalMOdel.quantity)) {
+              double.parse(data.quantity)) {
             return 'La Qtés à livrer ne peut pas être superieur à la Qtés actuelle';
           }
           return null;
@@ -426,9 +424,9 @@ class _LivraisonStockState extends State<LivraisonStock> {
   }
 
   // Livraison vers succursale
-  void submit() async {
+  void submit(StocksGlobalMOdel data) async {
     var qtyRestanteStockGlobal =
-        double.parse(widget.stocksGlobalMOdel.quantity) -
+        double.parse(data.quantity) -
             double.parse(quantityStock.toString());
 
     var remisePourcent =
@@ -437,31 +435,31 @@ class _LivraisonStockState extends State<LivraisonStock> {
 
     // Update quantity stock global
     final stocksGlobalMOdel = StocksGlobalMOdel(
-      id: widget.stocksGlobalMOdel.id!,
-        idProduct: widget.stocksGlobalMOdel.idProduct,
+      id: data.id!,
+        idProduct: data.idProduct,
         quantity: qtyRestanteStockGlobal.toString(),
-        quantityAchat: widget.stocksGlobalMOdel.quantityAchat,
-        priceAchatUnit: widget.stocksGlobalMOdel.priceAchatUnit,
-        prixVenteUnit: widget.stocksGlobalMOdel.prixVenteUnit,
-        unite: widget.stocksGlobalMOdel.unite,
-        modeAchat: widget.stocksGlobalMOdel.modeAchat,
-        tva: widget.stocksGlobalMOdel.tva,
-        qtyRavitailler: widget.stocksGlobalMOdel.qtyRavitailler,
-        signature: widget.stocksGlobalMOdel.signature,
-        created: widget.stocksGlobalMOdel.created);
+        quantityAchat: data.quantityAchat,
+        priceAchatUnit: data.priceAchatUnit,
+        prixVenteUnit: data.prixVenteUnit,
+        unite: data.unite,
+        modeAchat: data.modeAchat,
+        tva: data.tva,
+        qtyRavitailler: data.qtyRavitailler,
+        signature: data.signature,
+        created: data.created);
     await StockGlobalApi()
         .updateData( stocksGlobalMOdel);
 
     // Generer le bon de livraison pour la succursale
     final bonLivraisonModel = BonLivraisonModel(
-        idProduct: widget.stocksGlobalMOdel.idProduct,
+        idProduct: data.idProduct,
         quantityAchat: quantityStock.toString(),
-        priceAchatUnit: widget.stocksGlobalMOdel.priceAchatUnit,
+        priceAchatUnit: data.priceAchatUnit,
         prixVenteUnit: prixVenteUnit.toString(),
-        unite: widget.stocksGlobalMOdel.unite,
+        unite: data.unite,
         firstName: user!.prenom.toString(),
         lastName: user!.nom.toString(),
-        tva: widget.stocksGlobalMOdel.tva,
+        tva: data.tva,
         remise: remisePourcentToMontant.toString(),
         qtyRemise: qtyRemise.toString(),
         accuseReception: 'false',

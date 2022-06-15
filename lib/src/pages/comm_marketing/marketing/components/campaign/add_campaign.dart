@@ -1,12 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:fokad_admin/src/api/auth/auth_api.dart';
-import 'package:fokad_admin/src/api/comm_marketing/commerciale/produit_model_api.dart';
-import 'package:fokad_admin/src/api/comm_marketing/marketing/campaign_api.dart';
-import 'package:fokad_admin/src/api/user/user_api.dart';
+import 'package:fokad_admin/src/api/auth/auth_api.dart'; 
+import 'package:fokad_admin/src/api/comm_marketing/marketing/campaign_api.dart'; 
 import 'package:fokad_admin/src/constants/app_theme.dart';
 import 'package:fokad_admin/src/constants/responsive.dart';
-import 'package:fokad_admin/src/models/comm_maketing/campaign_model.dart';
-import 'package:fokad_admin/src/models/comm_maketing/prod_model.dart';
+import 'package:fokad_admin/src/models/comm_maketing/campaign_model.dart'; 
 import 'package:fokad_admin/src/models/users/user_model.dart';
 import 'package:fokad_admin/src/navigation/drawer/drawer_menu.dart';
 import 'package:fokad_admin/src/navigation/header/custom_appbar.dart';

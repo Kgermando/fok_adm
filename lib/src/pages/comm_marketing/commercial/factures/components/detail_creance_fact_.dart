@@ -16,8 +16,7 @@ import 'package:intl/intl.dart';
 import 'package:pluto_grid/pluto_grid.dart';
 
 class DetailCreanceFact extends StatefulWidget {
-  const DetailCreanceFact({Key? key, this.id}) : super(key: key);
-  final int? id;
+  const DetailCreanceFact({Key? key}) : super(key: key);
 
   @override
   State<DetailCreanceFact> createState() => _DetailCreanceFactState();
@@ -41,7 +40,7 @@ class _DetailCreanceFactState extends State<DetailCreanceFact> {
     super.initState();
   }
 
-  CreanceCartModel? facture;
+  CreanceCartModel? creanceCartModel; // Pour le trableau
 
   UserModel user = UserModel(
       nom: '-',
@@ -59,19 +58,21 @@ class _DetailCreanceFactState extends State<DetailCreanceFact> {
       succursale: '-');
   Future<void> getData() async {
     UserModel userModel = await AuthApi().getUserId();
-    CreanceCartModel data = await CreanceFactureApi().getOneData(widget.id!);
     setState(() {
       user = userModel;
-      facture = data;
     });
   }
 
   @override
   Widget build(BuildContext context) {
+    CreanceCartModel data =
+        ModalRoute.of(context)!.settings.arguments as CreanceCartModel;
+    creanceCartModel = data;
+    
     return Scaffold(
         key: _key,
         drawer: const DrawerMenu(),
-        bottomNavigationBar: totalCart(),
+        bottomNavigationBar: totalCart(data),
         body: SafeArea(
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -85,7 +86,7 @@ class _DetailCreanceFactState extends State<DetailCreanceFact> {
                 child: Padding(
                     padding: const EdgeInsets.all(p10),
                     child: FutureBuilder<CreanceCartModel>(
-                        future: CreanceFactureApi().getOneData(widget.id!),
+                        future: CreanceFactureApi().getOneData(data.id!),
                         builder: (BuildContext context,
                             AsyncSnapshot<CreanceCartModel> snapshot) {
                           if (snapshot.hasData) {
@@ -204,9 +205,9 @@ class _DetailCreanceFactState extends State<DetailCreanceFact> {
     );
   }
 
-  Widget totalCart() {
+  Widget totalCart(CreanceCartModel data) {
     List<dynamic> cartItem;
-    cartItem = facture!.cart.toList();
+    cartItem = data.cart.toList();
 
     double sumCart = 0;
     for (var data in cartItem) {
@@ -361,7 +362,9 @@ class _DetailCreanceFactState extends State<DetailCreanceFact> {
   }
 
   Future agentsRow() async {
-    List<dynamic> cartItem = facture!.cart.toList();
+    var creances = await CreanceFactureApi().getOneData(creanceCartModel!.id!);
+
+    List<dynamic> cartItem = creances.cart.toList();
 
     if (mounted) {
       setState(() {

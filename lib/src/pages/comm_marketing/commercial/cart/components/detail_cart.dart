@@ -4,7 +4,7 @@ import 'package:fokad_admin/src/api/comm_marketing/commerciale/cart_api.dart';
 import 'package:fokad_admin/src/constants/app_theme.dart';
 import 'package:fokad_admin/src/constants/responsive.dart';
 import 'package:fokad_admin/src/models/comm_maketing/achat_model.dart';
-import 'package:fokad_admin/src/models/comm_maketing/cart_model.dart';
+import 'package:fokad_admin/src/models/comm_maketing/cart_model.dart'; 
 import 'package:fokad_admin/src/navigation/drawer/drawer_menu.dart';
 import 'package:fokad_admin/src/navigation/header/custom_appbar.dart';
 import 'package:fokad_admin/src/widgets/print_widget.dart';
@@ -13,8 +13,7 @@ import 'package:intl/intl.dart';
 
 
 class DetailCart extends StatefulWidget {
-  const DetailCart({Key? key, required this.cart}) : super(key: key);
-  final CartModel cart;
+  const DetailCart({Key? key}) : super(key: key);
 
   @override
   State<DetailCart> createState() => _DetailCartState();
@@ -41,6 +40,8 @@ class _DetailCartState extends State<DetailCart> {
 
   @override
   Widget build(BuildContext context) {
+     CartModel cart =
+        ModalRoute.of(context)!.settings.arguments as CartModel;
     return Scaffold(
         key: _key,
         drawer: const DrawerMenu(),
@@ -70,14 +71,14 @@ class _DetailCartState extends State<DetailCart> {
                             const SizedBox(width: p10),
                             Expanded(
                               child: CustomAppbar(
-                                  title: widget.cart.idProductCart,
+                                  title: cart.idProductCart,
                                   controllerMenu: () =>
                                       _key.currentState!.openDrawer()),
                             ),
                           ],
                         ),
                         Expanded(
-                            child: SingleChildScrollView(child: pageDetail()))
+                            child: SingleChildScrollView(child: pageDetail(cart)))
                       ],
                     )),
               ),
@@ -86,7 +87,7 @@ class _DetailCartState extends State<DetailCart> {
         ));
   }
 
-  Widget pageDetail() {
+  Widget pageDetail(CartModel cart) {
     return Row(mainAxisAlignment: MainAxisAlignment.center, children: [
       Card(
         elevation: 10,
@@ -114,18 +115,18 @@ class _DetailCartState extends State<DetailCart> {
                           tooltip: 'Imprimer le document', onPressed: () {}),
                       SelectableText(
                           DateFormat("dd-MM-yy HH:mm")
-                              .format(widget.cart.created),
+                              .format(cart.created),
                           textAlign: TextAlign.start),
                     ],
                   )
                 ],
               ),
-              dataWidget(),
+              dataWidget(cart),
                Divider(
                 color: Colors.amber.shade700,
               ),
               const SizedBox(height: p10),
-              total(),
+              total(cart),
             ],
           ),
         ),
@@ -133,7 +134,7 @@ class _DetailCartState extends State<DetailCart> {
     ]);
   }
 
-  Widget dataWidget() {
+  Widget dataWidget(CartModel cart) {
     final headline6 = Theme.of(context).textTheme.headline6;
     return Padding(
       padding: const EdgeInsets.all(p10),
@@ -150,7 +151,7 @@ class _DetailCartState extends State<DetailCart> {
               ),
               Expanded(
                 flex: 3,
-                child: SelectableText(widget.cart.idProductCart,
+                child: SelectableText(cart.idProductCart,
                     textAlign: TextAlign.start, style: headline6),
               )
             ],
@@ -169,7 +170,7 @@ class _DetailCartState extends State<DetailCart> {
               Expanded(
                 flex: 3,
                 child: Text(
-                    '${NumberFormat.decimalPattern('fr').format(double.parse(widget.cart.quantityCart))} ${widget.cart.unite}',
+                    '${NumberFormat.decimalPattern('fr').format(double.parse(cart.quantityCart))} ${cart.unite}',
                    textAlign: TextAlign.start,
                     style: headline6),
               ),
@@ -184,12 +185,12 @@ class _DetailCartState extends State<DetailCart> {
                     style:
                         headline6.copyWith(fontWeight: FontWeight.bold)),
               ),
-              (double.parse(widget.cart.quantityCart) >=
-                      double.parse(widget.cart.qtyRemise))
+              (double.parse(cart.quantityCart) >=
+                      double.parse(cart.qtyRemise))
                   ? Expanded(
                     flex: 3,
                     child: Text(
-                        '${NumberFormat.decimalPattern('fr').format(double.parse(widget.cart.remise))} x ${NumberFormat.decimalPattern('fr').format(double.parse(widget.cart.quantityCart))} ${widget.cart.unite}',
+                        '${NumberFormat.decimalPattern('fr').format(double.parse(cart.remise))} x ${NumberFormat.decimalPattern('fr').format(double.parse(cart.quantityCart))} ${cart.unite}',
                         textAlign: TextAlign.start,
                           style: headline6
                       ),
@@ -197,7 +198,7 @@ class _DetailCartState extends State<DetailCart> {
                   : Expanded(
                     flex: 3,
                     child: Text(
-                        '${NumberFormat.decimalPattern('fr').format(double.parse(widget.cart.priceCart))} x ${NumberFormat.decimalPattern('fr').format(double.parse(widget.cart.quantityCart))} ${widget.cart.unite}',
+                        '${NumberFormat.decimalPattern('fr').format(double.parse(cart.priceCart))} x ${NumberFormat.decimalPattern('fr').format(double.parse(cart.quantityCart))} ${cart.unite}',
                         textAlign: TextAlign.start,
                         style: headline6,
                       ),
@@ -209,17 +210,17 @@ class _DetailCartState extends State<DetailCart> {
     );
   }
 
-  Widget total() {
+  Widget total(CartModel cart) {
     double sum = 0.0;
-    var qtyRemise = double.parse(widget.cart.qtyRemise);
-    var quantityCart = double.parse(widget.cart.quantityCart);
+    var qtyRemise = double.parse(cart.qtyRemise);
+    var quantityCart = double.parse(cart.quantityCart);
 
     if (quantityCart >= qtyRemise) {
-      sum = double.parse(widget.cart.quantityCart) *
-          double.parse(widget.cart.remise);
+      sum = double.parse(cart.quantityCart) *
+          double.parse(cart.remise);
     } else {
-      sum = double.parse(widget.cart.quantityCart) *
-          double.parse(widget.cart.priceCart);
+      sum = double.parse(cart.quantityCart) *
+          double.parse(cart.priceCart);
     }
 
     return Card(
@@ -247,13 +248,13 @@ class _DetailCartState extends State<DetailCart> {
   }
 
 
-  updateAchat() async {
+  updateAchat(CartModel cart) async {
     final achatQtyList =
-        listAchat.where((e) => e.idProduct == widget.cart.idProductCart);
+        listAchat.where((e) => e.idProduct == cart.idProductCart);
 
     final achatQty = achatQtyList
         .map((e) =>
-            double.parse(e.quantity) + double.parse(widget.cart.quantityCart))
+            double.parse(e.quantity) + double.parse(cart.quantityCart))
         .first;
 
     final achatIdProduct = achatQtyList.map((e) => e.idProduct).first;
@@ -287,7 +288,7 @@ class _DetailCartState extends State<DetailCart> {
         created: achatCreated);
 
     await AchatApi().updateData( achatModel);
-    await CartApi().deleteData(widget.cart.id!);
+    await CartApi().deleteData(cart.id!);
     Navigator.pop(context);
   }
 }

@@ -15,8 +15,7 @@ import 'package:fokad_admin/src/widgets/title_widget.dart';
 import 'package:intl/intl.dart';
 
 class DetailRestitution extends StatefulWidget {
-  const DetailRestitution({Key? key, required this.id}) : super(key: key);
-  final int id;
+  const DetailRestitution({Key? key}) : super(key: key);
 
   @override
   State<DetailRestitution> createState() => _DetailRestitutionState();
@@ -28,7 +27,8 @@ class _DetailRestitutionState extends State<DetailRestitution> {
   bool isLoading = false;
 
   List<RestitutionModel> restitutionModelList = [];
-  List<StocksGlobalMOdel> stockGlobal = [];
+  List<StocksGlobalMOdel> stockGlobalList = [];
+  List<StocksGlobalMOdel> stockGlobalFilter = [];
   bool isChecked = false;
 
   @override
@@ -53,19 +53,16 @@ class _DetailRestitutionState extends State<DetailRestitution> {
       succursale: '-');
   Future<void> getData() async {
     UserModel data = await AuthApi().getUserId();
-    RestitutionModel restitutionModel =
-        await RestitutionApi().getOneData(widget.id);
     List<StocksGlobalMOdel>? dataStocks = await StockGlobalApi().getAllData();
     setState(() {
       user = data;
-      stockGlobal = dataStocks
-          .where((element) => element.idProduct == restitutionModel.idProduct)
-          .toList();
+      stockGlobalFilter = dataStocks;
     });
   }
 
   @override
   Widget build(BuildContext context) {
+    final id = ModalRoute.of(context)!.settings.arguments as int;
     return Scaffold(
         key: _key,
         drawer: const DrawerMenu(),
@@ -82,11 +79,15 @@ class _DetailRestitutionState extends State<DetailRestitution> {
                 child: Padding(
                     padding: const EdgeInsets.all(p10),
                     child: FutureBuilder<RestitutionModel>(
-                        future: RestitutionApi().getOneData(widget.id),
+                        future: RestitutionApi().getOneData(id),
                         builder: (BuildContext context,
                             AsyncSnapshot<RestitutionModel> snapshot) {
                           if (snapshot.hasData) {
                             RestitutionModel? data = snapshot.data;
+                            stockGlobalList = stockGlobalFilter
+                                .where((element) =>
+                                    element.idProduct == data!.idProduct)
+                                .toList();
                             return Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
@@ -115,8 +116,8 @@ class _DetailRestitutionState extends State<DetailRestitution> {
                               ],
                             );
                           } else {
-                            return const Center(
-                                child: CircularProgressIndicator());
+                            return Center(
+                                child: loading());
                           }
                         })),
               ),
@@ -298,17 +299,17 @@ class _DetailRestitutionState extends State<DetailRestitution> {
   }
 
   Future<void> transfertProduit(RestitutionModel data) async {
-    var stockId = stockGlobal.map((e) => e.id).first;
-    var achatQty = stockGlobal.map((e) => e.quantity).first;
-    var quantityStockG = stockGlobal.map((e) => e.quantityAchat).first;
-    var pAU = stockGlobal.map((e) => e.priceAchatUnit).first;
-    var pVU = stockGlobal.map((e) => e.prixVenteUnit).first;
-    var uniteStock = stockGlobal.map((e) => e.unite).first;
-    var modeAchat = stockGlobal.map((e) => e.modeAchat).first;
-    var dateAchat = stockGlobal.map((e) => e.created).first;
-    var signatureAchat = stockGlobal.map((e) => e.signature).first;
-    var tvaAchat = stockGlobal.map((e) => e.tva).first;
-    var qtyRavitaillerStock = stockGlobal.map((e) => e.qtyRavitailler).first;
+    var stockId = stockGlobalList.map((e) => e.id).first;
+    var achatQty = stockGlobalList.map((e) => e.quantity).first;
+    var quantityStockG = stockGlobalList.map((e) => e.quantityAchat).first;
+    var pAU = stockGlobalList.map((e) => e.priceAchatUnit).first;
+    var pVU = stockGlobalList.map((e) => e.prixVenteUnit).first;
+    var uniteStock = stockGlobalList.map((e) => e.unite).first;
+    var modeAchat = stockGlobalList.map((e) => e.modeAchat).first;
+    var dateAchat = stockGlobalList.map((e) => e.created).first;
+    var signatureAchat = stockGlobalList.map((e) => e.signature).first;
+    var tvaAchat = stockGlobalList.map((e) => e.tva).first;
+    var qtyRavitaillerStock = stockGlobalList.map((e) => e.qtyRavitailler).first;
 
     // Stocks global + qty restitué
     var qtyTransfert = double.parse(achatQty) + double.parse(data.quantity);
@@ -329,7 +330,7 @@ class _DetailRestitutionState extends State<DetailRestitution> {
     await StockGlobalApi().updateData(stocksGlobalMOdel);
 
     final restitutionModel = RestitutionModel(
-      id: data.id!,
+        id: data.id!,
         idProduct: data.idProduct,
         quantity: data.quantity,
         unite: data.unite,

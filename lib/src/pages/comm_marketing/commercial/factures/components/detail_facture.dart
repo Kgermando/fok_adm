@@ -16,8 +16,7 @@ import 'package:intl/intl.dart';
 import 'package:pluto_grid/pluto_grid.dart';
 
 class DetailFacture extends StatefulWidget {
-  const DetailFacture({Key? key, this.id}) : super(key: key);
-  final int? id;
+  const DetailFacture({Key? key}) : super(key: key);
 
   @override
   State<DetailFacture> createState() => _DetailFactureState();
@@ -56,16 +55,18 @@ class _DetailFactureState extends State<DetailFacture> {
       passwordHash: '-',
       succursale: '-');
   Future<void> getData() async {
-    UserModel userModel = await AuthApi().getUserId();
-    FactureCartModel data = await FactureApi().getOneData(widget.id!);
+    UserModel userModel = await AuthApi().getUserId(); 
     setState(() {
-      user = userModel;
-      facture = data;
+      user = userModel; 
     });
   }
 
   @override
   Widget build(BuildContext context) {
+     FactureCartModel data =
+        ModalRoute.of(context)!.settings.arguments as FactureCartModel;
+    facture = data;
+
     return Scaffold(
         key: _key,
         drawer: const DrawerMenu(),
@@ -83,7 +84,7 @@ class _DetailFactureState extends State<DetailFacture> {
                 child: Padding(
                     padding: const EdgeInsets.all(p10),
                     child: FutureBuilder<FactureCartModel>(
-                        future: FactureApi().getOneData(widget.id!),
+                        future: FactureApi().getOneData(data.id!),
                         builder: (BuildContext context,
                             AsyncSnapshot<FactureCartModel> snapshot) {
                           if (snapshot.hasData) {

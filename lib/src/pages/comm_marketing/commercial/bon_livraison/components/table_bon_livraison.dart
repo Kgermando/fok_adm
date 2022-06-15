@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fokad_admin/src/api/comm_marketing/commerciale/bon_livraison_api.dart';
-import 'package:fokad_admin/src/models/comm_maketing/bon_livraison.dart';
-import 'package:fokad_admin/src/pages/comm_marketing/commercial/bon_livraison/components/detail_bon_livraison.dart';
+import 'package:fokad_admin/src/models/comm_maketing/bon_livraison.dart'; 
 import 'package:fokad_admin/src/widgets/print_widget.dart';
 import 'package:intl/intl.dart';
 import 'package:fokad_admin/src/utils/class_implemented.dart';
@@ -35,11 +34,12 @@ class _TableBonLivraisonState extends State<TableBonLivraison> {
       columns: columns,
       rows: rows,
       onRowDoubleTap: (PlutoGridOnRowDoubleTapEvent tapEvent) {
-        final dataList = tapEvent.row!.cells.values;
-        final idPlutoRow = dataList.elementAt(0);
+        // final dataList = tapEvent.row!.cells.values;
+        // final idPlutoRow = dataList.elementAt(0);
+        
 
-        Navigator.of(context).push(MaterialPageRoute(
-            builder: (context) => DetailBonLivraison(id: idPlutoRow.value)));
+        // Navigator.of(context).push(MaterialPageRoute(
+        //     builder: (context) => DetailBonLivraison(id: idPlutoRow.value)));
       },
       onLoaded: (PlutoGridOnLoadedEvent event) {
         stateManager = event.stateManager;

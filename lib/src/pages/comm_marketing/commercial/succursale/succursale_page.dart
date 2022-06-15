@@ -8,8 +8,7 @@ import 'package:fokad_admin/src/models/approbation/approbation_model.dart';
 import 'package:fokad_admin/src/models/comm_maketing/succursale_model.dart';
 import 'package:fokad_admin/src/models/users/user_model.dart';
 import 'package:fokad_admin/src/navigation/drawer/drawer_menu.dart';
-import 'package:fokad_admin/src/navigation/header/custom_appbar.dart';
-import 'package:fokad_admin/src/pages/comm_marketing/commercial/succursale/components/detail_succurssale.dart';
+import 'package:fokad_admin/src/navigation/header/custom_appbar.dart'; 
 import 'package:fokad_admin/src/routes/routes.dart';
 import 'package:fokad_admin/src/utils/loading.dart';
 
@@ -150,7 +149,7 @@ class _SuccursalePageState extends State<SuccursalePage> {
                                       ],
                                     ),
                                     Expanded(
-                                      child: dataList.isEmpty
+                                      child: data.isEmpty
                                           ? Center(
                                               child: Text(
                                                 'Ajoutez une Succursale.',

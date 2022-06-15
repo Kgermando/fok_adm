@@ -14,12 +14,11 @@ import 'package:fokad_admin/src/navigation/drawer/drawer_menu.dart';
 import 'package:fokad_admin/src/navigation/header/custom_appbar.dart';
 import 'package:fokad_admin/src/utils/dropdown.dart';
 import 'package:fokad_admin/src/utils/regex.dart';
-import 'package:fokad_admin/src/widgets/btn_widget.dart';
+import 'package:fokad_admin/src/widgets/btn_widget.dart'; 
 
 class RavitailleemntStock extends StatefulWidget {
-  const RavitailleemntStock({Key? key, required this.stocksGlobalMOdel})
-      : super(key: key);
-  final StocksGlobalMOdel stocksGlobalMOdel;
+  const RavitailleemntStock({Key? key})
+      : super(key: key); 
 
   @override
   State<RavitailleemntStock> createState() => _RavitailleemntStockState();
@@ -58,20 +57,7 @@ class _RavitailleemntStockState extends State<RavitailleemntStock> {
     getData();
     loadProdModel();
     setState(() {
-      id = widget.stocksGlobalMOdel.id;
-
-      controlleridProduct =
-          TextEditingController(text: widget.stocksGlobalMOdel.idProduct);
-      controllerquantity =
-          TextEditingController(text: widget.stocksGlobalMOdel.quantity);
-      // controllerQuantityAchat =
-      //     TextEditingController(text: widget.achat.quantityAchat);
-      controllerpriceAchatUnit =
-          TextEditingController(text: widget.stocksGlobalMOdel.priceAchatUnit);
-      controllerPrixVenteUnit =
-          TextEditingController(text: widget.stocksGlobalMOdel.prixVenteUnit);
-      controllerUnite =
-          TextEditingController(text: widget.stocksGlobalMOdel.unite);
+      
     });
   }
 
@@ -86,7 +72,6 @@ class _RavitailleemntStockState extends State<RavitailleemntStock> {
   }
 
   void loadProdModel() async {
-    // List<ProductModel>? achatDB = await ProdModelHttp().getAllProductModel();
     List<ProductModel>? achatDB = await ProduitModelApi().getAllData();
     if (!mounted) return;
     setState(() {
@@ -104,6 +89,19 @@ class _RavitailleemntStockState extends State<RavitailleemntStock> {
 
   @override
   Widget build(BuildContext context) {
+    StocksGlobalMOdel stocksGlobalMOdel = ModalRoute.of(context)!.settings.arguments as StocksGlobalMOdel;
+    id = stocksGlobalMOdel.id;
+
+    controlleridProduct =
+        TextEditingController(text: stocksGlobalMOdel.idProduct);
+    controllerquantity =
+        TextEditingController(text: stocksGlobalMOdel.quantity); 
+    controllerpriceAchatUnit =
+        TextEditingController(text: stocksGlobalMOdel.priceAchatUnit);
+    controllerPrixVenteUnit =
+        TextEditingController(text: stocksGlobalMOdel.prixVenteUnit);
+    controllerUnite =
+        TextEditingController(text: stocksGlobalMOdel.unite);
     return Scaffold(
         key: _key,
         drawer: const DrawerMenu(),
@@ -146,7 +144,7 @@ class _RavitailleemntStockState extends State<RavitailleemntStock> {
                       Expanded(
                           child: Scrollbar(
                         controller: _controllerScroll,
-                        child: addPageWidget(),
+                        child: addPageWidget(stocksGlobalMOdel),
                       ))
                     ],
                   ),
@@ -157,7 +155,7 @@ class _RavitailleemntStockState extends State<RavitailleemntStock> {
         ));
   }
 
-  Widget addPageWidget() {
+  Widget addPageWidget(StocksGlobalMOdel data) {
     return Form(
       key: _formKey,
       child: Row(
@@ -217,7 +215,7 @@ class _RavitailleemntStockState extends State<RavitailleemntStock> {
                         press: () {
                           final form = _formKey.currentState!;
                           if (form.validate()) {
-                            submit();
+                            submit(data);
                             form.reset();
                           }
                         })
@@ -431,44 +429,44 @@ class _RavitailleemntStockState extends State<RavitailleemntStock> {
   }
 
   // HIstorique de ravitaillement
-  void submit() async {
+  void submit(StocksGlobalMOdel data) async {
     var qtyDisponible = double.parse(controllerquantity.text) +
-        double.parse(widget.stocksGlobalMOdel.quantity);
+        double.parse(data.quantity);
 
     // Add Achat history pour voir les entrés et sorties de chaque produit
-    var qtyDifference = double.parse(widget.stocksGlobalMOdel.quantityAchat) -
-        double.parse(widget.stocksGlobalMOdel.quantity);
+    var qtyDifference = double.parse(data.quantityAchat) -
+        double.parse(data.quantity);
     var priceDifference =
-        pavTVA! - double.parse(widget.stocksGlobalMOdel.priceAchatUnit);
+        pavTVA! - double.parse(data.priceAchatUnit);
     var margeBenMap = qtyDifference * priceDifference;
 
     final historyRavitaillementModel = HistoryRavitaillementModel(
-        idProduct: widget.stocksGlobalMOdel.idProduct,
-        quantity: widget.stocksGlobalMOdel.quantity,
-        quantityAchat: widget.stocksGlobalMOdel.quantityAchat,
-        priceAchatUnit: widget.stocksGlobalMOdel.priceAchatUnit,
-        prixVenteUnit: widget.stocksGlobalMOdel.prixVenteUnit,
-        unite: widget.stocksGlobalMOdel.unite,
+        idProduct: data.idProduct,
+        quantity: data.quantity,
+        quantityAchat: data.quantityAchat,
+        priceAchatUnit: data.priceAchatUnit,
+        prixVenteUnit: data.prixVenteUnit,
+        unite: data.unite,
         margeBen: margeBenMap.toString(),
-        tva: widget.stocksGlobalMOdel.tva,
-        qtyRavitailler: widget.stocksGlobalMOdel.qtyRavitailler,
+        tva: data.tva,
+        qtyRavitailler: data.qtyRavitailler,
         succursale: user!.succursale,
         signature: user!.matricule.toString(),
-        created: widget.stocksGlobalMOdel.created);
+        created: data.created);
     await HistoryRavitaillementApi().insertData(historyRavitaillementModel);
 
     // Update Achat stock global
     final stocksGlobalMOdel = StocksGlobalMOdel(
-      id: widget.stocksGlobalMOdel.id!,
-        idProduct: widget.stocksGlobalMOdel.idProduct,
+      id: data.id!,
+        idProduct: data.idProduct,
         quantity: qtyDisponible.toString(),
         quantityAchat: qtyDisponible.toString(),
         priceAchatUnit: controllerpriceAchatUnit.text,
         prixVenteUnit: pavTVA.toString(),
-        unite: widget.stocksGlobalMOdel.unite,
+        unite: data.unite,
         modeAchat: 'true',
-        tva: widget.stocksGlobalMOdel.tva,
-        qtyRavitailler: widget.stocksGlobalMOdel.qtyRavitailler,
+        tva: data.tva,
+        qtyRavitailler: data.qtyRavitailler,
         signature: user!.matricule.toString(),
         created: DateTime.now());
     await StockGlobalApi()

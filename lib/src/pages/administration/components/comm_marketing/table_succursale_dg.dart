@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fokad_admin/src/api/comm_marketing/commerciale/succursale_api.dart';
-import 'package:fokad_admin/src/models/comm_maketing/succursale_model.dart';
-import 'package:fokad_admin/src/pages/comm_marketing/commercial/succursale/components/detail_succurssale.dart';
+import 'package:fokad_admin/src/models/comm_maketing/succursale_model.dart'; 
 import 'package:fokad_admin/src/routes/routes.dart';
 import 'package:fokad_admin/src/utils/class_implemented.dart';
 import 'package:fokad_admin/src/widgets/print_widget.dart';

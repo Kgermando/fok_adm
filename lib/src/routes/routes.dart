@@ -26,8 +26,13 @@ import 'package:fokad_admin/src/pages/budgets/ligne_budgetaire/components/ajout_
 import 'package:fokad_admin/src/pages/budgets/ligne_budgetaire/components/detail_ligne_budgetaire.dart';
 import 'package:fokad_admin/src/pages/comm_marketing/c_m_dd/c_m_dd.dart';
 import 'package:fokad_admin/src/pages/comm_marketing/commercial/achats/achats_page.dart';
+import 'package:fokad_admin/src/pages/comm_marketing/commercial/achats/components/detail_achat.dart';
 import 'package:fokad_admin/src/pages/comm_marketing/commercial/bon_livraison/bon_livraison_page.dart';
+import 'package:fokad_admin/src/pages/comm_marketing/commercial/bon_livraison/components/detail_bon_livraison.dart';
 import 'package:fokad_admin/src/pages/comm_marketing/commercial/cart/cart_page.dart';
+import 'package:fokad_admin/src/pages/comm_marketing/commercial/cart/components/detail_cart.dart';
+import 'package:fokad_admin/src/pages/comm_marketing/commercial/factures/components/detail_creance_fact_.dart';
+import 'package:fokad_admin/src/pages/comm_marketing/commercial/factures/components/detail_facture.dart';
 import 'package:fokad_admin/src/pages/comm_marketing/commercial/factures/creance_fact_page.dart';
 import 'package:fokad_admin/src/pages/comm_marketing/commercial/factures/factures_page.dart';
 import 'package:fokad_admin/src/pages/comm_marketing/commercial/history_livraison/history_livaison_page.dart';
@@ -38,6 +43,9 @@ import 'package:fokad_admin/src/pages/comm_marketing/commercial/prod_model/compo
 import 'package:fokad_admin/src/pages/comm_marketing/commercial/prod_model/prod_model_page.dart';
 import 'package:fokad_admin/src/pages/comm_marketing/commercial/restitutions/restitution_page.dart';
 import 'package:fokad_admin/src/pages/comm_marketing/commercial/stocks_global/components/add_stock_global.dart';
+import 'package:fokad_admin/src/pages/comm_marketing/commercial/stocks_global/components/detail_stock_global.dart';
+import 'package:fokad_admin/src/pages/comm_marketing/commercial/stocks_global/components/livraison_stock.dart';
+import 'package:fokad_admin/src/pages/comm_marketing/commercial/stocks_global/components/ravitaillement_stock.dart';
 import 'package:fokad_admin/src/pages/comm_marketing/commercial/stocks_global/stocks_global_page.dart';
 import 'package:fokad_admin/src/pages/comm_marketing/commercial/succursale/components/add_succursale.dart';
 import 'package:fokad_admin/src/pages/comm_marketing/commercial/succursale/components/detail_succurssale.dart';
@@ -343,21 +351,31 @@ class ComMarketingRoutes {
   static const comMarketingCampaignDetail = "/com-marketing-campaign-detail";
   static const comMarketingCampaignUpdate = "/com-marketing-campaign-update";
   
+
   // Commercial
   static const comMarketingProduitModel = "/com-marketing-produit-model";
   static const comMarketingProduitModelDetail = "/com-marketing-produit-model-detail";
   static const comMarketingProduitModelAdd = "/com-marketing-produit-model-add";
   static const comMarketingProduitModelUpdate = "/com-marketing-produit-model-update";
   static const comMarketingStockGlobal = "/com-marketing-stock-global";
+  static const comMarketingStockGlobalDetail = "/com-marketing-stock-global-detail";
   static const comMarketingStockGlobalAdd = "/com-marketing-stock-global-add";
+  static const comMarketingStockGlobalRavitaillement = "/com-marketing-stock-global-ravitaillement";
+  static const comMarketingStockGlobalLivraisonStock =
+      "/com-marketing-stock-global-livraisonStock";
   static const comMarketingSuccursale = "/com-marketing-succursale";
   static const comMarketingSuccursaleDetail = "/com-marketing-succursale-detail";
   static const comMarketingSuccursaleAdd = "/com-marketing-succursale-add";
   static const comMarketingAchat = "/com-marketing-achat";
+  static const comMarketingAchatDetail = "/com-marketing-achat-detail";
   static const comMarketingBonLivraison = "/com-marketing-bon-livraison";
+  static const comMarketingBonLivraisonDetail = "/com-marketing-bon-livraison-detail";
   static const comMarketingcart = "/com-marketing-cart";
+  static const comMarketingcartDetail = "/com-marketing-cart-detail";
   static const comMarketingCreance = "/com-marketing-creance";
+  static const comMarketingCreanceDetail = "/com-marketing-creance-detail";
   static const comMarketingFacture = "/com-marketing-facture";
+  static const comMarketingFactureDetail = "/com-marketing-facture-detail";
   static const comMarketingGain = "/com-marketing-gain";
   static const comMarketingHistoryRavitaillement =
       "/com-marketing-history-ravitaillement";
@@ -365,6 +383,7 @@ class ComMarketingRoutes {
       "/com-marketing-history-livraison";
   static const comMarketingnumberFact = "/com-marketing-number-fact";
   static const comMarketingRestitution = "/com-marketing-restitution";
+  static const comMarketingRestitutionDetail = "/com-marketing-restitution-detail";
   static const comMarketingVente = "/com-marketing-vente";
   static const comMarketingEtatBesoin = "/com-marketing-etat-besoin";
 }
@@ -565,18 +584,30 @@ final routes = <String, WidgetBuilder>{
   ComMarketingRoutes.comMarketingProduitModelUpdate: (context) =>
       const UpdateProModel(),
   ComMarketingRoutes.comMarketingStockGlobal: (context) =>const StockGlobalPage(),
+  ComMarketingRoutes.comMarketingStockGlobalDetail: (context) =>
+      const DetailStockGlobal(),
   ComMarketingRoutes.comMarketingStockGlobalAdd: (context) =>const AddStockGlobal(),
+  ComMarketingRoutes.comMarketingStockGlobalRavitaillement: (context) =>
+      const RavitailleemntStock(),
+  ComMarketingRoutes.comMarketingStockGlobalLivraisonStock: (context) =>
+      const LivraisonStock(),
   ComMarketingRoutes.comMarketingSuccursale: (context) =>const SuccursalePage(),
   ComMarketingRoutes.comMarketingSuccursaleAdd: (context) =>const AddSurrsale(),
   ComMarketingRoutes.comMarketingSuccursaleDetail: (context) =>
       const DetailSuccursale(),
   ComMarketingRoutes.comMarketingAchat: (context) =>const AchatsPage(),
+  ComMarketingRoutes.comMarketingAchatDetail: (context) => const DetailAchat(),
   ComMarketingRoutes.comMarketingBonLivraison: (context) =>const BonLivraisonPage(),
+  ComMarketingRoutes.comMarketingBonLivraisonDetail: (context) =>
+      const DetailBonLivraison(),
   ComMarketingRoutes.comMarketingRestitution: (context) =>const RestitutionPage(),
   ComMarketingRoutes.comMarketingFacture: (context) =>const FacturePage(),
+  ComMarketingRoutes.comMarketingFactureDetail: (context) => const DetailFacture(),
   ComMarketingRoutes.comMarketingCreance: (context) =>const CreanceFactPage(),
+  ComMarketingRoutes.comMarketingCreanceDetail: (context) => const DetailCreanceFact(),
   ComMarketingRoutes.comMarketingVente: (context) =>const VentesPage(),
   ComMarketingRoutes.comMarketingcart: (context) =>const CartPage(),
+  ComMarketingRoutes.comMarketingcartDetail: (context) => const DetailCart(),
   ComMarketingRoutes.comMarketingHistoryRavitaillement: (context) =>const HistoryRavitaillement(),
   ComMarketingRoutes.comMarketingHistoryLivraison: (context) =>const HistoryLivraison(),
   ComMarketingRoutes.comMarketingEtatBesoin: (context) =>

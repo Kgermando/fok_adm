@@ -5,8 +5,8 @@ import 'package:fokad_admin/src/api/comm_marketing/commerciale/cart_api.dart';
 import 'package:fokad_admin/src/constants/responsive.dart';
 import 'package:fokad_admin/src/models/comm_maketing/achat_model.dart';
 import 'package:fokad_admin/src/models/comm_maketing/cart_model.dart';
-import 'package:fokad_admin/src/models/users/user_model.dart';
-import 'package:fokad_admin/src/pages/comm_marketing/commercial/cart/components/detail_cart.dart';
+import 'package:fokad_admin/src/models/users/user_model.dart'; 
+import 'package:fokad_admin/src/routes/routes.dart';
 import 'package:fokad_admin/src/utils/loading.dart';
 import 'package:intl/intl.dart';
 
@@ -81,11 +81,9 @@ class _CartItemWidgetState extends State<CartItemWidget> {
             ? Card(
                 child: GestureDetector(
                   onTap: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) =>
-                                DetailCart(cart: widget.cart)));
+                    Navigator.pushNamed(
+                        context, ComMarketingRoutes.comMarketingcartDetail,
+                        arguments: widget.cart);  
                   },
                   child: ListTile(
                     leading: const Icon(

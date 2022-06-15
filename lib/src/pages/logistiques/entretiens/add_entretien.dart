@@ -25,8 +25,7 @@ class AddEntretienPage extends StatefulWidget {
 }
 
 class _AddEntretienPageState extends State<AddEntretienPage> {
-  final GlobalKey<ScaffoldState> _key = GlobalKey();
-  final ScrollController _controllerScroll = ScrollController();
+  final GlobalKey<ScaffoldState> _key = GlobalKey(); 
   final _formKey = GlobalKey<FormState>();
   final _formObjetKey = GlobalKey<FormState>();
   bool isLoading = false;

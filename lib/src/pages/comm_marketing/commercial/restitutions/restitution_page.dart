@@ -4,8 +4,9 @@ import 'package:fokad_admin/src/constants/app_theme.dart';
 import 'package:fokad_admin/src/constants/responsive.dart';
 import 'package:fokad_admin/src/models/comm_maketing/restitution_model.dart';
 import 'package:fokad_admin/src/navigation/drawer/drawer_menu.dart';
-import 'package:fokad_admin/src/navigation/header/custom_appbar.dart';
-import 'package:fokad_admin/src/pages/comm_marketing/commercial/restitutions/components/detail_restitution.dart';
+import 'package:fokad_admin/src/navigation/header/custom_appbar.dart'; 
+import 'package:fokad_admin/src/routes/routes.dart';
+import 'package:fokad_admin/src/utils/loading.dart';
 
 class RestitutionPage extends StatefulWidget {
   const RestitutionPage({ Key? key }) : super(key: key);
@@ -72,8 +73,8 @@ class _RestitutionPageState extends State<RestitutionPage> {
                                               }),
                                         );
                                 } else {
-                                  return const Center(
-                                      child: CircularProgressIndicator());
+                                  return Center(
+                                      child: loading());
                                 }
                               }))
                     ],
@@ -92,8 +93,9 @@ class _RestitutionPageState extends State<RestitutionPage> {
     }
     return GestureDetector(
       onTap: () {
-        Navigator.of(context).push(MaterialPageRoute(
-            builder: (context) => DetailRestitution(id: restitutionModel.id!)));
+         Navigator.pushNamed(
+            context, ComMarketingRoutes.comMarketingRestitutionDetail,
+            arguments: restitutionModel.id);  
       },
       child: Card(
         elevation: 10,

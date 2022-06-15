@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:fokad_admin/src/api/comm_marketing/commerciale/restitution_api.dart';
-import 'package:fokad_admin/src/models/comm_maketing/restitution_model.dart';
-import 'package:fokad_admin/src/pages/comm_marketing/commercial/restitutions/components/detail_restitution.dart';
+import 'package:fokad_admin/src/models/comm_maketing/restitution_model.dart'; 
+import 'package:fokad_admin/src/routes/routes.dart';
 import 'package:fokad_admin/src/widgets/print_widget.dart';
 import 'package:fokad_admin/src/utils/class_implemented.dart';
 import 'package:intl/intl.dart';
@@ -37,9 +37,9 @@ class _TableRestitutionState extends State<TableRestitution> {
       onRowDoubleTap: (PlutoGridOnRowDoubleTapEvent tapEvent) {
         final dataList = tapEvent.row!.cells.values;
         final idPlutoRow = dataList.elementAt(0);
-
-        Navigator.of(context).push(MaterialPageRoute(
-            builder: (context) => DetailRestitution(id: idPlutoRow.value)));
+        Navigator.pushNamed(
+            context, ComMarketingRoutes.comMarketingRestitutionDetail,
+            arguments: idPlutoRow.value);   
       },
       onLoaded: (PlutoGridOnLoadedEvent event) {
         stateManager = event.stateManager;

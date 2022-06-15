@@ -4,18 +4,17 @@ import 'package:fokad_admin/src/constants/app_theme.dart';
 import 'package:fokad_admin/src/constants/responsive.dart';
 import 'package:fokad_admin/src/models/comm_maketing/stocks_global_model.dart';
 import 'package:fokad_admin/src/navigation/drawer/drawer_menu.dart';
-import 'package:fokad_admin/src/navigation/header/custom_appbar.dart';
-import 'package:fokad_admin/src/pages/comm_marketing/commercial/stocks_global/components/livraison_stock.dart';
-import 'package:fokad_admin/src/pages/comm_marketing/commercial/stocks_global/components/ravitaillement_stock.dart';
+import 'package:fokad_admin/src/navigation/header/custom_appbar.dart'; 
 import 'package:fokad_admin/src/pages/comm_marketing/commercial/stocks_global/components/table_history_ravitaillement_produit.dart';
+import 'package:fokad_admin/src/routes/routes.dart';
+import 'package:fokad_admin/src/utils/loading.dart';
 import 'package:fokad_admin/src/widgets/title_widget.dart';
 import 'package:intl/intl.dart';
 import 'package:simple_speed_dial/simple_speed_dial.dart';
 
 class DetailStockGlobal extends StatefulWidget {
-  const DetailStockGlobal({Key? key, required this.stocksGlobalMOdel})
-      : super(key: key);
-  final StocksGlobalMOdel stocksGlobalMOdel;
+  const DetailStockGlobal({Key? key})
+      : super(key: key); 
 
   @override
   State<DetailStockGlobal> createState() => _DetailStockGlobalState();
@@ -28,25 +27,27 @@ class _DetailStockGlobalState extends State<DetailStockGlobal> {
 
   @override
   initState() {
-    getData();
     super.initState();
   }
 
-  StocksGlobalMOdel? stocksGlobalMOdel;
-  Future<void> getData() async {
-    StocksGlobalMOdel data =
-        await StockGlobalApi().getOneData(widget.stocksGlobalMOdel.id!);
-    setState(() {
-      stocksGlobalMOdel = data;
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
+    StocksGlobalMOdel stocksGlobalMOdel = ModalRoute.of(context)!.settings.arguments as StocksGlobalMOdel;
     return Scaffold(
         key: _key,
         drawer: const DrawerMenu(),
-        floatingActionButton: speedialWidget(),
+        floatingActionButton: FutureBuilder<StocksGlobalMOdel>(
+          future: StockGlobalApi().getOneData(stocksGlobalMOdel.id!),
+          builder:
+              (BuildContext context, AsyncSnapshot<StocksGlobalMOdel> snapshot) {
+            if (snapshot.hasData) {
+              StocksGlobalMOdel? data = snapshot.data;
+              return speedialWidget(data!);
+            } else {
+              return loadingMini();
+            }
+          }),
         body: SafeArea(
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -61,7 +62,7 @@ class _DetailStockGlobalState extends State<DetailStockGlobal> {
                     padding: const EdgeInsets.all(p10),
                     child: FutureBuilder<StocksGlobalMOdel>(
                         future: StockGlobalApi()
-                            .getOneData(widget.stocksGlobalMOdel.id!),
+                            .getOneData(stocksGlobalMOdel.id!),
                         builder: (BuildContext context,
                             AsyncSnapshot<StocksGlobalMOdel> snapshot) {
                           if (snapshot.hasData) {
@@ -104,7 +105,7 @@ class _DetailStockGlobalState extends State<DetailStockGlobal> {
         ));
   }
 
-  Widget pageDetail(StocksGlobalMOdel data) {
+  Widget pageDetail(StocksGlobalMOdel stocksGlobalMOdel) {
     return Row(mainAxisAlignment: MainAxisAlignment.center, children: [
       Card(
         elevation: 10,
@@ -126,18 +127,18 @@ class _DetailStockGlobalState extends State<DetailStockGlobal> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  TitleWidget(title: widget.stocksGlobalMOdel.idProduct),
+                  TitleWidget(title: stocksGlobalMOdel.idProduct),
                   Column(
                     children: [
                       reporting(),
                       SelectableText(
-                          DateFormat("dd-MM-yyyy HH:mm").format(data.created),
+                          DateFormat("dd-MM-yyyy HH:mm").format(stocksGlobalMOdel.created),
                           textAlign: TextAlign.start),
                     ],
                   )
                 ],
               ),
-              dataWidget(data),
+              dataWidget(stocksGlobalMOdel),
               // infosEditeurWidget(data),
             ],
           ),
@@ -151,12 +152,12 @@ class _DetailStockGlobalState extends State<DetailStockGlobal> {
       padding: const EdgeInsets.all(p10),
       child: Column(
         children: [
-          achats(),
+          achats(data),
           const SizedBox(
             height: 20,
           ),
           disponiblesTitle(),
-          disponibles(),
+          disponibles(data),
           const SizedBox(
             height: 30,
           ),
@@ -173,17 +174,17 @@ class _DetailStockGlobalState extends State<DetailStockGlobal> {
     );
   }
 
-  Widget achats() {
+  Widget achats(StocksGlobalMOdel stocksGlobalMOdel) {
     final bodyText1 = Theme.of(context).textTheme.bodyText1;
     final bodyText2 = Theme.of(context).textTheme.bodyText2;
 
-    var prixAchatTotal = double.parse(widget.stocksGlobalMOdel.priceAchatUnit) *
-        double.parse(widget.stocksGlobalMOdel.quantityAchat);
+    var prixAchatTotal = double.parse(stocksGlobalMOdel.priceAchatUnit) *
+        double.parse(stocksGlobalMOdel.quantityAchat);
 
-    var margeBenifice = double.parse(widget.stocksGlobalMOdel.prixVenteUnit) -
-        double.parse(widget.stocksGlobalMOdel.priceAchatUnit);
+    var margeBenifice = double.parse(stocksGlobalMOdel.prixVenteUnit) -
+        double.parse(stocksGlobalMOdel.priceAchatUnit);
     var margeBenificeTotal =
-        margeBenifice * double.parse(widget.stocksGlobalMOdel.quantityAchat);
+        margeBenifice * double.parse(stocksGlobalMOdel.quantityAchat);
 
     return Card(
       child: Padding(
@@ -201,7 +202,7 @@ class _DetailStockGlobalState extends State<DetailStockGlobal> {
                     overflow: TextOverflow.ellipsis),
                 const Spacer(),
                 Text(
-                    '${NumberFormat.decimalPattern('fr').format(double.parse(double.parse(widget.stocksGlobalMOdel.quantityAchat).toStringAsFixed(0)))} ${widget.stocksGlobalMOdel.unite}',
+                    '${NumberFormat.decimalPattern('fr').format(double.parse(double.parse(stocksGlobalMOdel.quantityAchat).toStringAsFixed(0)))} ${stocksGlobalMOdel.unite}',
                     style: Responsive.isDesktop(context)
                         ? const TextStyle(
                             fontWeight: FontWeight.w700, fontSize: 20)
@@ -222,7 +223,7 @@ class _DetailStockGlobalState extends State<DetailStockGlobal> {
                     overflow: TextOverflow.ellipsis),
                 const Spacer(),
                 Text(
-                    '${NumberFormat.decimalPattern('fr').format(double.parse(double.parse(widget.stocksGlobalMOdel.priceAchatUnit).toStringAsFixed(2)))} \$',
+                    '${NumberFormat.decimalPattern('fr').format(double.parse(double.parse(stocksGlobalMOdel.priceAchatUnit).toStringAsFixed(2)))} \$',
                     style: Responsive.isDesktop(context)
                         ? const TextStyle(
                             fontWeight: FontWeight.w700, fontSize: 20)
@@ -251,11 +252,11 @@ class _DetailStockGlobalState extends State<DetailStockGlobal> {
                     overflow: TextOverflow.ellipsis),
               ],
             ),
-            if (double.parse(widget.stocksGlobalMOdel.tva) > 1)
+            if (double.parse(stocksGlobalMOdel.tva) > 1)
               Divider(
                 color: Colors.amber.shade700,
               ),
-            if (double.parse(widget.stocksGlobalMOdel.tva) > 1)
+            if (double.parse(stocksGlobalMOdel.tva) > 1)
               Row(
                 children: [
                   Text('TVA',
@@ -265,7 +266,7 @@ class _DetailStockGlobalState extends State<DetailStockGlobal> {
                           : bodyText2,
                       overflow: TextOverflow.ellipsis),
                   const Spacer(),
-                  Text('${widget.stocksGlobalMOdel.tva} %',
+                  Text('${stocksGlobalMOdel.tva} %',
                       style: Responsive.isDesktop(context)
                           ? const TextStyle(
                               fontWeight: FontWeight.w700, fontSize: 20)
@@ -286,7 +287,7 @@ class _DetailStockGlobalState extends State<DetailStockGlobal> {
                     overflow: TextOverflow.ellipsis),
                 const Spacer(),
                 Text(
-                    '${NumberFormat.decimalPattern('fr').format(double.parse(double.parse(widget.stocksGlobalMOdel.prixVenteUnit).toStringAsFixed(2)))} \$',
+                    '${NumberFormat.decimalPattern('fr').format(double.parse(double.parse(stocksGlobalMOdel.prixVenteUnit).toStringAsFixed(2)))} \$',
                     style: Responsive.isDesktop(context)
                         ? const TextStyle(
                             fontWeight: FontWeight.w700, fontSize: 20)
@@ -422,12 +423,12 @@ class _DetailStockGlobalState extends State<DetailStockGlobal> {
     );
   }
 
-  Widget disponibles() {
+  Widget disponibles(StocksGlobalMOdel stocksGlobalMOdel) {
     final bodyText1 = Theme.of(context).textTheme.bodyText1;
     final bodyText2 = Theme.of(context).textTheme.bodyText2;
 
-    var prixTotalRestante = double.parse(widget.stocksGlobalMOdel.quantity) *
-        double.parse(widget.stocksGlobalMOdel.prixVenteUnit);
+    var prixTotalRestante = double.parse(stocksGlobalMOdel.quantity) *
+        double.parse(stocksGlobalMOdel.prixVenteUnit);
 
     return Card(
         child: Padding(
@@ -438,7 +439,7 @@ class _DetailStockGlobalState extends State<DetailStockGlobal> {
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text('Restes des ${widget.stocksGlobalMOdel.unite}',
+              Text('Restes des ${stocksGlobalMOdel.unite}',
                   style: Responsive.isDesktop(context)
                       ? const TextStyle(
                           fontWeight: FontWeight.w700, fontSize: 14)
@@ -455,7 +456,7 @@ class _DetailStockGlobalState extends State<DetailStockGlobal> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                  '${NumberFormat.decimalPattern('fr').format(double.parse(double.parse(widget.stocksGlobalMOdel.quantity).toStringAsFixed(0)))} ${widget.stocksGlobalMOdel.unite}',
+                  '${NumberFormat.decimalPattern('fr').format(double.parse(double.parse(stocksGlobalMOdel.quantity).toStringAsFixed(0)))} ${stocksGlobalMOdel.unite}',
                   style: Responsive.isDesktop(context)
                       ? const TextStyle(
                           fontWeight: FontWeight.w700, fontSize: 20)
@@ -507,7 +508,7 @@ class _DetailStockGlobalState extends State<DetailStockGlobal> {
 
   Future<void> exportToExcel() async {}
 
-  SpeedDial speedialWidget() {
+  SpeedDial speedialWidget(StocksGlobalMOdel stocksGlobalMOdel) {
     return SpeedDial(
       child: const Icon(
         Icons.menu,
@@ -524,9 +525,9 @@ class _DetailStockGlobalState extends State<DetailStockGlobal> {
           backgroundColor: Colors.green.shade700,
           label: 'Ravitaillement',
           onPressed: () {
-            Navigator.of(context).push(MaterialPageRoute(
-                builder: (context) => RavitailleemntStock(
-                    stocksGlobalMOdel: widget.stocksGlobalMOdel)));
+            Navigator.pushNamed(
+              context, ComMarketingRoutes.comMarketingStockGlobalRavitaillement, 
+              arguments: stocksGlobalMOdel);
           },
         ),
         SpeedDialChild(
@@ -534,9 +535,12 @@ class _DetailStockGlobalState extends State<DetailStockGlobal> {
             foregroundColor: Colors.white,
             backgroundColor: Colors.blue.shade700,
             label: 'Livraison',
-            onPressed: () => Navigator.of(context).push(MaterialPageRoute(
-                builder: (context) => LivraisonStock(
-                    stocksGlobalMOdel: widget.stocksGlobalMOdel)))),
+            onPressed: () {
+              Navigator.pushNamed(
+              context, ComMarketingRoutes.comMarketingStockGlobalLivraisonStock, 
+              arguments: stocksGlobalMOdel);
+            } 
+        ),
       ],
     );
   }

@@ -7,6 +7,7 @@ import 'package:fokad_admin/src/api/comm_marketing/commerciale/produit_model_api
 import 'package:fokad_admin/src/api/comm_marketing/commerciale/stock_global_api.dart';
 import 'package:fokad_admin/src/constants/app_theme.dart';
 import 'package:fokad_admin/src/constants/responsive.dart';
+import 'package:fokad_admin/src/models/approbation/approbation_model.dart';
 import 'package:fokad_admin/src/models/comm_maketing/prod_model.dart';
 import 'package:fokad_admin/src/models/comm_maketing/stocks_global_model.dart';
 import 'package:fokad_admin/src/models/users/user_model.dart';
@@ -62,16 +63,40 @@ class _AddStockGlobalState extends State<AddStockGlobal> {
 
     if (!mounted) return;
     setState(() {
-      signature = userModel.matricule;
-      for (var item in approbations) {
-        idProductDropdown = produitModel
+      signature = userModel.matricule; 
+    // Verifie les approbation si c'est la list es vide
+    if (approbations.isNotEmpty) {
+      List<ApprobationModel> isApproved = [];
+      for (var item in produitModel) {
+        isApproved = approbations
             .where((element) =>
-                element.created.microsecondsSinceEpoch ==
-                    item.reference.microsecondsSinceEpoch &&
-                item.approbation == 'Approved')
+                element.reference.microsecondsSinceEpoch ==
+                item.created.microsecondsSinceEpoch)
             .toList();
       }
-      stocksGlobalList = stockGlobal;
+      // FIltre si le filtre donne des elements
+      if (isApproved.isNotEmpty) {
+        for (var item in approbations) {
+          idProductDropdown = produitModel
+              .where((element) =>
+                  element.created.microsecondsSinceEpoch ==
+                          item.reference.microsecondsSinceEpoch &&
+                      item.fontctionOccupee == 'Directeur de departement' &&
+                      item.approbation == "Approved" ||
+                  element.signature == userModel.matricule)
+              .toList();
+        }
+      } else {
+        idProductDropdown = produitModel
+            .where((element) => element.signature == userModel.matricule)
+            .toList();
+      }
+    } else {
+      idProductDropdown = produitModel
+          .where((element) => element.signature == userModel.matricule)
+          .toList();
+    }
+      stocksGlobalList = stockGlobal; // Permet de filtrer les doubons
     });
   }
 

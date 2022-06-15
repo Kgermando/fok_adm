@@ -19,8 +19,7 @@ import 'package:fokad_admin/src/widgets/title_widget.dart';
 import 'package:intl/intl.dart';
 
 class DetailBonLivraison extends StatefulWidget {
-  const DetailBonLivraison({Key? key, required this.id}) : super(key: key);
-  final int id;
+  const DetailBonLivraison({Key? key}) : super(key: key);
 
   @override
   State<DetailBonLivraison> createState() => _DetailBonLivraisonState();
@@ -31,8 +30,8 @@ class _DetailBonLivraisonState extends State<DetailBonLivraison> {
   final ScrollController _controllerScroll = ScrollController();
   bool isLoading = false;
 
-  List<BonLivraisonModel> bonLivraisonList = [];
   List<AchatModel> achatList = [];
+  List<AchatModel> achatFilter = [];
   bool isChecked = false;
 
   @override
@@ -57,19 +56,21 @@ class _DetailBonLivraisonState extends State<DetailBonLivraison> {
       succursale: '-');
   Future<void> getData() async {
     UserModel userModel = await AuthApi().getUserId();
-    BonLivraisonModel? bonLivraison =
-        await BonLivraisonApi().getOneData(widget.id);
     List<AchatModel>? dataAchat = await AchatApi().getAllData();
     setState(() {
       user = userModel;
-      achatList = dataAchat
-          .where((element) => element.idProduct == bonLivraison.idProduct)
-          .toList();
+      achatFilter = dataAchat;
     });
   }
 
   @override
   Widget build(BuildContext context) {
+    BonLivraisonModel data =
+        ModalRoute.of(context)!.settings.arguments as BonLivraisonModel;
+    achatList = achatFilter
+        .where((element) => element.idProduct == data.idProduct)
+        .toList();
+
     return Scaffold(
         key: _key,
         drawer: const DrawerMenu(),
@@ -86,7 +87,7 @@ class _DetailBonLivraisonState extends State<DetailBonLivraison> {
                 child: Padding(
                     padding: const EdgeInsets.all(p10),
                     child: FutureBuilder<BonLivraisonModel>(
-                        future: BonLivraisonApi().getOneData(widget.id),
+                        future: BonLivraisonApi().getOneData(data.id!),
                         builder: (BuildContext context,
                             AsyncSnapshot<BonLivraisonModel> snapshot) {
                           if (snapshot.hasData) {
@@ -119,8 +120,8 @@ class _DetailBonLivraisonState extends State<DetailBonLivraison> {
                               ],
                             );
                           } else {
-                            return const Center(
-                                child: CircularProgressIndicator());
+                            return Center(
+                                child: loading());
                           }
                         })),
               ),
@@ -410,7 +411,7 @@ class _DetailBonLivraisonState extends State<DetailBonLivraison> {
   void bonLivraisonStock(BonLivraisonModel data) async {
     // Update Bon livraison
     final bonLivraisonModel = BonLivraisonModel(
-      id: data.id!,
+        id: data.id!,
         idProduct: data.idProduct,
         quantityAchat: data.quantityAchat,
         priceAchatUnit: data.priceAchatUnit,
@@ -475,7 +476,7 @@ class _DetailBonLivraisonState extends State<DetailBonLivraison> {
 
       // Update AchatModel
       final achatModel = AchatModel(
-        id: data.id!,
+          id: data.id!,
           idProduct: data.idProduct,
           quantity: qtyAchatDisponible.toString(),
           quantityAchat: qtyAchatDisponible

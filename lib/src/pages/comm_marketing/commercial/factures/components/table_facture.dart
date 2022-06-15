@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:fokad_admin/src/api/auth/auth_api.dart';
 import 'package:fokad_admin/src/api/comm_marketing/commerciale/facture_api.dart';
 import 'package:fokad_admin/src/models/comm_maketing/facture_cart_model.dart';
-import 'package:fokad_admin/src/models/users/user_model.dart';
-import 'package:fokad_admin/src/pages/comm_marketing/commercial/factures/components/detail_facture.dart';
+import 'package:fokad_admin/src/models/users/user_model.dart'; 
+import 'package:fokad_admin/src/routes/routes.dart';
 import 'package:fokad_admin/src/widgets/print_widget.dart';
 import 'package:fokad_admin/src/utils/class_implemented.dart';
 import 'package:intl/intl.dart';
@@ -62,8 +62,9 @@ class _TableFactureState extends State<TableFacture> {
         final dataList = tapEvent.row!.cells.values;
         final idPlutoRow = dataList.elementAt(0);
 
-        Navigator.of(context).push(MaterialPageRoute(
-            builder: (context) => DetailFacture(id: idPlutoRow.value)));
+        Navigator.pushNamed(
+            context, ComMarketingRoutes.comMarketingFactureDetail,
+            arguments: idPlutoRow.value);  
       },
       onLoaded: (PlutoGridOnLoadedEvent event) {
         stateManager = event.stateManager;
@@ -74,6 +75,12 @@ class _TableFactureState extends State<TableFacture> {
         return Row(
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
+            IconButton(
+                onPressed: () {
+                  Navigator.pushNamed(context,
+                      ComMarketingRoutes.comMarketingFacture);
+                },
+                icon: Icon(Icons.refresh, color: Colors.green.shade700)),
             IconButton(onPressed: () {}, icon: const Icon(Icons.download)),
             PrintWidget(onPressed: () {})
           ],

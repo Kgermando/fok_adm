@@ -7,8 +7,7 @@ import 'package:fokad_admin/src/models/comptabilites/balance_comptes_model.dart'
 import 'package:fokad_admin/src/models/users/user_model.dart';
 import 'package:fokad_admin/src/navigation/drawer/drawer_menu.dart';
 import 'package:fokad_admin/src/navigation/header/custom_appbar.dart'; 
-import 'package:fokad_admin/src/pages/comptabilite/balance/components/table_balance_comptabilite.dart';
-import 'package:fokad_admin/src/routes/routes.dart';
+import 'package:fokad_admin/src/pages/comptabilite/balance/components/table_balance_comptabilite.dart'; 
 import 'package:fokad_admin/src/utils/loading.dart';
 
 

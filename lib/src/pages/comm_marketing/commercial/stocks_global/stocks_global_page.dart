@@ -9,6 +9,7 @@ import 'package:fokad_admin/src/navigation/drawer/drawer_menu.dart';
 import 'package:fokad_admin/src/navigation/header/custom_appbar.dart';
 import 'package:fokad_admin/src/pages/comm_marketing/commercial/stocks_global/components/list_stock_global.dart';
 import 'package:fokad_admin/src/routes/routes.dart';
+import 'package:fokad_admin/src/utils/loading.dart';
 
 class StockGlobalPage extends StatefulWidget {
   const StockGlobalPage({Key? key}) : super(key: key);
@@ -104,13 +105,14 @@ class _StockGlobalPageState extends State<StockGlobalPage> {
                                               itemBuilder: (context, index) {
                                                 final data = dataList[index];
                                                 return ListStockGlobal(
-                                                    stocksGlobalMOdel: data,
-                                                    role: user.role);
+                                                  stocksGlobalMOdel: data,
+                                                  role: user.role
+                                                );
                                               }),
                                         );
                                 } else {
-                                  return const Center(
-                                      child: CircularProgressIndicator());
+                                  return Center(
+                                      child: loading());
                                 }
                               }))
                     ],

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:fokad_admin/src/constants/responsive.dart';
-import 'package:fokad_admin/src/models/comm_maketing/achat_model.dart';
-import 'package:fokad_admin/src/pages/comm_marketing/commercial/achats/components/detail_achat.dart';
+import 'package:fokad_admin/src/models/comm_maketing/achat_model.dart'; 
+import 'package:fokad_admin/src/routes/routes.dart';
 
 class ListStock extends StatelessWidget {
   const ListStock(
@@ -18,11 +18,9 @@ class ListStock extends StatelessWidget {
     return GestureDetector(
       onTap: () {
         if (roleAgent <= 3) {
-          Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) =>
-                      DetailAchat(achat: achat)));
+           Navigator.pushNamed(
+              context, ComMarketingRoutes.comMarketingAchatDetail,
+              arguments: achat);   
         }
       },
       child: Card(

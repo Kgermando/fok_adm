@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:fokad_admin/src/api/auth/auth_api.dart';
 import 'package:fokad_admin/src/api/comm_marketing/commerciale/creance_facture_api.dart';
 import 'package:fokad_admin/src/models/comm_maketing/creance_cart_model.dart';
-import 'package:fokad_admin/src/models/users/user_model.dart';
-import 'package:fokad_admin/src/pages/comm_marketing/commercial/factures/components/detail_creance_fact_.dart';
+import 'package:fokad_admin/src/models/users/user_model.dart'; 
+import 'package:fokad_admin/src/routes/routes.dart';
 import 'package:fokad_admin/src/widgets/print_widget.dart';
 import 'package:fokad_admin/src/utils/class_implemented.dart';
 import 'package:intl/intl.dart';
@@ -62,8 +62,9 @@ class _TableCreanceFactState extends State<TableCreanceFact> {
         final dataList = tapEvent.row!.cells.values;
         final idPlutoRow = dataList.elementAt(0);
 
-        Navigator.of(context).push(MaterialPageRoute(
-            builder: (context) => DetailCreanceFact(id: idPlutoRow.value)));
+        Navigator.pushNamed(
+            context, ComMarketingRoutes.comMarketingCreanceDetail,
+            arguments: idPlutoRow.value); 
       },
       onLoaded: (PlutoGridOnLoadedEvent event) {
         stateManager = event.stateManager;
@@ -74,6 +75,12 @@ class _TableCreanceFactState extends State<TableCreanceFact> {
         return Row(
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
+            IconButton(
+                onPressed: () {
+                  Navigator.pushNamed(
+                      context, ComMarketingRoutes.comMarketingCreance);
+                },
+                icon: Icon(Icons.refresh, color: Colors.green.shade700)),
             IconButton(onPressed: () {}, icon: const Icon(Icons.download)),
             PrintWidget(onPressed: () {})
           ],

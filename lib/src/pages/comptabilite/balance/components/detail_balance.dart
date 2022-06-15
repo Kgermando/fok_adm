@@ -253,7 +253,7 @@ class _DetailBalanceState extends State<DetailBalance> {
               totalCredit += double.parse(item.credit);
               totalSolde += item.solde;
               
-              print("item.debit ${item.debit} ");
+              // print("item.debit ${item.debit} ");
             } 
 
             return Padding(

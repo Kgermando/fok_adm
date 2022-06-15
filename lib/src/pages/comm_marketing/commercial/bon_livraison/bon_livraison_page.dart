@@ -6,8 +6,9 @@ import 'package:fokad_admin/src/constants/responsive.dart';
 import 'package:fokad_admin/src/models/comm_maketing/bon_livraison.dart';
 import 'package:fokad_admin/src/models/users/user_model.dart';
 import 'package:fokad_admin/src/navigation/drawer/drawer_menu.dart';
-import 'package:fokad_admin/src/navigation/header/custom_appbar.dart';
-import 'package:fokad_admin/src/pages/comm_marketing/commercial/bon_livraison/components/detail_bon_livraison.dart';
+import 'package:fokad_admin/src/navigation/header/custom_appbar.dart'; 
+import 'package:fokad_admin/src/routes/routes.dart';
+import 'package:fokad_admin/src/utils/loading.dart';
 
 class BonLivraisonPage extends StatefulWidget {
   const BonLivraisonPage({Key? key}) : super(key: key);
@@ -101,8 +102,8 @@ class _BonLivraisonPageState extends State<BonLivraisonPage> {
                                               }),
                                         );
                                 } else {
-                                  return const Center(
-                                      child: CircularProgressIndicator());
+                                  return Center(
+                                      child: loading());
                                 }
                               }))
                     ],
@@ -121,9 +122,9 @@ class _BonLivraisonPageState extends State<BonLivraisonPage> {
     }
     return GestureDetector(
       onTap: () {
-        Navigator.of(context).push(MaterialPageRoute(
-            builder: (context) =>
-                DetailBonLivraison(id: bonLivraisonModel.id!)));
+        Navigator.pushNamed(
+            context, ComMarketingRoutes.comMarketingBonLivraisonDetail,
+            arguments: bonLivraisonModel);  
       },
       child: Card(
         elevation: 10,

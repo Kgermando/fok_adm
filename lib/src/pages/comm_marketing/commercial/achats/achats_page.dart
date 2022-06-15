@@ -8,6 +8,7 @@ import 'package:fokad_admin/src/models/users/user_model.dart';
 import 'package:fokad_admin/src/navigation/drawer/drawer_menu.dart';
 import 'package:fokad_admin/src/navigation/header/custom_appbar.dart';
 import 'package:fokad_admin/src/pages/comm_marketing/commercial/achats/components/list_stock.dart';
+import 'package:fokad_admin/src/utils/loading.dart';
 
 class AchatsPage extends StatefulWidget {
   const AchatsPage({Key? key}) : super(key: key);
@@ -99,8 +100,8 @@ class _AchatsPageState extends State<AchatsPage> {
                                               }),
                                         );
                                 } else {
-                                  return const Center(
-                                      child: CircularProgressIndicator());
+                                  return Center(
+                                      child: loading());
                                 }
                               }))
                     ],

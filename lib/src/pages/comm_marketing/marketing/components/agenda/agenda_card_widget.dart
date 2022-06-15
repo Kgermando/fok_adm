@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fokad_admin/src/constants/responsive.dart';
 import 'package:fokad_admin/src/models/comm_maketing/agenda_model.dart';
-import 'package:intl/intl.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
 class AgendaCardWidget extends StatelessWidget {

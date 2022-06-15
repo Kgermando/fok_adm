@@ -10,12 +10,12 @@ import 'package:fokad_admin/src/models/users/user_model.dart';
 import 'package:fokad_admin/src/navigation/drawer/drawer_menu.dart';
 import 'package:fokad_admin/src/navigation/header/custom_appbar.dart';
 import 'package:fokad_admin/src/pages/comm_marketing/commercial/achats/components/restitution_stock.dart';
+import 'package:fokad_admin/src/utils/loading.dart';
 import 'package:fokad_admin/src/widgets/title_widget.dart';
 import 'package:intl/intl.dart';
 
 class DetailAchat extends StatefulWidget {
-  const DetailAchat({Key? key, required this.achat}) : super(key: key);
-  final AchatModel achat;
+  const DetailAchat({Key? key}) : super(key: key);
 
   @override
   State<DetailAchat> createState() => _DetailAchatState();
@@ -35,7 +35,7 @@ class _DetailAchatState extends State<DetailAchat> {
   // All ventes
   List<VenteCartModel> venteCartList = [];
 
-  AchatModel? achatModel;
+  // AchatModel? achatModel;
 
   UserModel user = UserModel(
       nom: '-',
@@ -52,18 +52,18 @@ class _DetailAchatState extends State<DetailAchat> {
       passwordHash: '-',
       succursale: '-');
   Future<void> getData() async {
-    UserModel userModel = await AuthApi().getUserId();
-    AchatModel data = await AchatApi().getOneData(widget.achat.id!);
+    UserModel userModel = await AuthApi().getUserId(); 
     var ventes = await VenteCartApi().getAllData();
     setState(() {
-      user = userModel;
-      achatModel = data;
+      user = userModel; 
       venteCartList = ventes;
     });
   }
 
   @override
   Widget build(BuildContext context) {
+    AchatModel data =
+        ModalRoute.of(context)!.settings.arguments as AchatModel;
     return Scaffold(
         key: _key,
         drawer: const DrawerMenu(),
@@ -80,7 +80,7 @@ class _DetailAchatState extends State<DetailAchat> {
                 child: Padding(
                     padding: const EdgeInsets.all(p10),
                     child: FutureBuilder<AchatModel>(
-                        future: AchatApi().getOneData(widget.achat.id!),
+                        future: AchatApi().getOneData(data.id!),
                         builder: (BuildContext context,
                             AsyncSnapshot<AchatModel> snapshot) {
                           if (snapshot.hasData) {
@@ -113,8 +113,8 @@ class _DetailAchatState extends State<DetailAchat> {
                               ],
                             );
                           } else {
-                            return const Center(
-                                child: CircularProgressIndicator());
+                            return Center(
+                                child: loading());
                           }
                         })),
               ),
@@ -148,15 +148,15 @@ class _DetailAchatState extends State<DetailAchat> {
                 children: [
                   TitleWidget(
                       title:
-                          'Succursale: ${widget.achat.succursale.toUpperCase()}'),
+                          'Succursale: ${data.succursale.toUpperCase()}'),
                   Column(
                     children: [
                       Row(
                         children: [
                           reporting(),
                           if (roleAgent)
-                            if (double.parse(widget.achat.quantity) > 0)
-                              transfertProduit()
+                            if (double.parse(data.quantity) > 0)
+                              transfertProduit(data)
                         ],
                       ),
                       SelectableText(
@@ -180,22 +180,22 @@ class _DetailAchatState extends State<DetailAchat> {
       padding: const EdgeInsets.all(p10),
       child: Column(
         children: [
-          headerTitle(),
+          headerTitle(data),
           const SizedBox(
             height: 20,
           ),
           achatTitle(),
-          achats(),
+          achats(data),
           const SizedBox(
             height: 20,
           ),
           ventetitle(),
-          ventes(),
+          ventes(data),
           const SizedBox(
             height: 20,
           ),
           benficesTitle(),
-          benfices(),
+          benfices(data),
           const SizedBox(
             height: 30,
           ),
@@ -204,14 +204,14 @@ class _DetailAchatState extends State<DetailAchat> {
     );
   }
 
-  Widget headerTitle() {
+  Widget headerTitle(AchatModel data) {
     final headline6 = Theme.of(context).textTheme.headline6;
     return SizedBox(
       width: double.infinity,
       child: Card(
           child: Padding(
         padding: const EdgeInsets.all(16.0),
-        child: Text(widget.achat.idProduct,
+        child: Text(data.idProduct,
             style: Responsive.isDesktop(context)
                 ? const TextStyle(fontWeight: FontWeight.w600, fontSize: 30)
                 : headline6),
@@ -232,23 +232,23 @@ class _DetailAchatState extends State<DetailAchat> {
     );
   }
 
-  Widget achats() {
+  Widget achats(AchatModel data) {
     var roleAgent = int.parse(user.role) <= 3;
 
     final bodyText1 = Theme.of(context).textTheme.bodyText1;
     final bodyText2 = Theme.of(context).textTheme.bodyText2;
 
-    var prixAchatTotal = double.parse(widget.achat.priceAchatUnit) *
-        double.parse(widget.achat.quantityAchat);
-    var margeBenifice = double.parse(widget.achat.prixVenteUnit) -
-        double.parse(widget.achat.priceAchatUnit);
+    var prixAchatTotal = double.parse(data.priceAchatUnit) *
+        double.parse(data.quantityAchat);
+    var margeBenifice = double.parse(data.prixVenteUnit) -
+        double.parse(data.priceAchatUnit);
     var margeBenificeTotal =
-        margeBenifice * double.parse(widget.achat.quantityAchat);
+        margeBenifice * double.parse(data.quantityAchat);
 
-    var margeBenificeRemise = double.parse(widget.achat.remise) -
-        double.parse(widget.achat.priceAchatUnit);
+    var margeBenificeRemise = double.parse(data.remise) -
+        double.parse(data.priceAchatUnit);
     var margeBenificeTotalRemise =
-        margeBenificeRemise * double.parse(widget.achat.quantityAchat);
+        margeBenificeRemise * double.parse(data.quantityAchat);
 
     return Card(
       child: Padding(
@@ -266,7 +266,7 @@ class _DetailAchatState extends State<DetailAchat> {
                     overflow: TextOverflow.ellipsis),
                 const Spacer(),
                 Text(
-                    '${NumberFormat.decimalPattern('fr').format(double.parse(double.parse(widget.achat.qtyLivre).toStringAsFixed(2)))} ${widget.achat.unite}',
+                    '${NumberFormat.decimalPattern('fr').format(double.parse(double.parse(data.qtyLivre).toStringAsFixed(2)))} ${data.unite}',
                     style: Responsive.isDesktop(context)
                         ? const TextStyle(
                             fontWeight: FontWeight.w700, fontSize: 20)
@@ -289,7 +289,7 @@ class _DetailAchatState extends State<DetailAchat> {
                       overflow: TextOverflow.ellipsis),
                   const Spacer(),
                   Text(
-                      '${NumberFormat.decimalPattern('fr').format(double.parse(double.parse(widget.achat.priceAchatUnit).toStringAsFixed(2)))} \$',
+                      '${NumberFormat.decimalPattern('fr').format(double.parse(double.parse(data.priceAchatUnit).toStringAsFixed(2)))} \$',
                       style: Responsive.isDesktop(context)
                           ? const TextStyle(
                               fontWeight: FontWeight.w700, fontSize: 20)
@@ -332,7 +332,7 @@ class _DetailAchatState extends State<DetailAchat> {
                         : bodyText2,
                     overflow: TextOverflow.ellipsis),
                 const Spacer(),
-                Text('${widget.achat.tva} %',
+                Text('${data.tva} %',
                     style: Responsive.isDesktop(context)
                         ? const TextStyle(
                             fontWeight: FontWeight.w700, fontSize: 20)
@@ -353,7 +353,7 @@ class _DetailAchatState extends State<DetailAchat> {
                     overflow: TextOverflow.ellipsis),
                 const Spacer(),
                 Text(
-                    '${NumberFormat.decimalPattern('fr').format(double.parse(double.parse(widget.achat.prixVenteUnit).toStringAsFixed(2)))} \$',
+                    '${NumberFormat.decimalPattern('fr').format(double.parse(double.parse(data.prixVenteUnit).toStringAsFixed(2)))} \$',
                     style: Responsive.isDesktop(context)
                         ? const TextStyle(
                             fontWeight: FontWeight.w700, fontSize: 20)
@@ -374,7 +374,7 @@ class _DetailAchatState extends State<DetailAchat> {
                     overflow: TextOverflow.ellipsis),
                 const Spacer(),
                 Text(
-                    '${double.parse(widget.achat.remise).toStringAsFixed(2)} \$',
+                    '${double.parse(data.remise).toStringAsFixed(2)} \$',
                     style: Responsive.isDesktop(context)
                         ? const TextStyle(
                             fontWeight: FontWeight.w700, fontSize: 20)
@@ -394,7 +394,7 @@ class _DetailAchatState extends State<DetailAchat> {
                         : bodyText2,
                     overflow: TextOverflow.ellipsis),
                 const Spacer(),
-                Text('${widget.achat.qtyRemise} ${widget.achat.unite}',
+                Text('${data.qtyRemise} ${data.unite}',
                     style: Responsive.isDesktop(context)
                         ? const TextStyle(
                             fontWeight: FontWeight.w700, fontSize: 20)
@@ -535,7 +535,7 @@ class _DetailAchatState extends State<DetailAchat> {
     );
   }
 
-  Widget ventes() {
+  Widget ventes(AchatModel data) {
     final bodyText1 = Theme.of(context).textTheme.bodyText1;
     final bodyText2 = Theme.of(context).textTheme.bodyText2;
 
@@ -545,9 +545,9 @@ class _DetailAchatState extends State<DetailAchat> {
     var ventesQty = venteCartList
         .where((element) {
           String v1 = element.idProductCart;
-          String v2 = widget.achat.idProduct;
+          String v2 = data.idProduct;
           int date1 = element.created.millisecondsSinceEpoch;
-          int date2 = widget.achat.created.millisecondsSinceEpoch;
+          int date2 = data.created.millisecondsSinceEpoch;
           return v1 == v2 && date2 >= date1;
         })
         .map((e) => double.parse(e.quantityCart))
@@ -560,9 +560,9 @@ class _DetailAchatState extends State<DetailAchat> {
     var ventesPrix = venteCartList
         .where((element) {
           var v1 = element.idProductCart;
-          var v2 = widget.achat.idProduct;
+          var v2 = data.idProduct;
           var date1 = element.created.millisecondsSinceEpoch;
-          var date2 = widget.achat.created.millisecondsSinceEpoch;
+          var date2 = data.created.millisecondsSinceEpoch;
           return v1 == v2 && date2 >= date1;
         })
         .map((e) => double.parse(e.priceTotalCart))
@@ -598,7 +598,7 @@ class _DetailAchatState extends State<DetailAchat> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                  '${NumberFormat.decimalPattern('fr').format(double.parse(qtyVendus.toStringAsFixed(0)))} ${widget.achat.unite}',
+                  '${NumberFormat.decimalPattern('fr').format(double.parse(qtyVendus.toStringAsFixed(0)))} ${data.unite}',
                   style: Responsive.isDesktop(context)
                       ? const TextStyle(
                           fontWeight: FontWeight.w700, fontSize: 20)
@@ -629,12 +629,12 @@ class _DetailAchatState extends State<DetailAchat> {
     );
   }
 
-  Widget benfices() {
+  Widget benfices(AchatModel data) {
     final bodyText1 = Theme.of(context).textTheme.bodyText1;
     final bodyText2 = Theme.of(context).textTheme.bodyText2;
 
-    var prixTotalRestante = double.parse(widget.achat.quantity) *
-        double.parse(widget.achat.prixVenteUnit);
+    var prixTotalRestante = double.parse(data.quantity) *
+        double.parse(data.prixVenteUnit);
 
     return Card(
         child: Padding(
@@ -645,7 +645,7 @@ class _DetailAchatState extends State<DetailAchat> {
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text('Restes des ${widget.achat.unite}',
+              Text('Restes des ${data.unite}',
                   style: Responsive.isDesktop(context)
                       ? const TextStyle(
                           fontWeight: FontWeight.w700, fontSize: 14)
@@ -662,7 +662,7 @@ class _DetailAchatState extends State<DetailAchat> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                  '${NumberFormat.decimalPattern('fr').format(double.parse(double.parse(widget.achat.quantity).toStringAsFixed(0)))} ${widget.achat.unite}',
+                  '${NumberFormat.decimalPattern('fr').format(double.parse(double.parse(data.quantity).toStringAsFixed(0)))} ${data.unite}',
                   style: Responsive.isDesktop(context)
                       ? const TextStyle(
                           fontWeight: FontWeight.w700, fontSize: 20)
@@ -682,7 +682,7 @@ class _DetailAchatState extends State<DetailAchat> {
     ));
   }
 
-  Widget transfertProduit() {
+  Widget transfertProduit(AchatModel data) {
     return IconButton(
       color: Colors.red,
       icon: const Icon(Icons.assistant_direction),
@@ -703,7 +703,7 @@ class _DetailAchatState extends State<DetailAchat> {
                 Navigator.of(context).pop();
                 Navigator.of(context).push(MaterialPageRoute(
                     builder: (context) =>
-                        RestitutionStock(achat: widget.achat)));
+                        RestitutionStock(achat: data)));
               },
               child: const Text('OK'),
             ),

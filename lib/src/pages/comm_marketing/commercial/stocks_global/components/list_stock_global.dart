@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:fokad_admin/src/constants/responsive.dart';
-import 'package:fokad_admin/src/models/comm_maketing/stocks_global_model.dart';
-import 'package:fokad_admin/src/pages/comm_marketing/commercial/stocks_global/components/detail_stock_global.dart';
+import 'package:fokad_admin/src/models/comm_maketing/stocks_global_model.dart'; 
+import 'package:fokad_admin/src/routes/routes.dart';
 
 class ListStockGlobal extends StatelessWidget {
   const ListStockGlobal(
@@ -18,11 +18,9 @@ class ListStockGlobal extends StatelessWidget {
     return GestureDetector(
       onTap: () {
         if (roleAgent <= 3) {
-          Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) =>
-                      DetailStockGlobal(stocksGlobalMOdel: stocksGlobalMOdel)));
+          Navigator.pushNamed(
+              context, ComMarketingRoutes.comMarketingStockGlobalDetail,
+              arguments: stocksGlobalMOdel);   
         }
       },
       child: Card(
