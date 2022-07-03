@@ -37,6 +37,8 @@ class DetailDepartmentBudget extends StatefulWidget {
 class _DetailDepartmentBudgetState extends State<DetailDepartmentBudget> {
   final GlobalKey<ScaffoldState> _key = GlobalKey();
 
+  bool isLoadingSend = false;
+
   String approbationDGController = '-';
   String approbationFinController = '-';
   String approbationBudgetController = '-';
@@ -270,9 +272,13 @@ class _DetailDepartmentBudgetState extends State<DetailDepartmentBudget> {
                           PrintWidget(
                               tooltip: 'Imprimer le document',
                               onPressed: () {}),
+                          if(data.isSubmit == 'false')
                           IconButton(
                               tooltip: 'Soumettre chez le directeur du budget',
                               onPressed: () {
+                                setState(() {
+                                  isLoadingSend = true;
+                                });
                                 alertDialog(data);
                               },
                               icon: const Icon(Icons.send),
