@@ -134,16 +134,16 @@ class _ChangePasswordState extends State<ChangePassword> {
                       ),
                     ),
                     const SizedBox(height: p30),
-                    // Expanded(child: newPasswordWidget()),
-                    Row(
-                      children: [
-                        Expanded(child: oldPasswordWidget()),
-                        const SizedBox(
-                          width: p10,
-                        ),
-                        Expanded(child: newPasswordWidget())
-                      ],
-                    ),
+                    Expanded(child: newPasswordWidget()),
+                    // Row(
+                    //   children: [
+                    //     Expanded(child: oldPasswordWidget()),
+                    //     const SizedBox(
+                    //       width: p10,
+                    //     ),
+                    //     Expanded(child: newPasswordWidget())
+                    //   ],
+                    // ),
                     const SizedBox(
                       height: p20,
                     ),
@@ -153,7 +153,7 @@ class _ChangePasswordState extends State<ChangePassword> {
                         press: () {
                           final form = _formKey.currentState!;
                           if (form.validate()) {
-                            submit();
+                            submitChangePassword();
                             form.reset();
                           }
                         })
@@ -212,9 +212,9 @@ class _ChangePasswordState extends State<ChangePassword> {
         ));
   }
 
-  Future<void> submit() async {
+  Future<void> submitChangePassword() async {
     final userModel = UserModel(
-      id: widget.userModel.id,
+        id: widget.userModel.id,
         nom: widget.userModel.nom,
         prenom: widget.userModel.prenom,
         email: widget.userModel.email,
@@ -228,6 +228,10 @@ class _ChangePasswordState extends State<ChangePassword> {
         createdAt: widget.userModel.createdAt,
         passwordHash: newPasswordController.text,
         succursale: widget.userModel.succursale);
-    await UserApi().updateData(userModel);
+    await UserApi().changePassword(userModel);
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      content: const Text("Mot de passe changer avec succès!"),
+      backgroundColor: Colors.green[700],
+    ));
   }
 }

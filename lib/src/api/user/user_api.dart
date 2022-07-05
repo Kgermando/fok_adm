@@ -10,12 +10,6 @@ import 'package:http/http.dart' as http;
 
 class UserApi {
   var client = http.Client();
-  // final storage = const FlutterSecureStorage();
-
-  // Future<String?> getToken() async {
-  //   final data = await storage.read(key: "accessToken");
-  //   return data;
-  // }
 
   Future<List<UserModel>> getAllData() async {
     // String? token = await UserSharedPref().getAccessToken();
@@ -100,6 +94,27 @@ class UserApi {
     var data = userModel.toJson();
     var body = jsonEncode(data);
     var updateAgentsUrl = Uri.parse("$mainUrl/user/update-user/");
+
+    var resp = await client.put(updateAgentsUrl,
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+          'Authorization': 'Bearer $token'
+        },
+        body: body);
+    if (resp.statusCode == 200) {
+      return UserModel.fromJson(json.decode(resp.body));
+    } else {
+      throw Exception(json.decode(resp.body)['message']);
+    }
+  }
+
+
+  Future<UserModel> changePassword(UserModel userModel) async {
+    String? token = await UserSharedPref().getAccessToken();
+
+    var data = userModel.toJson();
+    var body = jsonEncode(data);
+    var updateAgentsUrl = Uri.parse("$mainUrl/user/change-password/");
 
     var resp = await client.put(updateAgentsUrl,
         headers: <String, String>{
