@@ -11,8 +11,7 @@ import 'package:fokad_admin/src/widgets/btn_widget.dart';
 import 'package:fokad_admin/src/widgets/title_widget.dart';
 
 class ChangePassword extends StatefulWidget {
-  const ChangePassword({Key? key, required this.userModel}) : super(key: key);
-  final UserModel userModel;
+  const ChangePassword({Key? key}) : super(key: key);
 
   @override
   State<ChangePassword> createState() => _ChangePasswordState();
@@ -30,8 +29,8 @@ class _ChangePasswordState extends State<ChangePassword> {
   @override
   initState() {
     getData();
-    oldPasswordController =
-        TextEditingController(text: widget.userModel.passwordHash);
+    // oldPasswordController =
+    //     TextEditingController(text: userModel.passwordHash);
     super.initState();
   }
 
@@ -52,6 +51,7 @@ class _ChangePasswordState extends State<ChangePassword> {
 
   @override
   Widget build(BuildContext context) {
+    final userModel = ModalRoute.of(context)!.settings.arguments as UserModel;
     return Scaffold(
         key: _key,
         drawer: const DrawerMenu(),
@@ -80,12 +80,12 @@ class _ChangePasswordState extends State<ChangePassword> {
                                 },
                                 icon: const Icon(Icons.arrow_back)),
                           ),
-                          const SizedBox(height: p10),
+                          const SizedBox(width: p10),
                           Expanded(
                               flex: 5,
                               child: CustomAppbar(
                                   title:
-                                      "${widget.userModel.prenom} ${widget.userModel.nom}",
+                                      "${userModel.prenom} ${userModel.nom}",
                                   controllerMenu: () =>
                                       _key.currentState!.openDrawer())),
                         ],
@@ -93,7 +93,7 @@ class _ChangePasswordState extends State<ChangePassword> {
                       Expanded(
                           child: Scrollbar(
                         controller: _controllerScroll,
-                        child: addPageWidget(),
+                        child: addPageWidget(userModel),
                       ))
                     ],
                   ),
@@ -104,8 +104,8 @@ class _ChangePasswordState extends State<ChangePassword> {
         ));
   }
 
-  Widget addPageWidget() {
-    final headline6 = Theme.of(context).textTheme.headline6;
+  Widget addPageWidget(UserModel userModel) {
+    final bodyLarge = Theme.of(context).textTheme.bodyLarge;
     return Form(
       key: _formKey,
       child: Row(
@@ -128,9 +128,9 @@ class _ChangePasswordState extends State<ChangePassword> {
                     ),
                     Expanded(
                       child: AutoSizeText(
-                        "Bonjour ${widget.userModel.prenom}, votre sécurité passe avant tout!",
-                        maxLines: 2,
-                        style: headline6,
+                        "Bonjour ${userModel.prenom}, votre sécurité passe avant tout!",
+                        maxLines: 3,
+                        style: bodyLarge,
                       ),
                     ),
                     const SizedBox(height: p30),
@@ -153,7 +153,7 @@ class _ChangePasswordState extends State<ChangePassword> {
                         press: () {
                           final form = _formKey.currentState!;
                           if (form.validate()) {
-                            submitChangePassword();
+                            submitChangePassword(userModel);
                             form.reset();
                           }
                         })
@@ -212,23 +212,23 @@ class _ChangePasswordState extends State<ChangePassword> {
         ));
   }
 
-  Future<void> submitChangePassword() async {
-    final userModel = UserModel(
-        id: widget.userModel.id,
-        nom: widget.userModel.nom,
-        prenom: widget.userModel.prenom,
-        email: widget.userModel.email,
-        telephone: widget.userModel.telephone,
-        matricule: widget.userModel.matricule,
-        departement: widget.userModel.departement,
-        servicesAffectation: widget.userModel.servicesAffectation,
-        fonctionOccupe: widget.userModel.fonctionOccupe,
-        role: widget.userModel.role,
-        isOnline: widget.userModel.isOnline,
-        createdAt: widget.userModel.createdAt,
+  Future<void> submitChangePassword(UserModel userModel) async {
+    final user = UserModel(
+        id: userModel.id,
+        nom: userModel.nom,
+        prenom: userModel.prenom,
+        email: userModel.email,
+        telephone: userModel.telephone,
+        matricule: userModel.matricule,
+        departement: userModel.departement,
+        servicesAffectation: userModel.servicesAffectation,
+        fonctionOccupe: userModel.fonctionOccupe,
+        role: userModel.role,
+        isOnline: userModel.isOnline,
+        createdAt: userModel.createdAt,
         passwordHash: newPasswordController.text,
-        succursale: widget.userModel.succursale);
-    await UserApi().changePassword(userModel);
+        succursale: userModel.succursale);
+    await UserApi().changePassword(user);
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
       content: const Text("Mot de passe changer avec succès!"),
       backgroundColor: Colors.green[700],

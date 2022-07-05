@@ -13,6 +13,8 @@ import 'package:fokad_admin/src/pages/archives/archive_folder.dart';
 import 'package:fokad_admin/src/pages/archives/components/archive_pdf_viewer.dart';
 import 'package:fokad_admin/src/pages/archives/detail_archive.dart';
 import 'package:fokad_admin/src/pages/archives/table_archive.dart';
+import 'package:fokad_admin/src/pages/auth/change_password.dart';
+import 'package:fokad_admin/src/pages/auth/forgot_password.dart';
 import 'package:fokad_admin/src/pages/auth/login_auth.dart';
 import 'package:fokad_admin/src/pages/auth/profil_page.dart';
 import 'package:fokad_admin/src/pages/budgets/budget_dd/budget_dd.dart';
@@ -411,6 +413,8 @@ final routes = <String, WidgetBuilder>{
   UserRoutes.profile : (context) => const ProfilPage(),
   UserRoutes.helps: (context) => const HelpScreen(),
   UserRoutes.settings: (context) => const SettingsScreen(),
+  UserRoutes.changePassword: (context) => const ChangePassword(),
+  UserRoutes.forgotPassword: (context) => const ForgotPassword(),
 
   // Administration
   AdminRoutes.adminDashboard: (context) => const DashboardAdministration(),

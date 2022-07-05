@@ -97,25 +97,25 @@ class MyApp extends StatelessWidget {
     }
 
     return MultiProvider(
-        providers: [
-          ChangeNotifierProvider(create: (context) => Controller()),
-          ChangeNotifierProvider(create: (context) => ThemeProvider()),
-          ChangeNotifierProvider(create: (context) => AuthApi()),
-          ChangeNotifierProvider(create: (context) => DevisAPi()),
-          ChangeNotifierProvider(create: (_) => AppState()),
-        ],
-        builder: (context, _) {
-          final themeProvider = Provider.of<ThemeProvider>(context);
-          return MaterialApp(
-            title: 'FOKAD ADMINISTRATION',
-            themeMode: themeProvider.themeMode,
-            theme: MyThemes.lightTheme,
-            darkTheme: MyThemes.darkTheme,
-            initialRoute: homeRoute,
-            routes: routes,
-            localizationsDelegates: GlobalMaterialLocalizations.delegates,
-            supportedLocales: const [Locale('fr', 'FR'), Locale('en', 'EN')],
-          );
-        });
+      providers: [
+        ChangeNotifierProvider(create: (context) => Controller()),
+        ChangeNotifierProvider(create: (context) => ThemeProvider()),
+        ChangeNotifierProvider(create: (context) => AuthApi()),
+        ChangeNotifierProvider(create: (context) => DevisAPi()),
+        ChangeNotifierProvider(create: (_) => AppState()),
+      ],
+      builder: (context, _) {
+        final themeProvider = Provider.of<ThemeProvider>(context);
+        return MaterialApp(
+          title: 'FOKAD ADMINISTRATION',
+          themeMode: themeProvider.themeMode,
+          theme: MyThemes.lightTheme,
+          darkTheme: MyThemes.darkTheme,
+          initialRoute: homeRoute,
+          routes: routes,
+          localizationsDelegates: GlobalMaterialLocalizations.delegates,
+          supportedLocales: const [Locale('fr', 'FR'), Locale('en', 'EN')],
+        );
+      });
   }
 }

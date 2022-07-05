@@ -7,6 +7,7 @@ import 'package:fokad_admin/src/models/users/user_model.dart';
 import 'package:fokad_admin/src/navigation/drawer/drawer_menu.dart';
 import 'package:fokad_admin/src/navigation/header/custom_appbar.dart';
 import 'package:fokad_admin/src/pages/auth/change_password.dart';
+import 'package:fokad_admin/src/routes/routes.dart';
 import 'package:intl/intl.dart';
 
 class ProfilPage extends StatefulWidget {
@@ -67,7 +68,7 @@ class _ProfilPageState extends State<ProfilPage> {
                                 ],
                               ),
                               Expanded(
-                                  child: SingleChildScrollView( 
+                                  child: SingleChildScrollView(
                                       child: profileBody(userData))),
                             ],
                           );
@@ -318,11 +319,13 @@ class _ProfilPageState extends State<ProfilPage> {
         const SizedBox(height: p20),
         ElevatedButton.icon(
             onPressed: () {
-              Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) => ChangePassword(userModel: userModel)));
+              Navigator.of(context).pushNamed(UserRoutes.changePassword, arguments: userModel);
+              // Navigator.of(context).push(MaterialPageRoute(
+              //     builder: (context) => ChangePassword(userModel: userModel)));
             },
-            icon: const Icon(Icons.password),
-            label: const AutoSizeText("Modifiez votre mot de passe")),
+            icon: const Icon(Icons.password, color: Colors.white),
+            label: AutoSizeText("Modifiez votre mot de passe",
+                style: Theme.of(context).textTheme.bodyLarge)),
         const SizedBox(height: p30),
       ],
     );
