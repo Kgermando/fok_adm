@@ -418,7 +418,7 @@ class _DetailAnguinState extends State<DetailAnguin> {
               ),
               Expanded(
                 flex: 3,
-                child: SelectableText("${data.kilometrageInitiale} \$",
+                child: SelectableText("${data.kilometrageInitiale} km",
                     textAlign: TextAlign.start, style: bodyMedium),
               )
             ],
@@ -705,8 +705,8 @@ class _DetailAnguinState extends State<DetailAnguin> {
                                             ));
                                       });
                             } else {
-                              return const Center(
-                                  child: CircularProgressIndicator());
+                              return Center(
+                                  child: loading());
                             }
                           }),
                     ),

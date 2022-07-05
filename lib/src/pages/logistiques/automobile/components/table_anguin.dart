@@ -222,7 +222,7 @@ class _TableAnguinState extends State<TableAnguin> {
 
   Future agentsRow() async {
     List<AnguinModel?> dataList = await AnguinApi().getAllData();
-    var data = dataList;
+    var data = dataList.toList();
 
     if (mounted) {
       setState(() {

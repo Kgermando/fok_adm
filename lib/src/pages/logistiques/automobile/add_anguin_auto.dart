@@ -450,7 +450,7 @@ class _AddAnguinAutoState extends State<AddAnguinAuto> {
 
   Widget nomeroEntrepriseWidget() {
     String numero = '';
-    if (numberPlaque < 9) {
+    if (numberPlaque < 10) {
       numero = "00$numberPlaque";
     } else if(numberPlaque < 99) {
       numero = "0$numberPlaque";
@@ -515,7 +515,7 @@ class _AddAnguinAutoState extends State<AddAnguinAuto> {
 
   Future<void> submit() async {
     String numero = '';
-    if (numberPlaque < 9) {
+    if (numberPlaque < 10) {
       numero = "00$numberPlaque";
     } else if (numberPlaque < 99) {
       numero = "0$numberPlaque";

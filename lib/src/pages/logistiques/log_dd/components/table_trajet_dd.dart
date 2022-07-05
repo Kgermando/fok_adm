@@ -209,8 +209,8 @@ class _TableTrajetDDState extends State<TableTrajetDD> {
             'trajetDe': PlutoCell(value: item.trajetDe),
             'trajetA': PlutoCell(value: item.trajetA),
             'mission': PlutoCell(value: item.mission),
-            'kilometrageSorite': PlutoCell(value: item.kilometrageSorite),
-            'kilometrageRetour': PlutoCell(value: item.kilometrageRetour),
+            'kilometrageSorite': PlutoCell(value: "${item.kilometrageSorite} KM"),
+            'kilometrageRetour': PlutoCell(value: "${item.kilometrageRetour} KM"),
             'created': PlutoCell(
                 value: DateFormat("dd-MM-yy H:mm").format(item.created))
           }));

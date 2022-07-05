@@ -12,13 +12,13 @@ import 'package:fokad_admin/src/constants/app_theme.dart';
 import 'package:fokad_admin/src/constants/responsive.dart';
 import 'package:fokad_admin/src/navigation/drawer/drawer_menu.dart';
 import 'package:fokad_admin/src/navigation/header/custom_appbar.dart';
+import 'package:fokad_admin/src/pages/logistiques/log_dd/components/table_anguin_dd.dart';
 import 'package:fokad_admin/src/pages/logistiques/log_dd/components/table_carburant_dd.dart';
 import 'package:fokad_admin/src/pages/logistiques/log_dd/components/table_entretien_dd.dart';
 import 'package:fokad_admin/src/pages/logistiques/log_dd/components/table_etat_materiels_dd.dart';
 import 'package:fokad_admin/src/pages/logistiques/log_dd/components/table_immobilier_dd.dart';
 import 'package:fokad_admin/src/pages/logistiques/log_dd/components/table_mobilier_dd.dart';
-import 'package:fokad_admin/src/pages/logistiques/log_dd/components/table_trajet_dd.dart';
-import 'package:fokad_admin/src/pages/logistiques/log_dd/components/table_trajet_anguin_dd.dart';
+import 'package:fokad_admin/src/pages/logistiques/log_dd/components/table_trajet_dd.dart'; 
 
 class LogDD extends StatefulWidget {
   const LogDD({ Key? key }) : super(key: key);
@@ -116,7 +116,7 @@ var anguins = await AnguinApi().getAllData();
                               child: ExpansionTile(
                                 leading: const Icon(Icons.folder, color: Colors.white),
                                 title:
-                                    Text('Dossier Anguins', style: headline6!.copyWith(color: Colors.white)),
+                                    Text('Dossier engins', style: headline6!.copyWith(color: Colors.white)),
                                 subtitle: Text(
                                     "Vous avez $anguinsapprobationDD dossiers necessitent votre approbation",
                                     style: bodyMedium!.copyWith(
@@ -129,7 +129,7 @@ var anguins = await AnguinApi().getAllData();
                                 },
                                 trailing: const Icon(Icons.arrow_drop_down,
                                     color: Colors.white),
-                                children: const [TableTrajetAnguinDD()],
+                                children: const [TableAnguinDD()],
                               ),
                             ),
                             Card(

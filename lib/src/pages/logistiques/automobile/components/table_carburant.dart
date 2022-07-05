@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fokad_admin/src/api/logistiques/carburant_api.dart';
-import 'package:fokad_admin/src/models/logistiques/carburant_model.dart'; 
+import 'package:fokad_admin/src/models/logistiques/carburant_model.dart';
 import 'package:fokad_admin/src/routes/routes.dart';
 import 'package:fokad_admin/src/utils/class_implemented.dart';
 import 'package:fokad_admin/src/widgets/print_widget.dart';
@@ -38,7 +38,7 @@ class _TableCarburantState extends State<TableCarburant> {
         final dataList = tapEvent.row!.cells.values;
         final idPlutoRow = dataList.elementAt(0);
         Navigator.pushNamed(context, LogistiqueRoutes.logCarburantAutoDetail,
-            arguments: idPlutoRow.value);  
+            arguments: idPlutoRow.value);
       },
       onLoaded: (PlutoGridOnLoadedEvent event) {
         stateManager = event.stateManager;
@@ -55,7 +55,8 @@ class _TableCarburantState extends State<TableCarburant> {
                       context, LogistiqueRoutes.logCarburantAuto);
                 },
                 icon: Icon(Icons.refresh, color: Colors.green.shade700)),
-            PrintWidget(onPressed: () {})],
+            PrintWidget(onPressed: () {})
+          ],
         );
       },
       configuration: PlutoGridConfiguration(
@@ -68,7 +69,7 @@ class _TableCarburantState extends State<TableCarburant> {
           resolveDefaultColumnFilter: (column, resolver) {
             if (column.field == 'id') {
               return resolver<ClassFilterImplemented>() as PlutoFilterType;
-            } else if (column.field == 'qtyEntreSortie') {
+            } else if (column.field == 'operationEntreSortie') {
               return resolver<ClassFilterImplemented>() as PlutoFilterType;
             } else if (column.field == 'typeCaburant') {
               return resolver<ClassFilterImplemented>() as PlutoFilterType;
@@ -110,9 +111,9 @@ class _TableCarburantState extends State<TableCarburant> {
       ),
       PlutoColumn(
         readOnly: true,
-        title: 'Opération',
+        title: 'Tyep d\'Opération',
         field: 'operationEntreSortie',
-        type: PlutoColumnType.number(),
+        type: PlutoColumnType.text(),
         enableRowDrag: true,
         enableContextMenu: false,
         enableDropToResize: true,
@@ -225,21 +226,22 @@ class _TableCarburantState extends State<TableCarburant> {
 
     if (mounted) {
       setState(() {
-        for (var item in data) {
+        for (var item in data) { 
           rows.add(PlutoRow(cells: {
             'id': PlutoCell(value: item!.id),
             'operationEntreSortie': PlutoCell(value: item.operationEntreSortie),
             'typeCaburant': PlutoCell(value: item.typeCaburant),
             'fournisseur': PlutoCell(value: item.fournisseur),
             'nomeroFactureAchat': PlutoCell(value: item.nomeroFactureAchat),
-            'prixAchatParLitre': PlutoCell(value: "${item.prixAchatParLitre} \$"),
+            'prixAchatParLitre':
+                PlutoCell(value: "${item.prixAchatParLitre} \$"),
             'nomReceptioniste': PlutoCell(value: item.nomReceptioniste),
             'numeroPlaque': PlutoCell(value: item.numeroPlaque),
             'dateHeureSortieAnguin': PlutoCell(
                 value: DateFormat("dd-MM-yy HH:mm")
                     .format(item.dateHeureSortieAnguin)),
             'created': PlutoCell(
-                value: DateFormat("dd-MM-yy H:mm").format(item.created))
+                value: DateFormat("dd-MM-yy HH:mm").format(item.created))
           }));
           stateManager!.resetCurrentState();
         }
