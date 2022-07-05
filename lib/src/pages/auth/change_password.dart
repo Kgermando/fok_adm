@@ -119,8 +119,7 @@ class _ChangePasswordState extends State<ChangePassword> {
                 width: Responsive.isDesktop(context)
                     ? MediaQuery.of(context).size.width / 2
                     : MediaQuery.of(context).size.width,
-                child: ListView(
-                  controller: _controllerScroll,
+                child: Column( 
                   children: [
                     const TitleWidget(title: 'Modifier votre mot de passe'),
                     const SizedBox(
@@ -134,7 +133,7 @@ class _ChangePasswordState extends State<ChangePassword> {
                       ),
                     ),
                     const SizedBox(height: p30),
-                    Expanded(child: newPasswordWidget()),
+                     newPasswordWidget(),
                     // Row(
                     //   children: [
                     //     Expanded(child: oldPasswordWidget()),

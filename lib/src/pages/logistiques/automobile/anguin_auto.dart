@@ -41,7 +41,7 @@ class _AnguinAutoState extends State<AnguinAuto> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      CustomAppbar(title: 'Geston des enguins',
+                      CustomAppbar(title: 'Gestion des engins',
                           controllerMenu: () =>
                               _key.currentState!.openDrawer()),
                       const Expanded(child: TableAnguin())

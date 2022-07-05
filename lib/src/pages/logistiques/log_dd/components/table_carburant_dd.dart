@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fokad_admin/src/api/logistiques/carburant_api.dart';
-import 'package:fokad_admin/src/models/logistiques/carburant_model.dart'; 
+import 'package:fokad_admin/src/models/logistiques/carburant_model.dart';
 import 'package:fokad_admin/src/routes/routes.dart';
 import 'package:fokad_admin/src/widgets/card_widget_carburant.dart';
 import 'package:fokad_admin/src/widgets/print_widget.dart';
@@ -45,6 +45,7 @@ class _TableCarburantDDState extends State<TableCarburantDD> {
 
   Future<void> getData() async {
     List<CarburantModel?> dataList = await CarburantApi().getAllData();
+    if (mounted) return;
     setState(() {
       List<CarburantModel?> entreListEssence = dataList
           .where((element) =>
@@ -142,8 +143,7 @@ class _TableCarburantDDState extends State<TableCarburantDD> {
               children: [
                 IconButton(
                     onPressed: () {
-                      Navigator.pushNamed(
-                          context, LogistiqueRoutes.logDD);
+                      Navigator.pushNamed(context, LogistiqueRoutes.logDD);
                     },
                     icon: Icon(Icons.refresh, color: Colors.green.shade700)),
                 PrintWidget(onPressed: () {})
@@ -281,7 +281,6 @@ class _TableCarburantDDState extends State<TableCarburantDD> {
     );
   }
 
-
   void agentsColumn() {
     columns = [
       PlutoColumn(
@@ -409,8 +408,7 @@ class _TableCarburantDDState extends State<TableCarburantDD> {
 
   Future agentsRow() async {
     List<CarburantModel?> dataList = await CarburantApi().getAllData();
-    var data =
-        dataList.toList();
+    var data = dataList.toList();
 
     if (mounted) {
       setState(() {

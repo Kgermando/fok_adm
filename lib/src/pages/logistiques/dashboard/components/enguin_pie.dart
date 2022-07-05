@@ -36,7 +36,7 @@ class _EnguinPieState extends State<EnguinPie> {
       child: Material(
         elevation: 10.0,
         child: SfCircularChart(
-            title: ChartTitle(text: "Type d'anguins",
+            title: ChartTitle(text: "Type d'engins",
                 textStyle: const TextStyle(fontWeight: FontWeight.bold)),
             legend: Legend(isVisible: true, isResponsive: true),
             series: <CircularSeries>[

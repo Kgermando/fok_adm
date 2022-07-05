@@ -10,12 +10,6 @@ import 'package:http/http.dart' as http;
 
 class MobilierApi {
   var client = http.Client();
-  // final storage = const FlutterSecureStorage();
-
-  // Future<String?> getToken() async {
-  //   final data = await storage.read(key: "accessToken");
-  //   return data;
-  // }
 
   Future<List<MobilierModel>> getAllData() async {
     String? token = await UserSharedPref().getAccessToken();

@@ -161,7 +161,7 @@ class _LogistiqueNavState extends State<LogistiqueNav> {
                             LogistiqueRoutes.logAnguinAuto,
                         icon: Icons.arrow_right,
                         sizeIcon: 15.0,
-                        title: 'Anguins',
+                        title: 'Angins',
                         style: bodyText2!,
                         onTap: () {
                           Navigator.pushNamed(

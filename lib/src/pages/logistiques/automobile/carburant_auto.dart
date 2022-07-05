@@ -41,7 +41,7 @@ class _CarburantAutoState extends State<CarburantAuto> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      CustomAppbar(title: 'Geston des carburants',
+                      CustomAppbar(title: 'Gestion des carburants',
                           controllerMenu: () =>
                               _key.currentState!.openDrawer()),
                       const Expanded(child: TableCarburant())
