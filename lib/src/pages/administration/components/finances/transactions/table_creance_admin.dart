@@ -271,7 +271,11 @@ class _TableCreanceAdminState extends State<TableCreanceAdmin> {
 
   Future agentsRow() async {
     List<CreanceModel?> dataList = await CreanceApi().getAllData();
-    var data = dataList.toList();
+    var data = dataList
+        .where((element) =>
+            element!.approbationDG == '-' &&
+            element.approbationDD == 'Approved')
+        .toList();
 
     if (mounted) {
       setState(() {

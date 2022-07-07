@@ -1,20 +1,22 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
-import 'package:fokad_admin/src/api/logistiques/mobilier_api.dart';
-import 'package:fokad_admin/src/models/logistiques/mobilier_model.dart'; 
+import 'package:fokad_admin/src/api/logistiques/anguin_api.dart'; 
+import 'package:fokad_admin/src/models/logistiques/anguin_model.dart'; 
 import 'package:fokad_admin/src/routes/routes.dart';
 import 'package:fokad_admin/src/widgets/print_widget.dart';
-import 'package:fokad_admin/src/utils/class_implemented.dart';
+import 'package:fokad_admin/src/utils/class_implemented.dart'; 
 import 'package:intl/intl.dart';
 import 'package:pluto_grid/pluto_grid.dart';
 
-class TableMobilierDG extends StatefulWidget {
-  const TableMobilierDG({Key? key}) : super(key: key);
+class TableAnguinDG extends StatefulWidget {
+  const TableAnguinDG({Key? key}) : super(key: key);
 
   @override
-  State<TableMobilierDG> createState() => _TableMobilierDGState();
+  State<TableAnguinDG> createState() => _TableAnguinDGState();
 }
 
-class _TableMobilierDGState extends State<TableMobilierDG> {
+class _TableAnguinDGState extends State<TableAnguinDG> {
   List<PlutoColumn> columns = [];
   List<PlutoRow> rows = [];
   PlutoGridStateManager? stateManager;
@@ -26,10 +28,11 @@ class _TableMobilierDGState extends State<TableMobilierDG> {
   void initState() {
     agentsColumn();
     agentsRow();
+
     super.initState();
   }
 
-  @override
+   @override
   Widget build(BuildContext context) {
     return SizedBox(
       height: MediaQuery.of(context).size.height,
@@ -39,8 +42,7 @@ class _TableMobilierDGState extends State<TableMobilierDG> {
         onRowDoubleTap: (PlutoGridOnRowDoubleTapEvent tapEvent) {
           final dataList = tapEvent.row!.cells.values;
           final idPlutoRow = dataList.elementAt(0);
-          Navigator.pushNamed(
-              context, LogistiqueRoutes.logMobilierMaterielDetail,
+          Navigator.pushNamed(context, LogistiqueRoutes.logAnguinAutoDetail,
               arguments: idPlutoRow.value);
         },
         onLoaded: (PlutoGridOnLoadedEvent event) {
@@ -55,7 +57,7 @@ class _TableMobilierDGState extends State<TableMobilierDG> {
               IconButton(
                   onPressed: () {
                     Navigator.pushNamed(
-                        context, LogistiqueRoutes.logMobilierMateriel);
+                        context, LogistiqueRoutes.logAnguinAuto);
                   },
                   icon: Icon(Icons.refresh, color: Colors.green.shade700)),
               PrintWidget(onPressed: () {})
@@ -70,13 +72,25 @@ class _TableMobilierDGState extends State<TableMobilierDG> {
               ClassFilterImplemented(),
             ],
             resolveDefaultColumnFilter: (column, resolver) {
-              if (column.field == 'nom') {
+              if (column.field == 'id') {
+                return resolver<ClassFilterImplemented>() as PlutoFilterType;
+              } else if (column.field == 'nom') {
                 return resolver<ClassFilterImplemented>() as PlutoFilterType;
               } else if (column.field == 'modele') {
                 return resolver<ClassFilterImplemented>() as PlutoFilterType;
               } else if (column.field == 'marque') {
                 return resolver<ClassFilterImplemented>() as PlutoFilterType;
-              } else if (column.field == 'nombre') {
+              } else if (column.field == 'genre') {
+                return resolver<ClassFilterImplemented>() as PlutoFilterType;
+              } else if (column.field == 'numeroChassie') {
+                return resolver<ClassFilterImplemented>() as PlutoFilterType;
+              } else if (column.field == 'qtyMaxReservoir') {
+                return resolver<ClassFilterImplemented>() as PlutoFilterType;
+              } else if (column.field == 'dateFabrication') {
+                return resolver<ClassFilterImplemented>() as PlutoFilterType;
+              } else if (column.field == 'nomeroPLaque') {
+                return resolver<ClassFilterImplemented>() as PlutoFilterType;
+              } else if (column.field == 'nomeroEntreprise') {
                 return resolver<ClassFilterImplemented>() as PlutoFilterType;
               } else if (column.field == 'created') {
                 return resolver<ClassFilterImplemented>() as PlutoFilterType;
@@ -112,7 +126,7 @@ class _TableMobilierDGState extends State<TableMobilierDG> {
         enableContextMenu: false,
         enableDropToResize: true,
         titleTextAlign: PlutoColumnTextAlign.left,
-        width: 150,
+        width: 200,
         minWidth: 150,
       ),
       PlutoColumn(
@@ -124,7 +138,7 @@ class _TableMobilierDGState extends State<TableMobilierDG> {
         enableContextMenu: false,
         enableDropToResize: true,
         titleTextAlign: PlutoColumnTextAlign.left,
-        width: 150,
+        width: 200,
         minWidth: 150,
       ),
       PlutoColumn(
@@ -136,19 +150,67 @@ class _TableMobilierDGState extends State<TableMobilierDG> {
         enableContextMenu: false,
         enableDropToResize: true,
         titleTextAlign: PlutoColumnTextAlign.left,
-        width: 150,
+        width: 200,
         minWidth: 150,
       ),
       PlutoColumn(
         readOnly: true,
-        title: 'Nombre',
-        field: 'nombre',
+        title: 'Genre',
+        field: 'genre',
         type: PlutoColumnType.text(),
         enableRowDrag: true,
         enableContextMenu: false,
         enableDropToResize: true,
         titleTextAlign: PlutoColumnTextAlign.left,
-        width: 150,
+        width: 200,
+        minWidth: 150,
+      ),
+      PlutoColumn(
+        readOnly: true,
+        title: 'Qté max reservoir',
+        field: 'qtyMaxReservoir',
+        type: PlutoColumnType.text(),
+        enableRowDrag: true,
+        enableContextMenu: false,
+        enableDropToResize: true,
+        titleTextAlign: PlutoColumnTextAlign.left,
+        width: 200,
+        minWidth: 150,
+      ),
+      PlutoColumn(
+        readOnly: true,
+        title: 'Date de fabrication',
+        field: 'dateFabrication',
+        type: PlutoColumnType.text(),
+        enableRowDrag: true,
+        enableContextMenu: false,
+        enableDropToResize: true,
+        titleTextAlign: PlutoColumnTextAlign.left,
+        width: 200,
+        minWidth: 150,
+      ),
+      PlutoColumn(
+        readOnly: true,
+        title: 'Numero Plaque',
+        field: 'nomeroPlaque',
+        type: PlutoColumnType.text(),
+        enableRowDrag: true,
+        enableContextMenu: false,
+        enableDropToResize: true,
+        titleTextAlign: PlutoColumnTextAlign.left,
+        width: 200,
+        minWidth: 150,
+      ),
+      PlutoColumn(
+        readOnly: true,
+        title: 'Numero engin',
+        field: 'nomeroEntreprise',
+        type: PlutoColumnType.text(),
+        enableRowDrag: true,
+        enableContextMenu: false,
+        enableDropToResize: true,
+        titleTextAlign: PlutoColumnTextAlign.left,
+        width: 200,
         minWidth: 150,
       ),
       PlutoColumn(
@@ -160,28 +222,37 @@ class _TableMobilierDGState extends State<TableMobilierDG> {
         enableContextMenu: false,
         enableDropToResize: true,
         titleTextAlign: PlutoColumnTextAlign.left,
-        width: 150,
+        width: 200,
         minWidth: 150,
       ),
     ];
   }
 
   Future agentsRow() async {
-    List<MobilierModel?> dataList = await MobilierApi().getAllData();
-    var data = dataList.toList();
+    List<AnguinModel?> dataList = await AnguinApi().getAllData();
+    var data =
+        dataList
+        .where((element) =>
+            element!.approbationDG == '-' && element.approbationDD == 'Approved')
+        .toList();
 
     if (mounted) {
       setState(() {
         for (var item in data) {
-          id = item!.id;
           rows.add(PlutoRow(cells: {
-            'id': PlutoCell(value: item.id),
+            'id': PlutoCell(value: item!.id),
             'nom': PlutoCell(value: item.nom),
             'modele': PlutoCell(value: item.modele),
             'marque': PlutoCell(value: item.marque),
-            'nombre': PlutoCell(value: item.nombre),
+            'genre': PlutoCell(value: item.genre),
+            'numeroChassie': PlutoCell(value: item.numeroChassie),
+            'qtyMaxReservoir': PlutoCell(value: "${item.qtyMaxReservoir} L"),
+            'dateFabrication': PlutoCell(
+                value: DateFormat("dd-MM-yyyy").format(item.dateFabrication)),
+            'nomeroPlaque': PlutoCell(value: item.nomeroPLaque),
+            'nomeroEntreprise': PlutoCell(value: item.nomeroEntreprise),
             'created': PlutoCell(
-                value: DateFormat("dd-MM-yy H:mm").format(item.created))
+                value: DateFormat("dd-MM-yyyy HH:mm").format(item.created))
           }));
         }
         stateManager!.resetCurrentState();

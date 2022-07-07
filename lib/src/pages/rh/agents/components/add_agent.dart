@@ -974,7 +974,14 @@ class _AddAgentState extends State<AddAgent> {
         photo: '-',
         salaire: (salaireController.text == '') ? '-' : salaireController.text,
         signature: user!.matricule.toString(),
-        created: DateTime.now());
+        created: DateTime.now(),
+        approbationDG: '-',
+        motifDG: '-',
+        signatureDG: '-',
+        approbationDD: '-',
+        motifDD: '-',
+        signatureDD: '-'
+    );
 
     await AgentsApi().insertData(agentModel);
     await submitPerformence();

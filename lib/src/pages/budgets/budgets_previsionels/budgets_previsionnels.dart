@@ -234,7 +234,13 @@ class _BudgetsPrevisionnelsState extends State<BudgetsPrevisionnels> {
       signature: signature.toString(),
       createdRef: DateTime.now(),
       created: DateTime.now(),
-      isSubmit: 'false'
+      isSubmit: 'false',
+      approbationDG: '-',
+      motifDG: '-',
+      signatureDG: '-',
+      approbationDD: '-',
+      motifDD: '-',
+      signatureDD: '-'
     );
 
     await DepeartementBudgetApi().insertData(departementBudgetModel);

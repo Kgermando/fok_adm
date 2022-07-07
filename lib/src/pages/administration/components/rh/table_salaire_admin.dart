@@ -208,8 +208,13 @@ class _TableSalaireAdminState extends State<TableSalaireAdmin> {
   Future agentsRow() async {
     List<PaiementSalaireModel?> dataList =
         await PaiementSalaireApi().getAllData();
-    var data = dataList
-        .where((element) => element!.observation == 'false')
+    var data = dataList 
+        .where((element) =>
+           element!.observation == 'false' &&
+            element.createdAt.month == DateTime.now().month &&
+            element.createdAt.year == DateTime.now().year &&
+            element.approbationDG == '-' &&
+            element.approbationDD == 'Approuved')
         .toList();
 
     if (mounted) {

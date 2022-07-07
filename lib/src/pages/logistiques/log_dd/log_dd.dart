@@ -65,19 +65,21 @@ var anguins = await AnguinApi().getAllData();
 
     setState(() {
       anguinsapprobationDD =
-          anguins.length;
+          anguins
+          .where((element) =>element.approbationDD == '-')
+          .length;
       carburantCount =
-          carburants.length;
+          carburants.where((element) => element.approbationDD == '-').length;
       trajetsCount =
-          trajets.length;
+          trajets.where((element) => element.approbationDD == '-').length;
       immobiliersCount =
-          immobiliers.length;
+          immobiliers.where((element) => element.approbationDD == '-').length;
       mobiliersCount =
-          mobiliers.length;
+          mobiliers.where((element) => element.approbationDD == '-').length;
       entretiensCount =
-          entretiens.length;
+          entretiens.where((element) => element.approbationDD == '-').length;
       etatmaterielsCount =
-          etatmateriels.length;
+          etatmateriels.where((element) => element.approbationDD == '-').length;
     });
   }
 

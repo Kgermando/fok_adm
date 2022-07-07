@@ -408,7 +408,7 @@ class _TableCarburantDDState extends State<TableCarburantDD> {
 
   Future agentsRow() async {
     List<CarburantModel?> dataList = await CarburantApi().getAllData();
-    var data = dataList.toList();
+    var data = dataList.where((element) => element!.approbationDD == '-').toList();
 
     if (mounted) {
       setState(() {

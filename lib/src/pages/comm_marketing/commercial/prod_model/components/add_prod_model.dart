@@ -289,14 +289,18 @@ class _AddProModelState extends State<AddProModel> {
     final idProductform =
         "${categorieController.text}-${sousCategorie1Controller.text}-${sousCategorie2Controller.text}-${sousCategorie3Controller.text}-${sousCategorie4Controller.text}";
     final productModel = ProductModel(
-        categorie: categorieController.text,
-        sousCategorie1: sousCategorie1Controller.text,
-        sousCategorie2: sousCategorie2Controller.text,
-        sousCategorie3: sousCategorie3Controller.text,
-        sousCategorie4: sousCategorie4Controller.text,
-        idProduct: idProductform,
-        signature: signature.toString(),
-        created: DateTime.now());
+      categorie: categorieController.text,
+      sousCategorie1: sousCategorie1Controller.text,
+      sousCategorie2: sousCategorie2Controller.text,
+      sousCategorie3: sousCategorie3Controller.text,
+      sousCategorie4: sousCategorie4Controller.text,
+      idProduct: idProductform,
+      signature: signature.toString(),
+      created: DateTime.now(),
+      approbationDD: '-',
+      motifDD: '-',
+      signatureDD: '-'
+    );
     await ProduitModelApi().insertData(productModel);
     Navigator.of(context).pop();
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(

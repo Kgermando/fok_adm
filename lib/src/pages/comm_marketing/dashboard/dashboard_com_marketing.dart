@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:fokad_admin/src/api/approbation/approbation_api.dart';
 import 'package:fokad_admin/src/api/comm_marketing/commerciale/creance_facture_api.dart';
 import 'package:fokad_admin/src/api/comm_marketing/commerciale/gain_api.dart';
 import 'package:fokad_admin/src/api/comm_marketing/commerciale/succursale_api.dart';
@@ -61,26 +60,22 @@ class _ComMarketingState extends State<ComMarketing> {
     var annuaires = await AnnuaireApi().getAllData();
     var agendas = await AgendaApi().getAllData();
     var succursales = await SuccursaleApi().getAllData();
-    var approbations = await ApprobationApi().getAllData();
 
     setState(() {
       ventesList = ventes;
       gainsList = gains;
       creanceFactureList = creanceFacture;
-      for (var item in approbations) {
-        campaignCount = campaigns
-            .where((element) =>
-                element.created.microsecondsSinceEpoch == item.reference.microsecondsSinceEpoch &&
-                item.fontctionOccupee == 'Directeur générale' &&
-                item.approbation == "Approved")
-            .length;
-        succursaleCount = succursales
-            .where((element) =>
-                element.created.microsecondsSinceEpoch == item.reference.microsecondsSinceEpoch &&
-                item.fontctionOccupee == 'Directeur générale' &&
-                item.approbation == "Approved")
-            .length;
-      }
+ 
+      campaignCount = campaigns
+          .where((element) => 
+              element.approbationDD == "Approved" &&
+              element.approbationBudget == "Approved" &&
+              element.approbationFin == "Approved")
+          .length;
+      succursaleCount = succursales
+          .where((element) =>
+              element.approbationDD == "Approved")
+          .length;
 
       annuaireCount = annuaires.length;
       agendaCount = agendas.length;

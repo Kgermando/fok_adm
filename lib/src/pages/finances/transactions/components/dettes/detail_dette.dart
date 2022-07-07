@@ -1,14 +1,12 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:fokad_admin/src/api/approbation/approbation_api.dart';
+import 'package:flutter/services.dart'; 
 import 'package:fokad_admin/src/api/auth/auth_api.dart';
 import 'package:fokad_admin/src/api/finances/creance_dette_api.dart';
 import 'package:fokad_admin/src/api/finances/dette_api.dart';
 import 'package:fokad_admin/src/api/user/user_api.dart';
 import 'package:fokad_admin/src/constants/app_theme.dart';
-import 'package:fokad_admin/src/constants/responsive.dart';
-import 'package:fokad_admin/src/models/approbation/approbation_model.dart';
+import 'package:fokad_admin/src/constants/responsive.dart'; 
 import 'package:fokad_admin/src/models/finances/creance_dette_model.dart';
 import 'package:fokad_admin/src/models/finances/dette_model.dart';
 import 'package:fokad_admin/src/models/users/user_model.dart';
@@ -54,36 +52,33 @@ class _DetailDetteState extends State<DetailDette> {
 
   double total = 0.0;
 
-  @override
-  void dispose() {
-    nomCompletController.dispose();
-    pieceJustificativeController.dispose();
-    libelleController.dispose();
-    montantController.dispose();
-    super.dispose();
-  }
+  // Approbations
+  String approbationDG = '-';
+  String approbationDD = '-';
+  TextEditingController motifDGController = TextEditingController();
+  TextEditingController motifDDController = TextEditingController();
 
+  
   @override
   initState() {
     getData();
     super.initState();
   }
 
+  @override
+  void dispose() {
+    nomCompletController.dispose();
+    pieceJustificativeController.dispose();
+    libelleController.dispose();
+    montantController.dispose();
+    motifDGController.dispose();
+    motifDDController.dispose();
+    super.dispose();
+  }
+
+
   List<CreanceDetteModel> creanceDetteList = [];
   List<CreanceDetteModel> creanceDetteFilter = [];
-  List<ApprobationModel> approbList = [];
-  List<ApprobationModel> approbationData = [];
-  ApprobationModel approb = ApprobationModel(
-      reference: DateTime.now(),
-      title: '-',
-      departement: '-',
-      fontctionOccupee: '-',
-      ligneBudgtaire: '-',
-      resources: '-',
-      approbation: '-',
-      justification: '-',
-      signature: '-',
-      created: DateTime.now());
   UserModel user = UserModel(
       nom: '-',
       prenom: '-',
@@ -101,13 +96,11 @@ class _DetailDetteState extends State<DetailDette> {
   Future<void> getData() async {
     final dataUser = await UserApi().getAllData();
     UserModel userModel = await AuthApi().getUserId();
-    var creanceDette = await CreanceDetteApi().getAllData();
-    var approbations = await ApprobationApi().getAllData();
+    var creanceDette = await CreanceDetteApi().getAllData(); 
     setState(() {
       userList = dataUser;
       user = userModel;
-      creanceDetteFilter = creanceDette;
-      approbList = approbations;
+      creanceDetteFilter = creanceDette; 
     });
   }
 
@@ -156,16 +149,7 @@ class _DetailDetteState extends State<DetailDette> {
                                     element.creanceDette == 'dettes' &&
                                     element.reference.microsecondsSinceEpoch ==
                                         data!.createdRef.microsecondsSinceEpoch)
-                                .toList();
-                            approbationData = approbList
-                                .where((element) =>
-                                    element.reference.microsecondsSinceEpoch ==
-                                    data!.created.microsecondsSinceEpoch)
-                                .toList();
-
-                            if (approbationData.isNotEmpty) {
-                              approb = approbationData.first;
-                            }
+                                .toList(); 
                             return Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
@@ -193,13 +177,7 @@ class _DetailDetteState extends State<DetailDette> {
                                   children: [
                                     pageDetail(data!),
                                     const SizedBox(height: p10),
-                                    if (approbationData.isNotEmpty)
-                                      infosEditeurWidget(),
-                                    const SizedBox(height: p10),
-                                    if (int.parse(user.role) <= 2)
-                                      if (approb.fontctionOccupee !=
-                                          user.fonctionOccupe)
-                                        approbationForm(data),
+                                    approbationWidget(data)
                                   ],
                                 )))
                               ],
@@ -480,7 +458,13 @@ class _DetailDetteState extends State<DetailDette> {
         statutPaie: 'true',
         signature: data.signature,
         createdRef: data.createdRef,
-        created: DateTime.now());
+        created: DateTime.now(),
+        approbationDG: data.approbationDG,
+        motifDG: data.motifDG,
+        signatureDG: data.signatureDG,
+        approbationDD: data.approbationDD,
+        motifDD: data.motifDD,
+        signatureDD: data.signatureDD);
     await DetteApi().updateData(detteModel);
     Navigator.of(context).pop();
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
@@ -658,269 +642,16 @@ class _DetailDetteState extends State<DetailDette> {
     ));
   }
 
-  Widget infosEditeurWidget() {
-    final bodyLarge = Theme.of(context).textTheme.bodyLarge;
+  
 
-    return SizedBox(
-      height: 500,
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Card(
-            elevation: 10,
-            child: Container(
-                margin: const EdgeInsets.all(p16),
-                width: (Responsive.isDesktop(context))
-                    ? MediaQuery.of(context).size.width / 2
-                    : MediaQuery.of(context).size.width,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(p10),
-                  border: Border.all(
-                    color: Colors.red.shade700,
-                    width: 2.0,
-                  ),
-                ),
-                child: Column(
-                  children: [
-                    const TitleWidget(title: 'Approbation'),
-                    Expanded(
-                      child: FutureBuilder<List<ApprobationModel>>(
-                          future: ApprobationApi().getAllData(),
-                          builder: (BuildContext context,
-                              AsyncSnapshot<List<ApprobationModel>> snapshot) {
-                            if (snapshot.hasData) {
-                              List<ApprobationModel>? dataList = snapshot.data;
-                              return dataList!.isEmpty
-                                  ? Center(
-                                      child: Text(
-                                      "Pas encore d'approbation",
-                                      style: Responsive.isDesktop(context)
-                                          ? const TextStyle(fontSize: 24)
-                                          : const TextStyle(fontSize: 16),
-                                    ))
-                                  : ListView.builder(
-                                      itemCount: dataList.length,
-                                      itemBuilder: (context, index) {
-                                        final item = dataList[index];
-                                        return Padding(
-                                            padding: const EdgeInsets.all(p10),
-                                            child: Table(
-                                              children: [
-                                                TableRow(children: [
-                                                  TableCell(
-                                                      child: Padding(
-                                                    padding:
-                                                        const EdgeInsets.only(
-                                                            bottom: p20),
-                                                    child: Text(
-                                                        "Responsable"
-                                                            .toUpperCase(),
-                                                        textAlign:
-                                                            TextAlign.center,
-                                                        style: bodyLarge!
-                                                            .copyWith(
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .bold)),
-                                                  )),
-                                                  TableCell(
-                                                      child: Padding(
-                                                    padding:
-                                                        const EdgeInsets.only(
-                                                            bottom: p20),
-                                                    child: Text(
-                                                        "Approbation"
-                                                            .toUpperCase(),
-                                                        textAlign:
-                                                            TextAlign.center,
-                                                        style:
-                                                            bodyLarge.copyWith(
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .bold)),
-                                                  )),
-                                                  TableCell(
-                                                      child: Padding(
-                                                    padding:
-                                                        const EdgeInsets.only(
-                                                            bottom: p20),
-                                                    child: Text(
-                                                        "Motif".toUpperCase(),
-                                                        textAlign:
-                                                            TextAlign.center,
-                                                        style:
-                                                            bodyLarge.copyWith(
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .bold)),
-                                                  )),
-                                                  TableCell(
-                                                      child: Padding(
-                                                    padding:
-                                                        const EdgeInsets.only(
-                                                            bottom: p20),
-                                                    child: Text(
-                                                        "Signature"
-                                                            .toUpperCase(),
-                                                        textAlign:
-                                                            TextAlign.center,
-                                                        style:
-                                                            bodyLarge.copyWith(
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .bold)),
-                                                  )),
-                                                ]),
-                                                TableRow(children: [
-                                                  TableCell(
-                                                      child: Padding(
-                                                    padding:
-                                                        const EdgeInsets.only(
-                                                            bottom: p10),
-                                                    child: Text(
-                                                        item.fontctionOccupee,
-                                                        textAlign:
-                                                            TextAlign.center,
-                                                        style:
-                                                            bodyLarge.copyWith(
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .bold)),
-                                                  )),
-                                                  TableCell(
-                                                      child: Padding(
-                                                    padding:
-                                                        const EdgeInsets.only(
-                                                            bottom: p10),
-                                                    child: Text(
-                                                        item.approbation,
-                                                        textAlign:
-                                                            TextAlign.center,
-                                                        style: bodyLarge.copyWith(
-                                                            color: (item.approbation ==
-                                                                    'Approuved')
-                                                                ? Colors.green
-                                                                    .shade700
-                                                                : Colors.red
-                                                                    .shade700)),
-                                                  )),
-                                                  TableCell(
-                                                      child: Padding(
-                                                    padding:
-                                                        const EdgeInsets.only(
-                                                            bottom: p10),
-                                                    child: AutoSizeText(
-                                                        item.justification,
-                                                        maxLines: 10,
-                                                        textAlign:
-                                                            TextAlign.center,
-                                                        style: bodyLarge),
-                                                  )),
-                                                  TableCell(
-                                                      child: Text(
-                                                          item.signature,
-                                                          textAlign:
-                                                              TextAlign.center,
-                                                          style: bodyLarge)),
-                                                ]),
-                                                if (item.fontctionOccupee ==
-                                                    'Directeur de budget')
-                                                  TableRow(children: [
-                                                    TableCell(
-                                                        child: Padding(
-                                                            padding:
-                                                                const EdgeInsets
-                                                                        .only(
-                                                                    bottom:
-                                                                        p20),
-                                                            child:
-                                                                Container())),
-                                                    TableCell(
-                                                        child: Padding(
-                                                      padding:
-                                                          const EdgeInsets.only(
-                                                              bottom: p20),
-                                                      child: Text(
-                                                          "Ligne budgetaire"
-                                                              .toUpperCase(),
-                                                          textAlign:
-                                                              TextAlign.center,
-                                                          style: bodyLarge
-                                                              .copyWith(
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .bold)),
-                                                    )),
-                                                    TableCell(
-                                                        child: Padding(
-                                                      padding:
-                                                          const EdgeInsets.only(
-                                                              bottom: p20),
-                                                      child: Text(
-                                                          "Ressources"
-                                                              .toUpperCase(),
-                                                          textAlign:
-                                                              TextAlign.center,
-                                                          style: bodyLarge
-                                                              .copyWith(
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .bold)),
-                                                    )),
-                                                    TableCell(
-                                                        child: Padding(
-                                                      padding:
-                                                          const EdgeInsets.only(
-                                                              bottom: p20),
-                                                      child: Container(),
-                                                    )),
-                                                  ]),
-                                                if (item.fontctionOccupee ==
-                                                    'Directeur de budget')
-                                                  TableRow(children: [
-                                                    TableCell(
-                                                        child: Container()),
-                                                    TableCell(
-                                                        child: Text(
-                                                            item.ligneBudgtaire,
-                                                            textAlign: TextAlign
-                                                                .center,
-                                                            style: bodyLarge)),
-                                                    TableCell(
-                                                        child: Text(
-                                                            item.resources,
-                                                            textAlign: TextAlign
-                                                                .center,
-                                                            style: bodyLarge)),
-                                                    TableCell(
-                                                        child: Container()),
-                                                  ])
-                                              ],
-                                            ));
-                                      });
-                            } else {
-                              return const Center(
-                                  child: CircularProgressIndicator());
-                            }
-                          }),
-                    ),
-                  ],
-                )),
-          ),
-        ],
-      ),
-    );
-  }
 
-  Widget approbationForm(DetteModel data) {
-    final bodyLarge = Theme.of(context).textTheme.bodyLarge;
-    List<String> approbationList = ['Approved', 'Unapproved', '-'];
-    return SizedBox(
-      height: 200,
-      child: Card(
+  Widget approbationWidget(DetteModel data) {
+    return Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+      Card(
         elevation: 10,
         child: Container(
           margin: const EdgeInsets.all(p16),
+          height: 200,
           width: (Responsive.isDesktop(context))
               ? MediaQuery.of(context).size.width / 2
               : MediaQuery.of(context).size.width,
@@ -931,173 +662,305 @@ class _DetailDetteState extends State<DetailDette> {
               width: 2.0,
             ),
           ),
-          child: SingleChildScrollView(
-            padding: const EdgeInsets.all(p10),
-            child: Form(
-              // key: _approbationKey,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
+          child: Column(
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
                 children: [
-                  Expanded(
-                      flex: 1,
-                      child: Text(user.fonctionOccupe,
-                          style: bodyLarge!.copyWith(
-                              fontWeight: FontWeight.bold,
-                              color: Colors.blue.shade700))),
-                  Expanded(
-                    flex: 3,
-                    child: Column(
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
+                  IconButton(
+                      onPressed: () {},
+                      icon: Icon(Icons.add_task, color: Colors.green.shade700)),
+                ],
+              ),
+              const SizedBox(height: p20),
+              Row(
+                children: [
+                  const Expanded(flex: 1, child: Text("Directeur générale")),
+                  const SizedBox(width: p20),
+                  if (data.approbationDG != '-')
+                    Expanded(
+                        flex: 4,
+                        child: Row(children: [
+                          Expanded(
+                              flex: 2,
+                              child: Column(
+                                children: [
+                                  const Text("Approbation"),
+                                  const SizedBox(height: p20),
+                                  Text(data.approbationDG),
+                                ],
+                              )),
+                          if (data.approbationDG == "Unapproved")
                             Expanded(
                                 flex: 3,
                                 child: Column(
                                   children: [
-                                    Text(
-                                      'Approbation',
-                                      style: bodyLarge.copyWith(
-                                          fontWeight: FontWeight.bold),
-                                    ),
+                                    const Text("Motif"),
                                     const SizedBox(height: p20),
-                                    Container(
-                                      margin: const EdgeInsets.only(
-                                          bottom: p10, left: p5),
-                                      child: Row(
-                                        children: [
-                                          Expanded(
-                                            flex: 1,
-                                            child:
-                                                DropdownButtonFormField<String>(
-                                              decoration: InputDecoration(
-                                                labelText: 'Approbation',
-                                                border: OutlineInputBorder(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            5.0)),
-                                              ),
-                                              value: approbationDGController,
-                                              isExpanded: true,
-                                              items: approbationList
-                                                  .map((String value) {
-                                                return DropdownMenuItem<String>(
-                                                  value: value,
-                                                  child: Text(value),
-                                                );
-                                              }).toList(),
-                                              onChanged: (value) {
-                                                setState(() {
-                                                  approbationDGController =
-                                                      value!;
-                                                });
-                                              },
-                                            ),
-                                          ),
-                                          if (approbationDGController ==
-                                              'Approved')
-                                            Expanded(
-                                              flex: 1,
-                                              child: IconButton(
-                                                  tooltip: 'Approuvé',
-                                                  onPressed: () {
-                                                    submitApprobation(data);
-                                                  },
-                                                  icon: Icon(Icons.send,
-                                                      color:
-                                                          Colors.red.shade700)),
-                                            )
-                                        ],
-                                      ),
-                                    )
+                                    Text(data.motifDG),
                                   ],
                                 )),
-                            if (approbationDGController == 'Unapproved')
-                              Expanded(
-                                  flex: 3,
-                                  child: Column(
-                                    children: [
-                                      Text(
-                                        'Motif',
-                                        style: bodyLarge.copyWith(
-                                            fontWeight: FontWeight.bold),
-                                      ),
-                                      const SizedBox(height: p20),
-                                      Container(
-                                          margin: const EdgeInsets.only(
-                                              bottom: p10, left: p5),
-                                          child: Row(
-                                            children: [
-                                              Expanded(
-                                                flex: 3,
-                                                child: TextFormField(
-                                                  controller:
-                                                      signatureJustificationDGController,
-                                                  decoration: InputDecoration(
-                                                    border: OutlineInputBorder(
-                                                        borderRadius:
-                                                            BorderRadius
-                                                                .circular(
-                                                                    10.0)),
-                                                    labelText:
-                                                        'Ecrivez votre motif...',
-                                                  ),
-                                                  keyboardType:
-                                                      TextInputType.multiline,
-                                                  minLines: 2,
-                                                  maxLines: 3,
-                                                  style: const TextStyle(),
-                                                ),
-                                              ),
-                                              Expanded(
-                                                flex: 1,
-                                                child: IconButton(
-                                                    tooltip: 'Approuvé',
-                                                    onPressed: () {
-                                                      // final form =
-                                                      //     _approbationKey
-                                                      //         .currentState!;
-                                                      // if (form.validate()) {
-
-                                                      //   form.reset();
-                                                      // }
-                                                      submitApprobation(data);
-                                                    },
-                                                    icon: Icon(Icons.send,
-                                                        color: Colors
-                                                            .red.shade700)),
-                                              )
-                                            ],
-                                          )),
-                                    ],
-                                  ))
-                          ],
-                        ),
-                      ],
-                    ),
-                  ),
+                          Expanded(
+                              flex: 2,
+                              child: Column(
+                                children: [
+                                  const Text("Signature"),
+                                  const SizedBox(height: p20),
+                                  Text(data.signatureDG),
+                                ],
+                              )),
+                        ])),
+                  if (data.approbationDG == '-' &&
+                      user.fonctionOccupe == "Directeur générale")
+                    Expanded(
+                        flex: 4,
+                        child: Row(children: [
+                          Expanded(child: approbationDGWidget(data)),
+                          Expanded(child: motifDGWidget(data))
+                        ])),
                 ],
               ),
-            ),
+              const SizedBox(height: p20),
+              Row(
+                children: [
+                  const Expanded(
+                      flex: 1, child: Text("Directeur de departement")),
+                  const SizedBox(width: p20),
+                  if (data.approbationDD != '-')
+                    Expanded(
+                        flex: 4,
+                        child: Row(children: [
+                          Expanded(
+                              flex: 2,
+                              child: Column(
+                                children: [
+                                  const Text("Approbation"),
+                                  const SizedBox(height: p20),
+                                  Text(data.approbationDD),
+                                ],
+                              )),
+                          if (data.approbationDD == "Unapproved")
+                            Expanded(
+                                flex: 3,
+                                child: Column(
+                                  children: [
+                                    const Text("Motif"),
+                                    const SizedBox(height: p20),
+                                    Text(data.motifDD),
+                                  ],
+                                )),
+                          Expanded(
+                              flex: 2,
+                              child: Column(
+                                children: [
+                                  const Text("Signature"),
+                                  const SizedBox(height: p20),
+                                  Text(data.signatureDD),
+                                ],
+                              )),
+                        ])),
+                  if (data.approbationDD == '-' &&
+                      user.fonctionOccupe == "Directeur de departement")
+                    Expanded(
+                        flex: 4,
+                        child: Row(children: [
+                          Expanded(child: approbationDDWidget(data)),
+                          Expanded(child: motifDDWidget(data))
+                        ])),
+                ],
+              ),
+            ],
           ),
         ),
+      ),
+    ]);
+  }
+
+  Widget approbationDGWidget(DetteModel data) {
+    List<String> approbationList = ['Approved', 'Unapproved', '-'];
+    return Container(
+      margin: const EdgeInsets.only(bottom: p20),
+      child: DropdownButtonFormField<String>(
+        decoration: InputDecoration(
+          labelText: 'Approbation',
+          labelStyle: const TextStyle(),
+          border: OutlineInputBorder(borderRadius: BorderRadius.circular(5.0)),
+          contentPadding: const EdgeInsets.only(left: 5.0),
+        ),
+        value: approbationDG,
+        isExpanded: true,
+        items: approbationList.map((String value) {
+          return DropdownMenuItem<String>(
+            value: value,
+            child: Text(value),
+          );
+        }).toList(),
+        onChanged: (value) {
+          setState(() {
+            approbationDG = value!;
+            if (approbationDG == "Approved") {
+              submitDG(data);
+            }
+          });
+        },
       ),
     );
   }
 
-  Future submitApprobation(DetteModel data) async {
-    final approbation = ApprobationModel(
-        reference: data.created,
-        title: data.nomComplet,
-        departement: '-',
-        fontctionOccupee: user.fonctionOccupe,
-        ligneBudgtaire: '-',
-        resources: '-',
-        approbation: approbationDGController,
-        justification: signatureJustificationDGController.text,
-        signature: user.matricule,
-        created: DateTime.now());
-    await ApprobationApi().insertData(approbation);
-    Navigator.of(context).pop();
+  Widget motifDGWidget(DetteModel data) {
+    return Container(
+        margin: const EdgeInsets.only(bottom: p20),
+        child: Row(
+          children: [
+            Expanded(
+              flex: 3,
+              child: TextFormField(
+                controller: motifDGController,
+                decoration: InputDecoration(
+                  border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10.0)),
+                  labelText: 'Ecrivez le motif...',
+                ),
+                keyboardType: TextInputType.text,
+                validator: (value) {
+                  if (value != null && value.isEmpty) {
+                    return 'Ce champs est obligatoire';
+                  } else {
+                    return null;
+                  }
+                },
+              ),
+            ),
+            Expanded(
+              flex: 1,
+              child: IconButton(
+                  tooltip: 'Soumettre le Motif',
+                  onPressed: () {
+                    submitDG(data);
+                  },
+                  icon: Icon(Icons.send, color: Colors.red.shade700)),
+            )
+          ],
+        ));
+  }
+
+  Widget approbationDDWidget(DetteModel data) {
+    List<String> approbationList = ['Approved', 'Unapproved', '-'];
+    return Container(
+      margin: const EdgeInsets.only(bottom: p20),
+      child: DropdownButtonFormField<String>(
+        decoration: InputDecoration(
+          labelText: 'Approbation',
+          labelStyle: const TextStyle(),
+          border: OutlineInputBorder(borderRadius: BorderRadius.circular(5.0)),
+          contentPadding: const EdgeInsets.only(left: 5.0),
+        ),
+        value: approbationDD,
+        isExpanded: true,
+        items: approbationList.map((String value) {
+          return DropdownMenuItem<String>(
+            value: value,
+            child: Text(value),
+          );
+        }).toList(),
+        onChanged: (value) {
+          setState(() {
+            approbationDD = value!;
+            if (approbationDD == "Approved") {
+              submitDD(data);
+            }
+          });
+        },
+      ),
+    );
+  }
+
+  Widget motifDDWidget(DetteModel data) {
+    return Container(
+        margin: const EdgeInsets.only(bottom: p20),
+        child: Row(
+          children: [
+            Expanded(
+              flex: 3,
+              child: TextFormField(
+                controller: motifDDController,
+                decoration: InputDecoration(
+                  border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10.0)),
+                  labelText: 'Ecrivez le motif...',
+                ),
+                keyboardType: TextInputType.text,
+                validator: (value) {
+                  if (value != null && value.isEmpty) {
+                    return 'Ce champs est obligatoire';
+                  } else {
+                    return null;
+                  }
+                },
+              ),
+            ),
+            Expanded(
+              flex: 1,
+              child: IconButton(
+                  tooltip: 'Soumettre le Motif',
+                  onPressed: () {
+                    submitDD(data);
+                  },
+                  icon: Icon(Icons.send, color: Colors.red.shade700)),
+            )
+          ],
+        ));
+  }
+
+  Future<void> submitDG(DetteModel data) async {
+    final detteModel = DetteModel(
+        id: data.id,
+        nomComplet: data.nomComplet,
+        pieceJustificative: data.pieceJustificative,
+        libelle: data.libelle,
+        montant: data.montant,
+        numeroOperation: data.numeroOperation,
+        statutPaie: data.statutPaie,
+        signature: data.signature,
+        createdRef: data.createdRef,
+        created: DateTime.now(),
+        approbationDG: approbationDG,
+        motifDG: (motifDGController.text == '') ? '-' : motifDGController.text,
+        signatureDG: user.matricule,
+        approbationDD: data.approbationDD,
+        motifDD: data.motifDD,
+        signatureDD: data.signatureDD);
+    await DetteApi().updateData(detteModel);
+    Navigator.pop(context);
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      content: const Text("Soumis avec succès!"),
+      backgroundColor: Colors.green[700],
+    ));
+  }
+
+  Future<void> submitDD(DetteModel data) async {
+    final detteModel = DetteModel(
+        id: data.id,
+        nomComplet: data.nomComplet,
+        pieceJustificative: data.pieceJustificative,
+        libelle: data.libelle,
+        montant: data.montant,
+        numeroOperation: data.numeroOperation,
+        statutPaie: data.statutPaie,
+        signature: data.signature,
+        createdRef: data.createdRef,
+        created: DateTime.now(),
+        approbationDG: '-',
+        motifDG: '-',
+        signatureDG: '-',
+        approbationDD: approbationDD,
+        motifDD: (motifDDController.text == '') ? '-' : motifDDController.text,
+        signatureDD: user.matricule);
+    await DetteApi().updateData(detteModel);
+    Navigator.pop(context);
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      content: const Text("Soumis avec succès!"),
+      backgroundColor: Colors.green[700],
+    ));
   }
 }

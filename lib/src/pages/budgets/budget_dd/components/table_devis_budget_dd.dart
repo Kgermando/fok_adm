@@ -1,7 +1,6 @@
 import 'dart:async';
 
-import 'package:flutter/material.dart';
-import 'package:fokad_admin/src/api/approbation/approbation_api.dart';
+import 'package:flutter/material.dart'; 
 import 'package:fokad_admin/src/api/devis/devis_api.dart';
 import 'package:fokad_admin/src/models/devis/devis_models.dart';
 import 'package:fokad_admin/src/routes/routes.dart';
@@ -162,15 +161,14 @@ class _TableDevisBudgetDDState extends State<TableDevisBudgetDD> {
 
   Future agentsRow() async {
     List<DevisModel?> dataList = await DevisAPi().getAllData();
-    List<DevisModel?> data = [];
-    var approbations = await ApprobationApi().getAllData();
-    for (var item in approbations) {
-      data = dataList
-          .where((element) =>
-              element!.created.microsecondsSinceEpoch == item.reference.microsecondsSinceEpoch && 
-              item.fontctionOccupee == 'Directeur générale' && item.approbation == "Approved")
-          .toList();
-    }
+    List<DevisModel?> data = []; 
+
+    data = dataList
+         .where((element) =>
+            element!.approbationDG == 'Approuved' &&
+            element.approbationDD == 'Approuved' &&
+            element.approbationBudget == '-')
+        .toList();
     
 
     if (mounted) {

@@ -293,7 +293,10 @@ class _EtatMaterielState extends State<EtatMateriel> {
         statut: statut.toString(),
         signature: signature.toString(),
         createdRef: DateTime.now(),
-        created: DateTime.now());
+        created: DateTime.now(), 
+        approbationDD: '-',
+        motifDD: '-',
+        signatureDD: '-');
     await EtatMaterielApi().insertData(etatMaterielModel);
     Navigator.pop(context);
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(

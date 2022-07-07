@@ -71,13 +71,20 @@ class _LogistiqueNavState extends State<LogistiqueNav> {
     if (mounted) {
       setState(() {
         user = userModel;
-        anguinsapprobationDD = anguins.length;
-        carburantCount = carburants.length;
-        trajetsCount = trajets.length;
-        immobiliersCount = immobiliers.length;
-        mobiliersCount = mobiliers.length;
-        entretiensCount = entretiens.length;
-        etatmaterielsCount = etatmateriels.length;
+        anguinsapprobationDD = anguins.where((element) => 
+                element.approbationDD == '-').length;
+        carburantCount = carburants.where((element) => 
+                element.approbationDD == '-').length;
+        trajetsCount = trajets.where((element) => 
+                element.approbationDD == '-').length;
+        immobiliersCount = immobiliers.where((element) => 
+                element.approbationDD == '-').length;
+        mobiliersCount = mobiliers.where((element) => 
+                element.approbationDD == '-').length;
+        entretiensCount = entretiens.where((element) => 
+                element.approbationDD == '-').length;
+        etatmaterielsCount = etatmateriels.where((element) => 
+                element.approbationDD == '-').length;
       });
     }
   }

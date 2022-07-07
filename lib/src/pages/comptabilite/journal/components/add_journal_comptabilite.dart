@@ -550,7 +550,13 @@ class _AddJournalComptabiliteState extends State<AddJournalComptabilite> {
         remarque: remarqueController.text,
         signature: signature.toString(),
         createdRef: DateTime.now(),
-        created: DateTime.now());
+        created: DateTime.now(),
+        approbationDG: '-',
+        motifDG: '-',
+        signatureDG: '-',
+        approbationDD: '-',
+        motifDD: '-',
+        signatureDD: '-');
     await JournalApi().insertData(journalModel);
     Navigator.pop(context);
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(

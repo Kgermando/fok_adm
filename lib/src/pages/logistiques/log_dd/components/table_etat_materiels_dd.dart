@@ -183,7 +183,7 @@ class _TableEtatMaterielDDState extends State<TableEtatMaterielDD> {
   Future agentsRow() async {
     List<EtatMaterielModel?> dataList = await EtatMaterielApi().getAllData();
     var data =
-        dataList.toList();
+        dataList.where((element) => element!.approbationDD == '-').toList();
 
     if (mounted) {
       setState(() {

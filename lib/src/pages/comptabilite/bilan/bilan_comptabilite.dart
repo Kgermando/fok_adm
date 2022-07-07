@@ -151,7 +151,13 @@ class _BilanComptabiliteState extends State<BilanComptabilite> {
         signature: user!.matricule,
         createdRef: DateTime.now(),
         created: DateTime.now(),
-        isSubmit: 'false'
+        isSubmit: 'false',
+        approbationDG: '-',
+        motifDG: '-',
+        signatureDG: '-',
+        approbationDD: '-',
+        motifDD: '-',
+        signatureDD: '-'
     );
     await BilanApi().insertData(bilanModel);
     Navigator.of(context).pop();

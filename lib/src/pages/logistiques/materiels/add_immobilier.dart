@@ -305,7 +305,13 @@ class _AddImmobilierMaterielState extends State<AddImmobilierMateriel> {
         dateAcquisition: DateTime.parse(dateAcquisitionController.text),
         signature: signature.toString(),
         createdRef: DateTime.now(),
-        created: DateTime.now());
+        created: DateTime.now(),
+        approbationDG: '-',
+        motifDG: '-',
+        signatureDG: '-',
+        approbationDD: '-',
+        motifDD: '-',
+        signatureDD: '-');
     await ImmobilierApi().insertData(immobilierModel);
     Navigator.pop(context);
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(

@@ -395,7 +395,14 @@ class _DetailUserState extends State<DetailUser> {
         photo: agentModel.photo,
         salaire: agentModel.salaire,
         signature: agentModel.matricule,
-        created: DateTime.now());
+        created: DateTime.now(),
+        approbationDG: agentModel.approbationDG,
+        signatureDG: agentModel.signatureDG,
+        motifDG: agentModel.motifDG,
+        approbationDD: agentModel.approbationDD,
+        motifDD: agentModel.motifDD,
+        signatureDD: agentModel.signatureDD
+    );
     await AgentsApi().updateData(agent);
 
     await UserApi().deleteData(data.id!);

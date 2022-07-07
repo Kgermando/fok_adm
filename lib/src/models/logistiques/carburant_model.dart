@@ -11,7 +11,11 @@ class CarburantModel {
   late String qtyAchat;
   late String signature; // celui qui fait le document
   late DateTime createdRef;
-  late DateTime created;
+  late DateTime created; 
+  // Approbations DD
+  late String approbationDD;
+  late String motifDD;
+  late String signatureDD;
 
   CarburantModel({
     this.id,
@@ -26,7 +30,10 @@ class CarburantModel {
     required this.qtyAchat,
     required this.signature,
     required this.createdRef,
-      required this.created
+    required this.created, 
+    required this.approbationDD,
+    required this.motifDD,
+    required this.signatureDD
   });
 
   factory CarburantModel.fromSQL(List<dynamic> row) {
@@ -43,8 +50,10 @@ class CarburantModel {
       qtyAchat: row[9],
       signature: row[10],
       createdRef: row[11],
-      created: row[12]
-        
+      created: row[12], 
+      approbationDD: row[13],
+      motifDD: row[14],
+      signatureDD: row[15]
   );
   }
 
@@ -62,7 +71,10 @@ class CarburantModel {
       qtyAchat: json['qtyAchat'],
       signature: json['signature'],
       createdRef: DateTime.parse(json['createdRef']),
-        created: DateTime.parse(json['created'])
+      created: DateTime.parse(json['created']), 
+      approbationDD: json['approbationDD'],
+      motifDD: json['motifDD'],
+      signatureDD: json['signatureDD']
     );
   }
 
@@ -80,7 +92,10 @@ class CarburantModel {
       'qtyAchat': qtyAchat,
       'signature': signature,
       'createdRef': createdRef.toIso8601String(),
-      'created': created.toIso8601String()
+      'created': created.toIso8601String(), 
+      'approbationDD': approbationDD,
+      'motifDD': motifDD,
+      'signatureDD': signatureDD
     };
   }
 }

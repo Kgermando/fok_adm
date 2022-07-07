@@ -751,7 +751,13 @@ class _DetailAgentPageState extends State<DetailAgentPage> {
         photo: agentModel.photo,
         salaire: agentModel.salaire,
         signature: user.matricule,
-        created: DateTime.now());
+        created: DateTime.now(),
+        approbationDG: agentModel.approbationDG,
+        motifDG: agentModel.motifDG,
+        signatureDG: agentModel.signatureDG,
+        approbationDD: agentModel.approbationDD,
+        motifDD: agentModel.motifDD,
+        signatureDD: agentModel.signatureDD);
     await AgentsApi().updateData(agent);
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
       content: const Text("Mise à statut agent succès!"),

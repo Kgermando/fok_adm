@@ -298,7 +298,10 @@ class _AddMobilerMaterielState extends State<AddMobilerMateriel> {
         nombre: nombreController.text,
         signature: signature.toString(),
         createdRef: DateTime.now(),
-        created: DateTime.now());
+        created: DateTime.now(), 
+        approbationDD: '-',
+        motifDD: '-',
+        signatureDD: '-');
     await MobilierApi().insertData(mobilierModel);
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
       content: const Text("Enregistrer avec succès!"),

@@ -2,10 +2,12 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:fokad_admin/src/api/auth/auth_api.dart';
+import 'package:fokad_admin/src/api/budgets/ligne_budgetaire_api.dart';
 import 'package:fokad_admin/src/api/rh/trans_rest_agents_api.dart';
 import 'package:fokad_admin/src/api/rh/transport_restaurant_api.dart';
 import 'package:fokad_admin/src/constants/app_theme.dart';
 import 'package:fokad_admin/src/constants/responsive.dart';
+import 'package:fokad_admin/src/models/budgets/ligne_budgetaire_model.dart';
 import 'package:fokad_admin/src/models/rh/transport_restauration_model.dart';
 import 'package:fokad_admin/src/models/users/user_model.dart';
 import 'package:fokad_admin/src/navigation/drawer/drawer_menu.dart';
@@ -34,6 +36,18 @@ class _DetailTransportRestaurantState extends State<DetailTransportRestaurant> {
   final TextEditingController matriculeController = TextEditingController();
   final TextEditingController montantController = TextEditingController();
 
+  // Approbations
+  String approbationDG = '-';
+  String approbationBudget = '-';
+  String approbationFin = '-';
+  String approbationDD = '-';
+  TextEditingController motifDGController = TextEditingController();
+  TextEditingController motifBudgetController = TextEditingController();
+  TextEditingController motifFinController = TextEditingController();
+  TextEditingController motifDDController = TextEditingController();
+  String? ligneBudgtaire;
+  String? ressource;
+
   @override
   initState() {
     getData();
@@ -46,6 +60,10 @@ class _DetailTransportRestaurantState extends State<DetailTransportRestaurant> {
     prenomController.dispose();
     matriculeController.dispose();
     montantController.dispose();
+    motifDGController.dispose();
+    motifBudgetController.dispose();
+    motifFinController.dispose();
+    motifDDController.dispose();
     super.dispose();
   }
 
@@ -65,12 +83,15 @@ class _DetailTransportRestaurantState extends State<DetailTransportRestaurant> {
       succursale: '-');
   List<TransRestAgentsModel> transRestAgentsList = [];
   List<TransRestAgentsModel> transRestAgentsFilter = [];
+  List<LigneBudgetaireModel> ligneBudgetaireList = [];
   Future<void> getData() async {
     UserModel userModel = await AuthApi().getUserId();
     var transRestAgents = await TransRestAgentsApi().getAllData();
+    var budgets = await LIgneBudgetaireApi().getAllData();
     setState(() {
       user = userModel;
       transRestAgentsFilter = transRestAgents;
+      ligneBudgetaireList = budgets;
     });
   }
 
@@ -142,7 +163,13 @@ class _DetailTransportRestaurantState extends State<DetailTransportRestaurant> {
                                 ),
                                 Expanded(
                                     child: SingleChildScrollView(
-                                        child: pageDetail(data!)))
+                                        child: Column(
+                                  children: [
+                                    pageDetail(data!),
+                                    const SizedBox(height: p10),
+                                    approbationWidget(data)
+                                  ],
+                                )))
                               ],
                             );
                           } else {
@@ -525,12 +552,26 @@ class _DetailTransportRestaurantState extends State<DetailTransportRestaurant> {
 
   Future<void> submitObservation(TransportRestaurationModel data) async {
     final transRest = TransportRestaurationModel(
-      id: data.id!,
+        id: data.id!,
         title: data.title,
         observation: 'true',
         signature: data.signature,
         createdRef: data.createdRef,
-        created: DateTime.now());
+        created: DateTime.now(),
+        approbationDG: data.approbationDG,
+        motifDG: data.motifDG,
+        signatureDG: data.signatureDG,
+        approbationBudget: data.approbationBudget,
+        motifBudget: data.motifBudget,
+        signatureBudget: data.signatureBudget,
+        approbationFin: data.approbationFin,
+        motifFin: data.motifFin,
+        signatureFin: data.signatureFin,
+        approbationDD: data.approbationDD,
+        motifDD: data.motifDD,
+        signatureDD: data.signatureDD,
+        ligneBudgetaire: data.ligneBudgetaire,
+        ressource: data.ressource);
     await TransportRestaurationApi().updateData(transRest);
     Navigator.pop(context);
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
@@ -550,6 +591,727 @@ class _DetailTransportRestaurantState extends State<DetailTransportRestaurant> {
     Navigator.pop(context);
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
       content: const Text("Ajouté avec succès!"),
+      backgroundColor: Colors.green[700],
+    ));
+  }
+
+  Widget approbationWidget(TransportRestaurationModel data) {
+    return Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+      Card(
+        elevation: 10,
+        child: Container(
+          margin: const EdgeInsets.all(p16),
+          height: 200,
+          width: (Responsive.isDesktop(context))
+              ? MediaQuery.of(context).size.width / 2
+              : MediaQuery.of(context).size.width,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(p10),
+            border: Border.all(
+              color: Colors.blueGrey.shade700,
+              width: 2.0,
+            ),
+          ),
+          child: Column(
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  IconButton(
+                      onPressed: () {},
+                      icon: Icon(Icons.add_task, color: Colors.green.shade700)),
+                ],
+              ),
+              const SizedBox(height: p20),
+              Row(
+                children: [
+                  const Expanded(flex: 1, child: Text("Directeur générale")),
+                  const SizedBox(width: p20),
+                  if (data.approbationDG != '-')
+                    Expanded(
+                        flex: 4,
+                        child: Row(children: [
+                          Expanded(
+                              flex: 2,
+                              child: Column(
+                                children: [
+                                  const Text("Approbation"),
+                                  const SizedBox(height: p20),
+                                  Text(data.approbationDG),
+                                ],
+                              )),
+                          if (data.approbationDG == "Unapproved")
+                            Expanded(
+                                flex: 3,
+                                child: Column(
+                                  children: [
+                                    const Text("Motif"),
+                                    const SizedBox(height: p20),
+                                    Text(data.motifDG),
+                                  ],
+                                )),
+                          Expanded(
+                              flex: 2,
+                              child: Column(
+                                children: [
+                                  const Text("Signature"),
+                                  const SizedBox(height: p20),
+                                  Text(data.signatureDG),
+                                ],
+                              )),
+                        ])),
+                  if (data.approbationDG == '-' &&
+                      user.fonctionOccupe == "Directeur générale")
+                    Expanded(
+                        flex: 4,
+                        child: Row(children: [
+                          Expanded(child: approbationDGWidget(data)),
+                          Expanded(child: motifDGWidget(data))
+                        ])),
+                ],
+              ),
+              const SizedBox(height: p20),
+              Row(
+                children: [
+                  const Expanded(
+                      flex: 1, child: Text("Directeur de departement")),
+                  const SizedBox(width: p20),
+                  if (data.approbationDD != '-')
+                    Expanded(
+                        flex: 4,
+                        child: Row(children: [
+                          Expanded(
+                              flex: 2,
+                              child: Column(
+                                children: [
+                                  const Text("Approbation"),
+                                  const SizedBox(height: p20),
+                                  Text(data.approbationDD),
+                                ],
+                              )),
+                          if (data.approbationDD == "Unapproved")
+                            Expanded(
+                                flex: 3,
+                                child: Column(
+                                  children: [
+                                    const Text("Motif"),
+                                    const SizedBox(height: p20),
+                                    Text(data.motifDD),
+                                  ],
+                                )),
+                          Expanded(
+                              flex: 2,
+                              child: Column(
+                                children: [
+                                  const Text("Signature"),
+                                  const SizedBox(height: p20),
+                                  Text(data.signatureDD),
+                                ],
+                              )),
+                        ])),
+                  if (data.approbationDD == '-' &&
+                      user.fonctionOccupe == "Directeur de departement")
+                    Expanded(
+                        flex: 4,
+                        child: Row(children: [
+                          Expanded(child: approbationDDWidget(data)),
+                          Expanded(child: motifDDWidget(data))
+                        ])),
+                ],
+              ),
+              const SizedBox(height: p20),
+              Row(
+                children: [
+                  const Expanded(flex: 1, child: Text("Budget")),
+                  const SizedBox(width: p20),
+                  if (data.approbationBudget != '-')
+                    Expanded(
+                        flex: 4,
+                        child: Column(
+                          children: [
+                            Row(children: [
+                              Expanded(
+                                  flex: 2,
+                                  child: Column(
+                                    children: [
+                                      const Text("Approbation"),
+                                      const SizedBox(height: p20),
+                                      Text(data.approbationBudget),
+                                    ],
+                                  )),
+                              if (data.approbationBudget == "Unapproved")
+                                Expanded(
+                                    flex: 3,
+                                    child: Column(
+                                      children: [
+                                        const Text("Motif"),
+                                        const SizedBox(height: p20),
+                                        Text(data.motifBudget),
+                                      ],
+                                    )),
+                              Expanded(
+                                  flex: 2,
+                                  child: Column(
+                                    children: [
+                                      const Text("Signature"),
+                                      const SizedBox(height: p20),
+                                      Text(data.signatureBudget),
+                                    ],
+                                  )),
+                            ]),
+                            Row(children: [
+                              Expanded(
+                                  flex: 2,
+                                  child: Column(
+                                    children: [
+                                      const Text("Ligne Budgetaire"),
+                                      const SizedBox(height: p20),
+                                      Text(data.ligneBudgetaire),
+                                    ],
+                                  )),
+                              Expanded(
+                                  flex: 2,
+                                  child: Column(
+                                    children: [
+                                      const Text("Ressource"),
+                                      const SizedBox(height: p20),
+                                      Text(data.ressource),
+                                    ],
+                                  )),
+                            ]),
+                          ],
+                        )),
+                  if (data.approbationBudget == '-' &&
+                      user.fonctionOccupe == "Directeur de budget")
+                    Expanded(
+                        flex: 4,
+                        child: Column(
+                          children: [
+                            Row(children: [
+                              Expanded(child: approbationBudgetWidget(data)),
+                              Expanded(child: motifBudgetWidget(data))
+                            ]),
+                            Row(children: [
+                              Expanded(child: ligneBudgtaireWidget()),
+                              Expanded(child: resourcesWidget())
+                            ]),
+                          ],
+                        )),
+                ],
+              ),
+              const SizedBox(height: p20),
+              Row(
+                children: [
+                  const Expanded(flex: 1, child: Text("Finance")),
+                  const SizedBox(width: p20),
+                  if (data.approbationFin != '-')
+                    Expanded(
+                        flex: 4,
+                        child: Row(children: [
+                          Expanded(
+                              flex: 2,
+                              child: Column(
+                                children: [
+                                  const Text("Approbation"),
+                                  const SizedBox(height: p20),
+                                  Text(data.approbationFin),
+                                ],
+                              )),
+                          if (data.approbationFin == "Unapproved")
+                            Expanded(
+                                flex: 3,
+                                child: Column(
+                                  children: [
+                                    const Text("Motif"),
+                                    const SizedBox(height: p20),
+                                    Text(data.motifFin),
+                                  ],
+                                )),
+                          Expanded(
+                              flex: 2,
+                              child: Column(
+                                children: [
+                                  const Text("Signature"),
+                                  const SizedBox(height: p20),
+                                  Text(data.signatureFin),
+                                ],
+                              )),
+                        ])),
+                  if (data.approbationFin == '-' &&
+                      user.fonctionOccupe == "Directeur de finance")
+                    Expanded(
+                        flex: 4,
+                        child: Row(children: [
+                          Expanded(child: approbationFinWidget(data)),
+                          Expanded(child: motifFinWidget(data))
+                        ])),
+                ],
+              ),
+            ],
+          ),
+        ),
+      ),
+    ]);
+  }
+
+  Widget approbationDGWidget(TransportRestaurationModel data) {
+    List<String> approbationList = ['Approved', 'Unapproved', '-'];
+    return Container(
+      margin: const EdgeInsets.only(bottom: p20),
+      child: DropdownButtonFormField<String>(
+        decoration: InputDecoration(
+          labelText: 'Approbation',
+          labelStyle: const TextStyle(),
+          border: OutlineInputBorder(borderRadius: BorderRadius.circular(5.0)),
+          contentPadding: const EdgeInsets.only(left: 5.0),
+        ),
+        value: approbationDG,
+        isExpanded: true,
+        items: approbationList.map((String value) {
+          return DropdownMenuItem<String>(
+            value: value,
+            child: Text(value),
+          );
+        }).toList(),
+        onChanged: (value) {
+          setState(() {
+            approbationDG = value!;
+            if (approbationDG == "Approved") {
+              submitDG(data);
+            }
+          });
+        },
+      ),
+    );
+  }
+
+  Widget motifDGWidget(TransportRestaurationModel data) {
+    return Container(
+        margin: const EdgeInsets.only(bottom: p20),
+        child: Row(
+          children: [
+            Expanded(
+              flex: 3,
+              child: TextFormField(
+                controller: motifDGController,
+                decoration: InputDecoration(
+                  border:
+                      OutlineInputBorder(borderRadius: BorderRadius.circular(10.0)),
+                  labelText: 'Ecrivez le motif...',
+                ),
+                keyboardType: TextInputType.text,
+                validator: (value) {
+                  if (value != null && value.isEmpty) {
+                    return 'Ce champs est obligatoire';
+                  } else {
+                    return null;
+                  }
+                },
+              ),
+            ),
+            Expanded(
+              flex: 1,
+              child: IconButton(
+                  tooltip: 'Soumettre le Motif',
+                  onPressed: () { 
+                    submitDG(data);
+                  },
+                  icon: Icon(Icons.send, color: Colors.red.shade700)),
+            )
+          ],
+        ));
+  }
+
+  Widget approbationDDWidget(TransportRestaurationModel data) {
+    List<String> approbationList = ['Approved', 'Unapproved', '-'];
+    return Container(
+      margin: const EdgeInsets.only(bottom: p20),
+      child: DropdownButtonFormField<String>(
+        decoration: InputDecoration(
+          labelText: 'Approbation',
+          labelStyle: const TextStyle(),
+          border: OutlineInputBorder(borderRadius: BorderRadius.circular(5.0)),
+          contentPadding: const EdgeInsets.only(left: 5.0),
+        ),
+        value: approbationDD,
+        isExpanded: true,
+        items: approbationList.map((String value) {
+          return DropdownMenuItem<String>(
+            value: value,
+            child: Text(value),
+          );
+        }).toList(),
+        onChanged: (value) {
+          setState(() {
+            approbationDD = value!;
+             if (approbationDD == "Approved") {
+              submitDD(data);
+            }
+          });
+        },
+      ),
+    );
+  }
+
+  Widget motifDDWidget(TransportRestaurationModel data) {
+    return Container(
+        margin: const EdgeInsets.only(bottom: p20),
+        child: Row(
+          children: [
+            Expanded(
+              flex: 3,
+              child: TextFormField(
+                controller: motifDDController,
+                decoration: InputDecoration(
+                  border:
+                      OutlineInputBorder(borderRadius: BorderRadius.circular(10.0)),
+                  labelText: 'Ecrivez le motif...',
+                ),
+                keyboardType: TextInputType.text,
+                validator: (value) {
+                  if (value != null && value.isEmpty) {
+                    return 'Ce champs est obligatoire';
+                  } else {
+                    return null;
+                  }
+                },
+              ),
+            ),
+            Expanded(
+              flex: 1,
+              child: IconButton(
+                  tooltip: 'Soumettre le Motif',
+                  onPressed: () {
+                    submitDD(data);
+                  },
+                  icon: Icon(Icons.send, color: Colors.red.shade700)),
+            )
+          ],
+        ));
+  }
+
+  Widget approbationBudgetWidget(TransportRestaurationModel data) {
+    List<String> approbationList = ['Approved', 'Unapproved', '-'];
+    return Container(
+      margin: const EdgeInsets.only(bottom: p20),
+      child: DropdownButtonFormField<String>(
+        decoration: InputDecoration(
+          labelText: 'Approbation',
+          labelStyle: const TextStyle(),
+          border: OutlineInputBorder(borderRadius: BorderRadius.circular(5.0)),
+          contentPadding: const EdgeInsets.only(left: 5.0),
+        ),
+        value: approbationBudget,
+        isExpanded: true,
+        items: approbationList.map((String value) {
+          return DropdownMenuItem<String>(
+            value: value,
+            child: Text(value),
+          );
+        }).toList(),
+        onChanged: (value) {
+          setState(() {
+            approbationBudget = value!;
+            if (approbationBudget == "Approved") {
+              submitBudget(data);
+            }
+          });
+        },
+      ),
+    );
+  }
+
+  Widget motifBudgetWidget(TransportRestaurationModel data) {
+    return Container(
+        margin: const EdgeInsets.only(bottom: p20),
+        child: Row(
+          children: [
+            Expanded(
+              flex: 3,
+              child: TextFormField(
+                controller: motifBudgetController,
+                decoration: InputDecoration(
+                  border:
+                      OutlineInputBorder(borderRadius: BorderRadius.circular(10.0)),
+                  labelText: 'Ecrivez le motif...',
+                ),
+                keyboardType: TextInputType.text,
+                validator: (value) {
+                  if (value != null && value.isEmpty) {
+                    return 'Ce champs est obligatoire';
+                  } else {
+                    return null;
+                  }
+                },
+              ),
+            ),
+            Expanded(
+              flex: 1,
+              child: IconButton(
+                  tooltip: 'Soumettre le Motif',
+                  onPressed: () {
+                    submitBudget(data);
+                  },
+                  icon: Icon(Icons.send, color: Colors.red.shade700)),
+            )
+          ],
+        ));
+  }
+
+  Widget approbationFinWidget(TransportRestaurationModel data) {
+    List<String> approbationList = ['Approved', 'Unapproved', '-'];
+    return Container(
+      margin: const EdgeInsets.only(bottom: p20),
+      child: DropdownButtonFormField<String>(
+        decoration: InputDecoration(
+          labelText: 'Approbation',
+          labelStyle: const TextStyle(),
+          border: OutlineInputBorder(borderRadius: BorderRadius.circular(5.0)),
+          contentPadding: const EdgeInsets.only(left: 5.0),
+        ),
+        value: approbationFin,
+        isExpanded: true,
+        items: approbationList.map((String value) {
+          return DropdownMenuItem<String>(
+            value: value,
+            child: Text(value),
+          );
+        }).toList(),
+        onChanged: (value) {
+          setState(() {
+            approbationFin = value!;
+            if (approbationFin == "Approved") {
+              submitFin(data);
+            }
+          });
+        },
+      ),
+    );
+  }
+
+  Widget motifFinWidget(TransportRestaurationModel data) {
+    return Container(
+        margin: const EdgeInsets.only(bottom: p20),
+        child: Row(
+          children: [
+            Expanded(
+              flex: 3,
+              child: TextFormField(
+                controller: motifFinController,
+                decoration: InputDecoration(
+                  border:
+                      OutlineInputBorder(borderRadius: BorderRadius.circular(10.0)),
+                  labelText: 'Ecrivez le motif...',
+                ),
+                keyboardType: TextInputType.text,
+                validator: (value) {
+                  if (value != null && value.isEmpty) {
+                    return 'Ce champs est obligatoire';
+                  } else {
+                    return null;
+                  }
+                },
+              ),
+            ),
+            Expanded(
+              flex: 1,
+              child: IconButton(
+                  tooltip: 'Soumettre le Motif',
+                  onPressed: () {
+                    submitFin(data);
+                  },
+                  icon: Icon(Icons.send, color: Colors.red.shade700)),
+            )
+          ],
+        ));
+  }
+
+  // Soumettre une ligne budgetaire
+  Widget ligneBudgtaireWidget() {
+    var dataList =
+        ligneBudgetaireList.map((e) => e.nomLigneBudgetaire).toList();
+    return Container(
+      margin: const EdgeInsets.only(bottom: p20),
+      child: DropdownButtonFormField<String>(
+        decoration: InputDecoration(
+          labelText: 'Ligne Budgetaire',
+          labelStyle: const TextStyle(),
+          border: OutlineInputBorder(borderRadius: BorderRadius.circular(5.0)),
+          contentPadding: const EdgeInsets.only(left: 5.0),
+        ),
+        value: ligneBudgtaire,
+        isExpanded: true,
+        items: dataList.map((String value) {
+          return DropdownMenuItem<String>(
+            value: value,
+            child: Text(value),
+          );
+        }).toList(),
+        onChanged: (value) {
+          setState(() {
+            ligneBudgtaire = value!;
+          });
+        },
+      ),
+    );
+  }
+
+  Widget resourcesWidget() {
+    List<String> dataList = ['caisse', 'banque', 'finPropre', 'finExterieur'];
+    return Container(
+      margin: const EdgeInsets.only(bottom: p20),
+      child: DropdownButtonFormField<String>(
+        decoration: InputDecoration(
+          labelText: 'Ligne Budgetaire',
+          labelStyle: const TextStyle(),
+          border: OutlineInputBorder(borderRadius: BorderRadius.circular(5.0)),
+          contentPadding: const EdgeInsets.only(left: 5.0),
+        ),
+        value: ressource,
+        isExpanded: true,
+        items: dataList.map((String value) {
+          return DropdownMenuItem<String>(
+            value: value,
+            child: Text(value),
+          );
+        }).toList(),
+        onChanged: (value) {
+          setState(() {
+            ressource = value!;
+          });
+        },
+      ),
+    );
+  }
+
+  Future<void> submitDG(TransportRestaurationModel data) async {
+    final transRest = TransportRestaurationModel(
+        id: data.id!,
+        title: data.title,
+        observation: data.observation,
+        signature: data.signature,
+        createdRef: data.createdRef,
+        created: data.created,
+ 
+        approbationDG: approbationDG,
+        motifDG: (motifDGController.text == '') ? '-' : motifDGController.text,
+        signatureDG: user.matricule,
+        approbationBudget: '-',
+        motifBudget: '-',
+        signatureBudget: '-',
+        approbationFin: '-',
+        motifFin: '-',
+        signatureFin: '-',
+        approbationDD: data.approbationDD,
+        motifDD: data.motifDD,
+        signatureDD: data.signatureDD,
+        ligneBudgetaire: '-',
+        ressource: '-'
+    );
+    await TransportRestaurationApi().updateData(transRest);
+    Navigator.pop(context);
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      content: const Text("Soumis avec succès!"),
+      backgroundColor: Colors.green[700],
+    ));
+  }
+
+  Future<void> submitDD(TransportRestaurationModel data) async {
+    final transRest = TransportRestaurationModel(
+        id: data.id!,
+        title: data.title,
+        observation: data.observation,
+        signature: data.signature,
+        createdRef: data.createdRef,
+        created: data.created,
+
+        approbationDG: '-',
+        motifDG: '-',
+        signatureDG: '-',
+        approbationBudget: '-',
+        motifBudget: '-',
+        signatureBudget: '-',
+        approbationFin: '-',
+        motifFin: '-',
+        signatureFin: '-',
+        approbationDD: approbationDD,
+        motifDD: (motifDDController.text == '') ? '-' : motifDDController.text,
+        signatureDD: user.matricule,
+        ligneBudgetaire: '-',
+        ressource: '-'
+    );
+    await TransportRestaurationApi().updateData(transRest);
+    Navigator.pop(context);
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      content: const Text("Soumis avec succès!"),
+      backgroundColor: Colors.green[700],
+    ));
+  }
+
+  Future<void> submitBudget(TransportRestaurationModel data) async {
+    final transRest = TransportRestaurationModel(
+        id: data.id!,
+        title: data.title,
+        observation: data.observation,
+        signature: data.signature,
+        createdRef: data.createdRef,
+        created: data.created,
+
+        approbationDG: approbationDG,
+        motifDG: data.motifDG,
+        signatureDG: data.signatureDG,
+        approbationBudget: approbationBudget,
+        motifBudget: (motifBudgetController.text == '')
+            ? '-'
+            : motifBudgetController.text,
+        signatureBudget: user.matricule,
+        approbationFin: '-',
+        motifFin: '-',
+        signatureFin: '-',
+        approbationDD: data.approbationDD,
+        motifDD: data.motifDD,
+        signatureDD: data.signatureDD,
+        ligneBudgetaire:
+            (ligneBudgtaire.toString() == '') ? '-' : ligneBudgtaire.toString(),
+        ressource: (ressource.toString() == '') ? '-' : ressource.toString()
+    );
+    await TransportRestaurationApi().updateData(transRest);
+    Navigator.pop(context);
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      content: const Text("Soumis avec succès!"),
+      backgroundColor: Colors.green[700],
+    ));
+  }
+
+  Future<void> submitFin(TransportRestaurationModel data) async {
+    final transRest = TransportRestaurationModel(
+        id: data.id!,
+        title: data.title,
+        observation: data.observation,
+        signature: data.signature,
+        createdRef: data.createdRef,
+        created: data.created,
+
+        approbationDG: approbationDG,
+        motifDG: data.motifDG,
+        signatureDG: data.signatureDG,
+        approbationBudget: data.approbationBudget,
+        motifBudget: data.motifBudget,
+        signatureBudget: data.signatureBudget,
+        approbationFin: approbationFin,
+        motifFin:
+            (motifFinController.text == '') ? '-' : motifFinController.text,
+        signatureFin: user.matricule,
+        approbationDD: data.approbationDD,
+        motifDD: data.motifDD,
+        signatureDD: data.signatureDD,
+        ligneBudgetaire: data.ligneBudgetaire,
+        ressource: data.ressource
+    );
+    await TransportRestaurationApi().updateData(transRest);
+    Navigator.pop(context);
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      content: const Text("Soumis avec succès!"),
       backgroundColor: Colors.green[700],
     ));
   }

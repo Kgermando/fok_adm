@@ -346,17 +346,32 @@ class _AddCampaignState extends State<AddCampaign> {
 
   Future<void> submit() async {
     final campaignModel = CampaignModel(
-        typeProduit: typeProduitController.text,
-        dateDebutEtFin:
-            "Du ${DateFormat('dd/MM/yyyy').format(dateRange!.start)} - Au ${DateFormat('dd/MM/yyyy').format(dateRange!.end)}",
-        coutCampaign: coutCampaignController.text,
-        lieuCible: lieuCibleController.text,
-        promotion: promotionController.text,
-        objectifs: objectifsController.text,
-        observation: 'false',
-        signature: user!.matricule.toString(),
-        createdRef: DateTime.now(),
-        created: DateTime.now());
+      typeProduit: typeProduitController.text,
+      dateDebutEtFin:
+          "Du ${DateFormat('dd/MM/yyyy').format(dateRange!.start)} - Au ${DateFormat('dd/MM/yyyy').format(dateRange!.end)}",
+      coutCampaign: coutCampaignController.text,
+      lieuCible: lieuCibleController.text,
+      promotion: promotionController.text,
+      objectifs: objectifsController.text,
+      observation: 'false',
+      signature: user!.matricule.toString(),
+      createdRef: DateTime.now(),
+      created: DateTime.now(),
+      approbationDG: '-',
+      motifDG: '-',
+      signatureDG: '-',
+      approbationBudget: '-',
+      motifBudget: '-',
+      signatureBudget: '-',
+      approbationFin: '-',
+      motifFin: '-',
+      signatureFin: '-',
+      approbationDD: '-',
+      motifDD: '-',
+      signatureDD: '-',
+      ligneBudgetaire: '-',
+      ressource: '-'
+    );
 
     await CampaignApi().insertData(campaignModel);
     Navigator.of(context).pop();

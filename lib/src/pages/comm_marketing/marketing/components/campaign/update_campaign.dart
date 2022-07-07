@@ -406,7 +406,21 @@ class _UpdateCampaignState extends State<UpdateCampaign> {
         observation: 'false',
         signature: user!.matricule.toString(),
         createdRef: data.createdRef,
-        created: DateTime.now());
+        created: DateTime.now(),
+        approbationDG: '-',
+        motifDG: '-',
+        signatureDG: '-',
+        approbationBudget: '-',
+        motifBudget: '-',
+        signatureBudget: '-',
+        approbationFin: '-',
+        motifFin: '-',
+        signatureFin: '-',
+        approbationDD: '-',
+        motifDD: '-',
+        signatureDD: '-',
+        ligneBudgetaire: '-',
+        ressource: '-');
 
     await CampaignApi().updateData(campaignModel);
     Navigator.of(context).pop();

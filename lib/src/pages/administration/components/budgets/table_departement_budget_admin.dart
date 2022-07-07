@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:fokad_admin/src/api/approbation/approbation_api.dart';
 import 'package:fokad_admin/src/api/budgets/departement_budget_api.dart';
 import 'package:fokad_admin/src/models/budgets/departement_budget_model.dart';
 import 'package:fokad_admin/src/routes/routes.dart';
@@ -143,25 +142,22 @@ class _TableDepartementBudgetDGState extends State<TableDepartementBudgetDG> {
   Future agentsRow() async {
     List<DepartementBudgetModel?> dataList =
         await DepeartementBudgetApi().getAllData();
-    var approbations = await ApprobationApi().getAllData();
+        
     List<DepartementBudgetModel?> data = [];
-    for (var item in approbations) {
-      data = dataList
-          .where((element) =>
-              DateTime.now().millisecondsSinceEpoch <=
-                  element!.periodeFin.millisecondsSinceEpoch &&
-              element.created.microsecondsSinceEpoch == item.reference.microsecondsSinceEpoch &&
-              item.fontctionOccupee == 'Directeur de budget' &&
-              item.approbation == "Approved")
-          .toList();
-    }
+     data = dataList
+      .where((element) =>
+          DateTime.now().millisecondsSinceEpoch <=
+              element!.periodeFin.millisecondsSinceEpoch &&
+          element.approbationDG == '-' &&
+          element.approbationDD == 'Approved'    
+        )
+      .toList();
 
     if (mounted) {
       setState(() {
-        for (var item in data) {
-          id = item!.id;
+        for (var item in data) { 
           rows.add(PlutoRow(cells: {
-            'id': PlutoCell(value: item.id),
+            'id': PlutoCell(value: item!.id),
             'departement': PlutoCell(value: item.departement),
             'periodeBudget': PlutoCell(
                 value:

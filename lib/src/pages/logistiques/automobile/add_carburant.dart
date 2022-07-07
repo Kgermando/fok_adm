@@ -469,7 +469,10 @@ class _AddCarburantAutoState extends State<AddCarburantAuto> {
         qtyAchat: qtyAchatController.text,
         signature: signature.toString(),
         createdRef: DateTime.now(),
-        created: DateTime.now());
+        created: DateTime.now(), 
+        approbationDD: '-',
+        motifDD: '-',
+        signatureDD: '-');
     await CarburantApi().insertData(carburantModel);
     Navigator.pop(context);
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(

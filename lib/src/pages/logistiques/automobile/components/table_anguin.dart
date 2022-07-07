@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:fokad_admin/src/api/auth/auth_api.dart';
 import 'package:fokad_admin/src/api/logistiques/anguin_api.dart';
-import 'package:fokad_admin/src/models/logistiques/anguin_model.dart'; 
+import 'package:fokad_admin/src/models/logistiques/anguin_model.dart';
+import 'package:fokad_admin/src/models/users/user_model.dart'; 
 import 'package:fokad_admin/src/routes/routes.dart';
 import 'package:fokad_admin/src/utils/class_implemented.dart';
 import 'package:fokad_admin/src/widgets/print_widget.dart';
@@ -222,7 +224,13 @@ class _TableAnguinState extends State<TableAnguin> {
 
   Future agentsRow() async {
     List<AnguinModel?> dataList = await AnguinApi().getAllData();
-    var data = dataList.toList();
+    UserModel userModel = await AuthApi().getUserId();
+    var data = dataList
+        .where((element) =>
+            element!.approbationDG == "Approved" &&
+                element.approbationDD == "Approved" ||
+            element.signature == userModel.matricule)
+        .toList();
 
     if (mounted) {
       setState(() {

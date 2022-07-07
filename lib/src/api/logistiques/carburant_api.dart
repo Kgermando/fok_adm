@@ -94,12 +94,12 @@ class CarburantApi {
   }
 
   Future<CarburantModel> updateData(
-      int id, CarburantModel carburantModel) async {
+      CarburantModel carburantModel) async {
     String? token = await UserSharedPref().getAccessToken();
 
     var data = carburantModel.toJson();
     var body = jsonEncode(data);
-    var updateUrl = Uri.parse("$mainUrl/carburants/update-carburant/$id");
+    var updateUrl = Uri.parse("$mainUrl/carburants/update-carburant/");
 
     var res = await client.put(updateUrl,
         headers: <String, String>{

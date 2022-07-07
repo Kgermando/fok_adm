@@ -271,7 +271,11 @@ class _TableDetteAdminState extends State<TableDetteAdmin> {
 
   Future agentsRow() async {
     List<DetteModel?> dataList = await DetteApi().getAllData();
-    var data = dataList.toList();  // PAs de filtre parce le fichier approbation n'est pas encore crée
+    var data = dataList
+        .where((element) =>
+            element!.approbationDG == '-' &&
+            element.approbationDD == 'Approved')
+        .toList();  // PAs de filtre parce le fichier approbation n'est pas encore crée
     
 
     if (mounted) {

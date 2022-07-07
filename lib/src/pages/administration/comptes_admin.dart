@@ -1,7 +1,6 @@
 import 'dart:async';
 
-import 'package:flutter/material.dart';
-import 'package:fokad_admin/src/api/approbation/approbation_api.dart';
+import 'package:flutter/material.dart'; 
 import 'package:fokad_admin/src/api/comptabilite/balance_compte_api.dart';
 import 'package:fokad_admin/src/api/comptabilite/bilan_api.dart';
 import 'package:fokad_admin/src/api/comptabilite/compte_resultat_api.dart';
@@ -50,32 +49,29 @@ class _CompteAdminState extends State<CompteAdmin> {
     var bilans = await BilanApi().getAllData();
     var journal = await JournalApi().getAllData();
     var compteReultats = await CompteResultatApi().getAllData();
-    var balances = await BalanceCompteApi().getAllData();
-    var approbations = await ApprobationApi().getAllData();
+    var balances = await BalanceCompteApi().getAllData(); 
 
     setState(() {
-      for (var item in approbations) {
-        bilanCount = bilans
-            .where((element) =>
-                element.created.microsecondsSinceEpoch == item.reference.microsecondsSinceEpoch &&
-                item.approbation == 'Directeur de departement')
-            .length;
-        journalCount = journal
-            .where((element) =>
-                element.created.microsecondsSinceEpoch == item.reference.microsecondsSinceEpoch &&
-                item.approbation == 'Directeur de departement')
-            .length;
-        compteResultatCount = compteReultats
-            .where((element) =>
-                element.created.microsecondsSinceEpoch == item.reference.microsecondsSinceEpoch &&
-                item.approbation == 'Directeur de departement')
-            .length;
-        balanceCount = balances
-            .where((element) =>
-                element.created.microsecondsSinceEpoch == item.reference.microsecondsSinceEpoch &&
-                item.approbation == 'Directeur de departement')
-            .length;
-      }
+      bilanCount = bilans
+          .where((element) =>
+              element.approbationDG == '-' &&
+              element.approbationDD == 'Approved')
+          .length;
+      journalCount = journal
+          .where((element) =>
+              element.approbationDG == '-' &&
+              element.approbationDD == 'Approved')
+          .length;
+      compteResultatCount = compteReultats
+          .where((element) =>
+              element.approbationDG == '-' &&
+              element.approbationDD == 'Approved')
+          .length;
+      balanceCount = balances
+          .where((element) =>
+              element.approbationDG == '-' &&
+              element.approbationDD == 'Approved')
+          .length;
     });
   }
 

@@ -168,7 +168,11 @@ class _TableImmobilierDGState extends State<TableImmobilierDG> {
 
   Future agentsRow() async {
     List<ImmobilierModel?> dataList = await ImmobilierApi().getAllData();
-    var data = dataList.toList();
+    var data = dataList
+        .where((element) =>
+            element!.approbationDG == '-' &&
+            element.approbationDD == 'Approved')
+        .toList();
 
     if (mounted) {
       setState(() {

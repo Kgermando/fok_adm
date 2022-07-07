@@ -272,7 +272,13 @@ class _AddBudgetPrevionelState extends State<AddBudgetPrevionel> {
         signature: signature.toString(),
         createdRef: DateTime.now(),
         created: DateTime.now(),
-        isSubmit: 'false'
+        isSubmit: 'false',
+        approbationDG: '-',
+        motifDG: '-',
+        signatureDG: '-',
+        approbationDD: '-',
+        motifDD: '-',
+        signatureDD: '-'
       );
 
     await DepeartementBudgetApi().insertData(departementBudgetModel);

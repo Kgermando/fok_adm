@@ -239,11 +239,18 @@ class _AddSurrsaleState extends State<AddSurrsale> {
 
   Future<void> submit() async {
     final succursaleModel = SuccursaleModel(
-        name: nameController.text,
-        adresse: adresseController.text,
-        province: province.toString(),
-        signature: user!.matricule.toString(),
-        created: DateTime.now());
+      name: nameController.text,
+      adresse: adresseController.text,
+      province: province.toString(),
+      signature: user!.matricule.toString(),
+      created: DateTime.now(),
+      approbationDG: '-',
+      motifDG: '-',
+      signatureDG: '-',
+      approbationDD: '-',
+      motifDD: '-',
+      signatureDD: '-'
+    );
 
     await SuccursaleApi().insertData(succursaleModel);
     Navigator.of(context).pop();

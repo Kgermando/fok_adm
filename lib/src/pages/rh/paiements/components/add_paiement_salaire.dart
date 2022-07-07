@@ -1328,6 +1328,7 @@ class _AddPaiementSalaireState extends State<AddPaiementSalaire> {
       nom: agentModel.nom,
       postNom: agentModel.postNom,
       prenom: agentModel.prenom,
+      email: agentModel.email,
       telephone: agentModel.telephone,
       adresse: agentModel.adresse,
       departement: agentModel.departement,
@@ -1428,6 +1429,21 @@ class _AddPaiementSalaireState extends State<AddPaiementSalaire> {
           (totalDuBrutController.text == '') ? '-' : totalDuBrutController.text,
 
       signature: signature.toString(),
+      
+      approbationDG: '-',
+      motifDG: '-',
+      signatureDG: '-',
+      approbationBudget: '-',
+      motifBudget: '-',
+      signatureBudget: '-',
+      approbationFin: '-',
+      motifFin: '-',
+      signatureFin: '-',
+      approbationDD: '-',
+      motifDD: '-',
+      signatureDD: '-',
+      ligneBudgetaire: '-',
+      ressource: '-'
     );
     await PaiementSalaireApi().insertData(paiementSalaireModel);
     Navigator.of(context).pop();

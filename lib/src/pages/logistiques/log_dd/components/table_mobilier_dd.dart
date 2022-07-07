@@ -169,7 +169,7 @@ class _TableMobilierDDState extends State<TableMobilierDD> {
   Future agentsRow() async {
     List<MobilierModel?> dataList = await MobilierApi().getAllData();
     var data =
-        dataList.toList();
+        dataList.where((element) => element!.approbationDD == '-').toList();
 
     if (mounted) {
       setState(() {

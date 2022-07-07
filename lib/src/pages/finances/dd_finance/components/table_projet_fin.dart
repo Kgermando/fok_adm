@@ -1,7 +1,6 @@
 import 'dart:async';
 
-import 'package:flutter/material.dart';
-import 'package:fokad_admin/src/api/approbation/approbation_api.dart';
+import 'package:flutter/material.dart'; 
 import 'package:fokad_admin/src/api/exploitations/projets_api.dart';
 import 'package:fokad_admin/src/models/exploitations/projet_model.dart'; 
 import 'package:fokad_admin/src/routes/routes.dart';
@@ -185,15 +184,13 @@ class _TableProjetFinState extends State<TableProjetFin> {
 
   Future agentsRow() async {
     List<ProjetModel?> dataList = await ProjetsApi().getAllData();
-    List<ProjetModel?> data = [];
-    var approbations = await ApprobationApi().getAllData();
-    for (var item in approbations) {
-      data = dataList
-          .where((element) =>
-              element!.created.microsecondsSinceEpoch == item.reference.microsecondsSinceEpoch &&
-              item.fontctionOccupee == 'Directeur budget')
-          .toList();
-    }
+    var data = dataList
+        .where((element) =>
+            element!.approbationDG == 'Approuved' &&
+            element.approbationDD == 'Approuved' &&
+            element.approbationBudget == 'Approuved' &&
+            element.approbationFin == "-")
+        .toList();
 
     if (mounted) {
       setState(() {

@@ -281,7 +281,13 @@ class _CreanceTransactionsState extends State<CreanceTransactions> {
         statutPaie: 'false',
         signature: matricule.toString(),
         createdRef: DateTime.now(),
-        created: DateTime.now());
+        created: DateTime.now(),
+        approbationDG: '-',
+        motifDG: '-',
+        signatureDG: '-',
+        approbationDD: '-',
+        motifDD: '-',
+        signatureDD: '-');
     await CreanceApi().insertData(creanceModel);
     Navigator.of(context).pop();
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(

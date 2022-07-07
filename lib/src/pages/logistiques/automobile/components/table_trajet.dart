@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:fokad_admin/src/api/auth/auth_api.dart';
 import 'package:fokad_admin/src/api/logistiques/trajet_api.dart';
-import 'package:fokad_admin/src/models/logistiques/trajet_model.dart'; 
+import 'package:fokad_admin/src/models/logistiques/trajet_model.dart';
+import 'package:fokad_admin/src/models/users/user_model.dart'; 
 import 'package:fokad_admin/src/routes/routes.dart';
 import 'package:fokad_admin/src/widgets/print_widget.dart';
 import 'package:fokad_admin/src/utils/class_implemented.dart';
@@ -192,7 +194,12 @@ class _TableTrajetState extends State<TableTrajet> {
 
   Future agentsRow() async {
     List<TrajetModel?> dataList = await TrajetApi().getAllData();
-    var data = dataList;
+     UserModel userModel = await AuthApi().getUserId();
+    var data = dataList
+        .where((element) =>
+          element!.approbationDD == "Approved" ||
+            element.signature == userModel.matricule)
+        .toList();
 
     if (mounted) {
       setState(() {

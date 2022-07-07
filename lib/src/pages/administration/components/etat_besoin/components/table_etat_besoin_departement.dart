@@ -198,7 +198,11 @@ class _TabvleEtatBesoinDepartementState
 
   Future agentsRow() async {
     List<DevisModel?> dataList = await DevisAPi().getAllData();
-    var data = dataList.toList();
+    var data = dataList
+        .where((element) =>
+            element!.approbationDG == '-' &&
+            element.approbationDD == 'Approved')
+        .toList();
     if (mounted) {
       setState(() {
         for (var item in data) {

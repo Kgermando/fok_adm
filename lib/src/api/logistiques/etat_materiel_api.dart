@@ -96,13 +96,13 @@ class EtatMaterielApi {
   }
 
   Future<EtatMaterielModel> updateData(
-      int id, EtatMaterielModel etatMaterielModel) async {
+      EtatMaterielModel etatMaterielModel) async {
     String? token = await UserSharedPref().getAccessToken();
 
     var data = etatMaterielModel.toJson();
     var body = jsonEncode(data);
     var updateUrl =
-        Uri.parse("$mainUrl/etat_materiels/update-etat-materiel/$id");
+        Uri.parse("$mainUrl/etat_materiels/update-etat-materiel/");
 
     var res = await client.put(updateUrl,
         headers: <String, String>{

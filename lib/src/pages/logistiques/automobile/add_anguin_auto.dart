@@ -2,7 +2,7 @@ import 'package:date_time_picker/date_time_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:fokad_admin/src/api/auth/auth_api.dart';
-import 'package:fokad_admin/src/api/logistiques/anguin_api.dart'; 
+import 'package:fokad_admin/src/api/logistiques/anguin_api.dart';
 import 'package:fokad_admin/src/constants/app_theme.dart';
 import 'package:fokad_admin/src/constants/responsive.dart';
 import 'package:fokad_admin/src/models/logistiques/anguin_model.dart';
@@ -57,10 +57,12 @@ class _AddAnguinAutoState extends State<AddAnguinAuto> {
   Future<void> getData() async {
     UserModel userModel = await AuthApi().getUserId();
     var anguins = await AnguinApi().getAllData();
-    setState(() {
+    if (mounted) {
+      setState(() {
       signature = userModel.matricule;
       numberPlaque = anguins.length;
     });
+    }
   }
 
   @override
@@ -72,7 +74,7 @@ class _AddAnguinAutoState extends State<AddAnguinAuto> {
     couleurController.dispose();
     qtyMaxReservoirController.dispose();
     dateFabricationController.dispose();
-    nomeroPLaqueController.dispose(); 
+    nomeroPLaqueController.dispose();
     kilometrageInitialeController.dispose();
     provenanceController.dispose();
     typeCaburantController.dispose();
@@ -161,7 +163,7 @@ class _AddAnguinAutoState extends State<AddAnguinAuto> {
                     const SizedBox(
                       height: p20,
                     ),
-                    Row( 
+                    Row(
                       children: [
                         Expanded(child: nomWidget()),
                         const SizedBox(
@@ -452,18 +454,17 @@ class _AddAnguinAutoState extends State<AddAnguinAuto> {
     String numero = '';
     if (numberPlaque < 10) {
       numero = "00$numberPlaque";
-    } else if(numberPlaque < 99) {
+    } else if (numberPlaque < 99) {
       numero = "0$numberPlaque";
     } else {
       numero = "$numberPlaque";
     }
     return Container(
-      margin: const EdgeInsets.only(bottom: p20),
-      child: Text(
-        "Identifiant N° $numero",
-        style: Theme.of(context).textTheme.headline6,
-      )
-    );
+        margin: const EdgeInsets.only(bottom: p20),
+        child: Text(
+          "Identifiant N° $numero",
+          style: Theme.of(context).textTheme.headline6,
+        ));
   }
 
   Widget kilometrageInitialeWidget() {
@@ -523,24 +524,29 @@ class _AddAnguinAutoState extends State<AddAnguinAuto> {
       numero = "$numberPlaque";
     }
     final anguinModel = AnguinModel(
-      nom: nomController.text,
-      modele: modeleController.text,
-      marque: marqueController.text,
-      numeroChassie: numeroChassieController.text,
-      couleur: couleurController.text,
-      genre: genre.toString(),
-      qtyMaxReservoir: qtyMaxReservoirController.text,
-      dateFabrication: DateTime.parse(dateFabricationController.text),
-      nomeroPLaque: nomeroPLaqueController.text,
-      nomeroEntreprise: numero,
-      kilometrageInitiale: kilometrageInitialeController.text,
-      provenance: provenanceController.text,
-      typeCaburant: typeCaburantController.text,
-      typeMoteur: typeMoteurController.text,
-      signature: signature.toString(),
-      createdRef: DateTime.now(),
-      created: DateTime.now()
-    );
+        nom: nomController.text,
+        modele: modeleController.text,
+        marque: marqueController.text,
+        numeroChassie: numeroChassieController.text,
+        couleur: couleurController.text,
+        genre: genre.toString(),
+        qtyMaxReservoir: qtyMaxReservoirController.text,
+        dateFabrication: DateTime.parse(dateFabricationController.text),
+        nomeroPLaque: nomeroPLaqueController.text,
+        nomeroEntreprise: numero,
+        kilometrageInitiale: kilometrageInitialeController.text,
+        provenance: provenanceController.text,
+        typeCaburant: typeCaburantController.text,
+        typeMoteur: typeMoteurController.text,
+        signature: signature.toString(),
+        createdRef: DateTime.now(),
+        created: DateTime.now(),
+        approbationDG: '-',
+        motifDG: '-',
+        signatureDG: '-',
+        approbationDD: '-',
+        motifDD: '-',
+        signatureDD: '-');
 
     await AnguinApi().insertData(anguinModel);
     Navigator.pop(context);

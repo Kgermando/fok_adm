@@ -1,7 +1,6 @@
 import 'dart:async';
 
-import 'package:flutter/material.dart';
-import 'package:fokad_admin/src/api/approbation/approbation_api.dart';
+import 'package:flutter/material.dart'; 
 import 'package:fokad_admin/src/api/exploitations/projets_api.dart';
 import 'package:fokad_admin/src/models/exploitations/projet_model.dart'; 
 import 'package:fokad_admin/src/routes/routes.dart';
@@ -28,10 +27,7 @@ class _TableProjeBudgetState extends State<TableProjeBudget> {
   @override
   void initState() {
     agentsColumn();
-    Timer.periodic(const Duration(milliseconds: 500), ((timer) {
-      agentsRow();
-      timer.cancel();
-    }));
+    agentsRow();
     super.initState();
   }
 
@@ -189,15 +185,12 @@ class _TableProjeBudgetState extends State<TableProjeBudget> {
   Future agentsRow() async {
     List<ProjetModel?> dataList = await ProjetsApi().getAllData();
     List<ProjetModel?> data = [];
-    var approbations = await ApprobationApi().getAllData();
-    for (var item in approbations) {
-      data = dataList
-          .where((element) =>
-              element!.created.microsecondsSinceEpoch == item.reference.microsecondsSinceEpoch &&
-              item.fontctionOccupee == 'Directeur générale' &&
-              item.approbation == "Approved")
-          .toList();
-    }
+    data = dataList
+        .where((element) =>
+            element!.approbationDG == 'Approuved' &&
+            element.approbationDD == 'Approuved' &&
+            element.approbationBudget == '-')
+        .toList();
         
 
     if (mounted) {

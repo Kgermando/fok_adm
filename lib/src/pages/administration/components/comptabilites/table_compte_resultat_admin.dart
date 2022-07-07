@@ -28,10 +28,7 @@ class _TableCompteResultatAdminState extends State<TableCompteResultatAdmin> {
   @override
   void initState() {
     agentsColumn();
-    Timer.periodic(const Duration(milliseconds: 500), ((timer) {
-      agentsRow();
-      timer.cancel();
-    }));
+    agentsRow(); 
 
     super.initState();
   }
@@ -141,7 +138,8 @@ class _TableCompteResultatAdminState extends State<TableCompteResultatAdmin> {
     // UserModel userModel = await AuthApi().getUserId();
     List<CompteResulatsModel?> dataList =
         await CompteResultatApi().getAllData();
-    var data = dataList;
+    var data = dataList.where((element) =>
+        element!.approbationDG == '-' && element.approbationDD == 'Approved').toList();
 
     if (mounted) {
       setState(() {

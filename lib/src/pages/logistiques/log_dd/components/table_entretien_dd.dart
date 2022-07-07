@@ -181,7 +181,7 @@ class _TableEntretienDDState extends State<TableEntretienDD> {
   Future agentsRow() async {
     List<EntretienModel?> dataList = await EntretienApi().getAllData();
     var data =
-        dataList.toList();
+        dataList.where((element) => element!.approbationDD == '-').toList();
 
     if (mounted) {
       setState(() {

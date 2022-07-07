@@ -59,10 +59,12 @@ class _ComptabiliteNavState extends State<ComptabiliteNav> {
     var balances = await BalanceCompteApi().getAllData();
     if (mounted) {
       setState(() {
-        bilanCount = bilans.length;
-        journalCount = journal.length;
-        compteResultatCount = compteReultats.length;
-        balanceCount = balances.length;
+        bilanCount = bilans.where((element) => element.approbationDD == '-').length;
+        journalCount = journal.where((element) => element.approbationDD == '-').length;
+        compteResultatCount = compteReultats
+            .where((element) => element.approbationDD == '-')
+            .length;
+        balanceCount = balances.where((element) => element.approbationDD == '-').length;
       });
     }
   }

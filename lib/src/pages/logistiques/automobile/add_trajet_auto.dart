@@ -362,7 +362,10 @@ class _AddTrajetAutoState extends State<AddTrajetAuto> {
         kilometrageRetour: '-',
         signature: signature.toString(),
         createdRef: DateTime.now(),
-        created: DateTime.now());
+        created: DateTime.now(), 
+        approbationDD: '-',
+        motifDD: '-',
+        signatureDD: '-');
     await TrajetApi().insertData(trajetModel);
     Navigator.of(context).pop();
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(

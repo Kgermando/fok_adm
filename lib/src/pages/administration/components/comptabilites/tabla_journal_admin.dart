@@ -28,12 +28,7 @@ class _TableJournalAdminState extends State<TableJournalAdmin> {
   @override
   void initState() {
     agentsColumn();
-    setState(() {
-      timer = Timer.periodic(const Duration(milliseconds: 500), ((timer) {
-        agentsRow();
-        timer.cancel();
-      }));
-    });
+    agentsRow();  
 
     super.initState();
   }
@@ -227,7 +222,10 @@ class _TableJournalAdminState extends State<TableJournalAdmin> {
   Future agentsRow() async {
     // UserModel userModel = await AuthApi().getUserId();
     List<JournalModel?> dataList = await JournalApi().getAllData();
-    var data = dataList.toList();
+    var data = dataList
+        .where((element) =>
+            element!.approbationDG == '-' && element.approbationDD == 'Approved')
+        .toList();
 
     if (mounted) {
       setState(() {

@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:fokad_admin/src/api/approbation/approbation_api.dart';
 import 'package:fokad_admin/src/api/auth/auth_api.dart';
 import 'package:fokad_admin/src/api/budgets/ligne_budgetaire_api.dart';
 import 'package:fokad_admin/src/api/comm_marketing/marketing/campaign_api.dart';
@@ -10,7 +9,6 @@ import 'package:fokad_admin/src/api/exploitations/projets_api.dart';
 import 'package:fokad_admin/src/api/rh/paiement_salaire_api.dart';
 import 'package:fokad_admin/src/constants/app_theme.dart';
 import 'package:fokad_admin/src/constants/responsive.dart';
-import 'package:fokad_admin/src/models/approbation/approbation_model.dart';
 import 'package:fokad_admin/src/models/budgets/ligne_budgetaire_model.dart';
 import 'package:fokad_admin/src/models/comm_maketing/campaign_model.dart';
 import 'package:fokad_admin/src/models/devis/devis_models.dart';
@@ -78,7 +76,6 @@ class _DetailLigneBudgetaireState extends State<DetailLigneBudgetaire> {
   List<PaiementSalaireModel> dataSalaireList = [];
 
   LigneBudgetaireModel? ligneBudgetaireModel;
-  List<ApprobationModel> approbationsList = [];
   UserModel user = UserModel(
       nom: '-',
       prenom: '-',
@@ -101,16 +98,36 @@ class _DetailLigneBudgetaireState extends State<DetailLigneBudgetaire> {
     var devis = await DevisAPi().getAllData();
     var projets = await ProjetsApi().getAllData();
     var salaires = await PaiementSalaireApi().getAllData();
-    var approbations = await ApprobationApi().getAllData();
     if (!mounted) return;
     setState(() {
       user = userModel;
-      approbationsList = approbations;
       ligneBudgetaireList = budgets;
-      dataCampaignList = campaigns.toList();
-      dataDevisList = devis.toList();
-      dataProjetList = projets.toList();
-      dataSalaireList = salaires.toList();
+      dataCampaignList = campaigns
+          .where((element) =>
+              element.approbationDG == 'Approuved' &&
+              element.approbationDD == 'Approuved' &&
+              element.approbationBudget == '-')
+          .toList();
+      dataDevisList = devis
+          .where((element) =>
+              element.approbationDG == 'Approuved' &&
+              element.approbationDD == 'Approuved' &&
+              element.approbationBudget == '-')
+          .toList();
+      dataProjetList = projets
+          .where((element) =>
+              element.approbationDG == 'Approuved' &&
+              element.approbationDD == 'Approuved' &&
+              element.approbationBudget == '-')
+          .toList();
+      dataSalaireList = salaires
+          .where((element) =>
+              element.createdAt.month == DateTime.now().month &&
+              element.createdAt.year == DateTime.now().year &&
+              element.approbationDG == 'Approuved' &&
+              element.approbationDD == 'Approuved' &&
+              element.approbationBudget == '-')
+          .toList();
     });
   }
 
@@ -472,40 +489,38 @@ class _DetailLigneBudgetaireState extends State<DetailLigneBudgetaire> {
     List<PaiementSalaireModel> salairefinPropreList = [];
     List<PaiementSalaireModel> salairefinExterieurList = [];
 
-    for (var item in approbationsList) {
-      salairecaisseList = dataSalaireList
-          .where((element) =>
-              element.departement == ligneBudgetaireModel!.departement &&
-              item.ligneBudgtaire == ligneBudgetaireModel!.nomLigneBudgetaire &&
-              element.createdAt.isBefore(
-                  DateTime.parse(ligneBudgetaireModel!.periodeBudget)) &&
-              item.resources == "caisse")
-          .toList();
-      salairebanqueList = dataSalaireList
-          .where((element) =>
-              element.departement == ligneBudgetaireModel!.departement &&
-              item.ligneBudgtaire == ligneBudgetaireModel!.nomLigneBudgetaire &&
-              element.createdAt.isBefore(
-                  DateTime.parse(ligneBudgetaireModel!.periodeBudget)) &&
-              item.resources == "banque")
-          .toList();
-      salairefinPropreList = dataSalaireList
-          .where((element) =>
-              element.departement == ligneBudgetaireModel!.departement &&
-              item.ligneBudgtaire == ligneBudgetaireModel!.nomLigneBudgetaire &&
-              element.createdAt.isBefore(
-                  DateTime.parse(ligneBudgetaireModel!.periodeBudget)) &&
-              item.resources == "finPropre")
-          .toList();
-      salairefinExterieurList = dataSalaireList
-          .where((element) =>
-              element.departement == ligneBudgetaireModel!.departement &&
-              item.ligneBudgtaire == ligneBudgetaireModel!.nomLigneBudgetaire &&
-              element.createdAt.isBefore(
-                  DateTime.parse(ligneBudgetaireModel!.periodeBudget)) &&
-              item.resources == "finExterieur")
-          .toList();
-    }
+    salairecaisseList = dataSalaireList
+        .where((element) =>
+            element.departement == ligneBudgetaireModel!.departement &&
+            element.ligneBudgetaire == ligneBudgetaireModel!.nomLigneBudgetaire &&
+            element.createdAt.isBefore(
+                DateTime.parse(ligneBudgetaireModel!.periodeBudget)) &&
+            element.ressource == "caisse")
+        .toList();
+    salairebanqueList = dataSalaireList
+        .where((element) =>
+            element.departement == ligneBudgetaireModel!.departement &&
+            element.ligneBudgetaire == ligneBudgetaireModel!.nomLigneBudgetaire &&
+            element.createdAt.isBefore(
+                DateTime.parse(ligneBudgetaireModel!.periodeBudget)) &&
+            element.ressource == "banque")
+        .toList();
+    salairefinPropreList = dataSalaireList
+        .where((element) =>
+            element.departement == ligneBudgetaireModel!.departement &&
+            element.ligneBudgetaire == ligneBudgetaireModel!.nomLigneBudgetaire &&
+            element.createdAt.isBefore(
+                DateTime.parse(ligneBudgetaireModel!.periodeBudget)) &&
+            element.ressource == "finPropre")
+        .toList();
+    salairefinExterieurList = dataSalaireList
+        .where((element) =>
+            element.departement == ligneBudgetaireModel!.departement &&
+            element.ligneBudgetaire == ligneBudgetaireModel!.nomLigneBudgetaire &&
+            element.createdAt.isBefore(
+                DateTime.parse(ligneBudgetaireModel!.periodeBudget)) &&
+            element.ressource == "finExterieur")
+        .toList();
 
     for (var item in salairecaisseList) {
       caissesalaire += double.parse(item.salaire);
@@ -524,40 +539,38 @@ class _DetailLigneBudgetaireState extends State<DetailLigneBudgetaire> {
     List<CampaignModel> campaignbanqueList = [];
     List<CampaignModel> campaignfinPropreList = [];
     List<CampaignModel> campaignfinExterieurList = [];
-    for (var item in approbationsList) {
-      campaigncaisseList = dataCampaignList
-          .where((element) =>
-              "Commercial et Marketing" == ligneBudgetaireModel!.departement &&
-              item.ligneBudgtaire == ligneBudgetaireModel!.nomLigneBudgetaire &&
-              element.created.isBefore(
-                  DateTime.parse(ligneBudgetaireModel!.periodeBudget)) &&
-              item.resources == "caisse")
-          .toList();
-      campaignbanqueList = dataCampaignList
-          .where((element) =>
-              "Commercial et Marketing" == ligneBudgetaireModel!.departement &&
-              item.ligneBudgtaire == ligneBudgetaireModel!.nomLigneBudgetaire &&
-              element.created.isBefore(
-                  DateTime.parse(ligneBudgetaireModel!.periodeBudget)) &&
-              item.resources == "banque")
-          .toList();
-      campaignfinPropreList = dataCampaignList
-          .where((element) =>
-              "Commercial et Marketing" == ligneBudgetaireModel!.departement &&
-              item.ligneBudgtaire == ligneBudgetaireModel!.nomLigneBudgetaire &&
-              element.created.isBefore(
-                  DateTime.parse(ligneBudgetaireModel!.periodeBudget)) &&
-              item.resources == "finPropre")
-          .toList();
-      campaignfinExterieurList = dataCampaignList
-          .where((element) =>
-              "Commercial et Marketing" == ligneBudgetaireModel!.departement &&
-              item.ligneBudgtaire == ligneBudgetaireModel!.nomLigneBudgetaire &&
-              element.created.isBefore(
-                  DateTime.parse(ligneBudgetaireModel!.periodeBudget)) &&
-              item.resources == "finExterieur")
-          .toList();
-    }
+    campaigncaisseList = dataCampaignList
+        .where((element) =>
+            "Commercial et Marketing" == ligneBudgetaireModel!.departement &&
+            element.ligneBudgetaire == ligneBudgetaireModel!.nomLigneBudgetaire &&
+            element.created.isBefore(
+                DateTime.parse(ligneBudgetaireModel!.periodeBudget)) &&
+            element.ressource == "caisse")
+        .toList();
+    campaignbanqueList = dataCampaignList
+        .where((element) =>
+            "Commercial et Marketing" == ligneBudgetaireModel!.departement &&
+            element.ligneBudgetaire == ligneBudgetaireModel!.nomLigneBudgetaire &&
+            element.created.isBefore(
+                DateTime.parse(ligneBudgetaireModel!.periodeBudget)) &&
+            element.ressource == "banque")
+        .toList();
+    campaignfinPropreList = dataCampaignList
+        .where((element) =>
+            "Commercial et Marketing" == ligneBudgetaireModel!.departement &&
+            element.ligneBudgetaire == ligneBudgetaireModel!.nomLigneBudgetaire &&
+            element.created.isBefore(
+                DateTime.parse(ligneBudgetaireModel!.periodeBudget)) &&
+            element.ressource == "finPropre")
+        .toList();
+    campaignfinExterieurList = dataCampaignList
+        .where((element) =>
+            "Commercial et Marketing" == ligneBudgetaireModel!.departement &&
+            element.ligneBudgetaire == ligneBudgetaireModel!.nomLigneBudgetaire &&
+            element.created.isBefore(
+                DateTime.parse(ligneBudgetaireModel!.periodeBudget)) &&
+            element.ressource == "finExterieur")
+        .toList();
 
     for (var item in campaigncaisseList) {
       caisseCampaign += double.parse(item.coutCampaign);
@@ -576,40 +589,38 @@ class _DetailLigneBudgetaireState extends State<DetailLigneBudgetaire> {
     List<ProjetModel> projetbanqueList = [];
     List<ProjetModel> projetfinPropreList = [];
     List<ProjetModel> projetfinExterieurList = [];
-    for (var item in approbationsList) {
-      projetcaisseList = dataProjetList
-          .where((element) =>
-              "Exploitations" == ligneBudgetaireModel!.departement &&
-              item.ligneBudgtaire == ligneBudgetaireModel!.nomLigneBudgetaire &&
-              element.created.isBefore(
-                  DateTime.parse(ligneBudgetaireModel!.periodeBudget)) &&
-              item.resources == "caisse")
-          .toList();
-      projetbanqueList = dataProjetList
-          .where((element) =>
-              "Exploitations" == ligneBudgetaireModel!.departement &&
-              item.ligneBudgtaire == ligneBudgetaireModel!.nomLigneBudgetaire &&
-              element.created.isBefore(
-                  DateTime.parse(ligneBudgetaireModel!.periodeBudget)) &&
-              item.resources == "banque")
-          .toList();
-      projetfinPropreList = dataProjetList
-          .where((element) =>
-              "Exploitations" == ligneBudgetaireModel!.departement &&
-              item.ligneBudgtaire == ligneBudgetaireModel!.nomLigneBudgetaire &&
-              element.created.isBefore(
-                  DateTime.parse(ligneBudgetaireModel!.periodeBudget)) &&
-              item.resources == "finPropre")
-          .toList();
-      projetfinExterieurList = dataProjetList
-          .where((element) =>
-              "Exploitations" == ligneBudgetaireModel!.departement &&
-              item.ligneBudgtaire == ligneBudgetaireModel!.nomLigneBudgetaire &&
-              element.created.isBefore(
-                  DateTime.parse(ligneBudgetaireModel!.periodeBudget)) &&
-              item.resources == "finExterieur")
-          .toList();
-    }
+    projetcaisseList = dataProjetList
+        .where((element) =>
+            "Exploitations" == ligneBudgetaireModel!.departement &&
+            element.ligneBudgetaire == ligneBudgetaireModel!.nomLigneBudgetaire &&
+            element.created.isBefore(
+                DateTime.parse(ligneBudgetaireModel!.periodeBudget)) &&
+            element.ressource == "caisse")
+        .toList();
+    projetbanqueList = dataProjetList
+        .where((element) =>
+            "Exploitations" == ligneBudgetaireModel!.departement &&
+            element.ligneBudgetaire == ligneBudgetaireModel!.nomLigneBudgetaire &&
+            element.created.isBefore(
+                DateTime.parse(ligneBudgetaireModel!.periodeBudget)) &&
+            element.ressource == "banque")
+        .toList();
+    projetfinPropreList = dataProjetList
+        .where((element) =>
+            "Exploitations" == ligneBudgetaireModel!.departement &&
+            element.ligneBudgetaire == ligneBudgetaireModel!.nomLigneBudgetaire &&
+            element.created.isBefore(
+                DateTime.parse(ligneBudgetaireModel!.periodeBudget)) &&
+            element.ressource == "finPropre")
+        .toList();
+    projetfinExterieurList = dataProjetList
+        .where((element) =>
+            "Exploitations" == ligneBudgetaireModel!.departement &&
+            element.ligneBudgetaire == ligneBudgetaireModel!.nomLigneBudgetaire &&
+            element.created.isBefore(
+                DateTime.parse(ligneBudgetaireModel!.periodeBudget)) &&
+            element.ressource == "finExterieur")
+        .toList();
 
     for (var item in projetcaisseList) {
       caisseProjet += double.parse(item.coutProjet);
@@ -772,15 +783,13 @@ class _DetailLigneBudgetaireState extends State<DetailLigneBudgetaire> {
   Future salaireRow() async {
     List<PaiementSalaireModel> dataList = [];
 
-    for (var item in approbationsList) {
-      dataList = dataSalaireList
-          .where((element) =>
-              element.departement == ligneBudgetaireModel!.departement &&
-              item.ligneBudgtaire == ligneBudgetaireModel!.nomLigneBudgetaire &&
-              element.createdAt.isBefore(
-                  DateTime.parse(ligneBudgetaireModel!.periodeBudget)))
-          .toList();
-    }
+    dataList = dataSalaireList
+        .where((element) =>
+            element.departement == ligneBudgetaireModel!.departement &&
+            element.ligneBudgetaire == ligneBudgetaireModel!.nomLigneBudgetaire &&
+            element.createdAt
+                .isBefore(DateTime.parse(ligneBudgetaireModel!.periodeBudget)))
+        .toList();
 
     if (mounted) {
       setState(() {
@@ -800,15 +809,13 @@ class _DetailLigneBudgetaireState extends State<DetailLigneBudgetaire> {
 
   Future campaignRow() async {
     List<CampaignModel> dataList = [];
-    for (var item in approbationsList) {
-      dataList = dataCampaignList
-          .where((element) =>
-              "Commercial et Marketing" == ligneBudgetaireModel!.departement &&
-              item.ligneBudgtaire == ligneBudgetaireModel!.nomLigneBudgetaire &&
-              element.created.isBefore(
-                  DateTime.parse(ligneBudgetaireModel!.periodeBudget)))
-          .toList();
-    }
+    dataList = dataCampaignList
+        .where((element) =>
+            "Commercial et Marketing" == ligneBudgetaireModel!.departement &&
+            element.ligneBudgetaire == ligneBudgetaireModel!.nomLigneBudgetaire &&
+            element.created
+                .isBefore(DateTime.parse(ligneBudgetaireModel!.periodeBudget)))
+        .toList();
 
     if (mounted) {
       setState(() {
@@ -828,15 +835,13 @@ class _DetailLigneBudgetaireState extends State<DetailLigneBudgetaire> {
 
   Future projetRow() async {
     List<ProjetModel> dataList = [];
-    for (var item in approbationsList) {
-      dataList = dataProjetList
-          .where((element) =>
-              "Exploitations" == ligneBudgetaireModel!.departement &&
-              item.ligneBudgtaire == ligneBudgetaireModel!.nomLigneBudgetaire &&
-              element.created.isBefore(
-                  DateTime.parse(ligneBudgetaireModel!.periodeBudget)))
-          .toList();
-    }
+     dataList = dataProjetList
+        .where((element) =>
+            "Exploitations" == ligneBudgetaireModel!.departement &&
+            element.ligneBudgetaire == ligneBudgetaireModel!.nomLigneBudgetaire &&
+            element.created
+                .isBefore(DateTime.parse(ligneBudgetaireModel!.periodeBudget)))
+        .toList();
 
     if (mounted) {
       setState(() {
@@ -856,15 +861,13 @@ class _DetailLigneBudgetaireState extends State<DetailLigneBudgetaire> {
 
   Future etatBesionRow() async {
     List<DevisModel> dataList = [];
-    for (var item in approbationsList) {
-      dataList = dataDevisList
-          .where((element) =>
-              element.departement == ligneBudgetaireModel!.departement &&
-              item.ligneBudgtaire == ligneBudgetaireModel!.nomLigneBudgetaire &&
-              element.created.isBefore(
-                  DateTime.parse(ligneBudgetaireModel!.periodeBudget)))
-          .toList();
-    }
+    dataList = dataDevisList
+        .where((element) =>
+            element.departement == ligneBudgetaireModel!.departement &&
+            element.ligneBudgetaire == ligneBudgetaireModel!.nomLigneBudgetaire &&
+            element.created
+                .isBefore(DateTime.parse(ligneBudgetaireModel!.periodeBudget)))
+        .toList();
     if (mounted) {
       setState(() {
         for (var item in dataList) {

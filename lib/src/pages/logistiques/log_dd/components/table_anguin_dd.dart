@@ -225,7 +225,7 @@ class _TableAnguinDDState extends State<TableAnguinDD> {
 
   Future agentsRow() async {
     List<AnguinModel?> dataList = await AnguinApi().getAllData();
-    var data = dataList.toList();
+    var data = dataList.where((element) => element!.approbationDD == '-').toList();
 
     if (mounted) {
       setState(() {

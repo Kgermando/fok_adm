@@ -169,7 +169,7 @@ class _TableImmobilierDDState extends State<TableImmobilierDD> {
   Future agentsRow() async {
     List<ImmobilierModel?> dataList = await ImmobilierApi().getAllData();
     var data =
-        dataList.toList();
+        dataList.where((element) => element!.approbationDD == '-').toList();
 
     if (mounted) {
       setState(() {

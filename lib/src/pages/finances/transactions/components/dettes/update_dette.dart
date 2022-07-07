@@ -235,22 +235,28 @@ class _UpdateDetteState extends State<UpdateDette> {
   }
 
   Future submit() async {
-    final detteModel = DetteModel(
-        nomComplet: nomCompletController.text,
-        pieceJustificative: pieceJustificativeController.text,
-        libelle: libelleController.text,
-        montant: montantController.text,
-        numeroOperation: 'Transaction-Dette-${numberItem + 1}',
-        statutPaie: 'true',
-        signature: matricule.toString(),
-        createdRef: DateTime.now(),
-        created: DateTime.now());
+    // final detteModel = DetteModel(
+    //     nomComplet: nomCompletController.text,
+    //     pieceJustificative: pieceJustificativeController.text,
+    //     libelle: libelleController.text,
+    //     montant: montantController.text,
+    //     numeroOperation: 'Transaction-Dette-${numberItem + 1}',
+    //     statutPaie: 'true',
+    //     signature: matricule.toString(),
+    //     createdRef: DateTime.now(),
+    //     created: DateTime.now(),
+    //     approbationDG: approbationDG,
+    //     motifDG: (motifDGController.text == '') ? '-' : motifDGController.text,
+    //     signatureDG: user.matricule,
+    //     approbationDD: data.approbationDD,
+    //     motifDD: data.motifDD,
+    //     signatureDD: data.signatureDD);
 
-    await DetteApi().insertData(detteModel);
-    Navigator.of(context).pop();
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-      content: const Text("Enregistrer avec succès!"),
-      backgroundColor: Colors.green[700],
-    ));
+    // await DetteApi().updateData(detteModel);
+    // Navigator.of(context).pop();
+    // ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+    //   content: const Text("Enregistrer avec succès!"),
+    //   backgroundColor: Colors.green[700],
+    // ));
   }
 }

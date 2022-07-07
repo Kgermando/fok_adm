@@ -91,14 +91,13 @@ class PaiementSalaireApi {
     }
   }
 
-  Future<PaiementSalaireModel> updateData(
-      int id, PaiementSalaireModel paiementSalaireModel) async {
+  Future<PaiementSalaireModel> updateData(PaiementSalaireModel paiementSalaireModel) async {
     String? token = await UserSharedPref().getAccessToken();
 
     var data = paiementSalaireModel.toJson();
     var body = jsonEncode(data);
     var updateUrl =
-        Uri.parse("$mainUrl/rh/paiement-salaires/update-paiement/$id");
+        Uri.parse("$mainUrl/rh/paiement-salaires/update-paiement/");
 
     var res = await client.put(updateUrl,
         headers: <String, String>{

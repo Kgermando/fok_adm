@@ -1,10 +1,8 @@
-import 'package:flutter/material.dart';
-import 'package:fokad_admin/src/api/approbation/approbation_api.dart';
+import 'package:flutter/material.dart'; 
 import 'package:fokad_admin/src/api/auth/auth_api.dart';
 import 'package:fokad_admin/src/api/comm_marketing/commerciale/succursale_api.dart';
 import 'package:fokad_admin/src/constants/app_theme.dart';
-import 'package:fokad_admin/src/constants/responsive.dart';
-import 'package:fokad_admin/src/models/approbation/approbation_model.dart';
+import 'package:fokad_admin/src/constants/responsive.dart'; 
 import 'package:fokad_admin/src/models/comm_maketing/succursale_model.dart';
 import 'package:fokad_admin/src/models/users/user_model.dart';
 import 'package:fokad_admin/src/navigation/drawer/drawer_menu.dart';
@@ -41,14 +39,11 @@ class _SuccursalePageState extends State<SuccursalePage> {
       isOnline: 'false',
       createdAt: DateTime.now(),
       passwordHash: '-',
-      succursale: '-');
-  List<ApprobationModel> approbationList = [];
+      succursale: '-'); 
   Future<void> getData() async {
-    UserModel data = await AuthApi().getUserId();
-    var approbations = await ApprobationApi().getAllData();
+    UserModel data = await AuthApi().getUserId(); 
     setState(() {
-      user = data;
-      approbationList = approbations;
+      user = data; 
     });
   }
 
@@ -91,50 +86,9 @@ class _SuccursalePageState extends State<SuccursalePage> {
                             builder: (BuildContext context,
                                 AsyncSnapshot<List<SuccursaleModel>> snapshot) {
                               if (snapshot.hasData) {
-                                List<SuccursaleModel>? dataList = snapshot.data;
-                                List<SuccursaleModel?> data = [];
-                                // Verifie les approbation si c'est la list es vide
-                                if (approbationList.isNotEmpty) {
-                                  List<ApprobationModel> isApproved = [];
-                                  for (var item in dataList!) {
-                                    isApproved = approbationList
-                                        .where((element) =>
-                                            element.reference
-                                                .microsecondsSinceEpoch ==
-                                            item.created
-                                                .microsecondsSinceEpoch)
-                                        .toList();
-                                  }
-                                  // FIltre si le filtre donne des elements
-                                  if (isApproved.isNotEmpty) {
-                                    for (var item in approbationList) {
-                                      data = dataList
-                                          .where((element) =>
-                                              element.created
-                                                          .microsecondsSinceEpoch ==
-                                                      item.reference
-                                                          .microsecondsSinceEpoch &&
-                                                  item.fontctionOccupee ==
-                                                      'Directeur générale' &&
-                                                  item.approbation ==
-                                                      "Approved" ||
-                                              element.signature ==
-                                                  user!.matricule)
-                                          .toList();
-                                    }
-                                  } else {
-                                    data = dataList
-                                        .where((element) =>
-                                            element.signature ==
-                                            user!.matricule)
-                                        .toList();
-                                  }
-                                } else {
-                                  data = dataList!
-                                      .where((element) =>
-                                          element.signature == user!.matricule)
-                                      .toList();
-                                }
+                                List<SuccursaleModel>? dataList = snapshot.data!
+                                  .where((element) => element.approbationDG == "Approved" &&
+                                   element.approbationDD == "Approved").toList(); 
  
                                 return Column(
                                   children: [
@@ -149,7 +103,7 @@ class _SuccursalePageState extends State<SuccursalePage> {
                                       ],
                                     ),
                                     Expanded(
-                                      child: data.isEmpty
+                                      child: dataList.isEmpty
                                           ? Center(
                                               child: Text(
                                                 'Ajoutez une Succursale.',

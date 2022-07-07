@@ -146,7 +146,11 @@ class _TableSuccursaleDGState extends State<TableSuccursaleDG> {
 
   Future agentsRow() async {
     List<SuccursaleModel?> dataList = await SuccursaleApi().getAllData();
-    var data = dataList.toList();
+    var data = dataList
+        .where((element) =>
+            element!.approbationDG == '-' &&
+            element.approbationDD == 'Approved')
+        .toList();
 
     if (mounted) {
       setState(() {

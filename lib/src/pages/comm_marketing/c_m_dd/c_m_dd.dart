@@ -43,11 +43,14 @@ class _CMDDState extends State<CMDD> {
     List<ProductModel> prodModel = await ProduitModelApi().getAllData();
     setState(() {
       campaignCount =
-          campaign.length;
+          campaign
+          .where((element) => 
+              element.approbationDD == '-')
+          .length; 
       succursaleCount =
-          succursale.length;
+          succursale.where((element) => element.approbationDD == "-").length;
       prodModelCount =
-          prodModel.length;
+          prodModel.where((element) => element.approbationDD == "-").length;
     });
   }
 

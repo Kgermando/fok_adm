@@ -94,12 +94,12 @@ class EntretienApi {
   }
 
   Future<EntretienModel> updateData(
-      int id, EntretienModel entretienModel) async {
+      EntretienModel entretienModel) async {
     String? token = await UserSharedPref().getAccessToken();
 
     var data = entretienModel.toJson();
     var body = jsonEncode(data);
-    var updateUrl = Uri.parse("$mainUrl/entretiens/update-entretien/$id");
+    var updateUrl = Uri.parse("$mainUrl/entretiens/update-entretien/");
 
     var res = await client.put(updateUrl,
         headers: <String, String>{

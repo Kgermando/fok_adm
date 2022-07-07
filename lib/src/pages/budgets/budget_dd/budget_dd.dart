@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:fokad_admin/src/api/approbation/approbation_api.dart';
 import 'package:fokad_admin/src/api/budgets/departement_budget_api.dart';
 import 'package:fokad_admin/src/api/comm_marketing/marketing/campaign_api.dart';
 import 'package:fokad_admin/src/api/devis/devis_api.dart';
@@ -53,47 +52,36 @@ class _BudgetDDState extends State<BudgetDD> {
     var devis = await DevisAPi().getAllData();
     var projets = await ProjetsApi().getAllData();
     var budgetDep = await DepeartementBudgetApi().getAllData();
-    var approbations = await ApprobationApi().getAllData();
 
     setState(() {
-      for (var item in approbations) {
-        salaireCount = salaires
-            .where((element) =>
-                element.createdAt.microsecondsSinceEpoch == item.reference.microsecondsSinceEpoch &&
-                item.fontctionOccupee == 'Directeur générale' &&
-                item.approbation == "Approved")
-            .toList()
-            .length;
-      }
-      for (var item in approbations) {
-        campaignCount = campaigns
-            .where((element) =>
-                element.created.microsecondsSinceEpoch == item.reference.microsecondsSinceEpoch &&
-                item.fontctionOccupee == 'Directeur générale' &&
-                item.approbation == "Approved")
-            .toList()
-            .length;
-      }
+      salaireCount = salaires
+          .where((element) =>
+              element.createdAt.month == DateTime.now().month &&
+              element.createdAt.year == DateTime.now().year &&
+              element.approbationDG == 'Approuved' &&
+              element.approbationDD == 'Approuved' &&
+              element.approbationBudget == '-')
+          .length;
+      campaignCount = campaigns
+          .where((element) =>
+              element.approbationDG == 'Approuved' &&
+              element.approbationDD == 'Approuved' &&
+              element.approbationBudget == '-') 
+          .length;
       
-      for (var item in approbations) {
-        devisCount = devis
-            .where((element) =>
-                element.created.microsecondsSinceEpoch == item.reference.microsecondsSinceEpoch &&
-                item.fontctionOccupee == 'Directeur générale' &&
-                item.approbation == "Approved")
-            .toList()
-            .length;
-      }
+      devisCount = devis
+          .where((element) =>
+              element.approbationDG == 'Approuved' &&
+              element.approbationDD == 'Approuved' &&
+              element.approbationBudget == '-') 
+          .length;
 
-      for (var item in approbations) {
-        projetCount = projets
-            .where((element) =>
-                element.created.microsecondsSinceEpoch == item.reference.microsecondsSinceEpoch &&
-                item.fontctionOccupee == 'Directeur générale' &&
-                item.approbation == "Approved")
-            .toList()
-            .length;
-      }
+      projetCount = projets
+          .where((element) =>
+              element.approbationDG == 'Approuved' &&
+              element.approbationDD == 'Approuved' &&
+              element.approbationBudget == '-') 
+          .length;
 
       budgetDepCount = budgetDep
           .where((element) => element.isSubmit == 'true')

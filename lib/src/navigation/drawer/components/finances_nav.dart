@@ -1,7 +1,6 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:badges/badges.dart';
-import 'package:flutter/material.dart';
-import 'package:fokad_admin/src/api/approbation/approbation_api.dart';
+import 'package:flutter/material.dart'; 
 import 'package:fokad_admin/src/api/auth/auth_api.dart';
 import 'package:fokad_admin/src/api/comm_marketing/marketing/campaign_api.dart';
 import 'package:fokad_admin/src/api/devis/devis_api.dart';
@@ -63,69 +62,56 @@ class _FinancesNavState extends State<FinancesNav> {
     var salaires = await PaiementSalaireApi().getAllData();
     var campaigns = await CampaignApi().getAllData();
     var devis = await DevisAPi().getAllData();
-    var projets = await ProjetsApi().getAllData();
-    var approbations = await ApprobationApi().getAllData();
+    var projets = await ProjetsApi().getAllData(); 
 
     if (mounted) {
       setState(() {
-        for (var item in approbations) {
-          creanceCount = creances
-              .where((element) =>
-                  element.statutPaie == 'false' &&
-                  element.created.microsecondsSinceEpoch ==
-                      item.reference.microsecondsSinceEpoch &&
-                  item.fontctionOccupee == 'Directeur budget')
-              .toList()
-              .length;
-        }
+        creanceCount = creances
+            .where((element) =>
+                element.statutPaie == 'false' &&
+                element.approbationDD == '-')
+            .toList()
+            .length;
 
-        for (var item in approbations) {
-          detteCount = dettes
-              .where((element) =>
-                  element.statutPaie == 'false' &&
-                  element.created.microsecondsSinceEpoch ==
-                      item.reference.microsecondsSinceEpoch &&
-                  item.fontctionOccupee == 'Directeur budget')
-              .toList()
-              .length;
-        }
+        detteCount = dettes
+            .where((element) =>
+                element.statutPaie == 'false' &&
+                element.approbationDD == '-')
+            .length;
 
-        for (var item in approbations) {
-          salaireCount = salaires
-              .where((element) =>
-                  element.createdAt.microsecondsSinceEpoch ==
-                      item.reference.microsecondsSinceEpoch &&
-                  item.fontctionOccupee == 'Directeur budget')
-              .toList()
-              .length;
-        }
-        for (var item in approbations) {
-          campaignCount = campaigns
-              .where((element) =>
-                  element.created.microsecondsSinceEpoch ==
-                      item.reference.microsecondsSinceEpoch &&
-                  item.fontctionOccupee == 'Directeur budget')
-              .toList()
-              .length;
-        }
-        for (var item in approbations) {
-          devisCount = devis
-              .where((element) =>
-                  element.created.microsecondsSinceEpoch ==
-                      item.reference.microsecondsSinceEpoch &&
-                  item.fontctionOccupee == 'Directeur budget')
-              .toList()
-              .length;
-        }
-        for (var item in approbations) {
-          projetCount = projets
-              .where((element) =>
-                  element.created.microsecondsSinceEpoch ==
-                      item.reference.microsecondsSinceEpoch &&
-                  item.fontctionOccupee == 'Directeur finance')
-              .toList()
-              .length;
-        }
+        salaireCount = salaires
+            .where((element) =>
+                element.createdAt.month == DateTime.now().month &&
+                element.createdAt.year == DateTime.now().year &&
+                element.approbationDG == 'Approuved' &&
+                element.approbationDD == 'Approuved' &&
+                element.approbationBudget == 'Approuved' && 
+                element.approbationFin == "-")
+            .length;
+         campaignCount = campaigns
+            .where((element) =>
+                element.approbationDG == 'Approuved' &&
+                element.approbationDD == 'Approuved' &&
+                element.approbationBudget == 'Approuved' &&
+                element.approbationFin == "-") 
+            .length;
+
+        devisCount = devis
+            .where((element) =>
+                element.approbationDG == 'Approuved' &&
+                element.approbationDD == 'Approuved' &&
+                element.approbationBudget == 'Approuved' &&
+                element.approbationFin == "-") 
+            .length;
+
+        projetCount = projets
+            .where((element) =>
+                element.approbationDG == 'Approuved' &&
+                element.approbationDD == 'Approuved' &&
+                element.approbationBudget == 'Approuved' &&
+                element.approbationFin == "-")
+            .toList()
+            .length;
       });
     }
   }

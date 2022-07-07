@@ -1,7 +1,6 @@
 import 'dart:async';
 
-import 'package:flutter/material.dart';
-import 'package:fokad_admin/src/api/approbation/approbation_api.dart';
+import 'package:flutter/material.dart'; 
 import 'package:fokad_admin/src/api/rh/paiement_salaire_api.dart';
 import 'package:fokad_admin/src/constants/app_theme.dart';
 import 'package:fokad_admin/src/constants/responsive.dart';
@@ -36,17 +35,13 @@ class _DepartementRHState extends State<DepartementRH> {
   Future<void> getData() async {
     // RH
     var salaires = await PaiementSalaireApi().getAllData();
-    var approbations = await ApprobationApi().getAllData();
     setState(() {
-      for (var item in approbations) {
-        salairesCount = salaires
-            .where((element) =>
-                element.createdAt.month == DateTime.now().month &&
-                element.createdAt.year == DateTime.now().year &&
-                element.createdAt.microsecondsSinceEpoch == item.reference.microsecondsSinceEpoch &&
-                item.fontctionOccupee != 'Directeur de departement')
-            .length;
-      }
+      salairesCount = salaires
+          .where((element) =>
+              element.createdAt.month == DateTime.now().month &&
+              element.createdAt.year == DateTime.now().year && 
+              element.approbationDD == "-"
+          ).length;
     });
   }
 

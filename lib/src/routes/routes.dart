@@ -21,8 +21,7 @@ import 'package:fokad_admin/src/pages/budgets/budget_dd/budget_dd.dart';
 import 'package:fokad_admin/src/pages/budgets/budgets_previsionels/budgets_previsionnels.dart';
 import 'package:fokad_admin/src/pages/budgets/budgets_previsionels/components/add_budget_previsionel.dart';
 import 'package:fokad_admin/src/pages/budgets/budgets_previsionels/components/detail_departement_budget.dart';
-import 'package:fokad_admin/src/pages/budgets/dashboard/dashboard_budget.dart';
-import 'package:fokad_admin/src/pages/budgets/etat_besoin/etat_besoin_budgets_page.dart';
+import 'package:fokad_admin/src/pages/budgets/dashboard/dashboard_budget.dart'; 
 import 'package:fokad_admin/src/pages/budgets/historique_budget/historique_budgets_previsionnels.dart';
 import 'package:fokad_admin/src/pages/budgets/ligne_budgetaire/components/ajout_ligne_budgetaire.dart';
 import 'package:fokad_admin/src/pages/budgets/ligne_budgetaire/components/detail_ligne_budgetaire.dart';
@@ -53,8 +52,7 @@ import 'package:fokad_admin/src/pages/comm_marketing/commercial/succursale/compo
 import 'package:fokad_admin/src/pages/comm_marketing/commercial/succursale/components/detail_succurssale.dart';
 import 'package:fokad_admin/src/pages/comm_marketing/commercial/succursale/succursale_page.dart';
 import 'package:fokad_admin/src/pages/comm_marketing/commercial/ventes/ventes_page.dart';
-import 'package:fokad_admin/src/pages/comm_marketing/dashboard/dashboard_com_marketing.dart';
-import 'package:fokad_admin/src/pages/comm_marketing/etat_besoin/etat_besoin_cm_page.dart';
+import 'package:fokad_admin/src/pages/comm_marketing/dashboard/dashboard_com_marketing.dart'; 
 import 'package:fokad_admin/src/pages/comm_marketing/marketing/agenda_marketing.dart';
 import 'package:fokad_admin/src/pages/comm_marketing/marketing/annuaire_marketing.dart';
 import 'package:fokad_admin/src/pages/comm_marketing/marketing/campaign_marketing.dart';
@@ -78,16 +76,14 @@ import 'package:fokad_admin/src/pages/comptabilite/compte_resultat/components/ad
 import 'package:fokad_admin/src/pages/comptabilite/compte_resultat/components/detail_compte_resultat.dart';
 import 'package:fokad_admin/src/pages/comptabilite/compte_resultat/components/update_compte_resultat.dart';
 import 'package:fokad_admin/src/pages/comptabilite/compte_resultat/compte_resultat.dart';
-import 'package:fokad_admin/src/pages/comptabilite/dashboard/dashboard_comptabilite.dart';
-import 'package:fokad_admin/src/pages/comptabilite/etat_besoin/etat_besoin_comptabilite_page.dart';
+import 'package:fokad_admin/src/pages/comptabilite/dashboard/dashboard_comptabilite.dart'; 
 import 'package:fokad_admin/src/pages/comptabilite/grand_livre/grand_livre_comptabilite.dart';
 import 'package:fokad_admin/src/pages/comptabilite/journal/components/add_journal_comptabilite.dart';
 import 'package:fokad_admin/src/pages/comptabilite/journal/components/detail_journal.dart';
 import 'package:fokad_admin/src/pages/comptabilite/journal/journal_comptabilite.dart';
 import 'package:fokad_admin/src/pages/devis/components/detail_devis.dart';
 import 'package:fokad_admin/src/pages/devis/devis_page.dart';
-import 'package:fokad_admin/src/pages/exploitations/dashboard/dashboard_exp.dart';
-import 'package:fokad_admin/src/pages/exploitations/etat_besoin/etat_besoin_exp_page.dart';
+import 'package:fokad_admin/src/pages/exploitations/dashboard/dashboard_exp.dart'; 
 import 'package:fokad_admin/src/pages/exploitations/expl_dd/exploitaion_dd.dart';
 import 'package:fokad_admin/src/pages/exploitations/projets/add_projet_exp.dart';
 import 'package:fokad_admin/src/pages/exploitations/projets/components/detail_projet.dart';
@@ -100,8 +96,7 @@ import 'package:fokad_admin/src/pages/exploitations/versements/add_versement_pro
 import 'package:fokad_admin/src/pages/exploitations/versements/components/detail_versement_projet.dart';
 import 'package:fokad_admin/src/pages/exploitations/versements/versement_projet.dart';
 import 'package:fokad_admin/src/pages/finances/dashboard/dashboard_finance.dart';
-import 'package:fokad_admin/src/pages/finances/dd_finance/departement_fin.dart';
-import 'package:fokad_admin/src/pages/finances/etat_besoin/etat_besoin_fin_page.dart';
+import 'package:fokad_admin/src/pages/finances/dd_finance/departement_fin.dart'; 
 import 'package:fokad_admin/src/pages/finances/transactions/banque_transactions.dart';
 import 'package:fokad_admin/src/pages/finances/transactions/caisses_transactions.dart';
 import 'package:fokad_admin/src/pages/finances/transactions/components/banques/add_depot_banque.dart';
@@ -153,8 +148,7 @@ import 'package:fokad_admin/src/pages/rh/agents/components/detail_agent_page.dar
 import 'package:fokad_admin/src/pages/rh/agents/components/update_agent.dart';
 import 'package:fokad_admin/src/pages/rh/dashboard/dashboard_rh.dart';
 import 'package:fokad_admin/src/pages/rh/dd_rh/departement_rh.dart';
-import 'package:fokad_admin/src/pages/rh/dd_rh/historique/table_salaires_historique.dart';
-import 'package:fokad_admin/src/pages/rh/etat_besoin/etat_besoin_rh_page.dart';
+import 'package:fokad_admin/src/pages/rh/dd_rh/historique/table_salaires_historique.dart'; 
 import 'package:fokad_admin/src/pages/rh/paiements/components/add_paiement_salaire.dart';
 import 'package:fokad_admin/src/pages/rh/paiements/components/paiement_bulletin.dart';
 import 'package:fokad_admin/src/pages/rh/paiements/paiements_rh.dart';
@@ -444,8 +438,7 @@ final routes = <String, WidgetBuilder>{
   RhRoutes.rhPerformenceDetail: (context) => const DetailPerformence(),
   RhRoutes.rhPerformenceAddNote: (context) => const AddPerformenceNote(),
   RhRoutes.rhDD: (context) => const DepartementRH(),
-  RhRoutes.rhHistoriqueSalaire: (context) => const TableSalairesHistorique(),
-  RhRoutes.rhEtatBesoin: (context) => const EtatBesoinRHPage(),
+  RhRoutes.rhHistoriqueSalaire: (context) => const TableSalairesHistorique(), 
   RhRoutes.rhTransportRest: (context) => const TransportRestaurationPage(),
   RhRoutes.rhTransportRestDetail: (context) => const DetailTransportRestaurant(),
 
@@ -460,9 +453,7 @@ final routes = <String, WidgetBuilder>{
       const AjoutLigneBudgetaire(),
   BudgetRoutes.historiqueBudgetBudgetPrevisionel: (context) => const HistoriqueBudgetsPrevisionnels(),
   BudgetRoutes.budgetBudgetPrevisionelDetail: (context) =>
-      const DetailDepartmentBudget(),
-  BudgetRoutes.budgetEtatBesoin: (context) =>
-      const EtatBesoinBudgetsPage(),
+      const DetailDepartmentBudget(), 
 
   // FInance
   FinanceRoutes.finDD: (context) => const DepartementFin(), 
@@ -482,9 +473,7 @@ final routes = <String, WidgetBuilder>{
   FinanceRoutes.transactionsFinancementExterne: (context) => const FinExterneTransactions(),
   FinanceRoutes.transactionsFinancementExterneAdd: (context) => const AddAutreFin(),
   FinanceRoutes.transactionsFinancementExterneDetail: (context) =>
-      const DetailFinExterieur(),
-  FinanceRoutes.finEtatBesoin: (context) =>
-      const EtatBesoinFinPage(), 
+      const DetailFinExterieur(), 
 
   // Comptabilite
   ComptabiliteRoutes.comptabiliteDD: (context) => const ComptabiliteDD(),
@@ -511,9 +500,7 @@ final routes = <String, WidgetBuilder>{
       const DetailBalance(), 
   ComptabiliteRoutes.comptabiliteGrandLivre: (context) => const GrandLivreComptabilite(),
   // ComptabiliteRoutes.comptabiliteGrandLivreSearch: (context) =>
-  //     const TableGrandLivre(),
-  ComptabiliteRoutes.comptabiliteEtatBesoin: (context) =>
-      const EtatBesoinComptabilitePage(),
+  //     const TableGrandLivre(), 
 
   // DEVIS
   DevisRoutes.devis: (context) => const DevisPage(),
@@ -559,8 +546,7 @@ final routes = <String, WidgetBuilder>{
   ExploitationRoutes.expVersementAdd: (context) => const AddVersementProjet(),
   ExploitationRoutes.expTache: (context) => const TacheExp(),
   ExploitationRoutes.expTacheAdd: (context) => const AddTacheExp(),
-  ExploitationRoutes.expTacheDetail: (context) => const DetailTache(),
-  ExploitationRoutes.exploitationEtatBesoin: (context) => const EtatBesoinExploitationsPage(),
+  ExploitationRoutes.expTacheDetail: (context) => const DetailTache(), 
 
   // Marketing
   ComMarketingRoutes.comMarketingDD: (context) => const CMDD(),
@@ -613,9 +599,7 @@ final routes = <String, WidgetBuilder>{
   ComMarketingRoutes.comMarketingcart: (context) =>const CartPage(),
   ComMarketingRoutes.comMarketingcartDetail: (context) => const DetailCart(),
   ComMarketingRoutes.comMarketingHistoryRavitaillement: (context) =>const HistoryRavitaillement(),
-  ComMarketingRoutes.comMarketingHistoryLivraison: (context) =>const HistoryLivraison(),
-  ComMarketingRoutes.comMarketingEtatBesoin: (context) =>
-      const EtatBesoinCMPage(),
+  ComMarketingRoutes.comMarketingHistoryLivraison: (context) =>const HistoryLivraison(), 
 
   // Mails
   MailRoutes.mails: (context) => const MailPages(),

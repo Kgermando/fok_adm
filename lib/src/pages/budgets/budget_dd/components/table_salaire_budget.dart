@@ -1,7 +1,6 @@
 import 'dart:async';
 
-import 'package:flutter/material.dart';
-import 'package:fokad_admin/src/api/approbation/approbation_api.dart';
+import 'package:flutter/material.dart'; 
 import 'package:fokad_admin/src/api/rh/paiement_salaire_api.dart';
 import 'package:fokad_admin/src/models/rh/paiement_salaire_model.dart';
 import 'package:fokad_admin/src/routes/routes.dart';
@@ -202,18 +201,15 @@ class _TableSalairesBudgetState extends State<TableSalairesBudget> {
   Future agentsRow() async {
     List<PaiementSalaireModel?> dataList =
         await PaiementSalaireApi().getAllData();
-    List<PaiementSalaireModel?> data = [];
-    var approbations = await ApprobationApi().getAllData();
-    for (var item in approbations) {
-      data = dataList
-          .where((element) =>
-              element!.createdAt.month == DateTime.now().month &&
-              element.createdAt.year == DateTime.now().year &&
-              element.createdAt.microsecondsSinceEpoch == item.reference.microsecondsSinceEpoch &&
-              item.fontctionOccupee == 'Directeur générale' &&
-              item.approbation == "Approved")
-          .toList();
-    }
+    List<PaiementSalaireModel?> data = []; 
+    data = dataList
+        .where((element) =>
+            element!.createdAt.month == DateTime.now().month &&
+            element.createdAt.year == DateTime.now().year &&
+            element.approbationDG == 'Approuved' &&
+            element.approbationDD == 'Approuved' &&
+            element.approbationBudget == '-')
+        .toList();
 
     if (mounted) {
       setState(() {

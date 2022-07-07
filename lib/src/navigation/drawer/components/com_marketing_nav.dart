@@ -55,9 +55,16 @@ class _ComMarketingState extends State<ComMarketing> {
     var prodModel = await ProduitModelApi().getAllData();
     if (mounted) {
       setState(() {
-        campaignCount = campaign.length;
-        succursaleCount = succursale.length;
-        prodModelCount = prodModel.length;
+        campaignCount = campaign
+            .where((element) => element.approbationDD == '-')
+            .length;
+        succursaleCount = succursale
+            .where((element) => element.approbationDD == '-')
+            .length;
+        prodModelCount = prodModel
+            .where((element) => 
+                element.approbationDD == '-')
+            .length;
       });
     }
   }

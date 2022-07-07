@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:fokad_admin/src/api/approbation/approbation_api.dart'; 
 import 'package:fokad_admin/src/api/finances/banque_api.dart';
 import 'package:fokad_admin/src/api/finances/caisse_api.dart';
 import 'package:fokad_admin/src/api/finances/creance_api.dart';
@@ -77,8 +76,7 @@ class _DashboardFinanceState extends State<DashboardFinance> {
     List<CreanceModel?> dataCreanceList = await CreanceApi().getAllData();
     List<DetteModel?> dataDetteList = await DetteApi().getAllData();
     var creanceDettes = await CreanceDetteApi().getAllData();
-    var dataFinanceExterieurList = await FinExterieurApi().getAllData();
-    var approbations = await ApprobationApi().getAllData();
+    var dataFinanceExterieurList = await FinExterieurApi().getAllData(); 
 
     setState(() {
       // Banque
@@ -108,40 +106,38 @@ class _DashboardFinanceState extends State<DashboardFinance> {
         depensesCaisse += double.parse(item!.montant);
       }
 
-      for (var item in approbations) {
-        // Creance remboursement
-        var creancePayementList = creanceDettes
-            .where((element) => element.creanceDette == 'creances');
+       // Creance remboursement
+      var creancePayementList =
+          creanceDettes.where((element) => element.creanceDette == 'creances');
 
-        List<CreanceModel?> nonPayeCreanceList = dataCreanceList
-            .where((element) =>
-                element!.statutPaie == 'false' &&
-                element.created.microsecondsSinceEpoch == item.reference.microsecondsSinceEpoch &&
-                item.fontctionOccupee == 'Directeur générale')
-            .toList();
+      List<CreanceModel?> nonPayeCreanceList = dataCreanceList
+          .where((element) =>
+              element!.statutPaie == 'false' &&
+              element.approbationDG == 'Approuved' &&
+              element.approbationDD == 'Approuved')
+          .toList();
 
-        for (var item in nonPayeCreanceList) {
-          nonPayesCreance += double.parse(item!.montant);
-        }
-        for (var item in creancePayementList) {
-          creancePayement += double.parse(item.montant);
-        }
+      for (var item in nonPayeCreanceList) {
+        nonPayesCreance += double.parse(item!.montant);
+      }
+      for (var item in creancePayementList) {
+        creancePayement += double.parse(item.montant);
+      }
 
-        // Dette remboursement
-        var detteRemboursementList =
-            creanceDettes.where((element) => element.creanceDette == 'dettes');
-        List<DetteModel?> nonPayeDetteList = dataDetteList
-            .where((element) =>
-                element!.statutPaie == 'false' &&
-                element.created.microsecondsSinceEpoch == item.reference.microsecondsSinceEpoch &&
-                item.fontctionOccupee == 'Directeur générale')
-            .toList();
-        for (var item in nonPayeDetteList) {
-          nonPayesDette += double.parse(item!.montant);
-        }
-        for (var item in detteRemboursementList) {
-          detteRemboursement += double.parse(item.montant);
-        }
+      // Dette remboursement
+      var detteRemboursementList =
+          creanceDettes.where((element) => element.creanceDette == 'dettes');
+      List<DetteModel?> nonPayeDetteList = dataDetteList
+          .where((element) =>
+              element!.statutPaie == 'false' &&
+              element.approbationDG == 'Approuved' &&
+              element.approbationDD == 'Approuved')
+          .toList();
+      for (var item in nonPayeDetteList) {
+        nonPayesDette += double.parse(item!.montant);
+      }
+      for (var item in detteRemboursementList) {
+        detteRemboursement += double.parse(item.montant);
       }
 
       // FinanceExterieur

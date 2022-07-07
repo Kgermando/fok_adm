@@ -1,19 +1,14 @@
 import 'dart:async';
 
-import 'package:flutter/material.dart';
-import 'package:fokad_admin/src/api/approbation/approbation_api.dart';
-import 'package:fokad_admin/src/api/logistiques/anguin_api.dart';
-import 'package:fokad_admin/src/api/logistiques/carburant_api.dart';
-import 'package:fokad_admin/src/api/logistiques/immobiler_api.dart';
-import 'package:fokad_admin/src/api/logistiques/mobilier_api.dart';
+import 'package:flutter/material.dart'; 
+import 'package:fokad_admin/src/api/logistiques/anguin_api.dart'; 
+import 'package:fokad_admin/src/api/logistiques/immobiler_api.dart'; 
 import 'package:fokad_admin/src/constants/app_theme.dart';
 import 'package:fokad_admin/src/constants/responsive.dart';
 import 'package:fokad_admin/src/navigation/drawer/drawer_menu.dart';
-import 'package:fokad_admin/src/navigation/header/custom_appbar.dart';
-import 'package:fokad_admin/src/pages/administration/components/logistiques/table_carburant_admin.dart';
-import 'package:fokad_admin/src/pages/administration/components/logistiques/table_immobilier_admin.dart';
-import 'package:fokad_admin/src/pages/administration/components/logistiques/table_mobilier_admin.dart';
-import 'package:fokad_admin/src/pages/administration/components/logistiques/table_trajet_anguin_admin.dart';
+import 'package:fokad_admin/src/navigation/header/custom_appbar.dart'; 
+import 'package:fokad_admin/src/pages/administration/components/logistiques/table_immobilier_admin.dart'; 
+import 'package:fokad_admin/src/pages/administration/components/logistiques/table_anguin_admin.dart';
 
 class LogistiquesAdmin extends StatefulWidget {
   const LogistiquesAdmin({Key? key}) : super(key: key);
@@ -31,11 +26,8 @@ class _LogistiquesAdminState extends State<LogistiquesAdmin> {
   bool isOpenLog3 = false;
   bool isOpenLog4 = false;
 
-  int anguinsapprobationDD = 0;
-  int carburantCount = 0;
-  int trajetsCount = 0;
-  int immobiliersCount = 0;
-  int mobiliersCount = 0;
+  int anguinsapprobationDD = 0; 
+  int immobiliersCount = 0; 
   int entretiensCount = 0;
   int etatmaterielsCount = 0;
 
@@ -47,35 +39,18 @@ class _LogistiquesAdminState extends State<LogistiquesAdmin> {
   }
 
   Future<void> getData() async {
-    var anguins = await AnguinApi().getAllData();
-    var carburants = await CarburantApi().getAllData();
-    var immobiliers = await ImmobilierApi().getAllData();
-    var mobiliers = await MobilierApi().getAllData();
-    var approbations = await ApprobationApi().getAllData();
+    var anguins = await AnguinApi().getAllData(); 
+    var immobiliers = await ImmobilierApi().getAllData(); 
 
     setState(() {
-      for (var item in approbations) {
-        anguinsapprobationDD = anguins
-            .where((element) =>
-                element.created.microsecondsSinceEpoch == item.reference.microsecondsSinceEpoch &&
-                item.approbation == 'Directeur de departement')
-            .length;
-        carburantCount = carburants
-            .where((element) =>
-                element.created.microsecondsSinceEpoch == item.reference.microsecondsSinceEpoch &&
-                item.approbation == 'Directeur de departement')
-            .length;
-        immobiliersCount = immobiliers
-            .where((element) =>
-                element.created.microsecondsSinceEpoch == item.reference.microsecondsSinceEpoch &&
-                item.approbation == 'Directeur de departement')
-            .length;
-        mobiliersCount = mobiliers
-            .where((element) =>
-                element.created.microsecondsSinceEpoch == item.reference.microsecondsSinceEpoch &&
-                item.approbation == 'Directeur de departement')
-            .length;
-      }
+      anguinsapprobationDD = anguins
+          .where((element) => element.approbationDG == '-' && element.approbationDD == 'Approved')
+          .length; 
+      immobiliersCount = immobiliers
+          .where((element) =>
+              element.approbationDG == '-' &&
+              element.approbationDD == 'Approved')
+          .length; 
     });
   }
 
@@ -131,32 +106,9 @@ class _LogistiquesAdminState extends State<LogistiquesAdmin> {
                                 },
                                 trailing: const Icon(Icons.arrow_drop_down,
                                     color: Colors.white),
-                                children: const [TableTrajetAnguinDG()],
+                                children: const [TableAnguinDG()],
                               ),
-                            ),
-                            Card(
-                              color: Colors.orange.shade700,
-                              child: ExpansionTile(
-                                leading: const Icon(Icons.folder,
-                                    color: Colors.white),
-                                title: Text('Dossier Carburants',
-                                    style: headline6.copyWith(
-                                        color: Colors.white)),
-                                subtitle: Text(
-                                    "Vous avez $carburantCount dossiers necessitent votre approbation",
-                                    style: bodyMedium.copyWith(
-                                        color: Colors.white)),
-                                initiallyExpanded: false,
-                                onExpansionChanged: (val) {
-                                  setState(() {
-                                    isOpenLog2 = !val;
-                                  });
-                                },
-                                trailing: const Icon(Icons.arrow_drop_down,
-                                    color: Colors.white),
-                                children: const [TableCarburantDG()],
-                              ),
-                            ),
+                            ), 
                             Card(
                               color: Colors.lime.shade700,
                               child: ExpansionTile(
@@ -178,29 +130,6 @@ class _LogistiquesAdminState extends State<LogistiquesAdmin> {
                                 trailing: const Icon(Icons.arrow_drop_down,
                                     color: Colors.white),
                                 children: const [TableImmobilierDG()],
-                              ),
-                            ),
-                            Card(
-                              color: Colors.blueGrey,
-                              child: ExpansionTile(
-                                leading: const Icon(Icons.folder,
-                                    color: Colors.white),
-                                title: Text('Dossier Mobiliers',
-                                    style: headline6.copyWith(
-                                        color: Colors.white)),
-                                subtitle: Text(
-                                    "Vous avez $mobiliersCount dossiers necessitent votre approbation",
-                                    style: bodyMedium.copyWith(
-                                        color: Colors.white)),
-                                initiallyExpanded: false,
-                                onExpansionChanged: (val) {
-                                  setState(() {
-                                    isOpenLog4 = !val;
-                                  });
-                                },
-                                trailing: const Icon(Icons.arrow_drop_down,
-                                    color: Colors.white),
-                                children: const [TableMobilierDG()],
                               ),
                             ),
                           ],

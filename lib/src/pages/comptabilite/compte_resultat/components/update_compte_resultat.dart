@@ -884,7 +884,13 @@ class _UpdateCompteResultatState extends State<UpdateCompteResultat> {
         soldeDebiteur: soldeDebiteurController.text,
         signature: user!.matricule.toString(),
         createdRef: data.createdRef,
-        created: DateTime.now());
+        created: DateTime.now(),
+        approbationDG: '-',
+        motifDG: '-',
+        signatureDG: '-',
+        approbationDD: '-',
+        motifDD: '-',
+        signatureDD: '-');
     await CompteResultatApi().insertData(compteResulatsModel);
     Navigator.of(context).pop();
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(

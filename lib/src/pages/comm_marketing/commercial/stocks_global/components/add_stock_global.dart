@@ -1,13 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_switch/flutter_switch.dart';
-import 'package:fokad_admin/src/api/approbation/approbation_api.dart';
 import 'package:fokad_admin/src/api/auth/auth_api.dart';
 import 'package:fokad_admin/src/api/comm_marketing/commerciale/produit_model_api.dart';
 import 'package:fokad_admin/src/api/comm_marketing/commerciale/stock_global_api.dart';
 import 'package:fokad_admin/src/constants/app_theme.dart';
 import 'package:fokad_admin/src/constants/responsive.dart';
-import 'package:fokad_admin/src/models/approbation/approbation_model.dart';
 import 'package:fokad_admin/src/models/comm_maketing/prod_model.dart';
 import 'package:fokad_admin/src/models/comm_maketing/stocks_global_model.dart';
 import 'package:fokad_admin/src/models/users/user_model.dart';
@@ -59,44 +57,15 @@ class _AddStockGlobalState extends State<AddStockGlobal> {
     UserModel userModel = await AuthApi().getUserId();
     var produitModel = await ProduitModelApi().getAllData();
     var stockGlobal = await StockGlobalApi().getAllData();
-    var approbations = await ApprobationApi().getAllData();
 
     if (!mounted) return;
     setState(() {
       signature = userModel.matricule; 
-    // Verifie les approbation si c'est la list es vide
-    if (approbations.isNotEmpty) {
-      List<ApprobationModel> isApproved = [];
-      for (var item in produitModel) {
-        isApproved = approbations
-            .where((element) =>
-                element.reference.microsecondsSinceEpoch ==
-                item.created.microsecondsSinceEpoch)
-            .toList();
-      }
-      // FIltre si le filtre donne des elements
-      if (isApproved.isNotEmpty) {
-        for (var item in approbations) {
-          idProductDropdown = produitModel
-              .where((element) =>
-                  element.created.microsecondsSinceEpoch ==
-                          item.reference.microsecondsSinceEpoch &&
-                      item.fontctionOccupee == 'Directeur de departement' &&
-                      item.approbation == "Approved" ||
-                  element.signature == userModel.matricule)
-              .toList();
-        }
-      } else {
-        idProductDropdown = produitModel
-            .where((element) => element.signature == userModel.matricule)
-            .toList();
-      }
-    } else {
       idProductDropdown = produitModel
-          .where((element) => element.signature == userModel.matricule)
+          .where((element) =>
+            element.approbationDD == "Approved")
           .toList();
-    }
-      stocksGlobalList = stockGlobal; // Permet de filtrer les doubons
+      stocksGlobalList = stockGlobal; 
     });
   }
 

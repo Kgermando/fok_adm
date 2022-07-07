@@ -972,7 +972,14 @@ class _UpdateAgentState extends State<UpdateAgent> {
         photo: '-',
         salaire: salaireController.text,
         signature: user.matricule.toString(),
-        created: DateTime.now());
+        created: DateTime.now(),
+        approbationDG: '-',
+        motifDG: '-',
+        signatureDG: '-',
+        approbationDD: '-',
+        motifDD: '-',
+        signatureDD: '-'
+    );
 
     await AgentsApi().updateData(agentModel);
     Navigator.of(context).pop();

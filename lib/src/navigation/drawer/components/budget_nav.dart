@@ -1,7 +1,6 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:badges/badges.dart';
-import 'package:flutter/material.dart';
-import 'package:fokad_admin/src/api/approbation/approbation_api.dart';
+import 'package:flutter/material.dart'; 
 import 'package:fokad_admin/src/api/auth/auth_api.dart';
 import 'package:fokad_admin/src/api/budgets/departement_budget_api.dart';
 import 'package:fokad_admin/src/api/comm_marketing/marketing/campaign_api.dart';
@@ -61,56 +60,47 @@ class _BudgetNavState extends State<BudgetNav> {
     var campaigns = await CampaignApi().getAllData();
     var devis = await DevisAPi().getAllData();
     var projets = await ProjetsApi().getAllData();
-    var budgetDep = await DepeartementBudgetApi().getAllData();
-    var approbations = await ApprobationApi().getAllData();
+    var budgetDep = await DepeartementBudgetApi().getAllData(); 
     if (mounted) {
       setState(() {
         user = userModel;
-        for (var item in approbations) {
-          salaireCount = salaires
-              .where((element) =>
-                  element.createdAt.microsecondsSinceEpoch ==
-                      item.reference.microsecondsSinceEpoch &&
-                  item.fontctionOccupee == 'Directeur générale')
-              .toList()
-              .length;
-        }
-        for (var item in approbations) {
-          campaignCount = campaigns
-              .where((element) =>
-                  element.created.microsecondsSinceEpoch ==
-                      item.reference.microsecondsSinceEpoch &&
-                  item.fontctionOccupee == 'Directeur générale')
-              .toList()
-              .length;
-        }
-        for (var item in approbations) {
-          devisCount = devis
-              .where((element) =>
-                  element.created.microsecondsSinceEpoch ==
-                      item.reference.microsecondsSinceEpoch &&
-                  item.fontctionOccupee == 'Directeur générale')
-              .toList()
-              .length;
-        }
-        for (var item in approbations) {
-          projetCount = projets
-              .where((element) =>
-                  element.created.microsecondsSinceEpoch ==
-                      item.reference.microsecondsSinceEpoch &&
-                  item.fontctionOccupee == 'Directeur générale')
-              .toList()
-              .length;
-        }
-        for (var item in approbations) {
-          budgetDepCount = budgetDep
-              .where((element) =>
-                  element.created.microsecondsSinceEpoch ==
-                      item.reference.microsecondsSinceEpoch &&
-                  item.fontctionOccupee == 'Directeur générale')
-              .toList()
-              .length;
-        }
+        salaireCount = salaires
+            .where((element) =>
+               element.createdAt.month == DateTime.now().month &&
+                element.createdAt.year == DateTime.now().year &&
+                element.approbationDG == 'Approuved' &&
+                element.approbationDD == 'Approuved' &&
+                element.approbationBudget == '-')
+            .length;
+
+         campaignCount = campaigns
+            .where((element) =>
+                element.approbationDG == 'Approuved' &&
+                element.approbationDD == 'Approuved' &&
+                element.approbationBudget == '-')
+            .length;
+
+        devisCount = devis
+            .where((element) =>
+                element.approbationDG == 'Approuved' &&
+                element.approbationDD == 'Approuved' &&
+                element.approbationBudget == '-')
+            .length;
+
+        projetCount = projets
+            .where((element) =>
+                element.approbationDG == 'Approuved' &&
+                element.approbationDD == 'Approuved' &&
+                element.approbationBudget == '-') 
+            .length;
+
+        budgetDepCount = budgetDep
+            .where((element) =>
+              DateTime.now().millisecondsSinceEpoch <=
+                    element.periodeFin.millisecondsSinceEpoch &&
+                element.approbationDG == 'Approuved' &&
+                element.approbationDD == 'Approuved')
+            .length;
       });
     }
   }

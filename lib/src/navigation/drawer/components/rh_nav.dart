@@ -1,7 +1,6 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:badges/badges.dart';
-import 'package:flutter/material.dart';
-import 'package:fokad_admin/src/api/approbation/approbation_api.dart';
+import 'package:flutter/material.dart'; 
 import 'package:fokad_admin/src/api/auth/auth_api.dart';
 import 'package:fokad_admin/src/api/rh/paiement_salaire_api.dart';
 import 'package:fokad_admin/src/constants/app_theme.dart';
@@ -34,20 +33,15 @@ class _RhNavState extends State<RhNav> {
 
   Future<void> getData() async {
     // RH
-    var salaires = await PaiementSalaireApi().getAllData();
-    var approbations = await ApprobationApi().getAllData();
+    var salaires = await PaiementSalaireApi().getAllData(); 
     if (mounted) {
       setState(() {
-        for (var item in approbations) {
-          salairesCount = salaires
-              .where((element) =>
-                  element.createdAt.month == DateTime.now().month &&
-                  element.createdAt.year == DateTime.now().year &&
-                  element.createdAt.microsecondsSinceEpoch ==
-                      item.reference.microsecondsSinceEpoch &&
-                  item.fontctionOccupee != 'Directeur de departement')
-              .length;
-        }
+         salairesCount = salaires
+            .where((element) =>
+                element.createdAt.month == DateTime.now().month &&
+                element.createdAt.year == DateTime.now().year &&
+                element.approbationDD == '-')
+            .length;
       });
     }
   }

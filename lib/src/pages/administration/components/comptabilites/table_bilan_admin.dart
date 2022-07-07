@@ -27,12 +27,7 @@ class _TableBilanAdminState extends State<TableBilanAdmin> {
   @override
   void initState() {
     agentsColumn();
-    Timer.periodic(const Duration(milliseconds: 500), ((timer) {
-      setState(() {
-        agentsRow();
-      });
-      timer.cancel();
-    }));
+    agentsRow(); 
 
     super.initState();
   }
@@ -140,7 +135,11 @@ class _TableBilanAdminState extends State<TableBilanAdmin> {
   Future agentsRow() async {
     // UserModel userModel = await AuthApi().getUserId();
     List<BilanModel?> dataList = await BilanApi().getAllData();
-    var data = dataList.toList();
+    var data = dataList
+        .where((element) =>
+            element!.approbationDG == '-' &&
+            element.approbationDD == 'Approved')
+        .toList();
 
     if (mounted) {
       setState(() {

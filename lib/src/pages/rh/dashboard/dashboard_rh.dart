@@ -1,7 +1,6 @@
 import 'dart:async';
 
-import 'package:flutter/material.dart';
-import 'package:fokad_admin/src/api/approbation/approbation_api.dart';
+import 'package:flutter/material.dart'; 
 import 'package:fokad_admin/src/api/rh/agents_api.dart';
 import 'package:fokad_admin/src/api/rh/paiement_salaire_api.dart';
 import 'package:fokad_admin/src/constants/app_theme.dart';
@@ -42,8 +41,7 @@ class _DashboardRhState extends State<DashboardRh> {
   List<PaiementSalaireModel> salaireList = [];
   Future<void> getData() async {
     var agents = await AgentsApi().getAllData();
-    var salaires = await PaiementSalaireApi().getAllData();
-    var approbations = await ApprobationApi().getAllData();
+    var salaires = await PaiementSalaireApi().getAllData(); 
     setState(() {
       agentsCount = agents.length;
       agentActifCount =
@@ -60,15 +58,15 @@ class _DashboardRhState extends State<DashboardRh> {
               element.createdAt.month == DateTime.now().month &&
               element.createdAt.year == DateTime.now().year)
           .length;
-      for (var item in approbations) {
-        salaireList = salaires
-            .where((element) =>
-                element.createdAt.month == DateTime.now().month &&
-                element.createdAt.year == DateTime.now().year &&
-                element.createdAt.microsecondsSinceEpoch == item.reference.microsecondsSinceEpoch &&
-                item.fontctionOccupee != 'Directeur de departement')
-            .toList();
-      }
+
+      salaireList = salaires
+          .where((element) =>
+              element.createdAt.month == DateTime.now().month &&
+              element.createdAt.year == DateTime.now().year &&
+              element.approbationDD == "Approved" && 
+              element.approbationBudget == "Approved" && 
+              element.approbationFin == "Approved")
+          .toList(); 
     });
   }
 

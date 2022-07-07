@@ -151,12 +151,19 @@ class _BalanceComptabiliteState extends State<BalanceComptabilite> {
   
   Future<void> submit() async {
     final balance = BalanceCompteModel(
-        title: titleController.text,
-        statut: 'false',
-        signature: user!.matricule.toString(),
-        createdRef: DateTime.now(),
-        created: DateTime.now(),
-        isSubmit: 'false');
+      title: titleController.text,
+      statut: 'false',
+      signature: user!.matricule.toString(),
+      createdRef: DateTime.now(),
+      created: DateTime.now(),
+      isSubmit: 'false',
+      approbationDG: '-',
+      motifDG: '-',
+      signatureDG: '-',
+      approbationDD: '-',
+      motifDD: '-',
+      signatureDD: '-'
+    );
     await BalanceCompteApi().insertData(balance);
     Navigator.of(context).pop();
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(

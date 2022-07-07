@@ -28,6 +28,15 @@ class AgentModel {
   late String signature; // celui qui fait le document
   late DateTime created;
 
+  // Approbations DG
+  late String approbationDG;
+  late String motifDG;
+  late String signatureDG;
+  // Approbations DD
+  late String approbationDD;
+  late String motifDD; 
+  late String signatureDD;
+
   AgentModel(
       {this.id,
       required this.nom,
@@ -56,7 +65,14 @@ class AgentModel {
       this.photo,
       required this.salaire,
       required this.signature,
-      required this.created
+      required this.created,
+
+      required this.approbationDG,
+      required this.motifDG,
+      required this.signatureDG,
+      required this.approbationDD,
+      required this.motifDD,
+      required this.signatureDD
   });
 
   factory AgentModel.fromSQL(List<dynamic> row) {
@@ -88,7 +104,14 @@ class AgentModel {
       photo: row[24],
       salaire: row[25],
       signature: row[26],
-      created: row[27]
+      created: row[27],
+
+      approbationDG: row[28],
+      motifDG: row[29],
+      signatureDG: row[30],
+      approbationDD: row[31],
+      motifDD: row[32],
+      signatureDD: row[33]
     );
   }
 
@@ -121,7 +144,14 @@ class AgentModel {
       photo: json["photo"],
       salaire: json["salaire"],
       signature: json['signature'],
-      created: DateTime.parse(json['created'])
+      created: DateTime.parse(json['created']),
+      
+      approbationDG: json['approbationDG'],
+      motifDG: json['motifDG'],
+      signatureDG: json['signatureDG'],
+      approbationDD: json['approbationDD'],
+      motifDD: json['motifDD'],
+      signatureDD: json['signatureDD']
     );
   }
 
@@ -154,7 +184,14 @@ class AgentModel {
       'phot': photo,
       'salaire': salaire,
       'signature': signature,
-      'created': created.toIso8601String()
+      'created': created.toIso8601String(),
+
+      'approbationDG': approbationDG,
+      'motifDG': motifDG,
+      'signatureDG': signatureDG,
+      'approbationDD': approbationDD,
+      'motifDD': motifDD,
+      'signatureDD': signatureDD
     };
   }
 }

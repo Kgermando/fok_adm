@@ -194,7 +194,21 @@ class _EtatBesoinLogPageState extends State<EtatBesoinLogPage> {
         signature: matricule.toString(),
         createdRef: DateTime.now(),
         created: DateTime.now(),
-        isSubmit: 'false');
+        isSubmit: 'false', 
+        approbationDG: '-',
+        motifDG: '-',
+        signatureDG: '-',
+        approbationBudget: '-',
+        motifBudget: '-',
+        signatureBudget: '-',
+        approbationFin: '-',
+        motifFin: '-',
+        signatureFin: '-',
+        approbationDD: '-',
+        motifDD: '-',
+        signatureDD: '-',
+        ligneBudgetaire: '-',
+        ressource: '-');
     await DevisAPi().insertData(devisModel);
     Navigator.pop(context);
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(

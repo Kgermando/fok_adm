@@ -107,7 +107,7 @@ class _UpdateTrajetState extends State<UpdateTrajet> {
                           Expanded(
                               flex: 5,
                               child: CustomAppbar(
-                                  title: 'Ajout Trajet',
+                                  title: 'Ajout KM retour',
                                   controllerMenu: () =>
                                       _key.currentState!.openDrawer())),
                         ],
@@ -375,7 +375,10 @@ class _UpdateTrajetState extends State<UpdateTrajet> {
         kilometrageRetour: kilometrageRetourController.text,
         signature: signature.toString(),
         createdRef: data.createdRef,
-        created: DateTime.now());
+        created: DateTime.now(), 
+        approbationDD: '-',
+        motifDD: '-',
+        signatureDD: '-');
     await TrajetApi().updateData(trajetModel);
     Navigator.of(context).pop();
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(

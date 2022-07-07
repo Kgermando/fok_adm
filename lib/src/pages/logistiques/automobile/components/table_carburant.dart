@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:fokad_admin/src/api/auth/auth_api.dart';
 import 'package:fokad_admin/src/api/logistiques/carburant_api.dart';
 import 'package:fokad_admin/src/models/logistiques/carburant_model.dart';
+import 'package:fokad_admin/src/models/users/user_model.dart';
 import 'package:fokad_admin/src/routes/routes.dart';
 import 'package:fokad_admin/src/utils/class_implemented.dart';
 import 'package:fokad_admin/src/widgets/print_widget.dart';
@@ -78,6 +80,8 @@ class _TableCarburantState extends State<TableCarburant> {
             } else if (column.field == 'nomeroFactureAchat') {
               return resolver<ClassFilterImplemented>() as PlutoFilterType;
             } else if (column.field == 'prixAchatParLitre') {
+              return resolver<ClassFilterImplemented>() as PlutoFilterType;
+            } else if (column.field == 'qtyAchat') {
               return resolver<ClassFilterImplemented>() as PlutoFilterType;
             } else if (column.field == 'nomReceptioniste') {
               return resolver<ClassFilterImplemented>() as PlutoFilterType;
@@ -171,6 +175,18 @@ class _TableCarburantState extends State<TableCarburant> {
       ),
       PlutoColumn(
         readOnly: true,
+        title: 'Quantité',
+        field: 'qtyAchat',
+        type: PlutoColumnType.text(),
+        enableRowDrag: true,
+        enableContextMenu: false,
+        enableDropToResize: true,
+        titleTextAlign: PlutoColumnTextAlign.left,
+        width: 200,
+        minWidth: 150,
+      ),
+      PlutoColumn(
+        readOnly: true,
         title: 'Nom du receptioniste',
         field: 'nomReceptioniste',
         type: PlutoColumnType.text(),
@@ -195,7 +211,7 @@ class _TableCarburantState extends State<TableCarburant> {
       ),
       PlutoColumn(
         readOnly: true,
-        title: 'Date Heure Sortie',
+        title: 'Date Entrer / Sortie',
         field: 'dateHeureSortieAnguin',
         type: PlutoColumnType.text(),
         enableRowDrag: true,
@@ -222,7 +238,12 @@ class _TableCarburantState extends State<TableCarburant> {
 
   Future agentsRow() async {
     List<CarburantModel?> dataList = await CarburantApi().getAllData();
-    var data = dataList;
+     UserModel userModel = await AuthApi().getUserId();
+    var data = dataList
+        .where((element) =>
+            element!.approbationDD == "Approved" ||
+            element.signature == userModel.matricule)
+        .toList();
 
     if (mounted) {
       setState(() {
@@ -235,10 +256,12 @@ class _TableCarburantState extends State<TableCarburant> {
             'nomeroFactureAchat': PlutoCell(value: item.nomeroFactureAchat),
             'prixAchatParLitre':
                 PlutoCell(value: "${item.prixAchatParLitre} \$"),
+            'qtyAchat':
+                PlutoCell(value: "${item.prixAchatParLitre} L"),
             'nomReceptioniste': PlutoCell(value: item.nomReceptioniste),
             'numeroPlaque': PlutoCell(value: item.numeroPlaque),
             'dateHeureSortieAnguin': PlutoCell(
-                value: DateFormat("dd-MM-yy HH:mm")
+                value: DateFormat("dd-MM-yy")
                     .format(item.dateHeureSortieAnguin)),
             'created': PlutoCell(
                 value: DateFormat("dd-MM-yy HH:mm").format(item.created))

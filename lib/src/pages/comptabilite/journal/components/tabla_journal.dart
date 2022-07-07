@@ -1,10 +1,8 @@
 import 'dart:async';
 
-import 'package:flutter/material.dart';
-import 'package:fokad_admin/src/api/approbation/approbation_api.dart';
+import 'package:flutter/material.dart'; 
 import 'package:fokad_admin/src/api/auth/auth_api.dart';
-import 'package:fokad_admin/src/api/comptabilite/journal_api.dart';
-import 'package:fokad_admin/src/models/approbation/approbation_model.dart';
+import 'package:fokad_admin/src/api/comptabilite/journal_api.dart'; 
 import 'package:fokad_admin/src/models/comptabilites/journal_model.dart';
 import 'package:fokad_admin/src/models/users/user_model.dart'; 
 import 'package:fokad_admin/src/routes/routes.dart';
@@ -248,40 +246,13 @@ class _TableJournalState extends State<TableJournal> {
   Future agentsRow() async { 
     List<JournalModel?> dataList = await JournalApi().getAllData();
      UserModel userModel = await AuthApi().getUserId();
-    var approbations = await ApprobationApi().getAllData();
-    List<JournalModel?> data = [];
-    // Verifie les approbation si c'est la list es vide
-    if (approbations.isNotEmpty) {
-      List<ApprobationModel> isApproved = [];
-      for (var item in dataList) {
-        isApproved = approbations
-            .where((element) =>
-                element.reference.microsecondsSinceEpoch ==
-                item!.createdRef.microsecondsSinceEpoch)
-            .toList();
-      }
-      // FIltre si le filtre donne des elements
-      if (isApproved.isNotEmpty) {
-        for (var item in approbations) {
-          data = dataList
-              .where((element) =>
-                  element!.createdRef.microsecondsSinceEpoch ==
-                          item.reference.microsecondsSinceEpoch &&
-                      item.fontctionOccupee == 'Directeur générale' &&
-                      item.approbation == "Approved" ||
-                  element.signature == userModel.matricule)
-              .toList();
-        }
-      } else {
-        data = dataList
-            .where((element) => element!.signature == userModel.matricule)
-            .toList();
-      }
-    } else {
-      data = dataList
-          .where((element) => element!.signature == userModel.matricule)
-          .toList();
-    }
+    var data = dataList
+        .where((element) =>
+            element!.approbationDG == "Approved" &&
+                element.approbationDD == "Approved" ||
+            element.signature == userModel.matricule)
+        .toList();
+
 
     if (mounted) {
       setState(() {

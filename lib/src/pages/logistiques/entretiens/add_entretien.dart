@@ -545,7 +545,10 @@ class _AddEntretienPageState extends State<AddEntretienPage> {
         dureeTravaux: dureeTravauxController.text,
         signature: signature.toString(),
         createdRef: entretiensCount,
-        created: DateTime.now());
+        created: DateTime.now(), 
+        approbationDD: '-',
+        motifDD: '-',
+        signatureDD: '-');
     await EntretienApi().insertData(entretienModel);
     Navigator.of(context).pop();
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(

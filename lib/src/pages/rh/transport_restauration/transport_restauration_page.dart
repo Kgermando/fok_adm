@@ -155,7 +155,22 @@ class _TransportRestaurationPageState extends State<TransportRestaurationPage> {
         observation: 'false',
         signature: matricule.toString(),
         createdRef: DateTime.now(),
-        created: DateTime.now());
+        created: DateTime.now(),
+        approbationDG: '-',
+        motifDG: '-',
+        signatureDG: '-',
+        approbationBudget: '-',
+        motifBudget: '-',
+        signatureBudget: '-',
+        approbationFin: '-',
+        motifFin: '-',
+        signatureFin: '-',
+        approbationDD: '-',
+        motifDD: '-',
+        signatureDD: '-',
+        ligneBudgetaire: '-',
+        ressource: '-'
+      );
     await TransportRestaurationApi().insertData(transRest);
     Navigator.pop(context);
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(

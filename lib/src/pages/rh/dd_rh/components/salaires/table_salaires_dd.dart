@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:fokad_admin/src/api/approbation/approbation_api.dart';
 import 'package:fokad_admin/src/api/rh/paiement_salaire_api.dart';
 import 'package:fokad_admin/src/models/rh/paiement_salaire_model.dart';
 import 'package:fokad_admin/src/routes/routes.dart';
@@ -196,20 +195,13 @@ class _TableSalairesDDState extends State<TableSalairesDD> {
   Future agentsRow() async {
     List<PaiementSalaireModel?> dataList =
         await PaiementSalaireApi().getAllData();
-    List<PaiementSalaireModel?> data = [];
-    var approbations = await ApprobationApi().getAllData();
-    for (var item in approbations) {
-      data = dataList.where((element) {
-        element!.createdAt.microsecondsSinceEpoch.compareTo(item.reference.microsecondsSinceEpoch);
-        return false;
-      }).toList();
-    }
-
-    // if (element!.createdAt.microsecondsSinceEpoch == item.reference) {
-    //   element.createdAt.month == DateTime.now().month &&
-    //       element.createdAt.year == DateTime.now().year &&
-    //       item.fontctionOccupee == 'Directeur de departement';
-    // }
+    
+    var data = dataList
+        .where((element) =>
+            element!.createdAt.month == DateTime.now().month &&
+            element.createdAt.year == DateTime.now().year &&
+            element.approbationDD == "-")
+        .toList();
 
     if (mounted) {
       setState(() {
