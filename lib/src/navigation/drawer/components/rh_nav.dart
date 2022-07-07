@@ -143,17 +143,6 @@ class _RhNavState extends State<RhNav> {
                       Navigator.pushNamed(context, RhRoutes.rhPresence);
                       // Navigator.of(context).pop();
                     }),
-                if (userRole <= 2)
-                  DrawerWidget(
-                      selected: widget.pageCurrente == RhRoutes.rhEtatBesoin,
-                      icon: Icons.note_alt,
-                      sizeIcon: 20.0,
-                      title: 'Etat besoin',
-                      style: bodyText1,
-                      onTap: () {
-                        Navigator.pushNamed(context, RhRoutes.rhEtatBesoin);
-                        // Navigator.of(context).pop();
-                      }),
                 if (userRole <= 3)
                   DrawerWidget(
                       selected: widget.pageCurrente == RhRoutes.rhPerformence,

@@ -213,8 +213,7 @@ class RhRoutes {
   static const rhPerformenceAddNote = "/rh-performence-add-note";
   static const rhPerformenceAdd = "/rh-performence-add";
   static const rhDD = "/rh-dd";
-  static const rhHistoriqueSalaire = "/rh-historique-salaire";
-  static const rhEtatBesoin = "/rh-etat-besoin";
+  static const rhHistoriqueSalaire = "/rh-historique-salaire"; 
   static const rhTransportRest = "/rh-transport-rest";
   static const rhTransportRestDetail = "/rh-transport-rest-detail";
 }
@@ -229,8 +228,7 @@ class BudgetRoutes {
   static const historiqueBudgetBudgetPrevisionel =
       "/historique-budgets-previsionels";
   static const budgetBudgetPrevisionelDetail =
-      "/budgets-previsionels-detail";
-  static const budgetEtatBesoin = "/budgets-etat-besoin";
+      "/budgets-previsionels-detail"; 
 }
 
 class FinanceRoutes {
@@ -258,8 +256,7 @@ class FinanceRoutes {
       "/transactions-financement-externe-detail";
   
   static const transactionsDepenses = "/transactions-depenses";
-  static const finDD = "/fin-dd";
-  static const finEtatBesoin = "/fin-etat-besoin";
+  static const finDD = "/fin-dd"; 
 }
 
 class ComptabiliteRoutes {
@@ -282,8 +279,7 @@ class ComptabiliteRoutes {
   static const comptabiliteBalanceDetail = "/comptabilite-balance-detail";
   static const comptabiliteGrandLivre = "/comptabilite-grand-livre";
   static const comptabiliteGrandLivreSearch = "/comptabilite-grand-livre-search";
-  static const comptabiliteDD = "/comptabilite-dd";
-  static const comptabiliteEtatBesoin = "/comptabilite-etat-besoin";
+  static const comptabiliteDD = "/comptabilite-dd"; 
 }
 
 class LogistiqueRoutes {
@@ -310,8 +306,8 @@ class LogistiqueRoutes {
   static const logAddMobilierMateriel = "/log-add-mobilier-materiel";
   static const logMobilierMateriel = "/log-mobilier-materiel";
   static const logMobilierMaterielDetail = "/log-mobilier-materiel-detail";
-  static const logDD = "/log-dd";
-  static const logEtatBesoin = "/log-etat-besoin";
+  static const logDD = "/log-dd"; 
+  static const logEtatBesoin = "/log-etat-besoin"; 
 }
 
 class ExploitationRoutes {
@@ -326,8 +322,7 @@ class ExploitationRoutes {
   static const expVersement = "/exploitation-virement";
   static const expVersementAdd = "/exploitation-virement-add";
   static const expVersementDetail = "/exploitation-virement-detail";
-  static const expDD = "/exp-dd";
-  static const exploitationEtatBesoin = "/exploitation-etat-besoin";
+  static const expDD = "/exp-dd"; 
 }
 
 class ComMarketingRoutes {
@@ -380,8 +375,7 @@ class ComMarketingRoutes {
   static const comMarketingnumberFact = "/com-marketing-number-fact";
   static const comMarketingRestitution = "/com-marketing-restitution";
   static const comMarketingRestitutionDetail = "/com-marketing-restitution-detail";
-  static const comMarketingVente = "/com-marketing-vente";
-  static const comMarketingEtatBesoin = "/com-marketing-etat-besoin";
+  static const comMarketingVente = "/com-marketing-vente"; 
 }
 
 class ArchiveRoutes {

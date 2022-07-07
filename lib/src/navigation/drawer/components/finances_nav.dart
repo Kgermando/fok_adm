@@ -253,19 +253,6 @@ class _FinancesNavState extends State<FinancesNav> {
                         }),
                   ],
                 ),
-                if (userRole <= 2)
-                  DrawerWidget(
-                      selected:
-                          widget.pageCurrente == FinanceRoutes.finEtatBesoin,
-                      icon: Icons.note_alt,
-                      sizeIcon: 20.0,
-                      title: 'Etat besoin',
-                      style: bodyText1!,
-                      onTap: () {
-                        Navigator.pushNamed(
-                            context, FinanceRoutes.finEtatBesoin);
-                        // Navigator.of(context).pop();
-                      }),
                 DrawerWidget(
                     selected: widget.pageCurrente == RhRoutes.rhPerformence,
                     icon: Icons.multiline_chart_sharp,

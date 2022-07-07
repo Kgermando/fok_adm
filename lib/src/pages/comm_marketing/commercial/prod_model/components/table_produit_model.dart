@@ -206,7 +206,7 @@ class _TableProduitModelState extends State<TableProduitModel> {
       setState(() {
         for (var item in data) {
           rows.add(PlutoRow(cells: {
-            'id': PlutoCell(value: item!.id),
+            'id': PlutoCell(value: item.id),
             'idProduct': PlutoCell(value: item.idProduct),
             'categorie': PlutoCell(value: item.categorie),
             'sousCategorie1': PlutoCell(value: item.sousCategorie1),

@@ -189,19 +189,6 @@ class _BudgetNavState extends State<BudgetNav> {
                           BudgetRoutes.historiqueBudgetBudgetPrevisionel);
                       // Navigator.of(context).pop();
                     }),
-                if (userRole <= 2)
-                  DrawerWidget(
-                      selected:
-                          widget.pageCurrente == BudgetRoutes.budgetEtatBesoin,
-                      icon: Icons.note_alt,
-                      sizeIcon: 20.0,
-                      title: 'Etat besoin',
-                      style: bodyText1,
-                      onTap: () {
-                        Navigator.pushNamed(
-                            context, BudgetRoutes.budgetEtatBesoin);
-                        // Navigator.of(context).pop();
-                      }),
                 DrawerWidget(
                     selected: widget.pageCurrente == RhRoutes.rhPerformence,
                     icon: Icons.multiline_chart_sharp,

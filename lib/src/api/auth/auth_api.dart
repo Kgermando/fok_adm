@@ -12,13 +12,7 @@ import 'package:http/http.dart' as http;
 
 class AuthApi extends ChangeNotifier {
   var client = http.Client();
-  // final storage = const FlutterSecureStorage();
-
-  // Future<String?> getToken() async {
-  //   final data = await storage.read(key: "accessToken");
-  //   return data;
-  // }
-
+  
   Future<bool> login(String matricule, String passwordHash) async {
     var data = {'matricule': matricule, 'passwordHash': passwordHash};
     var body = jsonEncode(data);

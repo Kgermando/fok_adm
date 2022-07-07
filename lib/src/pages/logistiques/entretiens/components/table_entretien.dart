@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:fokad_admin/src/api/auth/auth_api.dart';
 import 'package:fokad_admin/src/api/logistiques/entretien_api.dart';
-import 'package:fokad_admin/src/models/logistiques/entretien_model.dart'; 
+import 'package:fokad_admin/src/models/logistiques/entretien_model.dart';
+import 'package:fokad_admin/src/models/users/user_model.dart'; 
 import 'package:fokad_admin/src/routes/routes.dart';
 import 'package:fokad_admin/src/utils/class_implemented.dart';
 import 'package:fokad_admin/src/widgets/print_widget.dart';
@@ -176,7 +178,10 @@ class _TableEntretienState extends State<TableEntretien> {
 
   Future agentsRow() async {
     List<EntretienModel?> dataList = await EntretienApi().getAllData();
-    var data = dataList;
+    UserModel userModel = await AuthApi().getUserId();
+    var data = dataList.where((element) =>
+        element!.approbationDD == "Approved" ||
+        element.signature == userModel.matricule);
 
     if (mounted) {
       setState(() {

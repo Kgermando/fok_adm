@@ -7,6 +7,7 @@ import 'package:fokad_admin/src/models/devis/devis_models.dart';
 import 'package:fokad_admin/src/navigation/drawer/drawer_menu.dart';
 import 'package:fokad_admin/src/navigation/header/custom_appbar.dart';
 import 'package:fokad_admin/src/pages/logistiques/etat_besoin/components/table_etat_besoin_log.dart';
+import 'package:fokad_admin/src/utils/dropdown.dart';
 import 'package:fokad_admin/src/utils/priority_dropdown.dart';
 import 'package:fokad_admin/src/widgets/btn_widget.dart';
 import 'package:fokad_admin/src/widgets/title_widget.dart';
@@ -25,7 +26,9 @@ class _EtatBesoinLogPageState extends State<EtatBesoinLogPage> {
   bool isLoading = false;
   final List<String> priorityList = PriorityDropdown().priorityDropdown;
   final TextEditingController titleController = TextEditingController();
+  final List<String> departementList = Dropdown().departement;
   String? priority;
+  String? departement;
 
   @override
   void initState() {
@@ -87,6 +90,7 @@ class _EtatBesoinLogPageState extends State<EtatBesoinLogPage> {
                               Expanded(child: priorityWidget())
                             ],
                           ),
+                          departmentWidget(),
                           const SizedBox(
                             height: p20,
                           ),
@@ -185,16 +189,44 @@ class _EtatBesoinLogPageState extends State<EtatBesoinLogPage> {
     );
   }
 
+  Widget departmentWidget() {
+    return Container(
+      margin: const EdgeInsets.only(bottom: p20),
+      child: DropdownButtonFormField<String>(
+        decoration: InputDecoration(
+          labelText: 'Département',
+          labelStyle: const TextStyle(),
+          border: OutlineInputBorder(borderRadius: BorderRadius.circular(5.0)),
+          contentPadding: const EdgeInsets.only(left: 5.0),
+        ),
+        value: departement,
+        isExpanded: true,
+        items: departementList.map((String value) {
+          return DropdownMenuItem<String>(
+            value: value,
+            child: Text(value),
+          );
+        }).toList(),
+        validator: (value) => value == null ? "Select departement" : null,
+        onChanged: (value) {
+          setState(() {
+            departement = value!;
+          });
+        },
+      ),
+    );
+  }
+
   Future submit() async {
     final devisModel = DevisModel(
         title: titleController.text,
         priority: priority.toString(),
-        departement: "Logistique",
+        departement: departement.toString(),
         observation: 'false',
         signature: matricule.toString(),
         createdRef: DateTime.now(),
         created: DateTime.now(),
-        isSubmit: 'false', 
+        isSubmit: 'false',
         approbationDG: '-',
         motifDG: '-',
         signatureDG: '-',

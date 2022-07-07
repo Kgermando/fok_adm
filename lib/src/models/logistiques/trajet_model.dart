@@ -65,7 +65,7 @@ class TrajetModel {
         kilometrageRetour: json['kilometrageRetour'],
         signature: json['signature'],
         createdRef: DateTime.parse(json['createdRef']),
-        created: DateTime.parse(json['created']), 
+        created: DateTime.parse(json['created']),
         approbationDD: json['approbationDD'],
         motifDD: json['motifDD'],
         signatureDD: json['signatureDD']

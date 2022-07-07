@@ -190,19 +190,6 @@ class _ComptabiliteNavState extends State<ComptabiliteNav> {
                           context, ComptabiliteRoutes.comptabiliteGrandLivre);
                       // Navigator.of(context).pop();
                     }),
-                if (userRole <= 2)
-                  DrawerWidget(
-                      selected: widget.pageCurrente ==
-                          ComptabiliteRoutes.comptabiliteEtatBesoin,
-                      icon: Icons.note_alt,
-                      sizeIcon: 20.0,
-                      title: 'Etat besoin',
-                      style: bodyText1!,
-                      onTap: () {
-                        Navigator.pushNamed(
-                            context, ComptabiliteRoutes.comptabiliteEtatBesoin);
-                        // Navigator.of(context).pop();
-                      }),
                 DrawerWidget(
                     selected: widget.pageCurrente == RhRoutes.rhPerformence,
                     icon: Icons.multiline_chart_sharp,

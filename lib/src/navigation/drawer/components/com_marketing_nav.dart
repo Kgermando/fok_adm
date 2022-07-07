@@ -338,19 +338,6 @@ class _ComMarketingState extends State<ComMarketing> {
                         }),
                   ],
                 ),
-                if (userRole <= 2)
-                  DrawerWidget(
-                      selected: widget.pageCurrente ==
-                          ComMarketingRoutes.comMarketingEtatBesoin,
-                      icon: Icons.note_alt,
-                      sizeIcon: 20.0,
-                      title: 'Etat besoin',
-                      style: bodyText1!,
-                      onTap: () {
-                        Navigator.pushNamed(
-                            context, ComMarketingRoutes.comMarketingEtatBesoin);
-                        // Navigator.of(context).pop();
-                      }),
                 DrawerWidget(
                     selected: widget.pageCurrente == RhRoutes.rhPerformence,
                     icon: Icons.multiline_chart_sharp,

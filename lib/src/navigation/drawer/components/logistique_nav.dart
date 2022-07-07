@@ -273,19 +273,6 @@ class _LogistiqueNavState extends State<LogistiqueNav> {
                         }),
                   ],
                 ),
-                if (userRole <= 2)
-                  DrawerWidget(
-                      selected:
-                          widget.pageCurrente == LogistiqueRoutes.logEtatBesoin,
-                      icon: Icons.note_alt,
-                      sizeIcon: 20.0,
-                      title: 'Etat besoin',
-                      style: bodyText1!,
-                      onTap: () {
-                        Navigator.pushNamed(
-                            context, LogistiqueRoutes.logEtatBesoin);
-                        // Navigator.of(context).pop();
-                      }),
                 DrawerWidget(
                     selected: widget.pageCurrente == RhRoutes.rhPerformence,
                     icon: Icons.multiline_chart_sharp,
