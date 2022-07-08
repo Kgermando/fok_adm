@@ -1,4 +1,3 @@
-import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart'; 
 import 'package:fokad_admin/src/api/auth/auth_api.dart';
@@ -513,6 +512,7 @@ class _DetailDetteState extends State<DetailDette> {
                     const SizedBox(
                       height: p20,
                     ),
+                    if(data.approbationDG == "Approved" && data.approbationDD == "Approved")
                     BtnWidget(
                         title: 'Soumettre',
                         isLoading: isLoading,

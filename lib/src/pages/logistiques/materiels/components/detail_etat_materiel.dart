@@ -1,4 +1,4 @@
-import 'package:auto_size_text/auto_size_text.dart';
+
 import 'package:flutter/material.dart';
 import 'package:fokad_admin/src/api/auth/auth_api.dart';
 import 'package:fokad_admin/src/api/logistiques/etat_materiel_api.dart';
@@ -273,7 +273,7 @@ class _DetailEtatMaterielState extends State<DetailEtatMateriel> {
                       style:
                           bodyMedium.copyWith(color: Colors.orange.shade700)),
                 ),
-              if (data.statut == 'Declaser')
+              if (data.statut == 'Déclasser')
                 Expanded(
                   child: SelectableText(data.statut,
                       textAlign: TextAlign.start,
@@ -360,7 +360,7 @@ class _DetailEtatMaterielState extends State<DetailEtatMateriel> {
         elevation: 10,
         child: Container(
           margin: const EdgeInsets.all(p16),
-          height: 200,
+          // height: 200,
           width: (Responsive.isDesktop(context))
               ? MediaQuery.of(context).size.width / 2
               : MediaQuery.of(context).size.width,

@@ -146,8 +146,7 @@ class _DetailBonLivraisonState extends State<DetailBonLivraison> {
               width: 2.0,
             ),
           ),
-          child: ListView(
-            controller: _controllerScroll,
+          child: Column( 
             children: [
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,

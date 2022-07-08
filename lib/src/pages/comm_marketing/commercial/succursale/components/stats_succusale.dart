@@ -67,7 +67,8 @@ class _StatsSuccursaleState extends State<StatsSuccursale> {
         await CreanceFactureApi().getAllData();
     List<VenteCartModel>? dataVente = await VenteCartApi().getAllData();
     List<GainModel>? dataGain = await GainApi().getAllData();
-    setState(() {
+    if(mounted) {
+      setState(() {
       user = data;
       achatList = dataAchat
           .where((element) => element.succursale == widget.succursaleModel.name)
@@ -82,6 +83,7 @@ class _StatsSuccursaleState extends State<StatsSuccursale> {
           .where((element) => element.succursale == widget.succursaleModel.name)
           .toList();
     });
+    }
   }
 
   @override

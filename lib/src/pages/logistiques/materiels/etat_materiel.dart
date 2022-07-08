@@ -8,7 +8,6 @@ import 'package:fokad_admin/src/models/users/user_model.dart';
 import 'package:fokad_admin/src/navigation/drawer/drawer_menu.dart';
 import 'package:fokad_admin/src/navigation/header/custom_appbar.dart';
 import 'package:fokad_admin/src/pages/logistiques/materiels/components/table_etat_materiels.dart';
-import 'package:fokad_admin/src/routes/routes.dart';
 import 'package:fokad_admin/src/utils/loading.dart';
 
 class EtatMateriel extends StatefulWidget {
@@ -160,7 +159,7 @@ class _EtatMaterielState extends State<EtatMateriel> {
             );
           });
         });
-  }
+  } 
 
   Widget nomWidget() {
     return Container(
@@ -257,7 +256,7 @@ class _EtatMaterielState extends State<EtatMateriel> {
   }
 
   Widget statutListWidget() {
-    List<String> statutList = ["Actif", "Inactif", "Declaser"];
+    List<String> statutList = ["Actif", "Inactif", "Déclasser"];
     return Container(
       margin: const EdgeInsets.only(bottom: p20),
       child: DropdownButtonFormField<String>(

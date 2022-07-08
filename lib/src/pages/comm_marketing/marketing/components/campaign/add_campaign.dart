@@ -234,6 +234,7 @@ class _AddCampaignState extends State<AddCampaign> {
     );
     final newDateRange = await showDateRangePicker(
       context: context,
+      initialEntryMode: DatePickerEntryMode.input,
       firstDate: DateTime(DateTime.now().year - 5),
       lastDate: DateTime(DateTime.now().year + 5),
       initialDateRange: dateRange ?? initialDateRange,

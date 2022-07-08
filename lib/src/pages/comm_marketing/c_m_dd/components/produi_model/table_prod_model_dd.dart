@@ -198,7 +198,7 @@ class _TableProduitModelDDState extends State<TableProduitModelDD> {
 
   Future agentsRow() async {
     List<ProductModel?> dataList = await ProduitModelApi().getAllData();
-    var data = dataList.toList();
+    var data = dataList.where((element) => element!.approbationDD == "-").toList();
 
     if (mounted) {
       setState(() {

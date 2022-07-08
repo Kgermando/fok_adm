@@ -1,4 +1,3 @@
-import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:fokad_admin/src/api/auth/auth_api.dart';
@@ -15,8 +14,7 @@ import 'package:fokad_admin/src/navigation/header/custom_appbar.dart';
 import 'package:fokad_admin/src/pages/finances/transactions/components/creance_dette/table_creance_dette.dart';
 import 'package:fokad_admin/src/utils/loading.dart';
 import 'package:fokad_admin/src/widgets/btn_widget.dart';
-import 'package:fokad_admin/src/widgets/print_widget.dart';
-import 'package:fokad_admin/src/widgets/title_widget.dart';
+import 'package:fokad_admin/src/widgets/print_widget.dart'; 
 import 'package:intl/intl.dart';
 import 'package:pluto_grid/pluto_grid.dart';
 
@@ -490,6 +488,8 @@ class _DetailCreanceState extends State<DetailCreance> {
                       const SizedBox(
                         height: p20,
                       ),
+                      if (data.approbationDG == "Approved" &&
+                          data.approbationDD == "Approved")
                       BtnWidget(
                           title: 'Soumettre',
                           isLoading: isLoading,

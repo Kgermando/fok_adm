@@ -24,8 +24,7 @@ class DetailProdModel extends StatefulWidget {
 }
 
 class _DetailProdModelState extends State<DetailProdModel> {
-  final GlobalKey<ScaffoldState> _key = GlobalKey();
-  final ScrollController _controllerScroll = ScrollController();
+  final GlobalKey<ScaffoldState> _key = GlobalKey(); 
   bool isLoading = false;
 
   // Approbations
@@ -153,8 +152,7 @@ class _DetailProdModelState extends State<DetailProdModel> {
               width: 2.0,
             ),
           ),
-          child: ListView(
-            controller: _controllerScroll,
+          child: Column( 
             children: [
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -355,19 +353,20 @@ class _DetailProdModelState extends State<DetailProdModel> {
   }
 
   Widget approbationWidget(ProductModel data) {
+    final bodyLarge = Theme.of(context).textTheme.bodyLarge;
     return Row(mainAxisAlignment: MainAxisAlignment.center, children: [
       Card(
         elevation: 10,
+        color: Colors.red[50],
         child: Container(
           margin: const EdgeInsets.all(p16),
-          height: 200,
           width: (Responsive.isDesktop(context))
               ? MediaQuery.of(context).size.width / 2
               : MediaQuery.of(context).size.width,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(p10),
             border: Border.all(
-              color: Colors.blueGrey.shade700,
+              color: Colors.red.shade700,
               width: 2.0,
             ),
           ),
@@ -382,54 +381,62 @@ class _DetailProdModelState extends State<DetailProdModel> {
                 ],
               ),
               const SizedBox(height: p20),
-              Row(
-                children: [
-                  const Expanded(
-                      flex: 1, child: Text("Directeur de departement")),
-                  const SizedBox(width: p20),
-                  if (data.approbationDD != '-')
-                    Expanded(
-                        flex: 4,
-                        child: Row(children: [
-                          Expanded(
-                              flex: 2,
-                              child: Column(
-                                children: [
-                                  const Text("Approbation"),
-                                  const SizedBox(height: p20),
-                                  Text(data.approbationDD),
-                                ],
-                              )),
-                          if (data.approbationDD == "Unapproved")
+              Padding(
+                padding: const EdgeInsets.all(p10),
+                child: Row(
+                  children: [
+                   Expanded(
+                        flex: 1, child: Text("Directeur de departement", style: bodyLarge)),
+                    const SizedBox(width: p20),
+                      Expanded(
+                          flex: 3,
+                          child: Row(children: [
                             Expanded(
-                                flex: 3,
+                                flex: 2,
                                 child: Column(
                                   children: [
-                                    const Text("Motif"),
+                                    const Text("Approbation"),
                                     const SizedBox(height: p20),
-                                    Text(data.motifDD),
+                                    Text(data.approbationDD, style: bodyLarge!
+                                      .copyWith(color: Colors.green.shade700)),
                                   ],
                                 )),
-                          Expanded(
-                              flex: 2,
-                              child: Column(
-                                children: [
-                                  const Text("Signature"),
-                                  const SizedBox(height: p20),
-                                  Text(data.signatureDD),
-                                ],
-                              )),
-                        ])),
-                  if (data.approbationDD == '-' &&
-                      user.fonctionOccupe == "Directeur de departement")
-                    Expanded(
-                        flex: 4,
-                        child: Row(children: [
-                          Expanded(child: approbationDDWidget(data)),
-                          Expanded(child: motifDDWidget(data))
-                        ])),
-                ],
+                            if (data.approbationDD == "Unapproved")
+                              Expanded(
+                                  flex: 3,
+                                  child: Column(
+                                    children: [
+                                      const Text("Motif"),
+                                      const SizedBox(height: p20),
+                                      Text(data.motifDD),
+                                    ],
+                                  )),
+                            Expanded(
+                                flex: 2,
+                                child: Column(
+                                  children: [
+                                    const Text("Signature"),
+                                    const SizedBox(height: p20),
+                                    Text(data.signatureDD),
+                                  ],
+                                )),
+                          ])),
+                          
+                  ],
+                ),
               ),
+              // if (data.approbationDD == '-')
+                if (data.approbationDD == '-' &&
+                    user.fonctionOccupe == "Directeur de departement")
+                Padding(
+                  padding: const EdgeInsets.all(p10),
+                  child: Row(children: [
+                    Expanded(child: approbationDDWidget(data)),
+                    const SizedBox(width: p20),
+                    if (approbationDD == "Unapproved")
+                    Expanded(child: motifDDWidget(data))
+                  ]),
+                ),
             ],
           ),
         ),

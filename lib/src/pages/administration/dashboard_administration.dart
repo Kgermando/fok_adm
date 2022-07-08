@@ -229,7 +229,7 @@ class _DashboardAdministrationState extends State<DashboardAdministration> {
             .where((element) => element.creanceDette == 'creances');
 
         List<CreanceModel?> nonPayeCreanceList = dataCreanceList
-            .where((element) => element.statutPaie == 'false')
+            .where((element) => element.approbationDG == "Approved" && element.approbationDD == "Approved" && element.statutPaie == 'false')
             .toList();
         for (var item in nonPayeCreanceList) {
           nonPayesCreance += double.parse(item!.montant);
@@ -242,7 +242,8 @@ class _DashboardAdministrationState extends State<DashboardAdministration> {
         var detteRemboursementList =
             creanceDettes.where((element) => element.creanceDette == 'dettes');
         List<DetteModel?> nonPayeDetteList = dataDetteList
-            .where((element) => element.statutPaie == 'false')
+            .where((element) => element.approbationDG == "Approved" &&
+                element.approbationDD == "Approved" &&  element.statutPaie == 'false')
             .toList();
         for (var item in nonPayeDetteList) {
           nonPayesDette += double.parse(item!.montant);
@@ -255,15 +256,7 @@ class _DashboardAdministrationState extends State<DashboardAdministration> {
         List<FinanceExterieurModel?> recetteList = dataFinanceExterieurList;
         for (var item in recetteList) {
           cumulFinanceExterieur += double.parse(item!.montant);
-        }
-
-        // List<DevisModel?> devisList = dataDevisList;
-
-        // for (var item in devisList) {
-        //   for (var i in item!.list) {
-        //     depenses += double.parse(i['frais']);
-        //   }
-        // }
+        } 
 
         soldeBanque = recetteBanque - depensesBanque;
         soldeCaisse = recetteCaisse - depensesCaisse;

@@ -4,6 +4,7 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:badges/badges.dart';
 import 'package:flutter/material.dart';
 import 'package:fokad_admin/src/api/auth/auth_api.dart';
+import 'package:fokad_admin/src/api/budgets/departement_budget_api.dart';
 import 'package:fokad_admin/src/api/budgets/ligne_budgetaire_api.dart';
 import 'package:fokad_admin/src/api/comm_marketing/commerciale/produit_model_api.dart';
 import 'package:fokad_admin/src/api/comm_marketing/commerciale/succursale_api.dart';
@@ -65,14 +66,11 @@ class _AdministrationNavState extends State<AdministrationNav> {
 
   // Comm & Marketing
   int campaignCount = 0;
-  int succursaleCount = 0;
-  int prodModelCount = 0;
+  int succursaleCount = 0; 
 
   // Logistique
-  int anguinsCount = 0;
-  int carburantCount = 0;
-  int immobiliersCount = 0;
-  int mobiliersCount = 0;
+  int anguinsCount = 0; 
+  int immobiliersCount = 0; 
 
   int countPaie = 0;
   int nbrCreance = 0;
@@ -86,7 +84,7 @@ class _AdministrationNavState extends State<AdministrationNav> {
 
   Future<void> getData() async {
     // Budgets
-    var dataLigneBudgetaireList = await LIgneBudgetaireApi().getAllData();
+    var departementBudget = await DepeartementBudgetApi().getAllData();
 
     // RH
     var agents = await AgentsApi().getAllData();
@@ -107,21 +105,24 @@ class _AdministrationNavState extends State<AdministrationNav> {
 
     // Comm & Marketing
     var campaigns = await CampaignApi().getAllData();
-    var succursale = await SuccursaleApi().getAllData();
-    var prodModels = await ProduitModelApi().getAllData();
+    var succursale = await SuccursaleApi().getAllData(); 
 
     // Logistique
-    var anguins = await AnguinApi().getAllData();
-    var carburants = await CarburantApi().getAllData();
-    var immobiliers = await ImmobilierApi().getAllData();
-    var mobiliers = await MobilierApi().getAllData();
+    var anguins = await AnguinApi().getAllData(); 
+    var immobiliers = await ImmobilierApi().getAllData(); 
 
-    // Etaat de Besoins
+    // Etat de Besoins
     var etatBesions = await DevisAPi().getAllData();
     if (mounted) {
       setState(() {
         // Budgets
-        budgetCount = dataLigneBudgetaireList.length;
+        budgetCount = departementBudget
+          .where((element) =>
+              DateTime.now().millisecondsSinceEpoch <=
+                  element.periodeFin.millisecondsSinceEpoch &&
+              element.approbationDG == '-' &&
+              element.approbationDD == 'Approved')
+          .length; 
 
         // RH
         agentInactifs =
@@ -131,36 +132,57 @@ class _AdministrationNavState extends State<AdministrationNav> {
 
         // Finances
         creanceCount = creances
-            .where((element) => element.statutPaie == 'false')
-            .toList()
+            .where((element) =>
+              element.approbationDG == '-' &&
+              element.approbationDD == 'Approved' && 
+              element.statutPaie == 'false')
             .length;
+
         detteCount = dettes
-            .where((element) => element.statutPaie == 'false')
-            .toList()
+            .where((element) => element.approbationDG == '-' &&
+                element.approbationDD == 'Approved' &&
+                element.statutPaie == 'false')
             .length;
 
         // Comptabilites
-        bilanCount = bilans.length;
-        journalCount = journal.length;
-        compteResultatCount = compteReultats.length;
+        bilanCount = bilans.where((element) =>
+              element.approbationDG == '-' &&
+              element.approbationDD == 'Approved').length;
+        journalCount = journal.where((element) =>
+              element.approbationDG == '-' &&
+              element.approbationDD == 'Approved').length;
+        compteResultatCount = compteReultats.where((element) =>
+              element.approbationDG == '-' &&
+              element.approbationDD == 'Approved').length;
         balanceCount = balances.length;
 
         // Exploitations
-        exploitationCount = exploitations.length;
+        exploitationCount = exploitations.where((element) =>
+              element.approbationDG == '-' &&
+              element.approbationDD == 'Approved').length;
 
         // Comm & Marketing
-        campaignCount = campaigns.length;
-        succursaleCount = succursale.length;
-        prodModelCount = prodModels.length;
+        campaignCount = campaigns.where((element) =>
+              element.approbationDG == '-' &&
+              element.approbationDD == 'Approved').length;
+        succursaleCount = succursale.where((element) =>
+              element.approbationDG == '-' &&
+              element.approbationDD == 'Approved').length;
+
 
         // Logistique
-        anguinsCount = anguins.length;
-        carburantCount = carburants.length;
-        immobiliersCount = immobiliers.length;
-        mobiliersCount = mobiliers.length;
+        anguinsCount = anguins.where((element) =>
+              element.approbationDG == '-' &&
+              element.approbationDD == 'Approved').length;
+
+        immobiliersCount = immobiliers.where((element) =>
+              element.approbationDG == '-' &&
+              element.approbationDD == 'Approved').length; 
 
         // Etaat de Besoins
-        etatBesoinCount = etatBesions.length;
+        etatBesoinCount = etatBesions.where((element) =>
+              element.approbationDG == '-' &&
+              element.approbationDD == 'Approved').length;
       });
     }
   }
@@ -177,10 +199,9 @@ class _AdministrationNavState extends State<AdministrationNav> {
     comptabiliteCount =
         bilanCount + compteResultatCount + journalCount + balanceCount;
 
-    commMarketingCount = campaignCount + succursaleCount + prodModelCount;
+    commMarketingCount = campaignCount + succursaleCount;
 
-    logistiqueCount =
-        anguinsCount + carburantCount + immobiliersCount + mobiliersCount;
+    logistiqueCount = anguinsCount + immobiliersCount;
 
     return FutureBuilder<UserModel>(
         future: AuthApi().getUserId(),

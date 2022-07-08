@@ -89,7 +89,7 @@ class CarburantApi {
       await AuthApi().refreshAccessToken();
       return insertData(carburantModel);
     } else {
-      throw Exception(json.decode(resp.body)['message']);
+      throw Exception(resp.statusCode);
     }
   }
 

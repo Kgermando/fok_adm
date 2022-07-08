@@ -130,9 +130,7 @@ class _RavitailleemntStockState extends State<RavitailleemntStock> {
                                 },
                                 icon: const Icon(Icons.arrow_back)),
                           ),
-                          const SizedBox(
-                            height: p10,
-                          ),
+                          const SizedBox(width: p10),
                           Expanded(
                               flex: 5,
                               child: CustomAppbar(
