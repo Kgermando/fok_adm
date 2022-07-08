@@ -37,7 +37,7 @@ class _CustomAppbarState extends State<CustomAppbar> {
 
   @override
   void initState() {
-    timer = Timer.periodic(const Duration(seconds: 1), (timer) {
+    timer = Timer.periodic(const Duration(seconds: 2), (timer) {
       getData();
     });
     
@@ -58,17 +58,21 @@ class _CustomAppbarState extends State<CustomAppbar> {
     if (mounted) {
       setState(() {
         tacheCount = taches
-            .where((element) =>
-                element.signatureResp == userModel.matricule &&
-                element.read == 'false')
-            .length;
-        cartCount = cartList.length;
+          .where((element) =>
+              element.signatureResp == userModel.matricule &&
+              element.read == 'false')
+          .length;
+
+        cartCount = cartList
+          .where((element) =>
+              element.signature == userModel.matricule)
+          .length;
 
         mailsCount = mails
-            .where((element) =>
-                element.read == 'false' && element.email == userModel.email ||
-                element.read == 'false' && element.cc.contains(userModel.email))
-            .length;
+          .where((element) =>
+              element.read == 'false' && element.email == userModel.email ||
+              element.read == 'false' && element.cc.contains(userModel.email))
+          .length;
       });
     }
   }

@@ -30,6 +30,7 @@ class NewMail extends StatefulWidget {
 class _NewMailState extends State<NewMail> {
   final GlobalKey<ScaffoldState> _key = GlobalKey();
   final ScrollController _controllerScroll = ScrollController();
+  final ScrollController controllerScrollCC = ScrollController();
   final _formKey = GlobalKey<FormState>();
   bool isLoading = false;
   bool isOpen = false;
@@ -263,26 +264,32 @@ class _NewMailState extends State<NewMail> {
         children: [
           SizedBox(
             height: 100,
-            child: ListView.builder(
-                itemCount: userList.length,
-                itemBuilder: (context, i) {
-                  return ListTile(
-                      title: Text(userList[i].email),
-                      leading: Checkbox(
-                        value: ccList.contains(userList[i]),
-                        onChanged: (val) {
-                          if (val == true) {
-                            setState(() {
-                              ccList.add(userList[i]);
-                            });
-                          } else {
-                            setState(() {
-                              ccList.remove(userList[i]);
-                            });
-                          }
-                        },
-                      ));
-                }),
+            child: Scrollbar(
+              controller: controllerScrollCC,
+              trackVisibility: true,
+              thumbVisibility: true,
+              child: ListView.builder(
+                  itemCount: userList.length,
+                  controller: controllerScrollCC,
+                  itemBuilder: (context, i) {
+                    return ListTile(
+                        title: Text(userList[i].email),
+                        leading: Checkbox(
+                          value: ccList.contains(userList[i]),
+                          onChanged: (val) {
+                            if (val == true) {
+                              setState(() {
+                                ccList.add(userList[i]);
+                              });
+                            } else {
+                              setState(() {
+                                ccList.remove(userList[i]);
+                              });
+                            }
+                          },
+                        ));
+                  }),
+            ),
           )
         ],
       ),

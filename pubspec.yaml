@@ -56,7 +56,6 @@ dependencies:
   dospace: ^0.13.15
   file_picker: ^4.6.1
   extended_image: ^6.2.1
-  mailslurp: ^11.6.16
   
 
 dev_dependencies:
