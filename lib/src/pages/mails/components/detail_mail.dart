@@ -273,10 +273,13 @@ class _DetailMailState extends State<DetailMail> {
           Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              SelectableText(data.message,
-                  textAlign: TextAlign.start, style: bodyMedium),
+              Expanded(
+                child: SelectableText(data.message,
+                    textAlign: TextAlign.start, style: bodyMedium),
+              ),
             ],
-          )
+          ),
+          const SizedBox(height: p20)
         ],
       ),
     );
