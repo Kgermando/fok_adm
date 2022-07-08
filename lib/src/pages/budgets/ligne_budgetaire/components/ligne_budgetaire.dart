@@ -35,7 +35,7 @@ class _LigneBudgetaireState extends State<LigneBudgetaire> {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: MediaQuery.of(context).size.height,
+      height: MediaQuery.of(context).size.height / 2,
       child: PlutoGrid(
         columns: columns,
         rows: rows,

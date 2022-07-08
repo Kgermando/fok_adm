@@ -52,10 +52,12 @@ class _ComptabiliteDDState extends State<ComptabiliteDD> {
 
     setState(() {
       bilanCount =
-      bilans.length;
-      journalCount = journal.length;
-      compteResultatCount = compteReultats.length;
-      balanceCount = balances.length;
+      bilans.where((element) => element.approbationDD == "-").length;
+      journalCount = journal.where((element) => element.approbationDD == "-").length;
+      compteResultatCount = compteReultats
+          .where((element) => element.approbationDD == "-")
+          .length;
+      balanceCount = balances.where((element) => element.approbationDD == "-").length;
     });
   }
 

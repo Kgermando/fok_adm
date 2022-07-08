@@ -152,7 +152,10 @@ class _TableDepartementBudgetDDState extends State<TableDepartementBudgetDD> {
     List<DepartementBudgetModel?> dataList =
         await DepeartementBudgetApi().getAllData();
 
-    var data = dataList.where((element) => element!.isSubmit == 'true').toList();
+    var data = dataList.where((element) => DateTime.now().millisecondsSinceEpoch <=
+        element!.periodeFin.millisecondsSinceEpoch && 
+        element.approbationDD == '-' &&
+        element.isSubmit == 'true').toList();
 
     if (!mounted) return;
     setState(() {

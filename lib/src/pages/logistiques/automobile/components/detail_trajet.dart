@@ -1,4 +1,3 @@
-import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:fokad_admin/src/api/auth/auth_api.dart';
 import 'package:fokad_admin/src/api/logistiques/trajet_api.dart';
@@ -25,8 +24,8 @@ class _DetailTrajetState extends State<DetailTrajet> {
   final GlobalKey<ScaffoldState> _key = GlobalKey();
   bool isLoading = false;
 
-  // Approbations 
-  String approbationDD = '-'; 
+  // Approbations
+  String approbationDD = '-';
   TextEditingController motifDDController = TextEditingController();
 
   @override
@@ -36,7 +35,7 @@ class _DetailTrajetState extends State<DetailTrajet> {
   }
 
   @override
-  void dispose() { 
+  void dispose() {
     motifDDController.dispose();
     super.dispose();
   }
@@ -338,19 +337,20 @@ class _DetailTrajetState extends State<DetailTrajet> {
   }
 
   Widget approbationWidget(TrajetModel data) {
+    final bodyLarge = Theme.of(context).textTheme.bodyLarge;
     return Row(mainAxisAlignment: MainAxisAlignment.center, children: [
       Card(
         elevation: 10,
+        color: Colors.red[50],
         child: Container(
           margin: const EdgeInsets.all(p16),
-          height: 200,
           width: (Responsive.isDesktop(context))
               ? MediaQuery.of(context).size.width / 2
               : MediaQuery.of(context).size.width,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(p10),
             border: Border.all(
-              color: Colors.blueGrey.shade700,
+              color: Colors.red.shade700,
               width: 2.0,
             ),
           ),
@@ -365,53 +365,67 @@ class _DetailTrajetState extends State<DetailTrajet> {
                 ],
               ),
               const SizedBox(height: p20),
-              Row(
-                children: [
-                  const Expanded(
-                      flex: 1, child: Text("Directeur de departement")),
-                  const SizedBox(width: p20),
-                  if (data.approbationDD != '-')
+              Padding(
+                padding: const EdgeInsets.all(p10),
+                child: Row(
+                  children: [
                     Expanded(
-                        flex: 4,
-                        child: Row(children: [
-                          Expanded(
-                              flex: 2,
-                              child: Column(
-                                children: [
-                                  const Text("Approbation"),
-                                  const SizedBox(height: p20),
-                                  Text(data.approbationDD),
-                                ],
-                              )),
-                          if (data.approbationDD == "Unapproved")
-                            Expanded(
-                                flex: 3,
-                                child: Column(
-                                  children: [
-                                    const Text("Motif"),
-                                    const SizedBox(height: p20),
-                                    Text(data.motifDD),
-                                  ],
-                                )),
-                          Expanded(
-                              flex: 2,
-                              child: Column(
-                                children: [
-                                  const Text("Signature"),
-                                  const SizedBox(height: p20),
-                                  Text(data.signatureDD),
-                                ],
-                              )),
-                        ])),
-                  if (data.approbationDD == '-' &&
-                      user.fonctionOccupe == "Directeur de departement")
+                        flex: 1,
+                        child:
+                            Text("Directeur de departement", style: bodyLarge)),
+                    const SizedBox(width: p20),
                     Expanded(
-                        flex: 4,
-                        child: Row(children: [
-                          Expanded(child: approbationDDWidget(data)),
-                          Expanded(child: motifDDWidget(data))
-                        ])),
-                ],
+                        flex: 3,
+                        child: Column(
+                          children: [
+                            Row(children: [
+                              Expanded(
+                                  flex: 2,
+                                  child: Column(
+                                    children: [
+                                      const Text("Approbation"),
+                                      const SizedBox(height: p20),
+                                      Text(data.approbationDD,
+                                          style: bodyLarge!.copyWith(
+                                              color: Colors.green.shade700)),
+                                    ],
+                                  )),
+                              if (data.approbationDD == "Unapproved")
+                                Expanded(
+                                    flex: 3,
+                                    child: Column(
+                                      children: [
+                                        const Text("Motif"),
+                                        const SizedBox(height: p20),
+                                        Text(data.motifDD),
+                                      ],
+                                    )),
+                              Expanded(
+                                  flex: 2,
+                                  child: Column(
+                                    children: [
+                                      const Text("Signature"),
+                                      const SizedBox(height: p20),
+                                      Text(data.signatureDD),
+                                    ],
+                                  )),
+                            ]),
+                            if (data.approbationDD == '-' &&
+                                user.fonctionOccupe ==
+                                    "Directeur de departement")
+                              Padding(
+                                padding: const EdgeInsets.all(p10),
+                                child: Row(children: [
+                                  Expanded(child: approbationDDWidget(data)),
+                                  const SizedBox(width: p20),
+                                  if (approbationDD == "Unapproved")
+                                    Expanded(child: motifDDWidget(data))
+                                ]),
+                              ),
+                          ],
+                        )),
+                  ],
+                ),
               ),
             ],
           ),
@@ -419,7 +433,6 @@ class _DetailTrajetState extends State<DetailTrajet> {
       ),
     ]);
   }
-
 
   Widget approbationDDWidget(TrajetModel data) {
     List<String> approbationList = ['Approved', 'Unapproved', '-'];
@@ -491,7 +504,7 @@ class _DetailTrajetState extends State<DetailTrajet> {
 
   Future<void> submitDD(TrajetModel data) async {
     final trajetModel = TrajetModel(
-      id: data.id!,
+        id: data.id!,
         nomeroEntreprise: data.nomeroEntreprise,
         nomUtilisateur: data.nomUtilisateur,
         trajetDe: data.trajetDe,
@@ -504,7 +517,7 @@ class _DetailTrajetState extends State<DetailTrajet> {
         created: data.created,
         approbationDD: approbationDD,
         motifDD: (motifDDController.text == '') ? '-' : motifDDController.text,
-        signatureDD: user.matricule); 
+        signatureDD: user.matricule);
     await TrajetApi().updateData(trajetModel);
     Navigator.pop(context);
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(

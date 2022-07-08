@@ -46,10 +46,16 @@ class _DashboardComptabiliteState extends State<DashboardComptabilite> {
     var compteResults = await CompteResultatApi().getAllData();
 
     setState(() {
-      bilanCount = bilans.length;
-      journalCount = journals.length;
-      balanceCount = balances.length;
-      compteResultatCount = compteResults.length;
+      bilanCount = bilans.where((element) => element.approbationDG == "Approved" &&
+              element.approbationDD == "Approved").length;
+      journalCount = journals.where((element) => element.approbationDG == "Approved" &&
+              element.approbationDD == "Approved").length;
+      balanceCount = balances.where((element) => element.approbationDG == "Approved" &&
+              element.approbationDD == "Approved").length;
+      compteResultatCount = compteResults
+          .where((element) => element.approbationDG == "Approved" && 
+          element.approbationDD == "Approved")
+          .length;
     });
   }
 

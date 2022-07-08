@@ -146,7 +146,7 @@ class _TableBalanceCompteDDState extends State<TableBalanceCompteDD> {
 
   Future agentsRow() async {
     List<BalanceCompteModel?> dataList = await BalanceCompteApi().getAllData();
-    var data = dataList.toList();
+    var data = dataList.where((element) => element!.approbationDD == "-").toList();
 
     if (mounted) {
       setState(() {

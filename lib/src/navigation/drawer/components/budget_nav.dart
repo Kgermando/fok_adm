@@ -98,8 +98,7 @@ class _BudgetNavState extends State<BudgetNav> {
             .where((element) =>
               DateTime.now().millisecondsSinceEpoch <=
                     element.periodeFin.millisecondsSinceEpoch &&
-                element.approbationDG == 'Approuved' &&
-                element.approbationDD == 'Approuved')
+                element.approbationDD == '-')
             .length;
       });
     }

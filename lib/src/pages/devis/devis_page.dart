@@ -3,14 +3,7 @@ import 'package:fokad_admin/src/constants/app_theme.dart';
 import 'package:fokad_admin/src/constants/responsive.dart';
 import 'package:fokad_admin/src/navigation/drawer/drawer_menu.dart';
 import 'package:fokad_admin/src/navigation/header/custom_appbar.dart';
-import 'package:fokad_admin/src/pages/devis/departements/administration_dep.dart';
-import 'package:fokad_admin/src/pages/devis/departements/budget_dep.dart';
-import 'package:fokad_admin/src/pages/devis/departements/comm_marketing_dep.dart';
-import 'package:fokad_admin/src/pages/devis/departements/comptabilite_dep.dart';
-import 'package:fokad_admin/src/pages/devis/departements/exploitations_dep.dart';
-import 'package:fokad_admin/src/pages/devis/departements/finance_dep.dart';
-import 'package:fokad_admin/src/pages/devis/departements/logistique_dep.dart';
-import 'package:fokad_admin/src/pages/devis/departements/rh_dep.dart';
+import 'package:fokad_admin/src/pages/devis/components/table_devis.dart'; 
 import 'package:fokad_admin/src/routes/routes.dart';
 
 
@@ -57,19 +50,8 @@ class _DevisPageState extends State<DevisPage> {
                         controllerMenu: () =>
                             _key.currentState!.openDrawer()),
                     // const Expanded(child: TableDevis())
-                    Expanded(
-                      child: ListView(
-                        children: const [
-                          AdministrationDep(),
-                          RHDep(),
-                          BudgetDep(),
-                          ComptabiliteDep(),
-                          FinanceDep(),
-                          ExploitationDep(),
-                          CommMarketingDep(),
-                          LogistiqueDep(),
-                        ],
-                      ))
+                    const Expanded(
+                      child: TableDevis(departement: 'departement'))
                   ],
                 ),
               ),

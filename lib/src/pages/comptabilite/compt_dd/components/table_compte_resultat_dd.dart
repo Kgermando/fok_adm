@@ -146,7 +146,7 @@ class _TableCompteResultatDDState extends State<TableCompteResultatDD> {
   Future agentsRow() async {
     List<CompteResulatsModel?> dataList =
         await CompteResultatApi().getAllData();
-    var data = dataList.toList();
+    var data = dataList.where((element) => element!.approbationDD == "-").toList();
 
     if (mounted) {
       setState(() {

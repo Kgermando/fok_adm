@@ -234,7 +234,7 @@ class _TableJournalComptabiliteDDState
 
   Future agentsRow() async {
     List<JournalModel?> dataList = await JournalApi().getAllData();
-    var data = dataList.toList();
+    var data = dataList.where((element) => element!.approbationDD == "-").toList();
 
     if (mounted) {
       setState(() {

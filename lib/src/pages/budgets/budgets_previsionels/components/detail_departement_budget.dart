@@ -776,129 +776,159 @@ class _DetailDepartmentBudgetState extends State<DetailDepartmentBudget> {
     ));
   }
 
-  Widget approbationWidget(DepartementBudgetModel data) {
+ Widget approbationWidget(DepartementBudgetModel data) {
+    final bodyLarge = Theme.of(context).textTheme.bodyLarge;
     return Row(mainAxisAlignment: MainAxisAlignment.center, children: [
       Card(
         elevation: 10,
+        color: Colors.red[50],
         child: Container(
           margin: const EdgeInsets.all(p16),
-          height: 200,
           width: (Responsive.isDesktop(context))
               ? MediaQuery.of(context).size.width / 2
               : MediaQuery.of(context).size.width,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(p10),
             border: Border.all(
-              color: Colors.blueGrey.shade700,
+              color: Colors.red.shade700,
               width: 2.0,
             ),
           ),
           child: Column(
             children: [
               Row(
-                mainAxisAlignment: MainAxisAlignment.end,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
+                  const TitleWidget(title: 'Approbations'),
                   IconButton(
                       onPressed: () {},
                       icon: Icon(Icons.add_task, color: Colors.green.shade700)),
                 ],
               ),
               const SizedBox(height: p20),
-              Row(
-                children: [
-                  const Expanded(flex: 1, child: Text("Directeur générale")),
-                  const SizedBox(width: p20),
-                  if (data.approbationDG != '-')
+              Padding(
+                padding: const EdgeInsets.all(p10),
+                child: Row(
+                  children: [
+                    Expanded(
+                        flex: 1,
+                        child: Text("Directeur générale", style: bodyLarge)),
+                    const SizedBox(width: p20),
                     Expanded(
                         flex: 4,
-                        child: Row(children: [
-                          Expanded(
-                              flex: 2,
-                              child: Column(
-                                children: [
-                                  const Text("Approbation"),
-                                  const SizedBox(height: p20),
-                                  Text(data.approbationDG),
-                                ],
-                              )),
-                          if (data.approbationDG == "Unapproved")
-                            Expanded(
-                                flex: 3,
-                                child: Column(
-                                  children: [
-                                    const Text("Motif"),
-                                    const SizedBox(height: p20),
-                                    Text(data.motifDG),
-                                  ],
-                                )),
-                          Expanded(
-                              flex: 2,
-                              child: Column(
-                                children: [
-                                  const Text("Signature"),
-                                  const SizedBox(height: p20),
-                                  Text(data.signatureDG),
-                                ],
-                              )),
-                        ])),
-                  if (data.approbationDG == '-' &&
-                      user.fonctionOccupe == "Directeur générale")
-                    Expanded(
-                        flex: 4,
-                        child: Row(children: [
-                          Expanded(child: approbationDGWidget(data)),
-                          Expanded(child: motifDGWidget(data))
-                        ])),
-                ],
+                        child: Column(
+                          children: [
+                            Row(children: [
+                              Expanded(
+                                  flex: 2,
+                                  child: Column(
+                                    children: [
+                                      const Text("Approbation"),
+                                      const SizedBox(height: p20),
+                                      Text(data.approbationDG,
+                                          style: bodyLarge!.copyWith(
+                                              color: Colors.red.shade700)),
+                                    ],
+                                  )),
+                              if (data.approbationDG == "Unapproved")
+                                Expanded(
+                                    flex: 3,
+                                    child: Column(
+                                      children: [
+                                        const Text("Motif"),
+                                        const SizedBox(height: p20),
+                                        Text(data.motifDG),
+                                      ],
+                                    )),
+                              Expanded(
+                                  flex: 2,
+                                  child: Column(
+                                    children: [
+                                      const Text("Signature"),
+                                      const SizedBox(height: p20),
+                                      Text(data.signatureDG),
+                                    ],
+                                  )),
+                            ]),
+                            if (data.approbationDG == '-' &&
+                                user.fonctionOccupe == "Directeur générale")
+                              Padding(
+                                padding: const EdgeInsets.all(p10),
+                                child: Row(children: [
+                                  Expanded(child: approbationDGWidget(data)),
+                                  const SizedBox(width: p20),
+                                  if (approbationDG == "Unapproved")
+                                    Expanded(child: motifDGWidget(data))
+                                ]),
+                              ),
+                          ],
+                        )),
+                  ],
+                ),
               ),
               const SizedBox(height: p20),
-              Row(
-                children: [
-                  const Expanded(
-                      flex: 1, child: Text("Directeur de departement")),
-                  const SizedBox(width: p20),
-                  if (data.approbationDD != '-')
+              Divider(color: Colors.red[10]),
+              Padding(
+                padding: const EdgeInsets.all(p10),
+                child: Row(
+                  children: [
+                    Expanded(
+                        flex: 1,
+                        child:
+                            Text("Directeur de departement", style: bodyLarge)),
+                    const SizedBox(width: p20),
                     Expanded(
                         flex: 4,
-                        child: Row(children: [
-                          Expanded(
-                              flex: 2,
-                              child: Column(
-                                children: [
-                                  const Text("Approbation"),
-                                  const SizedBox(height: p20),
-                                  Text(data.approbationDD),
-                                ],
-                              )),
-                          if (data.approbationDD == "Unapproved")
-                            Expanded(
-                                flex: 3,
-                                child: Column(
-                                  children: [
-                                    const Text("Motif"),
-                                    const SizedBox(height: p20),
-                                    Text(data.motifDD),
-                                  ],
-                                )),
-                          Expanded(
-                              flex: 2,
-                              child: Column(
-                                children: [
-                                  const Text("Signature"),
-                                  const SizedBox(height: p20),
-                                  Text(data.signatureDD),
-                                ],
-                              )),
-                        ])),
-                  if (data.approbationDD == '-' &&
-                      user.fonctionOccupe == "Directeur de departement")
-                    Expanded(
-                        flex: 4,
-                        child: Row(children: [
-                          Expanded(child: approbationDDWidget(data)),
-                          Expanded(child: motifDDWidget(data))
-                        ])),
-                ],
+                        child: Column(
+                          children: [
+                            Row(children: [
+                              Expanded(
+                                  flex: 2,
+                                  child: Column(
+                                    children: [
+                                      const Text("Approbation"),
+                                      const SizedBox(height: p20),
+                                      Text(data.approbationDD,
+                                          style: bodyLarge.copyWith(
+                                              color: Colors.green.shade700)),
+                                    ],
+                                  )),
+                              if (data.approbationDD == "Unapproved")
+                                Expanded(
+                                    flex: 3,
+                                    child: Column(
+                                      children: [
+                                        const Text("Motif"),
+                                        const SizedBox(height: p20),
+                                        Text(data.motifDD),
+                                      ],
+                                    )),
+                              Expanded(
+                                  flex: 2,
+                                  child: Column(
+                                    children: [
+                                      const Text("Signature"),
+                                      const SizedBox(height: p20),
+                                      Text(data.signatureDD),
+                                    ],
+                                  )),
+                            ]),
+                            if (data.approbationDD == '-' &&
+                                user.fonctionOccupe ==
+                                    "Directeur de departement")
+                              Padding(
+                                padding: const EdgeInsets.all(p10),
+                                child: Row(children: [
+                                  Expanded(child: approbationDDWidget(data)),
+                                  const SizedBox(width: p20),
+                                  if (approbationDD == "Unapproved")
+                                    Expanded(child: motifDDWidget(data))
+                                ]),
+                              ),
+                          ],
+                        )),
+                  ],
+                ),
               ),
             ],
           ),

@@ -24,11 +24,7 @@ class _CourbeJournalMounthState extends State<CourbeJournalMounth> {
   void initState() {
     _tooltipBehavior = TooltipBehavior(enable: true);
 
-    Timer.periodic(const Duration(milliseconds: 500), (t) {
-      loadVente();
-
-      t.cancel();
-    });
+    loadVente();
     super.initState();
   }
 
@@ -37,7 +33,11 @@ class _CourbeJournalMounthState extends State<CourbeJournalMounth> {
         await JournalApi().getAllDataJournalMouth();
     if (mounted) {
       setState(() {
-        journalsList = journals;
+        journalsList = journals
+            .where((element) =>
+                element.approbationDG == "Approved" &&
+                element.approbationDD == "Approved")
+            .toList();
       });
     }
   }

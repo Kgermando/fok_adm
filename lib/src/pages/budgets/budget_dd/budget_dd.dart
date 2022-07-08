@@ -84,7 +84,11 @@ class _BudgetDDState extends State<BudgetDD> {
           .length;
 
       budgetDepCount = budgetDep
-          .where((element) => element.isSubmit == 'true')
+         .where((element) =>
+              DateTime.now().millisecondsSinceEpoch <=
+                  element.periodeFin.millisecondsSinceEpoch &&
+              element.approbationDD == '-' &&
+              element.isSubmit == 'true')
           .length;
     });
   }
