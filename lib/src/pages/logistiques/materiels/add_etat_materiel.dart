@@ -109,7 +109,7 @@ class _AddEtatMaterielState extends State<AddEtatMateriel> {
                           Expanded(
                               flex: 5,
                               child: CustomAppbar(
-                                  title: 'Ajout état materiel',
+                                  title: 'Etat du materiel',
                                   controllerMenu: () =>
                                       _key.currentState!.openDrawer())),
                         ],
@@ -148,7 +148,7 @@ class _AddEtatMaterielState extends State<AddEtatMateriel> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        const TitleWidget(title: "Ajout Materiel"),
+                        const TitleWidget(title: "Statut Materiel"),
                         PrintWidget(onPressed: () {})
                       ],
                     ),

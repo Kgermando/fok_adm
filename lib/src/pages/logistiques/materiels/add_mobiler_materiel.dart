@@ -46,8 +46,7 @@ class _AddMobilerMaterielState extends State<AddMobilerMateriel> {
   }
 
   @override
-  void dispose() {
-    _controllerScroll.dispose();
+  void dispose() { 
 
     nomController.dispose();
     modeleController.dispose();
@@ -71,7 +70,7 @@ class _AddMobilerMaterielState extends State<AddMobilerMateriel> {
                 const Expanded(
                   child: DrawerMenu(),
                 ),
-              Expanded(
+              Expanded( 
                 flex: 5,
                 child: Padding(
                   padding: const EdgeInsets.all(p10),

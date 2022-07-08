@@ -64,8 +64,8 @@ class _EtatMaterielState extends State<EtatMateriel> {
       floatingActionButton: FloatingActionButton(
           child: const Icon(Icons.add),
           onPressed: () {
-            // newFicheDialog();
-            Navigator.pushNamed(context, LogistiqueRoutes.logAddEtatMateriel);
+            newFicheDialog();
+            // Navigator.pushNamed(context, LogistiqueRoutes.logAddEtatMateriel);
           }),
       body: SafeArea(
         child: Row(
@@ -106,7 +106,7 @@ class _EtatMaterielState extends State<EtatMateriel> {
               scrollable: true,
               title: const Text('Ajout Materiel'),
               content: SizedBox(
-                  height: 250,
+                  height: 400,
                   width: 500,
                   child: isLoading
                   ? loading()

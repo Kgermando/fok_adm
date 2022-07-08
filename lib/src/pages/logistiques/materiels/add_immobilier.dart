@@ -50,8 +50,7 @@ class _AddImmobilierMaterielState extends State<AddImmobilierMateriel> {
   }
 
   @override
-  void dispose() {
-    _controllerScroll.dispose();
+  void dispose() { 
 
     typeAllocationController.dispose();
     adresseController.dispose();
