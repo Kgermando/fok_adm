@@ -89,7 +89,7 @@ class MailApi {
       await AuthApi().refreshAccessToken();
       return insertData(mailModel);
     } else {
-      throw Exception(json.decode(resp.body)['message']);
+      throw Exception(resp.statusCode);
     }
   }
 

@@ -1,12 +1,14 @@
 import 'dart:async';
- 
+
 import 'package:flutter/material.dart';
 import 'package:fokad_admin/src/api/auth/auth_api.dart';
 import 'package:fokad_admin/src/api/budgets/ligne_budgetaire_api.dart';
+import 'package:fokad_admin/src/api/mails/mail_api.dart';
 import 'package:fokad_admin/src/api/rh/paiement_salaire_api.dart';
 import 'package:fokad_admin/src/constants/app_theme.dart';
 import 'package:fokad_admin/src/constants/responsive.dart';
 import 'package:fokad_admin/src/models/budgets/ligne_budgetaire_model.dart';
+import 'package:fokad_admin/src/models/mail/mail_model.dart';
 import 'package:fokad_admin/src/models/rh/paiement_salaire_model.dart';
 import 'package:fokad_admin/src/models/users/user_model.dart';
 import 'package:fokad_admin/src/navigation/drawer/drawer_menu.dart';
@@ -30,7 +32,7 @@ class _PaiementBulletinState extends State<PaiementBulletin> {
 
   bool isChecked = false;
 
-   // Approbations
+  // Approbations
   String approbationDG = '-';
   String approbationBudget = '-';
   String approbationFin = '-';
@@ -51,7 +53,7 @@ class _PaiementBulletinState extends State<PaiementBulletin> {
   }
 
   @override
-  void dispose() { 
+  void dispose() {
     motifDGController.dispose();
     motifBudgetController.dispose();
     motifFinController.dispose();
@@ -59,7 +61,7 @@ class _PaiementBulletinState extends State<PaiementBulletin> {
     super.dispose();
   }
 
-  List<LigneBudgetaireModel> ligneBudgetaireList = []; 
+  List<LigneBudgetaireModel> ligneBudgetaireList = [];
 
   UserModel user = UserModel(
       nom: '-',
@@ -77,11 +79,11 @@ class _PaiementBulletinState extends State<PaiementBulletin> {
       succursale: '-');
   Future<void> getData() async {
     UserModel userModel = await AuthApi().getUserId();
-    var budgets = await LIgneBudgetaireApi().getAllData(); 
+    var budgets = await LIgneBudgetaireApi().getAllData();
     if (!mounted) return;
     setState(() {
       user = userModel;
-      ligneBudgetaireList = budgets; 
+      ligneBudgetaireList = budgets;
     });
   }
 
@@ -108,7 +110,7 @@ class _PaiementBulletinState extends State<PaiementBulletin> {
                   builder: (BuildContext context,
                       AsyncSnapshot<PaiementSalaireModel> snapshot) {
                     if (snapshot.hasData) {
-                      PaiementSalaireModel? data = snapshot.data; 
+                      PaiementSalaireModel? data = snapshot.data;
                       return Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
@@ -135,7 +137,6 @@ class _PaiementBulletinState extends State<PaiementBulletin> {
                               bulletinPaieWidget(data!),
                               const SizedBox(height: p10),
                               approbationWidget(data)
-                              
                             ],
                           )))
                         ],
@@ -1209,11 +1210,9 @@ class _PaiementBulletinState extends State<PaiementBulletin> {
     );
   }
 
- 
-
   Future<void> submitObservation(PaiementSalaireModel data) async {
     final paiementSalaireModel = PaiementSalaireModel(
-      id: data.id,
+        id: data.id,
         nom: data.nom,
         postNom: data.postNom,
         prenom: data.prenom,
@@ -1261,7 +1260,6 @@ class _PaiementBulletinState extends State<PaiementBulletin> {
             data.montantPrisConsiderationCalculCotisationsINSS,
         totalDuBrut: data.totalDuBrut,
         signature: data.signature,
-        
         approbationDG: data.approbationDG,
         motifDG: data.motifDG,
         signatureDG: data.signatureDG,
@@ -1275,8 +1273,7 @@ class _PaiementBulletinState extends State<PaiementBulletin> {
         motifDD: data.motifDD,
         signatureDD: data.signatureDD,
         ligneBudgetaire: data.ligneBudgetaire,
-        ressource: data.ressource  
-    );
+        ressource: data.ressource);
     await PaiementSalaireApi().updateData(paiementSalaireModel);
     Navigator.of(context).pop();
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
@@ -1285,9 +1282,7 @@ class _PaiementBulletinState extends State<PaiementBulletin> {
     ));
   }
 
-
-
-   Widget approbationWidget(PaiementSalaireModel data) {
+  Widget approbationWidget(PaiementSalaireModel data) {
     return Row(mainAxisAlignment: MainAxisAlignment.center, children: [
       Card(
         elevation: 10,
@@ -1878,7 +1873,7 @@ class _PaiementBulletinState extends State<PaiementBulletin> {
 
   Future<void> submitDG(PaiementSalaireModel data) async {
     final paiementSalaireModel = PaiementSalaireModel(
-      id: data.id,
+        id: data.id,
         nom: data.nom,
         postNom: data.postNom,
         prenom: data.prenom,
@@ -1950,7 +1945,7 @@ class _PaiementBulletinState extends State<PaiementBulletin> {
 
   Future<void> submitDD(PaiementSalaireModel data) async {
     final paiementSalaireModel = PaiementSalaireModel(
-      id: data.id,
+        id: data.id,
         nom: data.nom,
         postNom: data.postNom,
         prenom: data.prenom,
@@ -2022,11 +2017,11 @@ class _PaiementBulletinState extends State<PaiementBulletin> {
 
   Future<void> submitBudget(PaiementSalaireModel data) async {
     final paiementSalaireModel = PaiementSalaireModel(
-      id: data.id,
+        id: data.id,
         nom: data.nom,
         postNom: data.postNom,
         prenom: data.prenom,
-        email:  data.email,
+        email: data.email,
         telephone: data.telephone,
         adresse: data.adresse,
         departement: data.departement,
@@ -2097,7 +2092,7 @@ class _PaiementBulletinState extends State<PaiementBulletin> {
 
   Future<void> submitFin(PaiementSalaireModel data) async {
     final paiementSalaireModel = PaiementSalaireModel(
-      id: data.id,
+        id: data.id,
         nom: data.nom,
         postNom: data.postNom,
         prenom: data.prenom,
@@ -2161,9 +2156,58 @@ class _PaiementBulletinState extends State<PaiementBulletin> {
         ligneBudgetaire: data.ligneBudgetaire,
         ressource: data.ressource);
     await PaiementSalaireApi().updateData(paiementSalaireModel);
+    await send(data);
     Navigator.pop(context);
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
       content: const Text("Soumis avec succès!"),
+      backgroundColor: Colors.green[700],
+    ));
+  }
+
+  Future<void> send(PaiementSalaireModel data) async {
+    String mois = '';
+    if (DateTime.now().month == 1) {
+      mois = 'Janvier';
+    } else if (DateTime.now().month == 2) {
+      mois = 'Février';
+    } else if (DateTime.now().month == 3) {
+      mois = 'Mars';
+    } else if (DateTime.now().month == 4) {
+      mois = 'Avril';
+    } else if (DateTime.now().month == 5) {
+      mois = 'Mai';
+    } else if (DateTime.now().month == 6) {
+      mois = 'Juin';
+    } else if (DateTime.now().month == 7) {
+      mois = 'Juillet';
+    } else if (DateTime.now().month == 8) {
+      mois = 'Août';
+    } else if (DateTime.now().month == 9) {
+      mois = 'Septembre';
+    } else if (DateTime.now().month == 10) {
+      mois = 'Octobre';
+    } else if (DateTime.now().month == 11) {
+      mois = 'Novembre';
+    } else if (DateTime.now().month == 12) {
+      mois = 'Décembre';
+    }
+    final mailModel = MailModel(
+        fullName: "${data.prenom} ${data.nom}",
+        email: data.email,
+        cc: '-',
+        objet: "SALAIRE",
+        message:
+            "Bonjour ${data.prenom}, votre salaire de $mois est maintenant disponible",
+        pieceJointe: "-",
+        read: 'false',
+        fullNameDest: "${user.prenom} ${user.nom}",
+        emailDest: user.email,
+        dateSend: DateTime.now(),
+        dateRead: DateTime.now());
+    await MailApi().insertData(mailModel);
+    Navigator.pop(context);
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      content: const Text("Envoyer avec succès!"),
       backgroundColor: Colors.green[700],
     ));
   }

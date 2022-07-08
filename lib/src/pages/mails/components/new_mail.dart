@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:file_picker/file_picker.dart';
@@ -18,7 +19,6 @@ import 'package:fokad_admin/src/widgets/btn_widget.dart';
 import 'package:fokad_admin/src/widgets/file_uploader.dart';
 import 'package:fokad_admin/src/widgets/title_widget.dart';
 import 'package:dospace/dospace.dart' as dospace;
-
 
 class NewMail extends StatefulWidget {
   const NewMail({Key? key}) : super(key: key);
@@ -80,7 +80,6 @@ class _NewMailState extends State<NewMail> {
       print('upload: $etagpdf');
       print('done');
     }
-    
   }
 
   @override
@@ -197,7 +196,7 @@ class _NewMailState extends State<NewMail> {
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
                         fichierWidget(),
-                      ], 
+                      ],
                     ),
                     const SizedBox(
                       height: p20,
@@ -224,22 +223,19 @@ class _NewMailState extends State<NewMail> {
 
   Widget emailWidget() {
     return Container(
-      margin: const EdgeInsets.only(bottom: p20),
-      child: TextFormField(
-        controller: emailController,
-        decoration: InputDecoration(
-          border:
-              OutlineInputBorder(borderRadius: BorderRadius.circular(10.0)),
-          labelText: "Email",
-        ),
-        keyboardType: TextInputType.emailAddress,
-        style: const TextStyle(),
-        validator: (value) => RegExpIsValide().validateEmail(value),
-      )
-    );
+        margin: const EdgeInsets.only(bottom: p20),
+        child: TextFormField(
+          controller: emailController,
+          decoration: InputDecoration(
+            border:
+                OutlineInputBorder(borderRadius: BorderRadius.circular(10.0)),
+            labelText: "Email",
+          ),
+          keyboardType: TextInputType.emailAddress,
+          style: const TextStyle(),
+          validator: (value) => RegExpIsValide().validateEmail(value),
+        ));
   }
-
-
 
   Widget ccWidget() {
     return Material(
@@ -340,7 +336,6 @@ class _NewMailState extends State<NewMail> {
         ));
   }
 
-
   Widget fichierWidget() {
     return Container(
         margin: const EdgeInsets.only(bottom: p20),
@@ -352,8 +347,13 @@ class _NewMailState extends State<NewMail> {
                       await FilePicker.platform.pickFiles(
                     type: FileType.custom,
                     allowedExtensions: [
-                      'pdf', 'doc', 'docx', 'xlsx',
-                      'pptx', 'jpg', 'png'
+                      'pdf',
+                      'doc',
+                      'docx',
+                      'xlsx',
+                      'pptx',
+                      'jpg',
+                      'png'
                     ],
                   );
                   if (result != null) {
@@ -364,37 +364,38 @@ class _NewMailState extends State<NewMail> {
                   }
                 },
                 icon: isUploadingDone
-                  ? Icon(Icons.check_circle_outline, 
-                      color: Colors.green.shade700)
-                  : const Icon(Icons.attach_email),
+                    ? Icon(Icons.check_circle_outline,
+                        color: Colors.green.shade700)
+                    : const Icon(Icons.attach_email),
                 label: isUploadingDone
                     ? Text("Téléchargement terminé",
                         style: Theme.of(context)
                             .textTheme
                             .bodyLarge!
                             .copyWith(color: Colors.green.shade700))
-                    : Text("Joindre un fichier",
+                    : Text("Pièce jointe",
                         style: Theme.of(context).textTheme.bodyLarge)));
   }
 
   Future<void> send() async {
-    var userSelect = userList.where((element) => element.email == emailController.text).first;
+    var userSelect = userList
+        .where((element) => element.email == emailController.text)
+        .first;
+    var ccJson = jsonEncode(ccList);
     final mailModel = MailModel(
         fullName: "${userSelect.prenom} ${userSelect.nom}",
         email: emailController.text,
-        cc: ccList,
+        cc: ccJson,
         objet: objetController.text,
         message: messageController.text,
-        pieceJointe: (uploadedFileUrl == '')
-            ? '-'
-            : uploadedFileUrl.toString(),
+        pieceJointe: (uploadedFileUrl == '') ? '-' : uploadedFileUrl.toString(),
         read: 'false',
         fullNameDest: "${user!.prenom} ${user!.nom}",
         emailDest: user!.email,
         dateSend: DateTime.now(),
         dateRead: DateTime.now());
     await MailApi().insertData(mailModel);
-   Navigator.pop(context);
+    Navigator.pop(context);
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
       content: const Text("Envoyer avec succès!"),
       backgroundColor: Colors.green[700],

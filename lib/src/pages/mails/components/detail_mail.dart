@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:fokad_admin/src/api/auth/auth_api.dart';
@@ -182,6 +184,7 @@ class _DetailMailState extends State<DetailMail> {
     final bodyMedium = Theme.of(context).textTheme.bodyMedium;
     final bodySmall = Theme.of(context).textTheme.bodySmall;
     final String firstLettter = data.fullNameDest[0];
+    var ccList = jsonDecode(data.cc);
     return Padding(
       padding: const EdgeInsets.all(p10),
       child: Column(
@@ -209,8 +212,7 @@ class _DetailMailState extends State<DetailMail> {
                     children: [
                       AutoSizeText("à".toUpperCase()),
                       const AutoSizeText("moi."),
-                    ],
-                  ),
+                    ]),
                 SizedBox(
                   width: 500,
                   child: ExpansionTile(

@@ -323,7 +323,7 @@ class _RepondreMailState extends State<RepondreMail> {
     final mailModel = MailModel(
         fullName: data.fullName,
         email: emailController.text,
-        cc: [],
+        cc: '-',
         objet: objetController.text,
         message: messageController.text,
         pieceJointe: data.pieceJointe,

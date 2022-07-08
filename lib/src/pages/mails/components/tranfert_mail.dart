@@ -244,7 +244,7 @@ class _TransfertMailState extends State<TransfertMail> {
     final mailModel = MailModel(
         fullName: data.fullName,
         email: emailController.text,
-        cc: [],
+        cc: '-',
         objet: objetController.text,
         message: messageController.text,
         pieceJointe: data.pieceJointe,

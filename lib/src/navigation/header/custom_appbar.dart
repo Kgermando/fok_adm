@@ -16,8 +16,6 @@ import 'package:fokad_admin/src/utils/menu_items.dart';
 import 'package:fokad_admin/src/utils/menu_options.dart';
 import 'package:badges/badges.dart';
 
-
-
 class CustomAppbar extends StatefulWidget {
   const CustomAppbar(
       {Key? key, required this.title, required this.controllerMenu})
@@ -32,15 +30,24 @@ class CustomAppbar extends StatefulWidget {
 
 class _CustomAppbarState extends State<CustomAppbar> {
   bool isActiveNotification = true;
-
+  Timer? timer;
   int tacheCount = 0;
   int cartCount = 0;
   int mailsCount = 0;
 
   @override
   void initState() {
-    getData();
+    timer = Timer.periodic(const Duration(seconds: 1), (timer) {
+      getData();
+    });
+    
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    timer!.cancel();
+    super.dispose();
   }
 
   Future<void> getData() async {
@@ -58,13 +65,10 @@ class _CustomAppbarState extends State<CustomAppbar> {
         cartCount = cartList.length;
 
         mailsCount = mails
-            .where((element) => element.read == 'false' &&
-                element.email == userModel.email ||
-                element.read == 'false' &&
-                element.cc.contains(userModel.email))
+            .where((element) =>
+                element.read == 'false' && element.email == userModel.email ||
+                element.read == 'false' && element.cc.contains(userModel.email))
             .length;
-
-            
       });
     }
   }
@@ -99,10 +103,9 @@ class _CustomAppbarState extends State<CustomAppbar> {
                       children: [
                         if (userModel.departement == "Commercial et Marketing")
                           IconButton(
-                            tooltip: 'Panier',
+                              tooltip: 'Panier',
                               onPressed: () {
-                                Navigator.pushNamed(
-                                    context,
+                                Navigator.pushNamed(context,
                                     ComMarketingRoutes.comMarketingcart);
                               },
                               icon: Badge(
@@ -112,17 +115,19 @@ class _CustomAppbarState extends State<CustomAppbar> {
                                 child: const Icon(Icons.shopping_cart),
                               )),
                         IconButton(
-                          tooltip: 'Agenda',
-                            onPressed: () {
-                              Navigator.pushNamed(
-                                  context, ComMarketingRoutes.comMarketingAgenda);
-                            },
-                            icon: Icon(Icons.note_alt_rounded, color: Colors.amber.shade700,)),
-                        IconButton(
-                          tooltip: 'Mails',
+                            tooltip: 'Agenda',
                             onPressed: () {
                               Navigator.pushNamed(context,
-                                  MailRoutes.mails);
+                                  ComMarketingRoutes.comMarketingAgenda);
+                            },
+                            icon: Icon(
+                              Icons.note_alt_rounded,
+                              color: Colors.amber.shade700,
+                            )),
+                        IconButton(
+                            tooltip: 'Mails',
+                            onPressed: () {
+                              Navigator.pushNamed(context, MailRoutes.mails);
                             },
                             icon: Badge(
                               showBadge: (mailsCount >= 1),
@@ -134,11 +139,10 @@ class _CustomAppbarState extends State<CustomAppbar> {
                         if (userModel.departement == "Exploitations")
                           if (tacheCount >= 1)
                             IconButton(
-                              tooltip: 'Notifications',
+                                tooltip: 'Notifications',
                                 onPressed: () {
                                   Navigator.pushNamed(
-                                      context,
-                                      ExploitationRoutes.expTache);
+                                      context, ExploitationRoutes.expTache);
                                 },
                                 icon: Badge(
                                   badgeContent: Text('$tacheCount',
