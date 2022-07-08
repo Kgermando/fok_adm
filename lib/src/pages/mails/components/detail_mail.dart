@@ -211,6 +211,7 @@ class _DetailMailState extends State<DetailMail> {
                   Row(
                     children: [
                       AutoSizeText("à".toUpperCase()),
+                      const SizedBox(height: p8),
                       const AutoSizeText("moi."),
                     ]),
                 SizedBox(

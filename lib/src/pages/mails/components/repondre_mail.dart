@@ -108,6 +108,10 @@ class _RepondreMailState extends State<RepondreMail> {
   Widget build(BuildContext context) {
     MailModel mailModel =
         ModalRoute.of(context)!.settings.arguments as MailModel;
+    emailController = TextEditingController(text: mailModel.email);
+    objetController = TextEditingController(text: mailModel.objet);
+    // messageController = TextEditingController(text: mailModel.message);
+    // pieceJointeController = TextEditingController(text: mailModel.pieceJointe);
     return Scaffold(
         key: _key,
         drawer: const DrawerMenu(),
@@ -179,7 +183,7 @@ class _RepondreMailState extends State<RepondreMail> {
                 width: Responsive.isDesktop(context)
                     ? MediaQuery.of(context).size.width / 2
                     : MediaQuery.of(context).size.width,
-                child: ListView(
+                child: Column(
                   children: [
                     Row(
                       mainAxisAlignment: MainAxisAlignment.start,
