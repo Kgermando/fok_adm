@@ -104,28 +104,28 @@ class _DetailLigneBudgetaireState extends State<DetailLigneBudgetaire> {
       ligneBudgetaireList = budgets;
       dataCampaignList = campaigns
           .where((element) =>
-              element.approbationDG == 'Approuved' &&
-              element.approbationDD == 'Approuved' &&
+              element.approbationDG == 'Approved' &&
+              element.approbationDD == 'Approved' &&
               element.approbationBudget == '-')
           .toList();
       dataDevisList = devis
           .where((element) =>
-              element.approbationDG == 'Approuved' &&
-              element.approbationDD == 'Approuved' &&
+              element.approbationDG == 'Approved' &&
+              element.approbationDD == 'Approved' &&
               element.approbationBudget == '-')
           .toList();
       dataProjetList = projets
           .where((element) =>
-              element.approbationDG == 'Approuved' &&
-              element.approbationDD == 'Approuved' &&
+              element.approbationDG == 'Approved' &&
+              element.approbationDD == 'Approved' &&
               element.approbationBudget == '-')
           .toList();
       dataSalaireList = salaires
           .where((element) =>
               element.createdAt.month == DateTime.now().month &&
               element.createdAt.year == DateTime.now().year &&
-              element.approbationDG == 'Approuved' &&
-              element.approbationDD == 'Approuved' &&
+              element.approbationDG == 'Approved' &&
+              element.approbationDD == 'Approved' &&
               element.approbationBudget == '-')
           .toList();
     });
@@ -492,7 +492,8 @@ class _DetailLigneBudgetaireState extends State<DetailLigneBudgetaire> {
     salairecaisseList = dataSalaireList
         .where((element) =>
             element.departement == ligneBudgetaireModel!.departement &&
-            element.ligneBudgetaire == ligneBudgetaireModel!.nomLigneBudgetaire &&
+            element.ligneBudgetaire ==
+                ligneBudgetaireModel!.nomLigneBudgetaire &&
             element.createdAt.isBefore(
                 DateTime.parse(ligneBudgetaireModel!.periodeBudget)) &&
             element.ressource == "caisse")
@@ -500,7 +501,8 @@ class _DetailLigneBudgetaireState extends State<DetailLigneBudgetaire> {
     salairebanqueList = dataSalaireList
         .where((element) =>
             element.departement == ligneBudgetaireModel!.departement &&
-            element.ligneBudgetaire == ligneBudgetaireModel!.nomLigneBudgetaire &&
+            element.ligneBudgetaire ==
+                ligneBudgetaireModel!.nomLigneBudgetaire &&
             element.createdAt.isBefore(
                 DateTime.parse(ligneBudgetaireModel!.periodeBudget)) &&
             element.ressource == "banque")
@@ -508,7 +510,8 @@ class _DetailLigneBudgetaireState extends State<DetailLigneBudgetaire> {
     salairefinPropreList = dataSalaireList
         .where((element) =>
             element.departement == ligneBudgetaireModel!.departement &&
-            element.ligneBudgetaire == ligneBudgetaireModel!.nomLigneBudgetaire &&
+            element.ligneBudgetaire ==
+                ligneBudgetaireModel!.nomLigneBudgetaire &&
             element.createdAt.isBefore(
                 DateTime.parse(ligneBudgetaireModel!.periodeBudget)) &&
             element.ressource == "finPropre")
@@ -516,7 +519,8 @@ class _DetailLigneBudgetaireState extends State<DetailLigneBudgetaire> {
     salairefinExterieurList = dataSalaireList
         .where((element) =>
             element.departement == ligneBudgetaireModel!.departement &&
-            element.ligneBudgetaire == ligneBudgetaireModel!.nomLigneBudgetaire &&
+            element.ligneBudgetaire ==
+                ligneBudgetaireModel!.nomLigneBudgetaire &&
             element.createdAt.isBefore(
                 DateTime.parse(ligneBudgetaireModel!.periodeBudget)) &&
             element.ressource == "finExterieur")
@@ -542,7 +546,8 @@ class _DetailLigneBudgetaireState extends State<DetailLigneBudgetaire> {
     campaigncaisseList = dataCampaignList
         .where((element) =>
             "Commercial et Marketing" == ligneBudgetaireModel!.departement &&
-            element.ligneBudgetaire == ligneBudgetaireModel!.nomLigneBudgetaire &&
+            element.ligneBudgetaire ==
+                ligneBudgetaireModel!.nomLigneBudgetaire &&
             element.created.isBefore(
                 DateTime.parse(ligneBudgetaireModel!.periodeBudget)) &&
             element.ressource == "caisse")
@@ -550,7 +555,8 @@ class _DetailLigneBudgetaireState extends State<DetailLigneBudgetaire> {
     campaignbanqueList = dataCampaignList
         .where((element) =>
             "Commercial et Marketing" == ligneBudgetaireModel!.departement &&
-            element.ligneBudgetaire == ligneBudgetaireModel!.nomLigneBudgetaire &&
+            element.ligneBudgetaire ==
+                ligneBudgetaireModel!.nomLigneBudgetaire &&
             element.created.isBefore(
                 DateTime.parse(ligneBudgetaireModel!.periodeBudget)) &&
             element.ressource == "banque")
@@ -558,7 +564,8 @@ class _DetailLigneBudgetaireState extends State<DetailLigneBudgetaire> {
     campaignfinPropreList = dataCampaignList
         .where((element) =>
             "Commercial et Marketing" == ligneBudgetaireModel!.departement &&
-            element.ligneBudgetaire == ligneBudgetaireModel!.nomLigneBudgetaire &&
+            element.ligneBudgetaire ==
+                ligneBudgetaireModel!.nomLigneBudgetaire &&
             element.created.isBefore(
                 DateTime.parse(ligneBudgetaireModel!.periodeBudget)) &&
             element.ressource == "finPropre")
@@ -566,7 +573,8 @@ class _DetailLigneBudgetaireState extends State<DetailLigneBudgetaire> {
     campaignfinExterieurList = dataCampaignList
         .where((element) =>
             "Commercial et Marketing" == ligneBudgetaireModel!.departement &&
-            element.ligneBudgetaire == ligneBudgetaireModel!.nomLigneBudgetaire &&
+            element.ligneBudgetaire ==
+                ligneBudgetaireModel!.nomLigneBudgetaire &&
             element.created.isBefore(
                 DateTime.parse(ligneBudgetaireModel!.periodeBudget)) &&
             element.ressource == "finExterieur")
@@ -592,7 +600,8 @@ class _DetailLigneBudgetaireState extends State<DetailLigneBudgetaire> {
     projetcaisseList = dataProjetList
         .where((element) =>
             "Exploitations" == ligneBudgetaireModel!.departement &&
-            element.ligneBudgetaire == ligneBudgetaireModel!.nomLigneBudgetaire &&
+            element.ligneBudgetaire ==
+                ligneBudgetaireModel!.nomLigneBudgetaire &&
             element.created.isBefore(
                 DateTime.parse(ligneBudgetaireModel!.periodeBudget)) &&
             element.ressource == "caisse")
@@ -600,7 +609,8 @@ class _DetailLigneBudgetaireState extends State<DetailLigneBudgetaire> {
     projetbanqueList = dataProjetList
         .where((element) =>
             "Exploitations" == ligneBudgetaireModel!.departement &&
-            element.ligneBudgetaire == ligneBudgetaireModel!.nomLigneBudgetaire &&
+            element.ligneBudgetaire ==
+                ligneBudgetaireModel!.nomLigneBudgetaire &&
             element.created.isBefore(
                 DateTime.parse(ligneBudgetaireModel!.periodeBudget)) &&
             element.ressource == "banque")
@@ -608,7 +618,8 @@ class _DetailLigneBudgetaireState extends State<DetailLigneBudgetaire> {
     projetfinPropreList = dataProjetList
         .where((element) =>
             "Exploitations" == ligneBudgetaireModel!.departement &&
-            element.ligneBudgetaire == ligneBudgetaireModel!.nomLigneBudgetaire &&
+            element.ligneBudgetaire ==
+                ligneBudgetaireModel!.nomLigneBudgetaire &&
             element.created.isBefore(
                 DateTime.parse(ligneBudgetaireModel!.periodeBudget)) &&
             element.ressource == "finPropre")
@@ -616,7 +627,8 @@ class _DetailLigneBudgetaireState extends State<DetailLigneBudgetaire> {
     projetfinExterieurList = dataProjetList
         .where((element) =>
             "Exploitations" == ligneBudgetaireModel!.departement &&
-            element.ligneBudgetaire == ligneBudgetaireModel!.nomLigneBudgetaire &&
+            element.ligneBudgetaire ==
+                ligneBudgetaireModel!.nomLigneBudgetaire &&
             element.created.isBefore(
                 DateTime.parse(ligneBudgetaireModel!.periodeBudget)) &&
             element.ressource == "finExterieur")
@@ -786,7 +798,8 @@ class _DetailLigneBudgetaireState extends State<DetailLigneBudgetaire> {
     dataList = dataSalaireList
         .where((element) =>
             element.departement == ligneBudgetaireModel!.departement &&
-            element.ligneBudgetaire == ligneBudgetaireModel!.nomLigneBudgetaire &&
+            element.ligneBudgetaire ==
+                ligneBudgetaireModel!.nomLigneBudgetaire &&
             element.createdAt
                 .isBefore(DateTime.parse(ligneBudgetaireModel!.periodeBudget)))
         .toList();
@@ -812,7 +825,8 @@ class _DetailLigneBudgetaireState extends State<DetailLigneBudgetaire> {
     dataList = dataCampaignList
         .where((element) =>
             "Commercial et Marketing" == ligneBudgetaireModel!.departement &&
-            element.ligneBudgetaire == ligneBudgetaireModel!.nomLigneBudgetaire &&
+            element.ligneBudgetaire ==
+                ligneBudgetaireModel!.nomLigneBudgetaire &&
             element.created
                 .isBefore(DateTime.parse(ligneBudgetaireModel!.periodeBudget)))
         .toList();
@@ -835,10 +849,11 @@ class _DetailLigneBudgetaireState extends State<DetailLigneBudgetaire> {
 
   Future projetRow() async {
     List<ProjetModel> dataList = [];
-     dataList = dataProjetList
+    dataList = dataProjetList
         .where((element) =>
             "Exploitations" == ligneBudgetaireModel!.departement &&
-            element.ligneBudgetaire == ligneBudgetaireModel!.nomLigneBudgetaire &&
+            element.ligneBudgetaire ==
+                ligneBudgetaireModel!.nomLigneBudgetaire &&
             element.created
                 .isBefore(DateTime.parse(ligneBudgetaireModel!.periodeBudget)))
         .toList();
@@ -864,7 +879,8 @@ class _DetailLigneBudgetaireState extends State<DetailLigneBudgetaire> {
     dataList = dataDevisList
         .where((element) =>
             element.departement == ligneBudgetaireModel!.departement &&
-            element.ligneBudgetaire == ligneBudgetaireModel!.nomLigneBudgetaire &&
+            element.ligneBudgetaire ==
+                ligneBudgetaireModel!.nomLigneBudgetaire &&
             element.created
                 .isBefore(DateTime.parse(ligneBudgetaireModel!.periodeBudget)))
         .toList();

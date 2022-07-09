@@ -36,43 +36,6 @@ class DepartementBudgetModel {
       required this.motifDD,
       required this.signatureDD});
 
-  DepartementBudgetModel copyWith({
-    int? id,
-    String? title,
-    String? departement,
-    DateTime? periodeDebut,
-    DateTime? periodeFin,
-    String? signature,
-    DateTime? createdRef,
-    DateTime? created,
-    String? isSubmit,
-    String? approbationDG,
-    String? motifDG,
-    String? signatureDG,
-    String? approbationDD,
-    String? motifDD,
-    String? signatureDD,
-  }) {
-    return DepartementBudgetModel(
-      id: id ?? this.id,
-      title: title ?? this.title,
-      departement: departement ?? this.departement,
-      periodeDebut: periodeDebut ?? this.periodeDebut,
-      periodeFin: periodeFin ?? this.periodeFin,
-      signature: signature ?? this.signature,
-      createdRef: createdRef ?? this.createdRef,
-      created: created ?? this.created,
-      isSubmit: isSubmit ?? this.isSubmit,
-
-      approbationDG: approbationDG ?? this.approbationDG,
-      motifDG: motifDG ?? this.motifDG,
-      signatureDG: signatureDG ?? this.signatureDG,
-      approbationDD: approbationDD ?? this.approbationDD, 
-      motifDD: motifDD ?? this.motifDD, 
-      signatureDD: signatureDD ?? this.signatureDD, 
-    );
-  }
-
   factory DepartementBudgetModel.fromSQL(List<dynamic> row) {
     return DepartementBudgetModel(
         id: row[0],

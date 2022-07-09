@@ -76,7 +76,7 @@ class _DashboardFinanceState extends State<DashboardFinance> {
     List<CreanceModel?> dataCreanceList = await CreanceApi().getAllData();
     List<DetteModel?> dataDetteList = await DetteApi().getAllData();
     var creanceDettes = await CreanceDetteApi().getAllData();
-    var dataFinanceExterieurList = await FinExterieurApi().getAllData(); 
+    var dataFinanceExterieurList = await FinExterieurApi().getAllData();
 
     setState(() {
       // Banque
@@ -106,15 +106,15 @@ class _DashboardFinanceState extends State<DashboardFinance> {
         depensesCaisse += double.parse(item!.montant);
       }
 
-       // Creance remboursement
+      // Creance remboursement
       var creancePayementList =
           creanceDettes.where((element) => element.creanceDette == 'creances');
 
       List<CreanceModel?> nonPayeCreanceList = dataCreanceList
           .where((element) =>
               element!.statutPaie == 'false' &&
-              element.approbationDG == 'Approuved' &&
-              element.approbationDD == 'Approuved')
+              element.approbationDG == 'Approved' &&
+              element.approbationDD == 'Approved')
           .toList();
 
       for (var item in nonPayeCreanceList) {
@@ -130,8 +130,8 @@ class _DashboardFinanceState extends State<DashboardFinance> {
       List<DetteModel?> nonPayeDetteList = dataDetteList
           .where((element) =>
               element!.statutPaie == 'false' &&
-              element.approbationDG == 'Approuved' &&
-              element.approbationDD == 'Approuved')
+              element.approbationDG == 'Approved' &&
+              element.approbationDD == 'Approved')
           .toList();
       for (var item in nonPayeDetteList) {
         nonPayesDette += double.parse(item!.montant);
@@ -145,7 +145,6 @@ class _DashboardFinanceState extends State<DashboardFinance> {
       for (var item in recetteList) {
         cumulFinanceExterieur += double.parse(item!.montant);
       }
-
 
       // DEvis
       // List<DevisModel?> devisList = dataDevisList;

@@ -5,8 +5,6 @@ import 'package:badges/badges.dart';
 import 'package:flutter/material.dart';
 import 'package:fokad_admin/src/api/auth/auth_api.dart';
 import 'package:fokad_admin/src/api/budgets/departement_budget_api.dart';
-import 'package:fokad_admin/src/api/budgets/ligne_budgetaire_api.dart';
-import 'package:fokad_admin/src/api/comm_marketing/commerciale/produit_model_api.dart';
 import 'package:fokad_admin/src/api/comm_marketing/commerciale/succursale_api.dart';
 import 'package:fokad_admin/src/api/comm_marketing/marketing/campaign_api.dart';
 import 'package:fokad_admin/src/api/comptabilite/balance_compte_api.dart';
@@ -18,9 +16,7 @@ import 'package:fokad_admin/src/api/exploitations/projets_api.dart';
 import 'package:fokad_admin/src/api/finances/creance_api.dart';
 import 'package:fokad_admin/src/api/finances/dette_api.dart';
 import 'package:fokad_admin/src/api/logistiques/anguin_api.dart';
-import 'package:fokad_admin/src/api/logistiques/carburant_api.dart';
 import 'package:fokad_admin/src/api/logistiques/immobiler_api.dart';
-import 'package:fokad_admin/src/api/logistiques/mobilier_api.dart';
 import 'package:fokad_admin/src/api/rh/agents_api.dart';
 import 'package:fokad_admin/src/api/rh/paiement_salaire_api.dart';
 import 'package:fokad_admin/src/constants/app_theme.dart';
@@ -128,7 +124,11 @@ class _AdministrationNavState extends State<AdministrationNav> {
         agentInactifs =
             agents.where((element) => element.statutAgent == 'false').length;
         salaireCount =
-            salaires.where((element) => element.observation == 'false').length;
+            salaires.where((element) =>  element.observation == 'false' &&
+                element.createdAt.month == DateTime.now().month &&
+                element.createdAt.year == DateTime.now().year &&
+                element.approbationDG == '-')
+            .length;
 
         // Finances
         creanceCount = creances

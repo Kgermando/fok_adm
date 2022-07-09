@@ -38,7 +38,8 @@ class _BudgetsAdminState extends State<BudgetsAdmin> {
           .where((element) =>
               DateTime.now().millisecondsSinceEpoch <=
                   element!.periodeFin.millisecondsSinceEpoch &&  
-              element.isSubmit == 'true' && element.approbationDG == '-' &&
+              element.isSubmit == 'true' && 
+              element.approbationDG == '-' &&
               element.approbationDD == 'Approved')
               
           .length;

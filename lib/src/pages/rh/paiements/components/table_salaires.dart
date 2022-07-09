@@ -203,12 +203,12 @@ class _TableSalairesState extends State<TableSalaires> {
     // Uniquement ceux qui ont déjà été approuvé
     var data = dataList
         .where((element) =>
-          element!.createdAt.month == DateTime.now().month &&
-          element.createdAt.year == DateTime.now().year && 
-          element.approbationDG == 'Approuved' &&
-          element.approbationDD == 'Approuved' &&
-          element.approbationBudget == 'Approuved' &&
-          element.approbationFin == 'Approuved')
+            element!.createdAt.month == DateTime.now().month &&
+            element.createdAt.year == DateTime.now().year &&
+            element.approbationDG == 'Approved' &&
+            element.approbationDD == 'Approved' &&
+            element.approbationBudget == 'Approved' &&
+            element.approbationFin == 'Approved')
         .toList();
 
     if (mounted) {

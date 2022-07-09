@@ -58,33 +58,34 @@ class _BudgetDDState extends State<BudgetDD> {
           .where((element) =>
               element.createdAt.month == DateTime.now().month &&
               element.createdAt.year == DateTime.now().year &&
-              element.approbationDG == 'Approuved' &&
-              element.approbationDD == 'Approuved' &&
+              element.approbationDG == 'Approved' &&
+              element.approbationDD == 'Approved' &&
+              element.observation == 'false' &&
               element.approbationBudget == '-')
           .length;
       campaignCount = campaigns
           .where((element) =>
-              element.approbationDG == 'Approuved' &&
-              element.approbationDD == 'Approuved' &&
-              element.approbationBudget == '-') 
+              element.approbationDG == 'Approved' &&
+              element.approbationDD == 'Approved' &&
+              element.approbationBudget == '-')
           .length;
-      
+
       devisCount = devis
           .where((element) =>
-              element.approbationDG == 'Approuved' &&
-              element.approbationDD == 'Approuved' &&
-              element.approbationBudget == '-') 
+              element.approbationDG == 'Approved' &&
+              element.approbationDD == 'Approved' &&
+              element.approbationBudget == '-')
           .length;
 
       projetCount = projets
           .where((element) =>
-              element.approbationDG == 'Approuved' &&
-              element.approbationDD == 'Approuved' &&
-              element.approbationBudget == '-') 
+              element.approbationDG == 'Approved' &&
+              element.approbationDD == 'Approved' &&
+              element.approbationBudget == '-')
           .length;
 
       budgetDepCount = budgetDep
-         .where((element) =>
+          .where((element) =>
               DateTime.now().millisecondsSinceEpoch <=
                   element.periodeFin.millisecondsSinceEpoch &&
               element.approbationDD == '-' &&

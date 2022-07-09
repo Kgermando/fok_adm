@@ -89,7 +89,6 @@ class _DashboardBudgetState extends State<DashboardBudget> {
 
     if (mounted) {
       setState(() {
-
         departementsList = departements
             .where((element) => DateTime.now().isBefore(element.periodeFin))
             .toList();
@@ -102,30 +101,30 @@ class _DashboardBudgetState extends State<DashboardBudget> {
         for (var item in ligneBudgetaireList) {
           dataCampaignList = campaigns
               .where((element) =>
-                  element.approbationDG == 'Approuved' &&
-                  element.approbationDD == 'Approuved' &&
-                  element.approbationBudget == 'Approuved' &&
+                  element.approbationDG == 'Approved' &&
+                  element.approbationDD == 'Approved' &&
+                  element.approbationBudget == 'Approved' &&
                   element.created.isBefore(DateTime.parse(item.periodeBudget)))
               .toList();
           dataDevisList = devis
               .where((element) =>
-                   element.approbationDG == 'Approuved' &&
-                  element.approbationDD == 'Approuved' &&
-                  element.approbationBudget == 'Approuved' &&
+                  element.approbationDG == 'Approved' &&
+                  element.approbationDD == 'Approved' &&
+                  element.approbationBudget == 'Approved' &&
                   element.created.isBefore(DateTime.parse(item.periodeBudget)))
               .toList();
           dataProjetList = projets
               .where((element) =>
-                  element.approbationDG == 'Approuved' &&
-                  element.approbationDD == 'Approuved' &&
-                  element.approbationBudget == 'Approuved' &&
+                  element.approbationDG == 'Approved' &&
+                  element.approbationDD == 'Approved' &&
+                  element.approbationBudget == 'Approved' &&
                   element.created.isBefore(DateTime.parse(item.periodeBudget)))
               .toList();
           dataSalaireList = salaires
               .where((element) =>
-                  element.approbationDG == 'Approuved' &&
-                  element.approbationDD == 'Approuved' &&
-                  element.approbationBudget == 'Approuved' &&
+                  element.approbationDG == 'Approved' &&
+                  element.approbationDD == 'Approved' &&
+                  element.approbationBudget == 'Approved' &&
                   element.createdAt
                       .isBefore(DateTime.parse(item.periodeBudget)))
               .toList();
@@ -155,13 +154,11 @@ class _DashboardBudgetState extends State<DashboardBudget> {
     sommeRestantes = coutTotal - sommeEnCours;
     poursentExecution = sommeRestantes * 100 / coutTotal;
 
-
-    
     for (var item in dataCampaignList
         .where((element) =>
-            element.approbationDG == 'Approuved' &&
-            element.approbationDD == 'Approuved' &&
-            element.approbationBudget == 'Approuved' &&
+            element.approbationDG == 'Approved' &&
+            element.approbationDD == 'Approved' &&
+            element.approbationBudget == 'Approved' &&
             element.ressource == "caisse")
         .toList()) {
       caisseCampaign += double.parse(item.coutCampaign);
@@ -171,18 +168,18 @@ class _DashboardBudgetState extends State<DashboardBudget> {
     // }
     for (var item in dataProjetList
         .where((element) =>
-            element.approbationDG == 'Approuved' &&
-            element.approbationDD == 'Approuved' &&
-            element.approbationBudget == 'Approuved' &&
+            element.approbationDG == 'Approved' &&
+            element.approbationDD == 'Approved' &&
+            element.approbationBudget == 'Approved' &&
             element.ressource == "caisse")
         .toList()) {
       caisseProjet += double.parse(item.coutProjet);
     }
     for (var item in dataSalaireList
         .where((element) =>
-            element.approbationDG == 'Approuved' &&
-            element.approbationDD == 'Approuved' &&
-            element.approbationBudget == 'Approuved' &&
+            element.approbationDG == 'Approved' &&
+            element.approbationDD == 'Approved' &&
+            element.approbationBudget == 'Approved' &&
             element.ressource == "caisse")
         .toList()) {
       caissesalaire += double.parse(item.salaire);
@@ -190,9 +187,9 @@ class _DashboardBudgetState extends State<DashboardBudget> {
 
     for (var item in dataCampaignList
         .where((element) =>
-           element.approbationDG == 'Approuved' &&
-            element.approbationDD == 'Approuved' &&
-            element.approbationBudget == 'Approuved' &&
+            element.approbationDG == 'Approved' &&
+            element.approbationDD == 'Approved' &&
+            element.approbationBudget == 'Approved' &&
             element.ressource == "caisse")
         .toList()) {
       banqueCampaign += double.parse(item.coutCampaign);
@@ -202,20 +199,20 @@ class _DashboardBudgetState extends State<DashboardBudget> {
     // }
     for (var item in dataProjetList
         .where((element) =>
-            element.approbationDG == 'Approuved' &&
-            element.approbationDD == 'Approuved' &&
-            element.approbationBudget == 'Approuved' &&
+            element.approbationDG == 'Approved' &&
+            element.approbationDD == 'Approved' &&
+            element.approbationBudget == 'Approved' &&
             element.ressource == "banque")
         .toList()) {
       banqueProjet += double.parse(item.coutProjet);
     }
     for (var item in dataSalaireList
         .where((element) =>
-        element.createdAt.month == DateTime.now().month &&
+            element.createdAt.month == DateTime.now().month &&
             element.createdAt.year == DateTime.now().year &&
-            element.approbationDG == 'Approuved' &&
-            element.approbationDD == 'Approuved' &&
-            element.approbationBudget == 'Approuved' &&
+            element.approbationDG == 'Approved' &&
+            element.approbationDD == 'Approved' &&
+            element.approbationBudget == 'Approved' &&
             element.ressource == "banque")
         .toList()) {
       banquesalaire += double.parse(item.salaire);
@@ -223,9 +220,9 @@ class _DashboardBudgetState extends State<DashboardBudget> {
 
     for (var item in dataCampaignList
         .where((element) =>
-            element.approbationDG == 'Approuved' &&
-            element.approbationDD == 'Approuved' &&
-            element.approbationBudget == 'Approuved' &&
+            element.approbationDG == 'Approved' &&
+            element.approbationDD == 'Approved' &&
+            element.approbationBudget == 'Approved' &&
             element.ressource == "finPropre")
         .toList()) {
       finPropreCampaign += double.parse(item.coutCampaign);
@@ -235,18 +232,18 @@ class _DashboardBudgetState extends State<DashboardBudget> {
     // }
     for (var item in dataProjetList
         .where((element) =>
-            element.approbationDG == 'Approuved' &&
-            element.approbationDD == 'Approuved' &&
-            element.approbationBudget == 'Approuved' &&
+            element.approbationDG == 'Approved' &&
+            element.approbationDD == 'Approved' &&
+            element.approbationBudget == 'Approved' &&
             element.ressource == "finPropre")
         .toList()) {
       finPropreProjet += double.parse(item.coutProjet);
     }
     for (var item in dataSalaireList
         .where((element) =>
-            element.approbationDG == 'Approuved' &&
-            element.approbationDD == 'Approuved' &&
-            element.approbationBudget == 'Approuved' &&
+            element.approbationDG == 'Approved' &&
+            element.approbationDD == 'Approved' &&
+            element.approbationBudget == 'Approved' &&
             element.ressource == "finPropre")
         .toList()) {
       finPropresalaire += double.parse(item.salaire);
@@ -254,9 +251,9 @@ class _DashboardBudgetState extends State<DashboardBudget> {
 
     for (var item in dataCampaignList
         .where((element) =>
-            element.approbationDG == 'Approuved' &&
-            element.approbationDD == 'Approuved' &&
-            element.approbationBudget == 'Approuved' &&
+            element.approbationDG == 'Approved' &&
+            element.approbationDD == 'Approved' &&
+            element.approbationBudget == 'Approved' &&
             element.ressource == "finExterieur")
         .toList()) {
       finExterieurCampaign += double.parse(item.coutCampaign);
@@ -267,18 +264,18 @@ class _DashboardBudgetState extends State<DashboardBudget> {
     // }
     for (var item in dataProjetList
         .where((element) =>
-            element.approbationDG == 'Approuved' &&
-            element.approbationDD == 'Approuved' &&
-            element.approbationBudget == 'Approuved' &&
+            element.approbationDG == 'Approved' &&
+            element.approbationDD == 'Approved' &&
+            element.approbationBudget == 'Approved' &&
             element.ressource == "finExterieur")
         .toList()) {
       finExterieurProjet += double.parse(item.coutProjet);
     }
     for (var item in dataSalaireList
         .where((element) =>
-           element.approbationDG == 'Approuved' &&
-            element.approbationDD == 'Approuved' &&
-            element.approbationBudget == 'Approuved' &&
+            element.approbationDG == 'Approved' &&
+            element.approbationDD == 'Approved' &&
+            element.approbationBudget == 'Approved' &&
             element.ressource == "finExterieur")
         .toList()) {
       finExterieursalaire += double.parse(item.salaire);

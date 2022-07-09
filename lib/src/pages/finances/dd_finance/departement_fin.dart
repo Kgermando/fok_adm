@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart'; 
+import 'package:flutter/material.dart';
 import 'package:fokad_admin/src/api/comm_marketing/marketing/campaign_api.dart';
 import 'package:fokad_admin/src/api/devis/devis_api.dart';
 import 'package:fokad_admin/src/api/exploitations/projets_api.dart';
@@ -50,20 +50,18 @@ class _DepartementFinState extends State<DepartementFin> {
     var salaires = await PaiementSalaireApi().getAllData();
     var campaigns = await CampaignApi().getAllData();
     var devis = await DevisAPi().getAllData();
-    var projets = await ProjetsApi().getAllData(); 
+    var projets = await ProjetsApi().getAllData();
 
     setState(() {
       creanceCount = creances
           .where((element) =>
-              element.statutPaie == 'false' &&
-              element.approbationDD == '-')
+              element.statutPaie == 'false' && element.approbationDD == '-')
           .toList()
           .length;
 
       detteCount = dettes
           .where((element) =>
-              element.statutPaie == 'false' &&
-              element.approbationDD == '-')
+              element.statutPaie == 'false' && element.approbationDD == '-')
           .toList()
           .length;
 
@@ -71,34 +69,34 @@ class _DepartementFinState extends State<DepartementFin> {
           .where((element) =>
               element.createdAt.month == DateTime.now().month &&
               element.createdAt.year == DateTime.now().year &&
-              element.approbationDG == 'Approuved' &&
-              element.approbationDD == 'Approuved' &&
-              element.approbationBudget == 'Approuved' &&
-              element.approbationFin == "-") 
+              element.approbationDG == 'Approved' &&
+              element.approbationDD == 'Approved' &&
+              element.approbationBudget == 'Approved' &&
+              element.approbationFin == "-")
           .length;
 
       campaignCount = campaigns
           .where((element) =>
-              element.approbationDG == 'Approuved' &&
-              element.approbationDD == 'Approuved' &&
-              element.approbationBudget == 'Approuved' &&
-              element.approbationFin == "-") 
+              element.approbationDG == 'Approved' &&
+              element.approbationDD == 'Approved' &&
+              element.approbationBudget == 'Approved' &&
+              element.approbationFin == "-")
           .length;
 
-     devisCount = devis
+      devisCount = devis
           .where((element) =>
-              element.approbationDG == 'Approuved' &&
-              element.approbationDD == 'Approuved' &&
-              element.approbationBudget == 'Approuved' &&
-              element.approbationFin == "-") 
+              element.approbationDG == 'Approved' &&
+              element.approbationDD == 'Approved' &&
+              element.approbationBudget == 'Approved' &&
+              element.approbationFin == "-")
           .length;
 
       projetCount = projets
           .where((element) =>
-              element.approbationDG == 'Approuved' &&
-              element.approbationDD == 'Approuved' &&
-              element.approbationBudget == 'Approuved' &&
-              element.approbationFin == "-") 
+              element.approbationDG == 'Approved' &&
+              element.approbationDD == 'Approved' &&
+              element.approbationBudget == 'Approved' &&
+              element.approbationFin == "-")
           .length;
     });
   }

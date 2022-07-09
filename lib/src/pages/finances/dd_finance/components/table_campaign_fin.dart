@@ -1,6 +1,6 @@
-import 'package:flutter/material.dart'; 
+import 'package:flutter/material.dart';
 import 'package:fokad_admin/src/api/comm_marketing/marketing/campaign_api.dart';
-import 'package:fokad_admin/src/models/comm_maketing/campaign_model.dart'; 
+import 'package:fokad_admin/src/models/comm_maketing/campaign_model.dart';
 import 'package:fokad_admin/src/routes/routes.dart';
 import 'package:fokad_admin/src/widgets/print_widget.dart';
 import 'package:fokad_admin/src/utils/class_implemented.dart';
@@ -200,9 +200,9 @@ class _TableCampaignFinState extends State<TableCampaignFin> {
     List<CampaignModel?> dataList = await CampaignApi().getAllData();
     var data = dataList
         .where((element) =>
-            element!.approbationDG == 'Approuved' &&
-            element.approbationDD == 'Approuved' &&
-            element.approbationBudget == 'Approuved' &&
+            element!.approbationDG == 'Approved' &&
+            element.approbationDD == 'Approved' &&
+            element.approbationBudget == 'Approved' &&
             element.approbationFin == "-")
         .toList();
 

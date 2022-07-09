@@ -40,13 +40,14 @@ class _RhAdminState extends State<RhAdmin> {
     setState(() {
       agentInactifs =
           agents.where((element) => element.statutAgent == 'false').length;
+
       salaireCount = salaires
           .where((element) =>
               element.observation == 'false' &&
               element.createdAt.month == DateTime.now().month &&
               element.createdAt.year == DateTime.now().year &&
-              element.approbationDG == '-' &&
-              element.approbationDD == 'Approuved')
+              element.approbationDD == 'Approved' &&
+              element.approbationDG == '-')
           .length;
     });
   }

@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:flutter/material.dart'; 
+import 'package:flutter/material.dart';
 import 'package:fokad_admin/src/api/devis/devis_api.dart';
 import 'package:fokad_admin/src/models/devis/devis_models.dart';
 import 'package:fokad_admin/src/routes/routes.dart';
@@ -29,7 +29,7 @@ class _TableDevisBudgetDDState extends State<TableDevisBudgetDD> {
     agentsColumn();
     agentsRow();
     super.initState();
-  } 
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -42,8 +42,7 @@ class _TableDevisBudgetDDState extends State<TableDevisBudgetDD> {
           final dataList = tapEvent.row!.cells.values;
           final idPlutoRow = dataList.elementAt(0);
           Navigator.pushNamed(context, DevisRoutes.devisDetail,
-              arguments: idPlutoRow.value);    
-          
+              arguments: idPlutoRow.value);
         },
         onLoaded: (PlutoGridOnLoadedEvent event) {
           stateManager = event.stateManager;
@@ -59,7 +58,7 @@ class _TableDevisBudgetDDState extends State<TableDevisBudgetDD> {
                     Navigator.pushNamed(context, BudgetRoutes.budgetDD);
                   },
                   icon: Icon(Icons.refresh, color: Colors.green.shade700)),
-               PrintWidget(onPressed: () {}),    
+              PrintWidget(onPressed: () {}),
             ],
           );
         },
@@ -129,7 +128,7 @@ class _TableDevisBudgetDDState extends State<TableDevisBudgetDD> {
         enableContextMenu: false,
         enableDropToResize: true,
         titleTextAlign: PlutoColumnTextAlign.left,
-        width: 150,
+        width: 200,
         minWidth: 150,
       ),
       PlutoColumn(
@@ -141,7 +140,7 @@ class _TableDevisBudgetDDState extends State<TableDevisBudgetDD> {
         enableContextMenu: false,
         enableDropToResize: true,
         titleTextAlign: PlutoColumnTextAlign.left,
-        width: 150,
+        width: 200,
         minWidth: 150,
       ),
       PlutoColumn(
@@ -153,7 +152,7 @@ class _TableDevisBudgetDDState extends State<TableDevisBudgetDD> {
         enableContextMenu: false,
         enableDropToResize: true,
         titleTextAlign: PlutoColumnTextAlign.left,
-        width: 150,
+        width: 200,
         minWidth: 150,
       ),
     ];
@@ -161,15 +160,14 @@ class _TableDevisBudgetDDState extends State<TableDevisBudgetDD> {
 
   Future agentsRow() async {
     List<DevisModel?> dataList = await DevisAPi().getAllData();
-    List<DevisModel?> data = []; 
+    List<DevisModel?> data = [];
 
     data = dataList
-         .where((element) =>
-            element!.approbationDG == 'Approuved' &&
-            element.approbationDD == 'Approuved' &&
+        .where((element) =>
+            element!.approbationDG == 'Approved' &&
+            element.approbationDD == 'Approved' &&
             element.approbationBudget == '-')
         .toList();
-    
 
     if (mounted) {
       setState(() {

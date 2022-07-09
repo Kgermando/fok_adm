@@ -83,28 +83,28 @@ class _DetailDepartmentBudgetState extends State<DetailDepartmentBudget> {
 
       dataCampaignList = campaigns
           .where((element) =>
-              element.approbationDG == 'Approuved' &&
-              element.approbationDD == 'Approuved' &&
+              element.approbationDG == 'Approved' &&
+              element.approbationDD == 'Approved' &&
               element.approbationBudget == '-')
           .toList();
       dataDevisList = devis
           .where((element) =>
-              element.approbationDG == 'Approuved' &&
-              element.approbationDD == 'Approuved' &&
+              element.approbationDG == 'Approved' &&
+              element.approbationDD == 'Approved' &&
               element.approbationBudget == '-')
           .toList();
       dataProjetList = projets
           .where((element) =>
-              element.approbationDG == 'Approuved' &&
-              element.approbationDD == 'Approuved' &&
+              element.approbationDG == 'Approved' &&
+              element.approbationDD == 'Approved' &&
               element.approbationBudget == '-')
           .toList();
       dataSalaireList = salaires
           .where((element) =>
               element.createdAt.month == DateTime.now().month &&
               element.createdAt.year == DateTime.now().year &&
-              element.approbationDG == 'Approuved' &&
-              element.approbationDD == 'Approuved' &&
+              element.approbationDG == 'Approved' &&
+              element.approbationDD == 'Approved' &&
               element.approbationBudget == '-')
           .toList();
     });
@@ -776,7 +776,7 @@ class _DetailDepartmentBudgetState extends State<DetailDepartmentBudget> {
     ));
   }
 
- Widget approbationWidget(DepartementBudgetModel data) {
+  Widget approbationWidget(DepartementBudgetModel data) {
     final bodyLarge = Theme.of(context).textTheme.bodyLarge;
     return Row(mainAxisAlignment: MainAxisAlignment.center, children: [
       Card(
@@ -1075,21 +1075,21 @@ class _DetailDepartmentBudgetState extends State<DetailDepartmentBudget> {
 
   Future<void> submitDG(DepartementBudgetModel data) async {
     final departementBudgetModel = DepartementBudgetModel(
-      title: data.title,
-      departement: data.departement,
-      periodeDebut: data.periodeDebut,
-      periodeFin: data.periodeFin,
-      signature: data.signature,
-      createdRef: data.createdRef,
-      created: data.created,
-      isSubmit: data.isSubmit,
-      approbationDG: approbationDG,
+        id: data.id!,
+        title: data.title,
+        departement: data.departement,
+        periodeDebut: data.periodeDebut,
+        periodeFin: data.periodeFin,
+        signature: data.signature,
+        createdRef: data.createdRef,
+        created: data.created,
+        isSubmit: data.isSubmit,
+        approbationDG: approbationDG,
         motifDG: (motifDGController.text == '') ? '-' : motifDGController.text,
         signatureDG: user.matricule,
         approbationDD: data.approbationDD,
         motifDD: data.motifDD,
-        signatureDD: data.signatureDD
-    ); 
+        signatureDD: data.signatureDD);
     await DepeartementBudgetApi().updateData(departementBudgetModel);
     Navigator.pop(context);
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
@@ -1100,6 +1100,7 @@ class _DetailDepartmentBudgetState extends State<DetailDepartmentBudget> {
 
   Future<void> submitDD(DepartementBudgetModel data) async {
     final departementBudgetModel = DepartementBudgetModel(
+        id: data.id!,
         title: data.title,
         departement: data.departement,
         periodeDebut: data.periodeDebut,
@@ -1109,12 +1110,11 @@ class _DetailDepartmentBudgetState extends State<DetailDepartmentBudget> {
         created: data.created,
         isSubmit: data.isSubmit,
         approbationDG: '-',
-      motifDG: '-',
-      signatureDG: '-',
-      approbationDD: approbationDD,
-      motifDD: (motifDDController.text == '') ? '-' : motifDDController.text,
-      signatureDD: user.matricule
-  ); 
+        motifDG: '-',
+        signatureDG: '-',
+        approbationDD: approbationDD,
+        motifDD: (motifDDController.text == '') ? '-' : motifDDController.text,
+        signatureDD: user.matricule);
     await DepeartementBudgetApi().updateData(departementBudgetModel);
     Navigator.pop(context);
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(

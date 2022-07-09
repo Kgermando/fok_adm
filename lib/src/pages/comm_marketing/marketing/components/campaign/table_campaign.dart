@@ -200,10 +200,10 @@ class _TableCampaignState extends State<TableCampaign> {
     // Uniquement ceux qui ont déjà été approuvé
     var data = dataList
         .where((element) =>
-            element!.approbationDG == 'Approuved' &&
-            element.approbationDD == 'Approuved' &&
-            element.approbationBudget == 'Approuved' &&
-            element.approbationFin == 'Approuved')
+            element!.approbationDG == 'Approved' &&
+            element.approbationDD == 'Approved' &&
+            element.approbationBudget == 'Approved' &&
+            element.approbationFin == 'Approved')
         .toList();
 
     if (mounted) {

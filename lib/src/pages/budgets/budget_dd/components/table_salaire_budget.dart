@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:flutter/material.dart'; 
+import 'package:flutter/material.dart';
 import 'package:fokad_admin/src/api/rh/paiement_salaire_api.dart';
 import 'package:fokad_admin/src/models/rh/paiement_salaire_model.dart';
 import 'package:fokad_admin/src/routes/routes.dart';
@@ -59,7 +59,8 @@ class _TableSalairesBudgetState extends State<TableSalairesBudget> {
                     Navigator.pushNamed(context, BudgetRoutes.budgetDD);
                   },
                   icon: Icon(Icons.refresh, color: Colors.green.shade700)),
-              PrintWidget(onPressed: () {})],
+              PrintWidget(onPressed: () {})
+            ],
           );
         },
         configuration: PlutoGridConfiguration(
@@ -120,7 +121,7 @@ class _TableSalairesBudgetState extends State<TableSalairesBudget> {
         enableContextMenu: false,
         enableDropToResize: true,
         titleTextAlign: PlutoColumnTextAlign.left,
-        width: 150,
+        width: 200,
         minWidth: 150,
       ),
       PlutoColumn(
@@ -132,7 +133,7 @@ class _TableSalairesBudgetState extends State<TableSalairesBudget> {
         enableContextMenu: false,
         enableDropToResize: true,
         titleTextAlign: PlutoColumnTextAlign.left,
-        width: 150,
+        width: 200,
         minWidth: 150,
       ),
       PlutoColumn(
@@ -144,19 +145,19 @@ class _TableSalairesBudgetState extends State<TableSalairesBudget> {
         enableContextMenu: false,
         enableDropToResize: true,
         titleTextAlign: PlutoColumnTextAlign.left,
-        width: 150,
+        width: 200,
         minWidth: 150,
       ),
       PlutoColumn(
         readOnly: true,
-        title: 'departement',
+        title: 'Département',
         field: 'departement',
         type: PlutoColumnType.text(),
         enableRowDrag: true,
         enableContextMenu: false,
         enableDropToResize: true,
         titleTextAlign: PlutoColumnTextAlign.left,
-        width: 150,
+        width: 200,
         minWidth: 150,
       ),
       PlutoColumn(
@@ -168,7 +169,7 @@ class _TableSalairesBudgetState extends State<TableSalairesBudget> {
         enableContextMenu: false,
         enableDropToResize: true,
         titleTextAlign: PlutoColumnTextAlign.left,
-        width: 150,
+        width: 200,
         minWidth: 150,
       ),
       PlutoColumn(
@@ -180,7 +181,7 @@ class _TableSalairesBudgetState extends State<TableSalairesBudget> {
         enableContextMenu: false,
         enableDropToResize: true,
         titleTextAlign: PlutoColumnTextAlign.left,
-        width: 150,
+        width: 200,
         minWidth: 150,
       ),
       PlutoColumn(
@@ -192,7 +193,7 @@ class _TableSalairesBudgetState extends State<TableSalairesBudget> {
         enableContextMenu: false,
         enableDropToResize: true,
         titleTextAlign: PlutoColumnTextAlign.left,
-        width: 150,
+        width: 200,
         minWidth: 150,
       ),
     ];
@@ -201,13 +202,14 @@ class _TableSalairesBudgetState extends State<TableSalairesBudget> {
   Future agentsRow() async {
     List<PaiementSalaireModel?> dataList =
         await PaiementSalaireApi().getAllData();
-    List<PaiementSalaireModel?> data = []; 
+    List<PaiementSalaireModel?> data = [];
     data = dataList
         .where((element) =>
             element!.createdAt.month == DateTime.now().month &&
             element.createdAt.year == DateTime.now().year &&
-            element.approbationDG == 'Approuved' &&
-            element.approbationDD == 'Approuved' &&
+            element.approbationDG == 'Approved' &&
+            element.approbationDD == 'Approved' &&
+            element.observation == 'false' &&
             element.approbationBudget == '-')
         .toList();
 

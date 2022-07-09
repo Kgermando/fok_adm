@@ -180,7 +180,7 @@ class _PaiementBulletinState extends State<PaiementBulletin> {
                       children: [
                         TitleWidget(
                             title:
-                                'Bulletin de paie du ${DateFormat("dd-mm-yyyy HH:mm").format(data.createdAt)}'),
+                                'Bulletin de paie du ${DateFormat("dd-MM-yyyy HH:mm").format(data.createdAt)}'),
                         Row(
                           children: [PrintWidget(onPressed: () {})],
                         ),

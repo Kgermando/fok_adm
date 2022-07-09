@@ -122,7 +122,7 @@ class _TableDepartementBudgetState extends State<TableDepartementBudget> {
         enableContextMenu: false,
         enableDropToResize: true,
         titleTextAlign: PlutoColumnTextAlign.left,
-        width: 200,
+        width: 300,
         minWidth: 150,
       ),
       PlutoColumn(
@@ -134,7 +134,7 @@ class _TableDepartementBudgetState extends State<TableDepartementBudget> {
         enableContextMenu: false,
         enableDropToResize: true,
         titleTextAlign: PlutoColumnTextAlign.left,
-        width: 300,
+        width: 400,
         minWidth: 150,
       ),
       PlutoColumn(

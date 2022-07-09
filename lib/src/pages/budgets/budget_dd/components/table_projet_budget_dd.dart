@@ -1,8 +1,8 @@
 import 'dart:async';
 
-import 'package:flutter/material.dart'; 
+import 'package:flutter/material.dart';
 import 'package:fokad_admin/src/api/exploitations/projets_api.dart';
-import 'package:fokad_admin/src/models/exploitations/projet_model.dart'; 
+import 'package:fokad_admin/src/models/exploitations/projet_model.dart';
 import 'package:fokad_admin/src/routes/routes.dart';
 import 'package:fokad_admin/src/widgets/print_widget.dart';
 import 'package:fokad_admin/src/utils/class_implemented.dart';
@@ -116,7 +116,7 @@ class _TableProjeBudgetState extends State<TableProjeBudget> {
         enableContextMenu: false,
         enableDropToResize: true,
         titleTextAlign: PlutoColumnTextAlign.left,
-        width: 150,
+        width: 300,
         minWidth: 150,
       ),
       PlutoColumn(
@@ -128,7 +128,7 @@ class _TableProjeBudgetState extends State<TableProjeBudget> {
         enableContextMenu: false,
         enableDropToResize: true,
         titleTextAlign: PlutoColumnTextAlign.left,
-        width: 150,
+        width: 200,
         minWidth: 150,
       ),
       PlutoColumn(
@@ -140,7 +140,7 @@ class _TableProjeBudgetState extends State<TableProjeBudget> {
         enableContextMenu: false,
         enableDropToResize: true,
         titleTextAlign: PlutoColumnTextAlign.left,
-        width: 150,
+        width: 300,
         minWidth: 150,
       ),
       PlutoColumn(
@@ -152,7 +152,7 @@ class _TableProjeBudgetState extends State<TableProjeBudget> {
         enableContextMenu: false,
         enableDropToResize: true,
         titleTextAlign: PlutoColumnTextAlign.left,
-        width: 150,
+        width: 300,
         minWidth: 150,
       ),
       PlutoColumn(
@@ -164,7 +164,7 @@ class _TableProjeBudgetState extends State<TableProjeBudget> {
         enableContextMenu: false,
         enableDropToResize: true,
         titleTextAlign: PlutoColumnTextAlign.left,
-        width: 150,
+        width: 200,
         minWidth: 150,
       ),
       PlutoColumn(
@@ -176,7 +176,7 @@ class _TableProjeBudgetState extends State<TableProjeBudget> {
         enableContextMenu: false,
         enableDropToResize: true,
         titleTextAlign: PlutoColumnTextAlign.left,
-        width: 150,
+        width: 200,
         minWidth: 150,
       ),
     ];
@@ -187,11 +187,10 @@ class _TableProjeBudgetState extends State<TableProjeBudget> {
     List<ProjetModel?> data = [];
     data = dataList
         .where((element) =>
-            element!.approbationDG == 'Approuved' &&
-            element.approbationDD == 'Approuved' &&
+            element!.approbationDG == 'Approved' &&
+            element.approbationDD == 'Approved' &&
             element.approbationBudget == '-')
         .toList();
-        
 
     if (mounted) {
       setState(() {

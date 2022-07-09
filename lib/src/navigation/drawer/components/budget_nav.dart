@@ -1,6 +1,6 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:badges/badges.dart';
-import 'package:flutter/material.dart'; 
+import 'package:flutter/material.dart';
 import 'package:fokad_admin/src/api/auth/auth_api.dart';
 import 'package:fokad_admin/src/api/budgets/departement_budget_api.dart';
 import 'package:fokad_admin/src/api/comm_marketing/marketing/campaign_api.dart';
@@ -60,43 +60,44 @@ class _BudgetNavState extends State<BudgetNav> {
     var campaigns = await CampaignApi().getAllData();
     var devis = await DevisAPi().getAllData();
     var projets = await ProjetsApi().getAllData();
-    var budgetDep = await DepeartementBudgetApi().getAllData(); 
+    var budgetDep = await DepeartementBudgetApi().getAllData();
     if (mounted) {
       setState(() {
         user = userModel;
         salaireCount = salaires
             .where((element) =>
-               element.createdAt.month == DateTime.now().month &&
+                element.createdAt.month == DateTime.now().month &&
                 element.createdAt.year == DateTime.now().year &&
-                element.approbationDG == 'Approuved' &&
-                element.approbationDD == 'Approuved' &&
+                element.approbationDG == 'Approved' &&
+                element.approbationDD == 'Approved' &&
+                element.observation == 'false' &&
                 element.approbationBudget == '-')
             .length;
 
-         campaignCount = campaigns
+        campaignCount = campaigns
             .where((element) =>
-                element.approbationDG == 'Approuved' &&
-                element.approbationDD == 'Approuved' &&
+                element.approbationDG == 'Approved' &&
+                element.approbationDD == 'Approved' &&
                 element.approbationBudget == '-')
             .length;
 
         devisCount = devis
             .where((element) =>
-                element.approbationDG == 'Approuved' &&
-                element.approbationDD == 'Approuved' &&
+                element.approbationDG == 'Approved' &&
+                element.approbationDD == 'Approved' &&
                 element.approbationBudget == '-')
             .length;
 
         projetCount = projets
             .where((element) =>
-                element.approbationDG == 'Approuved' &&
-                element.approbationDD == 'Approuved' &&
-                element.approbationBudget == '-') 
+                element.approbationDG == 'Approved' &&
+                element.approbationDD == 'Approved' &&
+                element.approbationBudget == '-')
             .length;
 
         budgetDepCount = budgetDep
             .where((element) =>
-              DateTime.now().millisecondsSinceEpoch <=
+                DateTime.now().millisecondsSinceEpoch <=
                     element.periodeFin.millisecondsSinceEpoch &&
                 element.approbationDD == '-')
             .length;

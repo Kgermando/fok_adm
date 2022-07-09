@@ -115,7 +115,7 @@ class _TableSalaireAdminState extends State<TableSalaireAdmin> {
         enableContextMenu: false,
         enableDropToResize: true,
         titleTextAlign: PlutoColumnTextAlign.left,
-        width: 150,
+        width: 200,
         minWidth: 150,
       ),
       PlutoColumn(
@@ -127,7 +127,7 @@ class _TableSalaireAdminState extends State<TableSalaireAdmin> {
         enableContextMenu: false,
         enableDropToResize: true,
         titleTextAlign: PlutoColumnTextAlign.left,
-        width: 150,
+        width: 200,
         minWidth: 150,
       ),
       PlutoColumn(
@@ -139,7 +139,7 @@ class _TableSalaireAdminState extends State<TableSalaireAdmin> {
         enableContextMenu: false,
         enableDropToResize: true,
         titleTextAlign: PlutoColumnTextAlign.left,
-        width: 150,
+        width: 200,
         minWidth: 150,
       ),
       PlutoColumn(
@@ -151,7 +151,7 @@ class _TableSalaireAdminState extends State<TableSalaireAdmin> {
         enableContextMenu: false,
         enableDropToResize: true,
         titleTextAlign: PlutoColumnTextAlign.left,
-        width: 150,
+        width: 200,
         minWidth: 150,
       ),
       PlutoColumn(
@@ -163,7 +163,7 @@ class _TableSalaireAdminState extends State<TableSalaireAdmin> {
         enableContextMenu: false,
         enableDropToResize: true,
         titleTextAlign: PlutoColumnTextAlign.left,
-        width: 150,
+        width: 200,
         minWidth: 150,
       ),
       PlutoColumn(
@@ -175,7 +175,7 @@ class _TableSalaireAdminState extends State<TableSalaireAdmin> {
         enableContextMenu: false,
         enableDropToResize: true,
         titleTextAlign: PlutoColumnTextAlign.left,
-        width: 150,
+        width: 200,
         minWidth: 150,
       ),
       PlutoColumn(
@@ -187,7 +187,7 @@ class _TableSalaireAdminState extends State<TableSalaireAdmin> {
         enableContextMenu: false,
         enableDropToResize: true,
         titleTextAlign: PlutoColumnTextAlign.left,
-        width: 150,
+        width: 200,
         minWidth: 150,
       ),
       PlutoColumn(
@@ -199,7 +199,7 @@ class _TableSalaireAdminState extends State<TableSalaireAdmin> {
         enableContextMenu: false,
         enableDropToResize: true,
         titleTextAlign: PlutoColumnTextAlign.left,
-        width: 150,
+        width: 200,
         minWidth: 150,
       ),
     ];
@@ -210,19 +210,18 @@ class _TableSalaireAdminState extends State<TableSalaireAdmin> {
         await PaiementSalaireApi().getAllData();
     var data = dataList 
         .where((element) =>
-           element!.observation == 'false' &&
+            element!.observation == 'false' &&
             element.createdAt.month == DateTime.now().month &&
             element.createdAt.year == DateTime.now().year &&
-            element.approbationDG == '-' &&
-            element.approbationDD == 'Approuved')
+            element.approbationDD == 'Approved' &&
+            element.approbationDG == '-')
         .toList();
 
     if (mounted) {
       setState(() {
-        for (var item in data) {
-          id = item!.id;
+        for (var item in data) { 
           rows.add(PlutoRow(cells: {
-            'id': PlutoCell(value: item.id),
+            'id': PlutoCell(value: item!.id),
             'prenom': PlutoCell(value: item.prenom),
             'nom': PlutoCell(value: item.nom),
             'matricule': PlutoCell(value: item.matricule),
@@ -232,7 +231,7 @@ class _TableSalaireAdminState extends State<TableSalaireAdmin> {
                 value: (item.observation == 'true') ? "Payé" : "Non payé"),
             'modePaiement': PlutoCell(value: item.modePaiement),
             'createdAt': PlutoCell(
-                value: DateFormat("DD-MM-yy HH:mm").format(item.createdAt))
+                value: DateFormat("dd-MM-yy HH:mm").format(item.createdAt))
           }));
         }
         stateManager!.resetCurrentState();

@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:flutter/material.dart'; 
+import 'package:flutter/material.dart';
 import 'package:fokad_admin/src/api/rh/paiement_salaire_api.dart';
 import 'package:fokad_admin/src/models/rh/paiement_salaire_model.dart';
 import 'package:fokad_admin/src/routes/routes.dart';
@@ -194,15 +194,15 @@ class _TableSalairesFINState extends State<TableSalairesFIN> {
   Future agentsRow() async {
     List<PaiementSalaireModel?> dataList =
         await PaiementSalaireApi().getAllData();
-     var data = dataList
+    var data = dataList
         .where((element) =>
             element!.createdAt.month == DateTime.now().month &&
             element.createdAt.year == DateTime.now().year &&
-            element.approbationDG == 'Approuved' &&
-            element.approbationDD == 'Approuved' &&
-            element.approbationBudget == 'Approuved' &&
+            element.approbationDG == 'Approved' &&
+            element.approbationDD == 'Approved' &&
+            element.approbationBudget == 'Approved' &&
             element.approbationFin == "-")
-        .toList(); 
+        .toList();
 
     if (mounted) {
       setState(() {

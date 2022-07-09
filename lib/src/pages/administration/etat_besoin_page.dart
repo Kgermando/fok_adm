@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:fokad_admin/src/api/devis/devis_api.dart';
 import 'package:fokad_admin/src/constants/app_theme.dart';
-import 'package:fokad_admin/src/constants/responsive.dart'; 
+import 'package:fokad_admin/src/constants/responsive.dart';
 import 'package:fokad_admin/src/navigation/drawer/drawer_menu.dart';
-import 'package:fokad_admin/src/navigation/header/custom_appbar.dart'; 
+import 'package:fokad_admin/src/navigation/header/custom_appbar.dart';
 import 'package:fokad_admin/src/pages/administration/components/etat_besoin/components/table_etat_besoin_departement.dart';
-import 'package:fokad_admin/src/utils/priority_dropdown.dart'; 
+import 'package:fokad_admin/src/utils/priority_dropdown.dart';
 
 class EtatBesoinAdmin extends StatefulWidget {
   const EtatBesoinAdmin({Key? key}) : super(key: key);
@@ -22,7 +22,6 @@ class _EtatBesoinAdminState extends State<EtatBesoinAdmin> {
 
   int itemCount = 0;
 
-  final _formKey = GlobalKey<FormState>();
   bool isLoading = false;
   final List<String> priorityList = PriorityDropdown().priorityDropdown;
   final TextEditingController titleController = TextEditingController();
@@ -41,18 +40,19 @@ class _EtatBesoinAdminState extends State<EtatBesoinAdmin> {
       itemCount = data
           .where((element) =>
               element.approbationDG == '-' &&
-              element.approbationDD == 'Approuved')
-          .toList().length; 
+              element.approbationDD == 'Approved')
+          .toList()
+          .length;
     });
   }
 
   @override
   Widget build(BuildContext context) {
     final headline6 = Theme.of(context).textTheme.headline6;
-    final bodyMedium = Theme.of(context).textTheme.bodyMedium; 
+    final bodyMedium = Theme.of(context).textTheme.bodyMedium;
     return Scaffold(
         key: _key,
-        drawer: const DrawerMenu(), 
+        drawer: const DrawerMenu(),
         body: SafeArea(
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -83,8 +83,7 @@ class _EtatBesoinAdminState extends State<EtatBesoinAdmin> {
                               child: ExpansionTile(
                                 leading: const Icon(Icons.folder,
                                     color: Colors.white),
-                                title: Text(
-                                    'Dossier sur les états de besoin',
+                                title: Text('Dossier sur les états de besoin',
                                     style: headline6!
                                         .copyWith(color: Colors.white)),
                                 subtitle: Text(
@@ -103,7 +102,7 @@ class _EtatBesoinAdminState extends State<EtatBesoinAdmin> {
                                   TabvleEtatBesoinDepartement(),
                                 ],
                               ),
-                            ), 
+                            ),
                           ],
                         ),
                       ))
@@ -115,6 +114,4 @@ class _EtatBesoinAdminState extends State<EtatBesoinAdmin> {
           ),
         ));
   }
-
- 
 }

@@ -38,9 +38,10 @@ class _RhNavState extends State<RhNav> {
       setState(() {
          salairesCount = salaires
             .where((element) =>
+            element.observation == 'false' &&
                 element.createdAt.month == DateTime.now().month &&
                 element.createdAt.year == DateTime.now().year &&
-                element.approbationDD == '-')
+                element.approbationDD == 'Approved') 
             .length;
       });
     }

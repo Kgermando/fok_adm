@@ -1,6 +1,6 @@
-import 'package:flutter/material.dart'; 
+import 'package:flutter/material.dart';
 import 'package:fokad_admin/src/api/comm_marketing/marketing/campaign_api.dart';
-import 'package:fokad_admin/src/models/comm_maketing/campaign_model.dart'; 
+import 'package:fokad_admin/src/models/comm_maketing/campaign_model.dart';
 import 'package:fokad_admin/src/routes/routes.dart';
 import 'package:fokad_admin/src/widgets/print_widget.dart';
 import 'package:fokad_admin/src/utils/class_implemented.dart';
@@ -115,7 +115,7 @@ class _TableCampaignBudgetState extends State<TableCampaignBudget> {
         enableContextMenu: false,
         enableDropToResize: true,
         titleTextAlign: PlutoColumnTextAlign.left,
-        width: 150,
+        width: 300,
         minWidth: 150,
       ),
       PlutoColumn(
@@ -127,7 +127,7 @@ class _TableCampaignBudgetState extends State<TableCampaignBudget> {
         enableContextMenu: false,
         enableDropToResize: true,
         titleTextAlign: PlutoColumnTextAlign.left,
-        width: 150,
+        width: 200,
         minWidth: 150,
       ),
       PlutoColumn(
@@ -139,7 +139,7 @@ class _TableCampaignBudgetState extends State<TableCampaignBudget> {
         enableContextMenu: false,
         enableDropToResize: true,
         titleTextAlign: PlutoColumnTextAlign.left,
-        width: 150,
+        width: 200,
         minWidth: 150,
       ),
       PlutoColumn(
@@ -151,7 +151,7 @@ class _TableCampaignBudgetState extends State<TableCampaignBudget> {
         enableContextMenu: false,
         enableDropToResize: true,
         titleTextAlign: PlutoColumnTextAlign.left,
-        width: 150,
+        width: 200,
         minWidth: 150,
       ),
       PlutoColumn(
@@ -163,7 +163,7 @@ class _TableCampaignBudgetState extends State<TableCampaignBudget> {
         enableContextMenu: false,
         enableDropToResize: true,
         titleTextAlign: PlutoColumnTextAlign.left,
-        width: 150,
+        width: 200,
         minWidth: 150,
       ),
       PlutoColumn(
@@ -175,7 +175,7 @@ class _TableCampaignBudgetState extends State<TableCampaignBudget> {
         enableContextMenu: false,
         enableDropToResize: true,
         titleTextAlign: PlutoColumnTextAlign.left,
-        width: 150,
+        width: 200,
         minWidth: 150,
       ),
       PlutoColumn(
@@ -187,7 +187,7 @@ class _TableCampaignBudgetState extends State<TableCampaignBudget> {
         enableContextMenu: false,
         enableDropToResize: true,
         titleTextAlign: PlutoColumnTextAlign.left,
-        width: 150,
+        width: 200,
         minWidth: 150,
       ),
     ];
@@ -195,14 +195,14 @@ class _TableCampaignBudgetState extends State<TableCampaignBudget> {
 
   Future agentsRow() async {
     List<CampaignModel?> dataList = await CampaignApi().getAllData();
-    List<CampaignModel?> data = []; 
-     data = dataList
+    List<CampaignModel?> data = [];
+    data = dataList
         .where((element) =>
-            element!.approbationDG == 'Approuved' &&
-            element.approbationDD == 'Approuved' &&
-            element.approbationBudget == '-') 
+            element!.approbationDG == 'Approved' &&
+            element.approbationDD == 'Approved' &&
+            element.approbationBudget == '-')
         .toList();
-        
+
     if (mounted) {
       setState(() {
         for (var item in data) {

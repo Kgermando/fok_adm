@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:flutter/material.dart'; 
+import 'package:flutter/material.dart';
 import 'package:fokad_admin/src/api/auth/auth_api.dart';
 import 'package:fokad_admin/src/api/devis/devis_api.dart';
 import 'package:fokad_admin/src/models/devis/devis_models.dart';
@@ -64,8 +64,7 @@ class _TableDevisFinState extends State<TableDevisFin> {
           final dataList = tapEvent.row!.cells.values;
           final idPlutoRow = dataList.elementAt(0);
           Navigator.pushNamed(context, DevisRoutes.devisDetail,
-              arguments: idPlutoRow.value);    
-          
+              arguments: idPlutoRow.value);
         },
         onLoaded: (PlutoGridOnLoadedEvent event) {
           stateManager = event.stateManager;
@@ -174,12 +173,11 @@ class _TableDevisFinState extends State<TableDevisFin> {
     List<DevisModel?> dataList = await DevisAPi().getAllData();
     var data = dataList
         .where((element) =>
-            element!.approbationDG == 'Approuved' &&
-            element.approbationDD == 'Approuved' &&
-            element.approbationBudget == 'Approuved' &&
+            element!.approbationDG == 'Approved' &&
+            element.approbationDD == 'Approved' &&
+            element.approbationBudget == 'Approved' &&
             element.approbationFin == "-")
         .toList();
-
 
     if (mounted) {
       setState(() {
