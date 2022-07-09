@@ -5,7 +5,7 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import '../models/users/user_model.dart';
 
 class UserSharedPref {
-    static const _keyUser = 'userModel';
+  static const _keyUser = 'userModel';
   // static const _keyAuth = 'authJWT';
   static const _keyIdToken = 'idToken';
   static const _keyAccessToken = 'accessToken';
@@ -63,7 +63,12 @@ class UserSharedPref {
   // AccessToken
   Future<String?> getAccessToken() async {
     final data = await storage.read(key: _keyAccessToken);
-    return data;
+
+    if (data != null) {
+      return data;
+    } else { 
+      return "";
+    }
   }
 
   saveAccessToken(value) async {
