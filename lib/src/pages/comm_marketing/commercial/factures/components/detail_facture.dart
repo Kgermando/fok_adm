@@ -23,8 +23,7 @@ class DetailFacture extends StatefulWidget {
 }
 
 class _DetailFactureState extends State<DetailFacture> {
-  final GlobalKey<ScaffoldState> _key = GlobalKey();
-  final ScrollController _controllerScroll = ScrollController();
+  final GlobalKey<ScaffoldState> _key = GlobalKey(); 
   bool isLoading = false;
 
   List<PlutoColumn> columns = [];

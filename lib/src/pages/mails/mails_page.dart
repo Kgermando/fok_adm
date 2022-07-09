@@ -110,7 +110,7 @@ class _MailPagesState extends State<MailPages> {
                                 if (snapshot.hasData) {
                                   List<MailModel>? data = snapshot.data!
                                       .where((element) =>
-                                          element.email == user.email || jsonDecode(element.cc).contains(user.email))
+                                          element.email == user.email)
                                       .toList();
 
                                   return (data.isEmpty)

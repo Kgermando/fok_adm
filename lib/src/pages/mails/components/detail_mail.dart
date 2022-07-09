@@ -179,12 +179,13 @@ class _DetailMailState extends State<DetailMail> {
     ]);
   }
 
+
   Widget dataWidget(MailModel data, color) {
     final headlineSmall = Theme.of(context).textTheme.headlineSmall;
     final bodyMedium = Theme.of(context).textTheme.bodyMedium;
     final bodySmall = Theme.of(context).textTheme.bodySmall;
     final String firstLettter = data.fullNameDest[0];
-    var ccList = jsonDecode(data.cc);
+    // var ccList = jsonDecode(data.cc);
     return Padding(
       padding: const EdgeInsets.all(p10),
       child: Column(

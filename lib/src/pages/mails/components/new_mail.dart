@@ -189,7 +189,7 @@ class _NewMailState extends State<NewMail> {
                       height: p20,
                     ),
                     emailWidget(),
-                    ccWidget(),
+                    // ccWidget(),
                     const SizedBox(height: p20),
                     objetWidget(),
                     messageWidget(),
