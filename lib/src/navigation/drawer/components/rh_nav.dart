@@ -41,7 +41,7 @@ class _RhNavState extends State<RhNav> {
             element.observation == 'false' &&
                 element.createdAt.month == DateTime.now().month &&
                 element.createdAt.year == DateTime.now().year &&
-                element.approbationDD == 'Approved') 
+                element.approbationDD == "-") 
             .length;
       });
     }
