@@ -55,6 +55,10 @@ class _DashboardRhState extends State<DashboardRh> {
       agentNonPaye = salaires
           .where((element) =>
               element.observation == 'false' &&
+              element.approbationDG == "Approved" && 
+              element.approbationDD == "Approved" && 
+              element.approbationBudget == "Approved" && 
+              element.approbationFin == "Approved" &&
               element.createdAt.month == DateTime.now().month &&
               element.createdAt.year == DateTime.now().year)
           .length;
@@ -63,6 +67,7 @@ class _DashboardRhState extends State<DashboardRh> {
           .where((element) =>
               element.createdAt.month == DateTime.now().month &&
               element.createdAt.year == DateTime.now().year &&
+              element.approbationDG == "Approved" && 
               element.approbationDD == "Approved" && 
               element.approbationBudget == "Approved" && 
               element.approbationFin == "Approved")
@@ -168,7 +173,7 @@ class _DashboardRhState extends State<DashboardRh> {
                                     color: Colors.teal.shade700),
                                 DashNumberRHWidget(
                                     number: '$agentNonPaye',
-                                    title: 'Agents Non payés en $isMonth',
+                                    title: 'Non payés $isMonth',
                                     icon: Icons.person_remove,
                                     color: Colors.pink.shade700),
                               ],

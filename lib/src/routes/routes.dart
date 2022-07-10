@@ -9,10 +9,10 @@ import 'package:fokad_admin/src/pages/administration/finances_admin.dart';
 import 'package:fokad_admin/src/pages/administration/logistique_admin.dart';
 import 'package:fokad_admin/src/pages/administration/rh_admin.dart';
 import 'package:fokad_admin/src/pages/archives/add_archive.dart';
+import 'package:fokad_admin/src/pages/archives/archive.dart';
 import 'package:fokad_admin/src/pages/archives/archive_folder.dart';
 import 'package:fokad_admin/src/pages/archives/components/archive_pdf_viewer.dart';
-import 'package:fokad_admin/src/pages/archives/detail_archive.dart';
-import 'package:fokad_admin/src/pages/archives/table_archive.dart';
+import 'package:fokad_admin/src/pages/archives/detail_archive.dart'; 
 import 'package:fokad_admin/src/pages/auth/change_password.dart';
 import 'package:fokad_admin/src/pages/auth/forgot_password.dart';
 import 'package:fokad_admin/src/pages/auth/login_auth.dart';
@@ -604,7 +604,7 @@ final routes = <String, WidgetBuilder>{
 
   // Archives
   ArchiveRoutes.archives: (context) => const ArchiveFolder(),
-  ArchiveRoutes.archiveTable: (context) => const TableArchive(),
+  ArchiveRoutes.archiveTable: (context) => const Archive(),
   ArchiveRoutes.addArchives: (context) => const AddArchive(),
   ArchiveRoutes.archivesDetail: (context) => const DetailArchive(),
   ArchiveRoutes.archivePdf: (context) => const ArchivePdfViewer(),

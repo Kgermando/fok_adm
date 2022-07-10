@@ -8,14 +8,14 @@ import 'package:fokad_admin/src/navigation/header/custom_appbar.dart';
 import 'package:fokad_admin/src/pages/archives/table_archive_data.dart';
 import 'package:fokad_admin/src/routes/routes.dart';
 import 'package:fokad_admin/src/utils/loading.dart';
-class TableArchive extends StatefulWidget {
-  const TableArchive({Key? key}) : super(key: key);
+class Archive extends StatefulWidget {
+  const Archive({Key? key}) : super(key: key);
 
   @override
-  State<TableArchive> createState() => _TableArchiveState();
+  State<Archive> createState() => _ArchiveState();
 }
 
-class _TableArchiveState extends State<TableArchive> {
+class _ArchiveState extends State<Archive> {
   final GlobalKey<ScaffoldState> _key = GlobalKey();
 
   int? id;
