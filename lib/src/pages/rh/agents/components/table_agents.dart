@@ -65,19 +65,23 @@ class _TableAgentsState extends State<TableAgents> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             const TitleWidget(title: "Agents"),
-            IconButton(
-                onPressed: () {
-                  Navigator.pushNamed(context, RhRoutes.rhAgent);
-                },
-                icon: Icon(Icons.refresh, color: Colors.green.shade700)),
-            PrintWidget(onPressed: () {
-              AgentXlsx().exportToExcel(dataList);
-              if (!mounted) return;
-              ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                content: const Text("Exportation effectué!"),
-                backgroundColor: Colors.green[700],
-              ));
-            })
+            Row(
+              children: [
+                IconButton(
+                    onPressed: () {
+                      Navigator.pushNamed(context, RhRoutes.rhAgent);
+                    },
+                    icon: Icon(Icons.refresh, color: Colors.green.shade700)),
+                PrintWidget(onPressed: () {
+                  AgentXlsx().exportToExcel(dataList);
+                  if (!mounted) return;
+                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                    content: const Text("Exportation effectué!"),
+                    backgroundColor: Colors.green[700],
+                  ));
+                })    
+              ],
+            ),
           ],
         );
       },
