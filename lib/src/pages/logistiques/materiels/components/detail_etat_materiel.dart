@@ -153,8 +153,6 @@ class _DetailEtatMaterielState extends State<DetailEtatMateriel> {
                   TitleWidget(title: data.modele),
                   Column(
                     children: [
-                      PrintWidget(
-                          tooltip: 'Imprimer le document', onPressed: () {}),
                       SelectableText(
                           DateFormat("dd-MM-yy HH:mm").format(data.created),
                           textAlign: TextAlign.start),

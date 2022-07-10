@@ -154,8 +154,6 @@ class _DetailCaburantState extends State<DetailCaburant> {
                           : 'Consommation'),
                   Column(
                     children: [
-                      PrintWidget(
-                          tooltip: 'Imprimer le document', onPressed: () {}),
                       SelectableText(
                           DateFormat("dd-MM-yyyy HH:mm").format(data.created),
                           textAlign: TextAlign.start),

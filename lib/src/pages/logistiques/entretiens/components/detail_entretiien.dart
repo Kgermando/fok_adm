@@ -176,8 +176,6 @@ class _DetailEntretienState extends State<DetailEntretien> {
                               tooltip: 'Modifier',
                               onPressed: () {},
                               icon: const Icon(Icons.edit)),
-                          PrintWidget(
-                              tooltip: 'Imprimer le document', onPressed: () {})
                         ],
                       ),
                       SelectableText(

@@ -183,8 +183,6 @@ class _DetailAnguinState extends State<DetailAnguin> {
                   TitleWidget(title: data.modele),
                   Column(
                     children: [
-                      PrintWidget(
-                          tooltip: 'Imprimer le document', onPressed: () {}),
                       SelectableText(
                           DateFormat("dd-MM-yyyy HH:mm").format(data.created),
                           textAlign: TextAlign.start),

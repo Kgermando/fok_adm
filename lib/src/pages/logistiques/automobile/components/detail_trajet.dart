@@ -164,9 +164,6 @@ class _DetailTrajetState extends State<DetailTrajet> {
                                 Icons.traffic_outlined,
                                 color: Colors.red.shade700,
                               )),
-                          PrintWidget(
-                              tooltip: 'Imprimer le document',
-                              onPressed: () {}),
                         ],
                       ),
                       SelectableText(
