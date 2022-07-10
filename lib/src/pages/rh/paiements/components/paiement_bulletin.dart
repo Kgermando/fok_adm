@@ -418,7 +418,7 @@ class _PaiementBulletinState extends State<PaiementBulletin> {
             ),
             Expanded(
                 child: SelectableText(
-              '${data.salaire} USD',
+                "${NumberFormat.decimalPattern('fr').format(double.parse(data.salaire))} USD",
               style: bodyMedium.copyWith(color: Colors.blueGrey),
             ))
           ],
