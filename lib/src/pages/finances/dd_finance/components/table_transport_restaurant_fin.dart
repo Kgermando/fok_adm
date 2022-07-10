@@ -83,28 +83,24 @@ class _TableTansportRestaurantFinState extends State<TableTansportRestaurantFin>
           return Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
+              const TitleWidget(title: "Transports & Restaurations"),
               Row(
                 children: [
-                  const TitleWidget(title: "Transports & Restaurations"),
-                  Row(
-                    children: [
-                      IconButton(
-                          onPressed: () {
-                            Navigator.pushNamed(context, RhRoutes.rhTransportRest);
-                          },
-                          icon: Icon(Icons.refresh, color: Colors.green.shade700)),
-                          PrintWidget(onPressed: () {
-                        TransportRestXlsx().exportToExcel(dataList);
-                        if (!mounted) return;
-                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                          content: const Text("Exportation effectué!"),
-                          backgroundColor: Colors.green[700],
-                        ));
-                      })
-                    ],
-                  ), 
+                  IconButton(
+                      onPressed: () {
+                        Navigator.pushNamed(context, RhRoutes.rhTransportRest);
+                      },
+                      icon: Icon(Icons.refresh, color: Colors.green.shade700)),
+                  PrintWidget(onPressed: () {
+                    TransportRestXlsx().exportToExcel(dataList);
+                    if (!mounted) return;
+                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                      content: const Text("Exportation effectué!"),
+                      backgroundColor: Colors.green[700],
+                    ));
+                  })
                 ],
-              )
+              ), 
             ],
           );
         },
