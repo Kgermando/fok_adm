@@ -214,9 +214,7 @@ class _DetailDetteState extends State<DetailDette> {
                 children: [
                   TitleWidget(title: data.libelle),
                   Column(
-                    children: [
-                      PrintWidget(
-                          tooltip: 'Imprimer le document', onPressed: () {}),
+                    children: [ 
                       SelectableText(
                           DateFormat("dd-MM-yyyy HH:mm").format(data.created),
                           textAlign: TextAlign.start),

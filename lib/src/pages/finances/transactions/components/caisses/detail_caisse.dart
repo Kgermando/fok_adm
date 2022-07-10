@@ -157,9 +157,7 @@ class _DetailCaisseState extends State<DetailCaisse> {
                 children: [
                   TitleWidget(title: data.typeOperation),
                   Column(
-                    children: [
-                      PrintWidget(
-                          tooltip: 'Imprimer le document', onPressed: () {}),
+                    children: [ 
                       SelectableText(
                           DateFormat("dd-MM-yyyy HH:mm").format(data.created),
                           textAlign: TextAlign.start),

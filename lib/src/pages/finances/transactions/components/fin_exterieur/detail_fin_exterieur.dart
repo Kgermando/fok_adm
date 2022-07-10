@@ -155,17 +155,7 @@ class _DetailFinExterieurState extends State<DetailFinExterieur> {
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
                   Column(
-                    children: [
-                      Row(
-                        children: [
-                          // IconButton(
-                          //     tooltip: 'Modifier',
-                          //     onPressed: () {},
-                          //     icon: const Icon(Icons.edit)),
-                          PrintWidget(
-                              tooltip: 'Imprimer le document', onPressed: () {})
-                        ],
-                      ),
+                    children: [ 
                       SelectableText(
                           DateFormat("dd-MM-yyyy HH:mm").format(data.created),
                           textAlign: TextAlign.start),

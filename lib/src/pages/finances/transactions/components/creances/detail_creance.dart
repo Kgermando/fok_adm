@@ -213,9 +213,7 @@ class _DetailCreanceState extends State<DetailCreance> {
                 children: [
                   // TitleWidget(title: creanceModel.libelle),
                   Column(
-                    children: [
-                      PrintWidget(
-                          tooltip: 'Imprimer le document', onPressed: () {}),
+                    children: [ 
                       SelectableText(
                           DateFormat("dd-MM-yyyy HH:mm").format(data.created),
                           textAlign: TextAlign.start),
