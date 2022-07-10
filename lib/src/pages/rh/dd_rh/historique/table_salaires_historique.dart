@@ -88,7 +88,7 @@ class _TableSalairesHistoriqueState extends State<TableSalairesHistorique> {
                         Expanded(
                             flex: 5,
                             child: CustomAppbar(
-                                title: 'Etat de besoin',
+                                title: 'Historique',
                                 controllerMenu: () =>
                                     _key.currentState!.openDrawer())),
                       ],

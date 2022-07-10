@@ -2,7 +2,8 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:fokad_admin/src/api/user/user_api.dart';
-import 'package:fokad_admin/src/models/users/user_model.dart';
+import 'package:fokad_admin/src/models/users/user_model.dart'; 
+import 'package:fokad_admin/src/pages/rh/dd_rh/components/users/users_xlsx.dart';
 import 'package:fokad_admin/src/routes/routes.dart';
 import 'package:fokad_admin/src/utils/class_implemented.dart';
 import 'package:fokad_admin/src/widgets/print_widget.dart';
@@ -25,13 +26,22 @@ class _TableUsersState extends State<TableUsers> {
 
   int? id;
 
-  @override
-  void initState() {
+   @override
+  initState() {
     agentsColumn();
     agentsRow();
+    getData();
     super.initState();
   }
 
+  List<UserModel> dataList = [];
+  Future<void> getData() async {
+   List<UserModel> data = await UserApi().getAllData();
+
+    setState(() {
+      dataList = data.toList();
+    });
+  }
   @override
   Widget build(BuildContext context) {
     return SizedBox(
@@ -55,7 +65,24 @@ class _TableUsersState extends State<TableUsers> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               const TitleWidget(title: "Agents activés"),
-              PrintWidget(onPressed: () {})],
+              Row(
+                children: [
+                  IconButton(
+                      onPressed: () {
+                        Navigator.pushNamed(context, RhRoutes.rhDD);
+                      },
+                      icon: Icon(Icons.refresh, color: Colors.green.shade700)),
+                  PrintWidget(onPressed: () {
+                    UserXlsx().exportToExcel(dataList);
+                    if (!mounted) return;
+                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                      content: const Text("Exportation effectué!"),
+                      backgroundColor: Colors.green[700],
+                    ));
+                  }),
+                ],
+              )
+            ],
           );
         },
         configuration: PlutoGridConfiguration(
@@ -261,14 +288,14 @@ class _TableUsersState extends State<TableUsers> {
   }
 
   Future agentsRow() async {
-    List<UserModel?> dataList = await UserApi().getAllData();
+    List<UserModel> dataList = await UserApi().getAllData();
     var data = dataList;
 
     if (mounted) {
       setState(() {
         for (var item in data) { 
           rows.add(PlutoRow(cells: {
-            'id': PlutoCell(value: item!.id),
+            'id': PlutoCell(value: item.id),
             'nom': PlutoCell(value: item.nom),
             'prenom': PlutoCell(value: item.prenom),
             'matricule': PlutoCell(value: item.matricule),

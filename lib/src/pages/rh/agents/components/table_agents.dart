@@ -7,6 +7,7 @@ import 'package:fokad_admin/src/pages/rh/agents/components/agents_xlsx.dart';
 import 'package:fokad_admin/src/routes/routes.dart';
 import 'package:fokad_admin/src/utils/class_implemented.dart';
 import 'package:fokad_admin/src/widgets/print_widget.dart';
+import 'package:fokad_admin/src/widgets/title_widget.dart';
 import 'package:intl/intl.dart';
 import 'package:pluto_grid/pluto_grid.dart';
 
@@ -28,7 +29,17 @@ class _TableAgentsState extends State<TableAgents> {
   initState() {
     agentsColumn();
     agentsRow();
+    getData();
     super.initState();
+  }
+
+  List<AgentModel> dataList = [];
+  Future<void> getData() async {
+    List<AgentModel> data = await AgentsApi().getAllData();
+
+    setState(() {
+      dataList = data.toList();
+    });
   }
 
   @override
@@ -42,7 +53,7 @@ class _TableAgentsState extends State<TableAgents> {
         // Navigator.of(context).push(MaterialPageRoute(
         //     builder: (context) => AgentPage(id: idPlutoRow.value)));
         Navigator.pushNamed(context, RhRoutes.rhAgentPage,
-            arguments: idPlutoRow.value); 
+            arguments: idPlutoRow.value);
       },
       onLoaded: (PlutoGridOnLoadedEvent event) {
         stateManager = event.stateManager;
@@ -51,16 +62,21 @@ class _TableAgentsState extends State<TableAgents> {
       },
       createHeader: (PlutoGridStateManager header) {
         return Row(
-          mainAxisAlignment: MainAxisAlignment.end,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
+            const TitleWidget(title: "Agents"),
             IconButton(
                 onPressed: () {
                   Navigator.pushNamed(context, RhRoutes.rhAgent);
                 },
                 icon: Icon(Icons.refresh, color: Colors.green.shade700)),
             PrintWidget(onPressed: () {
-              Navigator.of(context).push(
-                  MaterialPageRoute(builder: (context) => const AgentXlsx()));
+              AgentXlsx().exportToExcel(dataList);
+              if (!mounted) return;
+              ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                content: const Text("Exportation effectué!"),
+                backgroundColor: Colors.green[700],
+              ));
             })
           ],
         );
@@ -290,7 +306,9 @@ class _TableAgentsState extends State<TableAgents> {
             'departement': PlutoCell(value: item.departement),
             'servicesAffectation': PlutoCell(value: item.servicesAffectation),
             'statutAgent': PlutoCell(
-                value: (item.statutAgent == "true") ? 'Agent actif' : 'Agent inactif')
+                value: (item.statutAgent == "true")
+                    ? 'Agent actif'
+                    : 'Agent inactif')
           }));
         }
         stateManager!.resetCurrentState();
