@@ -3,6 +3,7 @@ import 'package:fokad_admin/src/api/auth/auth_api.dart';
 import 'package:fokad_admin/src/api/rh/performence_api.dart';
 import 'package:fokad_admin/src/models/rh/perfomence_model.dart';
 import 'package:fokad_admin/src/models/users/user_model.dart';
+import 'package:fokad_admin/src/pages/rh/performences/components/performence_xlsx.dart';
 import 'package:fokad_admin/src/routes/routes.dart';
 import 'package:fokad_admin/src/utils/class_implemented.dart';
 import 'package:fokad_admin/src/widgets/print_widget.dart';
@@ -29,7 +30,20 @@ class _TablePerformenceState extends State<TablePerformence> {
   void initState() {
     agentsColumn();
     agentsRow();
+    getData();
     super.initState();
+  }
+
+  List<PerformenceModel> dataList = [];
+
+  Future<void> getData() async {
+    UserModel user = await AuthApi().getUserId();
+    List<PerformenceModel> performences = await PerformenceApi().getAllData();
+    
+    setState(() {
+      dataList = performences
+        .where((element) => element.departement == user.departement).toList();
+    });
   }
 
   @override
@@ -58,13 +72,20 @@ class _TablePerformenceState extends State<TablePerformence> {
               children: [
                 IconButton(
                     onPressed: () {
-                      Navigator.pushNamed(context, RhRoutes.rhPerformence);
-                    },
-                    icon: Icon(Icons.refresh, color: Colors.green.shade700)),
-               PrintWidget(onPressed: () {})     
+                    Navigator.pushNamed(context, RhRoutes.rhPerformence);
+                  },
+                  icon: Icon(Icons.refresh, color: Colors.green.shade700)
+                ),
+                PrintWidget(onPressed: () {
+                  PerformenceXlsx().exportToExcel(dataList);
+                  if (!mounted) return;
+                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                    content: const Text("Exportation effectué!"),
+                    backgroundColor: Colors.green[700],
+                  ));
+                }) 
               ],
             ),
-            
           ],
         );
       },
@@ -205,7 +226,7 @@ class _TablePerformenceState extends State<TablePerformence> {
     UserModel user = await AuthApi().getUserId();
     List<PerformenceModel?> dataList = await PerformenceApi().getAllData();
     var data =
-        dataList.where((element) => element!.departement == user.departement);
+        dataList.where((element) => element!.departement == user.departement).toList();
 
     if (mounted) {
       setState(() {
