@@ -457,8 +457,10 @@ class _DetailPerformenceState extends State<DetailPerformence> {
             Row(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                SelectableText(rapport.note,
-                    style: bodyMedium, textAlign: TextAlign.justify),
+                Expanded(
+                  child: SelectableText(rapport.note,
+                      style: bodyMedium, textAlign: TextAlign.justify),
+                ),
               ],
             ),
           ],
