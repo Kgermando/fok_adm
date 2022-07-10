@@ -3,9 +3,11 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:fokad_admin/src/api/rh/paiement_salaire_api.dart';
 import 'package:fokad_admin/src/models/rh/paiement_salaire_model.dart';
+import 'package:fokad_admin/src/pages/rh/paiements/components/salaire_xlsx.dart';
 import 'package:fokad_admin/src/routes/routes.dart';
 import 'package:fokad_admin/src/widgets/print_widget.dart';
 import 'package:fokad_admin/src/utils/class_implemented.dart';
+import 'package:fokad_admin/src/widgets/title_widget.dart';
 import 'package:intl/intl.dart';
 import 'package:pluto_grid/pluto_grid.dart';
 
@@ -24,11 +26,30 @@ class _TableSalairesBudgetState extends State<TableSalairesBudget> {
 
   int? id;
 
+
   @override
   initState() {
     agentsColumn();
     agentsRow();
+    getData();
     super.initState();
+  }
+
+  List<PaiementSalaireModel> paiementSalaireList = [];
+  Future<void> getData() async {
+    var dataList = await PaiementSalaireApi().getAllData();
+
+    setState(() {
+      paiementSalaireList = dataList
+          .where((element) =>
+              element.createdAt.month == DateTime.now().month &&
+              element.createdAt.year == DateTime.now().year &&
+              element.approbationDG == 'Approved' &&
+              element.approbationDD == 'Approved' &&
+              element.observation == 'false' &&
+              element.approbationBudget == '-')
+          .toList();
+    });
   }
 
   @override
@@ -52,14 +73,27 @@ class _TableSalairesBudgetState extends State<TableSalairesBudget> {
         },
         createHeader: (PlutoGridStateManager header) {
           return Row(
-            mainAxisAlignment: MainAxisAlignment.end,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              IconButton(
-                  onPressed: () {
-                    Navigator.pushNamed(context, BudgetRoutes.budgetDD);
-                  },
-                  icon: Icon(Icons.refresh, color: Colors.green.shade700)),
-              PrintWidget(onPressed: () {})
+              const TitleWidget(title: "Salaires"),
+              Row(
+                children: [
+                  IconButton(
+                      onPressed: () {
+                        Navigator.pushNamed(context, BudgetRoutes.budgetDD);
+                      },
+                      icon: Icon(Icons.refresh, color: Colors.green.shade700)),
+                  PrintWidget(onPressed: () {
+                    SalaireXlsx().exportToExcel(paiementSalaireList);
+                    if (!mounted) return;
+                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                      content: const Text("Exportation effectué!"),
+                      backgroundColor: Colors.green[700],
+                    ));
+                  })  
+                ],
+              ),
+              
             ],
           );
         },

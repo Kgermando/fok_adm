@@ -13,6 +13,7 @@ import 'package:fokad_admin/src/models/rh/paiement_salaire_model.dart';
 import 'package:fokad_admin/src/models/users/user_model.dart';
 import 'package:fokad_admin/src/navigation/drawer/drawer_menu.dart';
 import 'package:fokad_admin/src/navigation/header/custom_appbar.dart';
+import 'package:fokad_admin/src/pages/rh/paiements/components/salaire_pdf.dart';
 import 'package:fokad_admin/src/utils/loading.dart';
 import 'package:fokad_admin/src/widgets/print_widget.dart';
 import 'package:fokad_admin/src/widgets/title_widget.dart';
@@ -182,7 +183,12 @@ class _PaiementBulletinState extends State<PaiementBulletin> {
                             title:
                                 'Bulletin de paie du ${DateFormat("dd-MM-yyyy HH:mm").format(data.createdAt)}'),
                         Row(
-                          children: [PrintWidget(onPressed: () {})],
+                          children: [
+                           PrintWidget(
+                                onPressed: () async {
+                                  await SalairePdf.generate(data);
+                                }),
+                          ],
                         ),
                       ],
                     ),
@@ -371,7 +377,7 @@ class _PaiementBulletinState extends State<PaiementBulletin> {
           children: [
             Expanded(
               child: Text(
-                'departement',
+                'Département',
                 style: bodyMedium.copyWith(fontWeight: FontWeight.bold),
               ),
             ),
@@ -517,7 +523,7 @@ class _PaiementBulletinState extends State<PaiementBulletin> {
       padding: const EdgeInsets.only(top: p16, bottom: p16),
       decoration: BoxDecoration(
         border: Border(
-          top: const BorderSide(width: 1.0),
+          top: BorderSide(width: 1.0, color: Colors.amber.shade700),
           bottom: BorderSide(width: 1.0, color: Colors.amber.shade700),
         ),
       ),

@@ -168,8 +168,7 @@ class _DetailAgentPageState extends State<DetailAgentPage> {
                     const TitleWidget(title: 'Curriculum vitæ'),
                     Column(
                       children: [
-                        PrintWidget(
-                            tooltip: 'Imprimer le document',
+                        PrintWidget( 
                             onPressed: () async {
                               await AgentPdf.generate(agentModel);
                             }),

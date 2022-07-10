@@ -122,8 +122,8 @@ class PaiementSalaireModel {
     required this.approbationDD,
     required this.motifDD,
     required this.signatureDD,
-      required this.ligneBudgetaire,
-      required this.ressource
+    required this.ligneBudgetaire,
+    required this.ressource
 
   });
 

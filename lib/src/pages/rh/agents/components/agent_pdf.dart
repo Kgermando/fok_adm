@@ -6,6 +6,7 @@ import 'package:fokad_admin/src/api/auth/auth_api.dart';
 import 'package:fokad_admin/src/constants/app_theme.dart';
 import 'package:fokad_admin/src/models/rh/agent_model.dart';
 import 'package:fokad_admin/src/models/users/user_model.dart';
+import 'package:fokad_admin/src/utils/info_company.dart';
 import 'package:intl/intl.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
@@ -100,9 +101,9 @@ class AgentPdf {
   static Widget buildCompagnyInfo(AgentModel data, UserModel user) {
     final titles = <String>['RCCM:', 'N° Impôt:', 'ID Nat.:', 'Crée le:'];
     final datas = <String>[
-      "GK5-84-5E5-43",
-      "123456789",
-      "2546821331",
+      InfoCompany().rccm(),
+      InfoCompany().nImpot(),
+      InfoCompany().iDNat(),
       DateFormat("dd/MM/yy HH:mm").format(data.created)
     ];
 

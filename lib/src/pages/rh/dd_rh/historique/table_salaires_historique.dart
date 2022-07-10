@@ -7,6 +7,7 @@ import 'package:fokad_admin/src/constants/responsive.dart';
 import 'package:fokad_admin/src/models/rh/paiement_salaire_model.dart';
 import 'package:fokad_admin/src/navigation/drawer/drawer_menu.dart';
 import 'package:fokad_admin/src/navigation/header/custom_appbar.dart';
+import 'package:fokad_admin/src/pages/rh/paiements/components/salaire_xlsx.dart';
 import 'package:fokad_admin/src/routes/routes.dart';
 import 'package:fokad_admin/src/utils/class_implemented.dart';
 import 'package:fokad_admin/src/widgets/print_widget.dart';
@@ -30,11 +31,25 @@ class _TableSalairesHistoriqueState extends State<TableSalairesHistorique> {
 
   int? id;
 
-  @override
+   @override
   initState() {
     agentsColumn();
     agentsRow();
+    getData();
     super.initState();
+  }
+
+  List<PaiementSalaireModel> paiementSalaireList = [];
+  Future<void> getData() async {
+    var dataList = await PaiementSalaireApi().getAllData();
+
+    setState(() {
+      paiementSalaireList = dataList
+          .where((element) =>
+              element.createdAt.month < DateTime.now().month &&
+              element.createdAt.year < DateTime.now().year)
+          .toList();
+    });
   }
 
   @override
@@ -99,7 +114,17 @@ class _TableSalairesHistoriqueState extends State<TableSalairesHistorique> {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               const TitleWidget(title: "Historique salaire"),
-                              PrintWidget(onPressed: () {})],
+                              PrintWidget(onPressed: () {
+                                SalaireXlsx()
+                                    .exportToExcel(paiementSalaireList);
+                                if (!mounted) return;
+                                ScaffoldMessenger.of(context)
+                                    .showSnackBar(SnackBar(
+                                  content: const Text("Exportation effectué!"),
+                                  backgroundColor: Colors.green[700],
+                                ));
+                              })
+                            ],
                           );
                         },
                         configuration: PlutoGridConfiguration(
