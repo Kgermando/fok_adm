@@ -2,10 +2,12 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:fokad_admin/src/api/finances/caisse_api.dart';
-import 'package:fokad_admin/src/models/finances/caisse_model.dart'; 
+import 'package:fokad_admin/src/models/finances/caisse_model.dart';
+import 'package:fokad_admin/src/pages/finances/transactions/components/caisses/caisse_xlsx.dart'; 
 import 'package:fokad_admin/src/routes/routes.dart';
 import 'package:fokad_admin/src/widgets/print_widget.dart';
 import 'package:fokad_admin/src/utils/class_implemented.dart';
+import 'package:fokad_admin/src/widgets/title_widget.dart';
 import 'package:intl/intl.dart';
 import 'package:pluto_grid/pluto_grid.dart';
 
@@ -41,14 +43,16 @@ class _TableCaisseState extends State<TableCaisse> {
     super.initState();
   }
 
+  List<CaisseModel> dataList = [];
+
   Future<void> getData() async {
-    List<CaisseModel?> dataList = await CaisseApi().getAllData();
+    List<CaisseModel> caisses = await CaisseApi().getAllData();
     setState(() {
-      List<CaisseModel?> recetteList = dataList
-          .where((element) => element!.typeOperation == "Encaissement")
+      List<CaisseModel?> recetteList = caisses
+          .where((element) => element.typeOperation == "Encaissement")
           .toList();
-      List<CaisseModel?> depensesList = dataList
-          .where((element) => element!.typeOperation == "Decaissement")
+      List<CaisseModel?> depensesList = caisses
+          .where((element) => element.typeOperation == "Decaissement")
           .toList();
       for (var item in recetteList) {
         recette += double.parse(item!.montant);
@@ -56,6 +60,8 @@ class _TableCaisseState extends State<TableCaisse> {
       for (var item in depensesList) {
         depenses += double.parse(item!.montant);
       }
+
+      dataList = caisses.toList();
     });
   }
 
@@ -81,15 +87,28 @@ class _TableCaisseState extends State<TableCaisse> {
             },
             createHeader: (PlutoGridStateManager header) {
               return Row(
-                mainAxisAlignment: MainAxisAlignment.end,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  IconButton(
-                      onPressed: () {
-                        Navigator.pushNamed(
-                            context, FinanceRoutes.transactionsCaisse);
-                      },
-                      icon: Icon(Icons.refresh, color: Colors.green.shade700)),
-                  PrintWidget(onPressed: () {})
+                  const TitleWidget(title: "Caisse"),
+                  Row(
+                    children: [
+                      IconButton(
+                          onPressed: () {
+                            Navigator.pushNamed(
+                                context, FinanceRoutes.transactionsCaisse);
+                          },
+                          icon: Icon(Icons.refresh,
+                              color: Colors.green.shade700)),
+                      PrintWidget(onPressed: () {
+                        CaisseXlsx().exportToExcel(dataList);
+                        if (!mounted) return;
+                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                          content: const Text("Exportation effectué!"),
+                          backgroundColor: Colors.green[700],
+                        ));
+                      })
+                    ],
+                  ),
                 ],
               );
             },
@@ -305,14 +324,14 @@ class _TableCaisseState extends State<TableCaisse> {
   }
 
   Future agentsRow() async {
-    List<CaisseModel?> dataList = await CaisseApi().getAllData();
-    var data = dataList;
+    List<CaisseModel> dataList = await CaisseApi().getAllData();
+    var data = dataList.toList();
 
     if (mounted) {
       setState(() {
         for (var item in data) {
           rows.add(PlutoRow(cells: {
-            'id': PlutoCell(value: item!.id),
+            'id': PlutoCell(value: item.id),
             'nomComplet': PlutoCell(value: item.nomComplet),
             'pieceJustificative': PlutoCell(value: item.pieceJustificative),
             'libelle': PlutoCell(value: item.libelle),

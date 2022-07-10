@@ -1,36 +1,40 @@
 import 'dart:io';
 
 import 'package:excel/excel.dart';
-import 'package:fokad_admin/src/models/rh/perfomence_model.dart'; 
+import 'package:fokad_admin/src/models/finances/banque_model.dart'; 
 import 'package:intl/intl.dart';
 import 'package:path_provider/path_provider.dart';
 
-class PerformenceXlsx {
-  Future<void> exportToExcel(List<PerformenceModel> dataList) async {
+class BanqueXlsx {
+  Future<void> exportToExcel(List<BanqueModel> dataList) async {
     var excel = Excel.createExcel();
-    String title = "Performences";
+    String title = "Banque";
     Sheet sheetObject = excel[title];
     sheetObject.insertRowIterables([
       "id",
-      "agent",
+      "nomComplet",
+      "pieceJustificative",
+      "libelle",
+      "montant",
       "departement",
-      "nom",
-      "postnom",
-      "prenom",
-      "signature",
-      "Date"
+      "typeOperation",
+      "numeroOperation",
+      "signature", 
+      "created"
     ], 0);
 
     for (int i = 0; i < dataList.length; i++) {
       List<String> data = [
         dataList[i].id.toString(),
-        dataList[i].agent,
+        dataList[i].nomComplet,
+        dataList[i].pieceJustificative,
+        dataList[i].libelle,
+        dataList[i].montant,
         dataList[i].departement,
-        dataList[i].nom,
-        dataList[i].postnom,
-        dataList[i].prenom,
-        dataList[i].signature,
-        DateFormat("dd/MM/yy HH-mm").format(dataList[i].created),
+        dataList[i].typeOperation,
+        dataList[i].numeroOperation,
+        dataList[i].signature, 
+        DateFormat("dd/MM/yy HH-mm").format(dataList[i].created) 
       ];
 
       sheetObject.insertRowIterables(data, i + 1);
