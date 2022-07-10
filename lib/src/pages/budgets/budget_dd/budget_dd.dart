@@ -6,6 +6,7 @@ import 'package:fokad_admin/src/api/comm_marketing/marketing/campaign_api.dart';
 import 'package:fokad_admin/src/api/devis/devis_api.dart';
 import 'package:fokad_admin/src/api/exploitations/projets_api.dart';
 import 'package:fokad_admin/src/api/rh/paiement_salaire_api.dart';
+import 'package:fokad_admin/src/api/rh/transport_restaurant_api.dart';
 import 'package:fokad_admin/src/constants/app_theme.dart';
 import 'package:fokad_admin/src/constants/responsive.dart';
 import 'package:fokad_admin/src/navigation/drawer/drawer_menu.dart';
@@ -15,6 +16,7 @@ import 'package:fokad_admin/src/pages/budgets/budget_dd/components/table_departe
 import 'package:fokad_admin/src/pages/budgets/budget_dd/components/table_devis_budget_dd.dart';
 import 'package:fokad_admin/src/pages/budgets/budget_dd/components/table_projet_budget_dd.dart';
 import 'package:fokad_admin/src/pages/budgets/budget_dd/components/table_salaire_budget.dart';
+import 'package:fokad_admin/src/pages/budgets/budget_dd/components/table_transport_restaurant_budget.dart';
 
 class BudgetDD extends StatefulWidget {
   const BudgetDD({Key? key}) : super(key: key);
@@ -32,8 +34,10 @@ class _BudgetDDState extends State<BudgetDD> {
   bool isOpen3 = false;
   bool isOpen4 = false;
   bool isOpen5 = false;
+  bool isOpen6 = false;
 
   int salaireCount = 0;
+  int transRestCount = 0;
   int campaignCount = 0;
   int devisCount = 0;
   int projetCount = 0;
@@ -48,6 +52,7 @@ class _BudgetDDState extends State<BudgetDD> {
 
   Future<void> getData() async {
     var salaires = await PaiementSalaireApi().getAllData();
+    var transRests = await TransportRestaurationApi().getAllData();
     var campaigns = await CampaignApi().getAllData();
     var devis = await DevisAPi().getAllData();
     var projets = await ProjetsApi().getAllData();
@@ -61,6 +66,12 @@ class _BudgetDDState extends State<BudgetDD> {
               element.approbationDG == 'Approved' &&
               element.approbationDD == 'Approved' &&
               element.observation == 'false' &&
+              element.approbationBudget == '-')
+          .length;
+      transRestCount = transRests
+          .where((element) =>
+              element.approbationDG == 'Approved' &&
+              element.approbationDD == 'Approved' &&
               element.approbationBudget == '-')
           .length;
       campaignCount = campaigns
@@ -149,6 +160,31 @@ class _BudgetDDState extends State<BudgetDD> {
                                   color: Colors.white,
                                 ),
                                 children: const [TableSalairesBudget()],
+                              ),
+                            ),
+                            Card(
+                              color: Colors.blue.shade700,
+                              child: ExpansionTile(
+                                leading: const Icon(Icons.folder,
+                                    color: Colors.white),
+                                title: Text(
+                                    'Dossier Transports & Restaurations',
+                                    style: headline6.copyWith(
+                                        color: Colors.white)),
+                                subtitle: Text(
+                                    "Vous $transRestCount dossiers necessitent votre approbation",
+                                    style: bodyMedium.copyWith(
+                                        color: Colors.white)),
+                                initiallyExpanded: false,
+                                onExpansionChanged: (val) {
+                                  setState(() {
+                                    isOpen6 = !val;
+                                  });
+                                },
+                                trailing: const Icon(Icons.arrow_drop_down,
+                                    color: Colors.white),
+                                children: const [
+                                  TableTansportRestaurantBudget()],
                               ),
                             ),
                             Card(

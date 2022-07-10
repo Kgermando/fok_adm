@@ -2,10 +2,14 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:fokad_admin/src/api/finances/creance_api.dart';
+import 'package:fokad_admin/src/api/finances/creance_dette_api.dart';
+import 'package:fokad_admin/src/models/finances/creance_dette_model.dart';
 import 'package:fokad_admin/src/models/finances/creances_model.dart';
+import 'package:fokad_admin/src/pages/finances/transactions/components/creances/creance_xlsx.dart';
 import 'package:fokad_admin/src/routes/routes.dart';
 import 'package:fokad_admin/src/widgets/print_widget.dart';
 import 'package:fokad_admin/src/utils/class_implemented.dart';
+import 'package:fokad_admin/src/widgets/title_widget.dart';
 import 'package:intl/intl.dart';
 import 'package:pluto_grid/pluto_grid.dart';
 
@@ -36,19 +40,35 @@ class _TableCreanceAdminState extends State<TableCreanceAdmin> {
     super.initState();
   }
 
+   List<CreanceModel> dataList = [];
+   List<CreanceDetteModel> creanceDetteList = [];
+
   Future<void> getData() async {
-    List<CreanceModel?> dataList = await CreanceApi().getAllData();
+    List<CreanceModel> creances = await CreanceApi().getAllData();
+    var creanceDette = await CreanceDetteApi().getAllData();
     setState(() {
-      List<CreanceModel?> payeList =
-          dataList.where((element) => element!.statutPaie == 'true').toList();
-      List<CreanceModel?> nonPayeList =
-          dataList.where((element) => element!.statutPaie == 'false').toList();
-      for (var item in payeList) {
-        paye += double.parse(item!.montant);
-      }
-      for (var item in nonPayeList) {
+      List<CreanceModel?> data = creances
+          .where((element) =>
+              element.approbationDG == "Approved" &&
+              element.approbationDD == "Approved")
+          .toList();
+      creanceDetteList = creanceDette
+          .where((element) => element.creanceDette == 'creances')
+          .toList();
+
+      for (var item in data) {
         nonPaye += double.parse(item!.montant);
       }
+
+      for (var item in creanceDetteList) {
+        paye += double.parse(item.montant);
+      }
+
+      dataList = creances
+          .where((element) =>
+              element.approbationDG == "-" &&
+              element.approbationDD == "Approved")
+          .toList();
     });
   }
 
@@ -76,8 +96,29 @@ class _TableCreanceAdminState extends State<TableCreanceAdmin> {
               },
               createHeader: (PlutoGridStateManager header) {
                 return Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [PrintWidget(onPressed: () {})],
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    const TitleWidget(title: "Créances"),
+                    Row(
+                      children: [
+                        IconButton(
+                            onPressed: () {
+                              Navigator.pushNamed(
+                                  context, AdminRoutes.adminFinance);
+                            },
+                            icon: Icon(Icons.refresh,
+                                color: Colors.green.shade700)),
+                        PrintWidget(onPressed: () {
+                          CreanceXlsx().exportToExcel(dataList);
+                          if (!mounted) return;
+                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                            content: const Text("Exportation effectué!"),
+                            backgroundColor: Colors.green[700],
+                          ));
+                        })
+                      ],
+                    ),
+                  ],
                 );
               },
               configuration: PlutoGridConfiguration(

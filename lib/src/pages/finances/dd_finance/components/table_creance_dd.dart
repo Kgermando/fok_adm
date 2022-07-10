@@ -15,15 +15,14 @@ import 'package:fokad_admin/src/widgets/title_widget.dart';
 import 'package:intl/intl.dart';
 import 'package:pluto_grid/pluto_grid.dart';
 
-class TableCreance extends StatefulWidget {
-  const TableCreance({Key? key}) : super(key: key);
+class TableCreanceDD extends StatefulWidget {
+  const TableCreanceDD({Key? key}) : super(key: key);
 
   @override
-  State<TableCreance> createState() => _TableCreanceState();
+  State<TableCreanceDD> createState() => _TableCreanceDDState();
 }
 
-class _TableCreanceState extends State<TableCreance> {
-  Timer? timer;
+class _TableCreanceDDState extends State<TableCreanceDD> {
   List<PlutoColumn> columns = [];
   List<PlutoRow> rows = [];
   PlutoGridStateManager? stateManager;
@@ -52,7 +51,7 @@ class _TableCreanceState extends State<TableCreance> {
       List<CreanceModel?> data = creances
           .where((element) =>
               element.approbationDG == "Approved" &&
-                  element.approbationDD == "Approved")
+              element.approbationDD == "Approved")
           .toList();
       creanceDetteList = creanceDette.where((element) => element.creanceDette == 'creances').toList();
 
@@ -65,9 +64,8 @@ class _TableCreanceState extends State<TableCreance> {
       }
 
       dataList = creances
-          .where((element) =>
-              element.approbationDG == "Approved" &&
-              element.approbationDD == "Approved")
+          .where((element) => 
+              element.approbationDD == "-")
           .toList();
     });
   }
@@ -101,8 +99,7 @@ class _TableCreanceState extends State<TableCreance> {
                     children: [
                       IconButton(
                           onPressed: () {
-                            Navigator.pushNamed(
-                                context, FinanceRoutes.transactionsCreances);
+                            Navigator.pushNamed(context, FinanceRoutes.finDD);
                           },
                           icon: Icon(Icons.refresh,
                               color: Colors.green.shade700)),

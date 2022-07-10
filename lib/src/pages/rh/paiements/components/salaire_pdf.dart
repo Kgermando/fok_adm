@@ -118,7 +118,7 @@ class SalairePdf {
   }
 
   static Widget buildTitle(PaiementSalaireModel data) {
-    final date = DateFormat("dd/MM/yy HH:mm").format(data.createdAt);
+    // final date = DateFormat("dd/MM/yy HH:mm").format(data.createdAt);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [

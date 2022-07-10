@@ -8,6 +8,7 @@ import 'package:fokad_admin/src/api/exploitations/projets_api.dart';
 import 'package:fokad_admin/src/api/finances/creance_api.dart';
 import 'package:fokad_admin/src/api/finances/dette_api.dart';
 import 'package:fokad_admin/src/api/rh/paiement_salaire_api.dart';
+import 'package:fokad_admin/src/api/rh/transport_restaurant_api.dart';
 import 'package:fokad_admin/src/constants/app_theme.dart';
 import 'package:fokad_admin/src/models/users/user_model.dart';
 import 'package:fokad_admin/src/navigation/drawer/drawer_widget.dart';
@@ -31,6 +32,7 @@ class _FinancesNavState extends State<FinancesNav> {
   int detteCount = 0;
 
   int salaireCount = 0;
+  int transRestCount = 0;
   int campaignCount = 0;
   int devisCount = 0;
   int projetCount = 0;
@@ -60,6 +62,7 @@ class _FinancesNavState extends State<FinancesNav> {
     var creances = await CreanceApi().getAllData();
     var dettes = await DetteApi().getAllData();
     var salaires = await PaiementSalaireApi().getAllData();
+    var transRests = await TransportRestaurationApi().getAllData();
     var campaigns = await CampaignApi().getAllData();
     var devis = await DevisAPi().getAllData();
     var projets = await ProjetsApi().getAllData();
@@ -86,6 +89,13 @@ class _FinancesNavState extends State<FinancesNav> {
                 element.approbationBudget == 'Approved' &&
                 element.approbationFin == "-")
             .length;
+            
+         transRestCount =
+            transRests.where((element) => element.approbationDG == 'Approved' &&
+                element.approbationDD == 'Approved' &&
+                element.approbationBudget == 'Approved' &&
+                element.approbationFin == "-").length;
+
         campaignCount = campaigns
             .where((element) =>
                 element.approbationDG == 'Approved' &&
@@ -123,6 +133,7 @@ class _FinancesNavState extends State<FinancesNav> {
     itemCount = creanceCount +
         detteCount +
         salaireCount +
+        transRestCount +
         campaignCount +
         devisCount +
         projetCount;

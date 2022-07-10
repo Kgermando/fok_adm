@@ -9,15 +9,15 @@ import 'package:fokad_admin/src/widgets/title_widget.dart';
 import 'package:intl/intl.dart';
 import 'package:pluto_grid/pluto_grid.dart';
 
-class TableTansportRestaurant extends StatefulWidget {
-  const TableTansportRestaurant({Key? key}) : super(key: key);
+class TableTansportRestaurantFin extends StatefulWidget {
+  const TableTansportRestaurantFin({Key? key}) : super(key: key);
 
   @override
-  State<TableTansportRestaurant> createState() =>
-      _TableTansportRestaurantState();
+  State<TableTansportRestaurantFin> createState() =>
+      _TableTansportRestaurantFinState();
 }
 
-class _TableTansportRestaurantState extends State<TableTansportRestaurant> {
+class _TableTansportRestaurantFinState extends State<TableTansportRestaurantFin> {
   List<PlutoColumn> columns = [];
   List<PlutoRow> rows = [];
   PlutoGridStateManager? stateManager;
@@ -49,7 +49,7 @@ class _TableTansportRestaurantState extends State<TableTansportRestaurant> {
                 element.approbationDG == 'Approved' &&
                 element.approbationDD == 'Approved' &&
                 element.approbationBudget == 'Approved' &&
-                element.approbationFin == 'Approved')
+                element.approbationFin == '-')
             .toList();
       });
     }
@@ -93,14 +93,14 @@ class _TableTansportRestaurantState extends State<TableTansportRestaurant> {
                             Navigator.pushNamed(context, RhRoutes.rhTransportRest);
                           },
                           icon: Icon(Icons.refresh, color: Colors.green.shade700)),
-                        PrintWidget(onPressed: () {
-                          TransportRestXlsx().exportToExcel(dataList);
-                          if (!mounted) return;
-                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                            content: const Text("Exportation effectué!"),
-                            backgroundColor: Colors.green[700],
-                          ));
-                        })
+                          PrintWidget(onPressed: () {
+                        TransportRestXlsx().exportToExcel(dataList);
+                        if (!mounted) return;
+                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                          content: const Text("Exportation effectué!"),
+                          backgroundColor: Colors.green[700],
+                        ));
+                      })
                     ],
                   ), 
                 ],
@@ -208,7 +208,7 @@ class _TableTansportRestaurantState extends State<TableTansportRestaurant> {
             element.approbationDG == 'Approved' &&
             element.approbationDD == 'Approved' &&
             element.approbationBudget == 'Approved' &&
-            element.approbationFin == 'Approved')
+            element.approbationFin == '-')
         .toList();
 
     if (mounted) {

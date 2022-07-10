@@ -16,9 +16,9 @@ import 'package:fokad_admin/src/api/exploitations/projets_api.dart';
 import 'package:fokad_admin/src/api/finances/creance_api.dart';
 import 'package:fokad_admin/src/api/finances/dette_api.dart';
 import 'package:fokad_admin/src/api/logistiques/anguin_api.dart';
-import 'package:fokad_admin/src/api/logistiques/immobiler_api.dart';
-import 'package:fokad_admin/src/api/rh/agents_api.dart';
+import 'package:fokad_admin/src/api/logistiques/immobiler_api.dart'; 
 import 'package:fokad_admin/src/api/rh/paiement_salaire_api.dart';
+import 'package:fokad_admin/src/api/rh/transport_restaurant_api.dart';
 import 'package:fokad_admin/src/constants/app_theme.dart';
 import 'package:fokad_admin/src/models/users/user_model.dart';
 import 'package:fokad_admin/src/navigation/drawer/drawer_widget.dart';
@@ -47,7 +47,7 @@ class _AdministrationNavState extends State<AdministrationNav> {
   int etatBesoinCount = 0;
 
   // RH
-  int agentInactifs = 0;
+  int transRestCount = 0;
   int salaireCount = 0;
 
   // Finances
@@ -83,7 +83,7 @@ class _AdministrationNavState extends State<AdministrationNav> {
     var departementBudget = await DepeartementBudgetApi().getAllData();
 
     // RH
-    var agents = await AgentsApi().getAllData();
+    var transRests = await TransportRestaurationApi().getAllData();
     var salaires = await PaiementSalaireApi().getAllData();
 
     // Finances
@@ -121,8 +121,11 @@ class _AdministrationNavState extends State<AdministrationNav> {
           .length; 
 
         // RH
-        agentInactifs =
-            agents.where((element) => element.statutAgent == 'false').length;
+       transRestCount = transRests
+            .where((element) =>
+                element.approbationDD == 'Approved' &&
+                element.approbationDG == '-')
+            .length;
         salaireCount =
             salaires.where((element) =>  element.observation == 'false' &&
                 element.createdAt.month == DateTime.now().month &&
@@ -192,7 +195,7 @@ class _AdministrationNavState extends State<AdministrationNav> {
     final bodyLarge = Theme.of(context).textTheme.bodyLarge;
     final bodyText1 = Theme.of(context).textTheme.bodyText1;
 
-    rhCount = agentInactifs + salaireCount;
+    rhCount = transRestCount + salaireCount;
 
     financeCount = creanceCount + detteCount;
 

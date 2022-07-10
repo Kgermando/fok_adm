@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart'; 
-import 'package:fokad_admin/src/api/rh/agents_api.dart';
 import 'package:fokad_admin/src/api/rh/paiement_salaire_api.dart';
+import 'package:fokad_admin/src/api/rh/transport_restaurant_api.dart';
 import 'package:fokad_admin/src/constants/app_theme.dart';
 import 'package:fokad_admin/src/constants/responsive.dart';
-import 'package:fokad_admin/src/models/rh/agent_model.dart';
 import 'package:fokad_admin/src/navigation/drawer/drawer_menu.dart';
 import 'package:fokad_admin/src/navigation/header/custom_appbar.dart';
-import 'package:fokad_admin/src/pages/administration/components/rh/table_agent_admin.dart';
 import 'package:fokad_admin/src/pages/administration/components/rh/table_salaire_admin.dart';
+import 'package:fokad_admin/src/pages/administration/components/rh/table_transport_restaurant_admin.dart';
 
 class RhAdmin extends StatefulWidget {
   const RhAdmin({Key? key}) : super(key: key);
@@ -23,8 +22,8 @@ class _RhAdminState extends State<RhAdmin> {
   bool isOpenRh1 = false;
   bool isOpenRh2 = false;
 
-  int agentInactifs = 0;
   int salaireCount = 0;
+  int transRestCount = 0;
 
   @override
   void initState() {
@@ -34,12 +33,11 @@ class _RhAdminState extends State<RhAdmin> {
 
   Future<void> getData() async {
     // RH
-    List<AgentModel> agents = await AgentsApi().getAllData();
     var salaires = await PaiementSalaireApi().getAllData(); 
+    var transRests = await TransportRestaurationApi().getAllData();
+
 
     setState(() {
-      agentInactifs =
-          agents.where((element) => element.statutAgent == 'false').length;
 
       salaireCount = salaires
           .where((element) =>
@@ -49,6 +47,10 @@ class _RhAdminState extends State<RhAdmin> {
               element.approbationDD == 'Approved' &&
               element.approbationDG == '-')
           .length;
+
+        transRestCount =
+          transRests.where((element) =>  element.approbationDD == 'Approved' &&
+              element.approbationDG == '-').length;
     });
   }
 
@@ -85,17 +87,17 @@ class _RhAdminState extends State<RhAdmin> {
                           controller: _controllerScroll,
                           children: [
                             Card(
-                              color: Colors.blue.shade700,
+                              color: Colors.orange.shade700,
                               child: ExpansionTile(
                                 leading: const Icon(Icons.folder,
                                     color: Colors.white),
-                                title: Text('Dossier Agents inactifs',
-                                    style: headline6!
-                                        .copyWith(color: Colors.white)),
+                                title: Text('Dossier Salaires',
+                                    style: headline6!.copyWith(
+                                        color: Colors.white)),
                                 subtitle: Text(
-                                    "Vous avez $agentInactifs dossiers necessitent votre approbation",
-                                    style: bodyMedium!
-                                        .copyWith(color: Colors.white)),
+                                    "Vous avez $salaireCount dossiers necessitent votre approbation",
+                                    style: bodyMedium!.copyWith(
+                                        color: Colors.white)),
                                 initiallyExpanded: false,
                                 onExpansionChanged: (val) {
                                   setState(() {
@@ -104,19 +106,20 @@ class _RhAdminState extends State<RhAdmin> {
                                 },
                                 trailing: const Icon(Icons.arrow_drop_down,
                                     color: Colors.white),
-                                children: const [TableAgentAdmin()],
+                                children: const [TableSalaireAdmin()],
                               ),
                             ),
                             Card(
-                              color: Colors.orange.shade700,
+                              color: Colors.blue.shade700,
                               child: ExpansionTile(
                                 leading: const Icon(Icons.folder,
                                     color: Colors.white),
-                                title: Text('Dossier Salaires',
+                                title: Text(
+                                    'Dossier Transports & Restaurations',
                                     style: headline6.copyWith(
                                         color: Colors.white)),
                                 subtitle: Text(
-                                    "Vous avez $salaireCount dossiers necessitent votre approbation",
+                                    "Vous $transRestCount dossiers necessitent votre approbation",
                                     style: bodyMedium.copyWith(
                                         color: Colors.white)),
                                 initiallyExpanded: false,
@@ -127,7 +130,8 @@ class _RhAdminState extends State<RhAdmin> {
                                 },
                                 trailing: const Icon(Icons.arrow_drop_down,
                                     color: Colors.white),
-                                children: const [TableSalaireAdmin()],
+                                children: const [
+                                  TableTansportRestaurantAdmin()],
                               ),
                             ),
                           ],

@@ -2,11 +2,13 @@ import 'dart:async';
 
 import 'package:flutter/material.dart'; 
 import 'package:fokad_admin/src/api/rh/paiement_salaire_api.dart';
+import 'package:fokad_admin/src/api/rh/transport_restaurant_api.dart';
 import 'package:fokad_admin/src/constants/app_theme.dart';
 import 'package:fokad_admin/src/constants/responsive.dart';
 import 'package:fokad_admin/src/navigation/drawer/drawer_menu.dart';
 import 'package:fokad_admin/src/navigation/header/custom_appbar.dart';
 import 'package:fokad_admin/src/pages/rh/dd_rh/components/salaires/table_salaires_dd.dart';
+import 'package:fokad_admin/src/pages/rh/dd_rh/components/transport_restauration/table_transport_restaurant_dd.dart';
 import 'package:fokad_admin/src/pages/rh/dd_rh/components/users/table_users.dart';
 import 'package:fokad_admin/src/routes/routes.dart';
 
@@ -22,8 +24,10 @@ class _DepartementRHState extends State<DepartementRH> {
 
   bool isOpen1 = false;
   bool isOpen2 = false;
+  bool isOpen3 = false;
 
   int salairesCount = 0;
+  int transRestCount = 0;
   // int userAcount = 0;
 
   @override
@@ -35,6 +39,8 @@ class _DepartementRHState extends State<DepartementRH> {
   Future<void> getData() async {
     // RH
     var salaires = await PaiementSalaireApi().getAllData();
+    var transRests = await TransportRestaurationApi().getAllData();
+
     setState(() {
       salairesCount = salaires
           .where((element) =>
@@ -42,6 +48,9 @@ class _DepartementRHState extends State<DepartementRH> {
               element.createdAt.year == DateTime.now().year && 
               element.approbationDD == "-"
           ).length;
+
+      transRestCount =
+          transRests.where((element) => element.approbationDD == '-').length;
     });
   }
 
@@ -112,21 +121,38 @@ class _DepartementRHState extends State<DepartementRH> {
                               ),
                             ),
                             Card(
+                              color: Colors.blue.shade700,
+                              child: ExpansionTile(
+                                leading: const Icon(Icons.folder,
+                                    color: Colors.white),
+                                title: Text('Dossier Transports & Restaurations',
+                                    style: headline6.copyWith(color: Colors.white)),
+                                subtitle: Text(
+                                    "Vous $transRestCount dossiers necessitent votre approbation",
+                                    style: bodyMedium.copyWith(color: Colors.white)),
+                                initiallyExpanded: false,
+                                onExpansionChanged: (val) {
+                                  setState(() {
+                                    isOpen2 = !val;
+                                  });
+                                },
+                                trailing: const Icon(Icons.arrow_drop_down,
+                                    color: Colors.white),
+                                children: const [TableTansportRestaurantDD()],
+                              ),
+                            ),
+                            Card(
                               color: Colors.green.shade700,
                               child: ExpansionTile(
                                 leading: const Icon(Icons.folder,
                                     color: Colors.white),
                                 title: Text('Dossier utilisateurs actifs',
                                     style: headline6.copyWith(
-                                        color: Colors.white)),
-                                // subtitle: Text(
-                                //     "Vous $userAcount dossiers necessitent votre approbation",
-                                //     style: bodyMedium.copyWith(
-                                //         color: Colors.white)),
+                                        color: Colors.white)), 
                                 initiallyExpanded: false,
                                 onExpansionChanged: (val) {
                                   setState(() {
-                                    isOpen2 = !val;
+                                    isOpen3 = !val;
                                   });
                                 },
                                 trailing: const Icon(Icons.arrow_drop_down,

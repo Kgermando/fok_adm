@@ -7,6 +7,7 @@ import 'package:fokad_admin/src/api/comm_marketing/marketing/campaign_api.dart';
 import 'package:fokad_admin/src/api/devis/devis_api.dart';
 import 'package:fokad_admin/src/api/exploitations/projets_api.dart';
 import 'package:fokad_admin/src/api/rh/paiement_salaire_api.dart';
+import 'package:fokad_admin/src/api/rh/transport_restaurant_api.dart';
 import 'package:fokad_admin/src/constants/app_theme.dart';
 import 'package:fokad_admin/src/models/users/user_model.dart';
 import 'package:fokad_admin/src/navigation/drawer/drawer_widget.dart';
@@ -27,6 +28,7 @@ class _BudgetNavState extends State<BudgetNav> {
   int itemCount = 0;
 
   int salaireCount = 0;
+  int transRestCount = 0;
   int campaignCount = 0;
   int devisCount = 0;
   int projetCount = 0;
@@ -57,6 +59,7 @@ class _BudgetNavState extends State<BudgetNav> {
   Future<void> getData() async {
     var userModel = await AuthApi().getUserId();
     var salaires = await PaiementSalaireApi().getAllData();
+    var transRests = await TransportRestaurationApi().getAllData();
     var campaigns = await CampaignApi().getAllData();
     var devis = await DevisAPi().getAllData();
     var projets = await ProjetsApi().getAllData();
@@ -71,6 +74,13 @@ class _BudgetNavState extends State<BudgetNav> {
                 element.approbationDG == 'Approved' &&
                 element.approbationDD == 'Approved' &&
                 element.observation == 'false' &&
+                element.approbationBudget == '-')
+            .length;
+        
+        transRestCount = transRests
+            .where((element) =>
+                element.approbationDG == 'Approved' &&
+                element.approbationDD == 'Approved' &&
                 element.approbationBudget == '-')
             .length;
 
@@ -111,6 +121,7 @@ class _BudgetNavState extends State<BudgetNav> {
     final bodyText1 = Theme.of(context).textTheme.bodyText1;
 
     itemCount = salaireCount +
+        transRestCount +
         campaignCount +
         devisCount +
         projetCount +

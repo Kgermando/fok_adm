@@ -1,26 +1,28 @@
 import 'dart:async';
 
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart'; 
+import 'package:fokad_admin/src/api/auth/auth_api.dart';
 import 'package:fokad_admin/src/api/finances/creance_dette_api.dart';
-import 'package:fokad_admin/src/api/finances/dette_api.dart';
+import 'package:fokad_admin/src/api/finances/dette_api.dart'; 
 import 'package:fokad_admin/src/models/finances/creance_dette_model.dart';
 import 'package:fokad_admin/src/models/finances/dette_model.dart';
+import 'package:fokad_admin/src/models/users/user_model.dart';
 import 'package:fokad_admin/src/pages/finances/transactions/components/dettes/dette_xlsx.dart';
-import 'package:fokad_admin/src/routes/routes.dart'; 
+import 'package:fokad_admin/src/routes/routes.dart';
 import 'package:fokad_admin/src/widgets/print_widget.dart';
 import 'package:fokad_admin/src/utils/class_implemented.dart';
 import 'package:fokad_admin/src/widgets/title_widget.dart';
 import 'package:intl/intl.dart';
 import 'package:pluto_grid/pluto_grid.dart';
 
-class TableDetteAdmin extends StatefulWidget {
-  const TableDetteAdmin({Key? key}) : super(key: key);
+class TableDetteDD extends StatefulWidget {
+  const TableDetteDD({Key? key}) : super(key: key);
 
   @override
-  State<TableDetteAdmin> createState() => _TableDetteAdminState();
+  State<TableDetteDD> createState() => _TableDetteDDState();
 }
 
-class _TableDetteAdminState extends State<TableDetteAdmin> {
+class _TableDetteDDState extends State<TableDetteDD> {
   Timer? timer;
   List<PlutoColumn> columns = [];
   List<PlutoRow> rows = [];
@@ -46,21 +48,23 @@ class _TableDetteAdminState extends State<TableDetteAdmin> {
     List<DetteModel> dettes = await DetteApi().getAllData();
     var creanceDette = await CreanceDetteApi().getAllData();
     setState(() {
-      List<DetteModel> data = dettes
+      List<DetteModel?> data = dettes
           .where((element) =>
               element.approbationDG == "Approved" &&
               element.approbationDD == "Approved")
           .toList();
       creanceDetteList = creanceDette
-          .where((element) => element.creanceDette == 'dettes')
-          .toList();
+        .where((element) => element.creanceDette == 'dettes').toList();
       for (var item in data) {
-        nonPaye += double.parse(item.montant);
+        nonPaye += double.parse(item!.montant);
       }
 
       for (var item in creanceDetteList) {
         paye += double.parse(item.montant);
       }
+
+      dataList =
+          dettes.where((element) => element.approbationDD == "-").toList();
     });
   }
 
@@ -96,7 +100,7 @@ class _TableDetteAdminState extends State<TableDetteAdmin> {
                         IconButton(
                             onPressed: () {
                               Navigator.pushNamed(
-                                  context, AdminRoutes.adminFinance);
+                                  context, FinanceRoutes.finDD);
                             },
                             icon: Icon(Icons.refresh,
                                 color: Colors.green.shade700)),
@@ -121,7 +125,10 @@ class _TableDetteAdminState extends State<TableDetteAdmin> {
                     ClassFilterImplemented(),
                   ],
                   resolveDefaultColumnFilter: (column, resolver) {
-                    if (column.field == 'nomComplet') {
+                    if (column.field == 'id') {
+                      return resolver<ClassFilterImplemented>()
+                          as PlutoFilterType;
+                    } else if (column.field == 'nomComplet') {
                       return resolver<ClassFilterImplemented>()
                           as PlutoFilterType;
                     } else if (column.field == 'pieceJustificative') {
@@ -149,8 +156,7 @@ class _TableDetteAdminState extends State<TableDetteAdmin> {
                       return resolver<ClassFilterImplemented>()
                           as PlutoFilterType;
                     }
-                    return resolver<PlutoFilterTypeContains>()
-                        as PlutoFilterType;
+                    return resolver<PlutoFilterTypeContains>() as PlutoFilterType;
                   },
                 ),
               ),
@@ -177,7 +183,7 @@ class _TableDetteAdminState extends State<TableDetteAdmin> {
                     style: bodyMedium!.copyWith(
                         fontWeight: FontWeight.bold, color: Colors.white)),
                 SelectableText(
-                    '${NumberFormat.decimalPattern('fr').format(paye + nonPaye)} \$',
+                    '${NumberFormat.decimalPattern('fr').format(nonPaye)} \$',
                     style: bodyMedium.copyWith(
                         fontWeight: FontWeight.bold, color: Colors.white))
               ],
@@ -199,7 +205,7 @@ class _TableDetteAdminState extends State<TableDetteAdmin> {
                     style: bodyMedium.copyWith(
                         fontWeight: FontWeight.bold, color: Colors.white)),
                 SelectableText(
-                    '${NumberFormat.decimalPattern('fr').format(nonPaye)} \$',
+                    '${NumberFormat.decimalPattern('fr').format(nonPaye - paye)} \$',
                     style: bodyMedium.copyWith(
                         fontWeight: FontWeight.bold, color: Colors.white))
               ],
@@ -236,7 +242,7 @@ class _TableDetteAdminState extends State<TableDetteAdmin> {
         enableContextMenu: false,
         enableDropToResize: true,
         titleTextAlign: PlutoColumnTextAlign.left,
-        width: 150,
+        width: 200,
         minWidth: 150,
       ),
       PlutoColumn(
@@ -248,7 +254,7 @@ class _TableDetteAdminState extends State<TableDetteAdmin> {
         enableContextMenu: false,
         enableDropToResize: true,
         titleTextAlign: PlutoColumnTextAlign.left,
-        width: 150,
+        width: 200,
         minWidth: 150,
       ),
       PlutoColumn(
@@ -260,7 +266,7 @@ class _TableDetteAdminState extends State<TableDetteAdmin> {
         enableContextMenu: false,
         enableDropToResize: true,
         titleTextAlign: PlutoColumnTextAlign.left,
-        width: 150,
+        width: 300,
         minWidth: 150,
       ),
       PlutoColumn(
@@ -272,7 +278,7 @@ class _TableDetteAdminState extends State<TableDetteAdmin> {
         enableContextMenu: false,
         enableDropToResize: true,
         titleTextAlign: PlutoColumnTextAlign.left,
-        width: 150,
+        width: 200,
         minWidth: 150,
       ),
       PlutoColumn(
@@ -284,7 +290,7 @@ class _TableDetteAdminState extends State<TableDetteAdmin> {
         enableContextMenu: false,
         enableDropToResize: true,
         titleTextAlign: PlutoColumnTextAlign.left,
-        width: 150,
+        width: 200,
         minWidth: 150,
       ),
       PlutoColumn(
@@ -296,34 +302,35 @@ class _TableDetteAdminState extends State<TableDetteAdmin> {
         enableContextMenu: false,
         enableDropToResize: true,
         titleTextAlign: PlutoColumnTextAlign.left,
-        width: 150,
+        width: 200,
         minWidth: 150,
       ),
     ];
   }
 
-  Future agentsRow() async {
+  Future agentsRow() async { 
     List<DetteModel?> dataList = await DetteApi().getAllData();
+    UserModel userModel = await AuthApi().getUserId();
     var data = dataList
-        .where((element) =>
-            element!.approbationDG == '-' &&
-            element.approbationDD == 'Approved')
-        .toList();  // PAs de filtre parce le fichier approbation n'est pas encore crée
-    
+      .where((element) =>
+          element!.approbationDG == "Approved" &&
+              element.approbationDD == "-" ||
+          element.signature == userModel.matricule)
+      .toList();
 
     if (mounted) {
       setState(() {
-        for (var item in data) {
-          id = item!.id;
+        for (var item in data) { 
           rows.add(PlutoRow(cells: {
-            'id': PlutoCell(value: item.id),
+            'id': PlutoCell(value: item!.id),
             'nomComplet': PlutoCell(value: item.nomComplet),
             'pieceJustificative': PlutoCell(value: item.pieceJustificative),
             'libelle': PlutoCell(value: item.libelle),
-            'montant': PlutoCell(value: item.montant),
+            'montant': PlutoCell(value: "${NumberFormat.decimalPattern('fr')
+                .format(double.parse(item.montant))} \$"),
             'numeroOperation': PlutoCell(value: item.numeroOperation),
             'created': PlutoCell(
-                value: DateFormat("dd-MM-yy HH:mm").format(item.created))
+                value: DateFormat("dd-MM-yyyy HH:mm").format(item.created))
           }));
         }
         stateManager!.resetCurrentState();
