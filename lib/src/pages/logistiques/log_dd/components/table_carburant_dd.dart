@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:fokad_admin/src/api/logistiques/carburant_api.dart';
 import 'package:fokad_admin/src/models/logistiques/carburant_model.dart';
+import 'package:fokad_admin/src/pages/logistiques/automobile/components/carburant_xlsx.dart';
 import 'package:fokad_admin/src/routes/routes.dart';
 import 'package:fokad_admin/src/widgets/card_widget_carburant.dart';
 import 'package:fokad_admin/src/widgets/print_widget.dart';
 import 'package:fokad_admin/src/utils/class_implemented.dart';
+import 'package:fokad_admin/src/widgets/title_widget.dart';
 import 'package:intl/intl.dart';
 import 'package:pluto_grid/pluto_grid.dart';
 
@@ -43,18 +45,20 @@ class _TableCarburantDDState extends State<TableCarburantDD> {
     super.initState();
   }
 
+  List<CarburantModel> dataList = [];
+
   Future<void> getData() async {
-    List<CarburantModel?> dataList = await CarburantApi().getAllData();
+    List<CarburantModel> carburants = await CarburantApi().getAllData();
     if (mounted) return;
     setState(() {
-      List<CarburantModel?> entreListEssence = dataList
+      List<CarburantModel?> entreListEssence = carburants
           .where((element) =>
-              element!.operationEntreSortie == "Entrer" &&
+              element.operationEntreSortie == "Entrer" &&
               element.typeCaburant == "Essence")
           .toList();
-      List<CarburantModel?> sortieListEssence = dataList
+      List<CarburantModel?> sortieListEssence = carburants
           .where((element) =>
-              element!.operationEntreSortie == "Sortie" &&
+              element.operationEntreSortie == "Sortie" &&
               element.typeCaburant == "Essence")
           .toList();
       for (var item in entreListEssence) {
@@ -64,14 +68,14 @@ class _TableCarburantDDState extends State<TableCarburantDD> {
         sortieEssence += double.parse(item!.qtyAchat);
       }
 
-      List<CarburantModel?> entrerListMazoute = dataList
+      List<CarburantModel?> entrerListMazoute = carburants
           .where((element) =>
-              element!.operationEntreSortie == "Entrer" &&
+              element.operationEntreSortie == "Entrer" &&
               element.typeCaburant == "Mazoutte")
           .toList();
-      List<CarburantModel?> sortieListMazoute = dataList
+      List<CarburantModel?> sortieListMazoute = carburants
           .where((element) =>
-              element!.operationEntreSortie == "Sortie" &&
+              element.operationEntreSortie == "Sortie" &&
               element.typeCaburant == "Mazoutte")
           .toList();
       for (var item in entrerListMazoute) {
@@ -81,14 +85,14 @@ class _TableCarburantDDState extends State<TableCarburantDD> {
         sortieMazoute += double.parse(item!.qtyAchat);
       }
 
-      List<CarburantModel?> entrerListHuilleMoteur = dataList
+      List<CarburantModel?> entrerListHuilleMoteur = carburants
           .where((element) =>
-              element!.operationEntreSortie == "Entrer" &&
+              element.operationEntreSortie == "Entrer" &&
               element.typeCaburant == "Huille moteur")
           .toList();
-      List<CarburantModel?> sortieListHuilleMoteur = dataList
+      List<CarburantModel?> sortieListHuilleMoteur = carburants
           .where((element) =>
-              element!.operationEntreSortie == "Sortie" &&
+              element.operationEntreSortie == "Sortie" &&
               element.typeCaburant == "Huille moteur")
           .toList();
       for (var item in entrerListHuilleMoteur) {
@@ -98,14 +102,14 @@ class _TableCarburantDDState extends State<TableCarburantDD> {
         sortieHuilleMoteur += double.parse(item!.qtyAchat);
       }
 
-      List<CarburantModel?> entrerListPetrole = dataList
+      List<CarburantModel?> entrerListPetrole = carburants
           .where((element) =>
-              element!.operationEntreSortie == "Entrer" &&
+              element.operationEntreSortie == "Entrer" &&
               element.typeCaburant == "Pétrole")
           .toList();
-      List<CarburantModel?> sortieListPetrole = dataList
+      List<CarburantModel?> sortieListPetrole = carburants
           .where((element) =>
-              element!.operationEntreSortie == "Sortie" &&
+              element.operationEntreSortie == "Sortie" &&
               element.typeCaburant == "Pétrole")
           .toList();
       for (var item in entrerListPetrole) {
@@ -114,6 +118,10 @@ class _TableCarburantDDState extends State<TableCarburantDD> {
       for (var item in sortieListPetrole) {
         sortiePetrole += double.parse(item!.qtyAchat);
       }
+
+       dataList = carburants
+          .where((element) => element.approbationDD == "-")
+          .toList();
     });
   }
 
@@ -139,14 +147,28 @@ class _TableCarburantDDState extends State<TableCarburantDD> {
           },
           createHeader: (PlutoGridStateManager header) {
             return Row(
-              mainAxisAlignment: MainAxisAlignment.end,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                IconButton(
-                    onPressed: () {
-                      Navigator.pushNamed(context, LogistiqueRoutes.logDD);
-                    },
-                    icon: Icon(Icons.refresh, color: Colors.green.shade700)),
-                PrintWidget(onPressed: () {})
+                const TitleWidget(title: "Carburants"),
+                Row(
+                  children: [
+                    IconButton(
+                        onPressed: () {
+                          Navigator.pushNamed(
+                              context, LogistiqueRoutes.logDD);
+                        },
+                        icon:
+                            Icon(Icons.refresh, color: Colors.green.shade700)),
+                    PrintWidget(onPressed: () {
+                      CarburantXlsx().exportToExcel(dataList);
+                      if (!mounted) return;
+                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                        content: const Text("Exportation effectué!"),
+                        backgroundColor: Colors.green[700],
+                      ));
+                    })
+                  ],
+                ),
               ],
             );
           },

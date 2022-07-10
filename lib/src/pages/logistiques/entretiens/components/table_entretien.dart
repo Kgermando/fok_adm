@@ -2,10 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:fokad_admin/src/api/auth/auth_api.dart';
 import 'package:fokad_admin/src/api/logistiques/entretien_api.dart';
 import 'package:fokad_admin/src/models/logistiques/entretien_model.dart';
-import 'package:fokad_admin/src/models/users/user_model.dart'; 
+import 'package:fokad_admin/src/models/users/user_model.dart';
+import 'package:fokad_admin/src/pages/logistiques/entretiens/components/entretien_xlsx.dart'; 
 import 'package:fokad_admin/src/routes/routes.dart';
 import 'package:fokad_admin/src/utils/class_implemented.dart';
 import 'package:fokad_admin/src/widgets/print_widget.dart';
+import 'package:fokad_admin/src/widgets/title_widget.dart';
 import 'package:intl/intl.dart';
 import 'package:pluto_grid/pluto_grid.dart';
 
@@ -22,13 +24,23 @@ class _TableEntretienState extends State<TableEntretien> {
   PlutoGridStateManager? stateManager;
   PlutoGridSelectingMode gridSelectingMode = PlutoGridSelectingMode.row;
 
-  int? id;
-
   @override
-  void initState() {
+  initState() {
     agentsColumn();
+    getData();
     agentsRow();
     super.initState();
+  }
+
+  List<EntretienModel> dataList = [];
+
+  Future<void> getData() async {
+    List<EntretienModel> entretiens = await EntretienApi().getAllData();
+    setState(() {
+      dataList = entretiens.where((element) =>
+          element.approbationDD == "Approved").toList();
+
+    });
   }
 
   @override
@@ -49,14 +61,28 @@ class _TableEntretienState extends State<TableEntretien> {
       },
       createHeader: (PlutoGridStateManager header) {
         return Row(
-          mainAxisAlignment: MainAxisAlignment.end,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            IconButton(
-                onPressed: () {
-                  Navigator.pushNamed(context, LogistiqueRoutes.logEntretien);
-                },
-                icon: Icon(Icons.refresh, color: Colors.green.shade700)),
-            PrintWidget(onPressed: () {})],
+            const TitleWidget(title: "Entretiens"),
+            Row(
+              children: [
+                IconButton(
+                    onPressed: () {
+                      Navigator.pushNamed(
+                          context, LogistiqueRoutes.logEntretien);
+                    },
+                    icon: Icon(Icons.refresh, color: Colors.green.shade700)),
+                PrintWidget(onPressed: () {
+                  EntretienXlsx().exportToExcel(dataList);
+                  if (!mounted) return;
+                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                    content: const Text("Exportation effectué!"),
+                    backgroundColor: Colors.green[700],
+                  ));
+                })
+              ],
+            ),
+          ],
         );
       },
       configuration: PlutoGridConfiguration(
@@ -177,16 +203,16 @@ class _TableEntretienState extends State<TableEntretien> {
   }
 
   Future agentsRow() async {
-    List<EntretienModel?> dataList = await EntretienApi().getAllData();
+    List<EntretienModel> entretiens = await EntretienApi().getAllData();
     UserModel userModel = await AuthApi().getUserId();
-    var data = dataList.where((element) =>
-        element!.approbationDD == "Approved" ||
-        element.signature == userModel.matricule);
+    var data = entretiens.where((element) =>
+        element.approbationDD == "Approved" ||
+        element.signature == userModel.matricule)
+        .toList();
 
     if (mounted) {
       setState(() {
-        for (var item in data) {
-          id = item!.id;
+        for (var item in data) { 
           rows.add(PlutoRow(cells: {
             'id': PlutoCell(value: item.id),
             'nom': PlutoCell(value: item.nom),

@@ -20,15 +20,24 @@ class _TableMobilierDDState extends State<TableMobilierDD> {
   PlutoGridStateManager? stateManager;
   PlutoGridSelectingMode gridSelectingMode = PlutoGridSelectingMode.row;
 
-  int? id;
-
   @override
-  void initState() {
+  initState() {
     agentsColumn();
+    getData();
     agentsRow();
     super.initState();
   }
 
+  List<MobilierModel> dataList = [];
+
+  Future<void> getData() async {
+    List<MobilierModel> mobiliers = await MobilierApi().getAllData();
+    setState(() {
+      dataList = mobiliers
+          .where((element) => element.approbationDD == "Approved")
+          .toList();
+    });
+  }
   @override
   Widget build(BuildContext context) {
     return SizedBox(
@@ -167,14 +176,13 @@ class _TableMobilierDDState extends State<TableMobilierDD> {
   }
 
   Future agentsRow() async {
-    List<MobilierModel?> dataList = await MobilierApi().getAllData();
+    List<MobilierModel> mobiliers = await MobilierApi().getAllData();
     var data =
-        dataList.where((element) => element!.approbationDD == '-').toList();
+        mobiliers.where((element) => element.approbationDD == '-').toList();
 
     if (mounted) {
       setState(() {
-        for (var item in data) {
-          id = item!.id;
+        for (var item in data) { 
           rows.add(PlutoRow(cells: {
             'id': PlutoCell(value: item.id),
             'nom': PlutoCell(value: item.nom),

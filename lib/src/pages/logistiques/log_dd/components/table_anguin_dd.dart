@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:fokad_admin/src/api/logistiques/anguin_api.dart';
-import 'package:fokad_admin/src/models/logistiques/anguin_model.dart'; 
+import 'package:fokad_admin/src/models/logistiques/anguin_model.dart';
+import 'package:fokad_admin/src/pages/logistiques/automobile/components/engin_xlsx.dart'; 
 import 'package:fokad_admin/src/routes/routes.dart';
 import 'package:fokad_admin/src/utils/class_implemented.dart';
 import 'package:fokad_admin/src/widgets/print_widget.dart';
+import 'package:fokad_admin/src/widgets/title_widget.dart';
 import 'package:intl/intl.dart';
 import 'package:pluto_grid/pluto_grid.dart';
 
@@ -20,14 +22,25 @@ class _TableAnguinDDState extends State<TableAnguinDD> {
   PlutoGridStateManager? stateManager;
   PlutoGridSelectingMode gridSelectingMode = PlutoGridSelectingMode.row;
 
-  int? id;
-
   @override
-  void initState() {
+  initState() {
     agentsColumn();
+    getData();
     agentsRow();
     super.initState();
   }
+
+  List<AnguinModel> dataList = [];
+
+  Future<void> getData() async {
+    List<AnguinModel> engins = await AnguinApi().getAllData();
+    setState(() {
+      dataList = engins
+          .where((element) => element.approbationDD == '-')
+          .toList();
+    });
+  }
+ 
  
   @override
   Widget build(BuildContext context) {
@@ -49,14 +62,28 @@ class _TableAnguinDDState extends State<TableAnguinDD> {
         },
         createHeader: (PlutoGridStateManager header) {
           return Row(
-            mainAxisAlignment: MainAxisAlignment.end,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              IconButton(
-                  onPressed: () {
-                    Navigator.pushNamed(context, LogistiqueRoutes.logAnguinAuto);
-                  },
-                  icon: Icon(Icons.refresh, color: Colors.green.shade700)),
-              PrintWidget(onPressed: () {})],
+              const TitleWidget(title: "Engins"),
+              Row(
+                children: [
+                  IconButton(
+                      onPressed: () {
+                        Navigator.pushNamed(
+                            context, LogistiqueRoutes.logDD);
+                      },
+                      icon: Icon(Icons.refresh, color: Colors.green.shade700)),
+                  PrintWidget(onPressed: () {
+                    EnginXlsx().exportToExcel(dataList);
+                    if (!mounted) return;
+                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                      content: const Text("Exportation effectué!"),
+                      backgroundColor: Colors.green[700],
+                    ));
+                  })
+                ],
+              ),
+            ],
           );
         },
         configuration: PlutoGridConfiguration(

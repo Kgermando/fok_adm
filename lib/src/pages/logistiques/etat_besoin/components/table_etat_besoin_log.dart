@@ -5,6 +5,7 @@ import 'package:fokad_admin/src/api/auth/auth_api.dart';
 import 'package:fokad_admin/src/api/devis/devis_api.dart';
 import 'package:fokad_admin/src/models/devis/devis_models.dart';
 import 'package:fokad_admin/src/models/users/user_model.dart';
+import 'package:fokad_admin/src/pages/logistiques/etat_besoin/components/devis_xlxs.dart';
 import 'package:fokad_admin/src/routes/routes.dart';
 import 'package:fokad_admin/src/utils/class_implemented.dart';
 import 'package:fokad_admin/src/widgets/print_widget.dart';
@@ -45,22 +46,24 @@ class _TableEtatBesoinLogState extends State<TableEtatBesoinLog> {
   String? servicesAffectation;
   String? fonctionOccupe;
 
+  List<DevisModel> dataList = []; 
+
   Future<void> getData() async {
     final userModel = await AuthApi().getUserId();
+    List<DevisModel> devis = await DevisAPi().getAllData();
     if (mounted) {
       setState(() {
         matricule = userModel.matricule;
         departement = userModel.departement;
         servicesAffectation = userModel.servicesAffectation;
         fonctionOccupe = userModel.fonctionOccupe;
-      });
-    }
-  }
 
-  void handleKeyboard(PlutoKeyManagerEvent event) {
-    // Specify the desired shortcut key.
-    if (event.isKeyDownEvent && event.isCtrlC) {
-      agentsRow();
+        dataList = devis.where((element) =>
+            element.approbationDG == "Approved" &&
+                element.approbationDD == "Approved" &&
+                element.approbationBudget == "Approved" &&
+                element.approbationFin == "Approved").toList();
+      });
     }
   }
 
@@ -85,7 +88,7 @@ class _TableEtatBesoinLogState extends State<TableEtatBesoinLog> {
           return Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              const TitleWidget(title: 'Logistique'),
+              const TitleWidget(title: "Etat de Besoin"),
               Row(
                 children: [
                   IconButton(
@@ -94,9 +97,16 @@ class _TableEtatBesoinLogState extends State<TableEtatBesoinLog> {
                             context, LogistiqueRoutes.logEtatBesoin);
                       },
                       icon: Icon(Icons.refresh, color: Colors.green.shade700)),
-                  PrintWidget(onPressed: () {}),
+                  PrintWidget(onPressed: () {
+                    DevisXlsx().exportToExcel(dataList);
+                    if (!mounted) return;
+                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                      content: const Text("Exportation effectué!"),
+                      backgroundColor: Colors.green[700],
+                    ));
+                  })
                 ],
-              )
+              ),
             ],
           );
         },
@@ -196,21 +206,22 @@ class _TableEtatBesoinLogState extends State<TableEtatBesoinLog> {
   }
 
   Future agentsRow() async {
-    List<DevisModel?> dataList = await DevisAPi().getAllData();
+    List<DevisModel> devis = await DevisAPi().getAllData();
     UserModel userModel = await AuthApi().getUserId();
     
-    var data = dataList.where((element) =>
-        element!.approbationDG == "Approved" && 
+    var data = devis.where((element) =>
+        element.approbationDG == "Approved" && 
         element.approbationDD == "Approved" &&
         element.approbationBudget == "Approved" && 
         element.approbationFin == "Approved" ||
-        element.signature == userModel.matricule);
+        element.signature == userModel.matricule)
+        .toList();
 
     if (mounted) {
       setState(() {
         for (var item in data) {
           rows.add(PlutoRow(cells: {
-            'id': PlutoCell(value: item!.id),
+            'id': PlutoCell(value: item.id),
             'title': PlutoCell(value: item.title),
             'priority': PlutoCell(value: item.priority),
             'departement': PlutoCell(value: item.departement),

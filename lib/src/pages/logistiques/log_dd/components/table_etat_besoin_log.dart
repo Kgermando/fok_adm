@@ -1,22 +1,26 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
-import 'package:fokad_admin/src/api/logistiques/entretien_api.dart';
-import 'package:fokad_admin/src/models/logistiques/entretien_model.dart';
-import 'package:fokad_admin/src/pages/logistiques/entretiens/components/entretien_xlsx.dart'; 
+import 'package:fokad_admin/src/api/auth/auth_api.dart';
+import 'package:fokad_admin/src/api/devis/devis_api.dart';
+import 'package:fokad_admin/src/models/devis/devis_models.dart';
+import 'package:fokad_admin/src/models/users/user_model.dart';
+import 'package:fokad_admin/src/pages/logistiques/etat_besoin/components/devis_xlxs.dart';
 import 'package:fokad_admin/src/routes/routes.dart';
-import 'package:fokad_admin/src/widgets/print_widget.dart';
 import 'package:fokad_admin/src/utils/class_implemented.dart';
+import 'package:fokad_admin/src/widgets/print_widget.dart';
 import 'package:fokad_admin/src/widgets/title_widget.dart';
 import 'package:intl/intl.dart';
 import 'package:pluto_grid/pluto_grid.dart';
 
-class TableEntretienDD extends StatefulWidget {
-  const TableEntretienDD({Key? key}) : super(key: key);
+class TableEtatBesoinDD extends StatefulWidget {
+  const TableEtatBesoinDD({Key? key}) : super(key: key);
 
   @override
-  State<TableEntretienDD> createState() => _TableEntretienDDState();
+  State<TableEtatBesoinDD> createState() => _TableEtatBesoinDDState();
 }
 
-class _TableEntretienDDState extends State<TableEntretienDD> {
+class _TableEtatBesoinDDState extends State<TableEtatBesoinDD> {
   List<PlutoColumn> columns = [];
   List<PlutoRow> rows = [];
   PlutoGridStateManager? stateManager;
@@ -31,15 +35,32 @@ class _TableEntretienDDState extends State<TableEntretienDD> {
     super.initState();
   }
 
-  List<EntretienModel> dataList = [];
+  @override
+  void dispose() {
+    super.dispose();
+  }
+
+  String? matricule;
+  String? departement;
+  String? servicesAffectation;
+  String? fonctionOccupe;
+
+  List<DevisModel> dataList = []; 
 
   Future<void> getData() async {
-    List<EntretienModel> entretiens = await EntretienApi().getAllData();
-    setState(() {
-      dataList = entretiens
-          .where((element) => element.approbationDD == "-")
-          .toList();
-    });
+    final userModel = await AuthApi().getUserId();
+    List<DevisModel> devis = await DevisAPi().getAllData();
+    if (mounted) {
+      setState(() {
+        matricule = userModel.matricule;
+        departement = userModel.departement;
+        servicesAffectation = userModel.servicesAffectation;
+        fonctionOccupe = userModel.fonctionOccupe;
+
+        dataList = devis.where((element) =>
+          element.approbationDD == "-").toList();
+      });
+    }
   }
 
   @override
@@ -52,29 +73,28 @@ class _TableEntretienDDState extends State<TableEntretienDD> {
         onRowDoubleTap: (PlutoGridOnRowDoubleTapEvent tapEvent) {
           final dataList = tapEvent.row!.cells.values;
           final idPlutoRow = dataList.elementAt(0);
-          Navigator.pushNamed(context, LogistiqueRoutes.logEntretienDetail,
+          Navigator.pushNamed(context, DevisRoutes.devisDetail,
               arguments: idPlutoRow.value);
         },
         onLoaded: (PlutoGridOnLoadedEvent event) {
           stateManager = event.stateManager;
           stateManager!.setShowColumnFilter(true);
-          stateManager!.notifyListeners();
         },
         createHeader: (PlutoGridStateManager header) {
           return Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              const TitleWidget(title: "Entretiens"),
+              const TitleWidget(title: "Etat de Besoin"),
               Row(
                 children: [
                   IconButton(
                       onPressed: () {
                         Navigator.pushNamed(
-                            context, LogistiqueRoutes.logDD);
+                            context, LogistiqueRoutes.logEtatBesoin);
                       },
                       icon: Icon(Icons.refresh, color: Colors.green.shade700)),
                   PrintWidget(onPressed: () {
-                    EntretienXlsx().exportToExcel(dataList);
+                    DevisXlsx().exportToExcel(dataList);
                     if (!mounted) return;
                     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                       content: const Text("Exportation effectué!"),
@@ -86,23 +106,24 @@ class _TableEntretienDDState extends State<TableEntretienDD> {
             ],
           );
         },
+        // createFooter: (PlutoGridStateManager fotter) {
+        //   // fotter.setPageSize(100, notify: false); // default 40
+        //   return PlutoPagination(fotter);
+        // },
         configuration: PlutoGridConfiguration(
           columnFilterConfig: PlutoGridColumnFilterConfig(
             filters: const [
               ...FilterHelper.defaultFilters,
-              // custom filter
               ClassFilterImplemented(),
             ],
             resolveDefaultColumnFilter: (column, resolver) {
-              if (column.field == 'nom') {
+              if (column.field == 'id') {
                 return resolver<ClassFilterImplemented>() as PlutoFilterType;
-              } else if (column.field == 'modele') {
+              } else if (column.field == 'title') {
                 return resolver<ClassFilterImplemented>() as PlutoFilterType;
-              } else if (column.field == 'marque') {
+              } else if (column.field == 'priority') {
                 return resolver<ClassFilterImplemented>() as PlutoFilterType;
-              } else if (column.field == 'etatObjet') {
-                return resolver<ClassFilterImplemented>() as PlutoFilterType;
-              } else if (column.field == 'dureeTravaux') {
+              } else if (column.field == 'departement') {
                 return resolver<ClassFilterImplemented>() as PlutoFilterType;
               } else if (column.field == 'created') {
                 return resolver<ClassFilterImplemented>() as PlutoFilterType;
@@ -131,62 +152,38 @@ class _TableEntretienDDState extends State<TableEntretienDD> {
       ),
       PlutoColumn(
         readOnly: true,
-        title: 'Nom complet',
-        field: 'nom',
+        title: 'Intitlé',
+        field: 'title',
         type: PlutoColumnType.text(),
         enableRowDrag: true,
         enableContextMenu: false,
         enableDropToResize: true,
         titleTextAlign: PlutoColumnTextAlign.left,
-        width: 150,
+        width: 300,
         minWidth: 150,
       ),
       PlutoColumn(
         readOnly: true,
-        title: 'Modèle',
-        field: 'modele',
+        title: 'Priorité',
+        field: 'priority',
         type: PlutoColumnType.text(),
         enableRowDrag: true,
         enableContextMenu: false,
         enableDropToResize: true,
         titleTextAlign: PlutoColumnTextAlign.left,
-        width: 150,
+        width: 200,
         minWidth: 150,
       ),
       PlutoColumn(
         readOnly: true,
-        title: 'Marque',
-        field: 'marque',
+        title: 'Département',
+        field: 'departement',
         type: PlutoColumnType.text(),
         enableRowDrag: true,
         enableContextMenu: false,
         enableDropToResize: true,
         titleTextAlign: PlutoColumnTextAlign.left,
-        width: 150,
-        minWidth: 150,
-      ),
-      PlutoColumn(
-        readOnly: true,
-        title: 'Etat de l\'objet',
-        field: 'etatObjet',
-        type: PlutoColumnType.text(),
-        enableRowDrag: true,
-        enableContextMenu: false,
-        enableDropToResize: true,
-        titleTextAlign: PlutoColumnTextAlign.left,
-        width: 150,
-        minWidth: 150,
-      ),
-      PlutoColumn(
-        readOnly: true,
-        title: 'Durée travaux',
-        field: 'dureeTravaux',
-        type: PlutoColumnType.text(),
-        enableRowDrag: true,
-        enableContextMenu: false,
-        enableDropToResize: true,
-        titleTextAlign: PlutoColumnTextAlign.left,
-        width: 150,
+        width: 300,
         minWidth: 150,
       ),
       PlutoColumn(
@@ -198,31 +195,36 @@ class _TableEntretienDDState extends State<TableEntretienDD> {
         enableContextMenu: false,
         enableDropToResize: true,
         titleTextAlign: PlutoColumnTextAlign.left,
-        width: 150,
+        width: 300,
         minWidth: 150,
       ),
     ];
   }
 
   Future agentsRow() async {
-    List<EntretienModel> entretiens = await EntretienApi().getAllData();
-    var data =
-        entretiens.where((element) => element.approbationDD == '-').toList();
+    List<DevisModel> devis = await DevisAPi().getAllData();
+    UserModel userModel = await AuthApi().getUserId();
+    
+    var data = devis.where((element) => 
+        element.approbationDD == "-" ||
+        element.signature == userModel.matricule)
+        .toList();
 
     if (mounted) {
       setState(() {
-        for (var item in data) { 
+        for (var item in data) {
           rows.add(PlutoRow(cells: {
             'id': PlutoCell(value: item.id),
-            'nom': PlutoCell(value: item.nom),
-            'modele': PlutoCell(value: item.modele),
-            'marque': PlutoCell(value: item.marque),
-            'etatObjet': PlutoCell(value: item.etatObjet),
-            'dureeTravaux': PlutoCell(value: item.dureeTravaux),
+            'title': PlutoCell(value: item.title),
+            'priority': PlutoCell(value: item.priority),
+            'departement': PlutoCell(value: item.departement),
             'created': PlutoCell(
-                value: DateFormat("dd-MM-yy H:mm").format(item.created))
+                value: DateFormat("dd-MM-yyyy HH:mm").format(item.created))
           }));
           stateManager!.resetCurrentState();
+          stateManager!.notifyListeners();
+          // stateManager!.isPaginated;
+          //
         }
       });
     }

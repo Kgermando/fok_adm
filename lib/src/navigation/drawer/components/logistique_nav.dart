@@ -2,6 +2,7 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:badges/badges.dart';
 import 'package:flutter/material.dart';
 import 'package:fokad_admin/src/api/auth/auth_api.dart';
+import 'package:fokad_admin/src/api/devis/devis_api.dart';
 import 'package:fokad_admin/src/api/logistiques/anguin_api.dart';
 import 'package:fokad_admin/src/api/logistiques/carburant_api.dart';
 import 'package:fokad_admin/src/api/logistiques/entretien_api.dart';
@@ -36,6 +37,7 @@ class _LogistiqueNavState extends State<LogistiqueNav> {
   int mobiliersCount = 0;
   int entretiensCount = 0;
   int etatmaterielsCount = 0;
+  int etatBesoinCount = 0;
 
   @override
   void initState() {
@@ -68,6 +70,8 @@ class _LogistiqueNavState extends State<LogistiqueNav> {
     var mobiliers = await MobilierApi().getAllData();
     var entretiens = await EntretienApi().getAllData();
     var etatmateriels = await EtatMaterielApi().getAllData();
+    var devis = await DevisAPi().getAllData();
+    
     if (mounted) {
       setState(() {
         user = userModel;
@@ -85,6 +89,8 @@ class _LogistiqueNavState extends State<LogistiqueNav> {
                 element.approbationDD == '-').length;
         etatmaterielsCount = etatmateriels.where((element) => 
                 element.approbationDD == '-').length;
+        etatBesoinCount =
+            devis.where((element) => element.approbationDD == "-").length;
       });
     }
   }
@@ -101,7 +107,8 @@ class _LogistiqueNavState extends State<LogistiqueNav> {
         immobiliersCount +
         mobiliersCount +
         entretiensCount +
-        etatmaterielsCount;
+        etatmaterielsCount + 
+        etatBesoinCount;
 
     return FutureBuilder<UserModel>(
         future: AuthApi().getUserId(),
@@ -274,11 +281,21 @@ class _LogistiqueNavState extends State<LogistiqueNav> {
                   ],
                 ),
                 DrawerWidget(
+                    selected: widget.pageCurrente == LogistiqueRoutes.logEtatBesoin,
+                    icon: Icons.content_paste,
+                    sizeIcon: 20.0,
+                    title: 'Etat de besoin',
+                    style: bodyText1!,
+                    onTap: () {
+                      Navigator.pushNamed(context, LogistiqueRoutes.logEtatBesoin);
+                      // Navigator.of(context).pop();
+                    }),
+                DrawerWidget(
                     selected: widget.pageCurrente == RhRoutes.rhPerformence,
                     icon: Icons.multiline_chart_sharp,
                     sizeIcon: 20.0,
                     title: 'Performences',
-                    style: bodyText1!,
+                    style: bodyText1,
                     onTap: () {
                       Navigator.pushNamed(context, RhRoutes.rhPerformence);
                       // Navigator.of(context).pop();

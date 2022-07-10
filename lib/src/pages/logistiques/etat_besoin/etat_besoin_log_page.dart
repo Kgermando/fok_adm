@@ -58,7 +58,7 @@ class _EtatBesoinLogPageState extends State<EtatBesoinLogPage> {
         key: _key,
         drawer: const DrawerMenu(),
         floatingActionButton: FloatingActionButton(
-            tooltip: 'Ajout etat de besoin Logistique',
+            tooltip: 'Ajout etat de besoin',
             child: const Icon(Icons.add),
             onPressed: () {
               // Navigator.pushNamed(context, RhRoutes.rhEtatBesoinAdd);

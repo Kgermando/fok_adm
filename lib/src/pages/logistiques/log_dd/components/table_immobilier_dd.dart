@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:fokad_admin/src/api/logistiques/immobiler_api.dart';
-import 'package:fokad_admin/src/models/logistiques/immobilier_model.dart'; 
+import 'package:fokad_admin/src/models/logistiques/immobilier_model.dart';
+import 'package:fokad_admin/src/pages/logistiques/materiels/components/immobilier_xlsx.dart'; 
 import 'package:fokad_admin/src/routes/routes.dart';
 import 'package:fokad_admin/src/widgets/print_widget.dart';
 import 'package:fokad_admin/src/utils/class_implemented.dart';
+import 'package:fokad_admin/src/widgets/title_widget.dart';
 import 'package:intl/intl.dart';
 import 'package:pluto_grid/pluto_grid.dart';
 
@@ -20,15 +22,24 @@ class _TableImmobilierDDState extends State<TableImmobilierDD> {
   PlutoGridStateManager? stateManager;
   PlutoGridSelectingMode gridSelectingMode = PlutoGridSelectingMode.row;
 
-  int? id;
-
   @override
-  void initState() {
+  initState() {
     agentsColumn();
+    getData();
     agentsRow();
     super.initState();
   }
 
+  List<ImmobilierModel> dataList = [];
+
+  Future<void> getData() async {
+    List<ImmobilierModel> immobiliers = await ImmobilierApi().getAllData();
+    setState(() {
+      dataList = immobiliers
+          .where((element) => element.approbationDD == "-")
+          .toList();
+    });
+  }
   @override
   Widget build(BuildContext context) {
     return SizedBox(
@@ -50,15 +61,27 @@ class _TableImmobilierDDState extends State<TableImmobilierDD> {
         },
         createHeader: (PlutoGridStateManager header) {
           return Row(
-            mainAxisAlignment: MainAxisAlignment.end,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              IconButton(
-                  onPressed: () {
-                    Navigator.pushNamed(
-                        context, LogistiqueRoutes.logDD);
-                  },
-                  icon: Icon(Icons.refresh, color: Colors.green.shade700)),
-              PrintWidget(onPressed: () {})
+              const TitleWidget(title: "Immobiliers"),
+              Row(
+                children: [
+                  IconButton(
+                      onPressed: () {
+                        Navigator.pushNamed(
+                            context, LogistiqueRoutes.logDD);
+                      },
+                      icon: Icon(Icons.refresh, color: Colors.green.shade700)),
+                  PrintWidget(onPressed: () {
+                    ImmobilierXlsx().exportToExcel(dataList);
+                    if (!mounted) return;
+                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                      content: const Text("Exportation effectué!"),
+                      backgroundColor: Colors.green[700],
+                    ));
+                  })
+                ],
+              ),
             ],
           );
         },
@@ -167,14 +190,13 @@ class _TableImmobilierDDState extends State<TableImmobilierDD> {
   }
 
   Future agentsRow() async {
-    List<ImmobilierModel?> dataList = await ImmobilierApi().getAllData();
+    List<ImmobilierModel> immobiliers = await ImmobilierApi().getAllData();
     var data =
-        dataList.where((element) => element!.approbationDD == '-').toList();
+        immobiliers.where((element) => element.approbationDD == '-').toList();
 
     if (mounted) {
       setState(() {
-        for (var item in data) {
-          id = item!.id;
+        for (var item in data) { 
           rows.add(PlutoRow(cells: {
             'id': PlutoCell(value: item.id),
             'typeAllocation': PlutoCell(value: item.typeAllocation),

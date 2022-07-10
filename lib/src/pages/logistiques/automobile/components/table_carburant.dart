@@ -3,9 +3,11 @@ import 'package:fokad_admin/src/api/auth/auth_api.dart';
 import 'package:fokad_admin/src/api/logistiques/carburant_api.dart';
 import 'package:fokad_admin/src/models/logistiques/carburant_model.dart';
 import 'package:fokad_admin/src/models/users/user_model.dart';
+import 'package:fokad_admin/src/pages/logistiques/automobile/components/carburant_xlsx.dart';
 import 'package:fokad_admin/src/routes/routes.dart';
 import 'package:fokad_admin/src/utils/class_implemented.dart';
 import 'package:fokad_admin/src/widgets/print_widget.dart';
+import 'package:fokad_admin/src/widgets/title_widget.dart';
 import 'package:intl/intl.dart';
 import 'package:pluto_grid/pluto_grid.dart';
 
@@ -22,15 +24,26 @@ class _TableCarburantState extends State<TableCarburant> {
   PlutoGridStateManager? stateManager;
   PlutoGridSelectingMode gridSelectingMode = PlutoGridSelectingMode.row;
 
-  int? id;
-
   @override
-  void initState() {
+  initState() {
     agentsColumn();
+    getData();
     agentsRow();
     super.initState();
   }
 
+  List<CarburantModel> dataList = [];
+
+  Future<void> getData() async {
+    List<CarburantModel> carburants = await CarburantApi().getAllData();
+    setState(() {
+      dataList = carburants
+          .where((element) =>
+              element.approbationDD == "Approved")
+          .toList();
+    });
+  }
+ 
   @override
   Widget build(BuildContext context) {
     return PlutoGrid(
@@ -49,15 +62,27 @@ class _TableCarburantState extends State<TableCarburant> {
       },
       createHeader: (PlutoGridStateManager header) {
         return Row(
-          mainAxisAlignment: MainAxisAlignment.end,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            IconButton(
-                onPressed: () {
-                  Navigator.pushNamed(
-                      context, LogistiqueRoutes.logCarburantAuto);
-                },
-                icon: Icon(Icons.refresh, color: Colors.green.shade700)),
-            PrintWidget(onPressed: () {})
+            const TitleWidget(title: "Carburants"),
+            Row(
+              children: [
+                IconButton(
+                    onPressed: () {
+                      Navigator.pushNamed(
+                          context, LogistiqueRoutes.logCarburantAuto);
+                    },
+                    icon: Icon(Icons.refresh, color: Colors.green.shade700)),
+                PrintWidget(onPressed: () {
+                  CarburantXlsx().exportToExcel(dataList);
+                  if (!mounted) return;
+                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                    content: const Text("Exportation effectué!"),
+                    backgroundColor: Colors.green[700],
+                  ));
+                })
+              ],
+            ),
           ],
         );
       },

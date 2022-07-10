@@ -2,10 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:fokad_admin/src/api/auth/auth_api.dart';
 import 'package:fokad_admin/src/api/logistiques/trajet_api.dart';
 import 'package:fokad_admin/src/models/logistiques/trajet_model.dart';
-import 'package:fokad_admin/src/models/users/user_model.dart'; 
+import 'package:fokad_admin/src/models/users/user_model.dart';
+import 'package:fokad_admin/src/pages/logistiques/automobile/components/trajet_xlsx.dart'; 
 import 'package:fokad_admin/src/routes/routes.dart';
 import 'package:fokad_admin/src/widgets/print_widget.dart';
 import 'package:fokad_admin/src/utils/class_implemented.dart';
+import 'package:fokad_admin/src/widgets/title_widget.dart';
 import 'package:intl/intl.dart';
 import 'package:pluto_grid/pluto_grid.dart';
 
@@ -22,13 +24,23 @@ class _TableTrajetState extends State<TableTrajet> {
   PlutoGridStateManager? stateManager;
   PlutoGridSelectingMode gridSelectingMode = PlutoGridSelectingMode.row;
 
-  int? id;
-
-  @override
-  void initState() {
+   @override
+  initState() {
     agentsColumn();
+    getData();
     agentsRow();
     super.initState();
+  }
+
+  List<TrajetModel> dataList = [];
+
+  Future<void> getData() async {
+    List<TrajetModel> trajets = await TrajetApi().getAllData();
+    setState(() {
+      dataList = trajets
+          .where((element) => element.approbationDD == "Approved")
+          .toList();
+    });
   }
 
   @override
@@ -49,14 +61,28 @@ class _TableTrajetState extends State<TableTrajet> {
       },
       createHeader: (PlutoGridStateManager header) {
         return Row(
-          mainAxisAlignment: MainAxisAlignment.end,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            IconButton(
-                onPressed: () {
-                  Navigator.pushNamed(context, LogistiqueRoutes.logTrajetAuto);
-                },
-                icon: Icon(Icons.refresh, color: Colors.green.shade700)),
-            PrintWidget(onPressed: () {})],
+            const TitleWidget(title: "Trajets"),
+            Row(
+              children: [
+                IconButton(
+                    onPressed: () {
+                      Navigator.pushNamed(
+                          context, LogistiqueRoutes.logTrajetAuto);
+                    },
+                    icon: Icon(Icons.refresh, color: Colors.green.shade700)),
+                PrintWidget(onPressed: () {
+                  TrajetXlsx().exportToExcel(dataList);
+                  if (!mounted) return;
+                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                    content: const Text("Exportation effectué!"),
+                    backgroundColor: Colors.green[700],
+                  ));
+                })
+              ],
+            ),
+          ],
         );
       },
       configuration: PlutoGridConfiguration(
@@ -193,18 +219,17 @@ class _TableTrajetState extends State<TableTrajet> {
   }
 
   Future agentsRow() async {
-    List<TrajetModel?> dataList = await TrajetApi().getAllData();
+    List<TrajetModel> dataList = await TrajetApi().getAllData();
      UserModel userModel = await AuthApi().getUserId();
     var data = dataList
         .where((element) =>
-          element!.approbationDD == "Approved" ||
+          element.approbationDD == "Approved" ||
             element.signature == userModel.matricule)
         .toList();
 
     if (mounted) {
       setState(() {
-        for (var item in data) {
-          id = item!.id;
+        for (var item in data) { 
           rows.add(PlutoRow(cells: {
             'id': PlutoCell(value: item.id),
             'nomeroEntreprise': PlutoCell(value: item.nomeroEntreprise),

@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:fokad_admin/src/api/devis/devis_api.dart';
 import 'package:fokad_admin/src/api/logistiques/anguin_api.dart';
 import 'package:fokad_admin/src/api/logistiques/carburant_api.dart';
 import 'package:fokad_admin/src/api/logistiques/entretien_api.dart';
@@ -15,6 +16,7 @@ import 'package:fokad_admin/src/navigation/header/custom_appbar.dart';
 import 'package:fokad_admin/src/pages/logistiques/log_dd/components/table_anguin_dd.dart';
 import 'package:fokad_admin/src/pages/logistiques/log_dd/components/table_carburant_dd.dart';
 import 'package:fokad_admin/src/pages/logistiques/log_dd/components/table_entretien_dd.dart';
+import 'package:fokad_admin/src/pages/logistiques/log_dd/components/table_etat_besoin_log.dart';
 import 'package:fokad_admin/src/pages/logistiques/log_dd/components/table_etat_materiels_dd.dart';
 import 'package:fokad_admin/src/pages/logistiques/log_dd/components/table_immobilier_dd.dart';
 import 'package:fokad_admin/src/pages/logistiques/log_dd/components/table_mobilier_dd.dart';
@@ -37,6 +39,7 @@ class _LogDDState extends State<LogDD> {
   bool isOpenLog5 = false;
   bool isOpenLog6 = false;
   bool isOpenLog7 = false;
+  bool isOpenLog8 = false;
 
   int anguinsapprobationDD = 0;
   int carburantCount = 0;
@@ -45,6 +48,7 @@ class _LogDDState extends State<LogDD> {
   int mobiliersCount = 0;
   int entretiensCount = 0;
   int etatmaterielsCount = 0;
+  int etatBesoinCount = 0;
   
 
   @override
@@ -62,6 +66,7 @@ var anguins = await AnguinApi().getAllData();
     var mobiliers = await MobilierApi().getAllData();
     var entretiens = await EntretienApi().getAllData();
     var etatmateriels = await EtatMaterielApi().getAllData();
+    var devis = await DevisAPi().getAllData();
 
     setState(() {
       anguinsapprobationDD =
@@ -80,6 +85,8 @@ var anguins = await AnguinApi().getAllData();
           entretiens.where((element) => element.approbationDD == '-').length;
       etatmaterielsCount =
           etatmateriels.where((element) => element.approbationDD == '-').length;
+      etatBesoinCount =
+          devis.where((element) => element.approbationDD == "-").length;
     });
   }
 
@@ -267,6 +274,29 @@ var anguins = await AnguinApi().getAllData();
                                 trailing: const Icon(Icons.arrow_drop_down,
                                     color: Colors.white),
                                 children: const [TableEtatMaterielDD()],
+                              ),
+                            ),
+                            Card(
+                              color: Colors.purple.shade700,
+                              child: ExpansionTile(
+                                leading: const Icon(Icons.folder,
+                                    color: Colors.white),
+                                title: Text('Dossier Etat de besoins',
+                                    style: headline6.copyWith(
+                                        color: Colors.white)),
+                                subtitle: Text(
+                                    "Vous avez $etatBesoinCount dossiers necessitent votre approbation",
+                                    style: bodyMedium.copyWith(
+                                        color: Colors.white)),
+                                initiallyExpanded: false,
+                                onExpansionChanged: (val) {
+                                  setState(() {
+                                    isOpenLog8 = !val;
+                                  });
+                                },
+                                trailing: const Icon(Icons.arrow_drop_down,
+                                    color: Colors.white),
+                                children: const [TableEtatBesoinDD()],
                               ),
                             ),
                           ],
