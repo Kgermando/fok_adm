@@ -22,8 +22,6 @@ class _TableProjeBudgetState extends State<TableProjeBudget> {
   PlutoGridStateManager? stateManager;
   PlutoGridSelectingMode gridSelectingMode = PlutoGridSelectingMode.row;
 
-  int? id;
-
   @override
   void initState() {
     agentsColumn();
@@ -183,19 +181,17 @@ class _TableProjeBudgetState extends State<TableProjeBudget> {
   }
 
   Future agentsRow() async {
-    List<ProjetModel?> dataList = await ProjetsApi().getAllData();
-    List<ProjetModel?> data = [];
-    data = dataList
+    List<ProjetModel> projets = await ProjetsApi().getAllData();
+    var data = projets
         .where((element) =>
-            element!.approbationDG == 'Approved' &&
+            element.approbationDG == 'Approved' &&
             element.approbationDD == 'Approved' &&
             element.approbationBudget == '-')
         .toList();
 
     if (mounted) {
       setState(() {
-        for (var item in data) {
-          id = item!.id;
+        for (var item in data) { 
           rows.add(PlutoRow(cells: {
             'id': PlutoCell(value: item.id),
             'nomProjet': PlutoCell(value: item.nomProjet),

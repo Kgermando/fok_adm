@@ -24,9 +24,6 @@ class _TableSalairesBudgetState extends State<TableSalairesBudget> {
   PlutoGridStateManager? stateManager;
   PlutoGridSelectingMode gridSelectingMode = PlutoGridSelectingMode.row;
 
-  int? id;
-
-
   @override
   initState() {
     agentsColumn();

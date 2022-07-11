@@ -20,8 +20,6 @@ class _TableSuccursaleDGState extends State<TableSuccursaleDG> {
   PlutoGridStateManager? stateManager;
   PlutoGridSelectingMode gridSelectingMode = PlutoGridSelectingMode.row;
 
-  int? id;
-
   @override
   void initState() {
     agentsColumn();
@@ -145,17 +143,16 @@ class _TableSuccursaleDGState extends State<TableSuccursaleDG> {
   }
 
   Future agentsRow() async {
-    List<SuccursaleModel?> dataList = await SuccursaleApi().getAllData();
-    var data = dataList
+    List<SuccursaleModel> succursales = await SuccursaleApi().getAllData();
+    var data = succursales
         .where((element) =>
-            element!.approbationDG == '-' &&
+            element.approbationDG == '-' &&
             element.approbationDD == 'Approved')
         .toList();
 
     if (mounted) {
       setState(() {
         for (var item in data) {
-          id = item!.id;
           rows.add(PlutoRow(cells: {
             'id': PlutoCell(value: item.id),
             'name': PlutoCell(value: item.name),

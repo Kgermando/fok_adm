@@ -3,9 +3,11 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:fokad_admin/src/api/devis/devis_api.dart';
 import 'package:fokad_admin/src/models/devis/devis_models.dart';
+import 'package:fokad_admin/src/pages/logistiques/etat_besoin/components/devis_xlxs.dart';
 import 'package:fokad_admin/src/routes/routes.dart';
 import 'package:fokad_admin/src/widgets/print_widget.dart';
 import 'package:fokad_admin/src/utils/class_implemented.dart';
+import 'package:fokad_admin/src/widgets/title_widget.dart';
 import 'package:intl/intl.dart';
 import 'package:pluto_grid/pluto_grid.dart';
 
@@ -22,13 +24,29 @@ class _TableDevisBudgetDDState extends State<TableDevisBudgetDD> {
   PlutoGridStateManager? stateManager;
   PlutoGridSelectingMode gridSelectingMode = PlutoGridSelectingMode.row;
 
-  int? id;
-
   @override
   initState() {
     agentsColumn();
     agentsRow();
+    getData();
     super.initState();
+  }
+
+  List<DevisModel> dataList = []; 
+
+  Future<void> getData() async {
+    List<DevisModel> devis = await DevisAPi().getAllData();
+
+    if (mounted) {
+      setState(() {
+        dataList = devis
+            .where((element) =>
+                element.approbationDG == "Approved" &&
+                element.approbationDD == "Approved" &&
+                element.approbationBudget == "-")
+            .toList();
+      });
+    }
   }
 
   @override
@@ -51,14 +69,27 @@ class _TableDevisBudgetDDState extends State<TableDevisBudgetDD> {
         },
         createHeader: (PlutoGridStateManager header) {
           return Row(
-            mainAxisAlignment: MainAxisAlignment.end,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              IconButton(
-                  onPressed: () {
-                    Navigator.pushNamed(context, BudgetRoutes.budgetDD);
-                  },
-                  icon: Icon(Icons.refresh, color: Colors.green.shade700)),
-              PrintWidget(onPressed: () {}),
+              const TitleWidget(title: "Etat de Besoin"),
+              Row(
+                children: [
+                  IconButton(
+                      onPressed: () {
+                        Navigator.pushNamed(
+                            context, BudgetRoutes.budgetDD);
+                      },
+                      icon: Icon(Icons.refresh, color: Colors.green.shade700)),
+                  PrintWidget(onPressed: () {
+                    DevisXlsx().exportToExcel(dataList);
+                    if (!mounted) return;
+                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                      content: const Text("Exportation effectué!"),
+                      backgroundColor: Colors.green[700],
+                    ));
+                  })
+                ],
+              ),
             ],
           );
         },

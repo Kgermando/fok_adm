@@ -26,8 +26,6 @@ class _TableEtatBesoinLogState extends State<TableEtatBesoinLog> {
   PlutoGridStateManager? stateManager;
   PlutoGridSelectingMode gridSelectingMode = PlutoGridSelectingMode.row;
 
-  int? id;
-
   @override
   initState() {
     agentsColumn();

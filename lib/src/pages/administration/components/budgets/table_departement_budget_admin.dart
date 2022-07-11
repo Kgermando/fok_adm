@@ -4,6 +4,7 @@ import 'package:fokad_admin/src/models/budgets/departement_budget_model.dart';
 import 'package:fokad_admin/src/routes/routes.dart';
 import 'package:fokad_admin/src/widgets/print_widget.dart';
 import 'package:fokad_admin/src/utils/class_implemented.dart';
+import 'package:fokad_admin/src/widgets/title_widget.dart';
 import 'package:intl/intl.dart';
 import 'package:pluto_grid/pluto_grid.dart';
 
@@ -53,10 +54,8 @@ class _TableDepartementBudgetDGState extends State<TableDepartementBudgetDG> {
         createHeader: (PlutoGridStateManager header) {
           return Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text("Liste des budgets",
-                  style: Theme.of(context).textTheme.headline6),
-              PrintWidget(onPressed: () {})
+            children: const [
+              TitleWidget(title: "Lignes Budgetaires"), 
             ],
           );
         },
