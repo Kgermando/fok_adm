@@ -186,6 +186,8 @@ class _DetailBalanceState extends State<DetailBalance> {
                         children: [
                           if(data.signature == user.matricule) // Uniqyement celui a remplit le document
                           sendButton(data),
+                          if (data.approbationDG == "Unapproved" ||
+                              data.approbationDD == "Unapproved")
                           deleteButton(data),
                           
                           PrintWidget(

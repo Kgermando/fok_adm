@@ -165,6 +165,9 @@ class _DetailJournalState extends State<DetailJournal> {
                     children: [
                       Row(
                         children: [
+                          if (data.approbationDG == "Unapproved" ||
+                              data.approbationDD == "Unapproved")
+                          
                           deleteButton(data),
                           PrintWidget(
                               tooltip: 'Imprimer le document',

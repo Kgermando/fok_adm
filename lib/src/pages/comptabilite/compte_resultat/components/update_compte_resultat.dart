@@ -240,7 +240,7 @@ class _UpdateCompteResultatState extends State<UpdateCompteResultat> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      const TitleWidget(title: "Ajout compte résultat"),
+                      const TitleWidget(title: "Modifier compte résultat"),
                       Row(
                         children: [PrintWidget(onPressed: () {})],
                       ),

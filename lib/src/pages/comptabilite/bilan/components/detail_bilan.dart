@@ -195,6 +195,8 @@ class _DetailBilanState extends State<DetailBilan> {
                           if (data.signature ==
                               user.matricule) // Uniqyement celui a remplit le document
                           sendButton(data),
+                          if (data.approbationDG == "Unapproved" ||
+                              data.approbationDD == "Unapproved")
                           deleteButton(data),
                           PrintWidget(
                               tooltip: 'Imprimer le document',

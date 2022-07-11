@@ -203,6 +203,8 @@ class _DetailCompteResultatState extends State<DetailCompteResultat> {
                     children: [
                       Row(
                         children: [
+                          if (data.approbationDG == "Unapproved" ||
+                              data.approbationDD == "Unapproved")
                           editButton(data),
                           deleteButton(data),
                           PrintWidget(

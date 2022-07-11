@@ -1,5 +1,5 @@
 class CourbeJournalModel {
-  final DateTime created;
+  final String created;
   final double sumDebit;
   final double sumCredit;
 
@@ -8,19 +8,20 @@ class CourbeJournalModel {
 
   factory CourbeJournalModel.fromSQL(List<dynamic> row) {
     return CourbeJournalModel(
-        created: row[0], sumDebit: row[1], sumCredit: row[3]);
+        created: row[0], sumDebit: row[1], sumCredit: row[2]);
   }
 
   factory CourbeJournalModel.fromJson(Map<String, dynamic> json) {
     return CourbeJournalModel(
-        created: DateTime.parse(json['created']),
-        sumDebit: json['sumDebit'],
-        sumCredit: json['sumCredit']);
+      created: json['created'],
+      sumDebit: json['sumDebit'],
+      sumCredit: json['sumCredit']
+    );
   }
 
   Map<String, dynamic> toJson() {
     return {
-      'created': created.toIso8601String(),
+      'created': created,
       'sumDebit': sumDebit,
       'sumCredit': sumCredit
     };
