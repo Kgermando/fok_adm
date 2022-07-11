@@ -113,7 +113,7 @@ class FinExterieurApi {
     }
   }
 
-  Future<FinanceExterieurModel> deleteData(int id) async {
+  Future<void> deleteData(int id) async {
     String? token = await UserSharedPref().getAccessToken();
 
     var deleteUrl = Uri.parse(
@@ -123,8 +123,7 @@ class FinExterieurApi {
       'Content-Type': 'application/json; charset=UTF-8',
       'Authorization': 'Bearer $token'
     });
-    if (res.statusCode == 200) {
-      return FinanceExterieurModel.fromJson(json.decode(res.body)['agents']);
+    if (res.statusCode == 200) { 
     } else {
       throw Exception(json.decode(res.body)['message']);
     }

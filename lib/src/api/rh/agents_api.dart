@@ -2,7 +2,7 @@
 
 import 'dart:convert';
 
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:fokad_admin/src/helpers/user_shared_pref.dart';
 import 'package:fokad_admin/src/api/auth/auth_api.dart';
 import 'package:fokad_admin/src/api/route_api.dart';
@@ -197,7 +197,7 @@ class AgentsApi extends ChangeNotifier {
     }
   }
 
-  Future<AgentModel> deleteData(int id) async {
+  Future<void> deleteData(int id) async {
     String? token = await UserSharedPref().getAccessToken();
 
     var deleteUrl = Uri.parse("$mainUrl/rh/agents/delete-agent/$id");
@@ -206,8 +206,7 @@ class AgentsApi extends ChangeNotifier {
       'Content-Type': 'application/json; charset=UTF-8',
       'Authorization': 'Bearer $token'
     });
-    if (res.statusCode == 200) {
-      return AgentModel.fromJson(json.decode(res.body)['agents']);
+    if (res.statusCode == 200) { 
     } else {
       throw Exception(res.statusCode);
     }

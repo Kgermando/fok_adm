@@ -111,7 +111,7 @@ class CreanceDetteApi {
     }
   }
 
-  Future<CreanceDetteModel> deleteData(int id) async {
+  Future<void> deleteData(int id) async {
     String? token = await UserSharedPref().getAccessToken();
 
     var deleteUrl = Uri.parse("$mainUrl/finances/delete-creance-dette/$id");
@@ -120,8 +120,7 @@ class CreanceDetteApi {
       'Content-Type': 'application/json; charset=UTF-8',
       'Authorization': 'Bearer $token'
     });
-    if (res.statusCode == 200) {
-      return CreanceDetteModel.fromJson(json.decode(res.body)['agents']);
+    if (res.statusCode == 200) { 
     } else {
       throw Exception(json.decode(res.body)['message']);
     }

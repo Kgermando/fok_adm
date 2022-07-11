@@ -107,7 +107,7 @@ class ArchiveApi {
     }
   }
 
-  Future<ArchiveModel> deleteData(int id) async {
+  Future<void> deleteData(int id) async {
     // String? token = await UserSharedPref().getAccessToken();
     String? token = await UserSharedPref().getAccessToken();
 
@@ -117,8 +117,7 @@ class ArchiveApi {
       'Content-Type': 'application/json; charset=UTF-8',
       'Authorization': 'Bearer $token'
     });
-    if (res.statusCode == 200) {
-      return ArchiveModel.fromJson(json.decode(res.body)['data']);
+    if (res.statusCode == 200) { 
     } else {
       throw Exception(res.statusCode);
     }

@@ -70,8 +70,8 @@ class _TableTansportRestaurantState extends State<TableTansportRestaurant> {
         columns: columns,
         rows: rows,
         onRowDoubleTap: (PlutoGridOnRowDoubleTapEvent tapEvent) {
-          final dataList = tapEvent.row!.cells.values;
-          final idPlutoRow = dataList.elementAt(0);
+          final dataId = tapEvent.row!.cells.values;
+          final idPlutoRow = dataId.elementAt(0);
           Navigator.pushNamed(context, RhRoutes.rhTransportRestDetail,
               arguments: idPlutoRow.value);
         },
@@ -196,10 +196,10 @@ class _TableTansportRestaurantState extends State<TableTansportRestaurant> {
   }
 
   Future agentsRow() async { 
-    var dataList = await TransportRestaurationApi().getAllData();
+    var transRests = await TransportRestaurationApi().getAllData();
 
     // Uniquement ceux qui ont déjà été approuvé
-    var data = dataList
+    var data = transRests
         .where((element) =>
             element.approbationDG == 'Approved' &&
             element.approbationDD == 'Approved' &&

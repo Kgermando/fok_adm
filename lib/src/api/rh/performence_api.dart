@@ -106,7 +106,7 @@ class PerformenceApi {
     }
   }
 
-  Future<PerformenceModel> deleteData(int id) async {
+  Future<void> deleteData(int id) async {
     String? token = await UserSharedPref().getAccessToken();
 
     var deleteUrl =
@@ -116,8 +116,7 @@ class PerformenceApi {
       'Content-Type': 'application/json; charset=UTF-8',
       'Authorization': 'Bearer $token'
     });
-    if (res.statusCode == 200) {
-      return PerformenceModel.fromJson(json.decode(res.body)['agents']);
+    if (res.statusCode == 200) { 
     } else {
       throw Exception(res.statusCode);
     }

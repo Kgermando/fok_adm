@@ -112,7 +112,7 @@ class NumberFactureApi {
     }
   }
 
-  Future<NumberFactureModel> deleteData(int id) async {
+  Future<void> deleteData(int id) async {
     String? token = await UserSharedPref().getAccessToken();
 
     var deleteUrl = Uri.parse("$mainUrl/number-facts/delete-number-fact/$id");
@@ -121,8 +121,7 @@ class NumberFactureApi {
       'Content-Type': 'application/json; charset=UTF-8',
       'Authorization': 'Bearer $token'
     });
-    if (res.statusCode == 200) {
-      return NumberFactureModel.fromJson(json.decode(res.body)['data']);
+    if (res.statusCode == 200) { 
     } else {
       throw Exception(json.decode(res.body)['message']);
     }

@@ -108,7 +108,7 @@ class TransRestAgentsApi {
     }
   }
 
-  Future<TransRestAgentsModel> deleteData(int id) async {
+  Future<void> deleteData(int id) async {
     // String? token = await UserSharedPref().getAccessToken();
     String? token = await UserSharedPref().getAccessToken();
 
@@ -119,8 +119,7 @@ class TransRestAgentsApi {
       'Content-Type': 'application/json; charset=UTF-8',
       'Authorization': 'Bearer $token'
     });
-    if (res.statusCode == 200) {
-      return TransRestAgentsModel.fromJson(json.decode(res.body)['agents']);
+    if (res.statusCode == 200) { 
     } else {
       throw Exception(res.statusCode);
     }

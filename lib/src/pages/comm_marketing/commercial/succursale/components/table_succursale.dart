@@ -144,17 +144,16 @@ class _TableSuccursaleState extends State<TableSuccursale> {
 
   Future agentsRow() async {
 
-    List<SuccursaleModel?> dataList = await SuccursaleApi().getAllData();
+    List<SuccursaleModel> dataList = await SuccursaleApi().getAllData();
     var data = dataList
         .where((element) =>
-            element!.approbationDG == "Approved" &&
+            element.approbationDG == "Approved" &&
             element.approbationDD == "Approved")
         .toList();
 
     if (mounted) {
       setState(() {
-        for (var item in data) {
-          id = item!.id;
+        for (var item in data) { 
           rows.add(PlutoRow(cells: {
             'id': PlutoCell(value: item.id),
             'name': PlutoCell(value: item.name),

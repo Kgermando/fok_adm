@@ -117,8 +117,7 @@ class CoupureBilletApi {
       'Content-Type': 'application/json; charset=UTF-8',
       'Authorization': 'Bearer $token'
     });
-    if (res.statusCode == 200) {
-      // return CoupureBilletModel.fromJson(json.decode(res.body));
+    if (res.statusCode == 200) { 
     } else {
       throw Exception(res.statusCode);
     }

@@ -117,7 +117,7 @@ class PresenceApi {
     }
   }
 
-  Future<PresenceModel> deleteData(int id) async {
+  Future<void> deleteData(int id) async {
     // String? token = await UserSharedPref().getAccessToken();
     String? token = await UserSharedPref().getAccessToken();
 
@@ -127,8 +127,7 @@ class PresenceApi {
       'Content-Type': 'application/json; charset=UTF-8',
       'Authorization': 'Bearer $token'
     });
-    if (res.statusCode == 200) {
-      return PresenceModel.fromJson(json.decode(res.body)['agents']);
+    if (res.statusCode == 200) { 
     } else {
       throw Exception(res.statusCode);
     }

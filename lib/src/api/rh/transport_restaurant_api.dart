@@ -108,7 +108,7 @@ class TransportRestaurationApi {
     }
   }
 
-  Future<TransportRestaurationModel> deleteData(int id) async {
+  Future<void> deleteData(int id) async {
     // String? token = await UserSharedPref().getAccessToken();
     String? token = await UserSharedPref().getAccessToken();
 
@@ -120,8 +120,7 @@ class TransportRestaurationApi {
       'Authorization': 'Bearer $token'
     });
     if (res.statusCode == 200) {
-      return TransportRestaurationModel.fromJson(
-          json.decode(res.body)['agents']);
+      
     } else {
       throw Exception(res.statusCode);
     }

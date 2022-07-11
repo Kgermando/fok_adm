@@ -113,7 +113,7 @@ class PerformenceNoteApi {
     }
   }
 
-  Future<PerformenceNoteModel> deleteData(int id) async {
+  Future<void> deleteData(int id) async {
     String? token = await UserSharedPref().getAccessToken();
 
     var deleteUrl =
@@ -124,7 +124,7 @@ class PerformenceNoteApi {
       'Authorization': 'Bearer $token'
     });
     if (res.statusCode == 200) {
-      return PerformenceNoteModel.fromJson(json.decode(res.body)['agents']);
+       
     } else {
       throw Exception(res.statusCode);
     }
