@@ -180,7 +180,6 @@ class _DashboardAdministrationState extends State<DashboardAdministration> {
               .toList();
           dataSalaireList = salaires
               .where((element) =>
-                  element.approbationDG == 'Approved' &&
                   element.approbationDD == 'Approved' &&
                   element.createdAt
                       .isBefore(DateTime.parse(item.periodeBudget)))

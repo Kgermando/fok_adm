@@ -1266,9 +1266,6 @@ class _PaiementBulletinState extends State<PaiementBulletin> {
             data.montantPrisConsiderationCalculCotisationsINSS,
         totalDuBrut: data.totalDuBrut,
         signature: data.signature,
-        approbationDG: data.approbationDG,
-        motifDG: data.motifDG,
-        signatureDG: data.signatureDG,
         approbationBudget: data.approbationBudget,
         motifBudget: data.motifBudget,
         signatureBudget: data.signatureBudget,
@@ -1317,67 +1314,6 @@ class _PaiementBulletinState extends State<PaiementBulletin> {
                 ],
               ),
               const SizedBox(height: p20),
-              Padding(
-                padding: const EdgeInsets.all(p10),
-                child: Row(
-                  children: [
-                    Expanded(
-                        flex: 1,
-                        child: Text("Directeur générale", style: bodyLarge)),
-                    const SizedBox(width: p20),
-                    Expanded(
-                        flex: 4,
-                        child: Column(
-                          children: [
-                            Row(children: [
-                              Expanded(
-                                  flex: 2,
-                                  child: Column(
-                                    children: [
-                                      const Text("Approbation"),
-                                      const SizedBox(height: p20),
-                                      Text(data.approbationDG,
-                                          style: bodyLarge!.copyWith(
-                                              color: Colors.red.shade700)),
-                                    ],
-                                  )),
-                              if (data.approbationDG == "Unapproved")
-                                Expanded(
-                                    flex: 3,
-                                    child: Column(
-                                      children: [
-                                        const Text("Motif"),
-                                        const SizedBox(height: p20),
-                                        Text(data.motifDG),
-                                      ],
-                                    )),
-                              Expanded(
-                                  flex: 2,
-                                  child: Column(
-                                    children: [
-                                      const Text("Signature"),
-                                      const SizedBox(height: p20),
-                                      Text(data.signatureDG),
-                                    ],
-                                  )),
-                            ]),
-                            if (data.approbationDG == '-' &&
-                                user.fonctionOccupe == "Directeur générale")
-                              Padding(
-                                padding: const EdgeInsets.all(p10),
-                                child: Row(children: [
-                                  Expanded(child: approbationDGWidget(data)),
-                                  const SizedBox(width: p20),
-                                  if (approbationDG == "Unapproved")
-                                    Expanded(child: motifDGWidget(data))
-                                ]),
-                              ),
-                          ],
-                        )),
-                  ],
-                ),
-              ),
-              const SizedBox(height: p20),
               Divider(color: Colors.red[10]),
               Padding(
                 padding: const EdgeInsets.all(p10),
@@ -1400,7 +1336,7 @@ class _PaiementBulletinState extends State<PaiementBulletin> {
                                       const Text("Approbation"),
                                       const SizedBox(height: p20),
                                       Text(data.approbationDD,
-                                          style: bodyLarge.copyWith(
+                                          style: bodyLarge!.copyWith(
                                               color: Colors.green.shade700)),
                                     ],
                                   )),
@@ -1599,73 +1535,6 @@ class _PaiementBulletinState extends State<PaiementBulletin> {
     ]);
   }
 
-  Widget approbationDGWidget(PaiementSalaireModel data) {
-    List<String> approbationList = ['Approved', 'Unapproved', '-'];
-    return Container(
-      margin: const EdgeInsets.only(bottom: p10),
-      child: DropdownButtonFormField<String>(
-        decoration: InputDecoration(
-          labelText: 'Approbation',
-          labelStyle: const TextStyle(),
-          border: OutlineInputBorder(borderRadius: BorderRadius.circular(5.0)),
-          contentPadding: const EdgeInsets.only(left: 5.0),
-        ),
-        value: approbationDG,
-        isExpanded: true,
-        items: approbationList.map((String value) {
-          return DropdownMenuItem<String>(
-            value: value,
-            child: Text(value),
-          );
-        }).toList(),
-        onChanged: (value) {
-          setState(() {
-            approbationDG = value!;
-            if (approbationDG == "Approved") {
-              submitDG(data);
-            }
-          });
-        },
-      ),
-    );
-  }
-
-  Widget motifDGWidget(PaiementSalaireModel data) {
-    return Container(
-        margin: const EdgeInsets.only(bottom: p10),
-        child: Row(
-          children: [
-            Expanded(
-              flex: 3,
-              child: TextFormField(
-                controller: motifDGController,
-                decoration: InputDecoration(
-                  border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10.0)),
-                  labelText: 'Ecrivez le motif...',
-                ),
-                keyboardType: TextInputType.text,
-                validator: (value) {
-                  if (value != null && value.isEmpty) {
-                    return 'Ce champs est obligatoire';
-                  } else {
-                    return null;
-                  }
-                },
-              ),
-            ),
-            Expanded(
-              flex: 1,
-              child: IconButton(
-                  tooltip: 'Soumettre le Motif',
-                  onPressed: () {
-                    submitDG(data);
-                  },
-                  icon: Icon(Icons.send, color: Colors.red.shade700)),
-            )
-          ],
-        ));
-  }
 
   Widget approbationDDWidget(PaiementSalaireModel data) {
     List<String> approbationList = ['Approved', 'Unapproved', '-'];
@@ -1929,77 +1798,7 @@ class _PaiementBulletinState extends State<PaiementBulletin> {
     );
   }
 
-  Future<void> submitDG(PaiementSalaireModel data) async {
-    final paiementSalaireModel = PaiementSalaireModel(
-        id: data.id,
-        nom: data.nom,
-        postNom: data.postNom,
-        prenom: data.prenom,
-        email: data.email,
-        telephone: data.telephone,
-        adresse: data.adresse,
-        departement: data.departement,
-        numeroSecuriteSociale: data.numeroSecuriteSociale,
-        matricule: data.matricule,
-        servicesAffectation: data.servicesAffectation,
-        salaire: data.salaire,
-        observation: data.observation,
-        modePaiement: data.modePaiement,
-        createdAt: data.createdAt,
-        tauxJourHeureMoisSalaire: data.tauxJourHeureMoisSalaire,
-        joursHeuresPayeA100PourecentSalaire:
-            data.joursHeuresPayeA100PourecentSalaire,
-        totalDuSalaire: data.totalDuSalaire,
-        nombreHeureSupplementaires: data.nombreHeureSupplementaires,
-        tauxHeureSupplementaires: data.tauxHeureSupplementaires,
-        totalDuHeureSupplementaires: data.totalDuHeureSupplementaires,
-        supplementTravailSamediDimancheJoursFerie:
-            data.supplementTravailSamediDimancheJoursFerie,
-        prime: data.prime,
-        divers: data.divers,
-        joursCongesPaye: data.joursCongesPaye,
-        tauxCongesPaye: data.tauxCongesPaye,
-        totalDuCongePaye: data.totalDuCongePaye,
-        jourPayeMaladieAccident: data.jourPayeMaladieAccident,
-        tauxJournalierMaladieAccident: data.tauxJournalierMaladieAccident,
-        totalDuMaladieAccident: data.totalDuMaladieAccident,
-        pensionDeduction: data.pensionDeduction,
-        indemniteCompensatricesDeduction: data.indemniteCompensatricesDeduction,
-        avancesDeduction: data.avancesDeduction,
-        diversDeduction: data.diversDeduction,
-        retenuesFiscalesDeduction: data.retenuesFiscalesDeduction,
-        nombreEnfantBeneficaireAllocationsFamiliales:
-            data.nombreEnfantBeneficaireAllocationsFamiliales,
-        nombreDeJoursAllocationsFamiliales:
-            data.nombreDeJoursAllocationsFamiliales,
-        tauxJoursAllocationsFamiliales: data.tauxJoursAllocationsFamiliales,
-        totalAPayerAllocationsFamiliales: data.totalAPayerAllocationsFamiliales,
-        netAPayer: data.netAPayer,
-        montantPrisConsiderationCalculCotisationsINSS:
-            data.montantPrisConsiderationCalculCotisationsINSS,
-        totalDuBrut: data.totalDuBrut,
-        signature: data.signature,
-        approbationDG: approbationDG,
-        motifDG: (motifDGController.text == '') ? '-' : motifDGController.text,
-        signatureDG: user.matricule,
-        approbationBudget: '-',
-        motifBudget: '-',
-        signatureBudget: '-',
-        approbationFin: '-',
-        motifFin: '-',
-        signatureFin: '-',
-        approbationDD: data.approbationDD,
-        motifDD: data.motifDD,
-        signatureDD: data.signatureDD,
-        ligneBudgetaire: '-',
-        ressource: '-');
-    await PaiementSalaireApi().updateData(paiementSalaireModel);
-    Navigator.pop(context);
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-      content: const Text("Soumis avec succès!"),
-      backgroundColor: Colors.green[700],
-    ));
-  }
+  
 
   Future<void> submitDD(PaiementSalaireModel data) async {
     final paiementSalaireModel = PaiementSalaireModel(
@@ -2051,9 +1850,6 @@ class _PaiementBulletinState extends State<PaiementBulletin> {
             data.montantPrisConsiderationCalculCotisationsINSS,
         totalDuBrut: data.totalDuBrut,
         signature: data.signature,
-        approbationDG: '-',
-        motifDG: '-',
-        signatureDG: '-',
         approbationBudget: '-',
         motifBudget: '-',
         signatureBudget: '-',
@@ -2123,9 +1919,6 @@ class _PaiementBulletinState extends State<PaiementBulletin> {
             data.montantPrisConsiderationCalculCotisationsINSS,
         totalDuBrut: data.totalDuBrut,
         signature: data.signature,
-        approbationDG: data.approbationDG,
-        motifDG: data.motifDG,
-        signatureDG: data.signatureDG,
         approbationBudget: approbationBudget,
         motifBudget: (motifBudgetController.text == '')
             ? '-'
@@ -2198,9 +1991,6 @@ class _PaiementBulletinState extends State<PaiementBulletin> {
             data.montantPrisConsiderationCalculCotisationsINSS,
         totalDuBrut: data.totalDuBrut,
         signature: data.signature,
-        approbationDG: data.approbationDG,
-        motifDG: data.motifDG,
-        signatureDG: data.signatureDG,
         approbationBudget: data.approbationBudget,
         motifBudget: data.motifBudget,
         signatureBudget: data.signatureBudget,
@@ -2255,7 +2045,7 @@ class _PaiementBulletinState extends State<PaiementBulletin> {
         cc: '-',
         objet: "SALAIRE",
         message:
-            "Bonjour ${data.prenom}, votre salaire de $mois est maintenant disponible",
+            "Bonjour ${data.prenom}, votre salaire de $mois est maintenant disponible.",
         pieceJointe: "-",
         read: 'false',
         fullNameDest: "${user.prenom} ${user.nom}",

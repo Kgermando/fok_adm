@@ -122,7 +122,6 @@ class _DashboardBudgetState extends State<DashboardBudget> {
               .toList();
           dataSalaireList = salaires
               .where((element) =>
-                  element.approbationDG == 'Approved' &&
                   element.approbationDD == 'Approved' &&
                   element.approbationBudget == 'Approved' &&
                   element.createdAt
@@ -177,7 +176,6 @@ class _DashboardBudgetState extends State<DashboardBudget> {
     }
     for (var item in dataSalaireList
         .where((element) =>
-            element.approbationDG == 'Approved' &&
             element.approbationDD == 'Approved' &&
             element.approbationBudget == 'Approved' &&
             element.ressource == "caisse")
@@ -210,7 +208,6 @@ class _DashboardBudgetState extends State<DashboardBudget> {
         .where((element) =>
             element.createdAt.month == DateTime.now().month &&
             element.createdAt.year == DateTime.now().year &&
-            element.approbationDG == 'Approved' &&
             element.approbationDD == 'Approved' &&
             element.approbationBudget == 'Approved' &&
             element.ressource == "banque")
@@ -241,7 +238,6 @@ class _DashboardBudgetState extends State<DashboardBudget> {
     }
     for (var item in dataSalaireList
         .where((element) =>
-            element.approbationDG == 'Approved' &&
             element.approbationDD == 'Approved' &&
             element.approbationBudget == 'Approved' &&
             element.ressource == "finPropre")
@@ -273,7 +269,6 @@ class _DashboardBudgetState extends State<DashboardBudget> {
     }
     for (var item in dataSalaireList
         .where((element) =>
-            element.approbationDG == 'Approved' &&
             element.approbationDD == 'Approved' &&
             element.approbationBudget == 'Approved' &&
             element.ressource == "finExterieur")

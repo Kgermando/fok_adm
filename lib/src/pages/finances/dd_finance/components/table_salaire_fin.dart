@@ -43,7 +43,6 @@ class _TableSalairesFINState extends State<TableSalairesFIN> {
           .where((element) =>
               element.createdAt.month == DateTime.now().month &&
               element.createdAt.year == DateTime.now().year &&
-              element.approbationDG == 'Approved' &&
               element.approbationDD == 'Approved' &&
               element.approbationBudget == 'Approved' &&
               element.approbationFin == "-")
@@ -236,7 +235,6 @@ class _TableSalairesFINState extends State<TableSalairesFIN> {
         .where((element) =>
             element!.createdAt.month == DateTime.now().month &&
             element.createdAt.year == DateTime.now().year &&
-            element.approbationDG == 'Approved' &&
             element.approbationDD == 'Approved' &&
             element.approbationBudget == 'Approved' &&
             element.approbationFin == "-")

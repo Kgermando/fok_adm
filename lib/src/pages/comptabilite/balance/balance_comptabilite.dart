@@ -133,7 +133,7 @@ class _BalanceComptabiliteState extends State<BalanceComptabilite> {
           decoration: InputDecoration(
             border:
                 OutlineInputBorder(borderRadius: BorderRadius.circular(10.0)),
-            labelText: 'Titre du Bilan',
+            labelText: 'Titre du Balance',
           ),
           keyboardType: TextInputType.text,
           style: const TextStyle(),

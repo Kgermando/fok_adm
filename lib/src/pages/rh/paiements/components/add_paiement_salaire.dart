@@ -1429,10 +1429,6 @@ class _AddPaiementSalaireState extends State<AddPaiementSalaire> {
           (totalDuBrutController.text == '') ? '-' : totalDuBrutController.text,
 
       signature: signature.toString(),
-      
-      approbationDG: '-',
-      motifDG: '-',
-      signatureDG: '-',
       approbationBudget: '-',
       motifBudget: '-',
       signatureBudget: '-',

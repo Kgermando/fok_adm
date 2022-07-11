@@ -37,10 +37,7 @@ class _CompteAdminState extends State<CompteAdmin> {
 
   @override
   void initState() {
-    Timer.periodic(const Duration(milliseconds: 500), ((timer) {
-      getData();
-      timer.cancel();
-    }));
+    getData();
 
     super.initState();
   }
@@ -55,7 +52,8 @@ class _CompteAdminState extends State<CompteAdmin> {
       bilanCount = bilans
           .where((element) =>
               element.approbationDG == '-' &&
-              element.approbationDD == 'Approved')
+              element.approbationDD == 'Approved' &&
+              element.isSubmit == "true")
           .length;
       journalCount = journal
           .where((element) =>
@@ -70,7 +68,8 @@ class _CompteAdminState extends State<CompteAdmin> {
       balanceCount = balances
           .where((element) =>
               element.approbationDG == '-' &&
-              element.approbationDD == 'Approved')
+              element.approbationDD == 'Approved' &&
+              element.isSubmit == "true")
           .length;
     });
   }

@@ -16,8 +16,7 @@ import 'package:fokad_admin/src/api/exploitations/projets_api.dart';
 import 'package:fokad_admin/src/api/finances/creance_api.dart';
 import 'package:fokad_admin/src/api/finances/dette_api.dart';
 import 'package:fokad_admin/src/api/logistiques/anguin_api.dart';
-import 'package:fokad_admin/src/api/logistiques/immobiler_api.dart'; 
-import 'package:fokad_admin/src/api/rh/paiement_salaire_api.dart';
+import 'package:fokad_admin/src/api/logistiques/immobiler_api.dart';  
 import 'package:fokad_admin/src/api/rh/transport_restaurant_api.dart';
 import 'package:fokad_admin/src/constants/app_theme.dart';
 import 'package:fokad_admin/src/models/users/user_model.dart';
@@ -48,7 +47,6 @@ class _AdministrationNavState extends State<AdministrationNav> {
 
   // RH
   int transRestCount = 0;
-  int salaireCount = 0;
 
   // Finances
   int creanceCount = 0;
@@ -83,8 +81,7 @@ class _AdministrationNavState extends State<AdministrationNav> {
     var departementBudget = await DepeartementBudgetApi().getAllData();
 
     // RH
-    var transRests = await TransportRestaurationApi().getAllData();
-    var salaires = await PaiementSalaireApi().getAllData();
+    var transRests = await TransportRestaurationApi().getAllData(); 
 
     // Finances
     var creances = await CreanceApi().getAllData();
@@ -124,12 +121,6 @@ class _AdministrationNavState extends State<AdministrationNav> {
        transRestCount = transRests
             .where((element) =>
                 element.approbationDD == 'Approved' &&
-                element.approbationDG == '-')
-            .length;
-        salaireCount =
-            salaires.where((element) =>  element.observation == 'false' &&
-                element.createdAt.month == DateTime.now().month &&
-                element.createdAt.year == DateTime.now().year &&
                 element.approbationDG == '-')
             .length;
 
@@ -195,7 +186,7 @@ class _AdministrationNavState extends State<AdministrationNav> {
     final bodyLarge = Theme.of(context).textTheme.bodyLarge;
     final bodyText1 = Theme.of(context).textTheme.bodyText1;
 
-    rhCount = transRestCount + salaireCount;
+    rhCount = transRestCount;
 
     financeCount = creanceCount + detteCount;
 

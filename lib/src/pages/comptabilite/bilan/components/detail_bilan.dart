@@ -192,6 +192,8 @@ class _DetailBilanState extends State<DetailBilan> {
                     children: [
                       Row(
                         children: [
+                          if (data.signature ==
+                              user.matricule) // Uniqyement celui a remplit le document
                           sendButton(data),
                           deleteButton(data),
                           PrintWidget(
@@ -739,7 +741,6 @@ class _DetailBilanState extends State<DetailBilan> {
       ),
     ]);
   }
-
 
   Widget approbationDGWidget(BilanModel data) {
     List<String> approbationList = ['Approved', 'Unapproved', '-'];

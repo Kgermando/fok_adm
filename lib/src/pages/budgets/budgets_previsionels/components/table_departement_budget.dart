@@ -48,7 +48,7 @@ class _TableDepartementBudgetState extends State<TableDepartementBudget> {
       },
       createHeader: (PlutoGridStateManager header) {
         return Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             const TitleWidget(title: "Lignes Budgetaires"),
             IconButton(

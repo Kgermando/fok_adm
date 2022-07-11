@@ -1205,7 +1205,7 @@ class _DetailCompteResultatState extends State<DetailCompteResultat> {
     );
   }
 
-  Widget approbationWidget(CompteResulatsModel data) {
+ Widget approbationWidget(CompteResulatsModel data) {
     final bodyLarge = Theme.of(context).textTheme.bodyLarge;
     return Row(mainAxisAlignment: MainAxisAlignment.center, children: [
       Card(

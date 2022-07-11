@@ -7,7 +7,7 @@ class ListMails extends StatefulWidget {
       {Key? key,
       required this.fullName,
       required this.email,
-      required this.cc,
+      // required this.cc,
       required this.objet,
       required this.read,
       required this.dateSend, required this.color})
@@ -15,7 +15,7 @@ class ListMails extends StatefulWidget {
 
   final String fullName;
   final String email;
-  final List cc;
+  // final List cc;
   final String objet;
   final String read;
   final DateTime dateSend;

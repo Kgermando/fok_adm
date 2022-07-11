@@ -1,5 +1,4 @@
-import 'dart:async';
-import 'dart:convert';
+import 'dart:async'; 
 
 import 'package:flutter/material.dart';
 import 'package:fokad_admin/src/api/auth/auth_api.dart';
@@ -137,7 +136,7 @@ class _MailPagesState extends State<MailPages> {
   }
 
   Widget pageWidget(MailModel mail, Color color) {
-    var ccList = jsonDecode(mail.cc);
+    // var ccList = jsonDecode(mail.cc);
 
     return InkWell(
       onTap: () async {
@@ -151,7 +150,7 @@ class _MailPagesState extends State<MailPages> {
         child: ListMails(
             fullName: mail.fullName,
             email: mail.email,
-            cc: ccList,
+            // cc: ccList,
             objet: mail.objet,
             read: mail.read,
             dateSend: mail.dateSend,

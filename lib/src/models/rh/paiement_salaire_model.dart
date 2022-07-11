@@ -43,10 +43,6 @@ class PaiementSalaireModel {
   late String totalDuBrut;
   late String signature; // celui qui fait ce document
   
-  // Approbations DG
-  late String approbationDG;
-  late String motifDG;
-  late String signatureDG;
   // Approbations Budget
   late String approbationBudget;
   late String motifBudget;
@@ -109,10 +105,6 @@ class PaiementSalaireModel {
     required this.montantPrisConsiderationCalculCotisationsINSS,
     required this.totalDuBrut,
     required this.signature,
-
-    required this.approbationDG,
-    required this.motifDG,
-    required this.signatureDG,
     required this.approbationBudget,
     required this.motifBudget,
     required this.signatureBudget,
@@ -172,24 +164,20 @@ class PaiementSalaireModel {
         montantPrisConsiderationCalculCotisationsINSS: row[40],
         totalDuBrut: row[41],
         signature: row[42],
-        
-        approbationDG: row[43],
-        motifDG: row[44],
-        signatureDG: row[45],
 
-        approbationBudget: row[46],
-        motifBudget: row[47],
-        signatureBudget: row[48],
+        approbationBudget: row[43],
+        motifBudget: row[44],
+        signatureBudget: row[45],
 
-        approbationFin: row[49],
-        motifFin: row[50],
-        signatureFin: row[51],
+        approbationFin: row[46],
+        motifFin: row[47],
+        signatureFin: row[48],
 
-        approbationDD: row[52],
-        motifDD: row[53],
-        signatureDD: row[54],
-        ligneBudgetaire: row[55],
-        ressource: row[56]
+        approbationDD: row[49],
+        motifDD: row[50],
+        signatureDD: row[51],
+        ligneBudgetaire: row[52],
+        ressource: row[53]
     );
   }
 
@@ -244,10 +232,6 @@ class PaiementSalaireModel {
             json['montantPrisConsiderationCalculCotisationsINSS'],
         totalDuBrut: json['totalDuBrut'],
         signature: json['signature'],
-
-        approbationDG: json['approbationDG'],
-        motifDG: json['motifDG'],
-        signatureDG: json['signatureDG'],
         approbationBudget: json['approbationBudget'],
         motifBudget: json['motifBudget'],
         signatureBudget: json['signatureBudget'],
@@ -311,9 +295,6 @@ class PaiementSalaireModel {
           montantPrisConsiderationCalculCotisationsINSS,
       'totalDuBrut': totalDuBrut,
       'signature': signature,
-      'approbationDG': approbationDG,
-      'motifDG': motifDG,
-      'signatureDG': signatureDG,
       'approbationBudget': approbationBudget,
       'motifBudget': motifBudget,
       'signatureBudget': signatureBudget,

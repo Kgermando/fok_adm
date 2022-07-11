@@ -36,12 +36,14 @@ class _TableCompteDDState extends State<TableCompteBilanDD> {
   List<BilanModel> dataList = [];
   Future<void> getData() async {
     List<BilanModel> bilans = await BilanApi().getAllData();
-    setState(() {
+    if(mounted) {
+      setState(() {
       dataList = bilans
           .where((element) =>
-            element.approbationDD == "-")
+            element.approbationDD == "-" && element.isSubmit == "true")
           .toList();
     });
+    }
   }
 
   @override
@@ -169,7 +171,7 @@ class _TableCompteDDState extends State<TableCompteBilanDD> {
 
   Future agentsRow() async {
     List<BilanModel> bilans = await BilanApi().getAllData();
-    var data = bilans.where((element) => element.approbationDD == "-").toList();
+    var data = bilans.where((element) => element.approbationDD == "-" && element.isSubmit == "true").toList();
 
     if (mounted) {
       setState(() {

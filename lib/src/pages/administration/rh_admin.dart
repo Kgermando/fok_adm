@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart'; 
-import 'package:fokad_admin/src/api/rh/paiement_salaire_api.dart';
 import 'package:fokad_admin/src/api/rh/transport_restaurant_api.dart';
 import 'package:fokad_admin/src/constants/app_theme.dart';
 import 'package:fokad_admin/src/constants/responsive.dart';
 import 'package:fokad_admin/src/navigation/drawer/drawer_menu.dart';
 import 'package:fokad_admin/src/navigation/header/custom_appbar.dart';
-import 'package:fokad_admin/src/pages/administration/components/rh/table_salaire_admin.dart';
 import 'package:fokad_admin/src/pages/administration/components/rh/table_transport_restaurant_admin.dart';
 
 class RhAdmin extends StatefulWidget {
@@ -22,7 +20,6 @@ class _RhAdminState extends State<RhAdmin> {
   bool isOpenRh1 = false;
   bool isOpenRh2 = false;
 
-  int salaireCount = 0;
   int transRestCount = 0;
 
   @override
@@ -33,20 +30,10 @@ class _RhAdminState extends State<RhAdmin> {
 
   Future<void> getData() async {
     // RH
-    var salaires = await PaiementSalaireApi().getAllData(); 
     var transRests = await TransportRestaurationApi().getAllData();
 
 
     setState(() {
-
-      salaireCount = salaires
-          .where((element) =>
-              element.observation == 'false' &&
-              element.createdAt.month == DateTime.now().month &&
-              element.createdAt.year == DateTime.now().year &&
-              element.approbationDD == 'Approved' &&
-              element.approbationDG == '-')
-          .length;
 
         transRestCount =
           transRests.where((element) =>  element.approbationDD == 'Approved' &&
@@ -87,40 +74,17 @@ class _RhAdminState extends State<RhAdmin> {
                           controller: _controllerScroll,
                           children: [
                             Card(
-                              color: Colors.orange.shade700,
-                              child: ExpansionTile(
-                                leading: const Icon(Icons.folder,
-                                    color: Colors.white),
-                                title: Text('Dossier Salaires',
-                                    style: headline6!.copyWith(
-                                        color: Colors.white)),
-                                subtitle: Text(
-                                    "Vous avez $salaireCount dossiers necessitent votre approbation",
-                                    style: bodyMedium!.copyWith(
-                                        color: Colors.white)),
-                                initiallyExpanded: false,
-                                onExpansionChanged: (val) {
-                                  setState(() {
-                                    isOpenRh1 = !val;
-                                  });
-                                },
-                                trailing: const Icon(Icons.arrow_drop_down,
-                                    color: Colors.white),
-                                children: const [TableSalaireAdmin()],
-                              ),
-                            ),
-                            Card(
                               color: Colors.blue.shade700,
                               child: ExpansionTile(
                                 leading: const Icon(Icons.folder,
                                     color: Colors.white),
                                 title: Text(
                                     'Dossier Transports & Restaurations',
-                                    style: headline6.copyWith(
+                                    style: headline6!.copyWith(
                                         color: Colors.white)),
                                 subtitle: Text(
                                     "Vous $transRestCount dossiers necessitent votre approbation",
-                                    style: bodyMedium.copyWith(
+                                    style: bodyMedium!.copyWith(
                                         color: Colors.white)),
                                 initiallyExpanded: false,
                                 onExpansionChanged: (val) {

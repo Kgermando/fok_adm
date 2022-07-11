@@ -77,7 +77,6 @@ class _DepartementFinState extends State<DepartementFin> {
           .where((element) =>
               element.createdAt.month == DateTime.now().month &&
               element.createdAt.year == DateTime.now().year &&
-              element.approbationDG == 'Approved' &&
               element.approbationDD == 'Approved' &&
               element.approbationBudget == 'Approved' &&
               element.approbationFin == "-")

@@ -184,8 +184,10 @@ class _DetailBalanceState extends State<DetailBalance> {
                     children: [
                       Row(
                         children: [
+                          if(data.signature == user.matricule) // Uniqyement celui a remplit le document
                           sendButton(data),
                           deleteButton(data),
+                          
                           PrintWidget(
                               tooltip: 'Imprimer le document',
                               onPressed: () async {

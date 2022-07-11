@@ -32,9 +32,6 @@ class _CourbeJournalMounthState extends State<CourbeJournalMounth> {
     if (mounted) {
       setState(() {
         journalsList = journals
-            .where((element) =>
-                element.approbationDG == "Approved" &&
-                element.approbationDD == "Approved")
             .toList();
       });
     }
@@ -67,7 +64,7 @@ class _CourbeJournalMounthState extends State<CourbeJournalMounth> {
               sortingOrder: SortingOrder.ascending,
               markerSettings: const MarkerSettings(isVisible: true),
               xValueMapper: (CourbeJournalModel data, _) =>
-                  '${data.created.toInt()} Mois',
+                  '${data.created} Mois',
               yValueMapper: (CourbeJournalModel data, _) =>
                   double.parse(data.sumDebit.toStringAsFixed(2)),
               // Enable data label
@@ -79,7 +76,7 @@ class _CourbeJournalMounthState extends State<CourbeJournalMounth> {
               sortingOrder: SortingOrder.ascending,
               markerSettings: const MarkerSettings(isVisible: true),
               xValueMapper: (CourbeJournalModel data, _) =>
-                  '${data.created.toInt()} Mois',
+                  '${data.created} Mois',
               yValueMapper: (CourbeJournalModel ventes, _) =>
                   double.parse(ventes.sumCredit.toStringAsFixed(2)),
               // Enable data label

@@ -39,7 +39,7 @@ class _TableBalanceCompteDDState extends State<TableBalanceCompteDD> {
     setState(() {
       dataList = balances
           .where((element) =>
-            element.approbationDD == "-")
+            element.approbationDD == "-" && element.isSubmit == "true")
           .toList();
     });
   }
@@ -170,7 +170,8 @@ class _TableBalanceCompteDDState extends State<TableBalanceCompteDD> {
 
   Future agentsRow() async {
     List<BalanceCompteModel> balances = await BalanceCompteApi().getAllData();
-    var data = balances.where((element) => element.approbationDD == "-").toList();
+    var data = balances.where((element) => 
+      element.approbationDD == "-" && element.isSubmit == "true").toList();
 
     if (mounted) {
       setState(() {
