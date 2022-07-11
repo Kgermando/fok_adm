@@ -13,8 +13,7 @@ import 'package:fokad_admin/src/navigation/drawer/drawer_menu.dart';
 import 'package:fokad_admin/src/navigation/header/custom_appbar.dart';
 import 'package:fokad_admin/src/pages/finances/transactions/components/creance_dette/table_creance_dette.dart';
 import 'package:fokad_admin/src/utils/loading.dart';
-import 'package:fokad_admin/src/widgets/btn_widget.dart';
-import 'package:fokad_admin/src/widgets/print_widget.dart'; 
+import 'package:fokad_admin/src/widgets/btn_widget.dart'; 
 import 'package:intl/intl.dart';
 import 'package:pluto_grid/pluto_grid.dart';
 
