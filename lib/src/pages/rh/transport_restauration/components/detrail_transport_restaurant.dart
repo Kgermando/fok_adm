@@ -819,16 +819,16 @@ class _DetailTransportRestaurantState extends State<DetailTransportRestaurant> {
                                 child: Column(
                                   children: [
                                     Row(children: [
+                                      Expanded(child: ligneBudgtaireWidget()),
+                                      const SizedBox(width: p20),
+                                      Expanded(child: resourcesWidget())
+                                    ]),
+                                    Row(children: [
                                       Expanded(
                                           child: approbationBudgetWidget(data)),
                                       const SizedBox(width: p20),
                                       if (approbationDD == "Unapproved")
                                         Expanded(child: motifBudgetWidget(data))
-                                    ]),
-                                    Row(children: [
-                                      Expanded(child: ligneBudgtaireWidget()),
-                                      const SizedBox(width: p20),
-                                      Expanded(child: resourcesWidget())
                                     ]),
                                   ],
                                 ),
@@ -1213,7 +1213,7 @@ class _DetailTransportRestaurantState extends State<DetailTransportRestaurant> {
       margin: const EdgeInsets.only(bottom: p10),
       child: DropdownButtonFormField<String>(
         decoration: InputDecoration(
-          labelText: 'Ligne Budgetaire',
+          labelText: 'Resource',
           labelStyle: const TextStyle(),
           border: OutlineInputBorder(borderRadius: BorderRadius.circular(5.0)),
           contentPadding: const EdgeInsets.only(left: 5.0),
@@ -1308,7 +1308,7 @@ class _DetailTransportRestaurantState extends State<DetailTransportRestaurant> {
         createdRef: data.createdRef,
         created: data.created,
 
-        approbationDG: approbationDG,
+        approbationDG: data.approbationDG,
         motifDG: data.motifDG,
         signatureDG: data.signatureDG,
         approbationBudget: approbationBudget,
@@ -1342,8 +1342,7 @@ class _DetailTransportRestaurantState extends State<DetailTransportRestaurant> {
         signature: data.signature,
         createdRef: data.createdRef,
         created: data.created,
-
-        approbationDG: approbationDG,
+        approbationDG: data.approbationDG,
         motifDG: data.motifDG,
         signatureDG: data.signatureDG,
         approbationBudget: data.approbationBudget,

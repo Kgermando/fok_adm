@@ -1512,15 +1512,16 @@ class _PaiementBulletinState extends State<PaiementBulletin> {
                         child: Column(
                           children: [
                             Row(children: [
-                              Expanded(child: approbationBudgetWidget(data)),
-                              const SizedBox(width: p20),
-                              if (approbationDD == "Unapproved")
-                              Expanded(child: motifBudgetWidget(data))
-                            ]),
-                            Row(children: [
                               Expanded(child: ligneBudgtaireWidget()),
                               const SizedBox(width: p20),
                               Expanded(child: resourcesWidget())
+                            ]),
+                            Row(children: [
+                              Expanded(
+                                  child: approbationBudgetWidget(data)),
+                              const SizedBox(width: p20),
+                                if (approbationDD == "Unapproved")
+                                Expanded(child: motifBudgetWidget(data))
                             ]),
                           ],
                         ),
@@ -1906,7 +1907,7 @@ class _PaiementBulletinState extends State<PaiementBulletin> {
       margin: const EdgeInsets.only(bottom: p10),
       child: DropdownButtonFormField<String>(
         decoration: InputDecoration(
-          labelText: 'Ligne Budgetaire',
+          labelText: 'Resource',
           labelStyle: const TextStyle(),
           border: OutlineInputBorder(borderRadius: BorderRadius.circular(5.0)),
           contentPadding: const EdgeInsets.only(left: 5.0),
@@ -2122,7 +2123,7 @@ class _PaiementBulletinState extends State<PaiementBulletin> {
             data.montantPrisConsiderationCalculCotisationsINSS,
         totalDuBrut: data.totalDuBrut,
         signature: data.signature,
-        approbationDG: approbationDG,
+        approbationDG: data.approbationDG,
         motifDG: data.motifDG,
         signatureDG: data.signatureDG,
         approbationBudget: approbationBudget,
@@ -2197,7 +2198,7 @@ class _PaiementBulletinState extends State<PaiementBulletin> {
             data.montantPrisConsiderationCalculCotisationsINSS,
         totalDuBrut: data.totalDuBrut,
         signature: data.signature,
-        approbationDG: approbationDG,
+        approbationDG: data.approbationDG,
         motifDG: data.motifDG,
         signatureDG: data.signatureDG,
         approbationBudget: data.approbationBudget,

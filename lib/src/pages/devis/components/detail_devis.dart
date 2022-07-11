@@ -940,16 +940,16 @@ class _DetailDevisState extends State<DetailDevis> {
                                 child: Column(
                                   children: [
                                     Row(children: [
+                                      Expanded(child: ligneBudgtaireWidget()),
+                                      const SizedBox(width: p20),
+                                      Expanded(child: resourcesWidget())
+                                    ]),
+                                    Row(children: [
                                       Expanded(
                                           child: approbationBudgetWidget(data)),
                                       const SizedBox(width: p20),
                                       if (approbationDD == "Unapproved")
                                         Expanded(child: motifBudgetWidget(data))
-                                    ]),
-                                    Row(children: [
-                                      Expanded(child: ligneBudgtaireWidget()),
-                                      const SizedBox(width: p20),
-                                      Expanded(child: resourcesWidget())
                                     ]),
                                   ],
                                 ),
@@ -1334,7 +1334,7 @@ class _DetailDevisState extends State<DetailDevis> {
       margin: const EdgeInsets.only(bottom: p10),
       child: DropdownButtonFormField<String>(
         decoration: InputDecoration(
-          labelText: 'Ligne Budgetaire',
+          labelText: 'Ressource',
           labelStyle: const TextStyle(),
           border: OutlineInputBorder(borderRadius: BorderRadius.circular(5.0)),
           contentPadding: const EdgeInsets.only(left: 5.0),
@@ -1436,7 +1436,7 @@ class _DetailDevisState extends State<DetailDevis> {
         created: DateTime.now(),
         isSubmit: data.isSubmit,
 
-        approbationDG: approbationDG,
+        approbationDG: data.approbationDG,
         motifDG: data.motifDG,
         signatureDG: data.signatureDG,
         approbationBudget: approbationBudget,
@@ -1473,7 +1473,7 @@ class _DetailDevisState extends State<DetailDevis> {
         created: DateTime.now(),
         isSubmit: data.isSubmit,
 
-        approbationDG: approbationDG,
+        approbationDG: data.approbationDG,
         motifDG: data.motifDG,
         signatureDG: data.signatureDG,
         approbationBudget: data.approbationBudget,
