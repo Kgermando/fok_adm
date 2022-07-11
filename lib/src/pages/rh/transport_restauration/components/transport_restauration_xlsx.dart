@@ -62,7 +62,7 @@ class TransportRestXlsx {
     final date = DateFormat("dd-MM-yy_HH-mm").format(dateTime);
 
     var onValue = excel.encode();
-    File('${dir.path}/transport&restauration$date.xlsx')
+    File('${dir.path}/transport_restauration$date.xlsx')
       ..createSync(recursive: true)
       ..writeAsBytesSync(onValue!);
   }

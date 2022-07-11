@@ -28,7 +28,6 @@ class _TableCreanceDDState extends State<TableCreanceDD> {
   PlutoGridStateManager? stateManager;
   PlutoGridSelectingMode gridSelectingMode = PlutoGridSelectingMode.row;
 
-  int? id;
 
   double nonPaye = 0.0; // total Créance
   double paye = 0.0; // total creanceDette
@@ -72,97 +71,100 @@ class _TableCreanceDDState extends State<TableCreanceDD> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Expanded(
-          child: PlutoGrid(
-            columns: columns,
-            rows: rows,
-            onRowDoubleTap: (PlutoGridOnRowDoubleTapEvent tapEvent) {
-              final dataList = tapEvent.row!.cells.values;
-              final idPlutoRow = dataList.elementAt(0);
-              Navigator.pushNamed(
-                  context, FinanceRoutes.transactionsCreanceDetail,
-                  arguments: idPlutoRow.value);
-            },
-            onLoaded: (PlutoGridOnLoadedEvent event) {
-              stateManager = event.stateManager;
-              stateManager!.setShowColumnFilter(true);
-              stateManager!.notifyListeners();
-            },
-            createHeader: (PlutoGridStateManager header) {
-              return Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  const TitleWidget(title: "Créances"),
-                  Row(
-                    children: [
-                      IconButton(
-                          onPressed: () {
-                            Navigator.pushNamed(context, FinanceRoutes.finDD);
-                          },
-                          icon: Icon(Icons.refresh,
-                              color: Colors.green.shade700)),
-                      PrintWidget(onPressed: () {
-                        CreanceXlsx().exportToExcel(dataList);
-                        if (!mounted) return;
-                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                          content: const Text("Exportation effectué!"),
-                          backgroundColor: Colors.green[700],
-                        ));
-                      })
-                    ],
-                  ),
-                ],
-              );
-            },
-            configuration: PlutoGridConfiguration(
-              columnFilterConfig: PlutoGridColumnFilterConfig(
-                filters: const [
-                  ...FilterHelper.defaultFilters,
-                  // custom filter
-                  ClassFilterImplemented(),
-                ],
-                resolveDefaultColumnFilter: (column, resolver) {
-                  if (column.field == 'id') {
-                    return resolver<ClassFilterImplemented>()
-                        as PlutoFilterType;
-                  } else if (column.field == 'nomComplet') {
-                    return resolver<ClassFilterImplemented>()
-                        as PlutoFilterType;
-                  } else if (column.field == 'pieceJustificative') {
-                    return resolver<ClassFilterImplemented>()
-                        as PlutoFilterType;
-                  } else if (column.field == 'libelle') {
-                    return resolver<ClassFilterImplemented>()
-                        as PlutoFilterType;
-                  } else if (column.field == 'montant') {
-                    return resolver<ClassFilterImplemented>()
-                        as PlutoFilterType;
-                  } else if (column.field == 'ligneBudgtaire') {
-                    return resolver<ClassFilterImplemented>()
-                        as PlutoFilterType;
-                  } else if (column.field == 'departement') {
-                    return resolver<ClassFilterImplemented>()
-                        as PlutoFilterType;
-                  } else if (column.field == 'typeOperation') {
-                    return resolver<ClassFilterImplemented>()
-                        as PlutoFilterType;
-                  } else if (column.field == 'numeroOperation') {
-                    return resolver<ClassFilterImplemented>()
-                        as PlutoFilterType;
-                  } else if (column.field == 'created') {
-                    return resolver<ClassFilterImplemented>()
-                        as PlutoFilterType;
-                  }
-                  return resolver<PlutoFilterTypeContains>() as PlutoFilterType;
-                },
+    return SizedBox(
+      height: MediaQuery.of(context).size.height,
+      child: Column(
+        children: [
+          Expanded(
+            child: PlutoGrid(
+              columns: columns,
+              rows: rows,
+              onRowDoubleTap: (PlutoGridOnRowDoubleTapEvent tapEvent) {
+                final dataList = tapEvent.row!.cells.values;
+                final idPlutoRow = dataList.elementAt(0);
+                Navigator.pushNamed(
+                    context, FinanceRoutes.transactionsCreanceDetail,
+                    arguments: idPlutoRow.value);
+              },
+              onLoaded: (PlutoGridOnLoadedEvent event) {
+                stateManager = event.stateManager;
+                stateManager!.setShowColumnFilter(true);
+                stateManager!.notifyListeners();
+              },
+              createHeader: (PlutoGridStateManager header) {
+                return Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    const TitleWidget(title: "Créances"),
+                    Row(
+                      children: [
+                        IconButton(
+                            onPressed: () {
+                              Navigator.pushNamed(context, FinanceRoutes.finDD);
+                            },
+                            icon: Icon(Icons.refresh,
+                                color: Colors.green.shade700)),
+                        PrintWidget(onPressed: () {
+                          CreanceXlsx().exportToExcel(dataList);
+                          if (!mounted) return;
+                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                            content: const Text("Exportation effectué!"),
+                            backgroundColor: Colors.green[700],
+                          ));
+                        })
+                      ],
+                    ),
+                  ],
+                );
+              },
+              configuration: PlutoGridConfiguration(
+                columnFilterConfig: PlutoGridColumnFilterConfig(
+                  filters: const [
+                    ...FilterHelper.defaultFilters,
+                    // custom filter
+                    ClassFilterImplemented(),
+                  ],
+                  resolveDefaultColumnFilter: (column, resolver) {
+                    if (column.field == 'id') {
+                      return resolver<ClassFilterImplemented>()
+                          as PlutoFilterType;
+                    } else if (column.field == 'nomComplet') {
+                      return resolver<ClassFilterImplemented>()
+                          as PlutoFilterType;
+                    } else if (column.field == 'pieceJustificative') {
+                      return resolver<ClassFilterImplemented>()
+                          as PlutoFilterType;
+                    } else if (column.field == 'libelle') {
+                      return resolver<ClassFilterImplemented>()
+                          as PlutoFilterType;
+                    } else if (column.field == 'montant') {
+                      return resolver<ClassFilterImplemented>()
+                          as PlutoFilterType;
+                    } else if (column.field == 'ligneBudgtaire') {
+                      return resolver<ClassFilterImplemented>()
+                          as PlutoFilterType;
+                    } else if (column.field == 'departement') {
+                      return resolver<ClassFilterImplemented>()
+                          as PlutoFilterType;
+                    } else if (column.field == 'typeOperation') {
+                      return resolver<ClassFilterImplemented>()
+                          as PlutoFilterType;
+                    } else if (column.field == 'numeroOperation') {
+                      return resolver<ClassFilterImplemented>()
+                          as PlutoFilterType;
+                    } else if (column.field == 'created') {
+                      return resolver<ClassFilterImplemented>()
+                          as PlutoFilterType;
+                    }
+                    return resolver<PlutoFilterTypeContains>() as PlutoFilterType;
+                  },
+                ),
               ),
             ),
           ),
-        ),
-        totalSolde()
-      ],
+          totalSolde()
+        ],
+      ),
     );
   }
 
@@ -307,18 +309,16 @@ class _TableCreanceDDState extends State<TableCreanceDD> {
   }
 
   Future agentsRow() async { 
-    List<CreanceModel?> dataList = await CreanceApi().getAllData();
+    List<CreanceModel> creances = await CreanceApi().getAllData();
     UserModel userModel = await AuthApi().getUserId();
-    var data = dataList
-        .where((element) => element!.approbationDG == "Approved" && 
-          element.approbationDD == "Approved" || 
+    var data = creances
+        .where((element) => element.approbationDD == "-" || 
           element.signature == userModel.matricule)
         .toList();
         
     if (mounted) {
       setState(() {
         for (var item in data) {
-          id = item!.id;
           rows.add(PlutoRow(cells: {
             'id': PlutoCell(value: item.id),
             'nomComplet': PlutoCell(value: item.nomComplet),

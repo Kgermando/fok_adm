@@ -20,7 +20,6 @@ class _TableCampaignFinState extends State<TableCampaignFin> {
   PlutoGridStateManager? stateManager;
   PlutoGridSelectingMode gridSelectingMode = PlutoGridSelectingMode.row;
 
-  int? id;
 
   @override
   void initState() {
@@ -118,7 +117,7 @@ class _TableCampaignFinState extends State<TableCampaignFin> {
         enableContextMenu: false,
         enableDropToResize: true,
         titleTextAlign: PlutoColumnTextAlign.left,
-        width: 150,
+        width: 300,
         minWidth: 150,
       ),
       PlutoColumn(
@@ -130,7 +129,7 @@ class _TableCampaignFinState extends State<TableCampaignFin> {
         enableContextMenu: false,
         enableDropToResize: true,
         titleTextAlign: PlutoColumnTextAlign.left,
-        width: 150,
+        width: 300,
         minWidth: 150,
       ),
       PlutoColumn(
@@ -142,7 +141,7 @@ class _TableCampaignFinState extends State<TableCampaignFin> {
         enableContextMenu: false,
         enableDropToResize: true,
         titleTextAlign: PlutoColumnTextAlign.left,
-        width: 150,
+        width: 200,
         minWidth: 150,
       ),
       PlutoColumn(
@@ -154,7 +153,7 @@ class _TableCampaignFinState extends State<TableCampaignFin> {
         enableContextMenu: false,
         enableDropToResize: true,
         titleTextAlign: PlutoColumnTextAlign.left,
-        width: 150,
+        width: 200,
         minWidth: 150,
       ),
       PlutoColumn(
@@ -166,7 +165,7 @@ class _TableCampaignFinState extends State<TableCampaignFin> {
         enableContextMenu: false,
         enableDropToResize: true,
         titleTextAlign: PlutoColumnTextAlign.left,
-        width: 150,
+        width: 200,
         minWidth: 150,
       ),
       PlutoColumn(
@@ -178,7 +177,7 @@ class _TableCampaignFinState extends State<TableCampaignFin> {
         enableContextMenu: false,
         enableDropToResize: true,
         titleTextAlign: PlutoColumnTextAlign.left,
-        width: 150,
+        width: 300,
         minWidth: 150,
       ),
       PlutoColumn(
@@ -190,17 +189,17 @@ class _TableCampaignFinState extends State<TableCampaignFin> {
         enableContextMenu: false,
         enableDropToResize: true,
         titleTextAlign: PlutoColumnTextAlign.left,
-        width: 150,
+        width: 200,
         minWidth: 150,
       ),
     ];
   }
 
   Future agentsRow() async {
-    List<CampaignModel?> dataList = await CampaignApi().getAllData();
-    var data = dataList
+    List<CampaignModel> campaigns = await CampaignApi().getAllData();
+    var data = campaigns
         .where((element) =>
-            element!.approbationDG == 'Approved' &&
+            element.approbationDG == 'Approved' &&
             element.approbationDD == 'Approved' &&
             element.approbationBudget == 'Approved' &&
             element.approbationFin == "-")
@@ -208,8 +207,7 @@ class _TableCampaignFinState extends State<TableCampaignFin> {
 
     if (mounted) {
       setState(() {
-        for (var item in data) {
-          id = item!.id;
+        for (var item in data) { 
           rows.add(PlutoRow(cells: {
             'id': PlutoCell(value: item.id),
             'typeProduit': PlutoCell(value: item.typeProduit),

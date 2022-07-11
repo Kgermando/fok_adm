@@ -29,7 +29,6 @@ class _TableDetteDDState extends State<TableDetteDD> {
   PlutoGridStateManager? stateManager;
   PlutoGridSelectingMode gridSelectingMode = PlutoGridSelectingMode.row;
 
-  int? id;
   double paye = 0.0;
   double nonPaye = 0.0;
 
@@ -309,12 +308,11 @@ class _TableDetteDDState extends State<TableDetteDD> {
   }
 
   Future agentsRow() async { 
-    List<DetteModel?> dataList = await DetteApi().getAllData();
+    List<DetteModel> dettes = await DetteApi().getAllData();
     UserModel userModel = await AuthApi().getUserId();
-    var data = dataList
+    var data = dettes
       .where((element) =>
-          element!.approbationDG == "Approved" &&
-              element.approbationDD == "-" ||
+          element.approbationDD == "-" ||
           element.signature == userModel.matricule)
       .toList();
 
@@ -322,7 +320,7 @@ class _TableDetteDDState extends State<TableDetteDD> {
       setState(() {
         for (var item in data) { 
           rows.add(PlutoRow(cells: {
-            'id': PlutoCell(value: item!.id),
+            'id': PlutoCell(value: item.id),
             'nomComplet': PlutoCell(value: item.nomComplet),
             'pieceJustificative': PlutoCell(value: item.pieceJustificative),
             'libelle': PlutoCell(value: item.libelle),
