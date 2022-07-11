@@ -29,7 +29,6 @@ class _TableDetteState extends State<TableDette> {
   PlutoGridStateManager? stateManager;
   PlutoGridSelectingMode gridSelectingMode = PlutoGridSelectingMode.row;
 
-  int? id;
   double paye = 0.0;
   double nonPaye = 0.0;
 

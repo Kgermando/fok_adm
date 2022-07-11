@@ -22,13 +22,13 @@ class BilanModel {
     required this.signature,
     required this.createdRef,
     required this.created,
-      required this.isSubmit,
-      required this.approbationDG,
-      required this.motifDG,
-      required this.signatureDG,
-      required this.approbationDD,
-      required this.motifDD,
-      required this.signatureDD
+    required this.isSubmit,
+    required this.approbationDG,
+    required this.motifDG,
+    required this.signatureDG,
+    required this.approbationDD,
+    required this.motifDD,
+    required this.signatureDD
   });
 
   factory BilanModel.fromSQL(List<dynamic> row) {

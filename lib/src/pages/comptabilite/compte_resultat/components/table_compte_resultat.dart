@@ -4,10 +4,12 @@ import 'package:flutter/material.dart';
 import 'package:fokad_admin/src/api/auth/auth_api.dart';
 import 'package:fokad_admin/src/api/comptabilite/compte_resultat_api.dart'; 
 import 'package:fokad_admin/src/models/comptabilites/compte_resultat_model.dart';
-import 'package:fokad_admin/src/models/users/user_model.dart'; 
+import 'package:fokad_admin/src/models/users/user_model.dart';
+import 'package:fokad_admin/src/pages/comptabilite/compte_resultat/components/compte_resultat_xlsx.dart'; 
 import 'package:fokad_admin/src/routes/routes.dart';
 import 'package:fokad_admin/src/utils/class_implemented.dart';
 import 'package:fokad_admin/src/widgets/print_widget.dart';
+import 'package:fokad_admin/src/widgets/title_widget.dart';
 import 'package:intl/intl.dart';
 import 'package:pluto_grid/pluto_grid.dart';
 
@@ -24,18 +26,28 @@ class _TableCompteResultatState extends State<TableCompteResultat> {
   PlutoGridStateManager? stateManager;
   PlutoGridSelectingMode gridSelectingMode = PlutoGridSelectingMode.row;
 
-  int? id;
-
   @override
-  void initState() {
+  initState() {
     agentsColumn();
-    Timer.periodic(const Duration(milliseconds: 500), ((timer) {
-      agentsRow();
-      timer.cancel();
-    }));
+    getData();
+    agentsRow();
 
     super.initState();
   }
+
+  List<CompteResulatsModel> dataList = [];
+  Future<void> getData() async {
+    List<CompteResulatsModel> compteResulats =
+        await CompteResultatApi().getAllData();
+    setState(() {
+      dataList = compteResulats
+          .where((element) =>
+              element.approbationDG == "Approved" &&
+              element.approbationDD == "Approved")
+          .toList();
+    });
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -55,14 +67,28 @@ class _TableCompteResultatState extends State<TableCompteResultat> {
       },
       createHeader: (PlutoGridStateManager header) {
         return Row(
-          mainAxisAlignment: MainAxisAlignment.end,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            IconButton(
-              onPressed: () {
-                Navigator.pushNamed(context, ComptabiliteRoutes.comptabiliteCompteResultat);
-              },
-              icon: Icon(Icons.refresh, color: Colors.green.shade700)),
-            PrintWidget(onPressed: () {})],
+            const TitleWidget(title: "Compte Resultats"),
+            Row(
+              children: [
+                IconButton(
+                    onPressed: () {
+                      Navigator.pushNamed(
+                          context, ComptabiliteRoutes.comptabiliteCompteResultat );
+                    },
+                    icon: Icon(Icons.refresh, color: Colors.green.shade700)),
+                PrintWidget(onPressed: () {
+                  CompteResulatXlsx().exportToExcel(dataList);
+                  if (!mounted) return;
+                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                    content: const Text("Exportation effectué!"),
+                    backgroundColor: Colors.green[700],
+                  ));
+                })
+              ],
+            ),
+          ],
         );
       },
       configuration: PlutoGridConfiguration(
@@ -143,12 +169,12 @@ class _TableCompteResultatState extends State<TableCompteResultat> {
   }
 
   Future agentsRow() async { 
-    List<CompteResulatsModel?> dataList =
+    List<CompteResulatsModel> compteResulats =
         await CompteResultatApi().getAllData();
     UserModel userModel = await AuthApi().getUserId();
-    var data = dataList
+    var data = compteResulats
         .where((element) =>
-            element!.approbationDG == "Approved" &&
+            element.approbationDG == "Approved" &&
                 element.approbationDD == "Approved" ||
             element.signature == userModel.matricule)
         .toList();
@@ -158,7 +184,7 @@ class _TableCompteResultatState extends State<TableCompteResultat> {
       setState(() {
         for (var item in data) {
           rows.add(PlutoRow(cells: {
-            'id': PlutoCell(value: item!.id),
+            'id': PlutoCell(value: item.id),
             'intitule': PlutoCell(value: item.intitule),
             'signature': PlutoCell(value: item.signature),
             'created': PlutoCell(

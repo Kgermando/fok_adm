@@ -1,8 +1,9 @@
 import 'dart:io';
 import 'dart:typed_data';
+
 import 'package:fokad_admin/src/api/auth/auth_api.dart';
-import 'package:fokad_admin/src/constants/app_theme.dart'; 
-import 'package:fokad_admin/src/models/exploitations/projet_model.dart'; 
+import 'package:fokad_admin/src/constants/app_theme.dart';
+import 'package:fokad_admin/src/models/comptabilites/journal_model.dart'; 
 import 'package:fokad_admin/src/models/users/user_model.dart';
 import 'package:fokad_admin/src/utils/info_company.dart';
 import 'package:intl/intl.dart';
@@ -14,8 +15,8 @@ import 'package:pdf/widgets.dart';
 import 'package:fokad_admin/src/helpers/save_file_mobile_pdf.dart'
     if (dart.library.html) 'src/helpers/save_file_web.dart' as helper;
 
-class ProjetPdf {
-  static Future<void> generate(ProjetModel data) async {
+class JournalPdf {
+  static Future<void> generate(JournalModel data) async {
     final pdf = Document();
     final user = await AuthApi().getUserId();
     pdf.addPage(MultiPage(
@@ -31,10 +32,10 @@ class ProjetPdf {
     final dateTime = DateTime.now();
     final date = DateFormat("dd-MM-yy_HH-mm").format(dateTime);
     final Uint8List bytes = await pdf.save();
-    return helper.saveAndLaunchFilePdf(bytes, 'rh-$date.pdf');
+    return helper.saveAndLaunchFilePdf(bytes, 'journal-$date.pdf');
   }
 
-  static Widget buildHeader(ProjetModel data, UserModel user) => Column(
+   static Widget buildHeader(JournalModel data, UserModel user) => Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           // SizedBox(height: 1 * PdfPageFormat.cm),
@@ -45,10 +46,7 @@ class ProjetPdf {
               Container(
                 height: 50,
                 width: 50,
-                child: BarcodeWidget(
-                  barcode: Barcode.qrCode(),
-                  data: "FOKAD"
-                ),
+                child: BarcodeWidget(barcode: Barcode.qrCode(), data: "FOKAD"),
               ),
             ],
           ),
@@ -95,7 +93,7 @@ class ProjetPdf {
         ],
       );
 
-  static Widget buildCompagnyInfo(ProjetModel data, UserModel user) {
+  static Widget buildCompagnyInfo(JournalModel data, UserModel user) {
     final titles = <String>['RCCM:', 'N° Impôt:', 'ID Nat.:', 'Crée le:'];
     final datas = <String>[
       InfoCompany().rccm(),
@@ -115,198 +113,186 @@ class ProjetPdf {
     );
   }
 
-  static Widget buildTitle(ProjetModel data) => Column(
+  static Widget buildTitle(JournalModel data) => Column(
     crossAxisAlignment: CrossAxisAlignment.start,
     children: [
       Text(
-        data.nomProjet.toUpperCase(),
+        data.libele.toUpperCase(),
         style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
       ),
     ],
   );
 
 
-  static Widget buildBody(ProjetModel data) {
-    return pw.Column(
-      crossAxisAlignment: CrossAxisAlignment.start, 
-      children: [
-        Row(
+
+  static Widget buildBody(JournalModel data) {
+    return pw.Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+     Row(
         children: [
           Expanded(
             flex: 1,
-            child: Text('Nom Projet :',
+            child: Text('Nomero opération :',
                 textAlign: TextAlign.left,
                 style: TextStyle(fontWeight: FontWeight.bold)),
           ),
           Expanded(
             flex: 3,
-            child: Text(data.nomProjet,
-                textAlign: TextAlign.justify),
+            child: Text(data.numeroOperation,
+                textAlign: TextAlign.left),
           )
         ],
       ),
-      Divider(color: PdfColors.amber),
+      Divider(
+        color: PdfColors.amber,
+      ),
       Row(
         children: [
           Expanded(
             flex: 1,
-            child: Text('Responsable :',
+            child: Text('Libele :',
                 textAlign: TextAlign.left,
                 style: TextStyle(fontWeight: FontWeight.bold)),
           ),
           Expanded(
             flex: 3,
-            child: Text(data.responsable,
-                textAlign: TextAlign.justify),
+            child: Text(data.libele,
+                textAlign: TextAlign.left),
           )
         ],
       ),
-      Divider(color: PdfColors.amber),
+      Divider(
+        color: PdfColors.amber,
+      ),
       Row(
         children: [
           Expanded(
             flex: 1,
-            child: Text('Objectifs :',
+            child: Text('Débit :',
                 textAlign: TextAlign.left,
                 style: TextStyle(fontWeight: FontWeight.bold)),
           ),
           Expanded(
-            flex: 3,
-            child: Text(data.objectifs,
-                textAlign: TextAlign.justify),
-          )
+              flex: 3,
+              child: Column(
+                children: [
+                  Row(
+                    children: [
+                      Expanded(
+                        child: Text('Compte',
+                            textAlign: TextAlign.center,
+                            style: TextStyle(fontWeight: FontWeight.bold)),
+                      ),
+                      Expanded(
+                        child: Text('Montant',
+                            textAlign: TextAlign.center,
+                            style: TextStyle(fontWeight: FontWeight.bold)),
+                      ),
+                    ],
+                  ),
+                  SizedBox(height: p20),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: Text(data.compteDebit,
+                            textAlign: TextAlign.center),
+                      ),
+                      Expanded(
+                        child: Text(
+                            "${NumberFormat.decimalPattern('fr').format(double.parse(data.montantDebit))} \$",
+                            textAlign: TextAlign.center),
+                      ),
+                    ],
+                  ),
+                ],
+              )),
         ],
       ),
-      Divider(color: PdfColors.amber),
+      Divider(
+        color: PdfColors.amber,
+      ),
       Row(
         children: [
           Expanded(
             flex: 1,
-            child: Text('Description :',
+            child: Text('Crédit:',
                 textAlign: TextAlign.left,
                 style: TextStyle(fontWeight: FontWeight.bold)),
           ),
           Expanded(
-            flex: 3,
-            child: Text(data.description,
-                textAlign: TextAlign.justify),
-          )
+              flex: 3,
+              child: Column(
+                children: [
+                  Row(
+                    children: [
+                      Expanded(
+                        child: Text('Compte',
+                            textAlign: TextAlign.center,
+                            style: TextStyle(fontWeight: FontWeight.bold)),
+                      ),
+                      Expanded(
+                        child: Text('Montant',
+                            textAlign: TextAlign.center,
+                            style: TextStyle(fontWeight: FontWeight.bold)),
+                      ),
+                    ],
+                  ),
+                  SizedBox(height: p20),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: Text(data.compteCredit,
+                            textAlign: TextAlign.center),
+                      ),
+                      Expanded(
+                        child: Text(
+                            "${NumberFormat.decimalPattern('fr').format(double.parse(data.montantCredit))} \$",
+                            textAlign: TextAlign.center),
+                      ),
+                    ],
+                  )
+                ],
+              )),
         ],
       ),
-      Divider(color: PdfColors.amber),
+      Divider(
+        color: PdfColors.amber,
+      ),
       Row(
         children: [
           Expanded(
             flex: 1,
-            child: Text('Responsabilite :',
+            child: Text('TVA :',
                 textAlign: TextAlign.left,
                 style: TextStyle(fontWeight: FontWeight.bold)),
           ),
           Expanded(
             flex: 3,
-            child: Text(data.responsabilite,
-                textAlign: TextAlign.justify),
+            child: Text("${data.tva} %",
+                textAlign: TextAlign.left),
           )
         ],
       ),
-      Divider(color: PdfColors.amber),
+      Divider(
+        color: PdfColors.amber,
+      ),
       Row(
         children: [
           Expanded(
             flex: 1,
-            child: Text('Communication :',
+            child: Text('Remarque :',
                 textAlign: TextAlign.left,
                 style: TextStyle(fontWeight: FontWeight.bold)),
           ),
           Expanded(
             flex: 3,
-            child: Text(data.communication,
-                textAlign: TextAlign.justify),
+            child: Text(data.remarque,
+                textAlign: TextAlign.left),
           )
         ],
       ),
-      Divider(color: PdfColors.amber),
-      Row(
-        children: [
-          Expanded(
-            flex: 1,
-            child: Text('Processus de Verification :',
-                textAlign: TextAlign.left,
-                style: TextStyle(fontWeight: FontWeight.bold)),
-          ),
-          Expanded(
-            flex: 3,
-            child: Text(data.processusVerification,
-                textAlign: TextAlign.justify),
-          )
-        ],
+      Divider(
+        color: PdfColors.amber,
       ),
-      Divider(color: PdfColors.amber),
-      Row(
-        children: [
-          Expanded(
-            flex: 1,
-            child: Text('Problème potientiel et risque :',
-                textAlign: TextAlign.left,
-                style: TextStyle(fontWeight: FontWeight.bold)),
-          ),
-          Expanded(
-            flex: 3,
-            child: Text(data.problemePotientEtRisque,
-                textAlign: TextAlign.justify),
-          )
-        ],
-      ),
-      Divider(color: PdfColors.amber),
-      Row(
-        children: [
-          Expanded(
-            flex: 1,
-            child: Text('Date de Debut et Fin :',
-                textAlign: TextAlign.left,
-                style: TextStyle(fontWeight: FontWeight.bold)),
-          ),
-          Expanded(
-            flex: 3,
-            child: Text(data.dateDebutEtFin,
-                textAlign: TextAlign.justify),
-          )
-        ],
-      ),
-      Divider(color: PdfColors.amber),
-      Row(
-        children: [
-          Expanded(
-            flex: 1,
-            child: Text('Budget detailé :',
-                textAlign: TextAlign.left,
-                style: TextStyle(fontWeight: FontWeight.bold)),
-          ),
-          Expanded(
-            flex: 3,
-            child: Text(data.budgetDetail,
-                textAlign: TextAlign.justify),
-          )
-        ],
-      ),
-      Divider(color: PdfColors.amber),
-      Row(
-        children: [
-          Expanded(
-            flex: 1,
-            child: Text('Investissement total :',
-                textAlign: TextAlign.left,
-                style: TextStyle(fontWeight: FontWeight.bold)),
-          ),
-          Expanded(
-            flex: 3,
-            child: Text(
-                "${NumberFormat.decimalPattern('fr').format(double.parse(data.recetteAttendus))} \$",
-                textAlign: TextAlign.justify),
-          )
-        ],
-      ),
-      Divider(color: PdfColors.amber),
       Row(
         children: [
           Expanded(
@@ -318,56 +304,17 @@ class ProjetPdf {
           Expanded(
             flex: 3,
             child: Text(data.signature,
-                textAlign: TextAlign.justify),
+                textAlign: TextAlign.left),
           )
         ],
       ),
-      Divider(color: PdfColors.amber),
-      Row(
-        children: [
-          Expanded(
-            flex: 1,
-            child: Text('Type Financement :',
-                textAlign: TextAlign.left,
-                style: TextStyle(fontWeight: FontWeight.bold)),
-          ),
-          Expanded(
-            flex: 3,
-            child: Text(data.typeFinancement,
-                textAlign: TextAlign.justify),
-          )
-        ],
-      ),
-      Divider(color: PdfColors.amber),
-      Row(
-        children: [
-          Expanded(
-            child: Text(
-              'Observation',
-              style: TextStyle(fontWeight: FontWeight.bold),
-            ),
-          ),
-          SizedBox(
-            width: p10,
-          ), 
-          Expanded(
-              child: (data.observation == 'true')
-                  ? Text(
-                      'Payé',
-                      style: const pw.TextStyle(color: PdfColors.green),
-                    )
-                  : Text(
-                      'Non payé',
-                      style:
-                          const pw.TextStyle(color: PdfColors.red),
-                    ))
-        ],
-      ),
-      
-      ]
-    );
+    ]);
   }
- 
+
+
+
+
+
   static Widget buildFooter(UserModel user) => Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
@@ -417,4 +364,5 @@ class ProjetPdf {
       ),
     );
   }
+
 }

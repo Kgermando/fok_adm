@@ -7,6 +7,7 @@ import 'package:fokad_admin/src/models/comptabilites/journal_model.dart';
 import 'package:fokad_admin/src/models/users/user_model.dart';
 import 'package:fokad_admin/src/navigation/drawer/drawer_menu.dart';
 import 'package:fokad_admin/src/navigation/header/custom_appbar.dart';
+import 'package:fokad_admin/src/pages/comptabilite/journal/components/journal_pdf.dart';
 import 'package:fokad_admin/src/utils/loading.dart';
 import 'package:fokad_admin/src/widgets/print_widget.dart'; 
 import 'package:intl/intl.dart';
@@ -166,8 +167,10 @@ class _DetailJournalState extends State<DetailJournal> {
                           deleteButton(data),
                           PrintWidget(
                               tooltip: 'Imprimer le document',
-                              onPressed: () {}),
-                        ],
+                              onPressed: () async{
+                                await JournalPdf.generate(data);
+                              }),
+                        ], 
                       ),
                       SelectableText(
                           DateFormat("dd-MM-yy HH:mm").format(data.created),

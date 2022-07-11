@@ -8,6 +8,7 @@ import 'package:fokad_admin/src/models/comptabilites/balance_comptes_model.dart'
 import 'package:fokad_admin/src/models/users/user_model.dart';
 import 'package:fokad_admin/src/navigation/drawer/drawer_menu.dart';
 import 'package:fokad_admin/src/navigation/header/custom_appbar.dart';
+import 'package:fokad_admin/src/pages/comptabilite/balance/components/balance_pdf.dart';
 import 'package:fokad_admin/src/routes/routes.dart';
 import 'package:fokad_admin/src/utils/loading.dart';
 import 'package:fokad_admin/src/widgets/print_widget.dart';
@@ -46,6 +47,8 @@ class _DetailBalanceState extends State<DetailBalance> {
     super.dispose();
   }
 
+  List<CompteBalanceRefModel> compteBalanceRefList = [];
+
   UserModel user = UserModel(
       nom: '-',
       prenom: '-',
@@ -62,8 +65,10 @@ class _DetailBalanceState extends State<DetailBalance> {
       succursale: '-');
   Future<void> getData() async {
     UserModel userModel = await AuthApi().getUserId();
+    var compteBalanceRef = await CompteBalanceRefApi().getAllData();
     setState(() {
       user = userModel;
+      compteBalanceRefList = compteBalanceRef;
     });
   }
 
@@ -183,7 +188,15 @@ class _DetailBalanceState extends State<DetailBalance> {
                           deleteButton(data),
                           PrintWidget(
                               tooltip: 'Imprimer le document',
-                              onPressed: () {}),
+                              onPressed: () async {
+                                var compteBalanceRefPdf = compteBalanceRefList
+                                    .where((element) =>
+                                        element
+                                            .reference.microsecondsSinceEpoch ==
+                                        data.createdRef.microsecondsSinceEpoch)
+                                    .toList();
+                                await BalancePdf.generate(data, compteBalanceRefPdf);
+                              }),
                         ],
                       ),
                       SelectableText(
@@ -552,7 +565,7 @@ class _DetailBalanceState extends State<DetailBalance> {
 
   Future<void> sendDD(BalanceCompteModel data) async {
     final balanceCompteModel = BalanceCompteModel(
-      id: data.id!,
+        id: data.id!,
         title: data.title,
         statut: 'true',
         signature: data.signature,
@@ -734,7 +747,6 @@ class _DetailBalanceState extends State<DetailBalance> {
     ]);
   }
 
-
   Widget approbationDGWidget(BalanceCompteModel data) {
     List<String> approbationList = ['Approved', 'Unapproved', '-'];
     return Container(
@@ -873,7 +885,7 @@ class _DetailBalanceState extends State<DetailBalance> {
 
   Future<void> submitDG(BalanceCompteModel data) async {
     final balanceCompteModel = BalanceCompteModel(
-      id: data.id!,
+        id: data.id!,
         title: data.title,
         statut: data.statut,
         signature: data.signature,
@@ -885,7 +897,7 @@ class _DetailBalanceState extends State<DetailBalance> {
         signatureDG: user.matricule,
         approbationDD: data.approbationDD,
         motifDD: data.motifDD,
-        signatureDD: data.signatureDD); 
+        signatureDD: data.signatureDD);
 
     await BalanceCompteApi().updateData(balanceCompteModel);
     Navigator.pop(context);
@@ -897,7 +909,7 @@ class _DetailBalanceState extends State<DetailBalance> {
 
   Future<void> submitDD(BalanceCompteModel data) async {
     final balanceCompteModel = BalanceCompteModel(
-      id: data.id!,
+        id: data.id!,
         title: data.title,
         statut: data.statut,
         signature: data.signature,
@@ -909,7 +921,7 @@ class _DetailBalanceState extends State<DetailBalance> {
         signatureDG: '-',
         approbationDD: approbationDD,
         motifDD: (motifDDController.text == '') ? '-' : motifDDController.text,
-        signatureDD: user.matricule); 
+        signatureDD: user.matricule);
     await BalanceCompteApi().updateData(balanceCompteModel);
     Navigator.pop(context);
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(

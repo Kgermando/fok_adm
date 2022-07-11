@@ -8,6 +8,7 @@ import 'package:fokad_admin/src/models/comptabilites/compte_resultat_model.dart'
 import 'package:fokad_admin/src/models/users/user_model.dart';
 import 'package:fokad_admin/src/navigation/drawer/drawer_menu.dart';
 import 'package:fokad_admin/src/navigation/header/custom_appbar.dart';
+import 'package:fokad_admin/src/pages/comptabilite/compte_resultat/components/compte_resultat_pdf.dart';
 import 'package:fokad_admin/src/routes/routes.dart';
 import 'package:fokad_admin/src/utils/loading.dart';
 import 'package:fokad_admin/src/widgets/print_widget.dart';
@@ -206,7 +207,12 @@ class _DetailCompteResultatState extends State<DetailCompteResultat> {
                           deleteButton(data),
                           PrintWidget(
                               tooltip: 'Imprimer le document',
-                              onPressed: () {}),
+                              onPressed: () async {
+                                await CompteResultatPdf.generate(data, 
+                                  totalCharges1, totalCharges123, 
+                                  totalGeneralCharges, totalProduits1, 
+                                  totalProduits123, totalGeneralProduits);
+                              }),
                         ],
                       ),
                       SelectableText(

@@ -4,10 +4,12 @@ import 'package:flutter/material.dart';
 import 'package:fokad_admin/src/api/auth/auth_api.dart';
 import 'package:fokad_admin/src/api/comptabilite/journal_api.dart'; 
 import 'package:fokad_admin/src/models/comptabilites/journal_model.dart';
-import 'package:fokad_admin/src/models/users/user_model.dart'; 
+import 'package:fokad_admin/src/models/users/user_model.dart';
+import 'package:fokad_admin/src/pages/comptabilite/journal/components/journal_xksx.dart'; 
 import 'package:fokad_admin/src/routes/routes.dart';
 import 'package:fokad_admin/src/utils/class_implemented.dart';
 import 'package:fokad_admin/src/widgets/print_widget.dart';
+import 'package:fokad_admin/src/widgets/title_widget.dart';
 import 'package:intl/intl.dart';
 import 'package:pluto_grid/pluto_grid.dart';
 
@@ -25,14 +27,28 @@ class _TableJournalState extends State<TableJournal> {
   PlutoGridStateManager? stateManager;
   PlutoGridSelectingMode gridSelectingMode = PlutoGridSelectingMode.row;
 
-  int? id;
-
   @override
-  void initState() {
+  initState() {
     agentsColumn();
+    getData();
     agentsRow();
+
     super.initState();
   }
+
+
+  List<JournalModel> dataList = []; 
+  Future<void> getData() async {
+    List<JournalModel> journals = await JournalApi().getAllData(); 
+    setState(() { 
+      dataList = journals
+          .where((element) =>
+              element.approbationDG == "Approved" &&
+                  element.approbationDD == "Approved")
+          .toList();
+    });
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -56,15 +72,28 @@ class _TableJournalState extends State<TableJournal> {
         },
         createHeader: (PlutoGridStateManager header) {
           return Row(
-            mainAxisAlignment: MainAxisAlignment.end,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              IconButton(
-                  onPressed: () {
-                    Navigator.pushNamed(
-                        context, ComptabiliteRoutes.comptabiliteJournal);
-                  },
-                  icon: Icon(Icons.refresh, color: Colors.green.shade700)),
-              PrintWidget(onPressed: () {})],
+              const TitleWidget(title: "Journals"),
+              Row(
+                children: [
+                  IconButton(
+                      onPressed: () {
+                        Navigator.pushNamed(
+                            context, ComptabiliteRoutes.comptabiliteJournal);
+                      },
+                      icon: Icon(Icons.refresh, color: Colors.green.shade700)),
+                  PrintWidget(onPressed: () {
+                    JournalXlsx().exportToExcel(dataList);
+                    if (!mounted) return;
+                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                      content: const Text("Exportation effectué!"),
+                      backgroundColor: Colors.green[700],
+                    ));
+                  })
+                ],
+              ),
+            ],
           );
         },
         configuration: PlutoGridConfiguration(
@@ -244,11 +273,11 @@ class _TableJournalState extends State<TableJournal> {
   }
 
   Future agentsRow() async { 
-    List<JournalModel?> dataList = await JournalApi().getAllData();
+    List<JournalModel> journals = await JournalApi().getAllData();
      UserModel userModel = await AuthApi().getUserId();
-    var data = dataList
+    var data = journals
         .where((element) =>
-            element!.approbationDG == "Approved" &&
+            element.approbationDG == "Approved" &&
                 element.approbationDD == "Approved" ||
             element.signature == userModel.matricule)
         .toList();
@@ -258,7 +287,7 @@ class _TableJournalState extends State<TableJournal> {
       setState(() {
         for (var item in data) {
           rows.add(PlutoRow(cells: {
-            'id': PlutoCell(value: item!.id),
+            'id': PlutoCell(value: item.id),
             'numeroOperation': PlutoCell(value: item.numeroOperation),
             'libele': PlutoCell(value: item.libele),
             'compteDebit': PlutoCell(value: item.compteDebit),

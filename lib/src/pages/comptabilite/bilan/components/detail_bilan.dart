@@ -11,6 +11,7 @@ import 'package:fokad_admin/src/models/comptabilites/compte_passif_model.dart';
 import 'package:fokad_admin/src/models/users/user_model.dart';
 import 'package:fokad_admin/src/navigation/drawer/drawer_menu.dart';
 import 'package:fokad_admin/src/navigation/header/custom_appbar.dart';
+import 'package:fokad_admin/src/pages/comptabilite/bilan/components/bilan_pdf.dart';
 import 'package:fokad_admin/src/routes/routes.dart';
 import 'package:fokad_admin/src/utils/loading.dart';
 import 'package:fokad_admin/src/widgets/print_widget.dart';
@@ -195,7 +196,10 @@ class _DetailBilanState extends State<DetailBilan> {
                           deleteButton(data),
                           PrintWidget(
                               tooltip: 'Imprimer le document',
-                              onPressed: () {}),
+                              onPressed: () async{
+                                await BilanPdf.generate(
+                                  data, compteActifList, comptePassifList);
+                              }),
                         ],
                       ),
                       SelectableText(

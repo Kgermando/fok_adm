@@ -5,9 +5,11 @@ import 'package:fokad_admin/src/api/auth/auth_api.dart';
 import 'package:fokad_admin/src/api/comptabilite/bilan_api.dart'; 
 import 'package:fokad_admin/src/models/comptabilites/bilan_model.dart';
 import 'package:fokad_admin/src/models/users/user_model.dart';
+import 'package:fokad_admin/src/pages/comptabilite/bilan/components/bilan_xlsx.dart';
 import 'package:fokad_admin/src/routes/routes.dart';
 import 'package:fokad_admin/src/utils/class_implemented.dart';
 import 'package:fokad_admin/src/widgets/print_widget.dart';
+import 'package:fokad_admin/src/widgets/title_widget.dart';
 import 'package:intl/intl.dart';
 import 'package:pluto_grid/pluto_grid.dart';
 
@@ -24,15 +26,27 @@ class _TableBilanState extends State<TableBilan> {
   PlutoGridStateManager? stateManager;
   PlutoGridSelectingMode gridSelectingMode = PlutoGridSelectingMode.row;
 
-  int? id;
-
   @override
-  void initState() {
+  initState() {
     agentsColumn();
+    getData();
     agentsRow();
 
     super.initState();
   }
+
+  List<BilanModel> dataList = [];
+  Future<void> getData() async {
+    List<BilanModel> bilans = await BilanApi().getAllData();
+    setState(() {
+      dataList = bilans
+          .where((element) =>
+              element.approbationDG == "Approved" &&
+              element.approbationDD == "Approved")
+          .toList();
+    });
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -52,15 +66,27 @@ class _TableBilanState extends State<TableBilan> {
       },
       createHeader: (PlutoGridStateManager header) {
         return Row(
-          mainAxisAlignment: MainAxisAlignment.end,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            IconButton(
-                onPressed: () {
-                  Navigator.pushNamed(
-                      context, ComptabiliteRoutes.comptabiliteBilan);
-                },
-                icon: Icon(Icons.refresh, color: Colors.green.shade700)),
-            PrintWidget(onPressed: () {})
+            const TitleWidget(title: "Bilans"),
+            Row(
+              children: [
+                IconButton(
+                    onPressed: () {
+                      Navigator.pushNamed(
+                          context, ComptabiliteRoutes.comptabiliteBilan);
+                    },
+                    icon: Icon(Icons.refresh, color: Colors.green.shade700)),
+                PrintWidget(onPressed: () {
+                  BilanXlsx().exportToExcel(dataList);
+                  if (!mounted) return;
+                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                    content: const Text("Exportation effectué!"),
+                    backgroundColor: Colors.green[700],
+                  ));
+                })
+              ],
+            ),
           ],
         );
       },
@@ -142,12 +168,12 @@ class _TableBilanState extends State<TableBilan> {
   }
 
   Future agentsRow() async { 
-    List<BilanModel?> dataList = await BilanApi().getAllData();
+    List<BilanModel> bilans = await BilanApi().getAllData();
     UserModel userModel = await AuthApi().getUserId();
 
-    var data = dataList
+    var data = bilans
         .where((element) =>
-            element!.approbationDG == "Approved" &&
+            element.approbationDG == "Approved" &&
                 element.approbationDD == "Approved" ||
             element.signature == userModel.matricule)
         .toList();
@@ -156,7 +182,7 @@ class _TableBilanState extends State<TableBilan> {
       setState(() {
         for (var item in data) {
           rows.add(PlutoRow(cells: {
-            'id': PlutoCell(value: item!.id),
+            'id': PlutoCell(value: item.id),
             'titleBilan': PlutoCell(value: item.titleBilan),
             'signature': PlutoCell(value: item.signature),
             'created': PlutoCell(
