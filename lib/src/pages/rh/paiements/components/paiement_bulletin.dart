@@ -1398,7 +1398,7 @@ class _PaiementBulletinState extends State<PaiementBulletin> {
                                         const SizedBox(height: p20),
                                         Text(data.approbationBudget,
                                           style: bodyLarge.copyWith(
-                                              color: Colors.grey.shade700)),
+                                              color: Colors.orange.shade700)),
                                       ],
                                     )),
                                 if (data.approbationBudget == "Unapproved")
@@ -1421,6 +1421,7 @@ class _PaiementBulletinState extends State<PaiementBulletin> {
                                       ],
                                     )),
                               ]),
+                              const SizedBox(height: p20),
                               Row(children: [
                                 Expanded(
                                     flex: 2,
@@ -1428,7 +1429,8 @@ class _PaiementBulletinState extends State<PaiementBulletin> {
                                       children: [
                                         const Text("Ligne Budgetaire"),
                                         const SizedBox(height: p20),
-                                        Text(data.ligneBudgetaire),
+                                        Text(data.ligneBudgetaire, style: bodyLarge.copyWith(
+                                              color: Colors.purple.shade700)),
                                       ],
                                     )),
                                 Expanded(
@@ -1437,7 +1439,8 @@ class _PaiementBulletinState extends State<PaiementBulletin> {
                                       children: [
                                         const Text("Ressource"),
                                         const SizedBox(height: p20),
-                                        Text(data.ressource),
+                                        Text(data.ressource, style: bodyLarge.copyWith(
+                                              color: Colors.purple.shade700)),
                                       ],
                                     )),
                               ]),

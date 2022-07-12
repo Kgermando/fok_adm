@@ -123,7 +123,7 @@ class SalairePdf {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          'Salaire '.toUpperCase(),
+          'Bulletin de paie '.toUpperCase(),
           style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
         ),
       ],

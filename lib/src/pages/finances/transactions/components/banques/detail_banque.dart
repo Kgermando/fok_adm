@@ -56,10 +56,12 @@ class _DetailBanqueState extends State<DetailBanque> {
   Future<void> getData() async {
     final dataUser = await UserApi().getAllData();
     UserModel userModel = await AuthApi().getUserId();
-    setState(() {
+    if (mounted) {
+      setState(() {
       userList = dataUser;
       user = userModel;
     });
+    }
   }
 
   @override

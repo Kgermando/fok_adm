@@ -792,6 +792,7 @@ class _DetailTransportRestaurantState extends State<DetailTransportRestaurant> {
                                     ],
                                   )),
                             ]),
+                            const SizedBox(height: p20),
                             Row(children: [
                               Expanded(
                                   flex: 2,
@@ -799,7 +800,9 @@ class _DetailTransportRestaurantState extends State<DetailTransportRestaurant> {
                                     children: [
                                       const Text("Ligne Budgetaire"),
                                       const SizedBox(height: p20),
-                                      Text(data.ligneBudgetaire),
+                                      Text(data.ligneBudgetaire,
+                                          style: bodyLarge.copyWith(
+                                              color: Colors.purple.shade700)),
                                     ],
                                   )),
                               Expanded(
@@ -808,7 +811,9 @@ class _DetailTransportRestaurantState extends State<DetailTransportRestaurant> {
                                     children: [
                                       const Text("Ressource"),
                                       const SizedBox(height: p20),
-                                      Text(data.ressource),
+                                      Text(data.ressource,
+                                          style: bodyLarge.copyWith(
+                                              color: Colors.purple.shade700)),
                                     ],
                                   )),
                             ]),

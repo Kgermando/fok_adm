@@ -42,7 +42,6 @@ class _AddAutreFinState extends State<AddAutreFin> {
   TextEditingController coupureBilletController = TextEditingController();
   TextEditingController nombreBilletController = TextEditingController();
 
-  String? resourceFin;
   String? typeOperation;
 
     Timer? timer;
@@ -457,7 +456,7 @@ class _AddAutreFinState extends State<AddAutreFin> {
         libelle: libelleController.text,
         montant: montantController.text,
         typeOperation: typeOperation.toString(),
-        numeroOperation: 'Transaction-Fin-$resourceFin-${numberItem + 1}',
+        numeroOperation: 'Transaction-Autres-Fin-${numberItem + 1}',
         signature: matricule.toString(),
         createdRef: numberItem + 1,
         created: DateTime.now());

@@ -70,6 +70,11 @@ class _DashboardRhState extends State<DashboardRh> {
               element.approbationBudget == "Approved" && 
               element.approbationFin == "Approved")
           .toList(); 
+
+
+      for (var element in salaireList) {
+        totalEnveloppeSalaire += double.parse(element.salaire);
+      }
     });
   }
 
@@ -102,12 +107,8 @@ class _DashboardRhState extends State<DashboardRh> {
       isMonth = 'Novembre';
     } else if (month == 12) {
       isMonth = 'Décembre';
-    }
-
-    for (var element in salaireList) {
-      totalEnveloppeSalaire += double.parse(element.salaire);
-    }
-
+    } 
+    
     return Scaffold(
         // key: _key,
         drawer: const DrawerMenu(),

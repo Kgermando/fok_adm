@@ -264,30 +264,31 @@ class _DashboardAdministrationState extends State<DashboardAdministration> {
 
         disponible = soldeBanque + soldeCaisse + cumulFinanceExterieur;
       });
+
+
+      for (var item in ligneBudgetaireList) {
+        coutTotal += double.parse(item.coutTotal);
+      }
+      for (var item in dataCampaignList) {
+        totalCampaign += double.parse(item.coutCampaign);
+      }
+      // for (var item in dataDevisList) {
+      //   totalDevis += double.parse(item.resources);
+      // }
+      for (var item in dataProjetList) {
+        totalProjet += double.parse(item.coutProjet);
+      }
+      for (var item in dataSalaireList) {
+        totalSalaire += double.parse(item.salaire);
+      }
+      sommeEnCours = totalCampaign + totalDevis + totalProjet + totalSalaire;
+      sommeRestantes = coutTotal - sommeEnCours;
+      poursentExecution = sommeRestantes * 100 / coutTotal;
     }
   }
 
   @override
-  Widget build(BuildContext context) {
-    for (var item in ligneBudgetaireList) {
-      coutTotal += double.parse(item.coutTotal);
-    }
-    for (var item in dataCampaignList) {
-      totalCampaign += double.parse(item.coutCampaign);
-    }
-    // for (var item in dataDevisList) {
-    //   totalDevis += double.parse(item.resources);
-    // }
-    for (var item in dataProjetList) {
-      totalProjet += double.parse(item.coutProjet);
-    }
-    for (var item in dataSalaireList) {
-      totalSalaire += double.parse(item.salaire);
-    }
-    sommeEnCours = totalCampaign + totalDevis + totalProjet + totalSalaire;
-    sommeRestantes = coutTotal - sommeEnCours;
-    poursentExecution = sommeRestantes * 100 / coutTotal;
-
+  Widget build(BuildContext context) { 
     return Scaffold(
         key: _key,
         drawer: const DrawerMenu(),

@@ -625,6 +625,7 @@ class _DetailCampaignState extends State<DetailCampaign> {
                                     ],
                                   )),
                             ]),
+                            const SizedBox(height: p20),
                             Row(children: [
                               Expanded(
                                   flex: 2,
@@ -632,7 +633,9 @@ class _DetailCampaignState extends State<DetailCampaign> {
                                     children: [
                                       const Text("Ligne Budgetaire"),
                                       const SizedBox(height: p20),
-                                      Text(data.ligneBudgetaire),
+                                      Text(data.ligneBudgetaire,
+                                          style: bodyLarge.copyWith(
+                                              color: Colors.purple.shade700)),
                                     ],
                                   )),
                               Expanded(
@@ -641,7 +644,9 @@ class _DetailCampaignState extends State<DetailCampaign> {
                                     children: [
                                       const Text("Ressource"),
                                       const SizedBox(height: p20),
-                                      Text(data.ressource),
+                                      Text(data.ressource,
+                                          style: bodyLarge.copyWith(
+                                              color: Colors.purple.shade700)),
                                     ],
                                   )),
                             ]),

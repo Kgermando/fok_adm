@@ -54,16 +54,12 @@ class _DetailFinExterieurState extends State<DetailFinExterieur> {
       passwordHash: '-',
       succursale: '-');
 
-  List<CoupureBilletModel> coupureBilletList = [];
-  List<CoupureBilletModel> coupureBilletFilter = [];
   Future<void> getData() async {
     final dataUser = await UserApi().getAllData();
     UserModel userModel = await AuthApi().getUserId();
-    var coupureBillets = await CoupureBilletApi().getAllData();
     setState(() {
       userList = dataUser;
       user = userModel;
-      coupureBilletFilter = coupureBillets;
     });
   }
 
@@ -91,10 +87,6 @@ class _DetailFinExterieurState extends State<DetailFinExterieur> {
                             AsyncSnapshot<FinanceExterieurModel> snapshot) {
                           if (snapshot.hasData) {
                             FinanceExterieurModel? data = snapshot.data;
-                            coupureBilletList = coupureBilletFilter
-                                .where((element) =>
-                                    element.reference == data!.createdRef)
-                                .toList();
                             return Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [

@@ -56,17 +56,15 @@ class _DetailCaisseState extends State<DetailCaisse> {
       passwordHash: '-',
       succursale: '-');
 
-  List<CoupureBilletModel> coupureBilletList = [];
-  List<CoupureBilletModel> coupureBilletFilter = [];
   Future<void> getData() async {
     UserModel userModel = await AuthApi().getUserId();
     final dataUser = await UserApi().getAllData();
-    var coupureBillets = await CoupureBilletApi().getAllData();
-    setState(() {
+    if(mounted) {
+      setState(() {
       user = userModel;
       userList = dataUser;
-      coupureBilletFilter = coupureBillets;
     });
+    }
   }
 
   @override
@@ -93,10 +91,6 @@ class _DetailCaisseState extends State<DetailCaisse> {
                             AsyncSnapshot<CaisseModel> snapshot) {
                           if (snapshot.hasData) {
                             CaisseModel? data = snapshot.data;
-                            coupureBilletList = coupureBilletFilter
-                                .where((element) =>
-                                    element.reference == data!.createdRef)
-                                .toList();
                             return Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
