@@ -24,6 +24,8 @@ class _LoginPageState extends State<LoginPage> {
   final TextEditingController matriculeController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
 
+  final versionSoft = "";
+
   @override
   Widget build(BuildContext context) {
     var headline6 = Theme.of(context).textTheme.headline6;
@@ -337,8 +339,8 @@ class _LoginPageState extends State<LoginPage> {
                   // setState(() => isloading = false);
                 } else {
                   ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                    content:
-                        const Text("Votre Matricule ou Mot de passe incorrect ou encore verifiez votre connexion internet."),
+                    content: const Text(
+                        "Votre Matricule ou Mot de passe incorrect ou encore verifiez votre connexion internet."),
                     backgroundColor: Colors.red[700],
                   ));
                   setState(() => isloading = false);
