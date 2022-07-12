@@ -1,11 +1,11 @@
 import 'dart:async';
 
-import 'package:flutter/material.dart'; 
+import 'package:flutter/material.dart';
 import 'package:fokad_admin/src/api/auth/auth_api.dart';
-import 'package:fokad_admin/src/api/comptabilite/balance_compte_api.dart'; 
+import 'package:fokad_admin/src/api/comptabilite/balance_compte_api.dart';
 import 'package:fokad_admin/src/models/comptabilites/balance_comptes_model.dart';
 import 'package:fokad_admin/src/models/users/user_model.dart';
-import 'package:fokad_admin/src/pages/comptabilite/balance/components/balance_xlsx.dart'; 
+import 'package:fokad_admin/src/pages/comptabilite/balance/components/balance_xlsx.dart';
 import 'package:fokad_admin/src/routes/routes.dart';
 import 'package:fokad_admin/src/utils/class_implemented.dart';
 import 'package:fokad_admin/src/widgets/print_widget.dart';
@@ -53,11 +53,11 @@ class _TableBilanComptabiliteState extends State<TableBilanComptabilite> {
       columns: columns,
       rows: rows,
       onRowDoubleTap: (PlutoGridOnRowDoubleTapEvent tapEvent) {
-        final dataList = tapEvent.row!.cells.values;
-        final idPlutoRow = dataList.elementAt(0); 
+        final dataId = tapEvent.row!.cells.values;
+        final idPlutoRow = dataId.elementAt(0);
         Navigator.pushNamed(
             context, ComptabiliteRoutes.comptabiliteBalanceDetail,
-            arguments: idPlutoRow.value);  
+            arguments: idPlutoRow.value);
       },
       onLoaded: (PlutoGridOnLoadedEvent event) {
         stateManager = event.stateManager;
@@ -167,14 +167,15 @@ class _TableBilanComptabiliteState extends State<TableBilanComptabilite> {
     ];
   }
 
-  Future agentsRow() async { 
+  Future agentsRow() async {
     List<BalanceCompteModel> balances = await BalanceCompteApi().getAllData();
     UserModel userModel = await AuthApi().getUserId();
 
     var data = balances
-        .where((element) => element.approbationDG == "Approved" && 
-          element.approbationDD == "Approved" || 
-          element.signature == userModel.matricule)
+        .where((element) =>
+            element.approbationDG == "Approved" &&
+                element.approbationDD == "Approved" ||
+            element.signature == userModel.matricule)
         .toList();
 
     if (mounted) {

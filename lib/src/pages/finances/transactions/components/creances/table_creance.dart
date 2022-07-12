@@ -1,9 +1,9 @@
 import 'dart:async';
 
-import 'package:flutter/material.dart'; 
+import 'package:flutter/material.dart';
 import 'package:fokad_admin/src/api/auth/auth_api.dart';
 import 'package:fokad_admin/src/api/finances/creance_api.dart';
-import 'package:fokad_admin/src/api/finances/creance_dette_api.dart'; 
+import 'package:fokad_admin/src/api/finances/creance_dette_api.dart';
 import 'package:fokad_admin/src/models/finances/creance_dette_model.dart';
 import 'package:fokad_admin/src/models/finances/creances_model.dart';
 import 'package:fokad_admin/src/models/users/user_model.dart';
@@ -52,9 +52,11 @@ class _TableCreanceState extends State<TableCreance> {
       List<CreanceModel?> data = creances
           .where((element) =>
               element.approbationDG == "Approved" &&
-                  element.approbationDD == "Approved")
+              element.approbationDD == "Approved")
           .toList();
-      creanceDetteList = creanceDette.where((element) => element.creanceDette == 'creances').toList();
+      creanceDetteList = creanceDette
+          .where((element) => element.creanceDette == 'creances')
+          .toList();
 
       for (var item in data) {
         nonPaye += double.parse(item!.montant);
@@ -81,8 +83,8 @@ class _TableCreanceState extends State<TableCreance> {
             columns: columns,
             rows: rows,
             onRowDoubleTap: (PlutoGridOnRowDoubleTapEvent tapEvent) {
-              final dataList = tapEvent.row!.cells.values;
-              final idPlutoRow = dataList.elementAt(0);
+              final dataId = tapEvent.row!.cells.values;
+              final idPlutoRow = dataId.elementAt(0);
               Navigator.pushNamed(
                   context, FinanceRoutes.transactionsCreanceDetail,
                   arguments: idPlutoRow.value);
@@ -309,15 +311,16 @@ class _TableCreanceState extends State<TableCreance> {
     ];
   }
 
-  Future agentsRow() async { 
+  Future agentsRow() async {
     List<CreanceModel?> dataList = await CreanceApi().getAllData();
     UserModel userModel = await AuthApi().getUserId();
     var data = dataList
-        .where((element) => element!.approbationDG == "Approved" && 
-          element.approbationDD == "Approved" || 
-          element.signature == userModel.matricule)
+        .where((element) =>
+            element!.approbationDG == "Approved" &&
+                element.approbationDD == "Approved" ||
+            element.signature == userModel.matricule)
         .toList();
-        
+
     if (mounted) {
       setState(() {
         for (var item in data) {

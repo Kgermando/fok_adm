@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:fokad_admin/src/api/logistiques/immobiler_api.dart';
 import 'package:fokad_admin/src/models/logistiques/immobilier_model.dart';
-import 'package:fokad_admin/src/pages/logistiques/materiels/components/immobilier_xlsx.dart'; 
+import 'package:fokad_admin/src/pages/logistiques/materiels/components/immobilier_xlsx.dart';
 import 'package:fokad_admin/src/routes/routes.dart';
 import 'package:fokad_admin/src/utils/class_implemented.dart';
 import 'package:fokad_admin/src/widgets/print_widget.dart';
@@ -40,7 +40,6 @@ class _TableImmobilierState extends State<TableImmobilier> {
           .toList();
     });
   }
- 
 
   @override
   Widget build(BuildContext context) {
@@ -48,10 +47,11 @@ class _TableImmobilierState extends State<TableImmobilier> {
       columns: columns,
       rows: rows,
       onRowDoubleTap: (PlutoGridOnRowDoubleTapEvent tapEvent) {
-        final dataList = tapEvent.row!.cells.values;
-        final idPlutoRow = dataList.elementAt(0);
-        Navigator.pushNamed(context, LogistiqueRoutes.logImmobilierMaterielDetail,
-            arguments: idPlutoRow.value);  
+        final dataId = tapEvent.row!.cells.values;
+        final idPlutoRow = dataId.elementAt(0);
+        Navigator.pushNamed(
+            context, LogistiqueRoutes.logImmobilierMaterielDetail,
+            arguments: idPlutoRow.value);
       },
       onLoaded: (PlutoGridOnLoadedEvent event) {
         stateManager = event.stateManager;
@@ -195,7 +195,7 @@ class _TableImmobilierState extends State<TableImmobilier> {
 
     if (mounted) {
       setState(() {
-        for (var item in data) { 
+        for (var item in data) {
           rows.add(PlutoRow(cells: {
             'id': PlutoCell(value: item.id),
             'typeAllocation': PlutoCell(value: item.typeAllocation),

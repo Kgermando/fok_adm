@@ -157,10 +157,7 @@ class _DetailBonLivraisonState extends State<DetailBonLivraison> {
                       PrintWidget(
                         tooltip: 'Imprimer le document',
                         onPressed: () async {
-                          final pdfFile =
-                              await BonLivraisonPDF.generate(data, "\$");
-
-                          PdfApi.openFile(pdfFile);
+                          await BonLivraisonPDF.generate(data, "\$");
                         },
                       ),
                       SelectableText(

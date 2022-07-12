@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:fokad_admin/src/api/user/user_api.dart';
-import 'package:fokad_admin/src/models/users/user_model.dart'; 
+import 'package:fokad_admin/src/models/users/user_model.dart';
 import 'package:fokad_admin/src/pages/rh/dd_rh/components/users/users_xlsx.dart';
 import 'package:fokad_admin/src/routes/routes.dart';
 import 'package:fokad_admin/src/utils/class_implemented.dart';
@@ -26,7 +26,7 @@ class _TableUsersState extends State<TableUsers> {
 
   int? id;
 
-   @override
+  @override
   initState() {
     agentsColumn();
     agentsRow();
@@ -36,12 +36,13 @@ class _TableUsersState extends State<TableUsers> {
 
   List<UserModel> dataList = [];
   Future<void> getData() async {
-   List<UserModel> data = await UserApi().getAllData();
+    List<UserModel> data = await UserApi().getAllData();
 
     setState(() {
       dataList = data.toList();
     });
   }
+
   @override
   Widget build(BuildContext context) {
     return SizedBox(
@@ -50,9 +51,9 @@ class _TableUsersState extends State<TableUsers> {
         columns: columns,
         rows: rows,
         onRowDoubleTap: (PlutoGridOnRowDoubleTapEvent tapEvent) {
-          final dataList = tapEvent.row!.cells.values;
-          final idPlutoRow = dataList.elementAt(0);
-           Navigator.pushNamed(context, RhRoutes.rhAgentPageUser,
+          final dataId = tapEvent.row!.cells.values;
+          final idPlutoRow = dataId.elementAt(0);
+          Navigator.pushNamed(context, RhRoutes.rhAgentPageUser,
               arguments: idPlutoRow.value);
         },
         onLoaded: (PlutoGridOnLoadedEvent event) {
@@ -293,7 +294,7 @@ class _TableUsersState extends State<TableUsers> {
 
     if (mounted) {
       setState(() {
-        for (var item in data) { 
+        for (var item in data) {
           rows.add(PlutoRow(cells: {
             'id': PlutoCell(value: item.id),
             'nom': PlutoCell(value: item.nom),
@@ -306,8 +307,8 @@ class _TableUsersState extends State<TableUsers> {
             'fonctionOccupe': PlutoCell(value: item.fonctionOccupe),
             'role': PlutoCell(value: item.role),
             'succursale': PlutoCell(value: item.succursale),
-            'isOnline':
-                PlutoCell(value: (item.isOnline == 'true') ? "En ligne" : "Offline"),
+            'isOnline': PlutoCell(
+                value: (item.isOnline == 'true') ? "En ligne" : "Offline"),
             'createdAt': PlutoCell(
                 value: DateFormat("dd-MM-yyyy HH:mm").format(item.createdAt))
           }));

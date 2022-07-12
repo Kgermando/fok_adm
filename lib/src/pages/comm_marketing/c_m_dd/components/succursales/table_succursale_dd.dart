@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:fokad_admin/src/api/comm_marketing/commerciale/succursale_api.dart';
-import 'package:fokad_admin/src/models/comm_maketing/succursale_model.dart'; 
+import 'package:fokad_admin/src/models/comm_maketing/succursale_model.dart';
+import 'package:fokad_admin/src/pages/comm_marketing/commercial/succursale/components/succursale_xlsx.dart';
 import 'package:fokad_admin/src/routes/routes.dart';
 import 'package:fokad_admin/src/widgets/print_widget.dart';
 import 'package:fokad_admin/src/utils/class_implemented.dart';
+import 'package:fokad_admin/src/widgets/title_widget.dart';
 import 'package:intl/intl.dart';
 import 'package:pluto_grid/pluto_grid.dart';
 
@@ -20,13 +22,24 @@ class _TableSuccursaleDDState extends State<TableSuccursaleDD> {
   PlutoGridStateManager? stateManager;
   PlutoGridSelectingMode gridSelectingMode = PlutoGridSelectingMode.row;
 
-  int? id;
-
-  @override
-  void initState() {
+   @override
+  initState() {
     agentsColumn();
+    getData();
     agentsRow();
+
     super.initState();
+  }
+
+  List<SuccursaleModel> dataList = [];
+  Future<void> getData() async {
+    List<SuccursaleModel> succursales = await SuccursaleApi().getAllData();
+    setState(() {
+      dataList = succursales
+          .where((element) =>
+            element.approbationDD == "-")
+          .toList();
+    });
   }
 
   @override
@@ -37,12 +50,12 @@ class _TableSuccursaleDDState extends State<TableSuccursaleDD> {
         columns: columns,
         rows: rows,
         onRowDoubleTap: (PlutoGridOnRowDoubleTapEvent tapEvent) {
-          final dataList = tapEvent.row!.cells.values;
-          final idPlutoRow = dataList.elementAt(0);
+          final dataId = tapEvent.row!.cells.values;
+          final idPlutoRow = dataId.elementAt(0);
 
           Navigator.pushNamed(
               context, ComMarketingRoutes.comMarketingSuccursaleDetail,
-              arguments: idPlutoRow.value);  
+              arguments: idPlutoRow.value);
         },
         onLoaded: (PlutoGridOnLoadedEvent event) {
           stateManager = event.stateManager;
@@ -51,15 +64,28 @@ class _TableSuccursaleDDState extends State<TableSuccursaleDD> {
         },
         createHeader: (PlutoGridStateManager header) {
           return Row(
-            mainAxisAlignment: MainAxisAlignment.end,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              IconButton(
-                  onPressed: () {
-                    Navigator.pushNamed(
-                        context, ComMarketingRoutes.comMarketingDD);
-                  },
-                  icon: Icon(Icons.refresh, color: Colors.green.shade700)),
-              PrintWidget(onPressed: () {})],
+              const TitleWidget(title: "Succursales"),
+              Row(
+                children: [
+                  IconButton(
+                      onPressed: () {
+                        Navigator.pushNamed(
+                            context, ComMarketingRoutes.comMarketingDD);
+                      },
+                      icon: Icon(Icons.refresh, color: Colors.green.shade700)),
+                  PrintWidget(onPressed: () {
+                    SuccursaleXlsx().exportToExcel(dataList);
+                    if (!mounted) return;
+                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                      content: const Text("Exportation effectué!"),
+                      backgroundColor: Colors.green[700],
+                    ));
+                  })
+                ],
+              ),
+            ],
           );
         },
         configuration: PlutoGridConfiguration(
@@ -143,14 +169,13 @@ class _TableSuccursaleDDState extends State<TableSuccursaleDD> {
   }
 
   Future agentsRow() async {
-
-    List<SuccursaleModel?> dataList = await SuccursaleApi().getAllData();
-    var data = dataList.where((element) => element!.approbationDD == "-").toList();
+    List<SuccursaleModel> succursales = await SuccursaleApi().getAllData();
+    var data =
+        succursales.where((element) => element.approbationDD == "-").toList();
 
     if (mounted) {
       setState(() {
-        for (var item in data) {
-          id = item!.id;
+        for (var item in data) { 
           rows.add(PlutoRow(cells: {
             'id': PlutoCell(value: item.id),
             'name': PlutoCell(value: item.name),

@@ -6,7 +6,7 @@ import 'package:fokad_admin/src/api/finances/dette_api.dart';
 import 'package:fokad_admin/src/models/finances/creance_dette_model.dart';
 import 'package:fokad_admin/src/models/finances/dette_model.dart';
 import 'package:fokad_admin/src/pages/finances/transactions/components/dettes/dette_xlsx.dart';
-import 'package:fokad_admin/src/routes/routes.dart'; 
+import 'package:fokad_admin/src/routes/routes.dart';
 import 'package:fokad_admin/src/widgets/print_widget.dart';
 import 'package:fokad_admin/src/utils/class_implemented.dart';
 import 'package:fokad_admin/src/widgets/title_widget.dart';
@@ -75,8 +75,8 @@ class _TableDetteAdminState extends State<TableDetteAdmin> {
               columns: columns,
               rows: rows,
               onRowDoubleTap: (PlutoGridOnRowDoubleTapEvent tapEvent) {
-                final dataList = tapEvent.row!.cells.values;
-                final idPlutoRow = dataList.elementAt(0);
+                final dataId = tapEvent.row!.cells.values;
+                final idPlutoRow = dataId.elementAt(0);
                 Navigator.pushNamed(
                     context, FinanceRoutes.transactionsDetteDetail,
                     arguments: idPlutoRow.value);
@@ -308,8 +308,7 @@ class _TableDetteAdminState extends State<TableDetteAdmin> {
         .where((element) =>
             element!.approbationDG == '-' &&
             element.approbationDD == 'Approved')
-        .toList();  // PAs de filtre parce le fichier approbation n'est pas encore crée
-    
+        .toList(); // PAs de filtre parce le fichier approbation n'est pas encore crée
 
     if (mounted) {
       setState(() {

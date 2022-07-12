@@ -338,7 +338,7 @@ class _LoginPageState extends State<LoginPage> {
                 } else {
                   ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                     content:
-                        const Text("Votre Matricule ou Mot de passe incorrect"),
+                        const Text("Votre Matricule ou Mot de passe incorrect ou encore verifiez votre connexion internet."),
                     backgroundColor: Colors.red[700],
                   ));
                   setState(() => isloading = false);

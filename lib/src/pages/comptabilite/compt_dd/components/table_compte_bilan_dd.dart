@@ -36,13 +36,13 @@ class _TableCompteDDState extends State<TableCompteBilanDD> {
   List<BilanModel> dataList = [];
   Future<void> getData() async {
     List<BilanModel> bilans = await BilanApi().getAllData();
-    if(mounted) {
+    if (mounted) {
       setState(() {
-      dataList = bilans
-          .where((element) =>
-            element.approbationDD == "-" && element.isSubmit == "true")
-          .toList();
-    });
+        dataList = bilans
+            .where((element) =>
+                element.approbationDD == "-" && element.isSubmit == "true")
+            .toList();
+      });
     }
   }
 
@@ -54,8 +54,8 @@ class _TableCompteDDState extends State<TableCompteBilanDD> {
         columns: columns,
         rows: rows,
         onRowDoubleTap: (PlutoGridOnRowDoubleTapEvent tapEvent) {
-          final dataList = tapEvent.row!.cells.values;
-          final idPlutoRow = dataList.elementAt(0);
+          final dataId = tapEvent.row!.cells.values;
+          final idPlutoRow = dataId.elementAt(0);
           Navigator.pushNamed(
               context, ComptabiliteRoutes.comptabiliteBilanDetail,
               arguments: idPlutoRow.value);
@@ -171,11 +171,14 @@ class _TableCompteDDState extends State<TableCompteBilanDD> {
 
   Future agentsRow() async {
     List<BilanModel> bilans = await BilanApi().getAllData();
-    var data = bilans.where((element) => element.approbationDD == "-" && element.isSubmit == "true").toList();
+    var data = bilans
+        .where((element) =>
+            element.approbationDD == "-" && element.isSubmit == "true")
+        .toList();
 
     if (mounted) {
       setState(() {
-        for (var item in data) { 
+        for (var item in data) {
           rows.add(PlutoRow(cells: {
             'id': PlutoCell(value: item.id),
             'titleBilan': PlutoCell(value: item.titleBilan),

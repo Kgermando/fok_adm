@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:fokad_admin/src/api/logistiques/immobiler_api.dart';
 import 'package:fokad_admin/src/models/logistiques/immobilier_model.dart';
-import 'package:fokad_admin/src/pages/logistiques/materiels/components/immobilier_xlsx.dart'; 
+import 'package:fokad_admin/src/pages/logistiques/materiels/components/immobilier_xlsx.dart';
 import 'package:fokad_admin/src/routes/routes.dart';
 import 'package:fokad_admin/src/widgets/print_widget.dart';
 import 'package:fokad_admin/src/utils/class_implemented.dart';
@@ -35,11 +35,11 @@ class _TableImmobilierDDState extends State<TableImmobilierDD> {
   Future<void> getData() async {
     List<ImmobilierModel> immobiliers = await ImmobilierApi().getAllData();
     setState(() {
-      dataList = immobiliers
-          .where((element) => element.approbationDD == "-")
-          .toList();
+      dataList =
+          immobiliers.where((element) => element.approbationDD == "-").toList();
     });
   }
+
   @override
   Widget build(BuildContext context) {
     return SizedBox(
@@ -48,8 +48,8 @@ class _TableImmobilierDDState extends State<TableImmobilierDD> {
         columns: columns,
         rows: rows,
         onRowDoubleTap: (PlutoGridOnRowDoubleTapEvent tapEvent) {
-          final dataList = tapEvent.row!.cells.values;
-          final idPlutoRow = dataList.elementAt(0);
+          final dataId = tapEvent.row!.cells.values;
+          final idPlutoRow = dataId.elementAt(0);
           Navigator.pushNamed(
               context, LogistiqueRoutes.logImmobilierMaterielDetail,
               arguments: idPlutoRow.value);
@@ -68,8 +68,7 @@ class _TableImmobilierDDState extends State<TableImmobilierDD> {
                 children: [
                   IconButton(
                       onPressed: () {
-                        Navigator.pushNamed(
-                            context, LogistiqueRoutes.logDD);
+                        Navigator.pushNamed(context, LogistiqueRoutes.logDD);
                       },
                       icon: Icon(Icons.refresh, color: Colors.green.shade700)),
                   PrintWidget(onPressed: () {
@@ -196,7 +195,7 @@ class _TableImmobilierDDState extends State<TableImmobilierDD> {
 
     if (mounted) {
       setState(() {
-        for (var item in data) { 
+        for (var item in data) {
           rows.add(PlutoRow(cells: {
             'id': PlutoCell(value: item.id),
             'typeAllocation': PlutoCell(value: item.typeAllocation),

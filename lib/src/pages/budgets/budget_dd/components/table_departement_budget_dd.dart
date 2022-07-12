@@ -1,7 +1,7 @@
-import 'package:flutter/material.dart'; 
+import 'package:flutter/material.dart';
 import 'package:fokad_admin/src/api/budgets/departement_budget_api.dart';
 import 'package:fokad_admin/src/models/budgets/departement_budget_model.dart';
-import 'package:fokad_admin/src/routes/routes.dart'; 
+import 'package:fokad_admin/src/routes/routes.dart';
 import 'package:fokad_admin/src/utils/class_implemented.dart';
 import 'package:fokad_admin/src/widgets/title_widget.dart';
 import 'package:intl/intl.dart';
@@ -38,8 +38,8 @@ class _TableDepartementBudgetDDState extends State<TableDepartementBudgetDD> {
         columns: columns,
         rows: rows,
         onRowDoubleTap: (PlutoGridOnRowDoubleTapEvent tapEvent) {
-          final dataList = tapEvent.row!.cells.values;
-          final idPlutoRow = dataList.elementAt(0);
+          final dataId = tapEvent.row!.cells.values;
+          final idPlutoRow = dataId.elementAt(0);
 
           Navigator.pushNamed(
               context, BudgetRoutes.budgetBudgetPrevisionelDetail,
@@ -53,7 +53,7 @@ class _TableDepartementBudgetDDState extends State<TableDepartementBudgetDD> {
         createHeader: (PlutoGridStateManager header) {
           return Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [ 
+            children: [
               const TitleWidget(title: "Lignes Budgetaires"),
               Row(
                 children: [
@@ -61,7 +61,7 @@ class _TableDepartementBudgetDDState extends State<TableDepartementBudgetDD> {
                       onPressed: () {
                         Navigator.pushNamed(context, BudgetRoutes.budgetDD);
                       },
-                      icon: Icon(Icons.refresh, color: Colors.green.shade700)), 
+                      icon: Icon(Icons.refresh, color: Colors.green.shade700)),
                 ],
               )
             ],
@@ -150,14 +150,17 @@ class _TableDepartementBudgetDDState extends State<TableDepartementBudgetDD> {
     List<DepartementBudgetModel?> dataList =
         await DepeartementBudgetApi().getAllData();
 
-    var data = dataList.where((element) => DateTime.now().millisecondsSinceEpoch <=
-        element!.periodeFin.millisecondsSinceEpoch && 
-        element.approbationDD == '-' &&
-        element.isSubmit == 'true').toList();
+    var data = dataList
+        .where((element) =>
+            DateTime.now().millisecondsSinceEpoch <=
+                element!.periodeFin.millisecondsSinceEpoch &&
+            element.approbationDD == '-' &&
+            element.isSubmit == 'true')
+        .toList();
 
     if (!mounted) return;
     setState(() {
-      for (var item in data) { 
+      for (var item in data) {
         rows.add(PlutoRow(cells: {
           'id': PlutoCell(value: item!.id),
           'departement': PlutoCell(value: item.departement),

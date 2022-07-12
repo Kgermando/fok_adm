@@ -32,7 +32,7 @@ class _TableDevisBudgetDDState extends State<TableDevisBudgetDD> {
     super.initState();
   }
 
-  List<DevisModel> dataList = []; 
+  List<DevisModel> dataList = [];
 
   Future<void> getData() async {
     List<DevisModel> devis = await DevisAPi().getAllData();
@@ -57,8 +57,8 @@ class _TableDevisBudgetDDState extends State<TableDevisBudgetDD> {
         columns: columns,
         rows: rows,
         onRowDoubleTap: (PlutoGridOnRowDoubleTapEvent tapEvent) {
-          final dataList = tapEvent.row!.cells.values;
-          final idPlutoRow = dataList.elementAt(0);
+          final dataId = tapEvent.row!.cells.values;
+          final idPlutoRow = dataId.elementAt(0);
           Navigator.pushNamed(context, DevisRoutes.devisDetail,
               arguments: idPlutoRow.value);
         },
@@ -76,8 +76,7 @@ class _TableDevisBudgetDDState extends State<TableDevisBudgetDD> {
                 children: [
                   IconButton(
                       onPressed: () {
-                        Navigator.pushNamed(
-                            context, BudgetRoutes.budgetDD);
+                        Navigator.pushNamed(context, BudgetRoutes.budgetDD);
                       },
                       icon: Icon(Icons.refresh, color: Colors.green.shade700)),
                   PrintWidget(onPressed: () {

@@ -39,10 +39,10 @@ class _TableSalairesBudgetState extends State<TableSalairesBudget> {
     setState(() {
       paiementSalaireList = dataList
           .where((element) =>
-            element.observation == 'false' &&
+              element.observation == 'false' &&
               element.createdAt.month == DateTime.now().month &&
               element.createdAt.year == DateTime.now().year &&
-              element.approbationDD == 'Approved' && 
+              element.approbationDD == 'Approved' &&
               element.approbationBudget == '-')
           .toList();
     });
@@ -56,8 +56,8 @@ class _TableSalairesBudgetState extends State<TableSalairesBudget> {
         columns: columns,
         rows: rows,
         onRowDoubleTap: (PlutoGridOnRowDoubleTapEvent tapEvent) {
-          final dataList = tapEvent.row!.cells.values;
-          final idPlutoRow = dataList.elementAt(0);
+          final dataId = tapEvent.row!.cells.values;
+          final idPlutoRow = dataId.elementAt(0);
 
           Navigator.pushNamed(context, RhRoutes.rhPaiementBulletin,
               arguments: idPlutoRow.value);
@@ -86,10 +86,9 @@ class _TableSalairesBudgetState extends State<TableSalairesBudget> {
                       content: const Text("Exportation effectué!"),
                       backgroundColor: Colors.green[700],
                     ));
-                  })  
+                  })
                 ],
               ),
-              
             ],
           );
         },

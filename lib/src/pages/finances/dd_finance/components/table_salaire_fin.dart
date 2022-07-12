@@ -26,7 +26,7 @@ class _TableSalairesFINState extends State<TableSalairesFIN> {
 
   int? id;
 
-   @override
+  @override
   initState() {
     agentsColumn();
     agentsRow();
@@ -49,6 +49,7 @@ class _TableSalairesFINState extends State<TableSalairesFIN> {
           .toList();
     });
   }
+
   @override
   Widget build(BuildContext context) {
     return SizedBox(
@@ -57,8 +58,8 @@ class _TableSalairesFINState extends State<TableSalairesFIN> {
         columns: columns,
         rows: rows,
         onRowDoubleTap: (PlutoGridOnRowDoubleTapEvent tapEvent) {
-          final dataList = tapEvent.row!.cells.values;
-          final idPlutoRow = dataList.elementAt(0);
+          final dataId = tapEvent.row!.cells.values;
+          final idPlutoRow = dataId.elementAt(0);
           Navigator.pushNamed(context, RhRoutes.rhPaiementBulletin,
               arguments: idPlutoRow.value);
         },

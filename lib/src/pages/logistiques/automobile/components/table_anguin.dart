@@ -3,7 +3,7 @@ import 'package:fokad_admin/src/api/auth/auth_api.dart';
 import 'package:fokad_admin/src/api/logistiques/anguin_api.dart';
 import 'package:fokad_admin/src/models/logistiques/anguin_model.dart';
 import 'package:fokad_admin/src/models/users/user_model.dart';
-import 'package:fokad_admin/src/pages/logistiques/automobile/components/engin_xlsx.dart'; 
+import 'package:fokad_admin/src/pages/logistiques/automobile/components/engin_xlsx.dart';
 import 'package:fokad_admin/src/routes/routes.dart';
 import 'package:fokad_admin/src/utils/class_implemented.dart';
 import 'package:fokad_admin/src/widgets/print_widget.dart';
@@ -24,7 +24,6 @@ class _TableAnguinState extends State<TableAnguin> {
   PlutoGridStateManager? stateManager;
   PlutoGridSelectingMode gridSelectingMode = PlutoGridSelectingMode.row;
 
-
   @override
   initState() {
     agentsColumn();
@@ -33,29 +32,29 @@ class _TableAnguinState extends State<TableAnguin> {
     super.initState();
   }
 
-  List<AnguinModel> dataList = []; 
+  List<AnguinModel> dataList = [];
 
   Future<void> getData() async {
     List<AnguinModel> engins = await AnguinApi().getAllData();
-    setState(() { 
+    setState(() {
       dataList = engins
           .where((element) =>
               element.approbationDG == "Approved" &&
-                  element.approbationDD == "Approved")
+              element.approbationDD == "Approved")
           .toList();
     });
   }
- 
+
   @override
   Widget build(BuildContext context) {
     return PlutoGrid(
       columns: columns,
       rows: rows,
       onRowDoubleTap: (PlutoGridOnRowDoubleTapEvent tapEvent) {
-        final dataList = tapEvent.row!.cells.values;
-        final idPlutoRow = dataList.elementAt(0);
-         Navigator.pushNamed(context, LogistiqueRoutes.logAnguinAutoDetail,
-            arguments: idPlutoRow.value); 
+        final dataId = tapEvent.row!.cells.values;
+        final idPlutoRow = dataId.elementAt(0);
+        Navigator.pushNamed(context, LogistiqueRoutes.logAnguinAutoDetail,
+            arguments: idPlutoRow.value);
       },
       onLoaded: (PlutoGridOnLoadedEvent event) {
         stateManager = event.stateManager;
@@ -277,7 +276,7 @@ class _TableAnguinState extends State<TableAnguin> {
             'nomeroPlaque': PlutoCell(value: item.nomeroPLaque),
             'nomeroEntreprise': PlutoCell(value: item.nomeroEntreprise),
             'created': PlutoCell(
-              value: DateFormat("dd-MM-yyyy HH:mm").format(item.created))
+                value: DateFormat("dd-MM-yyyy HH:mm").format(item.created))
           }));
         }
         stateManager!.resetCurrentState();

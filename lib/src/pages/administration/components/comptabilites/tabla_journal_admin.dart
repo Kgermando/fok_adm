@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:fokad_admin/src/api/comptabilite/journal_api.dart';
 import 'package:fokad_admin/src/models/comptabilites/journal_model.dart';
-import 'package:fokad_admin/src/pages/comptabilite/journal/components/journal_xksx.dart'; 
+import 'package:fokad_admin/src/pages/comptabilite/journal/components/journal_xksx.dart';
 import 'package:fokad_admin/src/routes/routes.dart';
 import 'package:fokad_admin/src/utils/class_implemented.dart';
 import 'package:fokad_admin/src/widgets/print_widget.dart';
@@ -25,7 +25,6 @@ class _TableJournalAdminState extends State<TableJournalAdmin> {
   PlutoGridStateManager? stateManager;
   PlutoGridSelectingMode gridSelectingMode = PlutoGridSelectingMode.row;
 
-
   @override
   initState() {
     agentsColumn();
@@ -39,15 +38,13 @@ class _TableJournalAdminState extends State<TableJournalAdmin> {
   Future<void> getData() async {
     List<JournalModel> journals = await JournalApi().getAllData();
     setState(() {
-      dataList =
-          journals
+      dataList = journals
           .where((element) =>
               element.approbationDG == '-' &&
               element.approbationDD == 'Approved')
           .toList();
     });
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -57,12 +54,12 @@ class _TableJournalAdminState extends State<TableJournalAdmin> {
         columns: columns,
         rows: rows,
         onRowDoubleTap: (PlutoGridOnRowDoubleTapEvent tapEvent) {
-          final dataList = tapEvent.row!.cells.values;
-          final idPlutoRow = dataList.elementAt(0);
+          final dataId = tapEvent.row!.cells.values;
+          final idPlutoRow = dataId.elementAt(0);
 
           Navigator.pushNamed(
               context, ComptabiliteRoutes.comptabiliteJournalDetail,
-              arguments: idPlutoRow.value);  
+              arguments: idPlutoRow.value);
         },
         onLoaded: (PlutoGridOnLoadedEvent event) {
           stateManager = event.stateManager;

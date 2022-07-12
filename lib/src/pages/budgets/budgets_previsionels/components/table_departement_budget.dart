@@ -1,9 +1,9 @@
-import 'package:flutter/material.dart'; 
+import 'package:flutter/material.dart';
 import 'package:fokad_admin/src/api/auth/auth_api.dart';
-import 'package:fokad_admin/src/api/budgets/departement_budget_api.dart'; 
+import 'package:fokad_admin/src/api/budgets/departement_budget_api.dart';
 import 'package:fokad_admin/src/models/budgets/departement_budget_model.dart';
 import 'package:fokad_admin/src/models/users/user_model.dart';
-import 'package:fokad_admin/src/routes/routes.dart'; 
+import 'package:fokad_admin/src/routes/routes.dart';
 import 'package:fokad_admin/src/utils/class_implemented.dart';
 import 'package:fokad_admin/src/widgets/title_widget.dart';
 import 'package:intl/intl.dart';
@@ -35,8 +35,8 @@ class _TableDepartementBudgetState extends State<TableDepartementBudget> {
       columns: columns,
       rows: rows,
       onRowDoubleTap: (PlutoGridOnRowDoubleTapEvent tapEvent) {
-        final dataList = tapEvent.row!.cells.values;
-        final idPlutoRow = dataList.elementAt(0);
+        final dataId = tapEvent.row!.cells.values;
+        final idPlutoRow = dataId.elementAt(0);
 
         Navigator.pushNamed(context, BudgetRoutes.budgetBudgetPrevisionelDetail,
             arguments: idPlutoRow.value);
@@ -151,22 +151,20 @@ class _TableDepartementBudgetState extends State<TableDepartementBudget> {
   }
 
   Future agentsRow() async {
-    
     List<DepartementBudgetModel?> dataList =
-        await DepeartementBudgetApi().getAllData(); 
-    UserModel userModel = await AuthApi().getUserId(); 
+        await DepeartementBudgetApi().getAllData();
+    UserModel userModel = await AuthApi().getUserId();
 
     var data = dataList
         .where((element) =>
-          element!.approbationDG == "Approved" &&
-          element.approbationDD == "Approved" &&
-            DateTime.now().millisecondsSinceEpoch <=
+            element!.approbationDG == "Approved" &&
+                element.approbationDD == "Approved" &&
+                DateTime.now().millisecondsSinceEpoch <=
                     element.periodeFin.millisecondsSinceEpoch ||
-                element.signature == userModel.matricule ||
+            element.signature == userModel.matricule ||
             element.isSubmit == 'false')
         .toList();
 
-    
     if (mounted) {
       setState(() {
         for (var item in data) {

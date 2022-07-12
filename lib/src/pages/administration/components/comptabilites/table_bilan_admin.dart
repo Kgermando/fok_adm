@@ -37,8 +37,7 @@ class _TableBilanAdminState extends State<TableBilanAdmin> {
   Future<void> getData() async {
     List<BilanModel> bilans = await BilanApi().getAllData();
     setState(() {
-      dataList =
-          bilans
+      dataList = bilans
           .where((element) =>
               element.approbationDG == '-' &&
               element.approbationDD == 'Approved' &&
@@ -46,7 +45,6 @@ class _TableBilanAdminState extends State<TableBilanAdmin> {
           .toList();
     });
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -56,10 +54,11 @@ class _TableBilanAdminState extends State<TableBilanAdmin> {
         columns: columns,
         rows: rows,
         onRowDoubleTap: (PlutoGridOnRowDoubleTapEvent tapEvent) {
-          final dataList = tapEvent.row!.cells.values;
-          final idPlutoRow = dataList.elementAt(0);
+          final dataId = tapEvent.row!.cells.values;
+          final idPlutoRow = dataId.elementAt(0);
 
-          Navigator.pushNamed(context, ComptabiliteRoutes.comptabiliteBilanDetail,
+          Navigator.pushNamed(
+              context, ComptabiliteRoutes.comptabiliteBilanDetail,
               arguments: idPlutoRow.value);
         },
         onLoaded: (PlutoGridOnLoadedEvent event) {
@@ -173,7 +172,7 @@ class _TableBilanAdminState extends State<TableBilanAdmin> {
 
   Future agentsRow() async {
     // UserModel userModel = await AuthApi().getUserId();
-     List<BilanModel> bilans = await BilanApi().getAllData();
+    List<BilanModel> bilans = await BilanApi().getAllData();
     var data = bilans
         .where((element) =>
             element.approbationDG == '-' &&

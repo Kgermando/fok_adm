@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:fokad_admin/src/api/auth/auth_api.dart';
 import 'package:fokad_admin/src/api/devis/devis_api.dart';
-import 'package:fokad_admin/src/models/devis/devis_models.dart'; 
+import 'package:fokad_admin/src/models/devis/devis_models.dart';
 import 'package:fokad_admin/src/routes/routes.dart';
 import 'package:fokad_admin/src/widgets/print_widget.dart';
 import 'package:fokad_admin/src/utils/class_implemented.dart';
@@ -46,13 +46,13 @@ class _TableDevisState extends State<TableDevis> {
 
   Future<void> getData() async {
     final userModel = await AuthApi().getUserId();
-    if(mounted) {
+    if (mounted) {
       setState(() {
-      matricule = userModel.matricule;
-      departement = userModel.departement;
-      servicesAffectation = userModel.servicesAffectation;
-      fonctionOccupe = userModel.fonctionOccupe;
-    });
+        matricule = userModel.matricule;
+        departement = userModel.departement;
+        servicesAffectation = userModel.servicesAffectation;
+        fonctionOccupe = userModel.fonctionOccupe;
+      });
     }
   }
 
@@ -64,12 +64,11 @@ class _TableDevisState extends State<TableDevis> {
         columns: columns,
         rows: rows,
         onRowDoubleTap: (PlutoGridOnRowDoubleTapEvent tapEvent) {
-          final dataList = tapEvent.row!.cells.values;
-          final idPlutoRow = dataList.elementAt(0);
+          final dataId = tapEvent.row!.cells.values;
+          final idPlutoRow = dataId.elementAt(0);
 
           Navigator.pushNamed(context, DevisRoutes.devisDetail,
-              arguments: idPlutoRow.value);    
-          
+              arguments: idPlutoRow.value);
         },
         onLoaded: (PlutoGridOnLoadedEvent event) {
           stateManager = event.stateManager;
@@ -79,8 +78,7 @@ class _TableDevisState extends State<TableDevis> {
         createHeader: (PlutoGridStateManager header) {
           return Row(
             mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              PrintWidget(onPressed: () {})],
+            children: [PrintWidget(onPressed: () {})],
           );
         },
         configuration: PlutoGridConfiguration(

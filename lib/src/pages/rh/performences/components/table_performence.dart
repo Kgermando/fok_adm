@@ -39,10 +39,11 @@ class _TablePerformenceState extends State<TablePerformence> {
   Future<void> getData() async {
     UserModel user = await AuthApi().getUserId();
     List<PerformenceModel> performences = await PerformenceApi().getAllData();
-    
+
     setState(() {
       dataList = performences
-        .where((element) => element.departement == user.departement).toList();
+          .where((element) => element.departement == user.departement)
+          .toList();
     });
   }
 
@@ -52,8 +53,8 @@ class _TablePerformenceState extends State<TablePerformence> {
       columns: columns,
       rows: rows,
       onRowDoubleTap: (PlutoGridOnRowDoubleTapEvent tapEvent) {
-        final dataList = tapEvent.row!.cells.values;
-        final idPlutoRow = dataList.elementAt(0);
+        final dataId = tapEvent.row!.cells.values;
+        final idPlutoRow = dataId.elementAt(0);
 
         Navigator.pushNamed(context, RhRoutes.rhPerformenceDetail,
             arguments: idPlutoRow.value);
@@ -72,10 +73,9 @@ class _TablePerformenceState extends State<TablePerformence> {
               children: [
                 IconButton(
                     onPressed: () {
-                    Navigator.pushNamed(context, RhRoutes.rhPerformence);
-                  },
-                  icon: Icon(Icons.refresh, color: Colors.green.shade700)
-                ),
+                      Navigator.pushNamed(context, RhRoutes.rhPerformence);
+                    },
+                    icon: Icon(Icons.refresh, color: Colors.green.shade700)),
                 PrintWidget(onPressed: () {
                   PerformenceXlsx().exportToExcel(dataList);
                   if (!mounted) return;
@@ -83,7 +83,7 @@ class _TablePerformenceState extends State<TablePerformence> {
                     content: const Text("Exportation effectué!"),
                     backgroundColor: Colors.green[700],
                   ));
-                }) 
+                })
               ],
             ),
           ],
@@ -225,8 +225,9 @@ class _TablePerformenceState extends State<TablePerformence> {
   Future agentsRow() async {
     UserModel user = await AuthApi().getUserId();
     List<PerformenceModel?> dataList = await PerformenceApi().getAllData();
-    var data =
-        dataList.where((element) => element!.departement == user.departement).toList();
+    var data = dataList
+        .where((element) => element!.departement == user.departement)
+        .toList();
 
     if (mounted) {
       setState(() {

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:fokad_admin/src/api/logistiques/anguin_api.dart';
 import 'package:fokad_admin/src/models/logistiques/anguin_model.dart';
-import 'package:fokad_admin/src/pages/logistiques/automobile/components/engin_xlsx.dart'; 
+import 'package:fokad_admin/src/pages/logistiques/automobile/components/engin_xlsx.dart';
 import 'package:fokad_admin/src/routes/routes.dart';
 import 'package:fokad_admin/src/utils/class_implemented.dart';
 import 'package:fokad_admin/src/widgets/print_widget.dart';
@@ -35,13 +35,11 @@ class _TableAnguinDDState extends State<TableAnguinDD> {
   Future<void> getData() async {
     List<AnguinModel> engins = await AnguinApi().getAllData();
     setState(() {
-      dataList = engins
-          .where((element) => element.approbationDD == '-')
-          .toList();
+      dataList =
+          engins.where((element) => element.approbationDD == '-').toList();
     });
   }
- 
- 
+
   @override
   Widget build(BuildContext context) {
     return SizedBox(
@@ -50,10 +48,10 @@ class _TableAnguinDDState extends State<TableAnguinDD> {
         columns: columns,
         rows: rows,
         onRowDoubleTap: (PlutoGridOnRowDoubleTapEvent tapEvent) {
-          final dataList = tapEvent.row!.cells.values;
-          final idPlutoRow = dataList.elementAt(0);
-           Navigator.pushNamed(context, LogistiqueRoutes.logAnguinAutoDetail,
-              arguments: idPlutoRow.value); 
+          final dataId = tapEvent.row!.cells.values;
+          final idPlutoRow = dataId.elementAt(0);
+          Navigator.pushNamed(context, LogistiqueRoutes.logAnguinAutoDetail,
+              arguments: idPlutoRow.value);
         },
         onLoaded: (PlutoGridOnLoadedEvent event) {
           stateManager = event.stateManager;
@@ -69,8 +67,7 @@ class _TableAnguinDDState extends State<TableAnguinDD> {
                 children: [
                   IconButton(
                       onPressed: () {
-                        Navigator.pushNamed(
-                            context, LogistiqueRoutes.logDD);
+                        Navigator.pushNamed(context, LogistiqueRoutes.logDD);
                       },
                       icon: Icon(Icons.refresh, color: Colors.green.shade700)),
                   PrintWidget(onPressed: () {
@@ -252,7 +249,8 @@ class _TableAnguinDDState extends State<TableAnguinDD> {
 
   Future agentsRow() async {
     List<AnguinModel?> dataList = await AnguinApi().getAllData();
-    var data = dataList.where((element) => element!.approbationDD == '-').toList();
+    var data =
+        dataList.where((element) => element!.approbationDD == '-').toList();
 
     if (mounted) {
       setState(() {
@@ -270,7 +268,7 @@ class _TableAnguinDDState extends State<TableAnguinDD> {
             'nomeroPlaque': PlutoCell(value: item.nomeroPLaque),
             'nomeroEntreprise': PlutoCell(value: item.nomeroEntreprise),
             'created': PlutoCell(
-              value: DateFormat("dd-MM-yyyy HH:mm").format(item.created))
+                value: DateFormat("dd-MM-yyyy HH:mm").format(item.created))
           }));
         }
         stateManager!.resetCurrentState();

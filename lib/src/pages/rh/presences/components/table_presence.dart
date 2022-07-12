@@ -38,8 +38,8 @@ class _TablePresenceState extends State<TablePresence> {
       columns: columns,
       rows: rows,
       onRowDoubleTap: (PlutoGridOnRowDoubleTapEvent tapEvent) {
-        final dataList = tapEvent.row!.cells.values;
-        final idPlutoRow = dataList.elementAt(0);
+        final dataId = tapEvent.row!.cells.values;
+        final idPlutoRow = dataId.elementAt(0);
         Navigator.pushNamed(context, RhRoutes.rhPresenceDetail,
             arguments: idPlutoRow.value);
       },
@@ -60,10 +60,9 @@ class _TablePresenceState extends State<TablePresence> {
                       Navigator.pushNamed(context, RhRoutes.rhPresence);
                     },
                     icon: Icon(Icons.refresh, color: Colors.green.shade700)),
-                 PrintWidget(onPressed: () {})   
+                PrintWidget(onPressed: () {})
               ],
             ),
-            
           ],
         );
       },
@@ -162,7 +161,9 @@ class _TablePresenceState extends State<TablePresence> {
                     ? DateFormat("dd-MM-yyyy HH:mm").format(item.createdRef)
                     : "-"),
             'finJournee': PlutoCell(
-                value: (item.finJournee == 'true') ? "Journée fini" : 'Journée en cours'),
+                value: (item.finJournee == 'true')
+                    ? "Journée fini"
+                    : 'Journée en cours'),
           }));
         }
         stateManager!.resetCurrentState();

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:fokad_admin/src/api/logistiques/entretien_api.dart';
 import 'package:fokad_admin/src/models/logistiques/entretien_model.dart';
-import 'package:fokad_admin/src/pages/logistiques/entretiens/components/entretien_xlsx.dart'; 
+import 'package:fokad_admin/src/pages/logistiques/entretiens/components/entretien_xlsx.dart';
 import 'package:fokad_admin/src/routes/routes.dart';
 import 'package:fokad_admin/src/widgets/print_widget.dart';
 import 'package:fokad_admin/src/utils/class_implemented.dart';
@@ -22,7 +22,6 @@ class _TableEntretienDDState extends State<TableEntretienDD> {
   PlutoGridStateManager? stateManager;
   PlutoGridSelectingMode gridSelectingMode = PlutoGridSelectingMode.row;
 
-
   @override
   initState() {
     agentsColumn();
@@ -36,9 +35,8 @@ class _TableEntretienDDState extends State<TableEntretienDD> {
   Future<void> getData() async {
     List<EntretienModel> entretiens = await EntretienApi().getAllData();
     setState(() {
-      dataList = entretiens
-          .where((element) => element.approbationDD == "-")
-          .toList();
+      dataList =
+          entretiens.where((element) => element.approbationDD == "-").toList();
     });
   }
 
@@ -50,8 +48,8 @@ class _TableEntretienDDState extends State<TableEntretienDD> {
         columns: columns,
         rows: rows,
         onRowDoubleTap: (PlutoGridOnRowDoubleTapEvent tapEvent) {
-          final dataList = tapEvent.row!.cells.values;
-          final idPlutoRow = dataList.elementAt(0);
+          final dataId = tapEvent.row!.cells.values;
+          final idPlutoRow = dataId.elementAt(0);
           Navigator.pushNamed(context, LogistiqueRoutes.logEntretienDetail,
               arguments: idPlutoRow.value);
         },
@@ -69,8 +67,7 @@ class _TableEntretienDDState extends State<TableEntretienDD> {
                 children: [
                   IconButton(
                       onPressed: () {
-                        Navigator.pushNamed(
-                            context, LogistiqueRoutes.logDD);
+                        Navigator.pushNamed(context, LogistiqueRoutes.logDD);
                       },
                       icon: Icon(Icons.refresh, color: Colors.green.shade700)),
                   PrintWidget(onPressed: () {
@@ -211,7 +208,7 @@ class _TableEntretienDDState extends State<TableEntretienDD> {
 
     if (mounted) {
       setState(() {
-        for (var item in data) { 
+        for (var item in data) {
           rows.add(PlutoRow(cells: {
             'id': PlutoCell(value: item.id),
             'nom': PlutoCell(value: item.nom),

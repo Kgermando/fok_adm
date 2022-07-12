@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:fokad_admin/src/api/finances/fin_exterieur_api.dart';
 import 'package:fokad_admin/src/models/finances/fin_exterieur_model.dart';
-import 'package:fokad_admin/src/pages/finances/transactions/components/fin_exterieur/fin_autre_xlsx.dart'; 
+import 'package:fokad_admin/src/pages/finances/transactions/components/fin_exterieur/fin_autre_xlsx.dart';
 import 'package:fokad_admin/src/routes/routes.dart';
 import 'package:fokad_admin/src/widgets/print_widget.dart';
 import 'package:fokad_admin/src/utils/class_implemented.dart';
@@ -37,7 +37,6 @@ class _TableFinExterieurState extends State<TableFinExterieur> {
     super.initState();
   }
 
-
   List<FinanceExterieurModel> dataList = [];
 
   Future<void> getData() async {
@@ -49,7 +48,7 @@ class _TableFinExterieurState extends State<TableFinExterieur> {
         cumul += double.parse(item!.montant);
       }
 
-    dataList = financeExterieurs.toList();
+      dataList = financeExterieurs.toList();
     });
   }
 
@@ -62,9 +61,10 @@ class _TableFinExterieurState extends State<TableFinExterieur> {
             columns: columns,
             rows: rows,
             onRowDoubleTap: (PlutoGridOnRowDoubleTapEvent tapEvent) {
-              final dataList = tapEvent.row!.cells.values;
-              final idPlutoRow = dataList.elementAt(0);
-              Navigator.pushNamed(context, FinanceRoutes.transactionsFinancementExterneDetail,
+              final dataId = tapEvent.row!.cells.values;
+              final idPlutoRow = dataId.elementAt(0);
+              Navigator.pushNamed(
+                  context, FinanceRoutes.transactionsFinancementExterneDetail,
                   arguments: idPlutoRow.value);
             },
             onLoaded: (PlutoGridOnLoadedEvent event) {
@@ -81,8 +81,8 @@ class _TableFinExterieurState extends State<TableFinExterieur> {
                     children: [
                       IconButton(
                           onPressed: () {
-                            Navigator.pushNamed(
-                                context, FinanceRoutes.transactionsFinancementExterne);
+                            Navigator.pushNamed(context,
+                                FinanceRoutes.transactionsFinancementExterne);
                           },
                           icon: Icon(Icons.refresh,
                               color: Colors.green.shade700)),
@@ -119,7 +119,7 @@ class _TableFinExterieurState extends State<TableFinExterieur> {
                   } else if (column.field == 'montant') {
                     return resolver<ClassFilterImplemented>()
                         as PlutoFilterType;
-                  }   else if (column.field == 'departement') {
+                  } else if (column.field == 'departement') {
                     return resolver<ClassFilterImplemented>()
                         as PlutoFilterType;
                   } else if (column.field == 'typeOperation') {
@@ -233,7 +233,7 @@ class _TableFinExterieurState extends State<TableFinExterieur> {
         titleTextAlign: PlutoColumnTextAlign.left,
         width: 200,
         minWidth: 150,
-      ), 
+      ),
       PlutoColumn(
         readOnly: true,
         title: 'Type d\'operation',
@@ -274,20 +274,20 @@ class _TableFinExterieurState extends State<TableFinExterieur> {
   }
 
   Future agentsRow() async {
-    List<FinanceExterieurModel> dataList =
-        await FinExterieurApi().getAllData();
+    List<FinanceExterieurModel> dataList = await FinExterieurApi().getAllData();
     var data = dataList.toList();
 
     if (mounted) {
       setState(() {
-        for (var item in data) { 
+        for (var item in data) {
           rows.add(PlutoRow(cells: {
             'id': PlutoCell(value: item.id),
             'nomComplet': PlutoCell(value: item.nomComplet),
             'pieceJustificative': PlutoCell(value: item.pieceJustificative),
             'libelle': PlutoCell(value: item.libelle),
-            'montant': PlutoCell(value: "${NumberFormat
-              .decimalPattern('fr').format(double.parse(item.montant))} \$"), 
+            'montant': PlutoCell(
+                value:
+                    "${NumberFormat.decimalPattern('fr').format(double.parse(item.montant))} \$"),
             'typeOperation': PlutoCell(value: item.typeOperation),
             'numeroOperation': PlutoCell(value: item.numeroOperation),
             'created': PlutoCell(

@@ -44,7 +44,7 @@ class _TableEtatBesoinLogState extends State<TableEtatBesoinLog> {
   String? servicesAffectation;
   String? fonctionOccupe;
 
-  List<DevisModel> dataList = []; 
+  List<DevisModel> dataList = [];
 
   Future<void> getData() async {
     final userModel = await AuthApi().getUserId();
@@ -56,11 +56,13 @@ class _TableEtatBesoinLogState extends State<TableEtatBesoinLog> {
         servicesAffectation = userModel.servicesAffectation;
         fonctionOccupe = userModel.fonctionOccupe;
 
-        dataList = devis.where((element) =>
-            element.approbationDG == "Approved" &&
+        dataList = devis
+            .where((element) =>
+                element.approbationDG == "Approved" &&
                 element.approbationDD == "Approved" &&
                 element.approbationBudget == "Approved" &&
-                element.approbationFin == "Approved").toList();
+                element.approbationFin == "Approved")
+            .toList();
       });
     }
   }
@@ -73,8 +75,8 @@ class _TableEtatBesoinLogState extends State<TableEtatBesoinLog> {
         columns: columns,
         rows: rows,
         onRowDoubleTap: (PlutoGridOnRowDoubleTapEvent tapEvent) {
-          final dataList = tapEvent.row!.cells.values;
-          final idPlutoRow = dataList.elementAt(0);
+          final dataId = tapEvent.row!.cells.values;
+          final idPlutoRow = dataId.elementAt(0);
           Navigator.pushNamed(context, DevisRoutes.devisDetail,
               arguments: idPlutoRow.value);
         },
@@ -206,13 +208,14 @@ class _TableEtatBesoinLogState extends State<TableEtatBesoinLog> {
   Future agentsRow() async {
     List<DevisModel> devis = await DevisAPi().getAllData();
     UserModel userModel = await AuthApi().getUserId();
-    
-    var data = devis.where((element) =>
-        element.approbationDG == "Approved" && 
-        element.approbationDD == "Approved" &&
-        element.approbationBudget == "Approved" && 
-        element.approbationFin == "Approved" ||
-        element.signature == userModel.matricule)
+
+    var data = devis
+        .where((element) =>
+            element.approbationDG == "Approved" &&
+                element.approbationDD == "Approved" &&
+                element.approbationBudget == "Approved" &&
+                element.approbationFin == "Approved" ||
+            element.signature == userModel.matricule)
         .toList();
 
     if (mounted) {

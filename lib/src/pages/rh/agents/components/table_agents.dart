@@ -48,8 +48,8 @@ class _TableAgentsState extends State<TableAgents> {
       columns: columns,
       rows: rows,
       onRowDoubleTap: (PlutoGridOnRowDoubleTapEvent tapEvent) {
-        final dataList = tapEvent.row!.cells.values;
-        final idPlutoRow = dataList.elementAt(0);
+        final dataId = tapEvent.row!.cells.values;
+        final idPlutoRow = dataId.elementAt(0);
         // Navigator.of(context).push(MaterialPageRoute(
         //     builder: (context) => AgentPage(id: idPlutoRow.value)));
         Navigator.pushNamed(context, RhRoutes.rhAgentPage,
@@ -79,7 +79,7 @@ class _TableAgentsState extends State<TableAgents> {
                     content: const Text("Exportation effectué!"),
                     backgroundColor: Colors.green[700],
                   ));
-                })    
+                })
               ],
             ),
           ],

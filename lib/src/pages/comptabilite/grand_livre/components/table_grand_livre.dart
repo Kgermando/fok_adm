@@ -84,12 +84,12 @@ class _TableGrandLivreState extends State<TableGrandLivre> {
                         rows: rows,
                         onRowDoubleTap:
                             (PlutoGridOnRowDoubleTapEvent tapEvent) {
-                          final dataList = tapEvent.row!.cells.values;
-                          final idPlutoRow = dataList.elementAt(0);
+                          final dataId = tapEvent.row!.cells.values;
+                          final idPlutoRow = dataId.elementAt(0);
 
-                         Navigator.pushNamed(context,
+                          Navigator.pushNamed(context,
                               ComptabiliteRoutes.comptabiliteJournalDetail,
-                              arguments: idPlutoRow.value); 
+                              arguments: idPlutoRow.value);
                         },
                         onLoaded: (PlutoGridOnLoadedEvent event) {
                           stateManager = event.stateManager;

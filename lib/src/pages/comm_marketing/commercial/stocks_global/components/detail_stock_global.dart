@@ -4,10 +4,12 @@ import 'package:fokad_admin/src/constants/app_theme.dart';
 import 'package:fokad_admin/src/constants/responsive.dart';
 import 'package:fokad_admin/src/models/comm_maketing/stocks_global_model.dart';
 import 'package:fokad_admin/src/navigation/drawer/drawer_menu.dart';
-import 'package:fokad_admin/src/navigation/header/custom_appbar.dart'; 
+import 'package:fokad_admin/src/navigation/header/custom_appbar.dart';
+import 'package:fokad_admin/src/pages/comm_marketing/commercial/stocks_global/components/stock_global_pdf.dart'; 
 import 'package:fokad_admin/src/pages/comm_marketing/commercial/stocks_global/components/table_history_ravitaillement_produit.dart';
 import 'package:fokad_admin/src/routes/routes.dart';
 import 'package:fokad_admin/src/utils/loading.dart';
+import 'package:fokad_admin/src/widgets/print_widget.dart';
 import 'package:fokad_admin/src/widgets/title_widget.dart';
 import 'package:intl/intl.dart';
 import 'package:simple_speed_dial/simple_speed_dial.dart';
@@ -95,8 +97,8 @@ class _DetailStockGlobalState extends State<DetailStockGlobal> {
                               ],
                             );
                           } else {
-                            return const Center(
-                                child: CircularProgressIndicator());
+                            return Center(
+                                child: loading());
                           }
                         })),
               ),
@@ -129,7 +131,7 @@ class _DetailStockGlobalState extends State<DetailStockGlobal> {
                   TitleWidget(title: stocksGlobalMOdel.idProduct),
                   Column(
                     children: [
-                      reporting(),
+                      reporting(stocksGlobalMOdel),
                       SelectableText(
                           DateFormat("dd-MM-yyyy HH:mm").format(stocksGlobalMOdel.created),
                           textAlign: TextAlign.start),
@@ -490,22 +492,18 @@ class _DetailStockGlobalState extends State<DetailStockGlobal> {
     );
   }
 
-  Widget reporting() {
+  Widget reporting(StocksGlobalMOdel stocksGlobalMOdel) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.end,
       children: [
-        IconButton(
-            tooltip: 'Export Excel',
-            onPressed: exportToExcel,
-            icon: const Icon(
-              Icons.download,
-              color: Colors.green,
-            )),
+        PrintWidget(
+          onPressed: () async {
+             await StockGlobalPdf.generate(stocksGlobalMOdel);
+          }
+        )
       ],
     );
   }
-
-  Future<void> exportToExcel() async {}
 
   SpeedDial speedialWidget(StocksGlobalMOdel stocksGlobalMOdel) {
     return SpeedDial(

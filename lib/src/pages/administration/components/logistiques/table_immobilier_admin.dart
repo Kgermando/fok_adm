@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fokad_admin/src/api/logistiques/immobiler_api.dart';
-import 'package:fokad_admin/src/models/logistiques/immobilier_model.dart'; 
+import 'package:fokad_admin/src/models/logistiques/immobilier_model.dart';
 import 'package:fokad_admin/src/routes/routes.dart';
 import 'package:fokad_admin/src/widgets/print_widget.dart';
 import 'package:fokad_admin/src/utils/class_implemented.dart';
@@ -37,8 +37,8 @@ class _TableImmobilierDGState extends State<TableImmobilierDG> {
         columns: columns,
         rows: rows,
         onRowDoubleTap: (PlutoGridOnRowDoubleTapEvent tapEvent) {
-          final dataList = tapEvent.row!.cells.values;
-          final idPlutoRow = dataList.elementAt(0);
+          final dataId = tapEvent.row!.cells.values;
+          final idPlutoRow = dataId.elementAt(0);
           Navigator.pushNamed(
               context, LogistiqueRoutes.logImmobilierMaterielDetail,
               arguments: idPlutoRow.value);

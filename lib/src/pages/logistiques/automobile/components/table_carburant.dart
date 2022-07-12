@@ -38,20 +38,19 @@ class _TableCarburantState extends State<TableCarburant> {
     List<CarburantModel> carburants = await CarburantApi().getAllData();
     setState(() {
       dataList = carburants
-          .where((element) =>
-              element.approbationDD == "Approved")
+          .where((element) => element.approbationDD == "Approved")
           .toList();
     });
   }
- 
+
   @override
   Widget build(BuildContext context) {
     return PlutoGrid(
       columns: columns,
       rows: rows,
       onRowDoubleTap: (PlutoGridOnRowDoubleTapEvent tapEvent) {
-        final dataList = tapEvent.row!.cells.values;
-        final idPlutoRow = dataList.elementAt(0);
+        final dataId = tapEvent.row!.cells.values;
+        final idPlutoRow = dataId.elementAt(0);
         Navigator.pushNamed(context, LogistiqueRoutes.logCarburantAutoDetail,
             arguments: idPlutoRow.value);
       },
@@ -263,7 +262,7 @@ class _TableCarburantState extends State<TableCarburant> {
 
   Future agentsRow() async {
     List<CarburantModel?> dataList = await CarburantApi().getAllData();
-     UserModel userModel = await AuthApi().getUserId();
+    UserModel userModel = await AuthApi().getUserId();
     var data = dataList
         .where((element) =>
             element!.approbationDD == "Approved" ||
@@ -272,7 +271,7 @@ class _TableCarburantState extends State<TableCarburant> {
 
     if (mounted) {
       setState(() {
-        for (var item in data) { 
+        for (var item in data) {
           rows.add(PlutoRow(cells: {
             'id': PlutoCell(value: item!.id),
             'operationEntreSortie': PlutoCell(value: item.operationEntreSortie),
@@ -281,13 +280,12 @@ class _TableCarburantState extends State<TableCarburant> {
             'nomeroFactureAchat': PlutoCell(value: item.nomeroFactureAchat),
             'prixAchatParLitre':
                 PlutoCell(value: "${item.prixAchatParLitre} \$"),
-            'qtyAchat':
-                PlutoCell(value: "${item.prixAchatParLitre} L"),
+            'qtyAchat': PlutoCell(value: "${item.prixAchatParLitre} L"),
             'nomReceptioniste': PlutoCell(value: item.nomReceptioniste),
             'numeroPlaque': PlutoCell(value: item.numeroPlaque),
             'dateHeureSortieAnguin': PlutoCell(
-                value: DateFormat("dd-MM-yy")
-                    .format(item.dateHeureSortieAnguin)),
+                value:
+                    DateFormat("dd-MM-yy").format(item.dateHeureSortieAnguin)),
             'created': PlutoCell(
                 value: DateFormat("dd-MM-yy HH:mm").format(item.created))
           }));

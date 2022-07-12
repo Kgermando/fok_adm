@@ -1,11 +1,11 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:fokad_admin/src/api/logistiques/anguin_api.dart'; 
-import 'package:fokad_admin/src/models/logistiques/anguin_model.dart'; 
+import 'package:fokad_admin/src/api/logistiques/anguin_api.dart';
+import 'package:fokad_admin/src/models/logistiques/anguin_model.dart';
 import 'package:fokad_admin/src/routes/routes.dart';
 import 'package:fokad_admin/src/widgets/print_widget.dart';
-import 'package:fokad_admin/src/utils/class_implemented.dart'; 
+import 'package:fokad_admin/src/utils/class_implemented.dart';
 import 'package:intl/intl.dart';
 import 'package:pluto_grid/pluto_grid.dart';
 
@@ -32,7 +32,7 @@ class _TableAnguinDGState extends State<TableAnguinDG> {
     super.initState();
   }
 
-   @override
+  @override
   Widget build(BuildContext context) {
     return SizedBox(
       height: MediaQuery.of(context).size.height,
@@ -40,8 +40,8 @@ class _TableAnguinDGState extends State<TableAnguinDG> {
         columns: columns,
         rows: rows,
         onRowDoubleTap: (PlutoGridOnRowDoubleTapEvent tapEvent) {
-          final dataList = tapEvent.row!.cells.values;
-          final idPlutoRow = dataList.elementAt(0);
+          final dataId = tapEvent.row!.cells.values;
+          final idPlutoRow = dataId.elementAt(0);
           Navigator.pushNamed(context, LogistiqueRoutes.logAnguinAutoDetail,
               arguments: idPlutoRow.value);
         },
@@ -230,10 +230,10 @@ class _TableAnguinDGState extends State<TableAnguinDG> {
 
   Future agentsRow() async {
     List<AnguinModel?> dataList = await AnguinApi().getAllData();
-    var data =
-        dataList
+    var data = dataList
         .where((element) =>
-            element!.approbationDG == '-' && element.approbationDD == 'Approved')
+            element!.approbationDG == '-' &&
+            element.approbationDD == 'Approved')
         .toList();
 
     if (mounted) {

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:fokad_admin/src/api/budgets/departement_budget_api.dart';
 import 'package:fokad_admin/src/models/budgets/departement_budget_model.dart';
-import 'package:fokad_admin/src/routes/routes.dart'; 
+import 'package:fokad_admin/src/routes/routes.dart';
 import 'package:fokad_admin/src/utils/class_implemented.dart';
 import 'package:fokad_admin/src/widgets/title_widget.dart';
 import 'package:intl/intl.dart';
@@ -38,8 +38,8 @@ class _TableDepartementBudgetDGState extends State<TableDepartementBudgetDG> {
         columns: columns,
         rows: rows,
         onRowDoubleTap: (PlutoGridOnRowDoubleTapEvent tapEvent) {
-          final dataList = tapEvent.row!.cells.values;
-          final idPlutoRow = dataList.elementAt(0);
+          final dataId = tapEvent.row!.cells.values;
+          final idPlutoRow = dataId.elementAt(0);
 
           Navigator.pushNamed(
               context, BudgetRoutes.budgetBudgetPrevisionelDetail,
@@ -54,7 +54,7 @@ class _TableDepartementBudgetDGState extends State<TableDepartementBudgetDG> {
           return Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: const [
-              TitleWidget(title: "Lignes Budgetaires"), 
+              TitleWidget(title: "Lignes Budgetaires"),
             ],
           );
         },
@@ -140,20 +140,19 @@ class _TableDepartementBudgetDGState extends State<TableDepartementBudgetDG> {
   Future agentsRow() async {
     List<DepartementBudgetModel?> dataList =
         await DepeartementBudgetApi().getAllData();
-        
+
     List<DepartementBudgetModel?> data = [];
-     data = dataList
-      .where((element) =>
-          DateTime.now().millisecondsSinceEpoch <=
-              element!.periodeFin.millisecondsSinceEpoch &&
-          element.approbationDG == '-' &&
-          element.approbationDD == 'Approved'    
-        )
-      .toList();
+    data = dataList
+        .where((element) =>
+            DateTime.now().millisecondsSinceEpoch <=
+                element!.periodeFin.millisecondsSinceEpoch &&
+            element.approbationDG == '-' &&
+            element.approbationDD == 'Approved')
+        .toList();
 
     if (mounted) {
       setState(() {
-        for (var item in data) { 
+        for (var item in data) {
           rows.add(PlutoRow(cells: {
             'id': PlutoCell(value: item!.id),
             'departement': PlutoCell(value: item.departement),

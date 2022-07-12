@@ -9,6 +9,7 @@ import 'package:fokad_admin/src/models/comm_maketing/stocks_global_model.dart';
 import 'package:fokad_admin/src/models/users/user_model.dart';
 import 'package:fokad_admin/src/navigation/drawer/drawer_menu.dart';
 import 'package:fokad_admin/src/navigation/header/custom_appbar.dart';
+import 'package:fokad_admin/src/pages/comm_marketing/commercial/restitutions/components/restitution_pdf.dart';
 import 'package:fokad_admin/src/utils/loading.dart';
 import 'package:fokad_admin/src/widgets/print_widget.dart';
 import 'package:fokad_admin/src/widgets/title_widget.dart';
@@ -116,8 +117,7 @@ class _DetailRestitutionState extends State<DetailRestitution> {
                               ],
                             );
                           } else {
-                            return Center(
-                                child: loading());
+                            return Center(child: loading());
                           }
                         })),
               ),
@@ -142,7 +142,7 @@ class _DetailRestitutionState extends State<DetailRestitution> {
               width: 2.0,
             ),
           ),
-          child: Column( 
+          child: Column(
             children: [
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -152,7 +152,9 @@ class _DetailRestitutionState extends State<DetailRestitution> {
                     children: [
                       PrintWidget(
                         tooltip: 'Imprimer le document',
-                        onPressed: () async {},
+                        onPressed: () async {
+                          await RestitutionPdf.generate(data);
+                        },
                       ),
                       SelectableText(
                           DateFormat("dd-MM-yyyy HH:mm").format(data.created),
@@ -308,7 +310,8 @@ class _DetailRestitutionState extends State<DetailRestitution> {
     var dateAchat = stockGlobalList.map((e) => e.created).first;
     var signatureAchat = stockGlobalList.map((e) => e.signature).first;
     var tvaAchat = stockGlobalList.map((e) => e.tva).first;
-    var qtyRavitaillerStock = stockGlobalList.map((e) => e.qtyRavitailler).first;
+    var qtyRavitaillerStock =
+        stockGlobalList.map((e) => e.qtyRavitailler).first;
 
     // Stocks global + qty restitué
     var qtyTransfert = double.parse(achatQty) + double.parse(data.quantity);

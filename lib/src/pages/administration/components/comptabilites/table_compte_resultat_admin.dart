@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:fokad_admin/src/api/comptabilite/compte_resultat_api.dart';
 import 'package:fokad_admin/src/models/comptabilites/compte_resultat_model.dart';
-import 'package:fokad_admin/src/pages/comptabilite/compte_resultat/components/compte_resultat_xlsx.dart'; 
+import 'package:fokad_admin/src/pages/comptabilite/compte_resultat/components/compte_resultat_xlsx.dart';
 import 'package:fokad_admin/src/routes/routes.dart';
 import 'package:fokad_admin/src/utils/class_implemented.dart';
 import 'package:fokad_admin/src/widgets/print_widget.dart';
@@ -55,12 +55,12 @@ class _TableCompteResultatAdminState extends State<TableCompteResultatAdmin> {
         columns: columns,
         rows: rows,
         onRowDoubleTap: (PlutoGridOnRowDoubleTapEvent tapEvent) {
-          final dataList = tapEvent.row!.cells.values;
-          final idPlutoRow = dataList.elementAt(0);
+          final dataId = tapEvent.row!.cells.values;
+          final idPlutoRow = dataId.elementAt(0);
 
           Navigator.pushNamed(
               context, ComptabiliteRoutes.comptabiliteCompteResultatDetail,
-              arguments: idPlutoRow.value); 
+              arguments: idPlutoRow.value);
         },
         onLoaded: (PlutoGridOnLoadedEvent event) {
           stateManager = event.stateManager;
@@ -177,7 +177,8 @@ class _TableCompteResultatAdminState extends State<TableCompteResultatAdmin> {
         await CompteResultatApi().getAllData();
     var data = compteResulats
         .where((element) =>
-        element.approbationDG == '-' && element.approbationDD == 'Approved').toList();
+            element.approbationDG == '-' && element.approbationDD == 'Approved')
+        .toList();
 
     if (mounted) {
       setState(() {

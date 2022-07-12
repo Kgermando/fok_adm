@@ -26,7 +26,6 @@ class _TableEtatBesoinDDState extends State<TableEtatBesoinDD> {
   PlutoGridStateManager? stateManager;
   PlutoGridSelectingMode gridSelectingMode = PlutoGridSelectingMode.row;
 
-
   @override
   initState() {
     agentsColumn();
@@ -45,7 +44,7 @@ class _TableEtatBesoinDDState extends State<TableEtatBesoinDD> {
   String? servicesAffectation;
   String? fonctionOccupe;
 
-  List<DevisModel> dataList = []; 
+  List<DevisModel> dataList = [];
 
   Future<void> getData() async {
     final userModel = await AuthApi().getUserId();
@@ -57,8 +56,8 @@ class _TableEtatBesoinDDState extends State<TableEtatBesoinDD> {
         servicesAffectation = userModel.servicesAffectation;
         fonctionOccupe = userModel.fonctionOccupe;
 
-        dataList = devis.where((element) =>
-          element.approbationDD == "-").toList();
+        dataList =
+            devis.where((element) => element.approbationDD == "-").toList();
       });
     }
   }
@@ -71,8 +70,8 @@ class _TableEtatBesoinDDState extends State<TableEtatBesoinDD> {
         columns: columns,
         rows: rows,
         onRowDoubleTap: (PlutoGridOnRowDoubleTapEvent tapEvent) {
-          final dataList = tapEvent.row!.cells.values;
-          final idPlutoRow = dataList.elementAt(0);
+          final dataId = tapEvent.row!.cells.values;
+          final idPlutoRow = dataId.elementAt(0);
           Navigator.pushNamed(context, DevisRoutes.devisDetail,
               arguments: idPlutoRow.value);
         },
@@ -204,10 +203,11 @@ class _TableEtatBesoinDDState extends State<TableEtatBesoinDD> {
   Future agentsRow() async {
     List<DevisModel> devis = await DevisAPi().getAllData();
     UserModel userModel = await AuthApi().getUserId();
-    
-    var data = devis.where((element) => 
-        element.approbationDD == "-" ||
-        element.signature == userModel.matricule)
+
+    var data = devis
+        .where((element) =>
+            element.approbationDD == "-" ||
+            element.signature == userModel.matricule)
         .toList();
 
     if (mounted) {

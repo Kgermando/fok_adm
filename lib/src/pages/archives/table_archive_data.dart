@@ -3,7 +3,7 @@ import 'package:fokad_admin/src/api/archives/archive_api.dart';
 import 'package:fokad_admin/src/api/archives/archive_folderapi.dart';
 import 'package:fokad_admin/src/models/archive/archive_model.dart';
 import 'package:fokad_admin/src/routes/routes.dart';
-import 'package:fokad_admin/src/utils/class_implemented.dart'; 
+import 'package:fokad_admin/src/utils/class_implemented.dart';
 import 'package:fokad_admin/src/widgets/title_widget.dart';
 import 'package:intl/intl.dart';
 import 'package:pluto_grid/pluto_grid.dart';
@@ -38,8 +38,8 @@ class _TableArchiveDataState extends State<TableArchiveData> {
       columns: columns,
       rows: rows,
       onRowDoubleTap: (PlutoGridOnRowDoubleTapEvent tapEvent) {
-        final dataList = tapEvent.row!.cells.values;
-        final idPlutoRow = dataList.elementAt(0);
+        final dataId = tapEvent.row!.cells.values;
+        final idPlutoRow = dataId.elementAt(0);
         Navigator.pushNamed(context, ArchiveRoutes.archivesDetail,
             arguments: idPlutoRow.value);
       },
@@ -56,12 +56,12 @@ class _TableArchiveDataState extends State<TableArchiveData> {
               children: [
                 deleteButton(),
                 IconButton(
-                onPressed: () {
-                  Navigator.pop(context);
-                },
-                icon: Icon(Icons.refresh, color: Colors.green.shade700)),
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                    icon: Icon(Icons.refresh, color: Colors.green.shade700)),
               ],
-            ), 
+            ),
           ],
         );
       },

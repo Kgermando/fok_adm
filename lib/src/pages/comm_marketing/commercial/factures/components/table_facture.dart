@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:fokad_admin/src/api/auth/auth_api.dart';
 import 'package:fokad_admin/src/api/comm_marketing/commerciale/facture_api.dart';
 import 'package:fokad_admin/src/models/comm_maketing/facture_cart_model.dart';
-import 'package:fokad_admin/src/models/users/user_model.dart'; 
+import 'package:fokad_admin/src/models/users/user_model.dart';
 import 'package:fokad_admin/src/routes/routes.dart';
 import 'package:fokad_admin/src/widgets/print_widget.dart';
 import 'package:fokad_admin/src/utils/class_implemented.dart';
@@ -59,12 +59,12 @@ class _TableFactureState extends State<TableFacture> {
       columns: columns,
       rows: rows,
       onRowDoubleTap: (PlutoGridOnRowDoubleTapEvent tapEvent) {
-        final dataList = tapEvent.row!.cells.values;
-        final idPlutoRow = dataList.elementAt(0);
+        final dataId = tapEvent.row!.cells.values;
+        final idPlutoRow = dataId.elementAt(0);
 
         Navigator.pushNamed(
             context, ComMarketingRoutes.comMarketingFactureDetail,
-            arguments: idPlutoRow.value);  
+            arguments: idPlutoRow.value);
       },
       onLoaded: (PlutoGridOnLoadedEvent event) {
         stateManager = event.stateManager;
@@ -77,8 +77,8 @@ class _TableFactureState extends State<TableFacture> {
           children: [
             IconButton(
                 onPressed: () {
-                  Navigator.pushNamed(context,
-                      ComMarketingRoutes.comMarketingFacture);
+                  Navigator.pushNamed(
+                      context, ComMarketingRoutes.comMarketingFacture);
                 },
                 icon: Icon(Icons.refresh, color: Colors.green.shade700)),
             IconButton(onPressed: () {}, icon: const Icon(Icons.download)),

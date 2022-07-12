@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:fokad_admin/src/api/finances/caisse_api.dart';
 import 'package:fokad_admin/src/models/finances/caisse_model.dart';
-import 'package:fokad_admin/src/pages/finances/transactions/components/caisses/caisse_xlsx.dart'; 
+import 'package:fokad_admin/src/pages/finances/transactions/components/caisses/caisse_xlsx.dart';
 import 'package:fokad_admin/src/routes/routes.dart';
 import 'package:fokad_admin/src/widgets/print_widget.dart';
 import 'package:fokad_admin/src/utils/class_implemented.dart';
@@ -74,8 +74,8 @@ class _TableCaisseState extends State<TableCaisse> {
             columns: columns,
             rows: rows,
             onRowDoubleTap: (PlutoGridOnRowDoubleTapEvent tapEvent) {
-              final dataList = tapEvent.row!.cells.values;
-              final idPlutoRow = dataList.elementAt(0);
+              final dataId = tapEvent.row!.cells.values;
+              final idPlutoRow = dataId.elementAt(0);
               Navigator.pushNamed(
                   context, FinanceRoutes.transactionsCaisseDetail,
                   arguments: idPlutoRow.value);
@@ -336,8 +336,8 @@ class _TableCaisseState extends State<TableCaisse> {
             'pieceJustificative': PlutoCell(value: item.pieceJustificative),
             'libelle': PlutoCell(value: item.libelle),
             'montant': PlutoCell(
-                value: "${NumberFormat.decimalPattern('fr')
-                    .format(double.parse(item.montant))} \$"),
+                value:
+                    "${NumberFormat.decimalPattern('fr').format(double.parse(item.montant))} \$"),
             'departement': PlutoCell(value: item.departement),
             'typeOperation': PlutoCell(value: item.typeOperation),
             'numeroOperation': PlutoCell(value: item.numeroOperation),

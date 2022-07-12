@@ -39,8 +39,8 @@ class _LigneBudgetaireState extends State<LigneBudgetaire> {
         columns: columns,
         rows: rows,
         onRowDoubleTap: (PlutoGridOnRowDoubleTapEvent tapEvent) {
-          final dataList = tapEvent.row!.cells.values;
-          final idPlutoRow = dataList.elementAt(0);
+          final dataId = tapEvent.row!.cells.values;
+          final idPlutoRow = dataId.elementAt(0);
           Navigator.pushNamed(context, BudgetRoutes.budgetLignebudgetaireDetail,
               arguments: idPlutoRow.value);
         },
@@ -264,12 +264,11 @@ class _LigneBudgetaireState extends State<LigneBudgetaire> {
         await LIgneBudgetaireApi().getAllData();
     var data = dataList
         .where((element) =>
-            element!.departement == widget.departementBudgetModel.departement  &&
+            element!.departement == widget.departementBudgetModel.departement &&
             DateFormat("dd-MM-yyyy")
                     .format(DateTime.parse(element.periodeBudget)) ==
                 DateFormat("dd-MM-yyyy")
-                    .format(widget.departementBudgetModel.periodeDebut)
-                    )
+                    .format(widget.departementBudgetModel.periodeDebut))
         .toList();
 
     if (!mounted) return;

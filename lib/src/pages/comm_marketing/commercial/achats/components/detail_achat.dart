@@ -9,8 +9,10 @@ import 'package:fokad_admin/src/models/comm_maketing/vente_cart_model.dart';
 import 'package:fokad_admin/src/models/users/user_model.dart';
 import 'package:fokad_admin/src/navigation/drawer/drawer_menu.dart';
 import 'package:fokad_admin/src/navigation/header/custom_appbar.dart';
+import 'package:fokad_admin/src/pages/comm_marketing/commercial/achats/components/achat_pdf.dart';
 import 'package:fokad_admin/src/pages/comm_marketing/commercial/achats/components/restitution_stock.dart';
 import 'package:fokad_admin/src/utils/loading.dart';
+import 'package:fokad_admin/src/widgets/print_widget.dart';
 import 'package:fokad_admin/src/widgets/title_widget.dart';
 import 'package:intl/intl.dart';
 
@@ -52,18 +54,17 @@ class _DetailAchatState extends State<DetailAchat> {
       passwordHash: '-',
       succursale: '-');
   Future<void> getData() async {
-    UserModel userModel = await AuthApi().getUserId(); 
+    UserModel userModel = await AuthApi().getUserId();
     var ventes = await VenteCartApi().getAllData();
     setState(() {
-      user = userModel; 
+      user = userModel;
       venteCartList = ventes;
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    AchatModel data =
-        ModalRoute.of(context)!.settings.arguments as AchatModel;
+    AchatModel data = ModalRoute.of(context)!.settings.arguments as AchatModel;
     return Scaffold(
         key: _key,
         drawer: const DrawerMenu(),
@@ -113,8 +114,7 @@ class _DetailAchatState extends State<DetailAchat> {
                               ],
                             );
                           } else {
-                            return Center(
-                                child: loading());
+                            return Center(child: loading());
                           }
                         })),
               ),
@@ -140,19 +140,18 @@ class _DetailAchatState extends State<DetailAchat> {
               width: 2.0,
             ),
           ),
-          child: Column( 
+          child: Column(
             children: [
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   TitleWidget(
-                      title:
-                          'Succursale: ${data.succursale.toUpperCase()}'),
+                      title: 'Succursale: ${data.succursale.toUpperCase()}'),
                   Column(
                     children: [
                       Row(
                         children: [
-                          reporting(),
+                          reporting(data),
                           if (roleAgent)
                             if (double.parse(data.quantity) > 0)
                               transfertProduit(data)
@@ -237,15 +236,14 @@ class _DetailAchatState extends State<DetailAchat> {
     final bodyText1 = Theme.of(context).textTheme.bodyText1;
     final bodyText2 = Theme.of(context).textTheme.bodyText2;
 
-    var prixAchatTotal = double.parse(data.priceAchatUnit) *
-        double.parse(data.quantityAchat);
-    var margeBenifice = double.parse(data.prixVenteUnit) -
-        double.parse(data.priceAchatUnit);
-    var margeBenificeTotal =
-        margeBenifice * double.parse(data.quantityAchat);
+    var prixAchatTotal =
+        double.parse(data.priceAchatUnit) * double.parse(data.quantityAchat);
+    var margeBenifice =
+        double.parse(data.prixVenteUnit) - double.parse(data.priceAchatUnit);
+    var margeBenificeTotal = margeBenifice * double.parse(data.quantityAchat);
 
-    var margeBenificeRemise = double.parse(data.remise) -
-        double.parse(data.priceAchatUnit);
+    var margeBenificeRemise =
+        double.parse(data.remise) - double.parse(data.priceAchatUnit);
     var margeBenificeTotalRemise =
         margeBenificeRemise * double.parse(data.quantityAchat);
 
@@ -372,8 +370,7 @@ class _DetailAchatState extends State<DetailAchat> {
                         : bodyText2,
                     overflow: TextOverflow.ellipsis),
                 const Spacer(),
-                Text(
-                    '${double.parse(data.remise).toStringAsFixed(2)} \$',
+                Text('${double.parse(data.remise).toStringAsFixed(2)} \$',
                     style: Responsive.isDesktop(context)
                         ? const TextStyle(
                             fontWeight: FontWeight.w700, fontSize: 20)
@@ -632,8 +629,8 @@ class _DetailAchatState extends State<DetailAchat> {
     final bodyText1 = Theme.of(context).textTheme.bodyText1;
     final bodyText2 = Theme.of(context).textTheme.bodyText2;
 
-    var prixTotalRestante = double.parse(data.quantity) *
-        double.parse(data.prixVenteUnit);
+    var prixTotalRestante =
+        double.parse(data.quantity) * double.parse(data.prixVenteUnit);
 
     return Card(
         child: Padding(
@@ -701,8 +698,7 @@ class _DetailAchatState extends State<DetailAchat> {
               onPressed: () {
                 Navigator.of(context).pop();
                 Navigator.of(context).push(MaterialPageRoute(
-                    builder: (context) =>
-                        RestitutionStock(achat: data)));
+                    builder: (context) => RestitutionStock(achat: data)));
               },
               child: const Text('OK'),
             ),
@@ -712,20 +708,14 @@ class _DetailAchatState extends State<DetailAchat> {
     );
   }
 
-  Widget reporting() {
+  Widget reporting(AchatModel data) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.end,
       children: [
-        IconButton(
-            tooltip: 'Export Excel',
-            onPressed: exportToExcel,
-            icon: const Icon(
-              Icons.download,
-              color: Colors.green,
-            )),
+        PrintWidget(onPressed: () async {
+          await AchatPdf.generate(data, user, venteCartList);
+        })
       ],
     );
   }
-
-  Future<void> exportToExcel() async {}
 }

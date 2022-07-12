@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:fokad_admin/src/api/comptabilite/balance_compte_api.dart';
-import 'package:fokad_admin/src/models/comptabilites/balance_comptes_model.dart'; 
+import 'package:fokad_admin/src/models/comptabilites/balance_comptes_model.dart';
 import 'package:fokad_admin/src/routes/routes.dart';
 import 'package:fokad_admin/src/utils/class_implemented.dart';
 import 'package:fokad_admin/src/widgets/title_widget.dart';
@@ -43,11 +43,11 @@ class _TableBalanceCorbeilleState extends State<TableBalanceCorbeille> {
         columns: columns,
         rows: rows,
         onRowDoubleTap: (PlutoGridOnRowDoubleTapEvent tapEvent) {
-          final dataList = tapEvent.row!.cells.values;
-          final idPlutoRow = dataList.elementAt(0);
-Navigator.pushNamed(
+          final dataId = tapEvent.row!.cells.values;
+          final idPlutoRow = dataId.elementAt(0);
+          Navigator.pushNamed(
               context, ComptabiliteRoutes.comptabiliteBalanceDetail,
-              arguments: idPlutoRow.value);  
+              arguments: idPlutoRow.value);
         },
         onLoaded: (PlutoGridOnLoadedEvent event) {
           stateManager = event.stateManager;

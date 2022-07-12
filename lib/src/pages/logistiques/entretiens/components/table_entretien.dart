@@ -3,7 +3,7 @@ import 'package:fokad_admin/src/api/auth/auth_api.dart';
 import 'package:fokad_admin/src/api/logistiques/entretien_api.dart';
 import 'package:fokad_admin/src/models/logistiques/entretien_model.dart';
 import 'package:fokad_admin/src/models/users/user_model.dart';
-import 'package:fokad_admin/src/pages/logistiques/entretiens/components/entretien_xlsx.dart'; 
+import 'package:fokad_admin/src/pages/logistiques/entretiens/components/entretien_xlsx.dart';
 import 'package:fokad_admin/src/routes/routes.dart';
 import 'package:fokad_admin/src/utils/class_implemented.dart';
 import 'package:fokad_admin/src/widgets/print_widget.dart';
@@ -37,9 +37,9 @@ class _TableEntretienState extends State<TableEntretien> {
   Future<void> getData() async {
     List<EntretienModel> entretiens = await EntretienApi().getAllData();
     setState(() {
-      dataList = entretiens.where((element) =>
-          element.approbationDD == "Approved").toList();
-
+      dataList = entretiens
+          .where((element) => element.approbationDD == "Approved")
+          .toList();
     });
   }
 
@@ -49,10 +49,10 @@ class _TableEntretienState extends State<TableEntretien> {
       columns: columns,
       rows: rows,
       onRowDoubleTap: (PlutoGridOnRowDoubleTapEvent tapEvent) {
-        final dataList = tapEvent.row!.cells.values;
-        final idPlutoRow = dataList.elementAt(0);
+        final dataId = tapEvent.row!.cells.values;
+        final idPlutoRow = dataId.elementAt(0);
         Navigator.pushNamed(context, LogistiqueRoutes.logEntretienDetail,
-            arguments: idPlutoRow.value);  
+            arguments: idPlutoRow.value);
       },
       onLoaded: (PlutoGridOnLoadedEvent event) {
         stateManager = event.stateManager;
@@ -205,14 +205,15 @@ class _TableEntretienState extends State<TableEntretien> {
   Future agentsRow() async {
     List<EntretienModel> entretiens = await EntretienApi().getAllData();
     UserModel userModel = await AuthApi().getUserId();
-    var data = entretiens.where((element) =>
-        element.approbationDD == "Approved" ||
-        element.signature == userModel.matricule)
+    var data = entretiens
+        .where((element) =>
+            element.approbationDD == "Approved" ||
+            element.signature == userModel.matricule)
         .toList();
 
     if (mounted) {
       setState(() {
-        for (var item in data) { 
+        for (var item in data) {
           rows.add(PlutoRow(cells: {
             'id': PlutoCell(value: item.id),
             'nom': PlutoCell(value: item.nom),

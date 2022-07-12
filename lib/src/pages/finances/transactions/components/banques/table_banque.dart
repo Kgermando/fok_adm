@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:fokad_admin/src/api/finances/banque_api.dart';
 import 'package:fokad_admin/src/models/finances/banque_model.dart';
-import 'package:fokad_admin/src/pages/finances/transactions/components/banques/banque_xlsx.dart'; 
+import 'package:fokad_admin/src/pages/finances/transactions/components/banques/banque_xlsx.dart';
 import 'package:fokad_admin/src/routes/routes.dart';
 import 'package:fokad_admin/src/widgets/print_widget.dart';
 import 'package:fokad_admin/src/utils/class_implemented.dart';
@@ -32,7 +32,7 @@ class _TableBanqueState extends State<TableBanque> {
 
   @override
   initState() {
-   getData();
+    getData();
     agentsRow();
     agentsColumn();
     super.initState();
@@ -43,9 +43,8 @@ class _TableBanqueState extends State<TableBanque> {
   Future<void> getData() async {
     List<BanqueModel> banques = await BanqueApi().getAllData();
     setState(() {
-      List<BanqueModel?> recetteList = banques
-          .where((element) => element.typeOperation == "Depot")
-          .toList();
+      List<BanqueModel?> recetteList =
+          banques.where((element) => element.typeOperation == "Depot").toList();
       List<BanqueModel?> depensesList = banques
           .where((element) => element.typeOperation == "Retrait")
           .toList();
@@ -69,8 +68,8 @@ class _TableBanqueState extends State<TableBanque> {
             columns: columns,
             rows: rows,
             onRowDoubleTap: (PlutoGridOnRowDoubleTapEvent tapEvent) {
-              final dataList = tapEvent.row!.cells.values;
-              final idPlutoRow = dataList.elementAt(0);
+              final dataId = tapEvent.row!.cells.values;
+              final idPlutoRow = dataId.elementAt(0);
               Navigator.pushNamed(
                   context, FinanceRoutes.transactionsBanqueDetail,
                   arguments: idPlutoRow.value);
@@ -331,8 +330,8 @@ class _TableBanqueState extends State<TableBanque> {
             'pieceJustificative': PlutoCell(value: item.pieceJustificative),
             'libelle': PlutoCell(value: item.libelle),
             'montant': PlutoCell(
-                value: "${NumberFormat.decimalPattern('fr')
-                .format(double.parse(item.montant))} \$"),
+                value:
+                    "${NumberFormat.decimalPattern('fr').format(double.parse(item.montant))} \$"),
             'departement': PlutoCell(value: item.departement),
             'typeOperation': PlutoCell(value: item.typeOperation),
             'numeroOperation': PlutoCell(value: item.numeroOperation),

@@ -19,11 +19,12 @@ class TableSalairesHistorique extends StatefulWidget {
   const TableSalairesHistorique({Key? key}) : super(key: key);
 
   @override
-  State<TableSalairesHistorique> createState() => _TableSalairesHistoriqueState();
+  State<TableSalairesHistorique> createState() =>
+      _TableSalairesHistoriqueState();
 }
 
 class _TableSalairesHistoriqueState extends State<TableSalairesHistorique> {
-   final GlobalKey<ScaffoldState> _key = GlobalKey();
+  final GlobalKey<ScaffoldState> _key = GlobalKey();
   List<PlutoColumn> columns = [];
   List<PlutoRow> rows = [];
   PlutoGridStateManager? stateManager;
@@ -31,7 +32,7 @@ class _TableSalairesHistoriqueState extends State<TableSalairesHistorique> {
 
   int? id;
 
-   @override
+  @override
   initState() {
     agentsColumn();
     agentsRow();
@@ -97,11 +98,13 @@ class _TableSalairesHistoriqueState extends State<TableSalairesHistorique> {
                       child: PlutoGrid(
                         columns: columns,
                         rows: rows,
-                        onRowDoubleTap: (PlutoGridOnRowDoubleTapEvent tapEvent) {
-                          final dataList = tapEvent.row!.cells.values;
-                          final idPlutoRow = dataList.elementAt(0);
-                        
-                          Navigator.pushNamed(context, RhRoutes.rhPaiementBulletin,
+                        onRowDoubleTap:
+                            (PlutoGridOnRowDoubleTapEvent tapEvent) {
+                          final dataId = tapEvent.row!.cells.values;
+                          final idPlutoRow = dataId.elementAt(0);
+
+                          Navigator.pushNamed(
+                              context, RhRoutes.rhPaiementBulletin,
                               arguments: idPlutoRow.value);
                         },
                         onLoaded: (PlutoGridOnLoadedEvent event) {
@@ -136,25 +139,35 @@ class _TableSalairesHistoriqueState extends State<TableSalairesHistorique> {
                             ],
                             resolveDefaultColumnFilter: (column, resolver) {
                               if (column.field == 'id') {
-                                return resolver<ClassFilterImplemented>() as PlutoFilterType;
+                                return resolver<ClassFilterImplemented>()
+                                    as PlutoFilterType;
                               } else if (column.field == 'prenom') {
-                                return resolver<ClassFilterImplemented>() as PlutoFilterType;
+                                return resolver<ClassFilterImplemented>()
+                                    as PlutoFilterType;
                               } else if (column.field == 'nom') {
-                                return resolver<ClassFilterImplemented>() as PlutoFilterType;
+                                return resolver<ClassFilterImplemented>()
+                                    as PlutoFilterType;
                               } else if (column.field == 'matricule') {
-                                return resolver<ClassFilterImplemented>() as PlutoFilterType;
+                                return resolver<ClassFilterImplemented>()
+                                    as PlutoFilterType;
                               } else if (column.field == 'departement') {
-                                return resolver<ClassFilterImplemented>() as PlutoFilterType;
+                                return resolver<ClassFilterImplemented>()
+                                    as PlutoFilterType;
                               } else if (column.field == 'observation') {
-                                return resolver<ClassFilterImplemented>() as PlutoFilterType;
+                                return resolver<ClassFilterImplemented>()
+                                    as PlutoFilterType;
                               } else if (column.field == 'modePaiement') {
-                                return resolver<ClassFilterImplemented>() as PlutoFilterType;
+                                return resolver<ClassFilterImplemented>()
+                                    as PlutoFilterType;
                               } else if (column.field == 'salaire') {
-                                return resolver<ClassFilterImplemented>() as PlutoFilterType;
+                                return resolver<ClassFilterImplemented>()
+                                    as PlutoFilterType;
                               } else if (column.field == 'created') {
-                                return resolver<ClassFilterImplemented>() as PlutoFilterType;
+                                return resolver<ClassFilterImplemented>()
+                                    as PlutoFilterType;
                               }
-                              return resolver<PlutoFilterTypeContains>() as PlutoFilterType;
+                              return resolver<PlutoFilterTypeContains>()
+                                  as PlutoFilterType;
                             },
                           ),
                         ),
@@ -277,10 +290,9 @@ class _TableSalairesHistoriqueState extends State<TableSalairesHistorique> {
 
     var data = dataList
         .where((element) =>
-            element!.createdAt.month < DateTime.now().month && 
+            element!.createdAt.month < DateTime.now().month &&
             element.createdAt.year < DateTime.now().year)
         .toList();
-
 
     if (mounted) {
       setState(() {

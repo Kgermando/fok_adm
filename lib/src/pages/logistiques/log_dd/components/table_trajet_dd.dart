@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:fokad_admin/src/api/logistiques/trajet_api.dart';
 import 'package:fokad_admin/src/models/logistiques/trajet_model.dart';
-import 'package:fokad_admin/src/pages/logistiques/automobile/components/trajet_xlsx.dart'; 
+import 'package:fokad_admin/src/pages/logistiques/automobile/components/trajet_xlsx.dart';
 import 'package:fokad_admin/src/routes/routes.dart';
 import 'package:fokad_admin/src/widgets/print_widget.dart';
 import 'package:fokad_admin/src/utils/class_implemented.dart';
@@ -35,12 +35,10 @@ class _TableTrajetDDState extends State<TableTrajetDD> {
   Future<void> getData() async {
     List<TrajetModel> trajets = await TrajetApi().getAllData();
     setState(() {
-      dataList = trajets
-          .where((element) => element.approbationDD == "-")
-          .toList();
+      dataList =
+          trajets.where((element) => element.approbationDD == "-").toList();
     });
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -50,8 +48,8 @@ class _TableTrajetDDState extends State<TableTrajetDD> {
         columns: columns,
         rows: rows,
         onRowDoubleTap: (PlutoGridOnRowDoubleTapEvent tapEvent) {
-          final dataList = tapEvent.row!.cells.values;
-          final idPlutoRow = dataList.elementAt(0);
+          final dataId = tapEvent.row!.cells.values;
+          final idPlutoRow = dataId.elementAt(0);
           Navigator.pushNamed(context, LogistiqueRoutes.logTrajetAutoDetail,
               arguments: idPlutoRow.value);
         },
@@ -69,8 +67,7 @@ class _TableTrajetDDState extends State<TableTrajetDD> {
                 children: [
                   IconButton(
                       onPressed: () {
-                        Navigator.pushNamed(
-                            context, LogistiqueRoutes.logDD);
+                        Navigator.pushNamed(context, LogistiqueRoutes.logDD);
                       },
                       icon: Icon(Icons.refresh, color: Colors.green.shade700)),
                   PrintWidget(onPressed: () {
@@ -225,7 +222,7 @@ class _TableTrajetDDState extends State<TableTrajetDD> {
 
     if (mounted) {
       setState(() {
-        for (var item in data) { 
+        for (var item in data) {
           rows.add(PlutoRow(cells: {
             'id': PlutoCell(value: item.id),
             'nomeroEntreprise': PlutoCell(value: item.nomeroEntreprise),
@@ -233,8 +230,10 @@ class _TableTrajetDDState extends State<TableTrajetDD> {
             'trajetDe': PlutoCell(value: item.trajetDe),
             'trajetA': PlutoCell(value: item.trajetA),
             'mission': PlutoCell(value: item.mission),
-            'kilometrageSorite': PlutoCell(value: "${item.kilometrageSorite} KM"),
-            'kilometrageRetour': PlutoCell(value: "${item.kilometrageRetour} KM"),
+            'kilometrageSorite':
+                PlutoCell(value: "${item.kilometrageSorite} KM"),
+            'kilometrageRetour':
+                PlutoCell(value: "${item.kilometrageRetour} KM"),
             'created': PlutoCell(
                 value: DateFormat("dd-MM-yy H:mm").format(item.created))
           }));

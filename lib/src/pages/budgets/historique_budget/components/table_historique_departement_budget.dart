@@ -37,8 +37,8 @@ class _HistoriqueTableDepartementBudgetState
       columns: columns,
       rows: rows,
       onRowDoubleTap: (PlutoGridOnRowDoubleTapEvent tapEvent) {
-        final dataList = tapEvent.row!.cells.values;
-        final idPlutoRow = dataList.elementAt(0);
+        final dataId = tapEvent.row!.cells.values;
+        final idPlutoRow = dataId.elementAt(0);
 
         Navigator.pushNamed(context, BudgetRoutes.budgetBudgetPrevisionelDetail,
             arguments: idPlutoRow.value);

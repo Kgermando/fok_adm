@@ -1,11 +1,13 @@
-import 'package:flutter/material.dart'; 
+import 'package:flutter/material.dart';
 import 'package:fokad_admin/src/api/auth/auth_api.dart';
-import 'package:fokad_admin/src/api/comm_marketing/commerciale/produit_model_api.dart'; 
+import 'package:fokad_admin/src/api/comm_marketing/commerciale/produit_model_api.dart';
 import 'package:fokad_admin/src/models/comm_maketing/prod_model.dart';
-import 'package:fokad_admin/src/models/users/user_model.dart'; 
+import 'package:fokad_admin/src/models/users/user_model.dart';
+import 'package:fokad_admin/src/pages/comm_marketing/commercial/prod_model/components/prod_model_xlsx.dart';
 import 'package:fokad_admin/src/routes/routes.dart';
 import 'package:fokad_admin/src/widgets/print_widget.dart';
 import 'package:fokad_admin/src/utils/class_implemented.dart';
+import 'package:fokad_admin/src/widgets/title_widget.dart';
 import 'package:intl/intl.dart';
 import 'package:pluto_grid/pluto_grid.dart';
 
@@ -22,14 +24,27 @@ class _TableProduitModelState extends State<TableProduitModel> {
   PlutoGridStateManager? stateManager;
   PlutoGridSelectingMode gridSelectingMode = PlutoGridSelectingMode.row;
 
-  int? id;
-
   @override
   void initState() {
     agentsColumn();
+    getData();
     agentsRow();
     super.initState();
   }
+
+  List<ProductModel> dataList = [];
+  Future<void> getData() async {
+    List<ProductModel> prodModels = await ProduitModelApi().getAllData();
+    if (mounted) {
+      setState(() {
+        dataList = prodModels
+            .where((element) =>
+                element.approbationDD == "Approved")
+            .toList();
+      });
+    }
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -37,10 +52,11 @@ class _TableProduitModelState extends State<TableProduitModel> {
       columns: columns,
       rows: rows,
       onRowDoubleTap: (PlutoGridOnRowDoubleTapEvent tapEvent) {
-        final dataList = tapEvent.row!.cells.values;
-        final idPlutoRow = dataList.elementAt(0);
+        final dataId = tapEvent.row!.cells.values;
+        final idPlutoRow = dataId.elementAt(0);
         Navigator.pushNamed(
-            context, ComMarketingRoutes.comMarketingProduitModelDetail, arguments: idPlutoRow.value);
+            context, ComMarketingRoutes.comMarketingProduitModelDetail,
+            arguments: idPlutoRow.value);
       },
       onLoaded: (PlutoGridOnLoadedEvent event) {
         stateManager = event.stateManager;
@@ -49,16 +65,27 @@ class _TableProduitModelState extends State<TableProduitModel> {
       },
       createHeader: (PlutoGridStateManager header) {
         return Row(
-          mainAxisAlignment: MainAxisAlignment.end,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            IconButton(
-                onPressed: () {
-                  Navigator.pushNamed(
-                      context, ComMarketingRoutes.comMarketingProduitModel);
-                },
-                icon: Icon(Icons.refresh, color: Colors.green.shade700)),
-            IconButton(onPressed: () {}, icon: const Icon(Icons.download)),
-            PrintWidget(onPressed: () {})
+            const TitleWidget(title: "Modèle Produits"),
+            Row(
+              children: [
+                IconButton(
+                    onPressed: () {
+                      Navigator.pushNamed(
+                          context, ComMarketingRoutes.comMarketingProduitModel);
+                    },
+                    icon: Icon(Icons.refresh, color: Colors.green.shade700)),
+                PrintWidget(onPressed: () {
+                  ProdModelXlsx().exportToExcel(dataList);
+                  if (!mounted) return;
+                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                    content: const Text("Exportation effectué!"),
+                    backgroundColor: Colors.green[700],
+                  ));
+                })
+              ],
+            ),
           ],
         );
       },
@@ -193,10 +220,10 @@ class _TableProduitModelState extends State<TableProduitModel> {
     ];
   }
 
-  Future agentsRow() async { 
-    List<ProductModel> dataList = await ProduitModelApi().getAllData();
+  Future agentsRow() async {
+    List<ProductModel> prodModels = await ProduitModelApi().getAllData();
     UserModel userModel = await AuthApi().getUserId();
-    var data = dataList
+    var data = prodModels
         .where((element) =>
             element.approbationDD == "Approved" ||
             element.signature == userModel.matricule)

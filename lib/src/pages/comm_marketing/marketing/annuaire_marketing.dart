@@ -6,9 +6,11 @@ import 'package:fokad_admin/src/constants/app_theme.dart';
 import 'package:fokad_admin/src/constants/responsive.dart';
 import 'package:fokad_admin/src/models/comm_maketing/annuaire_model.dart';
 import 'package:fokad_admin/src/navigation/drawer/drawer_menu.dart';
-import 'package:fokad_admin/src/navigation/header/custom_appbar.dart'; 
+import 'package:fokad_admin/src/navigation/header/custom_appbar.dart';
+import 'package:fokad_admin/src/pages/comm_marketing/marketing/components/annuaire/annuaire_xlsx.dart';
 import 'package:fokad_admin/src/routes/routes.dart';
 import 'package:fokad_admin/src/utils/loading.dart';
+import 'package:fokad_admin/src/widgets/print_widget.dart';
 import 'package:fokad_admin/src/widgets/search_widget.dart';
 
 final _lightColors = [
@@ -41,6 +43,7 @@ class _AnnuaireMarketingState extends State<AnnuaireMarketing> {
 
   @override
   void initState() {
+    getData();
     super.initState();
   }
 
@@ -59,6 +62,14 @@ class _AnnuaireMarketingState extends State<AnnuaireMarketing> {
     }
 
     debouncer = Timer(duration, callback);
+  }
+
+  List<AnnuaireModel> dataList = [];
+  Future<void> getData() async {
+    List<AnnuaireModel> annuaires = await AnnuaireApi().getAllData();
+    setState(() {
+      dataList = annuaires.toList();
+    });
   }
 
   @override
@@ -133,8 +144,7 @@ class _AnnuaireMarketingState extends State<AnnuaireMarketing> {
                                                 annuaireModel, index);
                                           });
                                 } else {
-                                  return Center(
-                                      child: loading());
+                                  return Center(child: loading());
                                 }
                               })),
                     ],
@@ -165,32 +175,49 @@ class _AnnuaireMarketingState extends State<AnnuaireMarketing> {
     final bodyText1 = Theme.of(context).textTheme.bodyText1;
     final bodyText2 = Theme.of(context).textTheme.bodyText2;
     final color = _lightColors[index % _lightColors.length];
-    return GestureDetector(
-        onTap: () { 
-          Navigator.of(context).pushNamed(
-            ComMarketingRoutes.comMarketingAnnuaireDetail, 
-              arguments: AnnuaireColor(annuaireModel: annuaireModel, color: color)
-          ); 
-        },
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Card(
-            elevation: 10,
-            child: ListTile(
-              visualDensity: VisualDensity.comfortable,
-              dense: true,
-              leading:
-                  Icon(Icons.perm_contact_cal_sharp, color: color, size: 50),
-              title: Text(
-                annuaireModel.nomPostnomPrenom,
-                style: bodyText1,
+    return Column(
+      children: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: [
+            PrintWidget(onPressed: () {
+              AnnuaireXlsx().exportToExcel(dataList);
+              if (!mounted) return;
+              ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                content: const Text("Exportation effectué!"),
+                backgroundColor: Colors.green[700],
+              ));
+            })
+          ],
+        ),
+        GestureDetector(
+            onTap: () {
+              Navigator.of(context).pushNamed(
+                  ComMarketingRoutes.comMarketingAnnuaireDetail,
+                  arguments: AnnuaireColor(
+                      annuaireModel: annuaireModel, color: color));
+            },
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Card(
+                elevation: 10,
+                child: ListTile(
+                  visualDensity: VisualDensity.comfortable,
+                  dense: true,
+                  leading: Icon(Icons.perm_contact_cal_sharp,
+                      color: color, size: 50),
+                  title: Text(
+                    annuaireModel.nomPostnomPrenom,
+                    style: bodyText1,
+                  ),
+                  subtitle: Text(
+                    annuaireModel.mobile1,
+                    style: bodyText2,
+                  ),
+                ),
               ),
-              subtitle: Text(
-                annuaireModel.mobile1,
-                style: bodyText2,
-              ),
-            ),
-          ),
-        ));
+            )),
+      ],
+    );
   }
 }

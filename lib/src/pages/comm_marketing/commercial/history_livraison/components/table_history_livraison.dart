@@ -3,9 +3,11 @@ import 'package:fokad_admin/src/api/auth/auth_api.dart';
 import 'package:fokad_admin/src/api/comm_marketing/commerciale/livraison_history_api.dart';
 import 'package:fokad_admin/src/models/comm_maketing/livraiason_history_model.dart';
 import 'package:fokad_admin/src/models/users/user_model.dart';
+import 'package:fokad_admin/src/pages/comm_marketing/commercial/history_livraison/components/history_livraison_xlsx.dart';
 import 'package:fokad_admin/src/routes/routes.dart';
 import 'package:fokad_admin/src/utils/class_implemented.dart';
 import 'package:fokad_admin/src/widgets/print_widget.dart';
+import 'package:fokad_admin/src/widgets/title_widget.dart';
 import 'package:intl/intl.dart';
 import 'package:pluto_grid/pluto_grid.dart';
 
@@ -22,8 +24,6 @@ class _TableHistoryLivraisonState extends State<TableHistoryLivraison> {
   PlutoGridStateManager? stateManager;
   PlutoGridSelectingMode gridSelectingMode = PlutoGridSelectingMode.row;
 
-  int? id;
-
   @override
   void initState() {
     getData();
@@ -32,13 +32,19 @@ class _TableHistoryLivraisonState extends State<TableHistoryLivraison> {
     super.initState();
   }
 
-  UserModel? user;
+  List<LivraisonHistoryModel> dataList = [];
   Future<void> getData() async {
-    UserModel userModel = await AuthApi().getUserId();
+   UserModel userModel = await AuthApi().getUserId();
+    List<LivraisonHistoryModel> livraisonHistory =
+        await LivraisonHistoryApi().getAllData();
     setState(() {
-      user = userModel;
+      dataList = livraisonHistory
+          .where((element) => element.succursale == userModel.succursale)
+          .toSet()
+          .toList();
     });
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -46,8 +52,8 @@ class _TableHistoryLivraisonState extends State<TableHistoryLivraison> {
       columns: columns,
       rows: rows,
       onRowDoubleTap: (PlutoGridOnRowDoubleTapEvent tapEvent) {
-        // final dataList = tapEvent.row!.cells.values;
-        // final idPlutoRow = dataList.elementAt(0);
+        // final dataId = tapEvent.row!.cells.values;
+        // final idPlutoRow = dataId.elementAt(0);
 
         // Navigator.of(context).push(MaterialPageRoute(
         //     builder: (context) => DetailProdModel(id: idPlutoRow.value)));
@@ -59,16 +65,27 @@ class _TableHistoryLivraisonState extends State<TableHistoryLivraison> {
       },
       createHeader: (PlutoGridStateManager header) {
         return Row(
-          mainAxisAlignment: MainAxisAlignment.end,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            IconButton(
-                onPressed: () {
-                  Navigator.pushNamed(
-                      context, ComMarketingRoutes.comMarketingHistoryLivraison);
-                },
-                icon: Icon(Icons.refresh, color: Colors.green.shade700)),
-            IconButton(onPressed: () {}, icon: const Icon(Icons.download)),
-            PrintWidget(onPressed: () {})
+            const TitleWidget(title: "Historique de Livraisons"),
+            Row(
+              children: [
+                IconButton(
+                    onPressed: () {
+                      Navigator.pushNamed(
+                          context, ComMarketingRoutes.comMarketingBonLivraison);
+                    },
+                    icon: Icon(Icons.refresh, color: Colors.green.shade700)),
+                PrintWidget(onPressed: () {
+                  HistoriqueLivraisonXlsx().exportToExcel(dataList);
+                  if (!mounted) return;
+                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                    content: const Text("Exportation effectué!"),
+                    backgroundColor: Colors.green[700],
+                  ));
+                })
+              ],
+            ),
           ],
         );
       },
@@ -278,17 +295,17 @@ class _TableHistoryLivraisonState extends State<TableHistoryLivraison> {
   }
 
   Future agentsRow() async {
-    List<LivraisonHistoryModel?> dataList =
+    UserModel userModel = await AuthApi().getUserId();
+    List<LivraisonHistoryModel> livraisonHistory =
         await LivraisonHistoryApi().getAllData();
-    var data = dataList
-        .where((element) => element!.succursale == user!.succursale)
+    var data = livraisonHistory
+        .where((element) => element.succursale == userModel.succursale)
         .toSet()
         .toList();
 
     if (mounted) {
       setState(() {
-        for (var item in data) {
-          id = item!.id;
+        for (var item in data) { 
           rows.add(PlutoRow(cells: {
             'id': PlutoCell(value: item.id),
             'idProduct': PlutoCell(value: item.idProduct),

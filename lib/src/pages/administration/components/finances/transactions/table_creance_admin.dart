@@ -40,8 +40,8 @@ class _TableCreanceAdminState extends State<TableCreanceAdmin> {
     super.initState();
   }
 
-   List<CreanceModel> dataList = [];
-   List<CreanceDetteModel> creanceDetteList = [];
+  List<CreanceModel> dataList = [];
+  List<CreanceDetteModel> creanceDetteList = [];
 
   Future<void> getData() async {
     List<CreanceModel> creances = await CreanceApi().getAllData();
@@ -83,8 +83,8 @@ class _TableCreanceAdminState extends State<TableCreanceAdmin> {
               columns: columns,
               rows: rows,
               onRowDoubleTap: (PlutoGridOnRowDoubleTapEvent tapEvent) {
-                final dataList = tapEvent.row!.cells.values;
-                final idPlutoRow = dataList.elementAt(0);
+                final dataId = tapEvent.row!.cells.values;
+                final idPlutoRow = dataId.elementAt(0);
                 Navigator.pushNamed(
                     context, FinanceRoutes.transactionsCreanceDetail,
                     arguments: idPlutoRow.value);

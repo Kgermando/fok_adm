@@ -1,9 +1,9 @@
 import 'dart:async';
 
-import 'package:flutter/material.dart'; 
+import 'package:flutter/material.dart';
 import 'package:fokad_admin/src/api/auth/auth_api.dart';
 import 'package:fokad_admin/src/api/finances/creance_api.dart';
-import 'package:fokad_admin/src/api/finances/creance_dette_api.dart'; 
+import 'package:fokad_admin/src/api/finances/creance_dette_api.dart';
 import 'package:fokad_admin/src/models/finances/creance_dette_model.dart';
 import 'package:fokad_admin/src/models/finances/creances_model.dart';
 import 'package:fokad_admin/src/models/users/user_model.dart';
@@ -28,7 +28,6 @@ class _TableCreanceDDState extends State<TableCreanceDD> {
   PlutoGridStateManager? stateManager;
   PlutoGridSelectingMode gridSelectingMode = PlutoGridSelectingMode.row;
 
-
   double nonPaye = 0.0; // total Créance
   double paye = 0.0; // total creanceDette
 
@@ -52,7 +51,9 @@ class _TableCreanceDDState extends State<TableCreanceDD> {
               element.approbationDG == "Approved" &&
               element.approbationDD == "Approved")
           .toList();
-      creanceDetteList = creanceDette.where((element) => element.creanceDette == 'creances').toList();
+      creanceDetteList = creanceDette
+          .where((element) => element.creanceDette == 'creances')
+          .toList();
 
       for (var item in data) {
         nonPaye += double.parse(item!.montant);
@@ -62,10 +63,8 @@ class _TableCreanceDDState extends State<TableCreanceDD> {
         paye += double.parse(item.montant);
       }
 
-      dataList = creances
-          .where((element) => 
-              element.approbationDD == "-")
-          .toList();
+      dataList =
+          creances.where((element) => element.approbationDD == "-").toList();
     });
   }
 
@@ -80,8 +79,8 @@ class _TableCreanceDDState extends State<TableCreanceDD> {
               columns: columns,
               rows: rows,
               onRowDoubleTap: (PlutoGridOnRowDoubleTapEvent tapEvent) {
-                final dataList = tapEvent.row!.cells.values;
-                final idPlutoRow = dataList.elementAt(0);
+                final dataId = tapEvent.row!.cells.values;
+                final idPlutoRow = dataId.elementAt(0);
                 Navigator.pushNamed(
                     context, FinanceRoutes.transactionsCreanceDetail,
                     arguments: idPlutoRow.value);
@@ -156,7 +155,8 @@ class _TableCreanceDDState extends State<TableCreanceDD> {
                       return resolver<ClassFilterImplemented>()
                           as PlutoFilterType;
                     }
-                    return resolver<PlutoFilterTypeContains>() as PlutoFilterType;
+                    return resolver<PlutoFilterTypeContains>()
+                        as PlutoFilterType;
                   },
                 ),
               ),
@@ -308,14 +308,15 @@ class _TableCreanceDDState extends State<TableCreanceDD> {
     ];
   }
 
-  Future agentsRow() async { 
+  Future agentsRow() async {
     List<CreanceModel> creances = await CreanceApi().getAllData();
     UserModel userModel = await AuthApi().getUserId();
     var data = creances
-        .where((element) => element.approbationDD == "-" || 
-          element.signature == userModel.matricule)
+        .where((element) =>
+            element.approbationDD == "-" ||
+            element.signature == userModel.matricule)
         .toList();
-        
+
     if (mounted) {
       setState(() {
         for (var item in data) {

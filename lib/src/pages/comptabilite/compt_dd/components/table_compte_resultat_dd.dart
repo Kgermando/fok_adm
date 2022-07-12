@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:fokad_admin/src/api/comptabilite/compte_resultat_api.dart';
 import 'package:fokad_admin/src/models/comptabilites/compte_resultat_model.dart';
-import 'package:fokad_admin/src/pages/comptabilite/compte_resultat/components/compte_resultat_xlsx.dart'; 
+import 'package:fokad_admin/src/pages/comptabilite/compte_resultat/components/compte_resultat_xlsx.dart';
 import 'package:fokad_admin/src/routes/routes.dart';
 import 'package:fokad_admin/src/utils/class_implemented.dart';
 import 'package:fokad_admin/src/widgets/print_widget.dart';
@@ -24,7 +24,6 @@ class _TableCompteResultatDDState extends State<TableCompteResultatDD> {
   PlutoGridStateManager? stateManager;
   PlutoGridSelectingMode gridSelectingMode = PlutoGridSelectingMode.row;
 
-
   @override
   initState() {
     agentsColumn();
@@ -40,8 +39,7 @@ class _TableCompteResultatDDState extends State<TableCompteResultatDD> {
         await CompteResultatApi().getAllData();
     setState(() {
       dataList = compteResulats
-          .where((element) =>
-            element.approbationDD == "-")
+          .where((element) => element.approbationDD == "-")
           .toList();
     });
   }
@@ -53,9 +51,9 @@ class _TableCompteResultatDDState extends State<TableCompteResultatDD> {
       child: PlutoGrid(
         columns: columns,
         rows: rows,
-         onRowDoubleTap: (PlutoGridOnRowDoubleTapEvent tapEvent) {
-          final dataList = tapEvent.row!.cells.values;
-          final idPlutoRow = dataList.elementAt(0);
+        onRowDoubleTap: (PlutoGridOnRowDoubleTapEvent tapEvent) {
+          final dataId = tapEvent.row!.cells.values;
+          final idPlutoRow = dataId.elementAt(0);
           Navigator.pushNamed(
               context, ComptabiliteRoutes.comptabiliteCompteResultatDetail,
               arguments: idPlutoRow.value);
@@ -74,8 +72,8 @@ class _TableCompteResultatDDState extends State<TableCompteResultatDD> {
                 children: [
                   IconButton(
                       onPressed: () {
-                        Navigator.pushNamed(context,
-                            ComptabiliteRoutes.comptabiliteDD);
+                        Navigator.pushNamed(
+                            context, ComptabiliteRoutes.comptabiliteDD);
                       },
                       icon: Icon(Icons.refresh, color: Colors.green.shade700)),
                   PrintWidget(onPressed: () {
@@ -173,7 +171,8 @@ class _TableCompteResultatDDState extends State<TableCompteResultatDD> {
     List<CompteResulatsModel> compteResulats =
         await CompteResultatApi().getAllData();
     var data = compteResulats
-        .where((element) => element.approbationDD == "-").toList();
+        .where((element) => element.approbationDD == "-")
+        .toList();
 
     if (mounted) {
       setState(() {

@@ -287,8 +287,8 @@ class _DetailEntretienState extends State<DetailEntretien> {
       columns: columns,
       rows: rows,
       onRowDoubleTap: (PlutoGridOnRowDoubleTapEvent tapEvent) {
-        // final dataList = tapEvent.row!.cells.values;
-        // final idPlutoRow = dataList.elementAt(0);
+        // final dataId = tapEvent.row!.cells.values;
+        // final idPlutoRow = dataId.elementAt(0);
         //   Navigator.pushNamed(context, LogistiqueRoutes.logEntretienDetail,
         //     arguments: idPlutoRow.value);
       },
@@ -576,7 +576,7 @@ class _DetailEntretienState extends State<DetailEntretien> {
 
   Future<void> submitDD(EntretienModel data) async {
     final entretienModel = EntretienModel(
-      id: data.id!,
+        id: data.id!,
         nom: data.nom,
         modele: data.modele,
         marque: data.marque,
@@ -587,7 +587,7 @@ class _DetailEntretienState extends State<DetailEntretien> {
         created: data.created,
         approbationDD: approbationDD,
         motifDD: (motifDDController.text == '') ? '-' : motifDDController.text,
-        signatureDD: user.matricule); 
+        signatureDD: user.matricule);
     await EntretienApi().updateData(entretienModel);
     Navigator.pop(context);
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(

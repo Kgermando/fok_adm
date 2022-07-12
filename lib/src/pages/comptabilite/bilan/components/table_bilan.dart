@@ -1,8 +1,8 @@
 import 'dart:async';
 
-import 'package:flutter/material.dart'; 
+import 'package:flutter/material.dart';
 import 'package:fokad_admin/src/api/auth/auth_api.dart';
-import 'package:fokad_admin/src/api/comptabilite/bilan_api.dart'; 
+import 'package:fokad_admin/src/api/comptabilite/bilan_api.dart';
 import 'package:fokad_admin/src/models/comptabilites/bilan_model.dart';
 import 'package:fokad_admin/src/models/users/user_model.dart';
 import 'package:fokad_admin/src/pages/comptabilite/bilan/components/bilan_xlsx.dart';
@@ -47,15 +47,14 @@ class _TableBilanState extends State<TableBilan> {
     });
   }
 
-
   @override
   Widget build(BuildContext context) {
     return PlutoGrid(
       columns: columns,
       rows: rows,
       onRowDoubleTap: (PlutoGridOnRowDoubleTapEvent tapEvent) {
-        final dataList = tapEvent.row!.cells.values;
-        final idPlutoRow = dataList.elementAt(0);
+        final dataId = tapEvent.row!.cells.values;
+        final idPlutoRow = dataId.elementAt(0);
         Navigator.pushNamed(context, ComptabiliteRoutes.comptabiliteBilanDetail,
             arguments: idPlutoRow.value);
       },
@@ -167,7 +166,7 @@ class _TableBilanState extends State<TableBilan> {
     ];
   }
 
-  Future agentsRow() async { 
+  Future agentsRow() async {
     List<BilanModel> bilans = await BilanApi().getAllData();
     UserModel userModel = await AuthApi().getUserId();
 

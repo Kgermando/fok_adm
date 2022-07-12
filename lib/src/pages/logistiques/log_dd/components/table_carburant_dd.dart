@@ -119,9 +119,8 @@ class _TableCarburantDDState extends State<TableCarburantDD> {
         sortiePetrole += double.parse(item!.qtyAchat);
       }
 
-       dataList = carburants
-          .where((element) => element.approbationDD == "-")
-          .toList();
+      dataList =
+          carburants.where((element) => element.approbationDD == "-").toList();
     });
   }
 
@@ -134,8 +133,8 @@ class _TableCarburantDDState extends State<TableCarburantDD> {
           columns: columns,
           rows: rows,
           onRowDoubleTap: (PlutoGridOnRowDoubleTapEvent tapEvent) {
-            final dataList = tapEvent.row!.cells.values;
-            final idPlutoRow = dataList.elementAt(0);
+            final dataId = tapEvent.row!.cells.values;
+            final idPlutoRow = dataId.elementAt(0);
             Navigator.pushNamed(
                 context, LogistiqueRoutes.logCarburantAutoDetail,
                 arguments: idPlutoRow.value);
@@ -154,8 +153,7 @@ class _TableCarburantDDState extends State<TableCarburantDD> {
                   children: [
                     IconButton(
                         onPressed: () {
-                          Navigator.pushNamed(
-                              context, LogistiqueRoutes.logDD);
+                          Navigator.pushNamed(context, LogistiqueRoutes.logDD);
                         },
                         icon:
                             Icon(Icons.refresh, color: Colors.green.shade700)),
@@ -430,7 +428,8 @@ class _TableCarburantDDState extends State<TableCarburantDD> {
 
   Future agentsRow() async {
     List<CarburantModel?> dataList = await CarburantApi().getAllData();
-    var data = dataList.where((element) => element!.approbationDD == '-').toList();
+    var data =
+        dataList.where((element) => element!.approbationDD == '-').toList();
 
     if (mounted) {
       setState(() {

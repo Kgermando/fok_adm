@@ -1,9 +1,9 @@
 import 'dart:async';
 
-import 'package:flutter/material.dart'; 
+import 'package:flutter/material.dart';
 import 'package:fokad_admin/src/api/auth/auth_api.dart';
 import 'package:fokad_admin/src/api/finances/creance_dette_api.dart';
-import 'package:fokad_admin/src/api/finances/dette_api.dart'; 
+import 'package:fokad_admin/src/api/finances/dette_api.dart';
 import 'package:fokad_admin/src/models/finances/creance_dette_model.dart';
 import 'package:fokad_admin/src/models/finances/dette_model.dart';
 import 'package:fokad_admin/src/models/users/user_model.dart';
@@ -53,7 +53,8 @@ class _TableDetteDDState extends State<TableDetteDD> {
               element.approbationDD == "Approved")
           .toList();
       creanceDetteList = creanceDette
-        .where((element) => element.creanceDette == 'dettes').toList();
+          .where((element) => element.creanceDette == 'dettes')
+          .toList();
       for (var item in data) {
         nonPaye += double.parse(item!.montant);
       }
@@ -78,8 +79,8 @@ class _TableDetteDDState extends State<TableDetteDD> {
               columns: columns,
               rows: rows,
               onRowDoubleTap: (PlutoGridOnRowDoubleTapEvent tapEvent) {
-                final dataList = tapEvent.row!.cells.values;
-                final idPlutoRow = dataList.elementAt(0);
+                final dataId = tapEvent.row!.cells.values;
+                final idPlutoRow = dataId.elementAt(0);
                 Navigator.pushNamed(
                     context, FinanceRoutes.transactionsDetteDetail,
                     arguments: idPlutoRow.value);
@@ -98,8 +99,7 @@ class _TableDetteDDState extends State<TableDetteDD> {
                       children: [
                         IconButton(
                             onPressed: () {
-                              Navigator.pushNamed(
-                                  context, FinanceRoutes.finDD);
+                              Navigator.pushNamed(context, FinanceRoutes.finDD);
                             },
                             icon: Icon(Icons.refresh,
                                 color: Colors.green.shade700)),
@@ -155,7 +155,8 @@ class _TableDetteDDState extends State<TableDetteDD> {
                       return resolver<ClassFilterImplemented>()
                           as PlutoFilterType;
                     }
-                    return resolver<PlutoFilterTypeContains>() as PlutoFilterType;
+                    return resolver<PlutoFilterTypeContains>()
+                        as PlutoFilterType;
                   },
                 ),
               ),
@@ -307,25 +308,26 @@ class _TableDetteDDState extends State<TableDetteDD> {
     ];
   }
 
-  Future agentsRow() async { 
+  Future agentsRow() async {
     List<DetteModel> dettes = await DetteApi().getAllData();
     UserModel userModel = await AuthApi().getUserId();
     var data = dettes
-      .where((element) =>
-          element.approbationDD == "-" ||
-          element.signature == userModel.matricule)
-      .toList();
+        .where((element) =>
+            element.approbationDD == "-" ||
+            element.signature == userModel.matricule)
+        .toList();
 
     if (mounted) {
       setState(() {
-        for (var item in data) { 
+        for (var item in data) {
           rows.add(PlutoRow(cells: {
             'id': PlutoCell(value: item.id),
             'nomComplet': PlutoCell(value: item.nomComplet),
             'pieceJustificative': PlutoCell(value: item.pieceJustificative),
             'libelle': PlutoCell(value: item.libelle),
-            'montant': PlutoCell(value: "${NumberFormat.decimalPattern('fr')
-                .format(double.parse(item.montant))} \$"),
+            'montant': PlutoCell(
+                value:
+                    "${NumberFormat.decimalPattern('fr').format(double.parse(item.montant))} \$"),
             'numeroOperation': PlutoCell(value: item.numeroOperation),
             'created': PlutoCell(
                 value: DateFormat("dd-MM-yyyy HH:mm").format(item.created))

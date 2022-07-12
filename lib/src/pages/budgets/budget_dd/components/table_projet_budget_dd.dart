@@ -37,8 +37,8 @@ class _TableProjeBudgetState extends State<TableProjeBudget> {
         columns: columns,
         rows: rows,
         onRowDoubleTap: (PlutoGridOnRowDoubleTapEvent tapEvent) {
-          final dataList = tapEvent.row!.cells.values;
-          final idPlutoRow = dataList.elementAt(0);
+          final dataId = tapEvent.row!.cells.values;
+          final idPlutoRow = dataId.elementAt(0);
           Navigator.pushNamed(context, ExploitationRoutes.expProjetDetail,
               arguments: idPlutoRow.value);
         },
@@ -191,7 +191,7 @@ class _TableProjeBudgetState extends State<TableProjeBudget> {
 
     if (mounted) {
       setState(() {
-        for (var item in data) { 
+        for (var item in data) {
           rows.add(PlutoRow(cells: {
             'id': PlutoCell(value: item.id),
             'nomProjet': PlutoCell(value: item.nomProjet),

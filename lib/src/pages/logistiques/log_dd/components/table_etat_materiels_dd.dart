@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:fokad_admin/src/api/logistiques/etat_materiel_api.dart';
 import 'package:fokad_admin/src/models/logistiques/etat_materiel_model.dart';
-import 'package:fokad_admin/src/pages/logistiques/materiels/components/etat_material_xlsx.dart'; 
+import 'package:fokad_admin/src/pages/logistiques/materiels/components/etat_material_xlsx.dart';
 import 'package:fokad_admin/src/routes/routes.dart';
 import 'package:fokad_admin/src/widgets/print_widget.dart';
 import 'package:fokad_admin/src/utils/class_implemented.dart';
@@ -41,6 +41,7 @@ class _TableEtatMaterielDDState extends State<TableEtatMaterielDD> {
           .toList();
     });
   }
+
   @override
   Widget build(BuildContext context) {
     return SizedBox(
@@ -49,8 +50,8 @@ class _TableEtatMaterielDDState extends State<TableEtatMaterielDD> {
         columns: columns,
         rows: rows,
         onRowDoubleTap: (PlutoGridOnRowDoubleTapEvent tapEvent) {
-          final dataList = tapEvent.row!.cells.values;
-          final idPlutoRow = dataList.elementAt(0);
+          final dataId = tapEvent.row!.cells.values;
+          final idPlutoRow = dataId.elementAt(0);
 
           Navigator.pushNamed(context, LogistiqueRoutes.logEtatMaterielDetail,
               arguments: idPlutoRow.value);
@@ -69,8 +70,7 @@ class _TableEtatMaterielDDState extends State<TableEtatMaterielDD> {
                 children: [
                   IconButton(
                       onPressed: () {
-                        Navigator.pushNamed(
-                            context, LogistiqueRoutes.logDD);
+                        Navigator.pushNamed(context, LogistiqueRoutes.logDD);
                       },
                       icon: Icon(Icons.refresh, color: Colors.green.shade700)),
                   PrintWidget(onPressed: () {
@@ -208,12 +208,11 @@ class _TableEtatMaterielDDState extends State<TableEtatMaterielDD> {
     List<EtatMaterielModel> etatMateriels =
         await EtatMaterielApi().getAllData();
     var data =
-        etatMateriels
-        .where((element) => element.approbationDD == '-').toList();
+        etatMateriels.where((element) => element.approbationDD == '-').toList();
 
     if (mounted) {
       setState(() {
-        for (var item in data) { 
+        for (var item in data) {
           rows.add(PlutoRow(cells: {
             'id': PlutoCell(value: item.id),
             'nom': PlutoCell(value: item.nom),

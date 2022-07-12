@@ -1,6 +1,6 @@
-import 'package:flutter/material.dart'; 
+import 'package:flutter/material.dart';
 import 'package:fokad_admin/src/api/rh/transport_restaurant_api.dart';
-import 'package:fokad_admin/src/models/rh/transport_restauration_model.dart'; 
+import 'package:fokad_admin/src/models/rh/transport_restauration_model.dart';
 import 'package:fokad_admin/src/pages/rh/transport_restauration/components/transport_restauration_xlsx.dart';
 import 'package:fokad_admin/src/routes/routes.dart';
 import 'package:fokad_admin/src/utils/class_implemented.dart';
@@ -17,7 +17,8 @@ class TableTansportRestaurantAdmin extends StatefulWidget {
       _TableTansportRestaurantAdminState();
 }
 
-class _TableTansportRestaurantAdminState extends State<TableTansportRestaurantAdmin> {
+class _TableTansportRestaurantAdminState
+    extends State<TableTansportRestaurantAdmin> {
   List<PlutoColumn> columns = [];
   List<PlutoRow> rows = [];
   PlutoGridStateManager? stateManager;
@@ -40,14 +41,14 @@ class _TableTansportRestaurantAdminState extends State<TableTansportRestaurantAd
 
   List<TransportRestaurationModel> dataList = [];
 
-  Future<void> getData() async { 
+  Future<void> getData() async {
     var data = await TransportRestaurationApi().getAllData();
     if (mounted) {
-      setState(() { 
+      setState(() {
         dataList = data
             .where((element) =>
-                  element.approbationDD == 'Approved' &&
-              element.approbationDG == '-')
+                element.approbationDD == 'Approved' &&
+                element.approbationDG == '-')
             .toList();
       });
     }
@@ -68,8 +69,8 @@ class _TableTansportRestaurantAdminState extends State<TableTansportRestaurantAd
         columns: columns,
         rows: rows,
         onRowDoubleTap: (PlutoGridOnRowDoubleTapEvent tapEvent) {
-          final dataList = tapEvent.row!.cells.values;
-          final idPlutoRow = dataList.elementAt(0);
+          final dataId = tapEvent.row!.cells.values;
+          final idPlutoRow = dataId.elementAt(0);
           Navigator.pushNamed(context, RhRoutes.rhTransportRestDetail,
               arguments: idPlutoRow.value);
         },
@@ -193,14 +194,13 @@ class _TableTansportRestaurantAdminState extends State<TableTansportRestaurantAd
     ];
   }
 
-  Future agentsRow() async { 
+  Future agentsRow() async {
     var dataList = await TransportRestaurationApi().getAllData();
 
     // Uniquement ceux qui ont déjà été approuvé
     var data = dataList
         .where((element) =>
-              element.approbationDD == 'Approved' &&
-              element.approbationDG == '-')
+            element.approbationDD == 'Approved' && element.approbationDG == '-')
         .toList();
 
     if (mounted) {
