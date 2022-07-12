@@ -96,7 +96,8 @@ import 'package:fokad_admin/src/pages/exploitations/versements/add_versement_pro
 import 'package:fokad_admin/src/pages/exploitations/versements/components/detail_versement_projet.dart';
 import 'package:fokad_admin/src/pages/exploitations/versements/versement_projet.dart';
 import 'package:fokad_admin/src/pages/finances/dashboard/dashboard_finance.dart';
-import 'package:fokad_admin/src/pages/finances/dd_finance/departement_fin.dart'; 
+import 'package:fokad_admin/src/pages/finances/dd_finance/departement_fin.dart';
+import 'package:fokad_admin/src/pages/finances/observation/observation_page.dart'; 
 import 'package:fokad_admin/src/pages/finances/transactions/banque_transactions.dart';
 import 'package:fokad_admin/src/pages/finances/transactions/caisses_transactions.dart';
 import 'package:fokad_admin/src/pages/finances/transactions/components/banques/add_depot_banque.dart';
@@ -257,6 +258,7 @@ class FinanceRoutes {
   
   static const transactionsDepenses = "/transactions-depenses";
   static const finDD = "/fin-dd"; 
+  static const finObservation = "/fin-observation"; 
 }
 
 class ComptabiliteRoutes {
@@ -468,6 +470,7 @@ final routes = <String, WidgetBuilder>{
   FinanceRoutes.transactionsFinancementExterneAdd: (context) => const AddAutreFin(),
   FinanceRoutes.transactionsFinancementExterneDetail: (context) =>
       const DetailFinExterieur(), 
+  FinanceRoutes.finObservation: (context) => const ObservationPage(), 
 
   // Comptabilite
   ComptabiliteRoutes.comptabiliteDD: (context) => const ComptabiliteDD(),

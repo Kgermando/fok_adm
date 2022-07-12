@@ -89,7 +89,7 @@ class _TableTansportRestaurantFinState
                 children: [
                   IconButton(
                       onPressed: () {
-                        Navigator.pushNamed(context, RhRoutes.rhTransportRest);
+                        Navigator.pushNamed(context, FinanceRoutes.finDD);
                       },
                       icon: Icon(Icons.refresh, color: Colors.green.shade700)),
                   PrintWidget(onPressed: () {

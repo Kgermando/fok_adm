@@ -84,13 +84,13 @@ class _CourbeCaisseYearState extends State<CourbeCaisseYear> {
       LineSeries<CourbeChartModel, num>(
           dataSource: dataList1,
           name: 'Encaissements',
-          xValueMapper: (CourbeChartModel sales, _) => sales.created,
+          xValueMapper: (CourbeChartModel sales, _) => int.parse(sales.created),
           yValueMapper: (CourbeChartModel sales, _) => sales.sum,
           markerSettings: const MarkerSettings(isVisible: true)),
       LineSeries<CourbeChartModel, num>(
           dataSource: dataList2,
           name: 'Décaissements',
-          xValueMapper: (CourbeChartModel sales, _) => sales.created,
+          xValueMapper: (CourbeChartModel sales, _) => int.parse(sales.created),
           yValueMapper: (CourbeChartModel sales, _) => sales.sum,
           markerSettings: const MarkerSettings(isVisible: true))
     ];

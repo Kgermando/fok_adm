@@ -1,22 +1,25 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:fokad_admin/src/api/exploitations/projets_api.dart';
-import 'package:fokad_admin/src/models/exploitations/projet_model.dart';
+import 'package:fokad_admin/src/api/auth/auth_api.dart';
+import 'package:fokad_admin/src/api/devis/devis_api.dart';
+import 'package:fokad_admin/src/models/devis/devis_models.dart';
+import 'package:fokad_admin/src/pages/logistiques/etat_besoin/components/devis_xlxs.dart';
 import 'package:fokad_admin/src/routes/routes.dart';
 import 'package:fokad_admin/src/widgets/print_widget.dart';
 import 'package:fokad_admin/src/utils/class_implemented.dart';
+import 'package:fokad_admin/src/widgets/title_widget.dart';
 import 'package:intl/intl.dart';
 import 'package:pluto_grid/pluto_grid.dart';
 
-class TableProjetFin extends StatefulWidget {
-  const TableProjetFin({Key? key}) : super(key: key);
+class TableDevisObs extends StatefulWidget {
+  const TableDevisObs({Key? key}) : super(key: key);
 
   @override
-  State<TableProjetFin> createState() => _TableProjetFinState();
+  State<TableDevisObs> createState() => _TableDevisObsState();
 }
 
-class _TableProjetFinState extends State<TableProjetFin> {
+class _TableDevisObsState extends State<TableDevisObs> {
   List<PlutoColumn> columns = [];
   List<PlutoRow> rows = [];
   PlutoGridStateManager? stateManager;
@@ -25,10 +28,42 @@ class _TableProjetFinState extends State<TableProjetFin> {
   int? id;
 
   @override
-  void initState() {
+  initState() {
     agentsColumn();
+    getData();
     agentsRow();
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+  }
+
+  String? matricule;
+  String? departement;
+  String? servicesAffectation;
+  String? fonctionOccupe;
+
+  List<DevisModel> dataList = [];
+
+  Future<void> getData() async {
+    final userModel = await AuthApi().getUserId();
+    List<DevisModel> devis = await DevisAPi().getAllData();
+    setState(() {
+      matricule = userModel.matricule;
+      departement = userModel.departement;
+      servicesAffectation = userModel.servicesAffectation;
+      fonctionOccupe = userModel.fonctionOccupe;
+
+      dataList = devis
+          .where((element) =>
+              element.approbationDG == "Approved" &&
+              element.approbationDD == "Approved" &&
+              element.approbationBudget == "Approved" &&
+              element.approbationFin == "Approved")
+          .toList();
+    });
   }
 
   @override
@@ -41,7 +76,7 @@ class _TableProjetFinState extends State<TableProjetFin> {
         onRowDoubleTap: (PlutoGridOnRowDoubleTapEvent tapEvent) {
           final dataId = tapEvent.row!.cells.values;
           final idPlutoRow = dataId.elementAt(0);
-          Navigator.pushNamed(context, ExploitationRoutes.expProjetDetail,
+          Navigator.pushNamed(context, DevisRoutes.devisDetail,
               arguments: idPlutoRow.value);
         },
         onLoaded: (PlutoGridOnLoadedEvent event) {
@@ -51,14 +86,27 @@ class _TableProjetFinState extends State<TableProjetFin> {
         },
         createHeader: (PlutoGridStateManager header) {
           return Row(
-            mainAxisAlignment: MainAxisAlignment.end,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              IconButton(
-                  onPressed: () {
-                    Navigator.pushNamed(context, FinanceRoutes.finDD);
-                  },
-                  icon: Icon(Icons.refresh, color: Colors.green.shade700)),
-              PrintWidget(onPressed: () {})
+              const TitleWidget(title: "Etat de Besoin"),
+              Row(
+                children: [
+                  IconButton(
+                      onPressed: () {
+                        Navigator.pushNamed(
+                            context, FinanceRoutes.finObservation);
+                      },
+                      icon: Icon(Icons.refresh, color: Colors.green.shade700)),
+                  PrintWidget(onPressed: () {
+                    DevisXlsx().exportToExcel(dataList);
+                    if (!mounted) return;
+                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                      content: const Text("Exportation effectué!"),
+                      backgroundColor: Colors.green[700],
+                    ));
+                  })
+                ],
+              ),
             ],
           );
         },
@@ -72,15 +120,11 @@ class _TableProjetFinState extends State<TableProjetFin> {
             resolveDefaultColumnFilter: (column, resolver) {
               if (column.field == 'id') {
                 return resolver<ClassFilterImplemented>() as PlutoFilterType;
-              } else if (column.field == 'nomProjet') {
+              } else if (column.field == 'title') {
                 return resolver<ClassFilterImplemented>() as PlutoFilterType;
-              } else if (column.field == 'responsable') {
+              } else if (column.field == 'priority') {
                 return resolver<ClassFilterImplemented>() as PlutoFilterType;
-              } else if (column.field == 'objectifs') {
-                return resolver<ClassFilterImplemented>() as PlutoFilterType;
-              } else if (column.field == 'dateDebutEtFin') {
-                return resolver<ClassFilterImplemented>() as PlutoFilterType;
-              } else if (column.field == 'typeFinancement') {
+              } else if (column.field == 'departement') {
                 return resolver<ClassFilterImplemented>() as PlutoFilterType;
               } else if (column.field == 'created') {
                 return resolver<ClassFilterImplemented>() as PlutoFilterType;
@@ -109,8 +153,8 @@ class _TableProjetFinState extends State<TableProjetFin> {
       ),
       PlutoColumn(
         readOnly: true,
-        title: 'Nom projet',
-        field: 'nomProjet',
+        title: 'Titre',
+        field: 'title',
         type: PlutoColumnType.text(),
         enableRowDrag: true,
         enableContextMenu: false,
@@ -121,8 +165,8 @@ class _TableProjetFinState extends State<TableProjetFin> {
       ),
       PlutoColumn(
         readOnly: true,
-        title: 'Responsable',
-        field: 'responsable',
+        title: 'Priorité',
+        field: 'priority',
         type: PlutoColumnType.text(),
         enableRowDrag: true,
         enableContextMenu: false,
@@ -133,32 +177,8 @@ class _TableProjetFinState extends State<TableProjetFin> {
       ),
       PlutoColumn(
         readOnly: true,
-        title: 'Objectifs',
-        field: 'objectifs',
-        type: PlutoColumnType.text(),
-        enableRowDrag: true,
-        enableContextMenu: false,
-        enableDropToResize: true,
-        titleTextAlign: PlutoColumnTextAlign.left,
-        width: 150,
-        minWidth: 150,
-      ),
-      PlutoColumn(
-        readOnly: true,
-        title: 'Date de Debut Et Fin',
-        field: 'dateDebutEtFin',
-        type: PlutoColumnType.text(),
-        enableRowDrag: true,
-        enableContextMenu: false,
-        enableDropToResize: true,
-        titleTextAlign: PlutoColumnTextAlign.left,
-        width: 150,
-        minWidth: 150,
-      ),
-      PlutoColumn(
-        readOnly: true,
-        title: 'Type de Financement',
-        field: 'typeFinancement',
+        title: 'Département',
+        field: 'departement',
         type: PlutoColumnType.text(),
         enableRowDrag: true,
         enableContextMenu: false,
@@ -183,31 +203,29 @@ class _TableProjetFinState extends State<TableProjetFin> {
   }
 
   Future agentsRow() async {
-    List<ProjetModel?> dataList = await ProjetsApi().getAllData();
-    var data = dataList
-        .where((element) =>
-            element!.approbationDG == 'Approved' &&
-            element.approbationDD == 'Approved' &&
-            element.approbationBudget == 'Approved' &&
-            element.approbationFin == "-")
-        .toList();
+    List<DevisModel> devis = await DevisAPi().getAllData();
+    var data = devis
+      .where((element) =>
+        element.approbationDG == 'Approved' &&
+        element.approbationDD == 'Approved' &&
+        element.approbationBudget == 'Approved' &&
+        element.approbationFin == 'Approved' &&
+        element.observation == "false")
+      .toList();
 
     if (mounted) {
       setState(() {
         for (var item in data) {
-          id = item!.id;
           rows.add(PlutoRow(cells: {
             'id': PlutoCell(value: item.id),
-            'nomProjet': PlutoCell(value: item.nomProjet),
-            'responsable': PlutoCell(value: item.responsable),
-            'objectifs': PlutoCell(value: item.objectifs),
-            'dateDebutEtFin': PlutoCell(value: item.dateDebutEtFin),
-            'typeFinancement': PlutoCell(value: item.typeFinancement),
+            'title': PlutoCell(value: item.title),
+            'priority': PlutoCell(value: item.priority),
+            'departement': PlutoCell(value: item.departement),
             'created': PlutoCell(
-                value: DateFormat("dd-MM-yy H:mm").format(item.created))
+                value: DateFormat("dd-MM-yy HH:mm").format(item.created))
           }));
+          stateManager!.resetCurrentState();
         }
-        stateManager!.resetCurrentState();
       });
     }
   }

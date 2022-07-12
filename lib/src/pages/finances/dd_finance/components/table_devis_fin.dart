@@ -4,9 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:fokad_admin/src/api/auth/auth_api.dart';
 import 'package:fokad_admin/src/api/devis/devis_api.dart';
 import 'package:fokad_admin/src/models/devis/devis_models.dart';
+import 'package:fokad_admin/src/pages/logistiques/etat_besoin/components/devis_xlxs.dart';
 import 'package:fokad_admin/src/routes/routes.dart';
 import 'package:fokad_admin/src/widgets/print_widget.dart';
 import 'package:fokad_admin/src/utils/class_implemented.dart';
+import 'package:fokad_admin/src/widgets/title_widget.dart';
 import 'package:intl/intl.dart';
 import 'package:pluto_grid/pluto_grid.dart';
 
@@ -43,13 +45,24 @@ class _TableDevisFinState extends State<TableDevisFin> {
   String? servicesAffectation;
   String? fonctionOccupe;
 
+  List<DevisModel> dataList = [];
+
   Future<void> getData() async {
     final userModel = await AuthApi().getUserId();
+    List<DevisModel> devis = await DevisAPi().getAllData();
     setState(() {
       matricule = userModel.matricule;
       departement = userModel.departement;
       servicesAffectation = userModel.servicesAffectation;
       fonctionOccupe = userModel.fonctionOccupe;
+
+      dataList = devis
+          .where((element) =>
+              element.approbationDG == "Approved" &&
+              element.approbationDD == "Approved" &&
+              element.approbationBudget == "Approved" &&
+              element.approbationFin == "-")
+          .toList();
     });
   }
 
@@ -73,8 +86,28 @@ class _TableDevisFinState extends State<TableDevisFin> {
         },
         createHeader: (PlutoGridStateManager header) {
           return Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [PrintWidget(onPressed: () {})],
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              const TitleWidget(title: "Etat de Besoin"),
+              Row(
+                children: [
+                  IconButton(
+                      onPressed: () {
+                        Navigator.pushNamed(
+                            context, FinanceRoutes.finDD);
+                      },
+                      icon: Icon(Icons.refresh, color: Colors.green.shade700)),
+                  PrintWidget(onPressed: () {
+                    DevisXlsx().exportToExcel(dataList);
+                    if (!mounted) return;
+                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                      content: const Text("Exportation effectué!"),
+                      backgroundColor: Colors.green[700],
+                    ));
+                  })
+                ],
+              ),
+            ],
           );
         },
         configuration: PlutoGridConfiguration(
@@ -170,10 +203,10 @@ class _TableDevisFinState extends State<TableDevisFin> {
   }
 
   Future agentsRow() async {
-    List<DevisModel?> dataList = await DevisAPi().getAllData();
-    var data = dataList
+    List<DevisModel> devis = await DevisAPi().getAllData();
+    var data = devis
         .where((element) =>
-            element!.approbationDG == 'Approved' &&
+            element.approbationDG == 'Approved' &&
             element.approbationDD == 'Approved' &&
             element.approbationBudget == 'Approved' &&
             element.approbationFin == "-")
@@ -183,7 +216,7 @@ class _TableDevisFinState extends State<TableDevisFin> {
       setState(() {
         for (var item in data) {
           rows.add(PlutoRow(cells: {
-            'id': PlutoCell(value: item!.id),
+            'id': PlutoCell(value: item.id),
             'title': PlutoCell(value: item.title),
             'priority': PlutoCell(value: item.priority),
             'departement': PlutoCell(value: item.departement),

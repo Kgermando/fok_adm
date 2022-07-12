@@ -61,7 +61,7 @@ class _CourbeJournalYearState extends State<CourbeJournalYear> {
               sortingOrder: SortingOrder.ascending,
               markerSettings: const MarkerSettings(isVisible: true),
               xValueMapper: (CourbeJournalModel ventes, _) =>
-                  '${ventes.created}',
+                  '${ventes.created} AN',
               yValueMapper: (CourbeJournalModel data, _) =>
                   double.parse(data.sumDebit.toStringAsFixed(2)),
               // Enable data label
@@ -73,7 +73,7 @@ class _CourbeJournalYearState extends State<CourbeJournalYear> {
               sortingOrder: SortingOrder.ascending,
               markerSettings: const MarkerSettings(isVisible: true),
               xValueMapper: (CourbeJournalModel data, _) =>
-                  '${data.created}',
+                  '${data.created} AN',
               yValueMapper: (CourbeJournalModel data, _) =>
                   double.parse(data.sumCredit.toStringAsFixed(2)),
               // Enable data label

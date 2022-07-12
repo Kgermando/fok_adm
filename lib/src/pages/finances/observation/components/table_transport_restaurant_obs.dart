@@ -1,34 +1,61 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
-import 'package:fokad_admin/src/api/exploitations/projets_api.dart';
-import 'package:fokad_admin/src/models/exploitations/projet_model.dart';
+import 'package:fokad_admin/src/api/rh/transport_restaurant_api.dart';
+import 'package:fokad_admin/src/models/rh/transport_restauration_model.dart';
+import 'package:fokad_admin/src/pages/rh/transport_restauration/components/transport_restauration_xlsx.dart';
 import 'package:fokad_admin/src/routes/routes.dart';
-import 'package:fokad_admin/src/widgets/print_widget.dart';
 import 'package:fokad_admin/src/utils/class_implemented.dart';
+import 'package:fokad_admin/src/widgets/print_widget.dart';
+import 'package:fokad_admin/src/widgets/title_widget.dart';
 import 'package:intl/intl.dart';
 import 'package:pluto_grid/pluto_grid.dart';
 
-class TableProjetFin extends StatefulWidget {
-  const TableProjetFin({Key? key}) : super(key: key);
+class TableTansportRestaurantObs extends StatefulWidget {
+  const TableTansportRestaurantObs({Key? key}) : super(key: key);
 
   @override
-  State<TableProjetFin> createState() => _TableProjetFinState();
+  State<TableTansportRestaurantObs> createState() =>
+      _TableTansportRestaurantObsState();
 }
 
-class _TableProjetFinState extends State<TableProjetFin> {
+class _TableTansportRestaurantObsState
+    extends State<TableTansportRestaurantObs> {
   List<PlutoColumn> columns = [];
   List<PlutoRow> rows = [];
   PlutoGridStateManager? stateManager;
   PlutoGridSelectingMode gridSelectingMode = PlutoGridSelectingMode.row;
 
-  int? id;
-
   @override
-  void initState() {
+  initState() {
     agentsColumn();
+    getData();
     agentsRow();
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+  }
+
+  List<TransportRestaurationModel> dataList = [];
+
+  Future<void> getData() async {
+    var data = await TransportRestaurationApi().getAllData();
+    if (mounted) {
+      setState(() {
+        dataList = data
+            .where((element) =>
+                element.observation == "false")
+            .toList();
+      });
+    }
+  }
+
+  void handleKeyboard(PlutoKeyManagerEvent event) {
+    // Specify the desired shortcut key.
+    if (event.isKeyDownEvent && event.isCtrlC) {
+      agentsRow();
+    }
   }
 
   @override
@@ -41,24 +68,35 @@ class _TableProjetFinState extends State<TableProjetFin> {
         onRowDoubleTap: (PlutoGridOnRowDoubleTapEvent tapEvent) {
           final dataId = tapEvent.row!.cells.values;
           final idPlutoRow = dataId.elementAt(0);
-          Navigator.pushNamed(context, ExploitationRoutes.expProjetDetail,
+          Navigator.pushNamed(context, RhRoutes.rhTransportRestDetail,
               arguments: idPlutoRow.value);
         },
         onLoaded: (PlutoGridOnLoadedEvent event) {
           stateManager = event.stateManager;
           stateManager!.setShowColumnFilter(true);
-          stateManager!.notifyListeners();
         },
         createHeader: (PlutoGridStateManager header) {
           return Row(
-            mainAxisAlignment: MainAxisAlignment.end,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              IconButton(
-                  onPressed: () {
-                    Navigator.pushNamed(context, FinanceRoutes.finDD);
-                  },
-                  icon: Icon(Icons.refresh, color: Colors.green.shade700)),
-              PrintWidget(onPressed: () {})
+              const TitleWidget(title: "Transports & Restaurations"),
+              Row(
+                children: [
+                  IconButton(
+                      onPressed: () {
+                        Navigator.pushNamed(context, FinanceRoutes.finObservation);
+                      },
+                      icon: Icon(Icons.refresh, color: Colors.green.shade700)),
+                  PrintWidget(onPressed: () {
+                    TransportRestXlsx().exportToExcel(dataList);
+                    if (!mounted) return;
+                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                      content: const Text("Exportation effectué!"),
+                      backgroundColor: Colors.green[700],
+                    ));
+                  })
+                ],
+              ),
             ],
           );
         },
@@ -66,21 +104,16 @@ class _TableProjetFinState extends State<TableProjetFin> {
           columnFilterConfig: PlutoGridColumnFilterConfig(
             filters: const [
               ...FilterHelper.defaultFilters,
-              // custom filter
               ClassFilterImplemented(),
             ],
             resolveDefaultColumnFilter: (column, resolver) {
               if (column.field == 'id') {
                 return resolver<ClassFilterImplemented>() as PlutoFilterType;
-              } else if (column.field == 'nomProjet') {
+              } else if (column.field == 'title') {
                 return resolver<ClassFilterImplemented>() as PlutoFilterType;
-              } else if (column.field == 'responsable') {
+              } else if (column.field == 'observation') {
                 return resolver<ClassFilterImplemented>() as PlutoFilterType;
-              } else if (column.field == 'objectifs') {
-                return resolver<ClassFilterImplemented>() as PlutoFilterType;
-              } else if (column.field == 'dateDebutEtFin') {
-                return resolver<ClassFilterImplemented>() as PlutoFilterType;
-              } else if (column.field == 'typeFinancement') {
+              } else if (column.field == 'signature') {
                 return resolver<ClassFilterImplemented>() as PlutoFilterType;
               } else if (column.field == 'created') {
                 return resolver<ClassFilterImplemented>() as PlutoFilterType;
@@ -109,62 +142,38 @@ class _TableProjetFinState extends State<TableProjetFin> {
       ),
       PlutoColumn(
         readOnly: true,
-        title: 'Nom projet',
-        field: 'nomProjet',
+        title: 'Intitlé',
+        field: 'title',
         type: PlutoColumnType.text(),
         enableRowDrag: true,
         enableContextMenu: false,
         enableDropToResize: true,
         titleTextAlign: PlutoColumnTextAlign.left,
-        width: 150,
+        width: 300,
         minWidth: 150,
       ),
       PlutoColumn(
         readOnly: true,
-        title: 'Responsable',
-        field: 'responsable',
+        title: 'Observation',
+        field: 'observation',
         type: PlutoColumnType.text(),
         enableRowDrag: true,
         enableContextMenu: false,
         enableDropToResize: true,
         titleTextAlign: PlutoColumnTextAlign.left,
-        width: 150,
+        width: 200,
         minWidth: 150,
       ),
       PlutoColumn(
         readOnly: true,
-        title: 'Objectifs',
-        field: 'objectifs',
+        title: 'Signature',
+        field: 'signature',
         type: PlutoColumnType.text(),
         enableRowDrag: true,
         enableContextMenu: false,
         enableDropToResize: true,
         titleTextAlign: PlutoColumnTextAlign.left,
-        width: 150,
-        minWidth: 150,
-      ),
-      PlutoColumn(
-        readOnly: true,
-        title: 'Date de Debut Et Fin',
-        field: 'dateDebutEtFin',
-        type: PlutoColumnType.text(),
-        enableRowDrag: true,
-        enableContextMenu: false,
-        enableDropToResize: true,
-        titleTextAlign: PlutoColumnTextAlign.left,
-        width: 150,
-        minWidth: 150,
-      ),
-      PlutoColumn(
-        readOnly: true,
-        title: 'Type de Financement',
-        field: 'typeFinancement',
-        type: PlutoColumnType.text(),
-        enableRowDrag: true,
-        enableContextMenu: false,
-        enableDropToResize: true,
-        titleTextAlign: PlutoColumnTextAlign.left,
-        width: 150,
+        width: 300,
         minWidth: 150,
       ),
       PlutoColumn(
@@ -176,38 +185,42 @@ class _TableProjetFinState extends State<TableProjetFin> {
         enableContextMenu: false,
         enableDropToResize: true,
         titleTextAlign: PlutoColumnTextAlign.left,
-        width: 150,
+        width: 300,
         minWidth: 150,
       ),
     ];
   }
 
   Future agentsRow() async {
-    List<ProjetModel?> dataList = await ProjetsApi().getAllData();
+    var dataList = await TransportRestaurationApi().getAllData();
+
+    // Uniquement ceux qui ont déjà été approuvé
     var data = dataList
         .where((element) =>
-            element!.approbationDG == 'Approved' &&
+          element.approbationDG == 'Approved' &&
             element.approbationDD == 'Approved' &&
             element.approbationBudget == 'Approved' &&
-            element.approbationFin == "-")
+            element.approbationFin == 'Approved' &&
+            element.observation == "false")
         .toList();
 
     if (mounted) {
       setState(() {
         for (var item in data) {
-          id = item!.id;
           rows.add(PlutoRow(cells: {
             'id': PlutoCell(value: item.id),
-            'nomProjet': PlutoCell(value: item.nomProjet),
-            'responsable': PlutoCell(value: item.responsable),
-            'objectifs': PlutoCell(value: item.objectifs),
-            'dateDebutEtFin': PlutoCell(value: item.dateDebutEtFin),
-            'typeFinancement': PlutoCell(value: item.typeFinancement),
+            'title': PlutoCell(value: item.title),
+            'observation': PlutoCell(
+                value: (item.observation == 'true') ? "Payé" : "Non payé"),
+            'signature': PlutoCell(value: item.signature),
             'created': PlutoCell(
-                value: DateFormat("dd-MM-yy H:mm").format(item.created))
+                value: DateFormat("dd-MM-yyyy HH:mm").format(item.created))
           }));
+          stateManager!.resetCurrentState();
+          stateManager!.notifyListeners();
+          // stateManager!.isPaginated;
+          //
         }
-        stateManager!.resetCurrentState();
       });
     }
   }

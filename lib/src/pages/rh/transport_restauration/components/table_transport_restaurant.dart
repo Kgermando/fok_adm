@@ -204,7 +204,8 @@ class _TableTansportRestaurantState extends State<TableTansportRestaurant> {
             element.approbationDG == 'Approved' &&
             element.approbationDD == 'Approved' &&
             element.approbationBudget == 'Approved' &&
-            element.approbationFin == 'Approved')
+            element.approbationFin == 'Approved' &&
+            element.observation == 'true')
         .toList();
 
     if (mounted) {

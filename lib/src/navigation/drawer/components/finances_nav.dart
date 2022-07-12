@@ -27,6 +27,7 @@ class _FinancesNavState extends State<FinancesNav> {
   bool isOpen = false;
   bool isOpenTransaction = false;
   int itemCount = 0;
+  int observationCount = 0;
 
   int creanceCount = 0;
   int detteCount = 0;
@@ -36,6 +37,12 @@ class _FinancesNavState extends State<FinancesNav> {
   int campaignCount = 0;
   int devisCount = 0;
   int projetCount = 0;
+
+  int salaireObsCount = 0;
+  int transRestObsCount = 0;
+  int campaignObsCount = 0;
+  int devisObsCount = 0;
+  int projetObsCount = 0;
 
   @override
   void initState() {
@@ -88,12 +95,14 @@ class _FinancesNavState extends State<FinancesNav> {
                 element.approbationBudget == 'Approved' &&
                 element.approbationFin == "-")
             .length;
-            
-         transRestCount =
-            transRests.where((element) => element.approbationDG == 'Approved' &&
+
+        transRestCount = transRests
+            .where((element) =>
+                element.approbationDG == 'Approved' &&
                 element.approbationDD == 'Approved' &&
                 element.approbationBudget == 'Approved' &&
-                element.approbationFin == "-").length;
+                element.approbationFin == "-")
+            .length;
 
         campaignCount = campaigns
             .where((element) =>
@@ -119,9 +128,57 @@ class _FinancesNavState extends State<FinancesNav> {
                 element.approbationFin == "-")
             .toList()
             .length;
+
+
+        salaireObsCount = salaires
+            .where((element) =>
+                element.createdAt.month == DateTime.now().month &&
+                element.createdAt.year == DateTime.now().year && 
+                element.approbationDD == 'Approved' &&
+                element.approbationBudget == 'Approved' &&
+                element.approbationFin == 'Approved' &&
+                element.observation == "false")
+            .length;
+
+        transRestObsCount = transRests
+            .where((element) =>
+              element.approbationDG == 'Approved' &&
+                element.approbationDD == 'Approved' &&
+                element.approbationBudget == 'Approved' &&
+                element.approbationFin == 'Approved' &&
+                element.observation == "false")
+            .length;
+
+        campaignObsCount = campaigns
+            .where((element) =>
+            element.approbationDG == 'Approved' &&
+                element.approbationDD == 'Approved' &&
+                element.approbationBudget == 'Approved' &&
+                element.approbationFin == 'Approved' &&
+                element.observation == "false")
+            .length;
+
+        devisObsCount = devis
+            .where((element) =>
+              element.approbationDG == 'Approved' &&
+                element.approbationDD == 'Approved' &&
+                element.approbationBudget == 'Approved' &&
+                element.approbationFin == 'Approved' &&
+                element.observation == "false")
+            .length;
+
+        projetObsCount = projets
+            .where((element) =>
+              element.approbationDG == 'Approved' &&
+                element.approbationDD == 'Approved' &&
+                element.approbationBudget == 'Approved' &&
+                element.approbationFin == 'Approved' &&
+                element.observation == "false")
+            .length;
       });
     }
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -136,6 +193,13 @@ class _FinancesNavState extends State<FinancesNav> {
         campaignCount +
         devisCount +
         projetCount;
+
+    observationCount = 
+        salaireObsCount +
+        transRestObsCount +
+        campaignObsCount +
+        devisObsCount +
+        projetObsCount;
 
     return FutureBuilder<UserModel>(
         future: AuthApi().getUserId(),
@@ -187,6 +251,26 @@ class _FinancesNavState extends State<FinancesNav> {
                         Navigator.pushNamed(context, FinanceRoutes.finDD);
                         // Navigator.of(context).pop();
                       }),
+                DrawerWidget(
+                    selected:
+                        widget.pageCurrente == FinanceRoutes.finObservation,
+                    icon: Icons.grid_view,
+                    sizeIcon: 20.0,
+                    title: 'Observations',
+                    style: bodyText1!,
+                    badge: Badge(
+                      showBadge: (observationCount >= 1) ? true : false,
+                      badgeColor: Colors.purple,
+                      badgeContent: Text('$observationCount',
+                          style: const TextStyle(
+                              fontSize: 10.0, color: Colors.white)),
+                      child: const Icon(Icons.notifications),
+                    ),
+                    onTap: () {
+                      Navigator.pushNamed(
+                          context, FinanceRoutes.finObservation);
+                      // Navigator.of(context).pop();
+                    }),
                 ExpansionTile(
                   leading: const Icon(Icons.compare_arrows, size: 20.0),
                   title: Text('Transactions', style: bodyText1),
@@ -266,7 +350,7 @@ class _FinancesNavState extends State<FinancesNav> {
                     icon: Icons.multiline_chart_sharp,
                     sizeIcon: 20.0,
                     title: 'Performences',
-                    style: bodyText1!,
+                    style: bodyText1,
                     onTap: () {
                       Navigator.pushNamed(context, RhRoutes.rhPerformence);
                       // Navigator.of(context).pop();

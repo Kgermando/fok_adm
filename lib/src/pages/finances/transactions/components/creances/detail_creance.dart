@@ -782,8 +782,9 @@ class _DetailCreanceState extends State<DetailCreance> {
                                   )),
                             ]),
                             if (data.approbationDD == '-' &&
-                                user.fonctionOccupe ==
-                                    "Directeur de departement")
+                                    user.fonctionOccupe ==
+                                        "Directeur de departement" ||
+                                user.fonctionOccupe == "Directeur de finance")
                               Padding(
                                 padding: const EdgeInsets.all(p10),
                                 child: Row(children: [

@@ -9,14 +9,14 @@ import 'package:fokad_admin/src/utils/class_implemented.dart';
 import 'package:intl/intl.dart';
 import 'package:pluto_grid/pluto_grid.dart';
 
-class TableProjetFin extends StatefulWidget {
-  const TableProjetFin({Key? key}) : super(key: key);
+class TableProjetObs extends StatefulWidget {
+  const TableProjetObs({Key? key}) : super(key: key);
 
   @override
-  State<TableProjetFin> createState() => _TableProjetFinState();
+  State<TableProjetObs> createState() => _TableProjetObsState();
 }
 
-class _TableProjetFinState extends State<TableProjetFin> {
+class _TableProjetObsState extends State<TableProjetObs> {
   List<PlutoColumn> columns = [];
   List<PlutoRow> rows = [];
   PlutoGridStateManager? stateManager;
@@ -55,7 +55,7 @@ class _TableProjetFinState extends State<TableProjetFin> {
             children: [
               IconButton(
                   onPressed: () {
-                    Navigator.pushNamed(context, FinanceRoutes.finDD);
+                    Navigator.pushNamed(context, FinanceRoutes.finObservation);
                   },
                   icon: Icon(Icons.refresh, color: Colors.green.shade700)),
               PrintWidget(onPressed: () {})
@@ -183,19 +183,20 @@ class _TableProjetFinState extends State<TableProjetFin> {
   }
 
   Future agentsRow() async {
-    List<ProjetModel?> dataList = await ProjetsApi().getAllData();
-    var data = dataList
+    List<ProjetModel> projets = await ProjetsApi().getAllData();
+    var data = projets
         .where((element) =>
-            element!.approbationDG == 'Approved' &&
+         element.approbationDG == 'Approved' &&
             element.approbationDD == 'Approved' &&
             element.approbationBudget == 'Approved' &&
-            element.approbationFin == "-")
+            element.approbationFin == 'Approved' &&
+            element.observation == "false")
         .toList();
 
     if (mounted) {
       setState(() {
         for (var item in data) {
-          id = item!.id;
+          id = item.id;
           rows.add(PlutoRow(cells: {
             'id': PlutoCell(value: item.id),
             'nomProjet': PlutoCell(value: item.nomProjet),

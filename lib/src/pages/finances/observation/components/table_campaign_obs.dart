@@ -1,34 +1,48 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
-import 'package:fokad_admin/src/api/exploitations/projets_api.dart';
-import 'package:fokad_admin/src/models/exploitations/projet_model.dart';
+import 'package:fokad_admin/src/api/comm_marketing/marketing/campaign_api.dart';
+import 'package:fokad_admin/src/models/comm_maketing/campaign_model.dart';
+import 'package:fokad_admin/src/pages/comm_marketing/marketing/components/campaign/campaign_xlxs.dart';
 import 'package:fokad_admin/src/routes/routes.dart';
 import 'package:fokad_admin/src/widgets/print_widget.dart';
 import 'package:fokad_admin/src/utils/class_implemented.dart';
+import 'package:fokad_admin/src/widgets/title_widget.dart';
 import 'package:intl/intl.dart';
 import 'package:pluto_grid/pluto_grid.dart';
 
-class TableProjetFin extends StatefulWidget {
-  const TableProjetFin({Key? key}) : super(key: key);
+class TableCampaignObs extends StatefulWidget {
+  const TableCampaignObs({Key? key}) : super(key: key);
 
   @override
-  State<TableProjetFin> createState() => _TableProjetFinState();
+  State<TableCampaignObs> createState() => _TableCampaignObsState();
 }
 
-class _TableProjetFinState extends State<TableProjetFin> {
+class _TableCampaignObsState extends State<TableCampaignObs> {
   List<PlutoColumn> columns = [];
   List<PlutoRow> rows = [];
   PlutoGridStateManager? stateManager;
   PlutoGridSelectingMode gridSelectingMode = PlutoGridSelectingMode.row;
 
-  int? id;
-
   @override
-  void initState() {
+  initState() {
     agentsColumn();
+    getData();
     agentsRow();
+
     super.initState();
+  }
+
+  List<CampaignModel> dataList = [];
+  Future<void> getData() async {
+    List<CampaignModel> campaigns = await CampaignApi().getAllData();
+    setState(() {
+      dataList = campaigns
+        .where((element) =>
+            element.approbationDG == 'Approved' &&
+            element.approbationDD == 'Approved' &&
+            element.approbationBudget == 'Approved' &&
+            element.approbationFin == "-")
+        .toList();
+    });
   }
 
   @override
@@ -41,7 +55,8 @@ class _TableProjetFinState extends State<TableProjetFin> {
         onRowDoubleTap: (PlutoGridOnRowDoubleTapEvent tapEvent) {
           final dataId = tapEvent.row!.cells.values;
           final idPlutoRow = dataId.elementAt(0);
-          Navigator.pushNamed(context, ExploitationRoutes.expProjetDetail,
+          Navigator.pushNamed(
+              context, ComMarketingRoutes.comMarketingCampaignDetail,
               arguments: idPlutoRow.value);
         },
         onLoaded: (PlutoGridOnLoadedEvent event) {
@@ -51,14 +66,27 @@ class _TableProjetFinState extends State<TableProjetFin> {
         },
         createHeader: (PlutoGridStateManager header) {
           return Row(
-            mainAxisAlignment: MainAxisAlignment.end,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              IconButton(
-                  onPressed: () {
-                    Navigator.pushNamed(context, FinanceRoutes.finDD);
-                  },
-                  icon: Icon(Icons.refresh, color: Colors.green.shade700)),
-              PrintWidget(onPressed: () {})
+              const TitleWidget(title: "Campagnes"),
+              Row(
+                children: [
+                  IconButton(
+                      onPressed: () {
+                        Navigator.pushNamed(
+                            context, FinanceRoutes.finObservation);
+                      },
+                      icon: Icon(Icons.refresh, color: Colors.green.shade700)),
+                  PrintWidget(onPressed: () {
+                    CampagneXlsx().exportToExcel(dataList);
+                    if (!mounted) return;
+                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                      content: const Text("Exportation effectué!"),
+                      backgroundColor: Colors.green[700],
+                    ));
+                  })
+                ],
+              ),
             ],
           );
         },
@@ -72,15 +100,17 @@ class _TableProjetFinState extends State<TableProjetFin> {
             resolveDefaultColumnFilter: (column, resolver) {
               if (column.field == 'id') {
                 return resolver<ClassFilterImplemented>() as PlutoFilterType;
-              } else if (column.field == 'nomProjet') {
-                return resolver<ClassFilterImplemented>() as PlutoFilterType;
-              } else if (column.field == 'responsable') {
-                return resolver<ClassFilterImplemented>() as PlutoFilterType;
-              } else if (column.field == 'objectifs') {
+              } else if (column.field == 'typeProduit') {
                 return resolver<ClassFilterImplemented>() as PlutoFilterType;
               } else if (column.field == 'dateDebutEtFin') {
                 return resolver<ClassFilterImplemented>() as PlutoFilterType;
-              } else if (column.field == 'typeFinancement') {
+              } else if (column.field == 'coutCampaign') {
+                return resolver<ClassFilterImplemented>() as PlutoFilterType;
+              } else if (column.field == 'lieuCible') {
+                return resolver<ClassFilterImplemented>() as PlutoFilterType;
+              } else if (column.field == 'promotion') {
+                return resolver<ClassFilterImplemented>() as PlutoFilterType;
+              } else if (column.field == 'objectifs') {
                 return resolver<ClassFilterImplemented>() as PlutoFilterType;
               } else if (column.field == 'created') {
                 return resolver<ClassFilterImplemented>() as PlutoFilterType;
@@ -109,62 +139,74 @@ class _TableProjetFinState extends State<TableProjetFin> {
       ),
       PlutoColumn(
         readOnly: true,
-        title: 'Nom projet',
-        field: 'nomProjet',
+        title: 'Type Produit',
+        field: 'typeProduit',
         type: PlutoColumnType.text(),
         enableRowDrag: true,
         enableContextMenu: false,
         enableDropToResize: true,
         titleTextAlign: PlutoColumnTextAlign.left,
-        width: 150,
+        width: 300,
         minWidth: 150,
       ),
       PlutoColumn(
         readOnly: true,
-        title: 'Responsable',
-        field: 'responsable',
-        type: PlutoColumnType.text(),
-        enableRowDrag: true,
-        enableContextMenu: false,
-        enableDropToResize: true,
-        titleTextAlign: PlutoColumnTextAlign.left,
-        width: 150,
-        minWidth: 150,
-      ),
-      PlutoColumn(
-        readOnly: true,
-        title: 'Objectifs',
-        field: 'objectifs',
-        type: PlutoColumnType.text(),
-        enableRowDrag: true,
-        enableContextMenu: false,
-        enableDropToResize: true,
-        titleTextAlign: PlutoColumnTextAlign.left,
-        width: 150,
-        minWidth: 150,
-      ),
-      PlutoColumn(
-        readOnly: true,
-        title: 'Date de Debut Et Fin',
+        title: 'Date Debut Et Fin',
         field: 'dateDebutEtFin',
         type: PlutoColumnType.text(),
         enableRowDrag: true,
         enableContextMenu: false,
         enableDropToResize: true,
         titleTextAlign: PlutoColumnTextAlign.left,
-        width: 150,
+        width: 300,
         minWidth: 150,
       ),
       PlutoColumn(
         readOnly: true,
-        title: 'Type de Financement',
-        field: 'typeFinancement',
+        title: 'Coût de la Campaign',
+        field: 'coutCampaign',
         type: PlutoColumnType.text(),
         enableRowDrag: true,
         enableContextMenu: false,
         enableDropToResize: true,
         titleTextAlign: PlutoColumnTextAlign.left,
-        width: 150,
+        width: 200,
+        minWidth: 150,
+      ),
+      PlutoColumn(
+        readOnly: true,
+        title: 'Lieu Ciblé',
+        field: 'lieuCible',
+        type: PlutoColumnType.text(),
+        enableRowDrag: true,
+        enableContextMenu: false,
+        enableDropToResize: true,
+        titleTextAlign: PlutoColumnTextAlign.left,
+        width: 200,
+        minWidth: 150,
+      ),
+      PlutoColumn(
+        readOnly: true,
+        title: 'Promotion',
+        field: 'promotion',
+        type: PlutoColumnType.text(),
+        enableRowDrag: true,
+        enableContextMenu: false,
+        enableDropToResize: true,
+        titleTextAlign: PlutoColumnTextAlign.left,
+        width: 200,
+        minWidth: 150,
+      ),
+      PlutoColumn(
+        readOnly: true,
+        title: 'objectifs',
+        field: 'objectifs',
+        type: PlutoColumnType.text(),
+        enableRowDrag: true,
+        enableContextMenu: false,
+        enableDropToResize: true,
+        titleTextAlign: PlutoColumnTextAlign.left,
+        width: 300,
         minWidth: 150,
       ),
       PlutoColumn(
@@ -176,33 +218,34 @@ class _TableProjetFinState extends State<TableProjetFin> {
         enableContextMenu: false,
         enableDropToResize: true,
         titleTextAlign: PlutoColumnTextAlign.left,
-        width: 150,
+        width: 200,
         minWidth: 150,
       ),
     ];
   }
 
   Future agentsRow() async {
-    List<ProjetModel?> dataList = await ProjetsApi().getAllData();
-    var data = dataList
+    List<CampaignModel> campaigns = await CampaignApi().getAllData();
+    var data = campaigns
         .where((element) =>
-            element!.approbationDG == 'Approved' &&
+        element.approbationDG == 'Approved' &&
             element.approbationDD == 'Approved' &&
             element.approbationBudget == 'Approved' &&
-            element.approbationFin == "-")
+            element.approbationFin == 'Approved' &&
+            element.observation == "false")
         .toList();
 
     if (mounted) {
       setState(() {
         for (var item in data) {
-          id = item!.id;
           rows.add(PlutoRow(cells: {
             'id': PlutoCell(value: item.id),
-            'nomProjet': PlutoCell(value: item.nomProjet),
-            'responsable': PlutoCell(value: item.responsable),
-            'objectifs': PlutoCell(value: item.objectifs),
+            'typeProduit': PlutoCell(value: item.typeProduit),
             'dateDebutEtFin': PlutoCell(value: item.dateDebutEtFin),
-            'typeFinancement': PlutoCell(value: item.typeFinancement),
+            'coutCampaign': PlutoCell(value: item.coutCampaign),
+            'lieuCible': PlutoCell(value: item.lieuCible),
+            'promotion': PlutoCell(value: item.promotion),
+            'objectifs': PlutoCell(value: item.objectifs),
             'created': PlutoCell(
                 value: DateFormat("dd-MM-yy H:mm").format(item.created))
           }));

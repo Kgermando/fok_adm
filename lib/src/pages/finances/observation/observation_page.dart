@@ -1,44 +1,36 @@
 import 'package:flutter/material.dart';
 import 'package:fokad_admin/src/api/comm_marketing/marketing/campaign_api.dart';
 import 'package:fokad_admin/src/api/devis/devis_api.dart';
-import 'package:fokad_admin/src/api/exploitations/projets_api.dart';
-import 'package:fokad_admin/src/api/finances/creance_api.dart';
-import 'package:fokad_admin/src/api/finances/dette_api.dart';
+import 'package:fokad_admin/src/api/exploitations/projets_api.dart'; 
 import 'package:fokad_admin/src/api/rh/paiement_salaire_api.dart';
 import 'package:fokad_admin/src/api/rh/transport_restaurant_api.dart';
 import 'package:fokad_admin/src/constants/app_theme.dart';
 import 'package:fokad_admin/src/constants/responsive.dart';
 import 'package:fokad_admin/src/navigation/drawer/drawer_menu.dart';
 import 'package:fokad_admin/src/navigation/header/custom_appbar.dart';
-import 'package:fokad_admin/src/pages/finances/dd_finance/components/table_campaign_fin.dart';
-import 'package:fokad_admin/src/pages/finances/dd_finance/components/table_creance_dd.dart';
-import 'package:fokad_admin/src/pages/finances/dd_finance/components/table_dette_dd.dart'; 
+import 'package:fokad_admin/src/pages/finances/dd_finance/components/table_campaign_fin.dart'; 
 import 'package:fokad_admin/src/pages/finances/dd_finance/components/table_projet_fin.dart';
 import 'package:fokad_admin/src/pages/finances/dd_finance/components/table_salaire_fin.dart';
 import 'package:fokad_admin/src/pages/finances/dd_finance/components/table_transport_restaurant_fin.dart';
 
-class DepartementFin extends StatefulWidget {
-  const DepartementFin({Key? key}) : super(key: key);
+
+class ObservationPage extends StatefulWidget {
+  const ObservationPage({Key? key}) : super(key: key);
 
   @override
-  State<DepartementFin> createState() => _DepartementFinState();
+  State<ObservationPage> createState() => _ObservationPageState();
 }
 
-class _DepartementFinState extends State<DepartementFin> {
+class _ObservationPageState extends State<ObservationPage> {
   final GlobalKey<ScaffoldState> _key = GlobalKey();
   final ScrollController _controllerScroll = ScrollController();
-
+  
   bool isOpen1 = false;
   bool isOpen2 = false;
   bool isOpen3 = false;
   bool isOpen4 = false;
   bool isOpen5 = false;
-  bool isOpen6 = false;
-  bool isOpen7 = false;
-
-  int creanceCount = 0;
-  int detteCount = 0;
-
+ 
   int salaireCount = 0;
   int transRestCount = 0;
   int campaignCount = 0;
@@ -51,35 +43,22 @@ class _DepartementFinState extends State<DepartementFin> {
     super.initState();
   }
 
-  Future<void> getData() async {
-    var creances = await CreanceApi().getAllData();
-    var dettes = await DetteApi().getAllData();
+  Future<void> getData() async { 
     var salaires = await PaiementSalaireApi().getAllData();
     var transRests = await TransportRestaurationApi().getAllData();
     var campaigns = await CampaignApi().getAllData();
     var devis = await DevisAPi().getAllData();
     var projets = await ProjetsApi().getAllData();
 
-    setState(() {
-      creanceCount = creances
-          .where((element) =>
-              element.statutPaie == 'false' && element.approbationDD == '-')
-          .toList()
-          .length;
-
-      detteCount = dettes
-          .where((element) =>
-              element.statutPaie == 'false' && element.approbationDD == '-')
-          .toList()
-          .length;
-
+    setState(() { 
       salaireCount = salaires
           .where((element) =>
               element.createdAt.month == DateTime.now().month &&
-              element.createdAt.year == DateTime.now().year &&
+              element.createdAt.year == DateTime.now().year && 
               element.approbationDD == 'Approved' &&
               element.approbationBudget == 'Approved' &&
-              element.approbationFin == "-")
+              element.approbationFin == 'Approved' &&
+              element.observation == "false")
           .length;
 
       transRestCount =
@@ -88,7 +67,8 @@ class _DepartementFinState extends State<DepartementFin> {
               element.approbationDG == 'Approved' &&
               element.approbationDD == 'Approved' &&
               element.approbationBudget == 'Approved' &&
-              element.approbationFin == "-")
+              element.approbationFin == 'Approved' &&
+              element.observation == "false")
           .length;
 
       campaignCount = campaigns
@@ -96,15 +76,17 @@ class _DepartementFinState extends State<DepartementFin> {
               element.approbationDG == 'Approved' &&
               element.approbationDD == 'Approved' &&
               element.approbationBudget == 'Approved' &&
-              element.approbationFin == "-")
+              element.approbationFin == 'Approved' &&
+              element.observation == "false")
           .length;
 
       devisCount = devis
           .where((element) =>
-              element.approbationDG == 'Approved' &&
+            element.approbationDG == 'Approved' &&
               element.approbationDD == 'Approved' &&
               element.approbationBudget == 'Approved' &&
-              element.approbationFin == "-")
+              element.approbationFin == 'Approved' &&
+              element.observation == "false")
           .length;
 
       projetCount = projets
@@ -112,7 +94,8 @@ class _DepartementFinState extends State<DepartementFin> {
               element.approbationDG == 'Approved' &&
               element.approbationDD == 'Approved' &&
               element.approbationBudget == 'Approved' &&
-              element.approbationFin == "-")
+              element.approbationFin == 'Approved' &&
+              element.observation == "false")
           .length;
     });
   }
@@ -140,7 +123,7 @@ class _DepartementFinState extends State<DepartementFin> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       CustomAppbar(
-                          title: 'Département de finance',
+                          title: 'Observations',
                           controllerMenu: () =>
                               _key.currentState!.openDrawer()),
                       Expanded(
@@ -222,7 +205,7 @@ class _DepartementFinState extends State<DepartementFin> {
                                 ),
                                 children: const [TableCampaignFin()],
                               ),
-                            ), 
+                            ),
                             Card(
                               color: Colors.blue.shade700,
                               child: ExpansionTile(
@@ -248,56 +231,7 @@ class _DepartementFinState extends State<DepartementFin> {
                                 children: const [TableProjetFin()],
                               ),
                             ),
-                            Card(
-                              color: Colors.red.shade700,
-                              child: ExpansionTile(
-                                leading: const Icon(Icons.folder,
-                                    color: Colors.white),
-                                title: Text('Dossier Dette',
-                                    style: headline6.copyWith(
-                                        color: Colors.white)),
-                                subtitle: Text(
-                                    "Vous avez $detteCount dossiers necessitent votre approbation",
-                                    style: bodyMedium.copyWith(
-                                        color: Colors.white)),
-                                initiallyExpanded: false,
-                                onExpansionChanged: (val) {
-                                  setState(() {
-                                    isOpen6 = !val;
-                                  });
-                                },
-                                trailing: const Icon(
-                                  Icons.arrow_drop_down,
-                                  color: Colors.white,
-                                ),
-                                children: const [TableDetteDD()],
-                              ),
-                            ),
-                            Card(
-                              color: Colors.orange.shade700,
-                              child: ExpansionTile(
-                                leading: const Icon(Icons.folder,
-                                    color: Colors.white),
-                                title: Text('Dossier Créances',
-                                    style: headline6.copyWith(
-                                        color: Colors.white)),
-                                subtitle: Text(
-                                    "Vous avez $creanceCount dossiers necessitent votre approbation",
-                                    style: bodyMedium.copyWith(
-                                        color: Colors.white)),
-                                initiallyExpanded: false,
-                                onExpansionChanged: (val) {
-                                  setState(() {
-                                    isOpen7 = !val;
-                                  });
-                                },
-                                trailing: const Icon(
-                                  Icons.arrow_drop_down,
-                                  color: Colors.white,
-                                ),
-                                children: const [TableCreanceDD()],
-                              ),
-                            ),
+                            
                           ],
                         ),
                       ))

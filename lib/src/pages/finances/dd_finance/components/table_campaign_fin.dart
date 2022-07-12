@@ -34,7 +34,8 @@ class _TableCampaignFinState extends State<TableCampaignFin> {
   List<CampaignModel> dataList = [];
   Future<void> getData() async {
     List<CampaignModel> campaigns = await CampaignApi().getAllData();
-    setState(() {
+    if(mounted) {
+      setState(() {
       dataList = campaigns
         .where((element) =>
             element.approbationDG == 'Approved' &&
@@ -43,6 +44,7 @@ class _TableCampaignFinState extends State<TableCampaignFin> {
             element.approbationFin == "-")
         .toList();
     });
+    }
   }
 
   @override

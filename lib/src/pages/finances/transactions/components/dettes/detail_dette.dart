@@ -779,7 +779,8 @@ class _DetailDetteState extends State<DetailDette> {
                             ]),
                             if (data.approbationDD == '-' &&
                                 user.fonctionOccupe ==
-                                    "Directeur de departement")
+                                  "Directeur de departement" || 
+                                  user.fonctionOccupe == "Directeur de finance")
                               Padding(
                                 padding: const EdgeInsets.all(p10),
                                 child: Row(children: [
