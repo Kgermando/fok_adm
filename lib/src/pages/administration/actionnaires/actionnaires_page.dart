@@ -36,7 +36,7 @@ class _ActionnairesPageState extends State<ActionnairesPage> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       CustomAppbar(
-                          title: 'Liste des actionnaires',
+                          title: 'Actionnaires FOKAD',
                           controllerMenu: () =>
                               _key.currentState!.openDrawer()),
                       const Expanded(child: TableActionnaire())

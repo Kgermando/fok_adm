@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:fokad_admin/src/api/administration/actionnaire_api.dart';
 import 'package:fokad_admin/src/api/administration/actionnaire_cotisation_api.dart';
+import 'package:fokad_admin/src/constants/app_theme.dart';
 import 'package:fokad_admin/src/models/administrations/actionnaire_cotisation_model.dart';
 import 'package:fokad_admin/src/models/administrations/actionnaire_model.dart';
 import 'package:fokad_admin/src/pages/administration/actionnaires/components/actionnaire_xlsx.dart';
@@ -66,9 +67,11 @@ class _TableActionnaireState extends State<TableActionnaire> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
+    return ListView(
       children: [
+        const SizedBox(height: p20),
         Row(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
             DashNumberBudgetWidget(
               number: "${NumberFormat.decimalPattern('fr').format(totalGen)} \$",
@@ -80,6 +83,7 @@ class _TableActionnaireState extends State<TableActionnaire> {
                 color: Colors.red.shade700),
           ],
         ),
+        const SizedBox(height: p20),
         SizedBox(
           height: MediaQuery.of(context).size.height,
           child: PlutoGrid(
