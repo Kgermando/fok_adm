@@ -2,7 +2,7 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 
 #define MyAppName "FOKAD Admin"
-#define MyAppVersion "1.5"
+#define MyAppVersion "1.0.0+2"
 #define MyAppPublisher "Eventdrc Technology"
 #define MyAppURL "https://eventdrc.com/"
 #define MyAppExeName "fokad_admin.exe"
