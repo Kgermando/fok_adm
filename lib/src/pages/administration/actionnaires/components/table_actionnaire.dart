@@ -277,19 +277,7 @@ class _TableActionnaireState extends State<TableActionnaire> {
         titleTextAlign: PlutoColumnTextAlign.left,
         width: 200,
         minWidth: 150,
-      ),
-      PlutoColumn(
-        readOnly: true,
-        title: 'Total',
-        field: 'total',
-        type: PlutoColumnType.text(),
-        enableRowDrag: true,
-        enableContextMenu: false,
-        enableDropToResize: true,
-        titleTextAlign: PlutoColumnTextAlign.left,
-        width: 200,
-        minWidth: 150,
-      ),
+      ), 
       PlutoColumn(
         readOnly: true,
         title: 'Signature',
@@ -318,23 +306,11 @@ class _TableActionnaireState extends State<TableActionnaire> {
   }
 
   Future agentsRow() async {
-    List<ActionnaireModel> actionnaires = await ActionnaireApi().getAllData();
-    List<ActionnaireCotisationModel> actionnaireCotisations =
-        await ActionnaireCotisationApi().getAllData();
-
-    double total = 0.0;
+    List<ActionnaireModel> actionnaires = await ActionnaireApi().getAllData(); 
 
     if (mounted) {
       setState(() {
         for (var item in actionnaires) {
-          var cotisations = actionnaireCotisations
-              .where((element) => element.reference == item.createdRef)
-              .toList();
-
-          for (var element in cotisations) {
-            total += double.parse(element.montant);
-          }
-
           rows.add(PlutoRow(cells: {
             'id': PlutoCell(value: item.id),
             'nom': PlutoCell(value: item.nom),
@@ -344,13 +320,37 @@ class _TableActionnaireState extends State<TableActionnaire> {
             'telephone': PlutoCell(value: item.telephone),
             'sexe': PlutoCell(value: item.sexe),
             'matricule': PlutoCell(value: item.matricule),
-            'total': PlutoCell(
-                value: "${NumberFormat.decimalPattern('fr').format(total)} \$"),
             'signature': PlutoCell(value: item.signature),
             'created': PlutoCell(
                 value: DateFormat("dd-MM-yyyy HH:mm").format(item.created))
-          }));
+          })); 
         }
+
+        // for (var item in actionnaires) {
+        //   var cotisations = actionnaireCotisations
+        //       .where((element) => element.reference == item.id)
+        //       .toList();
+
+        //   for (var element in cotisations) {
+        //     total += double.parse(element.montant);
+        //   }
+
+        //   rows.add(PlutoRow(cells: {
+        //     'id': PlutoCell(value: item.id),
+        //     'nom': PlutoCell(value: item.nom),
+        //     'postNom': PlutoCell(value: item.postNom),
+        //     'prenom': PlutoCell(value: item.prenom),
+        //     'email': PlutoCell(value: item.email),
+        //     'telephone': PlutoCell(value: item.telephone),
+        //     'sexe': PlutoCell(value: item.sexe),
+        //     'matricule': PlutoCell(value: item.matricule),
+        //     'total': PlutoCell(
+        //         value: "${NumberFormat.decimalPattern('fr').format(total)} \$"),
+        //     'signature': PlutoCell(value: item.signature),
+        //     'created': PlutoCell(
+        //         value: DateFormat("dd-MM-yyyy HH:mm").format(item.created))
+        //   }));
+        // }
         stateManager!.resetCurrentState();
       });
     }

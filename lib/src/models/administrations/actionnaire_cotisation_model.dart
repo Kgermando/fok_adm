@@ -6,7 +6,7 @@ class ActionnaireCotisationModel {
   late String prenom;
   late String matricule;
   late String montant; 
-  late String note; // Une remarque soit payement de moitié
+  late String note; // Une remarque soit pour un payement moitié
   late String moyenPayement; // Paypal, card credit, mobile money(Mpesa)
   late String numeroTransaction; // Pour verifier la transaction
   late String signature;

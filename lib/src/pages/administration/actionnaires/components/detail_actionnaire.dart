@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:date_time_picker/date_time_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -10,8 +12,8 @@ import 'package:fokad_admin/src/models/administrations/actionnaire_cotisation_mo
 import 'package:fokad_admin/src/models/administrations/actionnaire_model.dart';
 import 'package:fokad_admin/src/models/users/user_model.dart';
 import 'package:fokad_admin/src/navigation/drawer/drawer_menu.dart';
-import 'package:fokad_admin/src/navigation/header/custom_appbar.dart'; 
-import 'package:fokad_admin/src/utils/loading.dart'; 
+import 'package:fokad_admin/src/navigation/header/custom_appbar.dart';
+import 'package:fokad_admin/src/utils/loading.dart';
 import 'package:fokad_admin/src/widgets/title_widget.dart';
 import 'package:intl/intl.dart';
 import 'package:timeago/timeago.dart' as timeago;
@@ -36,34 +38,52 @@ class _DetailActionnaireState extends State<DetailActionnaire> {
   final GlobalKey<ScaffoldState> _key = GlobalKey();
   final _formKey = GlobalKey<FormState>();
   bool isLoading = false;
+  bool isLoadingCotisations = false;
 
   TextEditingController montantController = TextEditingController();
   TextEditingController noteController = TextEditingController();
   TextEditingController moyenPayementController = TextEditingController();
   TextEditingController numeroTransactionController = TextEditingController();
 
+  Timer? timer;
+
   @override
   initState() {
-    getData();
+    timer = Timer.periodic(const Duration(seconds: 1), (timer) {
+      getData();
+    });
     super.initState();
   }
 
   @override
   void dispose() {
+    timer!.cancel();
+
     montantController.dispose();
     noteController.dispose();
     moyenPayementController.dispose();
-    numeroTransactionController.dispose(); 
+    numeroTransactionController.dispose();
 
     super.dispose();
   }
 
+  List<ActionnaireCotisationModel> actionnaireCotisationList = [];
   String? signature;
   Future<void> getData() async {
     UserModel userModel = await AuthApi().getUserId();
-    setState(() {
-      signature = userModel.matricule;
-    });
+    var actionnaireCotisations = await ActionnaireCotisationApi().getAllData();
+      if(mounted) {
+        setState(() {
+          setState(() {
+            isLoadingCotisations = true;
+          });
+          signature = userModel.matricule;
+          actionnaireCotisationList = actionnaireCotisations;
+          setState(() {
+            isLoadingCotisations = false;
+          });
+        });
+      }
   }
 
   @override
@@ -169,7 +189,10 @@ class _DetailActionnaireState extends State<DetailActionnaire> {
                 ],
               ),
               dataWidget(data),
-              listRapportWidget(data),
+              const TitleWidget(title: "Cotisations"),
+              SizedBox(
+                  height: MediaQuery.of(context).size.height / 2,
+                  child: listRapportWidget(data)),
             ],
           ),
         ),
@@ -182,6 +205,14 @@ class _DetailActionnaireState extends State<DetailActionnaire> {
     final bodyMedium = Theme.of(context).textTheme.bodyMedium;
 
     double total = 0.0;
+
+    var cotisationList = actionnaireCotisationList
+        .where((element) => element.reference == data.id)
+        .toList();
+
+    for (var element in cotisationList) {
+      total += double.parse(element.montant);
+    }
 
     return Padding(
       padding: const EdgeInsets.all(p10),
@@ -356,69 +387,240 @@ class _DetailActionnaireState extends State<DetailActionnaire> {
   }
 
   Widget listRapportWidget(ActionnaireModel data) {
-    final headline6 = Theme.of(context).textTheme.headline6;
-    return SizedBox(
-        height: 500,
-        child: FutureBuilder<List<ActionnaireCotisationModel>>(
-            future: ActionnaireCotisationApi().getAllData(),
-            builder: (BuildContext context,
-                AsyncSnapshot<List<ActionnaireCotisationModel>> snapshot) {
-              if (snapshot.hasData) {
-                List<ActionnaireCotisationModel>? cotisations = snapshot.data!
-                    .where((element) => element.reference == data.createdRef)
-                    .toList();
-
-                return cotisations.isEmpty
-                    ? Column(
-                        children: [
-                          Center(
-                            child: Text(
-                              "Pas encore de cotisations.",
-                              style: headline6,
-                            ),
-                          ),
-                        ],
-                      )
-                    : ListView.builder(
-                        itemCount: cotisations.length,
-                        itemBuilder: (context, index) {
-                          final cotisation = cotisations[index];
-                          return buildRapport(cotisation, index);
-                        });
-              } else {
-                return Center(child: loading());
-              }
-            }));
+    var dataList = actionnaireCotisationList
+        .where((element) => element.reference == data.id)
+        .toList();
+    return isLoadingCotisations
+      ? loading()
+      : dataList.isEmpty 
+        ? const Center(child: Text("Pas encore de cotisations")) 
+        : ListView.builder(
+        itemCount: dataList.length,
+        itemBuilder: (context, index) {
+          final cotisation = dataList[index];
+          return buildRapport(cotisation, index);
+        }
+      );
   }
 
   Widget buildRapport(ActionnaireCotisationModel data, int index) {
-    final bodySmall = Theme.of(context).textTheme.bodySmall;
-    final bodyMedium = Theme.of(context).textTheme.bodyMedium;
+    final headline6 = Theme.of(context).textTheme.headline6;
+    final bodyLarge = Theme.of(context).textTheme.bodyLarge;
     final color = _lightColors[index % _lightColors.length];
 
     return Card(
-      elevation: 4,
+      elevation: 2,
       child: ListTile(
         dense: true,
-        leading: Icon(Icons.person, color: color),
-        title: SelectableText(data.signature, style: bodySmall),
-        subtitle: SelectableText(
-          data.signature,
-          style: bodySmall,
-        ),
-        trailing: Column(
-          children: [
-            SelectableText(
-                "${NumberFormat.decimalPattern('fr').format(double.parse(data.montant))} \$",
-                textAlign: TextAlign.start,
-                style: bodyMedium!.copyWith(color: Colors.red.shade700)),
-            SelectableText(timeago.format(data.created, locale: 'fr_short'),
-                textAlign: TextAlign.start,
-                style: bodySmall!.copyWith(color: color)),
-          ],
-        ),
+        onLongPress: () {
+          detailDialog(data);
+        },
+        leading: Icon(Icons.monetization_on, color: color),
+        title: SelectableText(timeago.format(data.created, locale: 'fr_short'),
+            textAlign: TextAlign.start,
+            style: bodyLarge!.copyWith(color: color)),
+        subtitle: SelectableText(data.signature, style: bodyLarge),
+        trailing: SelectableText(
+            "${NumberFormat.decimalPattern('fr').format(double.parse(data.montant))} \$",
+            textAlign: TextAlign.start,
+            style: headline6!.copyWith(color: Colors.red.shade700)),
       ),
     );
+  }
+
+  detailDialog(ActionnaireCotisationModel data) {
+    final bodyLarge = Theme.of(context).textTheme.bodyLarge;
+    return showDialog(
+        context: context,
+        barrierDismissible: true,
+        builder: (context) {
+          return StatefulBuilder(builder: (context, StateSetter setState) {
+            return AlertDialog(
+              scrollable: true,
+              title: const Text('Ajout Cotisation'),
+              content: Column(
+                children: [
+                  const SizedBox(height: 20),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: SelectableText("Nom",
+                            style: bodyLarge!
+                                .copyWith(fontWeight: FontWeight.bold)),
+                      ),
+                      const SizedBox(
+                        width: p10,
+                      ),
+                      Expanded(
+                        child: SelectableText(data.nom, style: bodyLarge),
+                      )
+                    ],
+                  ),
+                  const SizedBox(height: 20),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: SelectableText("Post-Nom",
+                            style: bodyLarge.copyWith(
+                                fontWeight: FontWeight.bold)),
+                      ),
+                      const SizedBox(
+                        width: p10,
+                      ),
+                      Expanded(
+                        child: SelectableText(data.postNom, style: bodyLarge),
+                      )
+                    ],
+                  ),
+                  const SizedBox(height: 20),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: SelectableText("Prénom",
+                            style: bodyLarge.copyWith(
+                                fontWeight: FontWeight.bold)),
+                      ),
+                      const SizedBox(
+                        width: p10,
+                      ),
+                      Expanded(
+                        child: SelectableText(data.prenom, style: bodyLarge),
+                      )
+                    ],
+                  ),
+                  const SizedBox(height: 20),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: SelectableText("Matricule",
+                            style: bodyLarge.copyWith(
+                                fontWeight: FontWeight.bold)),
+                      ),
+                      const SizedBox(
+                        width: p10,
+                      ),
+                      Expanded(
+                        child: SelectableText(data.matricule, style: bodyLarge),
+                      )
+                    ],
+                  ),
+                  const SizedBox(height: 20),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: SelectableText("Montant",
+                            style: bodyLarge.copyWith(
+                                fontWeight: FontWeight.bold)),
+                      ),
+                      const SizedBox(
+                        width: p10,
+                      ),
+                      Expanded(
+                        child: SelectableText(
+                            "${NumberFormat.decimalPattern('fr').format(double.parse(data.montant))} \$",
+                            style: bodyLarge),
+                      )
+                    ],
+                  ),
+                  const SizedBox(height: 20),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: SelectableText("Note",
+                            style: bodyLarge.copyWith(
+                                fontWeight: FontWeight.bold)),
+                      ),
+                      const SizedBox(
+                        width: p10,
+                      ),
+                      Expanded(
+                        child: SelectableText(data.note, style: bodyLarge),
+                      )
+                    ],
+                  ),
+                  const SizedBox(height: 20),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: SelectableText("Moyen de Payement",
+                            style: bodyLarge.copyWith(
+                                fontWeight: FontWeight.bold)),
+                      ),
+                      const SizedBox(
+                        width: p10,
+                      ),
+                      Expanded(
+                        child: SelectableText(data.moyenPayement,
+                            style: bodyLarge),
+                      )
+                    ],
+                  ),
+                  const SizedBox(height: 20),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: SelectableText("Numero Transaction",
+                            style: bodyLarge.copyWith(
+                                fontWeight: FontWeight.bold)),
+                      ),
+                      const SizedBox(
+                        width: p10,
+                      ),
+                      Expanded(
+                        child: SelectableText(data.numeroTransaction,
+                            style: bodyLarge),
+                      )
+                    ],
+                  ),
+                  const SizedBox(height: 20),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: SelectableText("Signature",
+                            style: bodyLarge.copyWith(
+                                fontWeight: FontWeight.bold)),
+                      ),
+                      const SizedBox(
+                        width: p10,
+                      ),
+                      Expanded(
+                        child: SelectableText(data.signature, style: bodyLarge),
+                      )
+                    ],
+                  ),
+                  const SizedBox(height: 20),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: SelectableText("Date",
+                            style: bodyLarge.copyWith(
+                                fontWeight: FontWeight.bold)),
+                      ),
+                      const SizedBox(
+                        width: p10,
+                      ),
+                      Expanded(
+                        child: SelectableText(
+                            DateFormat("dd-MM-yyyy HH:mm").format(data.created),
+                            style: bodyLarge),
+                      )
+                    ],
+                  ),
+                ],
+              ),
+              actions: <Widget>[
+                TextButton(
+                  onPressed: () => Navigator.pop(context, 'Cancel'),
+                  child: const Text('Annuler'),
+                ),
+                TextButton(
+                  onPressed: () => Navigator.pop(context, 'ok'),
+                  child: const Text('OK'),
+                ),
+              ],
+            );
+          });
+        });
   }
 
   newDialog(ActionnaireModel data) {
@@ -457,7 +659,7 @@ class _DetailActionnaireState extends State<DetailActionnaire> {
                                   ),
                                   Expanded(child: numeroTransactionWidget())
                                 ],
-                              ), 
+                              ),
                               const SizedBox(
                                 height: p20,
                               ),
@@ -514,7 +716,7 @@ class _DetailActionnaireState extends State<DetailActionnaire> {
           decoration: InputDecoration(
             border:
                 OutlineInputBorder(borderRadius: BorderRadius.circular(10.0)),
-            labelText: 'note ou remarque',
+            labelText: 'Note ou remarque',
           ),
           keyboardType: TextInputType.text,
           style: const TextStyle(),
@@ -534,11 +736,10 @@ class _DetailActionnaireState extends State<DetailActionnaire> {
         child: TextFormField(
           controller: moyenPayementController,
           decoration: InputDecoration(
-            border:
-                OutlineInputBorder(borderRadius: BorderRadius.circular(10.0)),
-            labelText: 'Moyen de Payement',
-            hintText: "PayPal, virement, mobile money"
-          ),
+              border:
+                  OutlineInputBorder(borderRadius: BorderRadius.circular(10.0)),
+              labelText: 'Moyen de Payement',
+              hintText: "PayPal, virement, mobile money"),
           keyboardType: TextInputType.text,
           style: const TextStyle(),
           validator: (value) {
@@ -559,7 +760,7 @@ class _DetailActionnaireState extends State<DetailActionnaire> {
           decoration: InputDecoration(
             border:
                 OutlineInputBorder(borderRadius: BorderRadius.circular(10.0)),
-            labelText: 'NNmero de Transaction',
+            labelText: 'Numéro de Transaction',
           ),
           keyboardType: TextInputType.text,
           style: const TextStyle(),
@@ -571,8 +772,7 @@ class _DetailActionnaireState extends State<DetailActionnaire> {
             }
           },
         ));
-  } 
-
+  }
 
   Future<void> submit(ActionnaireModel data) async {
     final cotisation = ActionnaireCotisationModel(
