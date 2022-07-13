@@ -31,6 +31,7 @@ class _DetailAgentPageState extends State<DetailAgentPage> {
   final GlobalKey<ScaffoldState> _key = GlobalKey();
   final ScrollController _controllerScroll = ScrollController();
   bool isLoading = false;
+  bool isLoadingAction = false;
   List<UserModel> userList = [];
 
   bool statutAgent = false;
@@ -168,8 +169,16 @@ class _DetailAgentPageState extends State<DetailAgentPage> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     const TitleWidget(title: 'Curriculum vitæ'),
-                    Column(
+                    Row(
                       children: [
+                        if (int.parse(user.role) == 1)
+                          IconButton(
+                              color: Colors.red.shade700,
+                              tooltip: 'Ajout Actionnaire',
+                              onPressed: () {
+                                actionnaireDialog(agentModel);
+                              },
+                              icon: const Icon(Icons.admin_panel_settings)),
                         PrintWidget(onPressed: () async {
                           await AgentPdf.generate(agentModel);
                         }),
@@ -201,19 +210,6 @@ class _DetailAgentPageState extends State<DetailAgentPage> {
       closedBackgroundColor: themeColor,
       openBackgroundColor: themeColor,
       speedDialChildren: <SpeedDialChild>[
-        if (int.parse(user.role) == 1)
-          SpeedDialChild(
-            child: const Icon(
-              Icons.content_paste_sharp,
-              size: 15.0,
-            ),
-            foregroundColor: Colors.white,
-            backgroundColor: Colors.orange.shade700,
-            label: 'Ajout Actionnaire',
-            onPressed: () {
-              actionnaireSubmit(agentModel);
-            },
-          ),
         SpeedDialChild(
           child: const Icon(
             Icons.content_paste_sharp,
@@ -736,6 +732,38 @@ class _DetailAgentPageState extends State<DetailAgentPage> {
         });
   }
 
+  actionnaireDialog(AgentModel data) {
+    return showDialog(
+        context: context,
+        barrierDismissible: true,
+        builder: (context) {
+          return StatefulBuilder(builder: (context, StateSetter setState) {
+            return AlertDialog(
+              title: Text('Etes vous sûr de faire ceci ?',
+                  style: TextStyle(color: Colors.red.shade700)),
+              content: isLoadingAction
+                  ? Center(child: loading())
+                  : Text("Cette action va crée un nouvel actionnaire",
+                      style: Theme.of(context).textTheme.bodyLarge),
+              actions: <Widget>[
+                TextButton(
+                  onPressed: () => Navigator.pop(context, 'Cancel'),
+                  child: const Text('Annuler'),
+                ),
+                TextButton(
+                  onPressed: () {
+                    isLoadingAction = true;
+                    actionnaireSubmit(data);
+                    // .then((value) => isLoadingAction = false);
+                  },
+                  child: const Text('OK'),
+                ),
+              ],
+            );
+          });
+        });
+  }
+
   // Update statut agent
   Future<void> updateAgent(AgentModel agentModel) async {
     final agent = AgentModel(
@@ -839,6 +867,7 @@ class _DetailAgentPageState extends State<DetailAgentPage> {
         createdRef: data.id!,
         created: DateTime.now());
     await ActionnaireApi().insertData(actionnaireModel);
+    Navigator.pop(context, 'ok');
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
       content: const Text("Activation agent avec succès!"),
       backgroundColor: Colors.green[700],

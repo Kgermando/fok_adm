@@ -142,7 +142,7 @@ class _TableActionnaireState extends State<TableActionnaire> {
                   } else if (column.field == 'nom') {
                     return resolver<ClassFilterImplemented>()
                         as PlutoFilterType;
-                  } else if (column.field == 'postnom') {
+                  } else if (column.field == 'postNom') {
                     return resolver<ClassFilterImplemented>()
                         as PlutoFilterType;
                   } else if (column.field == 'prenom') {
@@ -209,7 +209,7 @@ class _TableActionnaireState extends State<TableActionnaire> {
       PlutoColumn(
         readOnly: true,
         title: 'Post-Nom',
-        field: 'postnom',
+        field: 'postNom',
         type: PlutoColumnType.text(),
         enableRowDrag: true,
         enableContextMenu: false,

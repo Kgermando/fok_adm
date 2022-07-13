@@ -1,5 +1,6 @@
 import 'package:date_time_picker/date_time_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:fokad_admin/src/api/auth/auth_api.dart';
 import 'package:fokad_admin/src/api/administration/actionnaire_api.dart';
 import 'package:fokad_admin/src/api/administration/actionnaire_cotisation_api.dart';
@@ -168,9 +169,6 @@ class _DetailActionnaireState extends State<DetailActionnaire> {
                 ],
               ),
               dataWidget(data),
-              Divider(
-                color: Colors.amber.shade700,
-              ),
               listRapportWidget(data),
             ],
           ),
@@ -275,6 +273,9 @@ class _DetailActionnaireState extends State<DetailActionnaire> {
             )
           ],
         ),
+        Divider(
+          color: Colors.amber.shade700,
+        ),
         Row(
           children: [
             Expanded(
@@ -289,6 +290,9 @@ class _DetailActionnaireState extends State<DetailActionnaire> {
                   textAlign: TextAlign.start, style: bodyMedium),
             )
           ],
+        ),
+        Divider(
+          color: Colors.amber.shade700,
         ),
         Row(
           children: [
@@ -305,6 +309,9 @@ class _DetailActionnaireState extends State<DetailActionnaire> {
             )
           ],
         ),
+        Divider(
+          color: Colors.amber.shade700,
+        ),
         Row(
           children: [
             Expanded(
@@ -320,6 +327,7 @@ class _DetailActionnaireState extends State<DetailActionnaire> {
             )
           ],
         ),
+        const SizedBox(height: p20),
         Divider(
           color: Colors.red.shade700,
         ),
@@ -421,10 +429,10 @@ class _DetailActionnaireState extends State<DetailActionnaire> {
           return StatefulBuilder(builder: (context, StateSetter setState) {
             return AlertDialog(
               scrollable: true,
-              title: const Text('Ajout immobilier'),
+              title: const Text('Ajout Cotisation'),
               content: SizedBox(
                   height: 400,
-                  width: 500,
+                  width: 400,
                   child: isLoading
                       ? loading()
                       : Form(
@@ -483,7 +491,10 @@ class _DetailActionnaireState extends State<DetailActionnaire> {
                   OutlineInputBorder(borderRadius: BorderRadius.circular(10.0)),
               labelText: 'Montant',
               hintText: 'Montant'),
-          keyboardType: TextInputType.text,
+          keyboardType: TextInputType.number,
+          inputFormatters: <TextInputFormatter>[
+            FilteringTextInputFormatter.digitsOnly
+          ],
           style: const TextStyle(),
           validator: (value) {
             if (value != null && value.isEmpty) {
