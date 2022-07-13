@@ -92,13 +92,13 @@ class PerformenceNoteApi {
   }
 
   Future<PerformenceNoteModel> updateData(
-      int id, PerformenceNoteModel performenceModel) async {
+      PerformenceNoteModel performenceModel) async {
     String? token = await UserSharedPref().getAccessToken();
 
     var data = performenceModel.toJson();
     var body = jsonEncode(data);
     var updateUrl =
-        Uri.parse("$mainUrl/rh/performences-note/update-performence-note/$id");
+        Uri.parse("$mainUrl/rh/performences-note/update-performence-note/");
 
     var res = await client.put(updateUrl,
         headers: <String, String>{

@@ -402,7 +402,7 @@ class _AdministrationNavState extends State<AdministrationNav> {
                 if(int.parse(user.role) == 1)
                 DrawerWidget(
                     selected: widget.pageCurrente == AdminRoutes.adminActionnaire,
-                    icon: Icons.archive,
+                    icon: Icons.admin_panel_settings,
                     sizeIcon: 20.0,
                     title: 'Actionnaires',
                     style: bodyLarge,

@@ -1,11 +1,12 @@
-import 'package:flutter/material.dart'; 
-import 'package:fokad_admin/src/api/rh/actionnaire_api.dart';
-import 'package:fokad_admin/src/api/rh/actionnaire_cotisation_api.dart';
+import 'package:flutter/material.dart';
+import 'package:fokad_admin/src/api/administration/actionnaire_api.dart';
+import 'package:fokad_admin/src/api/administration/actionnaire_cotisation_api.dart';
 import 'package:fokad_admin/src/models/administrations/actionnaire_cotisation_model.dart';
 import 'package:fokad_admin/src/models/administrations/actionnaire_model.dart';
-import 'package:fokad_admin/src/pages/administration/actionnaires/components/actionnaire_xlsx.dart'; 
+import 'package:fokad_admin/src/pages/administration/actionnaires/components/actionnaire_xlsx.dart';
 import 'package:fokad_admin/src/routes/routes.dart';
 import 'package:fokad_admin/src/utils/class_implemented.dart';
+import 'package:fokad_admin/src/widgets/dash_number_budget_widget.dart';
 import 'package:fokad_admin/src/widgets/print_widget.dart';
 import 'package:fokad_admin/src/widgets/title_widget.dart';
 import 'package:intl/intl.dart';
@@ -34,91 +35,144 @@ class _TableActionnaireState extends State<TableActionnaire> {
 
   List<ActionnaireModel> dataList = [];
 
+  List<ActionnaireCotisationModel> actionnaireCotisationList = [];
+  List<ActionnaireCotisationModel> actionnaireCotisationMonthList = [];
+
+  double totalGen = 0.0;
+  double totalMonth = 0.0;
+
   Future<void> getData() async {
     List<ActionnaireModel> actionnaires = await ActionnaireApi().getAllData();
+    List<ActionnaireCotisationModel> actionnaireCotisations =
+        await ActionnaireCotisationApi().getAllData();
 
     setState(() {
       dataList = actionnaires.toList();
+
+      actionnaireCotisationList = actionnaireCotisations.toList();
+      actionnaireCotisationMonthList = actionnaireCotisations
+          .where((element) => element.created.month == DateTime.now().month)
+          .toList();
+
+      for (var item in actionnaireCotisationList) {
+        totalGen += double.parse(item.montant);
+      }
+
+      for (var item in actionnaireCotisationMonthList) {
+        totalMonth += double.parse(item.montant);
+      }
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    return PlutoGrid(
-      columns: columns,
-      rows: rows,
-      onRowDoubleTap: (PlutoGridOnRowDoubleTapEvent tapEvent) {
-        final dataId = tapEvent.row!.cells.values;
-        final idPlutoRow = dataId.elementAt(0);
-
-        Navigator.pushNamed(context, AdminRoutes.adminActionnaireDetail,
-            arguments: idPlutoRow.value);
-      },
-      onLoaded: (PlutoGridOnLoadedEvent event) {
-        stateManager = event.stateManager;
-        stateManager!.setShowColumnFilter(true);
-        stateManager!.notifyListeners();
-      },
-      createHeader: (PlutoGridStateManager header) {
-        return Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    return Column(
+      children: [
+        Row(
           children: [
-            const TitleWidget(title: "Actionnaires"),
-            Row(
-              children: [
-                IconButton(
-                    onPressed: () {
-                      Navigator.pushNamed(context, RhRoutes.rhPerformence);
-                    },
-                    icon: Icon(Icons.refresh, color: Colors.green.shade700)),
-                PrintWidget(onPressed: () {
-                  ActionnaireXlsx().exportToExcel(dataList);
-                  if (!mounted) return;
-                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                    content: const Text("Exportation effectué!"),
-                    backgroundColor: Colors.green[700],
-                  ));
-                })
-              ],
-            ),
+            DashNumberBudgetWidget(
+              number: "${NumberFormat.decimalPattern('fr').format(totalGen)} \$",
+                 title: "Total général", icon: Icons.date_range, 
+                 color: Colors.green.shade700),
+            DashNumberBudgetWidget(
+              number: "${NumberFormat.decimalPattern('fr').format(totalMonth)} \$",
+                title: "Total de ce mois", icon: Icons.date_range_outlined, 
+                color: Colors.red.shade700),
           ],
-        );
-      },
-      configuration: PlutoGridConfiguration(
-        columnFilterConfig: PlutoGridColumnFilterConfig(
-          filters: const [
-            ...FilterHelper.defaultFilters,
-            // custom filter
-            ClassFilterImplemented(),
-          ],
-          resolveDefaultColumnFilter: (column, resolver) {
-            if (column.field == 'id') {
-              return resolver<ClassFilterImplemented>() as PlutoFilterType;
-            } else if (column.field == 'nom') {
-              return resolver<ClassFilterImplemented>() as PlutoFilterType;
-            } else if (column.field == 'postnom') {
-              return resolver<ClassFilterImplemented>() as PlutoFilterType;
-            } else if (column.field == 'prenom') {
-              return resolver<ClassFilterImplemented>() as PlutoFilterType;
-            } else if (column.field == 'email') {
-              return resolver<ClassFilterImplemented>() as PlutoFilterType;
-            } else if (column.field == 'telephone') {
-              return resolver<ClassFilterImplemented>() as PlutoFilterType;
-            } else if (column.field == 'sexe') {
-              return resolver<ClassFilterImplemented>() as PlutoFilterType;
-            } else if (column.field == 'matricule') {
-              return resolver<ClassFilterImplemented>() as PlutoFilterType;
-            } else if (column.field == 'total') {
-              return resolver<ClassFilterImplemented>() as PlutoFilterType;
-            } else if (column.field == 'signature') {
-              return resolver<ClassFilterImplemented>() as PlutoFilterType;
-            } else if (column.field == 'created') {
-              return resolver<ClassFilterImplemented>() as PlutoFilterType;
-            }
-            return resolver<PlutoFilterTypeContains>() as PlutoFilterType;
-          },
         ),
-      ),
+        SizedBox(
+          height: MediaQuery.of(context).size.height,
+          child: PlutoGrid(
+            columns: columns,
+            rows: rows,
+            onRowDoubleTap: (PlutoGridOnRowDoubleTapEvent tapEvent) {
+              final dataId = tapEvent.row!.cells.values;
+              final idPlutoRow = dataId.elementAt(0);
+
+              Navigator.pushNamed(context, AdminRoutes.adminActionnaireDetail,
+                  arguments: idPlutoRow.value);
+            },
+            onLoaded: (PlutoGridOnLoadedEvent event) {
+              stateManager = event.stateManager;
+              stateManager!.setShowColumnFilter(true);
+              stateManager!.notifyListeners();
+            },
+            createHeader: (PlutoGridStateManager header) {
+              return Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  const TitleWidget(title: "Actionnaires"),
+                  Row(
+                    children: [
+                      IconButton(
+                          onPressed: () {
+                            Navigator.pushNamed(
+                                context, RhRoutes.rhPerformence);
+                          },
+                          icon: Icon(Icons.refresh,
+                              color: Colors.green.shade700)),
+                      PrintWidget(onPressed: () {
+                        ActionnaireXlsx().exportToExcel(dataList);
+                        if (!mounted) return;
+                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                          content: const Text("Exportation effectué!"),
+                          backgroundColor: Colors.green[700],
+                        ));
+                      })
+                    ],
+                  ),
+                ],
+              );
+            },
+            configuration: PlutoGridConfiguration(
+              columnFilterConfig: PlutoGridColumnFilterConfig(
+                filters: const [
+                  ...FilterHelper.defaultFilters,
+                  // custom filter
+                  ClassFilterImplemented(),
+                ],
+                resolveDefaultColumnFilter: (column, resolver) {
+                  if (column.field == 'id') {
+                    return resolver<ClassFilterImplemented>()
+                        as PlutoFilterType;
+                  } else if (column.field == 'nom') {
+                    return resolver<ClassFilterImplemented>()
+                        as PlutoFilterType;
+                  } else if (column.field == 'postnom') {
+                    return resolver<ClassFilterImplemented>()
+                        as PlutoFilterType;
+                  } else if (column.field == 'prenom') {
+                    return resolver<ClassFilterImplemented>()
+                        as PlutoFilterType;
+                  } else if (column.field == 'email') {
+                    return resolver<ClassFilterImplemented>()
+                        as PlutoFilterType;
+                  } else if (column.field == 'telephone') {
+                    return resolver<ClassFilterImplemented>()
+                        as PlutoFilterType;
+                  } else if (column.field == 'sexe') {
+                    return resolver<ClassFilterImplemented>()
+                        as PlutoFilterType;
+                  } else if (column.field == 'matricule') {
+                    return resolver<ClassFilterImplemented>()
+                        as PlutoFilterType;
+                  } else if (column.field == 'total') {
+                    return resolver<ClassFilterImplemented>()
+                        as PlutoFilterType;
+                  } else if (column.field == 'signature') {
+                    return resolver<ClassFilterImplemented>()
+                        as PlutoFilterType;
+                  } else if (column.field == 'created') {
+                    return resolver<ClassFilterImplemented>()
+                        as PlutoFilterType;
+                  }
+                  return resolver<PlutoFilterTypeContains>() as PlutoFilterType;
+                },
+              ),
+            ),
+          ),
+        ),
+      ],
     );
   }
 
@@ -268,28 +322,30 @@ class _TableActionnaireState extends State<TableActionnaire> {
 
     if (mounted) {
       setState(() {
-        for (var item in actionnaires) { 
+        for (var item in actionnaires) {
           var cotisations = actionnaireCotisations
-            .where((element) => element.reference == item.createdRef).toList();
+              .where((element) => element.reference == item.createdRef)
+              .toList();
 
-            for (var element in cotisations) {
-              total += double.parse(element.montant);
-            }
+          for (var element in cotisations) {
+            total += double.parse(element.montant);
+          }
 
-            rows.add(PlutoRow(cells: {
-              'id': PlutoCell(value: item.id),
-              'nom': PlutoCell(value: item.nom),
-              'postNom': PlutoCell(value: item.postNom),
-              'prenom': PlutoCell(value: item.prenom),
-              'email': PlutoCell(value: item.email),
-              'telephone': PlutoCell(value: item.telephone),
-              'sexe': PlutoCell(value: item.sexe),
-              'matricule': PlutoCell(value: item.matricule),
-              'total': PlutoCell(value: "${NumberFormat.decimalPattern('fr').format(total)} \$"),
-              'signature': PlutoCell(value: item.signature),
-              'created': PlutoCell(
-                  value: DateFormat("dd-MM-yyyy HH:mm").format(item.created))
-            })); 
+          rows.add(PlutoRow(cells: {
+            'id': PlutoCell(value: item.id),
+            'nom': PlutoCell(value: item.nom),
+            'postNom': PlutoCell(value: item.postNom),
+            'prenom': PlutoCell(value: item.prenom),
+            'email': PlutoCell(value: item.email),
+            'telephone': PlutoCell(value: item.telephone),
+            'sexe': PlutoCell(value: item.sexe),
+            'matricule': PlutoCell(value: item.matricule),
+            'total': PlutoCell(
+                value: "${NumberFormat.decimalPattern('fr').format(total)} \$"),
+            'signature': PlutoCell(value: item.signature),
+            'created': PlutoCell(
+                value: DateFormat("dd-MM-yyyy HH:mm").format(item.created))
+          }));
         }
         stateManager!.resetCurrentState();
       });

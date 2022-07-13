@@ -13,6 +13,12 @@ var registerUrl = Uri.parse("$mainUrl/user/insert-new-user");
 var userAllUrl = Uri.parse("$mainUrl/user/users/");
 var userUrl = Uri.parse("$mainUrl/user/");
 
+// Administration
+var actionnaireListUrl = Uri.parse("$mainUrl/admin/actionnaires/");
+var actionnaireAddUrl = Uri.parse("$mainUrl/admin/actionnaires/insert-new-actionnaire");
+var actionnaireCotisationListUrl = Uri.parse("$mainUrl/admin/actionnaire-cotisations/");
+var actionnaireCotisationAddUrl = 
+  Uri.parse("$mainUrl/admin/actionnaire-cotisations/insert-new-actionnaire-cotisation");
 
 // RH
 var listAgentsUrl = Uri.parse("$mainUrl/rh/agents/");
