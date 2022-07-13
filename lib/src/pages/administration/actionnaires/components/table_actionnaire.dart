@@ -160,9 +160,6 @@ class _TableActionnaireState extends State<TableActionnaire> {
                   } else if (column.field == 'matricule') {
                     return resolver<ClassFilterImplemented>()
                         as PlutoFilterType;
-                  } else if (column.field == 'total') {
-                    return resolver<ClassFilterImplemented>()
-                        as PlutoFilterType;
                   } else if (column.field == 'signature') {
                     return resolver<ClassFilterImplemented>()
                         as PlutoFilterType;
