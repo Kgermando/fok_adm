@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:fokad_admin/src/pages/administration/actionnaires/actionnaires_page.dart';
+import 'package:fokad_admin/src/pages/administration/actionnaires/components/detail_actionnaire.dart';
 import 'package:fokad_admin/src/pages/administration/budgets_admin.dart';
 import 'package:fokad_admin/src/pages/administration/comm_marketing_admin.dart';
 import 'package:fokad_admin/src/pages/administration/comptes_admin.dart';
@@ -142,7 +144,7 @@ import 'package:fokad_admin/src/pages/mails/components/detail_mail.dart';
 import 'package:fokad_admin/src/pages/mails/components/new_mail.dart';
 import 'package:fokad_admin/src/pages/mails/components/repondre_mail.dart';
 import 'package:fokad_admin/src/pages/mails/components/tranfert_mail.dart';
-import 'package:fokad_admin/src/pages/mails/mails_page.dart';
+import 'package:fokad_admin/src/pages/mails/mails_page.dart'; 
 import 'package:fokad_admin/src/pages/rh/agents/agents_rh.dart';
 import 'package:fokad_admin/src/pages/rh/agents/components/add_agent.dart';
 import 'package:fokad_admin/src/pages/rh/agents/components/detail_agent_page.dart';
@@ -193,6 +195,8 @@ class AdminRoutes {
   static const adminCommMarketing = "/admin-commercial-marketing";
   static const adminLogistique = "/admin-logistiques";
   static const adminEtatBesoin = "/admin-etat-besoin";
+  static const adminActionnaire = "/admin-actionnaire";
+  static const adminActionnaireDetail = "/admin-actionnaire-detail"; 
 }
 
 class RhRoutes {
@@ -416,6 +420,8 @@ final routes = <String, WidgetBuilder>{
   AdminRoutes.adminCommMarketing: (context) => const CommMarketingAdmin(),
   AdminRoutes.adminLogistique: (context) => const LogistiquesAdmin(),
   AdminRoutes.adminEtatBesoin: (context) => const EtatBesoinAdmin(),
+  AdminRoutes.adminActionnaire: (context) => const ActionnairesPage(),
+  AdminRoutes.adminActionnaireDetail: (context) => const DetailActionnaire(),
 
   // RH
   RhRoutes.rhDashboard: (context) => const DashboardRh(),

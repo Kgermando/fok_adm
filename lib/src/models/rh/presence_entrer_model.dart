@@ -4,7 +4,7 @@ class PresenceEntrerModel {
   late String nom;
   late String prenom;
   late String matricule;
-  late String note;
+  late String note; // Note pour l'agent
   late String signature; // celui qui fait le document
   late DateTime created;
 

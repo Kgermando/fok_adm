@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_switch/flutter_switch.dart';
 import 'package:fokad_admin/src/api/auth/auth_api.dart';
+import 'package:fokad_admin/src/api/rh/actionnaire_api.dart';
 import 'package:fokad_admin/src/api/rh/agents_api.dart';
 import 'package:fokad_admin/src/api/user/user_api.dart';
 import 'package:fokad_admin/src/constants/app_theme.dart';
 import 'package:fokad_admin/src/constants/responsive.dart';
+import 'package:fokad_admin/src/models/administrations/actionnaire_model.dart';
 import 'package:fokad_admin/src/models/rh/agent_model.dart';
 import 'package:fokad_admin/src/models/users/user_model.dart';
 import 'package:fokad_admin/src/navigation/drawer/drawer_menu.dart';
@@ -56,7 +58,7 @@ class _DetailAgentPageState extends State<DetailAgentPage> {
       succursale: '-');
   Future<void> getData(BuildContext context) async {
     UserModel userModel = await AuthApi().getUserId();
-    final data = await UserApi().getAllData(); 
+    final data = await UserApi().getAllData();
     // final agent = await AgentsApi().getOneData(id);
     setState(() {
       user = userModel;
@@ -168,10 +170,9 @@ class _DetailAgentPageState extends State<DetailAgentPage> {
                     const TitleWidget(title: 'Curriculum vitæ'),
                     Column(
                       children: [
-                        PrintWidget( 
-                            onPressed: () async {
-                              await AgentPdf.generate(agentModel);
-                            }),
+                        PrintWidget(onPressed: () async {
+                          await AgentPdf.generate(agentModel);
+                        }),
                       ],
                     )
                   ],
@@ -200,6 +201,19 @@ class _DetailAgentPageState extends State<DetailAgentPage> {
       closedBackgroundColor: themeColor,
       openBackgroundColor: themeColor,
       speedDialChildren: <SpeedDialChild>[
+        if (int.parse(user.role) == 1)
+          SpeedDialChild(
+            child: const Icon(
+              Icons.content_paste_sharp,
+              size: 15.0,
+            ),
+            foregroundColor: Colors.white,
+            backgroundColor: Colors.orange.shade700,
+            label: 'Ajout Actionnaire',
+            onPressed: () {
+              actionnaireSubmit(agentModel);
+            },
+          ),
         SpeedDialChild(
           child: const Icon(
             Icons.content_paste_sharp,
@@ -805,6 +819,26 @@ class _DetailAgentPageState extends State<DetailAgentPage> {
         passwordHash: '12345678',
         succursale: '-');
     await UserApi().insertData(userModel);
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      content: const Text("Activation agent avec succès!"),
+      backgroundColor: Colors.green[700],
+    ));
+  }
+
+  Future<void> actionnaireSubmit(AgentModel data) async {
+    final actionnaireModel = ActionnaireModel(
+        nom: data.nom,
+        postNom: data.postNom,
+        prenom: data.prenom,
+        email: data.email,
+        telephone: data.telephone,
+        adresse: data.adresse,
+        sexe: data.sexe,
+        matricule: data.matricule,
+        signature: user.matricule,
+        createdRef: data.id!,
+        created: DateTime.now());
+    await ActionnaireApi().insertData(actionnaireModel);
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
       content: const Text("Activation agent avec succès!"),
       backgroundColor: Colors.green[700],

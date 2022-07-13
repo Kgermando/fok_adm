@@ -570,7 +570,8 @@ class _PaiementBulletinState extends State<PaiementBulletin> {
                       children: [
                         Text('Total dû', style: bodySmall),
                         SelectableText(
-                          data.totalDuSalaire,
+                          (data.totalDuSalaire == '-') ? data.totalDuSalaire :
+                          "${NumberFormat.decimalPattern('fr').format(double.parse(data.totalDuSalaire))} USD",
                           style: bodyMedium,
                         ),
                       ],
@@ -1306,8 +1307,9 @@ class _PaiementBulletinState extends State<PaiementBulletin> {
           child: Column(
             children: [
               Row(
-                mainAxisAlignment: MainAxisAlignment.end,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
+                  const TitleWidget(title: "Approbations"),
                   IconButton(
                       onPressed: () {},
                       icon: Icon(Icons.add_task, color: Colors.green.shade700)),

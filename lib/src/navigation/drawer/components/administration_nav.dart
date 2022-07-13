@@ -399,7 +399,16 @@ class _AdministrationNavState extends State<AdministrationNav> {
                     // Navigator.of(context).pop();
                   }
                 ),
-
+                if(int.parse(user.role) == 1)
+                DrawerWidget(
+                    selected: widget.pageCurrente == AdminRoutes.adminActionnaire,
+                    icon: Icons.archive,
+                    sizeIcon: 20.0,
+                    title: 'Actionnaires',
+                    style: bodyLarge,
+                    onTap: () {
+                      Navigator.pushNamed(context, AdminRoutes.adminActionnaire );
+                    }),
               ],
             );
           } else {

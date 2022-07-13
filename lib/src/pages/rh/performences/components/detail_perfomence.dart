@@ -9,8 +9,7 @@ import 'package:fokad_admin/src/models/users/user_model.dart';
 import 'package:fokad_admin/src/navigation/drawer/drawer_menu.dart';
 import 'package:fokad_admin/src/navigation/header/custom_appbar.dart';
 import 'package:fokad_admin/src/routes/routes.dart';
-import 'package:fokad_admin/src/utils/loading.dart';
-import 'package:fokad_admin/src/widgets/print_widget.dart';
+import 'package:fokad_admin/src/utils/loading.dart'; 
 import 'package:fokad_admin/src/widgets/title_widget.dart';
 import 'package:intl/intl.dart';
 import 'package:timeago/timeago.dart' as timeago;
@@ -152,15 +151,9 @@ class _DetailPerformenceState extends State<DetailPerformence> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   TitleWidget(title: data.agent),
-                  Column(
-                    children: [
-                      PrintWidget(
-                          tooltip: 'Imprimer le document', onPressed: () {}),
-                      SelectableText(
-                          DateFormat("dd-MM-yyyy HH:mm").format(data.created),
-                          textAlign: TextAlign.start),
-                    ],
-                  )
+                  SelectableText(
+                      DateFormat("dd-MM-yyyy HH:mm").format(data.created),
+                      textAlign: TextAlign.start)
                 ],
               ),
               dataWidget(data),
@@ -256,7 +249,7 @@ class _DetailPerformenceState extends State<DetailPerformence> {
             children: [
               Expanded(
                 flex: 1,
-                child: Text('Agent :',
+                child: Text('Matricule :',
                     textAlign: TextAlign.start,
                     style: bodyMedium.copyWith(fontWeight: FontWeight.bold)),
               ),
@@ -376,7 +369,7 @@ class _DetailPerformenceState extends State<DetailPerformence> {
                           return buildRapport(rapport, index);
                         });
               } else {
-                return const Center(child: CircularProgressIndicator());
+                return Center(child: loading());
               }
             }));
   }
@@ -387,7 +380,7 @@ class _DetailPerformenceState extends State<DetailPerformence> {
     final color = _lightColors[index % _lightColors.length];
 
     return Card(
-      elevation: 10,
+      elevation: 4,
       child: Padding(
         padding: const EdgeInsets.all(p10),
         child: Column(
