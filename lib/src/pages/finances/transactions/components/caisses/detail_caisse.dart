@@ -2,13 +2,11 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:fokad_admin/src/api/auth/auth_api.dart';
-import 'package:fokad_admin/src/api/finances/caisse_api.dart';
-import 'package:fokad_admin/src/api/finances/coupure_billet_api.dart';
+import 'package:fokad_admin/src/api/finances/caisse_api.dart'; 
 import 'package:fokad_admin/src/api/user/user_api.dart';
 import 'package:fokad_admin/src/constants/app_theme.dart';
 import 'package:fokad_admin/src/constants/responsive.dart';
-import 'package:fokad_admin/src/models/finances/caisse_model.dart';
-import 'package:fokad_admin/src/models/finances/coupure_billet_model.dart';
+import 'package:fokad_admin/src/models/finances/caisse_model.dart'; 
 import 'package:fokad_admin/src/models/users/user_model.dart';
 import 'package:fokad_admin/src/navigation/drawer/drawer_menu.dart';
 import 'package:fokad_admin/src/navigation/header/custom_appbar.dart';

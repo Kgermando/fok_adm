@@ -1,12 +1,10 @@
 import 'dart:async';
 
-import 'package:flutter/material.dart';
-import 'package:fokad_admin/src/api/auth/auth_api.dart';
+import 'package:flutter/material.dart'; 
 import 'package:fokad_admin/src/api/finances/creance_dette_api.dart';
 import 'package:fokad_admin/src/api/finances/dette_api.dart';
 import 'package:fokad_admin/src/models/finances/creance_dette_model.dart';
-import 'package:fokad_admin/src/models/finances/dette_model.dart';
-import 'package:fokad_admin/src/models/users/user_model.dart';
+import 'package:fokad_admin/src/models/finances/dette_model.dart'; 
 import 'package:fokad_admin/src/pages/finances/transactions/components/dettes/dette_xlsx.dart';
 import 'package:fokad_admin/src/routes/routes.dart';
 import 'package:fokad_admin/src/widgets/print_widget.dart';

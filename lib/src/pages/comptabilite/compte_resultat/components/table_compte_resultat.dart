@@ -1,10 +1,8 @@
 import 'dart:async';
 
-import 'package:flutter/material.dart';
-import 'package:fokad_admin/src/api/auth/auth_api.dart';
+import 'package:flutter/material.dart'; 
 import 'package:fokad_admin/src/api/comptabilite/compte_resultat_api.dart';
-import 'package:fokad_admin/src/models/comptabilites/compte_resultat_model.dart';
-import 'package:fokad_admin/src/models/users/user_model.dart';
+import 'package:fokad_admin/src/models/comptabilites/compte_resultat_model.dart'; 
 import 'package:fokad_admin/src/pages/comptabilite/compte_resultat/components/compte_resultat_xlsx.dart';
 import 'package:fokad_admin/src/routes/routes.dart';
 import 'package:fokad_admin/src/utils/class_implemented.dart';
