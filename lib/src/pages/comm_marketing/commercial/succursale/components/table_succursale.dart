@@ -36,9 +36,9 @@ class _TableSuccursaleState extends State<TableSuccursale> {
     List<SuccursaleModel> succursales = await SuccursaleApi().getAllData();
     setState(() {
       dataList = succursales
-          .where((element) =>
-              element.approbationDG == "Approved" &&
-              element.approbationDD == "Approved")
+          // .where((element) =>
+          //     element.approbationDG == "Approved" &&
+              // element.approbationDD == "Approved")
           .toList();
     });
   }
@@ -172,9 +172,9 @@ class _TableSuccursaleState extends State<TableSuccursale> {
   Future agentsRow() async {
     List<SuccursaleModel> succursales = await SuccursaleApi().getAllData();
     var data = succursales
-        .where((element) =>
-            element.approbationDG == "Approved" &&
-            element.approbationDD == "Approved")
+        // .where((element) =>
+        //     element.approbationDG == "Approved" &&
+        //     element.approbationDD == "Approved")
         .toList();
 
     if (mounted) {

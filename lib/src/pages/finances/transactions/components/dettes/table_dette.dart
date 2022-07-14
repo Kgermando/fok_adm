@@ -47,11 +47,13 @@ class _TableDetteState extends State<TableDette> {
     List<DetteModel> dettes = await DetteApi().getAllData();
     var creanceDette = await CreanceDetteApi().getAllData();
     setState(() {
+
       List<DetteModel> data = dettes
           .where((element) =>
               element.approbationDG == "Approved" &&
               element.approbationDD == "Approved")
           .toList();
+          
       creanceDetteList = creanceDette
           .where((element) => element.creanceDette == 'dettes')
           .toList();
@@ -64,9 +66,9 @@ class _TableDetteState extends State<TableDette> {
       }
 
       dataList = dettes
-          .where((element) =>
-              element.approbationDG == "Approved" &&
-              element.approbationDD == "Approved")
+          // .where((element) =>
+          //     element.approbationDG == "Approved" &&
+          //     element.approbationDD == "Approved")
           .toList();
     });
   }
@@ -310,12 +312,12 @@ class _TableDetteState extends State<TableDette> {
 
   Future agentsRow() async {
     List<DetteModel?> dataList = await DetteApi().getAllData();
-    UserModel userModel = await AuthApi().getUserId();
+    // UserModel userModel = await AuthApi().getUserId();
     var data = dataList
-        .where((element) =>
-            element!.approbationDG == "Approved" &&
-                element.approbationDD == "Approved" ||
-            element.signature == userModel.matricule)
+        // .where((element) =>
+        //     element!.approbationDG == "Approved" &&
+        //         element.approbationDD == "Approved" ||
+        //     element.signature == userModel.matricule)
         .toList();
 
     if (mounted) {

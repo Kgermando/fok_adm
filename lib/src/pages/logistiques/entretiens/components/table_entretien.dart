@@ -38,7 +38,7 @@ class _TableEntretienState extends State<TableEntretien> {
     List<EntretienModel> entretiens = await EntretienApi().getAllData();
     setState(() {
       dataList = entretiens
-          .where((element) => element.approbationDD == "Approved")
+          // .where((element) => element.approbationDD == "Approved")
           .toList();
     });
   }
@@ -204,11 +204,11 @@ class _TableEntretienState extends State<TableEntretien> {
 
   Future agentsRow() async {
     List<EntretienModel> entretiens = await EntretienApi().getAllData();
-    UserModel userModel = await AuthApi().getUserId();
+    // UserModel userModel = await AuthApi().getUserId();
     var data = entretiens
-        .where((element) =>
-            element.approbationDD == "Approved" ||
-            element.signature == userModel.matricule)
+        // .where((element) =>
+        //     element.approbationDD == "Approved" ||
+        //     element.signature == userModel.matricule)
         .toList();
 
     if (mounted) {

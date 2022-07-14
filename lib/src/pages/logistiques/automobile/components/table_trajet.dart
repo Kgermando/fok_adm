@@ -38,7 +38,7 @@ class _TableTrajetState extends State<TableTrajet> {
     List<TrajetModel> trajets = await TrajetApi().getAllData();
     setState(() {
       dataList = trajets
-          .where((element) => element.approbationDD == "Approved")
+          // .where((element) => element.approbationDD == "Approved")
           .toList();
     });
   }
@@ -220,11 +220,11 @@ class _TableTrajetState extends State<TableTrajet> {
 
   Future agentsRow() async {
     List<TrajetModel> dataList = await TrajetApi().getAllData();
-    UserModel userModel = await AuthApi().getUserId();
+    // UserModel userModel = await AuthApi().getUserId();
     var data = dataList
-        .where((element) =>
-            element.approbationDD == "Approved" ||
-            element.signature == userModel.matricule)
+        // .where((element) =>
+        //     element.approbationDD == "Approved" ||
+        //     element.signature == userModel.matricule)
         .toList();
 
     if (mounted) {

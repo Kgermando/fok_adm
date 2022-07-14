@@ -222,11 +222,11 @@ class _TableProduitModelState extends State<TableProduitModel> {
 
   Future agentsRow() async {
     List<ProductModel> prodModels = await ProduitModelApi().getAllData();
-    UserModel userModel = await AuthApi().getUserId();
+    // UserModel userModel = await AuthApi().getUserId();
     var data = prodModels
-        .where((element) =>
-            element.approbationDD == "Approved" ||
-            element.signature == userModel.matricule)
+        // .where((element) =>
+        //     element.approbationDD == "Approved" ||
+        //     element.signature == userModel.matricule)
         .toList();
 
     if (mounted) {

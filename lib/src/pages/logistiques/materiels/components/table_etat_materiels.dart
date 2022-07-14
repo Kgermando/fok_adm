@@ -37,7 +37,7 @@ class _TableEtatMaterielState extends State<TableEtatMateriel> {
         await EtatMaterielApi().getAllData();
     setState(() {
       dataList = etatMateriels
-          .where((element) => element.approbationDD == "Approved")
+          // .where((element) => element.approbationDD == "Approved")
           .toList();
     });
   }
@@ -182,7 +182,7 @@ class _TableEtatMaterielState extends State<TableEtatMateriel> {
     List<EtatMaterielModel> etatMateriels =
         await EtatMaterielApi().getAllData();
     var data = etatMateriels
-        .where((element) => element.approbationDD == "Approved")
+        // .where((element) => element.approbationDD == "Approved")
         .toList();
 
     if (mounted) {

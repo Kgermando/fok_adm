@@ -38,9 +38,9 @@ class _TableAnguinState extends State<TableAnguin> {
     List<AnguinModel> engins = await AnguinApi().getAllData();
     setState(() {
       dataList = engins
-          .where((element) =>
-              element.approbationDG == "Approved" &&
-              element.approbationDD == "Approved")
+          // .where((element) =>
+          //     element.approbationDG == "Approved" &&
+          //     element.approbationDD == "Approved")
           .toList();
     });
   }
@@ -252,12 +252,12 @@ class _TableAnguinState extends State<TableAnguin> {
 
   Future agentsRow() async {
     List<AnguinModel> dataList = await AnguinApi().getAllData();
-    UserModel userModel = await AuthApi().getUserId();
+    // UserModel userModel = await AuthApi().getUserId();
     var data = dataList
-        .where((element) =>
-            element.approbationDG == "Approved" &&
-                element.approbationDD == "Approved" ||
-            element.signature == userModel.matricule)
+        // .where((element) =>
+        //     element.approbationDG == "Approved" &&
+        //         element.approbationDD == "Approved" ||
+        //     element.signature == userModel.matricule)
         .toList();
 
     if (mounted) {

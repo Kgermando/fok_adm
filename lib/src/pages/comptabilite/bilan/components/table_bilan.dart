@@ -40,9 +40,9 @@ class _TableBilanState extends State<TableBilan> {
     List<BilanModel> bilans = await BilanApi().getAllData();
     setState(() {
       dataList = bilans
-          .where((element) =>
-              element.approbationDG == "Approved" &&
-              element.approbationDD == "Approved")
+          // .where((element) =>
+          //     element.approbationDG == "Approved" &&
+          //     element.approbationDD == "Approved")
           .toList();
     });
   }
@@ -168,13 +168,13 @@ class _TableBilanState extends State<TableBilan> {
 
   Future agentsRow() async {
     List<BilanModel> bilans = await BilanApi().getAllData();
-    UserModel userModel = await AuthApi().getUserId();
+    // UserModel userModel = await AuthApi().getUserId();
 
     var data = bilans
-        .where((element) =>
-            element.approbationDG == "Approved" &&
-                element.approbationDD == "Approved" ||
-            element.signature == userModel.matricule)
+        // .where((element) =>
+        //     element.approbationDG == "Approved" &&
+        //         element.approbationDD == "Approved" ||
+        //     element.signature == userModel.matricule)
         .toList();
 
     if (mounted) {

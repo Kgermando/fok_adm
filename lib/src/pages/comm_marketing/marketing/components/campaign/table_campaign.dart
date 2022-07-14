@@ -36,11 +36,11 @@ class _TableCampaignState extends State<TableCampaign> {
     List<CampaignModel> campaigns = await CampaignApi().getAllData();
     setState(() {
       dataList = campaigns
-          .where((element) =>
-              element.approbationDG == 'Approved' &&
-              element.approbationDD == 'Approved' &&
-              element.approbationBudget == 'Approved' &&
-              element.approbationFin == 'Approved')
+          // .where((element) =>
+          //     element.approbationDG == 'Approved' &&
+          //     element.approbationDD == 'Approved' &&
+          //     element.approbationBudget == 'Approved' &&
+          //     element.approbationFin == 'Approved')
           .toList();
     });
   }
@@ -225,11 +225,11 @@ class _TableCampaignState extends State<TableCampaign> {
     List<CampaignModel> campaigns = await CampaignApi().getAllData();
     // Uniquement ceux qui ont déjà été approuvé
     var data = campaigns
-        .where((element) =>
-            element.approbationDG == 'Approved' &&
-            element.approbationDD == 'Approved' &&
-            element.approbationBudget == 'Approved' &&
-            element.approbationFin == 'Approved')
+        // .where((element) =>
+        //     element.approbationDG == 'Approved' &&
+        //     element.approbationDD == 'Approved' &&
+        //     element.approbationBudget == 'Approved' &&
+        //     element.approbationFin == 'Approved')
         .toList();
 
     if (mounted) {

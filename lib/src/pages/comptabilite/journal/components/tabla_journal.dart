@@ -41,9 +41,9 @@ class _TableJournalState extends State<TableJournal> {
     List<JournalModel> journals = await JournalApi().getAllData();
     setState(() {
       dataList = journals
-          .where((element) =>
-              element.approbationDG == "Approved" &&
-              element.approbationDD == "Approved")
+          // .where((element) =>
+          //     element.approbationDG == "Approved" &&
+          //     element.approbationDD == "Approved")
           .toList();
     });
   }
@@ -273,12 +273,12 @@ class _TableJournalState extends State<TableJournal> {
 
   Future agentsRow() async {
     List<JournalModel> journals = await JournalApi().getAllData();
-    UserModel userModel = await AuthApi().getUserId();
+    // UserModel userModel = await AuthApi().getUserId();
     var data = journals
-        .where((element) =>
-            element.approbationDG == "Approved" &&
-                element.approbationDD == "Approved" ||
-            element.signature == userModel.matricule)
+        // .where((element) =>
+        //     element.approbationDG == "Approved" &&
+        //         element.approbationDD == "Approved" ||
+        //     element.signature == userModel.matricule)
         .toList();
 
     if (mounted) {

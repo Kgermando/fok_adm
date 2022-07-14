@@ -153,15 +153,15 @@ class _TableDepartementBudgetState extends State<TableDepartementBudget> {
   Future agentsRow() async {
     List<DepartementBudgetModel?> dataList =
         await DepeartementBudgetApi().getAllData();
-    UserModel userModel = await AuthApi().getUserId();
+    // UserModel userModel = await AuthApi().getUserId();
 
     var data = dataList
         .where((element) =>
-            element!.approbationDG == "Approved" &&
-                element.approbationDD == "Approved" &&
+            // element!.approbationDG == "Approved" &&
+            //     element.approbationDD == "Approved" &&
                 DateTime.now().millisecondsSinceEpoch <=
-                    element.periodeFin.millisecondsSinceEpoch ||
-            element.signature == userModel.matricule ||
+                    element!.periodeFin.millisecondsSinceEpoch ||
+            // element.signature == userModel.matricule ||
             element.isSubmit == 'false')
         .toList();
 

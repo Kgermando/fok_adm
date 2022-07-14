@@ -39,12 +39,12 @@ class _TableSalairesState extends State<TableSalaires> {
 
     setState(() {
       paiementSalaireList = dataList
-          .where((element) =>
-              element.createdAt.month == DateTime.now().month &&
-              element.createdAt.year == DateTime.now().year &&
-              element.approbationDD == 'Approved' &&
-              element.approbationBudget == 'Approved' &&
-              element.approbationFin == 'Approved')
+          // .where((element) =>
+          //     element.createdAt.month == DateTime.now().month &&
+          //     element.createdAt.year == DateTime.now().year &&
+          //     element.approbationDD == 'Approved' &&
+          //     element.approbationBudget == 'Approved' &&
+          //     element.approbationFin == 'Approved')
           .toList();
     });
   }
@@ -232,13 +232,13 @@ class _TableSalairesState extends State<TableSalaires> {
 
     // Uniquement ceux qui ont déjà été approuvé
     var data = dataList
-        .where((element) =>
-            element!.createdAt.month == DateTime.now().month &&
-            element.createdAt.year == DateTime.now().year &&
-            element.approbationDD == 'Approved' &&
-            element.approbationBudget == 'Approved' &&
-            element.approbationFin == 'Approved' && 
-            element.observation == 'true')
+        // .where((element) =>
+        //     element!.createdAt.month == DateTime.now().month &&
+        //     element.createdAt.year == DateTime.now().year &&
+        //     element.approbationDD == 'Approved' &&
+        //     element.approbationBudget == 'Approved' &&
+        //     element.approbationFin == 'Approved' && 
+        //     element.observation == 'true')
         .toList();
 
     if (mounted) {

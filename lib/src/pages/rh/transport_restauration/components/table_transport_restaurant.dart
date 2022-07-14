@@ -45,11 +45,11 @@ class _TableTansportRestaurantState extends State<TableTansportRestaurant> {
     if (mounted) {
       setState(() { 
         dataList = data
-            .where((element) =>
-                element.approbationDG == 'Approved' &&
-                element.approbationDD == 'Approved' &&
-                element.approbationBudget == 'Approved' &&
-                element.approbationFin == 'Approved')
+            // .where((element) =>
+            //     element.approbationDG == 'Approved' &&
+            //     element.approbationDD == 'Approved' &&
+            //     element.approbationBudget == 'Approved' &&
+            //     element.approbationFin == 'Approved')
             .toList();
       });
     }
@@ -200,12 +200,12 @@ class _TableTansportRestaurantState extends State<TableTansportRestaurant> {
 
     // Uniquement ceux qui ont déjà été approuvé
     var data = transRests
-        .where((element) =>
-            element.approbationDG == 'Approved' &&
-            element.approbationDD == 'Approved' &&
-            element.approbationBudget == 'Approved' &&
-            element.approbationFin == 'Approved' &&
-            element.observation == 'true')
+        // .where((element) =>
+        //     element.approbationDG == 'Approved' &&
+        //     element.approbationDD == 'Approved' &&
+        //     element.approbationBudget == 'Approved' &&
+        //     element.approbationFin == 'Approved' &&
+        //     element.observation == 'true')
         .toList();
 
     if (mounted) {

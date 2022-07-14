@@ -67,9 +67,9 @@ class _TableCreanceState extends State<TableCreance> {
       }
 
       dataList = creances
-          .where((element) =>
-              element.approbationDG == "Approved" &&
-              element.approbationDD == "Approved")
+          // .where((element) =>
+              // element.approbationDG == "Approved" &&
+              // element.approbationDD == "Approved")
           .toList();
     });
   }

@@ -57,11 +57,11 @@ class _TableEtatBesoinLogState extends State<TableEtatBesoinLog> {
         fonctionOccupe = userModel.fonctionOccupe;
 
         dataList = devis
-            .where((element) =>
-                element.approbationDG == "Approved" &&
-                element.approbationDD == "Approved" &&
-                element.approbationBudget == "Approved" &&
-                element.approbationFin == "Approved")
+            // .where((element) =>
+            //     element.approbationDG == "Approved" &&
+            //     element.approbationDD == "Approved" &&
+            //     element.approbationBudget == "Approved" &&
+            //     element.approbationFin == "Approved")
             .toList();
       });
     }
@@ -207,15 +207,15 @@ class _TableEtatBesoinLogState extends State<TableEtatBesoinLog> {
 
   Future agentsRow() async {
     List<DevisModel> devis = await DevisAPi().getAllData();
-    UserModel userModel = await AuthApi().getUserId();
+    // UserModel userModel = await AuthApi().getUserId();
 
     var data = devis
-        .where((element) =>
-            element.approbationDG == "Approved" &&
-                element.approbationDD == "Approved" &&
-                element.approbationBudget == "Approved" &&
-                element.approbationFin == "Approved" ||
-            element.signature == userModel.matricule)
+        // .where((element) =>
+        //     element.approbationDG == "Approved" &&
+        //         element.approbationDD == "Approved" &&
+        //         element.approbationBudget == "Approved" &&
+        //         element.approbationFin == "Approved" ||
+        //     element.signature == userModel.matricule)
         .toList();
 
     if (mounted) {

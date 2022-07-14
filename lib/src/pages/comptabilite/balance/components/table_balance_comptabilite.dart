@@ -40,9 +40,9 @@ class _TableBilanComptabiliteState extends State<TableBilanComptabilite> {
     List<BalanceCompteModel> balances = await BalanceCompteApi().getAllData();
     setState(() {
       dataList = balances
-          .where((element) =>
-              element.approbationDG == "Approved" &&
-              element.approbationDD == "Approved")
+          // .where((element) =>
+          //     element.approbationDG == "Approved" &&
+          //     element.approbationDD == "Approved")
           .toList();
     });
   }
@@ -169,13 +169,13 @@ class _TableBilanComptabiliteState extends State<TableBilanComptabilite> {
 
   Future agentsRow() async {
     List<BalanceCompteModel> balances = await BalanceCompteApi().getAllData();
-    UserModel userModel = await AuthApi().getUserId();
+    // UserModel userModel = await AuthApi().getUserId();
 
     var data = balances
-        .where((element) =>
-            element.approbationDG == "Approved" &&
-                element.approbationDD == "Approved" ||
-            element.signature == userModel.matricule)
+        // .where((element) =>
+        //     element.approbationDG == "Approved" &&
+        //         element.approbationDD == "Approved" ||
+        //     element.signature == userModel.matricule)
         .toList();
 
     if (mounted) {

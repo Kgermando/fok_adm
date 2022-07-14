@@ -36,7 +36,7 @@ class _TableImmobilierState extends State<TableImmobilier> {
     List<ImmobilierModel> immobiliers = await ImmobilierApi().getAllData();
     setState(() {
       dataList = immobiliers
-          .where((element) => element.approbationDD == "Approved")
+          // .where((element) => element.approbationDD == "Approved")
           .toList();
     });
   }
@@ -190,7 +190,7 @@ class _TableImmobilierState extends State<TableImmobilier> {
   Future agentsRow() async {
     List<ImmobilierModel> immobiliers = await ImmobilierApi().getAllData();
     var data = immobiliers
-        .where((element) => element.approbationDD == "Approved")
+        // .where((element) => element.approbationDD == "Approved")
         .toList();
 
     if (mounted) {

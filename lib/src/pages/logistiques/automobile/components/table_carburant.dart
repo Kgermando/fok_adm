@@ -38,7 +38,7 @@ class _TableCarburantState extends State<TableCarburant> {
     List<CarburantModel> carburants = await CarburantApi().getAllData();
     setState(() {
       dataList = carburants
-          .where((element) => element.approbationDD == "Approved")
+          // .where((element) => element.approbationDD == "Approved")
           .toList();
     });
   }
@@ -262,11 +262,11 @@ class _TableCarburantState extends State<TableCarburant> {
 
   Future agentsRow() async {
     List<CarburantModel?> dataList = await CarburantApi().getAllData();
-    UserModel userModel = await AuthApi().getUserId();
+    // UserModel userModel = await AuthApi().getUserId();
     var data = dataList
-        .where((element) =>
-            element!.approbationDD == "Approved" ||
-            element.signature == userModel.matricule)
+        // .where((element) =>
+            // element!.approbationDD == "Approved" ||
+            // element.signature == userModel.matricule)
         .toList();
 
     if (mounted) {
