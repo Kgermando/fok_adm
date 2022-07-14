@@ -37,7 +37,7 @@ class _TableSalairesDDState extends State<TableSalairesDD> {
   List<PaiementSalaireModel> paiementSalaireList = [];
   Future<void> getData() async {
     var dataList = await PaiementSalaireApi().getAllData();
-
+  if(mounted) {
     setState(() {
       paiementSalaireList = dataList
           .where((element) =>
@@ -46,6 +46,7 @@ class _TableSalairesDDState extends State<TableSalairesDD> {
               element.approbationDD == "-")
           .toList();
     });
+  }
   }
 
   @override

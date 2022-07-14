@@ -260,7 +260,8 @@ class _TableJournalAdminState extends State<TableJournalAdmin> {
     List<JournalModel> journals = await JournalApi().getAllData();
     var data = journals
         .where((element) =>
-            element.approbationDG == '-' && element.approbationDD == 'Approved')
+            element.approbationDG == '-' && 
+            element.approbationDD == 'Approved')
         .toList();
 
     if (mounted) {

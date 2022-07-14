@@ -139,16 +139,24 @@ class _AdministrationNavState extends State<AdministrationNav> {
             .length;
 
         // Comptabilites
-        bilanCount = bilans.where((element) =>
-              element.approbationDG == '-' &&
-              element.approbationDD == 'Approved').length;
+        bilanCount = bilans
+            .where((element) =>
+                element.approbationDG == '-' &&
+                element.approbationDD == 'Approved' &&
+                element.isSubmit == "true")
+            .length;
         journalCount = journal.where((element) =>
               element.approbationDG == '-' &&
               element.approbationDD == 'Approved').length;
         compteResultatCount = compteReultats.where((element) =>
               element.approbationDG == '-' &&
               element.approbationDD == 'Approved').length;
-        balanceCount = balances.length;
+        balanceCount = balances
+            .where((element) =>
+                element.approbationDG == '-' &&
+                element.approbationDD == 'Approved' &&
+                element.isSubmit == "true")
+            .length;
 
         // Exploitations
         exploitationCount = exploitations.where((element) =>
@@ -156,10 +164,14 @@ class _AdministrationNavState extends State<AdministrationNav> {
               element.approbationDD == 'Approved').length;
 
         // Comm & Marketing
-        campaignCount = campaigns.where((element) =>
+        campaignCount = campaigns
+            .where((element) =>
               element.approbationDG == '-' &&
-              element.approbationDD == 'Approved').length;
-        succursaleCount = succursale.where((element) =>
+              element.approbationDD == 'Approved' &&
+              element.observation == 'false').length;
+
+        succursaleCount = succursale
+            .where((element) =>
               element.approbationDG == '-' &&
               element.approbationDD == 'Approved').length;
 
@@ -177,6 +189,16 @@ class _AdministrationNavState extends State<AdministrationNav> {
         etatBesoinCount = etatBesions.where((element) =>
               element.approbationDG == '-' &&
               element.approbationDD == 'Approved').length;
+
+
+
+      rhCount = transRestCount;
+      financeCount = creanceCount + detteCount;
+      comptabiliteCount =
+            bilanCount + compteResultatCount + journalCount + balanceCount;
+        commMarketingCount = campaignCount + succursaleCount;
+        logistiqueCount = anguinsCount + immobiliersCount;
+
       });
     }
   }
@@ -186,16 +208,6 @@ class _AdministrationNavState extends State<AdministrationNav> {
     final bodyLarge = Theme.of(context).textTheme.bodyLarge;
     final bodyText1 = Theme.of(context).textTheme.bodyText1;
 
-    rhCount = transRestCount;
-
-    financeCount = creanceCount + detteCount;
-
-    comptabiliteCount =
-        bilanCount + compteResultatCount + journalCount + balanceCount;
-
-    commMarketingCount = campaignCount + succursaleCount;
-
-    logistiqueCount = anguinsCount + immobiliersCount;
 
     return FutureBuilder<UserModel>(
         future: AuthApi().getUserId(),

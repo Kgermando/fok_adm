@@ -37,10 +37,11 @@ class _TableUsersState extends State<TableUsers> {
   List<UserModel> dataList = [];
   Future<void> getData() async {
     List<UserModel> data = await UserApi().getAllData();
-
+  if(mounted) {
     setState(() {
       dataList = data.toList();
     });
+  }
   }
 
   @override

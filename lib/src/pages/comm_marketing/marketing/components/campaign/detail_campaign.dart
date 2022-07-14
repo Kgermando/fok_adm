@@ -274,7 +274,8 @@ class _DetailCampaignState extends State<DetailCampaign> {
                     style: bodyMedium.copyWith(fontWeight: FontWeight.bold)),
               ),
               Expanded(
-                child: SelectableText("${data.coutCampaign} \$",
+                child: SelectableText("${NumberFormat.decimalPattern('fr')
+              .format(double.parse(data.coutCampaign))} \$",  
                     textAlign: TextAlign.start, style: bodyMedium),
               )
             ],

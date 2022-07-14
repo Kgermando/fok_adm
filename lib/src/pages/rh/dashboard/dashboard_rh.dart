@@ -11,6 +11,7 @@ import 'package:fokad_admin/src/navigation/header/custom_appbar.dart';
 import 'package:fokad_admin/src/pages/rh/dashboard/components/calendar_widget.dart';
 import 'package:fokad_admin/src/pages/rh/dashboard/components/dash_pie_wdget.dart';
 import 'package:fokad_admin/src/widgets/dash_number_rh_widget.dart';
+import 'package:intl/intl.dart';
 
 class DashboardRh extends StatefulWidget {
   const DashboardRh({Key? key}) : super(key: key);
@@ -166,7 +167,8 @@ class _DashboardRhState extends State<DashboardRh> {
                                     icon: Icons.male,
                                     color: Colors.grey.shade700),
                                 DashNumberRHWidget(
-                                    number: '$totalEnveloppeSalaire',
+                                    number: "${NumberFormat.decimalPattern('fr')
+                                      .format(totalEnveloppeSalaire)} \$",
                                     title: 'Enveloppe salariale',
                                     icon: Icons.monetization_on,
                                     color: Colors.teal.shade700),

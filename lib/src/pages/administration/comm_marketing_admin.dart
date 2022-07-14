@@ -42,7 +42,8 @@ class _CommMarketingAdminState extends State<CommMarketingAdmin> {
      campaignCount = campaign
           .where((element) =>
               element.approbationDG == '-' &&
-              element.approbationDD == 'Approved')
+              element.approbationDD == 'Approved' &&
+              element.observation == 'false')
           .length;
       succursaleCount = succursale
           .where((element) =>

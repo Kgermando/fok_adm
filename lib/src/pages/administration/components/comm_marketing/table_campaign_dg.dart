@@ -228,7 +228,8 @@ class _TableCampaignDGState extends State<TableCampaignDG> {
     var data = campaigns
         .where((element) =>
             element.approbationDG == '-' &&
-            element.approbationDD == 'Approved')
+            element.approbationDD == 'Approved' && 
+            element.observation == 'false')
         .toList();
 
     if (mounted) {
@@ -238,7 +239,8 @@ class _TableCampaignDGState extends State<TableCampaignDG> {
             'id': PlutoCell(value: item.id),
             'typeProduit': PlutoCell(value: item.typeProduit),
             'dateDebutEtFin': PlutoCell(value: item.dateDebutEtFin),
-            'coutCampaign': PlutoCell(value: item.coutCampaign),
+            'coutCampaign': PlutoCell(value: "${NumberFormat.decimalPattern('fr')
+              .format(double.parse(item.coutCampaign))} \$"),
             'lieuCible': PlutoCell(value: item.lieuCible),
             'promotion': PlutoCell(value: item.promotion),
             'objectifs': PlutoCell(value: item.objectifs),

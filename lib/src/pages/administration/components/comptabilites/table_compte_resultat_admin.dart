@@ -177,7 +177,8 @@ class _TableCompteResultatAdminState extends State<TableCompteResultatAdmin> {
         await CompteResultatApi().getAllData();
     var data = compteResulats
         .where((element) =>
-            element.approbationDG == '-' && element.approbationDD == 'Approved')
+            element.approbationDG == '-' && 
+            element.approbationDD == 'Approved')
         .toList();
 
     if (mounted) {
