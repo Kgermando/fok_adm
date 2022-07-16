@@ -35,7 +35,7 @@ class AgendaCardWidget extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  timeago.format(agendaModel.created, locale: 'fr_short'),
+                  "Ajouté ${timeago.format(agendaModel.created, locale: 'fr_short')}",
                   style: TextStyle(color: Colors.grey.shade700),
                 ),
                 if(DateTime.now().day == agendaModel.dateRappel.day)

@@ -63,8 +63,7 @@ class _DetailAgendaState extends State<DetailAgenda> {
                           ],
                         ),
                         Expanded(
-                            child: Scrollbar(
-                                controller: _controllerScroll,
+                            child: SingleChildScrollView( 
                                 child: pageDetail(agendaColor)))
                       ],
                     )),
@@ -77,7 +76,7 @@ class _DetailAgendaState extends State<DetailAgenda> {
   Widget pageDetail(AgendaColor agendaColor) {
     return Row(mainAxisAlignment: MainAxisAlignment.center, children: [
       Card(
-        color: agendaColor.color.withOpacity(.8),
+        // color: agendaColor.color.withOpacity(0.1),
         elevation: 10,
         child: Container(
           margin: const EdgeInsets.all(p16),
@@ -87,12 +86,11 @@ class _DetailAgendaState extends State<DetailAgenda> {
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(p10),
             border: Border.all(
-              color: Colors.blueGrey.shade700,
+              color: agendaColor.color,
               width: 2.0,
             ),
           ),
-          child: ListView(
-            controller: _controllerScroll,
+          child: Column( 
             children: [
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -135,9 +133,9 @@ class _DetailAgendaState extends State<DetailAgenda> {
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
               Icon(Icons.date_range, color: agendaColor.color),
-              const SizedBox(height: p20),
+              const SizedBox(width: p20),
               SelectableText(
-                "Rappel le ${DateFormat("dd-MM-yyyy à HH:mm").format(agendaColor.agendaModel.dateRappel)}",
+                "Rappel le ${DateFormat("dd-MM-yyyy").format(agendaColor.agendaModel.dateRappel)}",
                 style: bodyMedium,
               ),
             ],
