@@ -7,6 +7,7 @@ var budgetNotifyUrl = "$mainUrl/counts/budgets";
 var campaignsNotifyUrl = "$mainUrl/counts/campaigns";
 var prodModelNotifyUrl = "$mainUrl/counts/prod-models";
 var agendasNotifyUrl = "$mainUrl/counts/agendas";
+var cartNotifyUrl = "$mainUrl/counts/carts";
 var succursalesNotifyUrl = "$mainUrl/counts/succursales";
 var balancesNotifyUrl = "$mainUrl/counts/balances";
 var bilansNotifyUrl = "$mainUrl/counts/bilans";
@@ -14,6 +15,7 @@ var compteResultatsNotifyUrl = "$mainUrl/counts/compte-resultats";
 var journalsNotifyUrl = "$mainUrl/counts/journals";
 var devisNotifyUrl = "$mainUrl/counts/devis";
 var projetsNotifyUrl = "$mainUrl/counts/projets";
+var tachesNotifyUrl = "$mainUrl/counts/taches";
 var creancesNotifyUrl = "$mainUrl/counts/creances";
 var dettesNotifyUrl = "$mainUrl/counts/dettes";
 var carburantsNotifyUrl = "$mainUrl/counts/carburants";
@@ -25,6 +27,7 @@ var mobiliersNotifyUrl = "$mainUrl/counts/mobiliers";
 var trajetNotifyUrl = "$mainUrl/counts/trajets";
 var salairesNotifyUrl = "$mainUrl/counts/salaires";
 var transRestNotifyUrl = "$mainUrl/counts/trans-rests";
+var mailsNotifyUrl = "$mainUrl/counts/mails";
 
 // AUTH
 var refreshTokenUrl = Uri.parse("$mainUrl/auth/reloadToken");

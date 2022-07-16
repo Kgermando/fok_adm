@@ -2,11 +2,12 @@ import 'dart:async';
 
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
-import 'package:fokad_admin/src/api/auth/auth_api.dart';
-import 'package:fokad_admin/src/api/comm_marketing/commerciale/cart_api.dart';
-import 'package:fokad_admin/src/api/exploitations/taches_api.dart';
+import 'package:fokad_admin/src/api/auth/auth_api.dart'; 
 import 'package:fokad_admin/src/api/mails/mail_api.dart';
 import 'package:fokad_admin/src/api/notifications/comm_marketing/agenda_notify_api.dart';
+import 'package:fokad_admin/src/api/notifications/comm_marketing/cart_notify_api.dart';
+import 'package:fokad_admin/src/api/notifications/exploitations/taches_notify_api.dart';
+import 'package:fokad_admin/src/api/notifications/mails/mails_notify_api.dart';
 import 'package:fokad_admin/src/constants/app_theme.dart';
 import 'package:fokad_admin/src/constants/responsive.dart';
 import 'package:fokad_admin/src/models/menu_item.dart';
@@ -53,29 +54,23 @@ class _CustomAppbarState extends State<CustomAppbar> {
   }
 
   Future<void> getData() async {
-    UserModel userModel = await AuthApi().getUserId();
-    var taches = await TachesApi().getAllData();
-    var cartList = await CartApi().getAllData(userModel.matricule);
-    var mails = await MailApi().getAllData();
+    UserModel userModel = await AuthApi().getUserId(); 
+    var cartCountNotify = await CartNotifyApi().getCount(userModel.matricule);
+    var tacheCountNotify = await TacheNotifyApi().getCount(userModel.matricule);
+    var mailsCountNotify = await MailsNotifyApi().getCount(userModel.email);
     var agendaCountNotify = await AgendaNotifyApi().getCount();
     if (mounted) {
       setState(() {
         agendaCount = agendaCountNotify.count;
-        tacheCount = taches
-            .where((element) =>
-                element.signatureResp == userModel.matricule &&
-                element.read == 'false')
-            .length;
+        cartCount = cartCountNotify.count;
+        tacheCount = tacheCountNotify.count; 
+        mailsCount = mailsCountNotify.count;  
 
-        cartCount = cartList
-            .where((element) => element.signature == userModel.matricule)
-            .length;
-
-        mailsCount = mails
-            .where((element) =>
-                element.read == 'false' && element.email == userModel.email ||
-                element.read == 'false' && element.cc.contains(userModel.email))
-            .length;
+        // mailsCount = mails
+        //     .where((element) =>
+        //         element.read == 'false' && element.email == userModel.email ||
+        //         element.read == 'false' && element.cc.contains(userModel.email))
+        //     .length;
       });
     }
   }
