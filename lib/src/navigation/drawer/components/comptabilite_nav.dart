@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:badges/badges.dart';
 import 'package:flutter/material.dart';
@@ -30,11 +32,20 @@ class _ComptabiliteNavState extends State<ComptabiliteNav> {
   int journalCount = 0;
   int balanceCount = 0;
 
+  Timer? timer;
+
   @override
   void initState() {
-    getData();
-
+    timer = Timer.periodic(const Duration(seconds: 1), (timer) {
+      getData();
+    });
     super.initState();
+  }
+
+  @override
+  dispose() {
+    timer!.cancel();
+    super.dispose();
   }
 
   UserModel user = UserModel(

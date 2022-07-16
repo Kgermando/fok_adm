@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:badges/badges.dart';
 import 'package:flutter/material.dart';
@@ -39,11 +41,20 @@ class _LogistiqueNavState extends State<LogistiqueNav> {
   int etatmaterielsCount = 0;
   int etatBesoinCount = 0;
 
+  Timer? timer;
+
   @override
   void initState() {
-    getData();
-
+    timer = Timer.periodic(const Duration(seconds: 1), (timer) {
+      getData();
+    });
     super.initState();
+  }
+
+  @override
+  dispose() {
+    timer!.cancel();
+    super.dispose();
   }
  
 
@@ -70,16 +81,16 @@ class _LogistiqueNavState extends State<LogistiqueNav> {
         entretiensCount = entretiensCountNotify.count;  
         etatmaterielsCount = etatmaterielsCountNotify.count;  
         etatBesoinCount = etatBesionsCountNotify.count;
-      });
 
-      itemCount = anguinsapprobationDD +
-          carburantCount +
-          trajetsCount +
-          immobiliersCount +
-          mobiliersCount +
-          entretiensCount +
-          etatmaterielsCount +
-          etatBesoinCount;
+        itemCount = anguinsapprobationDD +
+            carburantCount +
+            trajetsCount +
+            immobiliersCount +
+            mobiliersCount +
+            entretiensCount +
+            etatmaterielsCount +
+            etatBesoinCount;
+      }); 
     }
   }
 

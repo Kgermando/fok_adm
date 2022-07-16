@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:badges/badges.dart';
 import 'package:flutter/material.dart';
@@ -26,11 +28,20 @@ class _RhNavState extends State<RhNav> {
   int transRestCount = 0;
   // int userAcount = 0;
 
+  Timer? timer;
+
   @override
   void initState() {
-    getData();
-
+    timer = Timer.periodic(const Duration(seconds: 1), (timer) {
+      getData();
+    });
     super.initState();
+  }
+
+  @override
+  dispose() {
+    timer!.cancel();
+    super.dispose();
   }
 
   Future<void> getData() async {

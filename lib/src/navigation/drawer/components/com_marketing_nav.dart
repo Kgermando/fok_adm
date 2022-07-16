@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:badges/badges.dart';
 import 'package:flutter/material.dart';
@@ -27,11 +29,21 @@ class _ComMarketingState extends State<ComMarketing> {
   int campaignCount = 0;
   int succursaleCount = 0;
   int prodModelCount = 0;
+  
+  Timer? timer;
 
   @override
   void initState() {
-    getData();
+    timer = Timer.periodic(const Duration(seconds: 1), (timer) {
+      getData();
+    });
     super.initState();
+  }
+
+  @override
+  dispose() {
+    timer!.cancel();
+    super.dispose();
   }
 
 

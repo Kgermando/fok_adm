@@ -70,10 +70,20 @@ class _AdministrationNavState extends State<AdministrationNav> {
   int nbrCreance = 0;
   int nbrDette = 0;
 
+  Timer? timer;
+
   @override
   void initState() {
-    getData();
+    timer = Timer.periodic(const Duration(seconds: 1), (timer) {
+      getData();
+    });
     super.initState();
+  }
+
+  @override
+  dispose() {
+    timer!.cancel();
+    super.dispose();
   }
 
   Future<void> getData() async {
@@ -90,11 +100,12 @@ class _AdministrationNavState extends State<AdministrationNav> {
     // Comptabilites
     var bilansCountNotify = await BilanNotifyApi().getCountDG();
     var journalCountNotify = await JournalNotifyApi().getCountDG();
-    var compteReultatsCountNotify = await CompteResultatNotifyApi().getCountDG();
+    var compteReultatsCountNotify =
+        await CompteResultatNotifyApi().getCountDG();
     var balancesCountNotify = await BalanceNotifyApi().getCountDG();
 
     // Exploitations
-    var exploitationsCountNotify = await ProjetNotifyApi().getCountDG(); 
+    var exploitationsCountNotify = await ProjetNotifyApi().getCountDG();
 
     // Comm & Marketing
     var campaignsCountNotify = await CampaignNotifyApi().getCountDG();

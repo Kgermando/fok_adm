@@ -6,6 +6,7 @@ import 'package:fokad_admin/src/api/auth/auth_api.dart';
 import 'package:fokad_admin/src/api/comm_marketing/commerciale/cart_api.dart';
 import 'package:fokad_admin/src/api/exploitations/taches_api.dart';
 import 'package:fokad_admin/src/api/mails/mail_api.dart';
+import 'package:fokad_admin/src/api/notifications/comm_marketing/agenda_notify_api.dart';
 import 'package:fokad_admin/src/constants/app_theme.dart';
 import 'package:fokad_admin/src/constants/responsive.dart';
 import 'package:fokad_admin/src/models/menu_item.dart';
@@ -34,13 +35,14 @@ class _CustomAppbarState extends State<CustomAppbar> {
   int tacheCount = 0;
   int cartCount = 0;
   int mailsCount = 0;
+  int agendaCount = 0;
 
   @override
   void initState() {
     timer = Timer.periodic(const Duration(seconds: 2), (timer) {
       getData();
     });
-    
+
     super.initState();
   }
 
@@ -55,24 +57,25 @@ class _CustomAppbarState extends State<CustomAppbar> {
     var taches = await TachesApi().getAllData();
     var cartList = await CartApi().getAllData(userModel.matricule);
     var mails = await MailApi().getAllData();
+    var agendaCountNotify = await AgendaNotifyApi().getCount();
     if (mounted) {
       setState(() {
+        agendaCount = agendaCountNotify.count;
         tacheCount = taches
-          .where((element) =>
-              element.signatureResp == userModel.matricule &&
-              element.read == 'false')
-          .length;
+            .where((element) =>
+                element.signatureResp == userModel.matricule &&
+                element.read == 'false')
+            .length;
 
         cartCount = cartList
-          .where((element) =>
-              element.signature == userModel.matricule)
-          .length;
+            .where((element) => element.signature == userModel.matricule)
+            .length;
 
         mailsCount = mails
-          .where((element) =>
-              element.read == 'false' && element.email == userModel.email ||
-              element.read == 'false' && element.cc.contains(userModel.email))
-          .length;
+            .where((element) =>
+                element.read == 'false' && element.email == userModel.email ||
+                element.read == 'false' && element.cc.contains(userModel.email))
+            .length;
       });
     }
   }
@@ -124,9 +127,12 @@ class _CustomAppbarState extends State<CustomAppbar> {
                               Navigator.pushNamed(context,
                                   ComMarketingRoutes.comMarketingAgenda);
                             },
-                            icon: Icon(
-                              Icons.note_alt_rounded,
-                              color: Colors.amber.shade700,
+                            icon: Badge(
+                              showBadge: (agendaCount >= 1) ? true : false,
+                              badgeContent: Text('$agendaCount',
+                                  style: const TextStyle(
+                                      fontSize: 10.0, color: Colors.white)),
+                              child: const Icon(Icons.note_alt_rounded),
                             )),
                         IconButton(
                             tooltip: 'Mails',

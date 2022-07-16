@@ -6,6 +6,7 @@ const String mainUrl = "http://161.35.239.245/api";
 var budgetNotifyUrl = "$mainUrl/counts/budgets";
 var campaignsNotifyUrl = "$mainUrl/counts/campaigns";
 var prodModelNotifyUrl = "$mainUrl/counts/prod-models";
+var agendasNotifyUrl = "$mainUrl/counts/agendas";
 var succursalesNotifyUrl = "$mainUrl/counts/succursales";
 var balancesNotifyUrl = "$mainUrl/counts/balances";
 var bilansNotifyUrl = "$mainUrl/counts/bilans";
