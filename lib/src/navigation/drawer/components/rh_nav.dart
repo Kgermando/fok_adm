@@ -1,9 +1,9 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:badges/badges.dart';
-import 'package:flutter/material.dart'; 
+import 'package:flutter/material.dart';
 import 'package:fokad_admin/src/api/auth/auth_api.dart';
-import 'package:fokad_admin/src/api/rh/paiement_salaire_api.dart';
-import 'package:fokad_admin/src/api/rh/transport_restaurant_api.dart';
+import 'package:fokad_admin/src/api/notifications/rh/salaires_notify_api.dart';
+import 'package:fokad_admin/src/api/notifications/rh/trans_rest_notify_api.dart';
 import 'package:fokad_admin/src/constants/app_theme.dart';
 import 'package:fokad_admin/src/models/users/user_model.dart';
 import 'package:fokad_admin/src/navigation/drawer/drawer_widget.dart';
@@ -35,20 +35,15 @@ class _RhNavState extends State<RhNav> {
 
   Future<void> getData() async {
     // RH
-    var salaires = await PaiementSalaireApi().getAllData(); 
-    var transRests = await TransportRestaurationApi().getAllData();
-    
+    var salairesCountNotify = await SalaireNotifyApi().getCountDD();
+    var transRestsCountNotify = await TransRestNotifyApi().getCountDD();
+
     if (mounted) {
       setState(() {
-         salairesCount = salaires
-            .where((element) =>
-            element.observation == 'false' &&
-                element.createdAt.month == DateTime.now().month &&
-                element.createdAt.year == DateTime.now().year &&
-                element.approbationDD == "-") 
-            .length;
-        transRestCount =
-            transRests.where((element) => element.approbationDD == '-').length;
+        salairesCount = salairesCountNotify.count;
+        transRestCount = transRestsCountNotify.count; 
+
+        itemCount = salairesCount + transRestCount;
       });
     }
   }
@@ -57,8 +52,6 @@ class _RhNavState extends State<RhNav> {
   Widget build(BuildContext context) {
     final bodyLarge = Theme.of(context).textTheme.bodyLarge;
     final bodyText1 = Theme.of(context).textTheme.bodyText1;
-
-    itemCount = salairesCount + transRestCount;
 
     return FutureBuilder<UserModel>(
         future: AuthApi().getUserId(),
@@ -69,7 +62,8 @@ class _RhNavState extends State<RhNav> {
             return ExpansionTile(
               leading: const Icon(Icons.group, size: 30.0),
               title: AutoSizeText('RH', maxLines: 1, style: bodyLarge),
-              initiallyExpanded: (user.departement == 'Ressources Humaines') ? true : false,
+              initiallyExpanded:
+                  (user.departement == 'Ressources Humaines') ? true : false,
               onExpansionChanged: (val) {
                 setState(() {
                   isOpenRh = !val;

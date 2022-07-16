@@ -4,20 +4,20 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:badges/badges.dart';
 import 'package:flutter/material.dart';
 import 'package:fokad_admin/src/api/auth/auth_api.dart';
-import 'package:fokad_admin/src/api/budgets/departement_budget_api.dart';
-import 'package:fokad_admin/src/api/comm_marketing/commerciale/succursale_api.dart';
-import 'package:fokad_admin/src/api/comm_marketing/marketing/campaign_api.dart';
-import 'package:fokad_admin/src/api/comptabilite/balance_compte_api.dart';
-import 'package:fokad_admin/src/api/comptabilite/bilan_api.dart';
-import 'package:fokad_admin/src/api/comptabilite/compte_resultat_api.dart';
-import 'package:fokad_admin/src/api/comptabilite/journal_api.dart';
-import 'package:fokad_admin/src/api/devis/devis_api.dart';
-import 'package:fokad_admin/src/api/exploitations/projets_api.dart';
-import 'package:fokad_admin/src/api/finances/creance_api.dart';
-import 'package:fokad_admin/src/api/finances/dette_api.dart';
-import 'package:fokad_admin/src/api/logistiques/anguin_api.dart';
-import 'package:fokad_admin/src/api/logistiques/immobiler_api.dart';  
-import 'package:fokad_admin/src/api/rh/transport_restaurant_api.dart';
+import 'package:fokad_admin/src/api/notifications/budgets/budget_notify_api.dart';
+import 'package:fokad_admin/src/api/notifications/comm_marketing/campaign_notify_api.dart';
+import 'package:fokad_admin/src/api/notifications/comm_marketing/succursale_notify_api.dart';
+import 'package:fokad_admin/src/api/notifications/comptabilite/balance_notify_api.dart';
+import 'package:fokad_admin/src/api/notifications/comptabilite/bilan_notify_api.dart';
+import 'package:fokad_admin/src/api/notifications/comptabilite/compte_resultat_notify_api.dart';
+import 'package:fokad_admin/src/api/notifications/comptabilite/journal_notify_api.dart';
+import 'package:fokad_admin/src/api/notifications/devis/devis_notify_api.dart';
+import 'package:fokad_admin/src/api/notifications/exploitations/projet_notify_api.dart';
+import 'package:fokad_admin/src/api/notifications/finances/creance_notify_api.dart';
+import 'package:fokad_admin/src/api/notifications/finances/dette_notify_api.dart';
+import 'package:fokad_admin/src/api/notifications/logistique/engin_notify_api.dart';
+import 'package:fokad_admin/src/api/notifications/logistique/immobilier_notify_api.dart';
+import 'package:fokad_admin/src/api/notifications/rh/trans_rest_notify_api.dart';
 import 'package:fokad_admin/src/constants/app_theme.dart';
 import 'package:fokad_admin/src/models/users/user_model.dart';
 import 'package:fokad_admin/src/navigation/drawer/drawer_widget.dart';
@@ -60,11 +60,11 @@ class _AdministrationNavState extends State<AdministrationNav> {
 
   // Comm & Marketing
   int campaignCount = 0;
-  int succursaleCount = 0; 
+  int succursaleCount = 0;
 
   // Logistique
-  int anguinsCount = 0; 
-  int immobiliersCount = 0; 
+  int anguinsCount = 0;
+  int immobiliersCount = 0;
 
   int countPaie = 0;
   int nbrCreance = 0;
@@ -78,130 +78,73 @@ class _AdministrationNavState extends State<AdministrationNav> {
 
   Future<void> getData() async {
     // Budgets
-    var departementBudget = await DepeartementBudgetApi().getAllData();
-
+    var budgetCountNotify = await BudgetNotifyApi().getCountDG();
 
     // RH
-    var transRests = await TransportRestaurationApi().getAllData(); 
+    var transRestsCountNotify = await TransRestNotifyApi().getCountDG();
 
     // Finances
-    var creances = await CreanceApi().getAllData();
-    var dettes = await DetteApi().getAllData();
+    var creancesCountNotify = await CreanceNotifyApi().getCountDG();
+    var dettesCountNotify = await DetteNotifyApi().getCountDG();
 
     // Comptabilites
-    var bilans = await BilanApi().getAllData();
-    var journal = await JournalApi().getAllData();
-    var compteReultats = await CompteResultatApi().getAllData();
-    var balances = await BalanceCompteApi().getAllData();
+    var bilansCountNotify = await BilanNotifyApi().getCountDG();
+    var journalCountNotify = await JournalNotifyApi().getCountDG();
+    var compteReultatsCountNotify = await CompteResultatNotifyApi().getCountDG();
+    var balancesCountNotify = await BalanceNotifyApi().getCountDG();
 
     // Exploitations
-    var exploitations = await ProjetsApi().getAllData();
+    var exploitationsCountNotify = await ProjetNotifyApi().getCountDG(); 
 
     // Comm & Marketing
-    var campaigns = await CampaignApi().getAllData();
-    var succursale = await SuccursaleApi().getAllData(); 
+    var campaignsCountNotify = await CampaignNotifyApi().getCountDG();
+    var succursaleCountNotify = await SuccursaleNotifyApi().getCountDG();
 
     // Logistique
-    var anguins = await AnguinApi().getAllData(); 
-    var immobiliers = await ImmobilierApi().getAllData(); 
+    var anguinsCountNotify = await EnginNotifyApi().getCountDG();
+    var immobiliersCountNotify = await ImmobilierNotifyApi().getCountDG();
 
     // Etat de Besoins
-    var etatBesions = await DevisAPi().getAllData();
-
+    var etatBesionsCountNotify = await DevisNotifyApi().getCountDG();
 
     if (mounted) {
       setState(() {
         // Budgets
-        budgetCount = departementBudget
-          .where((element) =>
-              DateTime.now().millisecondsSinceEpoch <=
-                  element.periodeFin.millisecondsSinceEpoch &&
-              element.approbationDG == '-' &&
-              element.approbationDD == 'Approved')
-          .length; 
+        budgetCount = budgetCountNotify.count;
 
         // RH
-       transRestCount = transRests
-            .where((element) =>
-                element.approbationDD == 'Approved' &&
-                element.approbationDG == '-')
-            .length;
+        transRestCount = transRestsCountNotify.count;
 
         // Finances
-        creanceCount = creances
-            .where((element) =>
-              element.approbationDG == '-' &&
-              element.approbationDD == 'Approved' && 
-              element.statutPaie == 'false')
-            .length;
-
-        detteCount = dettes
-            .where((element) => element.approbationDG == '-' &&
-                element.approbationDD == 'Approved' &&
-                element.statutPaie == 'false')
-            .length;
+        creanceCount = creancesCountNotify.count;
+        detteCount = dettesCountNotify.count;
 
         // Comptabilites
-        bilanCount = bilans
-            .where((element) =>
-                element.approbationDG == '-' &&
-                element.approbationDD == 'Approved' &&
-                element.isSubmit == "true")
-            .length;
-        journalCount = journal.where((element) =>
-              element.approbationDG == '-' &&
-              element.approbationDD == 'Approved').length;
-        compteResultatCount = compteReultats.where((element) =>
-              element.approbationDG == '-' &&
-              element.approbationDD == 'Approved').length;
-        balanceCount = balances
-            .where((element) =>
-                element.approbationDG == '-' &&
-                element.approbationDD == 'Approved' &&
-                element.isSubmit == "true")
-            .length;
+        bilanCount = bilansCountNotify.count;
+        journalCount = journalCountNotify.count;
+        compteResultatCount = compteReultatsCountNotify.count;
+        balanceCount = balancesCountNotify.count;
 
         // Exploitations
-        exploitationCount = exploitations.where((element) =>
-              element.approbationDG == '-' &&
-              element.approbationDD == 'Approved').length;
+        exploitationCount = exploitationsCountNotify.count;
 
         // Comm & Marketing
-        campaignCount = campaigns
-            .where((element) =>
-              element.approbationDG == '-' &&
-              element.approbationDD == 'Approved' &&
-              element.observation == 'false').length;
-
-        succursaleCount = succursale
-            .where((element) =>
-              element.approbationDG == '-' &&
-              element.approbationDD == 'Approved').length;
-
+        campaignCount = campaignsCountNotify.count;
+        succursaleCount = succursaleCountNotify.count;
 
         // Logistique
-        anguinsCount = anguins.where((element) =>
-              element.approbationDG == '-' &&
-              element.approbationDD == 'Approved').length;
-
-        immobiliersCount = immobiliers.where((element) =>
-              element.approbationDG == '-' &&
-              element.approbationDD == 'Approved').length; 
+        anguinsCount = anguinsCountNotify.count;
+        immobiliersCount = immobiliersCountNotify.count;
 
         // Etaat de Besoins
-        etatBesoinCount = etatBesions.where((element) =>
-              element.approbationDG == '-' &&
-              element.approbationDD == 'Approved').length;
+        etatBesoinCount = etatBesionsCountNotify.count;
 
-
-
-      rhCount = transRestCount;
-      financeCount = creanceCount + detteCount;
-      comptabiliteCount =
+        rhCount = transRestCount;
+        financeCount = creanceCount + detteCount;
+        comptabiliteCount =
             bilanCount + compteResultatCount + journalCount + balanceCount;
         commMarketingCount = campaignCount + succursaleCount;
         logistiqueCount = anguinsCount + immobiliersCount;
-
       });
     }
   }
@@ -210,7 +153,6 @@ class _AdministrationNavState extends State<AdministrationNav> {
   Widget build(BuildContext context) {
     final bodyLarge = Theme.of(context).textTheme.bodyLarge;
     final bodyText1 = Theme.of(context).textTheme.bodyText1;
-
 
     return FutureBuilder<UserModel>(
         future: AuthApi().getUserId(),
@@ -225,7 +167,8 @@ class _AdministrationNavState extends State<AdministrationNav> {
               ),
               title:
                   AutoSizeText('Administration', maxLines: 1, style: bodyLarge),
-              initiallyExpanded: (user!.departement == 'Administration') ? true : false,
+              initiallyExpanded:
+                  (user!.departement == 'Administration') ? true : false,
               onExpansionChanged: (val) {
                 setState(() {
                   isOpenAdmin = !val;
@@ -233,7 +176,7 @@ class _AdministrationNavState extends State<AdministrationNav> {
               },
               trailing: const Icon(Icons.arrow_drop_down),
               children: [
-                 DrawerWidget(
+                DrawerWidget(
                     selected: widget.pageCurrente == AdminRoutes.adminDashboard,
                     icon: Icons.dashboard,
                     sizeIcon: 20.0,
@@ -404,26 +347,27 @@ class _AdministrationNavState extends State<AdministrationNav> {
                       Navigator.pushNamed(context, RhRoutes.rhPerformence);
                     }),
                 DrawerWidget(
-                  selected: widget.pageCurrente == ArchiveRoutes.archives,
-                  icon: Icons.archive,
-                  sizeIcon: 20.0,
-                  title: 'Archives',
-                  style: bodyLarge!,
-                  onTap: () {
-                    Navigator.pushNamed(context, ArchiveRoutes.archives);
-                    // Navigator.of(context).pop();
-                  }
-                ),
-                if(int.parse(user.role) == 1)
-                DrawerWidget(
-                    selected: widget.pageCurrente == AdminRoutes.adminActionnaire,
-                    icon: Icons.admin_panel_settings,
+                    selected: widget.pageCurrente == ArchiveRoutes.archives,
+                    icon: Icons.archive,
                     sizeIcon: 20.0,
-                    title: 'Actionnaires',
-                    style: bodyLarge,
+                    title: 'Archives',
+                    style: bodyLarge!,
                     onTap: () {
-                      Navigator.pushNamed(context, AdminRoutes.adminActionnaire );
+                      Navigator.pushNamed(context, ArchiveRoutes.archives);
+                      // Navigator.of(context).pop();
                     }),
+                if (int.parse(user.role) == 1)
+                  DrawerWidget(
+                      selected:
+                          widget.pageCurrente == AdminRoutes.adminActionnaire,
+                      icon: Icons.admin_panel_settings,
+                      sizeIcon: 20.0,
+                      title: 'Actionnaires',
+                      style: bodyLarge,
+                      onTap: () {
+                        Navigator.pushNamed(
+                            context, AdminRoutes.adminActionnaire);
+                      }),
               ],
             );
           } else {

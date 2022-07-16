@@ -1,10 +1,10 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:badges/badges.dart';
 import 'package:flutter/material.dart';
-import 'package:fokad_admin/src/api/auth/auth_api.dart';
-import 'package:fokad_admin/src/api/comm_marketing/commerciale/produit_model_api.dart';
-import 'package:fokad_admin/src/api/comm_marketing/commerciale/succursale_api.dart';
-import 'package:fokad_admin/src/api/comm_marketing/marketing/campaign_api.dart';
+import 'package:fokad_admin/src/api/auth/auth_api.dart'; 
+import 'package:fokad_admin/src/api/notifications/comm_marketing/campaign_notify_api.dart';
+import 'package:fokad_admin/src/api/notifications/comm_marketing/prod_model_notify_api.dart';
+import 'package:fokad_admin/src/api/notifications/comm_marketing/succursale_notify_api.dart';
 import 'package:fokad_admin/src/constants/app_theme.dart';
 import 'package:fokad_admin/src/models/users/user_model.dart';
 import 'package:fokad_admin/src/navigation/drawer/drawer_widget.dart';
@@ -34,37 +34,19 @@ class _ComMarketingState extends State<ComMarketing> {
     super.initState();
   }
 
-  UserModel user = UserModel(
-      nom: '-',
-      prenom: '-',
-      email: '-',
-      telephone: '-',
-      matricule: '-',
-      departement: '-',
-      servicesAffectation: '-',
-      fonctionOccupe: '-',
-      role: '5',
-      isOnline: 'false',
-      createdAt: DateTime.now(),
-      passwordHash: '-',
-      succursale: '-');
 
   Future<void> getData() async {
-    var campaign = await CampaignApi().getAllData();
-    var succursale = await SuccursaleApi().getAllData();
-    var prodModel = await ProduitModelApi().getAllData();
+    var campaignsCountNotify = await CampaignNotifyApi().getCountDD();
+    var succursaleCountNotify = await SuccursaleNotifyApi().getCountDD();
+    var prodModelCountNotify = await ProdModelNotifyApi().getCountDD();
+
     if (mounted) {
       setState(() {
-        campaignCount = campaign
-            .where((element) => element.approbationDD == '-')
-            .length;
-        succursaleCount = succursale
-            .where((element) => element.approbationDD == '-')
-            .length;
-        prodModelCount = prodModel
-            .where((element) => 
-                element.approbationDD == '-')
-            .length;
+        campaignCount = campaignsCountNotify.count; 
+        succursaleCount = succursaleCountNotify.count; 
+        prodModelCount = prodModelCountNotify.count; 
+
+        itemCount = campaignCount + succursaleCount + prodModelCount;
       });
     }
   }
@@ -73,9 +55,7 @@ class _ComMarketingState extends State<ComMarketing> {
   Widget build(BuildContext context) {
     final bodyLarge = Theme.of(context).textTheme.bodyLarge;
     final bodyText1 = Theme.of(context).textTheme.bodyText1;
-    final bodyText2 = Theme.of(context).textTheme.bodyText2;
-
-    itemCount = campaignCount + succursaleCount + prodModelCount;
+    final bodyText2 = Theme.of(context).textTheme.bodyText2; 
 
     return FutureBuilder<UserModel>(
         future: AuthApi().getUserId(),
@@ -190,17 +170,17 @@ class _ComMarketingState extends State<ComMarketing> {
                   },
                   children: [
                     DrawerWidget(
-                      selected: widget.pageCurrente ==
-                          ComMarketingRoutes.comMarketingSuccursale,
-                      icon: Icons.arrow_right,
-                      sizeIcon: 15.0,
-                      title: 'Succursale',
-                      style: bodyText2,
-                      onTap: () {
-                        Navigator.pushNamed(context,
-                            ComMarketingRoutes.comMarketingSuccursale);
-                        // Navigator.of(context).pop();
-                      }),
+                        selected: widget.pageCurrente ==
+                            ComMarketingRoutes.comMarketingSuccursale,
+                        icon: Icons.arrow_right,
+                        sizeIcon: 15.0,
+                        title: 'Succursale',
+                        style: bodyText2,
+                        onTap: () {
+                          Navigator.pushNamed(context,
+                              ComMarketingRoutes.comMarketingSuccursale);
+                          // Navigator.of(context).pop();
+                        }),
                     DrawerWidget(
                         selected: widget.pageCurrente ==
                             ComMarketingRoutes.comMarketingProduitModel,

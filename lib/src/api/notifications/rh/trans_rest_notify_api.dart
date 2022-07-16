@@ -16,6 +16,7 @@ class TransRestNotifyApi extends ChangeNotifier {
   var getDDUrl = Uri.parse("$transRestNotifyUrl/get-count-dd/");
   var getBudgetUrl = Uri.parse("$transRestNotifyUrl/get-count-budget/");
   var getFinUrl = Uri.parse("$transRestNotifyUrl/get-count-fin/");
+  var getObsUrl = Uri.parse("$transRestNotifyUrl/get-count-obs/");
 
   Future<NotifyModel> getCountDG() async {
     String? token = await UserSharedPref().getAccessToken();
@@ -112,6 +113,31 @@ class TransRestNotifyApi extends ChangeNotifier {
     } else if (resp.statusCode == 401) {
       await AuthApi().refreshAccessToken();
       return getCountFin();
+    } else {
+      throw Exception(resp.statusCode);
+    }
+  }
+
+  Future<NotifyModel> getCountObs() async {
+    String? token = await UserSharedPref().getAccessToken();
+    if (token!.isNotEmpty) {
+      var splittedJwt = token.split(".");
+      var payload = json.decode(
+          ascii.decode(base64.decode(base64.normalize(splittedJwt[1]))));
+    }
+    var resp = await client.get(
+      getObsUrl,
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+        'Authorization': 'Bearer $token'
+      },
+    );
+
+    if (resp.statusCode == 200) {
+      return NotifyModel.fromJson(json.decode(resp.body));
+    } else if (resp.statusCode == 401) {
+      await AuthApi().refreshAccessToken();
+      return getCountObs();
     } else {
       throw Exception(resp.statusCode);
     }

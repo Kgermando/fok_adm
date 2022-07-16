@@ -1,11 +1,11 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:badges/badges.dart';
 import 'package:flutter/material.dart';
-import 'package:fokad_admin/src/api/auth/auth_api.dart';
-import 'package:fokad_admin/src/api/comptabilite/balance_compte_api.dart';
-import 'package:fokad_admin/src/api/comptabilite/bilan_api.dart';
-import 'package:fokad_admin/src/api/comptabilite/compte_resultat_api.dart';
-import 'package:fokad_admin/src/api/comptabilite/journal_api.dart';
+import 'package:fokad_admin/src/api/auth/auth_api.dart'; 
+import 'package:fokad_admin/src/api/notifications/comptabilite/balance_notify_api.dart';
+import 'package:fokad_admin/src/api/notifications/comptabilite/bilan_notify_api.dart';
+import 'package:fokad_admin/src/api/notifications/comptabilite/compte_resultat_notify_api.dart';
+import 'package:fokad_admin/src/api/notifications/comptabilite/journal_notify_api.dart';
 import 'package:fokad_admin/src/constants/app_theme.dart';
 import 'package:fokad_admin/src/models/users/user_model.dart';
 import 'package:fokad_admin/src/navigation/drawer/drawer_widget.dart';
@@ -52,23 +52,25 @@ class _ComptabiliteNavState extends State<ComptabiliteNav> {
       passwordHash: '-',
       succursale: '-');
 
-  Future<void> getData() async {
-    var bilans = await BilanApi().getAllData();
-    var journal = await JournalApi().getAllData();
-    var compteReultats = await CompteResultatApi().getAllData();
-    var balances = await BalanceCompteApi().getAllData();
+  Future<void> getData() async { 
+    var bilansCountNotify = await BilanNotifyApi().getCountDD(); 
+    var journalsCountNotify = await JournalNotifyApi().getCountDD(); 
+    var compteReultatsCountNotify =
+        await CompteResultatNotifyApi().getCountDD(); 
+    var balancesCountNotify = await BalanceNotifyApi().getCountDD();
     if (mounted) {
       setState(() {
-        bilanCount = bilans.where((element) => element.approbationDD == '-').length;
-        journalCount = journal.where((element) => element.approbationDD == '-').length;
-        compteResultatCount = compteReultats
-            .where((element) => element.approbationDD == '-')
-            .length;
-        balanceCount = balances.where((element) => element.approbationDD == '-').length;
+        bilanCount = bilansCountNotify.count; 
+        journalCount = journalsCountNotify.count; 
+        compteResultatCount = compteReultatsCountNotify.count; 
+        balanceCount = balancesCountNotify.count; 
+
+        itemCount =
+            bilanCount + compteResultatCount + journalCount + balanceCount;
       });
     }
 
-    itemCount = bilanCount + compteResultatCount + journalCount + balanceCount;
+    
   }
 
   @override

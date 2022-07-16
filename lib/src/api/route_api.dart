@@ -8,6 +8,7 @@ const String mainUrl = "http://161.35.239.245/api";
 // Notifications
 var budgetNotifyUrl = Uri.parse("$mainUrl/counts/budgets/");
 var campaignsNotifyUrl = Uri.parse("$mainUrl/counts/campaigns/");
+var prodModelNotifyUrl = Uri.parse("$mainUrl/counts/prod-models/");
 var succursalesNotifyUrl = Uri.parse("$mainUrl/counts/succursales/");
 var balancesNotifyUrl = Uri.parse("$mainUrl/counts/balances/");
 var bilansNotifyUrl = Uri.parse("$mainUrl/counts/bilans/");

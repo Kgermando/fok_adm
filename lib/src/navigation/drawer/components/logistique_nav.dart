@@ -1,15 +1,15 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:badges/badges.dart';
 import 'package:flutter/material.dart';
-import 'package:fokad_admin/src/api/auth/auth_api.dart';
-import 'package:fokad_admin/src/api/devis/devis_api.dart';
-import 'package:fokad_admin/src/api/logistiques/anguin_api.dart';
-import 'package:fokad_admin/src/api/logistiques/carburant_api.dart';
-import 'package:fokad_admin/src/api/logistiques/entretien_api.dart';
-import 'package:fokad_admin/src/api/logistiques/etat_materiel_api.dart';
-import 'package:fokad_admin/src/api/logistiques/immobiler_api.dart';
-import 'package:fokad_admin/src/api/logistiques/mobilier_api.dart';
-import 'package:fokad_admin/src/api/logistiques/trajet_api.dart';
+import 'package:fokad_admin/src/api/auth/auth_api.dart'; 
+import 'package:fokad_admin/src/api/notifications/devis/devis_notify_api.dart';
+import 'package:fokad_admin/src/api/notifications/logistique/carburant_notify_api.dart';
+import 'package:fokad_admin/src/api/notifications/logistique/engin_notify_api.dart';
+import 'package:fokad_admin/src/api/notifications/logistique/entretien_notify_api.dart';
+import 'package:fokad_admin/src/api/notifications/logistique/etat_materiel_notify_api.dart';
+import 'package:fokad_admin/src/api/notifications/logistique/immobilier_notify_api.dart';
+import 'package:fokad_admin/src/api/notifications/logistique/mobilier_notify_api.dart';
+import 'package:fokad_admin/src/api/notifications/logistique/trajet_notify_api.dart'; 
 import 'package:fokad_admin/src/constants/app_theme.dart';
 import 'package:fokad_admin/src/models/users/user_model.dart';
 import 'package:fokad_admin/src/navigation/drawer/drawer_widget.dart';
@@ -45,63 +45,41 @@ class _LogistiqueNavState extends State<LogistiqueNav> {
 
     super.initState();
   }
+ 
 
-  UserModel user = UserModel(
-      nom: '-',
-      prenom: '-',
-      email: '-',
-      telephone: '-',
-      matricule: '-',
-      departement: '-',
-      servicesAffectation: '-',
-      fonctionOccupe: '-',
-      role: '5',
-      isOnline: 'false',
-      createdAt: DateTime.now(),
-      passwordHash: '-',
-      succursale: '-');
+  Future<void> getData() async { 
 
-  Future<void> getData() async {
-    var userModel = await AuthApi().getUserId();
-    var anguins = await AnguinApi().getAllData();
-    var carburants = await CarburantApi().getAllData();
-    var trajets = await TrajetApi().getAllData();
-    var immobiliers = await ImmobilierApi().getAllData();
-    var mobiliers = await MobilierApi().getAllData();
-    var entretiens = await EntretienApi().getAllData();
-    var etatmateriels = await EtatMaterielApi().getAllData();
-    var devis = await DevisAPi().getAllData();
-    
+    var anguinsCountNotify = await EnginNotifyApi().getCountDD();
+    var acarburantsCountNotify = await CarburantNotifyApi().getCountDD();
+    var trajetsCountNotify = await TrajetNotifyApi().getCountDD();
+    var immobiliersCountNotify = await ImmobilierNotifyApi().getCountDD();
+    var mobiliersCountNotify = await MobilierNotifyApi().getCountDD();
+    var entretiensCountNotify = await EntretienNotifyApi().getCountDD();
+    var etatmaterielsCountNotify = await EtatMaterielNotifyApi().getCountDD();
+
+    // Etat de Besoins
+    var etatBesionsCountNotify = await DevisNotifyApi().getCountDD();
+
     if (mounted) {
-      setState(() {
-        user = userModel;
-        anguinsapprobationDD = anguins.where((element) => 
-                element.approbationDD == '-').length;
-        carburantCount = carburants.where((element) => 
-                element.approbationDD == '-').length;
-        trajetsCount = trajets.where((element) => 
-                element.approbationDD == '-').length;
-        immobiliersCount = immobiliers.where((element) => 
-                element.approbationDD == '-').length;
-        mobiliersCount = mobiliers.where((element) => 
-                element.approbationDD == '-').length;
-        entretiensCount = entretiens.where((element) => 
-                element.approbationDD == '-').length;
-        etatmaterielsCount = etatmateriels.where((element) => 
-                element.approbationDD == '-').length;
-        etatBesoinCount =
-            devis.where((element) => element.approbationDD == "-").length;
+      setState(() { 
+        anguinsapprobationDD = anguinsCountNotify.count; 
+        carburantCount = acarburantsCountNotify.count;  
+        trajetsCount = trajetsCountNotify.count; 
+        immobiliersCount = immobiliersCountNotify.count;    
+        mobiliersCount = mobiliersCountNotify.count; 
+        entretiensCount = entretiensCountNotify.count;  
+        etatmaterielsCount = etatmaterielsCountNotify.count;  
+        etatBesoinCount = etatBesionsCountNotify.count;
       });
 
-
       itemCount = anguinsapprobationDD +
-        carburantCount +
-        trajetsCount +
-        immobiliersCount +
-        mobiliersCount +
-        entretiensCount +
-        etatmaterielsCount + 
-        etatBesoinCount;
+          carburantCount +
+          trajetsCount +
+          immobiliersCount +
+          mobiliersCount +
+          entretiensCount +
+          etatmaterielsCount +
+          etatBesoinCount;
     }
   }
 
@@ -109,7 +87,7 @@ class _LogistiqueNavState extends State<LogistiqueNav> {
   Widget build(BuildContext context) {
     final bodyLarge = Theme.of(context).textTheme.bodyLarge;
     final bodyText1 = Theme.of(context).textTheme.bodyText1;
-    final bodyText2 = Theme.of(context).textTheme.bodyText2; 
+    final bodyText2 = Theme.of(context).textTheme.bodyText2;
     return FutureBuilder<UserModel>(
         future: AuthApi().getUserId(),
         builder: (BuildContext context, AsyncSnapshot<UserModel> snapshot) {
@@ -281,13 +259,15 @@ class _LogistiqueNavState extends State<LogistiqueNav> {
                   ],
                 ),
                 DrawerWidget(
-                    selected: widget.pageCurrente == LogistiqueRoutes.logEtatBesoin,
+                    selected:
+                        widget.pageCurrente == LogistiqueRoutes.logEtatBesoin,
                     icon: Icons.content_paste,
                     sizeIcon: 20.0,
                     title: 'Etat de besoin',
                     style: bodyText1!,
                     onTap: () {
-                      Navigator.pushNamed(context, LogistiqueRoutes.logEtatBesoin);
+                      Navigator.pushNamed(
+                          context, LogistiqueRoutes.logEtatBesoin);
                       // Navigator.of(context).pop();
                     }),
                 DrawerWidget(

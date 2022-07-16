@@ -2,13 +2,13 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:badges/badges.dart';
 import 'package:flutter/material.dart';
 import 'package:fokad_admin/src/api/auth/auth_api.dart';
-import 'package:fokad_admin/src/api/comm_marketing/marketing/campaign_api.dart';
-import 'package:fokad_admin/src/api/devis/devis_api.dart';
-import 'package:fokad_admin/src/api/exploitations/projets_api.dart';
-import 'package:fokad_admin/src/api/finances/creance_api.dart';
-import 'package:fokad_admin/src/api/finances/dette_api.dart';
-import 'package:fokad_admin/src/api/rh/paiement_salaire_api.dart';
-import 'package:fokad_admin/src/api/rh/transport_restaurant_api.dart';
+import 'package:fokad_admin/src/api/notifications/comm_marketing/campaign_notify_api.dart';
+import 'package:fokad_admin/src/api/notifications/devis/devis_notify_api.dart';
+import 'package:fokad_admin/src/api/notifications/exploitations/projet_notify_api.dart';
+import 'package:fokad_admin/src/api/notifications/finances/creance_notify_api.dart';
+import 'package:fokad_admin/src/api/notifications/finances/dette_notify_api.dart';
+import 'package:fokad_admin/src/api/notifications/rh/salaires_notify_api.dart';
+import 'package:fokad_admin/src/api/notifications/rh/trans_rest_notify_api.dart';
 import 'package:fokad_admin/src/constants/app_theme.dart';
 import 'package:fokad_admin/src/models/users/user_model.dart';
 import 'package:fokad_admin/src/navigation/drawer/drawer_widget.dart';
@@ -50,156 +50,63 @@ class _FinancesNavState extends State<FinancesNav> {
     super.initState();
   }
 
-  UserModel user = UserModel(
-      nom: '-',
-      prenom: '-',
-      email: '-',
-      telephone: '-',
-      matricule: '-',
-      departement: '-',
-      servicesAffectation: '-',
-      fonctionOccupe: '-',
-      role: '5',
-      isOnline: 'false',
-      createdAt: DateTime.now(),
-      passwordHash: '-',
-      succursale: '-');
-
   Future<void> getData() async {
-    var creances = await CreanceApi().getAllData();
-    var dettes = await DetteApi().getAllData();
-    var salaires = await PaiementSalaireApi().getAllData();
-    var transRests = await TransportRestaurationApi().getAllData();
-    var campaigns = await CampaignApi().getAllData();
-    var devis = await DevisAPi().getAllData();
-    var projets = await ProjetsApi().getAllData();
+    var creanceCountNotify = await CreanceNotifyApi().getCountDD();
+    var dettesCountNotify = await DetteNotifyApi().getCountDD();
+    var salairesCountNotify = await SalaireNotifyApi().getCountFin();
+    var transRestsCountNotify = await TransRestNotifyApi().getCountFin();
+    var campaignsCountNotify = await CampaignNotifyApi().getCountFin();
+    var devisCountNotify = await DevisNotifyApi().getCountFin();
+    var projetsCountNotify = await ProjetNotifyApi().getCountFin(); 
+
+    var salairesObsCountNotify = await SalaireNotifyApi().getCountObs();
+    var transRestObssCountNotify = await TransRestNotifyApi().getCountObs();
+    var campaignsObsCountNotify = await CampaignNotifyApi().getCountObs();
+    var devisCountObsNotify = await DevisNotifyApi().getCountObs();
+    var projetsObsCountNotify = await ProjetNotifyApi().getCountObs();
 
     if (mounted) {
       setState(() {
-        creanceCount = creances
-            .where((element) =>
-                element.statutPaie == 'false' && element.approbationDD == '-')
-            .toList()
-            .length;
+        // Approbations salaires
+        creanceCount = creanceCountNotify.count;
+        detteCount = dettesCountNotify.count;
+        salaireCount = salairesCountNotify.count;
+        transRestCount = transRestsCountNotify.count;
+        campaignCount = campaignsCountNotify.count;
+        devisCount = devisCountNotify.count;
+        projetCount = projetsCountNotify.count; 
 
-        detteCount = dettes
-            .where((element) =>
-                element.statutPaie == 'false' && element.approbationDD == '-')
-            .length;
+        // Observations
+        salaireObsCount = salairesObsCountNotify.count; 
+        transRestObsCount = transRestObssCountNotify.count; 
+        campaignObsCount = campaignsObsCountNotify.count; 
+        devisObsCount = devisCountObsNotify.count; 
+        projetObsCount = projetsObsCountNotify.count;   
 
-        salaireCount = salaires
-            .where((element) =>
-                element.createdAt.month == DateTime.now().month &&
-                element.createdAt.year == DateTime.now().year &&
-                element.approbationDD == 'Approved' &&
-                element.approbationBudget == 'Approved' &&
-                element.approbationFin == "-")
-            .length;
+        itemCount = 
+          creanceCount +
+          detteCount +
+          salaireCount +
+          transRestCount +
+          campaignCount +
+          devisCount +
+          projetCount;
 
-        transRestCount = transRests
-            .where((element) =>
-                element.approbationDG == 'Approved' &&
-                element.approbationDD == 'Approved' &&
-                element.approbationBudget == 'Approved' &&
-                element.approbationFin == "-")
-            .length;
-
-        campaignCount = campaigns
-            .where((element) =>
-                element.approbationDG == 'Approved' &&
-                element.approbationDD == 'Approved' &&
-                element.approbationBudget == 'Approved' &&
-                element.approbationFin == "-")
-            .length;
-
-        devisCount = devis
-            .where((element) =>
-                element.approbationDG == 'Approved' &&
-                element.approbationDD == 'Approved' &&
-                element.approbationBudget == 'Approved' &&
-                element.approbationFin == "-")
-            .length;
-
-        projetCount = projets
-            .where((element) =>
-                element.approbationDG == 'Approved' &&
-                element.approbationDD == 'Approved' &&
-                element.approbationBudget == 'Approved' &&
-                element.approbationFin == "-")
-            .toList()
-            .length;
-
-
-        salaireObsCount = salaires
-            .where((element) =>
-                element.createdAt.month == DateTime.now().month &&
-                element.createdAt.year == DateTime.now().year && 
-                element.approbationDD == 'Approved' &&
-                element.approbationBudget == 'Approved' &&
-                element.approbationFin == 'Approved' &&
-                element.observation == "false")
-            .length;
-
-        transRestObsCount = transRests
-            .where((element) =>
-              element.approbationDG == 'Approved' &&
-                element.approbationDD == 'Approved' &&
-                element.approbationBudget == 'Approved' &&
-                element.approbationFin == 'Approved' &&
-                element.observation == "false")
-            .length;
-
-        campaignObsCount = campaigns
-            .where((element) =>
-            element.approbationDG == 'Approved' &&
-                element.approbationDD == 'Approved' &&
-                element.approbationBudget == 'Approved' &&
-                element.approbationFin == 'Approved' &&
-                element.observation == "false")
-            .length;
-
-        devisObsCount = devis
-            .where((element) =>
-              element.approbationDG == 'Approved' &&
-                element.approbationDD == 'Approved' &&
-                element.approbationBudget == 'Approved' &&
-                element.approbationFin == 'Approved' &&
-                element.observation == "false")
-            .length;
-
-        projetObsCount = projets
-            .where((element) =>
-              element.approbationDG == 'Approved' &&
-                element.approbationDD == 'Approved' &&
-                element.approbationBudget == 'Approved' &&
-                element.approbationFin == 'Approved' &&
-                element.observation == "false")
-            .length;
-      });
+        observationCount = 
+          salaireObsCount +
+          transRestObsCount +
+          campaignObsCount +
+          devisObsCount +
+          projetObsCount;
+      }); 
     }
   }
-
 
   @override
   Widget build(BuildContext context) {
     final bodyLarge = Theme.of(context).textTheme.bodyLarge;
     final bodyText1 = Theme.of(context).textTheme.bodyText1;
-    final bodyText2 = Theme.of(context).textTheme.bodyText2;
-
-    itemCount = creanceCount +
-        detteCount +
-        salaireCount +
-        transRestCount +
-        campaignCount +
-        devisCount +
-        projetCount;
-
-    observationCount = 
-        salaireObsCount +
-        transRestObsCount +
-        campaignObsCount +
-        devisObsCount +
-        projetObsCount;
+    final bodyText2 = Theme.of(context).textTheme.bodyText2; 
 
     return FutureBuilder<UserModel>(
         future: AuthApi().getUserId(),
