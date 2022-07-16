@@ -92,16 +92,9 @@ class _LogistiqueNavState extends State<LogistiqueNav> {
         etatBesoinCount =
             devis.where((element) => element.approbationDD == "-").length;
       });
-    }
-  }
 
-  @override
-  Widget build(BuildContext context) {
-    final bodyLarge = Theme.of(context).textTheme.bodyLarge;
-    final bodyText1 = Theme.of(context).textTheme.bodyText1;
-    final bodyText2 = Theme.of(context).textTheme.bodyText2;
 
-    itemCount = anguinsapprobationDD +
+      itemCount = anguinsapprobationDD +
         carburantCount +
         trajetsCount +
         immobiliersCount +
@@ -109,7 +102,14 @@ class _LogistiqueNavState extends State<LogistiqueNav> {
         entretiensCount +
         etatmaterielsCount + 
         etatBesoinCount;
+    }
+  }
 
+  @override
+  Widget build(BuildContext context) {
+    final bodyLarge = Theme.of(context).textTheme.bodyLarge;
+    final bodyText1 = Theme.of(context).textTheme.bodyText1;
+    final bodyText2 = Theme.of(context).textTheme.bodyText2; 
     return FutureBuilder<UserModel>(
         future: AuthApi().getUserId(),
         builder: (BuildContext context, AsyncSnapshot<UserModel> snapshot) {

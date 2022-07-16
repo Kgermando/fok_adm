@@ -61,11 +61,13 @@ class _DetailAgentPageState extends State<DetailAgentPage> {
     UserModel userModel = await AuthApi().getUserId();
     final data = await UserApi().getAllData();
     // final agent = await AgentsApi().getOneData(id);
-    setState(() {
+    if(mounted) {
+      setState(() {
       user = userModel;
       userList = data;
       // agentModel = agent;
     });
+    }
   }
 
   @override

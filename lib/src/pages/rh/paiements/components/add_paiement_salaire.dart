@@ -10,7 +10,6 @@ import 'package:fokad_admin/src/navigation/drawer/drawer_menu.dart';
 import 'package:fokad_admin/src/navigation/header/custom_appbar.dart';
 import 'package:fokad_admin/src/utils/salaire_dropsown.dart';
 import 'package:fokad_admin/src/widgets/btn_widget.dart';
-import 'package:fokad_admin/src/widgets/print_widget.dart';
 import 'package:fokad_admin/src/widgets/title_widget.dart';
 import 'package:intl/intl.dart';
 
@@ -92,7 +91,6 @@ class _AddPaiementSalaireState extends State<AddPaiementSalaire> {
 
   @override
   void dispose() {
-    _controllerScroll.dispose();
 
     joursHeuresPayeA100PourecentSalaireController.dispose();
     totalDuSalaireController.dispose();
@@ -170,7 +168,7 @@ class _AddPaiementSalaireState extends State<AddPaiementSalaire> {
                           const SizedBox(width: p10),
                           Expanded(
                               child: CustomAppbar(
-                                  title: 'Nouvelle feuille',
+                                  title: 'Bulletin',
                                   controllerMenu: () =>
                                       _key.currentState!.openDrawer())),
                         ],
@@ -223,10 +221,8 @@ class _AddPaiementSalaireState extends State<AddPaiementSalaire> {
                     children: [
                       TitleWidget(
                           title:
-                              'Feuille de paie du ${DateFormat("MM-yy").format(DateTime.now())}'),
-                      Row(
-                        children: [PrintWidget(onPressed: () {})],
-                      ),
+                              'Bulletin de paie du ${DateFormat("MM-yy").format(DateTime.now())}'),
+                    
                     ],
                   ),
                   const SizedBox(
@@ -286,7 +282,7 @@ class _AddPaiementSalaireState extends State<AddPaiementSalaire> {
                   ),
                   if (isAgentDouble.isEmpty)
                     BtnWidget(
-                        title: 'Soumettre',
+                        title: 'Generation du bulletin',
                         isLoading: isLoading,
                         press: () {
                           setState(() {
@@ -487,7 +483,8 @@ class _AddPaiementSalaireState extends State<AddPaiementSalaire> {
             ),
             Expanded(
                 child: SelectableText(
-              '${agentModel.salaire} USD',
+                "${NumberFormat.decimalPattern('fr')
+                .format(double.parse(agentModel.salaire))} \$",
               style: bodyMedium,
             ))
           ],

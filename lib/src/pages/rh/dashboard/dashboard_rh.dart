@@ -56,9 +56,6 @@ class _DashboardRhState extends State<DashboardRh> {
       agentNonPaye = salaires
           .where((element) =>
               element.observation == 'false' &&
-              element.approbationDD == "Approved" && 
-              element.approbationBudget == "Approved" && 
-              element.approbationFin == "Approved" &&
               element.createdAt.month == DateTime.now().month &&
               element.createdAt.year == DateTime.now().year)
           .length;
@@ -69,7 +66,8 @@ class _DashboardRhState extends State<DashboardRh> {
               element.createdAt.year == DateTime.now().year &&
               element.approbationDD == "Approved" && 
               element.approbationBudget == "Approved" && 
-              element.approbationFin == "Approved")
+              element.approbationFin == "Approved" && 
+              element.observation == "true")
           .toList(); 
 
 

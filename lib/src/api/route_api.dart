@@ -5,6 +5,30 @@
 const String mainUrl = "http://161.35.239.245/api";
 
 
+// Notifications
+var budgetNotifyUrl = Uri.parse("$mainUrl/counts/budgets/");
+var campaignsNotifyUrl = Uri.parse("$mainUrl/counts/campaigns/");
+var succursalesNotifyUrl = Uri.parse("$mainUrl/counts/succursales/");
+var balancesNotifyUrl = Uri.parse("$mainUrl/counts/balances/");
+var bilansNotifyUrl = Uri.parse("$mainUrl/counts/bilans/");
+var compteResultatsNotifyUrl = Uri.parse("$mainUrl/counts/compte-resultats/");
+var journalsNotifyUrl = Uri.parse("$mainUrl/counts/journals/");
+var devisNotifyUrl = Uri.parse("$mainUrl/counts/devis/");
+var projetsNotifyUrl = Uri.parse("$mainUrl/counts/projets/");
+var creancesNotifyUrl = Uri.parse("$mainUrl/counts/creances/");
+var dettesNotifyUrl = Uri.parse("$mainUrl/counts/dettes/");
+var carburantsNotifyUrl = Uri.parse("$mainUrl/counts/carburants/");
+var enginsNotifyUrl = Uri.parse("$mainUrl/counts/engins/");
+var entretiensNotifyUrl = Uri.parse("$mainUrl/counts/entretiens/");
+var etatMaterielsNotifyUrl = Uri.parse("$mainUrl/counts/etat-materiels/");
+var immobiliersNotifyUrl = Uri.parse("$mainUrl/counts/immobiliers/");
+var mobiliersNotifyUrl = Uri.parse("$mainUrl/counts/mobiliers/");
+var trajetNotifyUrl = Uri.parse("$mainUrl/counts/trajets/"); 
+var salairesNotifyUrl = Uri.parse("$mainUrl/counts/salaires/"); 
+var transRestNotifyUrl = Uri.parse("$mainUrl/counts/trans-rests/"); 
+
+
+// AUTH
 var refreshTokenUrl = Uri.parse("$mainUrl/auth/reloadToken");
 var loginUrl = Uri.parse("$mainUrl/auth/login");
 var logoutUrl = Uri.parse("$mainUrl/auth/logout");

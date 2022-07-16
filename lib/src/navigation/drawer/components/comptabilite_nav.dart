@@ -67,6 +67,8 @@ class _ComptabiliteNavState extends State<ComptabiliteNav> {
         balanceCount = balances.where((element) => element.approbationDD == '-').length;
       });
     }
+
+    itemCount = bilanCount + compteResultatCount + journalCount + balanceCount;
   }
 
   @override
@@ -74,8 +76,6 @@ class _ComptabiliteNavState extends State<ComptabiliteNav> {
     final bodyLarge = Theme.of(context).textTheme.bodyLarge;
     final bodyText1 = Theme.of(context).textTheme.bodyText1;
     final bodyText2 = Theme.of(context).textTheme.bodyText2;
-
-    itemCount = bilanCount + compteResultatCount + journalCount + balanceCount;
 
     return FutureBuilder<UserModel>(
         future: AuthApi().getUserId(),
