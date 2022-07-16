@@ -64,7 +64,7 @@ class SalaireNotifyApi extends ChangeNotifier {
       await AuthApi().refreshAccessToken();
       return getCountBudget();
     } else {
-      throw Exception(resp.statusCode);
+       throw Exception(resp.statusCode);
     }
   }
 
