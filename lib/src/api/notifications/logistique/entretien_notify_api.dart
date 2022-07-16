@@ -9,7 +9,7 @@ import 'package:fokad_admin/src/helpers/user_shared_pref.dart';
 import 'package:fokad_admin/src/models/notify/notify_model.dart';
 import 'package:http/http.dart' as http;
 
-class EntretienNotify extends ChangeNotifier {
+class EntretienNotifyApi extends ChangeNotifier {
   var client = http.Client();
 
   var getDDUrl = Uri.parse("$entretiensNotifyUrl/get-count-dd/");

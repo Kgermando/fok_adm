@@ -9,7 +9,7 @@ import 'package:fokad_admin/src/helpers/user_shared_pref.dart';
 import 'package:fokad_admin/src/models/notify/notify_model.dart';
 import 'package:http/http.dart' as http;
 
-class DetteNotify extends ChangeNotifier {
+class DetteNotifyApi extends ChangeNotifier {
   var client = http.Client();
 
   var getDGUrl = Uri.parse("$dettesNotifyUrl/get-count-dg/");
