@@ -648,7 +648,7 @@ class _DetailLigneBudgetaireState extends State<DetailLigneBudgetaire> {
         caisseSalaire +
         caisseCampaign +
         caisseProjet +
-        caisseTransRest; 
+        caisseTransRest;
 
     banque = banqueEtatBesion +
         banqueSalaire +
@@ -665,6 +665,10 @@ class _DetailLigneBudgetaireState extends State<DetailLigneBudgetaire> {
     double caisseSolde = double.parse(data.caisse) - caisse;
     double banqueSolde = double.parse(data.banque) - banque;
     double finExterieurSolde = double.parse(data.finExterieur) - finExterieur;
+
+    double touxExecutions = (caisseSolde + banqueSolde + finExterieurSolde) *
+        100 /
+        double.parse(data.coutTotal);
 
     return Row(children: [
       Expanded(
@@ -698,26 +702,6 @@ class _DetailLigneBudgetaireState extends State<DetailLigneBudgetaire> {
           ],
         ),
       )),
-      // Expanded(
-      //     child: Container(
-      //   decoration: BoxDecoration(
-      //       border: Border(
-      //     left: BorderSide(
-      //       color: Colors.amber.shade700,
-      //       width: 2,
-      //     ),
-      //   )),
-      //   child: Column(
-      //     children: [
-      //       const Text("Solde Fonds Propres",
-      //           style: TextStyle(fontWeight: FontWeight.bold)),
-      //       SelectableText(
-      //           "${NumberFormat.decimalPattern('fr').format(finPropreSolde)} \$",
-      //           textAlign: TextAlign.center,
-      //           style: headline6),
-      //     ],
-      //   ),
-      // )),
       Expanded(
           child: Container(
         decoration: BoxDecoration(
@@ -734,10 +718,32 @@ class _DetailLigneBudgetaireState extends State<DetailLigneBudgetaire> {
             SelectableText(
                 "${NumberFormat.decimalPattern('fr').format(finExterieurSolde)} \$",
                 textAlign: TextAlign.center,
-                style: headline6!.copyWith(color: Colors.red.shade700)),
+                style: headline6!.copyWith(color: Colors.orange.shade700)),
+          ],
+        ),
+      )),
+      Expanded(
+          child: Container(
+        decoration: BoxDecoration(
+            border: Border(
+          left: BorderSide(
+            color: Colors.amber.shade700,
+            width: 2,
+          ),
+        )),
+        child: Column(
+          children: [
+            const Text("Taux d'executions",
+                style: TextStyle(fontWeight: FontWeight.bold)),
+            SelectableText(
+                "${NumberFormat.decimalPattern('fr').format(double.parse(touxExecutions.toStringAsFixed(0)))} %",
+                textAlign: TextAlign.center,
+                style: headline6.copyWith(color: (touxExecutions >= 50) ? Colors.green.shade700 : Colors.red.shade700)),
           ],
         ),
       )),
     ]);
   }
+
+
 }
