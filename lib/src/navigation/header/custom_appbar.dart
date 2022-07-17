@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:fokad_admin/src/api/auth/auth_api.dart'; 
-import 'package:fokad_admin/src/api/mails/mail_api.dart';
 import 'package:fokad_admin/src/api/notifications/comm_marketing/agenda_notify_api.dart';
 import 'package:fokad_admin/src/api/notifications/comm_marketing/cart_notify_api.dart';
 import 'package:fokad_admin/src/api/notifications/exploitations/taches_notify_api.dart';

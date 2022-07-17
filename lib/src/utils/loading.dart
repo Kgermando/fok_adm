@@ -7,7 +7,7 @@ Widget loadingMega() => Row(
     const SizedBox(
       width: 20.0,
     ),
-    Text('Patientez svp...', style: TextStyle(color: Colors.red.shade700))
+    Text('Initialisation en cours...', style: TextStyle(color: Colors.red.shade700))
   ],
 );
 

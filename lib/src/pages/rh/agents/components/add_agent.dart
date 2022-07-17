@@ -103,8 +103,7 @@ class _AddAgentState extends State<AddAgent> {
   }
 
   @override
-  void dispose() {
-    _controllerScroll.dispose();
+  void dispose() { 
 
     nomController.dispose();
     postNomController.dispose();

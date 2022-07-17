@@ -18,7 +18,6 @@ class DetailAgenda extends StatefulWidget {
 
 class _DetailAgendaState extends State<DetailAgenda> {
   final GlobalKey<ScaffoldState> _key = GlobalKey();
-  final ScrollController _controllerScroll = ScrollController();
   bool isLoading = false;
   bool isLoadingDelete = false;
 
