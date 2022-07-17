@@ -102,7 +102,7 @@ class _DashboardBudgetState extends State<DashboardBudget> {
 
         ligneBudgetaireList = budgets
             .where((element) =>
-                DateTime.now().isBefore(element.periodeBudget))
+                DateTime.now().isBefore(element.periodeBudgetFin))
             .toList();
 
         for (var item in ligneBudgetaireList) {
@@ -112,7 +112,7 @@ class _DashboardBudgetState extends State<DashboardBudget> {
                   element.approbationDD == 'Approved' &&
                   element.approbationBudget == 'Approved' &&
                   element.observation == 'true' &&
-                  element.created.isBefore(item.periodeBudget))
+                  element.created.isBefore(item.periodeBudgetFin))
               .toList();
           dataDevisList = devis
               .where((element) =>
@@ -120,7 +120,7 @@ class _DashboardBudgetState extends State<DashboardBudget> {
                   element.approbationDD == 'Approved' &&
                   element.approbationBudget == 'Approved' &&
                   element.observation == 'true' &&
-                  element.created.isBefore(item.periodeBudget))
+                  element.created.isBefore(item.periodeBudgetFin))
               .toList();
           dataProjetList = projets
               .where((element) =>
@@ -128,7 +128,7 @@ class _DashboardBudgetState extends State<DashboardBudget> {
                   element.approbationDD == 'Approved' &&
                   element.approbationBudget == 'Approved' &&
                   element.observation == 'true' &&
-                  element.created.isBefore(item.periodeBudget))
+                  element.created.isBefore(item.periodeBudgetFin))
               .toList();
           dataSalaireList = salaires
               .where((element) =>
@@ -138,7 +138,7 @@ class _DashboardBudgetState extends State<DashboardBudget> {
                   element.approbationBudget == 'Approved' &&
                   element.observation == 'true' &&
                   element.createdAt
-                      .isBefore(item.periodeBudget))
+                      .isBefore(item.periodeBudgetFin))
               .toList();
           dataTransRestList = transRests
               .where((element) =>
@@ -146,7 +146,7 @@ class _DashboardBudgetState extends State<DashboardBudget> {
                   element.approbationDD == 'Approved' &&
                   element.approbationBudget == 'Approved' &&
                   element.observation == 'true' &&
-                  element.created.isBefore(item.periodeBudget))
+                  element.created.isBefore(item.periodeBudgetFin))
               .toList();
         }
       });

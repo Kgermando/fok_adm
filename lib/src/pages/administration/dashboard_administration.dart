@@ -156,7 +156,7 @@ class _DashboardAdministrationState extends State<DashboardAdministration> {
 
         ligneBudgetaireList = budgets
             .where((element) =>
-                DateTime.now().isBefore(element.periodeBudget))
+                DateTime.now().isBefore(element.periodeBudgetFin))
             .toList();
 
         for (var item in ligneBudgetaireList) {
@@ -164,25 +164,25 @@ class _DashboardAdministrationState extends State<DashboardAdministration> {
               .where((element) =>
                   element.approbationDG == 'Approved' &&
                   element.approbationDD == 'Approved' &&
-                  element.created.isBefore(item.periodeBudget))
+                  element.created.isBefore(item.periodeBudgetFin))
               .toList();
           dataDevisList = devis
               .where((element) =>
                   element.approbationDG == 'Approved' &&
                   element.approbationDD == 'Approved' &&
-                  element.created.isBefore(item.periodeBudget))
+                  element.created.isBefore(item.periodeBudgetFin))
               .toList();
           dataProjetList = projets
               .where((element) =>
                   element.approbationDG == 'Approved' &&
                   element.approbationDD == 'Approved' &&
-                  element.created.isBefore(item.periodeBudget))
+                  element.created.isBefore(item.periodeBudgetFin))
               .toList();
           dataSalaireList = salaires
               .where((element) =>
                   element.approbationDD == 'Approved' &&
                   element.createdAt
-                      .isBefore(item.periodeBudget))
+                      .isBefore(item.periodeBudgetFin))
               .toList();
         }
 

@@ -468,7 +468,8 @@ class _AjoutLigneBudgetaireState extends State<AjoutLigneBudgetaire> {
     final ligneBudgetaireModel = LigneBudgetaireModel(
         nomLigneBudgetaire: nomLigneBudgetaireController.text,
         departement: data.departement,
-        periodeBudget: data.periodeDebut,
+        periodeBudgetDebut: data.periodeDebut,
+        periodeBudgetFin: data.periodeFin,
         uniteChoisie: uniteChoisieController.text,
         nombreUnite: nombreUniteController.toString(),
         coutUnitaire: coutUnitaireController.toString(),

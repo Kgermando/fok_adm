@@ -267,14 +267,14 @@ class _DetailLigneBudgetaireState extends State<DetailLigneBudgetaire> {
           Row(
             children: [
               Expanded(
-                child: Text('Periode Budgetaire :',
+                child: Text('Fin Budgetaire :',
                     textAlign: TextAlign.start,
                     style: bodyMedium.copyWith(fontWeight: FontWeight.bold)),
               ),
               Expanded(
                 child: SelectableText(
                     DateFormat("dd-MM-yyyy")
-                        .format(data.periodeBudget),
+                        .format(data.periodeBudgetFin),
                     textAlign: TextAlign.start,
                     style: bodyMedium),
               )
@@ -386,7 +386,7 @@ class _DetailLigneBudgetaireState extends State<DetailLigneBudgetaire> {
                 child: SelectableText(
                     "${NumberFormat.decimalPattern('fr').format(double.parse(data.finExterieur))} \$",
                     textAlign: TextAlign.start,
-                    style: bodyMedium.copyWith(color: Colors.red.shade700)),
+                    style: bodyMedium.copyWith(color: Colors.orange.shade700)),
               )
             ],
           ),
@@ -454,14 +454,14 @@ class _DetailLigneBudgetaireState extends State<DetailLigneBudgetaire> {
         .where((element) =>
             data.departement == "Commercial et Marketing" &&
             element.ligneBudgetaire == data.nomLigneBudgetaire &&
-            element.created.isBefore(data.periodeBudget) &&
+            element.created.isBefore(data.periodeBudgetFin) &&
             element.ressource == "caisse")
         .toList();
     campaignBanqueList = dataCampaignList
         .where((element) =>
             data.departement == "Commercial et Marketing" &&
             element.ligneBudgetaire == data.nomLigneBudgetaire &&
-            element.created.isBefore(data.periodeBudget) &&
+            element.created.isBefore(data.periodeBudgetFin) &&
             element.ressource == "banque")
         .toList();
     campaignfinExterieurList = dataCampaignList
@@ -469,7 +469,7 @@ class _DetailLigneBudgetaireState extends State<DetailLigneBudgetaire> {
             data.departement == "Commercial et Marketing" &&
             "Commercial et Marketing" == data.departement &&
             element.ligneBudgetaire == data.nomLigneBudgetaire &&
-            element.created.isBefore(data.periodeBudget) &&
+            element.created.isBefore(data.periodeBudgetFin) &&
             element.ressource == "finExterieur")
         .toList();
 
@@ -481,7 +481,7 @@ class _DetailLigneBudgetaireState extends State<DetailLigneBudgetaire> {
               element.referenceDate.microsecondsSinceEpoch ==
                   item.createdRef.microsecondsSinceEpoch &&
               item.ligneBudgetaire == data.nomLigneBudgetaire &&
-              item.created.isBefore(data.periodeBudget) &&
+              item.created.isBefore(data.periodeBudgetFin) &&
               item.ressource == "caisse")
           .toList();
       devisBanqueList = devisListObjetsList
@@ -490,7 +490,7 @@ class _DetailLigneBudgetaireState extends State<DetailLigneBudgetaire> {
               element.referenceDate.microsecondsSinceEpoch ==
                   item.createdRef.microsecondsSinceEpoch &&
               item.ligneBudgetaire == data.nomLigneBudgetaire &&
-              item.created.isBefore(data.periodeBudget) &&
+              item.created.isBefore(data.periodeBudgetFin) &&
               item.ressource == "banque")
           .toList();
       devisfinExterieurList = devisListObjetsList
@@ -499,7 +499,7 @@ class _DetailLigneBudgetaireState extends State<DetailLigneBudgetaire> {
               element.referenceDate.microsecondsSinceEpoch ==
                   item.createdRef.microsecondsSinceEpoch &&
               item.ligneBudgetaire == data.nomLigneBudgetaire &&
-              item.created.isBefore(data.periodeBudget) &&
+              item.created.isBefore(data.periodeBudgetFin) &&
               item.ressource == "finExterieur")
           .toList();
     }
@@ -509,21 +509,21 @@ class _DetailLigneBudgetaireState extends State<DetailLigneBudgetaire> {
         .where((element) =>
             data.departement == "Exploitations" &&
             element.ligneBudgetaire == data.nomLigneBudgetaire &&
-            element.created.isBefore(data.periodeBudget) &&
+            element.created.isBefore(data.periodeBudgetFin) &&
             element.ressource == "caisse")
         .toList();
     projetBanqueList = dataProjetList
         .where((element) =>
             data.departement == "Exploitations" &&
             element.ligneBudgetaire == data.nomLigneBudgetaire &&
-            element.created.isBefore(data.periodeBudget) &&
+            element.created.isBefore(data.periodeBudgetFin) &&
             element.ressource == "banque")
         .toList();
     projetfinExterieurList = dataProjetList
         .where((element) =>
             data.departement == "Exploitations" &&
             element.ligneBudgetaire == data.nomLigneBudgetaire &&
-            element.created.isBefore(data.periodeBudget) &&
+            element.created.isBefore(data.periodeBudgetFin) &&
             element.ressource == "finExterieur")
         .toList();
 
@@ -532,21 +532,21 @@ class _DetailLigneBudgetaireState extends State<DetailLigneBudgetaire> {
         .where((element) =>
             data.departement == element.departement &&
             element.ligneBudgetaire == data.nomLigneBudgetaire &&
-            element.createdAt.isBefore(data.periodeBudget) &&
+            element.createdAt.isBefore(data.periodeBudgetFin) &&
             element.ressource == "caisse")
         .toList();
     salaireBanqueList = dataSalaireList
         .where((element) =>
             data.departement == element.departement &&
             element.ligneBudgetaire == data.nomLigneBudgetaire &&
-            element.createdAt.isBefore(data.periodeBudget) &&
+            element.createdAt.isBefore(data.periodeBudgetFin) &&
             element.ressource == "banque")
         .toList();
     salairefinExterieurList = dataSalaireList
         .where((element) =>
             data.departement == element.departement &&
             element.ligneBudgetaire == data.nomLigneBudgetaire &&
-            element.createdAt.isBefore(data.periodeBudget) &&
+            element.createdAt.isBefore(data.periodeBudgetFin) &&
             element.ressource == "finExterieur")
         .toList();
 
@@ -558,7 +558,7 @@ class _DetailLigneBudgetaireState extends State<DetailLigneBudgetaire> {
               element.reference.microsecondsSinceEpoch ==
                   item.createdRef.microsecondsSinceEpoch &&
               item.ligneBudgetaire == data.nomLigneBudgetaire &&
-              item.created.isBefore(data.periodeBudget) &&
+              item.created.isBefore(data.periodeBudgetFin) &&
               item.ressource == "caisse")
           .toList();
       transRestBanqueList = tansRestList
@@ -567,7 +567,7 @@ class _DetailLigneBudgetaireState extends State<DetailLigneBudgetaire> {
               element.reference.microsecondsSinceEpoch ==
                   item.createdRef.microsecondsSinceEpoch &&
               item.ligneBudgetaire == data.nomLigneBudgetaire &&
-              item.created.isBefore(data.periodeBudget) &&
+              item.created.isBefore(data.periodeBudgetFin) &&
               item.ressource == "banque")
           .toList();
       transRestFinExterieurList = tansRestList
@@ -576,7 +576,7 @@ class _DetailLigneBudgetaireState extends State<DetailLigneBudgetaire> {
               element.reference.microsecondsSinceEpoch ==
                   item.createdRef.microsecondsSinceEpoch &&
               item.ligneBudgetaire == data.nomLigneBudgetaire &&
-              item.created.isBefore(data.periodeBudget) &&
+              item.created.isBefore(data.periodeBudgetFin) &&
               item.ressource == "finExterieur")
           .toList();
     }

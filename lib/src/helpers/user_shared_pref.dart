@@ -49,7 +49,11 @@ class UserSharedPref {
   // ID User
   Future<String?> getIdToken() async {
     final data = await storage.read(key: _keyIdToken);
-    return data;
+    if (data != null) {
+      return data;
+    } else {
+      return "";
+    }
   }
 
   saveIdToken(value) async {

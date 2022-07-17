@@ -506,7 +506,7 @@ class _DetailDepartmentBudgetState extends State<DetailDepartmentBudget> {
     ligneBudgetaireCoutTotalList = ligneBudgetaireList
       .where((element) =>
         element.departement == data.departement &&
-        element.periodeBudget.microsecondsSinceEpoch == data.periodeDebut.microsecondsSinceEpoch)
+        element.periodeBudgetDebut.microsecondsSinceEpoch == data.periodeDebut.microsecondsSinceEpoch)
       .toList();
 
     // Filtre ligne budgetaire pour ce budgets
