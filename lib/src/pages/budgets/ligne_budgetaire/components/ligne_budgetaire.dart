@@ -252,10 +252,13 @@ class _LigneBudgetaireState extends State<LigneBudgetaire> {
     var data = dataList
         .where((element) =>
             element!.departement == widget.departementBudgetModel.departement &&
-            DateFormat("dd-MM-yyyy")
-                    .format(DateTime.parse(element.periodeBudget)) ==
-                DateFormat("dd-MM-yyyy")
-                    .format(widget.departementBudgetModel.periodeDebut))
+            element.periodeBudget.microsecondsSinceEpoch == 
+            widget.departementBudgetModel.periodeDebut.microsecondsSinceEpoch
+            // DateFormat("dd-MM-yyyy")
+            //         .format(DateTime.parse(element.periodeBudget)) ==
+            //     DateFormat("dd-MM-yyyy")
+            //         .format(widget.departementBudgetModel.periodeDebut)
+                    )
         .toList();
 
     if (!mounted) return;
@@ -267,7 +270,7 @@ class _LigneBudgetaireState extends State<LigneBudgetaire> {
           'departement': PlutoCell(value: item.departement),
           'periodeBudget': PlutoCell(
               value: DateFormat("dd-MM-yyyy")
-                  .format(DateTime.parse(item.periodeBudget))),
+                  .format(item.periodeBudget)),
           'uniteChoisie': PlutoCell(value: item.uniteChoisie),
           'nombreUnite': PlutoCell(value: item.nombreUnite),
           'coutUnitaire': PlutoCell(value: item.coutUnitaire),

@@ -2,7 +2,7 @@ class LigneBudgetaireModel {
   late int? id;
   late String nomLigneBudgetaire;
   late String departement;
-  late String periodeBudget;
+  late DateTime periodeBudget;
   late String uniteChoisie;
   late String nombreUnite;
   late String coutUnitaire;
@@ -52,7 +52,7 @@ class LigneBudgetaireModel {
       id: json['id'],
       nomLigneBudgetaire: json['nomLigneBudgetaire'],
       departement: json['departement'],
-      periodeBudget: json['periodeBudget'],
+      periodeBudget: DateTime.parse(json['periodeBudget']),
       uniteChoisie: json['uniteChoisie'],
       nombreUnite: json['nombreUnite'],
       coutUnitaire: json['coutUnitaire'],
@@ -70,7 +70,7 @@ class LigneBudgetaireModel {
       'id': id,
       'nomLigneBudgetaire': nomLigneBudgetaire,
       'departement': departement,
-      'periodeBudget': periodeBudget,
+      'periodeBudget': periodeBudget.toIso8601String(),
       'uniteChoisie': uniteChoisie,
       'nombreUnite': nombreUnite,
       'coutUnitaire': coutUnitaire,

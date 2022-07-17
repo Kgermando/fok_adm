@@ -25,7 +25,7 @@ import 'package:fokad_admin/src/navigation/drawer/drawer_menu.dart';
 import 'package:fokad_admin/src/navigation/header/custom_appbar.dart';
 import 'package:fokad_admin/src/pages/budgets/ligne_budgetaire/components/ligne_budgetaire.dart';
 import 'package:fokad_admin/src/routes/routes.dart';
-import 'package:fokad_admin/src/utils/loading.dart'; 
+import 'package:fokad_admin/src/utils/loading.dart';
 import 'package:fokad_admin/src/widgets/title_widget.dart';
 import 'package:intl/intl.dart';
 
@@ -61,7 +61,7 @@ class _DetailDepartmentBudgetState extends State<DetailDepartmentBudget> {
   List<PaiementSalaireModel> dataSalaireList = [];
   List<TransportRestaurationModel> dataTransRestList = [];
   List<TransRestAgentsModel> tansRestList = []; // avec montant
-  
+
   UserModel user = UserModel(
       nom: '-',
       prenom: '-',
@@ -86,7 +86,7 @@ class _DetailDepartmentBudgetState extends State<DetailDepartmentBudget> {
     var transRests = await TransportRestaurationApi().getAllData();
     var devisListObjets = await DevisListObjetsApi().getAllData();
     var transRestAgents = await TransRestAgentsApi().getAllData();
-    
+
     if (!mounted) return;
     setState(() {
       user = userModel;
@@ -269,9 +269,8 @@ class _DetailDepartmentBudgetState extends State<DetailDepartmentBudget> {
                                   setState(() {
                                     isLoadingSend = true;
                                   });
-                                  await DepeartementBudgetApi()
-                                      .deleteData(data.id!);
-                                  Navigator.of(context).pop();
+                                  alertDeleteDialog(data); 
+                                  
                                 },
                                 icon: const Icon(Icons.delete),
                                 color: Colors.red.shade700),
@@ -503,44 +502,48 @@ class _DetailDepartmentBudgetState extends State<DetailDepartmentBudget> {
     List<TransRestAgentsModel> transRestBanqueList = [];
     List<TransRestAgentsModel> transRestFinExterieurList = [];
 
-
-     // Cout total ligne budgetaires
+    // Cout total ligne budgetaires
     ligneBudgetaireCoutTotalList = ligneBudgetaireList
-        .where((element) =>
-            element.departement == data.departement &&
-            DateFormat("dd-MM-yyyy")
-                    .format(DateTime.parse(element.periodeBudget)) ==
-                DateFormat("dd-MM-yyyy")
-                    .format(data.periodeDebut)
-        ).toList();
+      .where((element) =>
+        element.departement == data.departement &&
+        element.periodeBudget.microsecondsSinceEpoch == data.periodeDebut.microsecondsSinceEpoch)
+      .toList();
 
     // Filtre ligne budgetaire pour ce budgets
     // Recuperer les données qui sont identique aux lignes budgetaires
     List<CampaignModel> campaignList = [];
-    List<DevisModel> devisList = []; 
+    List<DevisModel> devisList = [];
     List<ProjetModel> projetList = [];
     List<PaiementSalaireModel> salaireList = [];
-    List<TransportRestaurationModel> transRestList = []; 
+    List<TransportRestaurationModel> transRestList = [];
 
     for (var item in ligneBudgetaireCoutTotalList) {
       campaignList = dataCampaignList
-        .where((element) => element.ligneBudgetaire == item.nomLigneBudgetaire)
-          .toSet().toList(); 
+          .where(
+              (element) => element.ligneBudgetaire == item.nomLigneBudgetaire)
+          .toSet()
+          .toList();
       devisList = dataDevisList
-        .where((element) => element.ligneBudgetaire == item.nomLigneBudgetaire)
-          .toSet().toList();
+          .where(
+              (element) => element.ligneBudgetaire == item.nomLigneBudgetaire)
+          .toSet()
+          .toList();
       projetList = dataProjetList
-        .where((element) => element.ligneBudgetaire == item.nomLigneBudgetaire)
-          .toSet().toList();
+          .where(
+              (element) => element.ligneBudgetaire == item.nomLigneBudgetaire)
+          .toSet()
+          .toList();
       salaireList = dataSalaireList
-        .where((element) => element.ligneBudgetaire == item.nomLigneBudgetaire)
-          .toSet().toList();
+          .where(
+              (element) => element.ligneBudgetaire == item.nomLigneBudgetaire)
+          .toSet()
+          .toList();
       transRestList = dataTransRestList
-        .where((element) => element.ligneBudgetaire == item.nomLigneBudgetaire)
-          .toSet().toList();
+          .where(
+              (element) => element.ligneBudgetaire == item.nomLigneBudgetaire)
+          .toSet()
+          .toList();
     }
-    
-
 
     // Campaigns
     campaignCaisseList = campaignList
@@ -551,14 +554,14 @@ class _DetailDepartmentBudgetState extends State<DetailDepartmentBudget> {
         .toList();
     campaignBanqueList = campaignList
         .where((element) =>
-            data.departement == "Commercial et Marketing" && 
+            data.departement == "Commercial et Marketing" &&
             element.created.isBefore(data.periodeFin) &&
             element.ressource == "banque")
         .toList();
     campaignfinExterieurList = campaignList
         .where((element) =>
             data.departement == "Commercial et Marketing" &&
-            "Commercial et Marketing" == data.departement && 
+            "Commercial et Marketing" == data.departement &&
             element.created.isBefore(data.periodeFin) &&
             element.ressource == "finExterieur")
         .toList();
@@ -577,7 +580,7 @@ class _DetailDepartmentBudgetState extends State<DetailDepartmentBudget> {
           .where((element) =>
               data.departement == item.departement &&
               element.referenceDate.microsecondsSinceEpoch ==
-                  item.createdRef.microsecondsSinceEpoch && 
+                  item.createdRef.microsecondsSinceEpoch &&
               item.created.isBefore(data.periodeFin) &&
               item.ressource == "banque")
           .toList();
@@ -585,7 +588,7 @@ class _DetailDepartmentBudgetState extends State<DetailDepartmentBudget> {
           .where((element) =>
               data.departement == item.departement &&
               element.referenceDate.microsecondsSinceEpoch ==
-                  item.createdRef.microsecondsSinceEpoch && 
+                  item.createdRef.microsecondsSinceEpoch &&
               item.created.isBefore(data.periodeFin) &&
               item.ressource == "finExterieur")
           .toList();
@@ -594,19 +597,19 @@ class _DetailDepartmentBudgetState extends State<DetailDepartmentBudget> {
     // Exploitations
     projetCaisseList = projetList
         .where((element) =>
-            data.departement == "Exploitations" && 
+            data.departement == "Exploitations" &&
             element.created.isBefore(data.periodeFin) &&
             element.ressource == "caisse")
         .toList();
     projetBanqueList = projetList
         .where((element) =>
-            data.departement == "Exploitations" && 
+            data.departement == "Exploitations" &&
             element.created.isBefore(data.periodeFin) &&
             element.ressource == "banque")
         .toList();
     projetfinExterieurList = projetList
         .where((element) =>
-            data.departement == "Exploitations" && 
+            data.departement == "Exploitations" &&
             element.created.isBefore(data.periodeFin) &&
             element.ressource == "finExterieur")
         .toList();
@@ -614,19 +617,19 @@ class _DetailDepartmentBudgetState extends State<DetailDepartmentBudget> {
     // Salaires
     salaireCaisseList = salaireList
         .where((element) =>
-            data.departement == element.departement && 
+            data.departement == element.departement &&
             element.createdAt.isBefore(data.periodeFin) &&
             element.ressource == "caisse")
         .toList();
     salaireBanqueList = salaireList
         .where((element) =>
-            data.departement == element.departement && 
+            data.departement == element.departement &&
             element.createdAt.isBefore(data.periodeFin) &&
             element.ressource == "banque")
         .toList();
     salairefinExterieurList = salaireList
         .where((element) =>
-            data.departement == element.departement && 
+            data.departement == element.departement &&
             element.createdAt.isBefore(data.periodeFin) &&
             element.ressource == "finExterieur")
         .toList();
@@ -637,7 +640,7 @@ class _DetailDepartmentBudgetState extends State<DetailDepartmentBudget> {
           .where((element) =>
               data.departement == "'Ressources Humaines'" &&
               element.reference.microsecondsSinceEpoch ==
-                  item.createdRef.microsecondsSinceEpoch && 
+                  item.createdRef.microsecondsSinceEpoch &&
               item.created.isBefore(data.periodeFin) &&
               item.ressource == "caisse")
           .toList();
@@ -645,7 +648,7 @@ class _DetailDepartmentBudgetState extends State<DetailDepartmentBudget> {
           .where((element) =>
               data.departement == "'Ressources Humaines'" &&
               element.reference.microsecondsSinceEpoch ==
-                  item.createdRef.microsecondsSinceEpoch && 
+                  item.createdRef.microsecondsSinceEpoch &&
               item.created.isBefore(data.periodeFin) &&
               item.ressource == "banque")
           .toList();
@@ -653,14 +656,11 @@ class _DetailDepartmentBudgetState extends State<DetailDepartmentBudget> {
           .where((element) =>
               data.departement == "'Ressources Humaines'" &&
               element.reference.microsecondsSinceEpoch ==
-                  item.createdRef.microsecondsSinceEpoch && 
+                  item.createdRef.microsecondsSinceEpoch &&
               item.created.isBefore(data.periodeFin) &&
               item.ressource == "finExterieur")
           .toList();
-    } 
-
-
-
+    }
 
     // Sommes des Lignes Budgetaires
     for (var item in ligneBudgetaireCoutTotalList) {
@@ -674,7 +674,7 @@ class _DetailDepartmentBudgetState extends State<DetailDepartmentBudget> {
     }
     for (var item in ligneBudgetaireCoutTotalList) {
       finExterieurLigneBud += double.parse(item.finExterieur);
-    } 
+    }
 
     // Somme des Salaires
     for (var item in salaireCaisseList) {
@@ -731,7 +731,7 @@ class _DetailDepartmentBudgetState extends State<DetailDepartmentBudget> {
       finExterieurTransRest += double.parse(item.montant);
     }
 
-     // Total par ressources
+    // Total par ressources
     caisse = caisseEtatBesion +
         caisseSalaire +
         caisseCampaign +
@@ -749,14 +749,13 @@ class _DetailDepartmentBudgetState extends State<DetailDepartmentBudget> {
         finExterieurProjet +
         finExterieurTransRest;
 
-
     // Differences entre les couts initial et les depenses
     double caisseSolde = caisseLigneBud - caisse;
     double banqueSolde = banqueLigneBud - banque;
     double finExterieurSolde = finExterieurLigneBud - finExterieur;
 
-    double touxExecutions = (caisseSolde + banqueSolde + finExterieurSolde) *
-        100 / coutTotal;
+    double touxExecutions =
+        (caisseSolde + banqueSolde + finExterieurSolde) * 100 / coutTotal;
 
     return Row(children: [
       Expanded(
@@ -809,7 +808,7 @@ class _DetailDepartmentBudgetState extends State<DetailDepartmentBudget> {
                 style: headline6),
           ],
         ),
-      )), 
+      )),
       Expanded(
           child: Container(
         decoration: BoxDecoration(
@@ -878,6 +877,37 @@ class _DetailDepartmentBudgetState extends State<DetailDepartmentBudget> {
                 TextButton(
                   onPressed: () {
                     submitToDD(data);
+                  },
+                  child: const Text('OK'),
+                ),
+              ],
+            );
+          });
+        });
+  }
+
+  alertDeleteDialog(DepartementBudgetModel data) {
+    return showDialog(
+        context: context,
+        barrierDismissible: true,
+        builder: (context) {
+          return StatefulBuilder(builder: (context, StateSetter setState) {
+            return AlertDialog(
+              title: const Text('Etes-vous sûr de vouloir faire ceci ?'),
+              content: const SizedBox(
+                  height: 100,
+                  width: 100,
+                  child: Text(
+                      "Cette action permet de supprimer le budget")),
+              actions: <Widget>[
+                TextButton(
+                  onPressed: () => Navigator.pop(context, 'Cancel'),
+                  child: const Text('Annuler'),
+                ),
+                TextButton(
+                  onPressed: () async {
+                    await DepeartementBudgetApi().deleteData(data.id!);
+                    Navigator.of(context).pop();
                   },
                   child: const Text('OK'),
                 ),
