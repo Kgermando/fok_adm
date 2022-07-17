@@ -64,9 +64,6 @@ class _DetailLigneBudgetaireState extends State<DetailLigneBudgetaire> {
     super.initState();
   }
 
-  String? ligneBudgtaire;
-  String? resource;
-  List<LigneBudgetaireModel> ligneBudgetaireList = [];
   List<CampaignModel> dataCampaignList = [];
   List<DevisModel> dataDevisList = [];
   List<DevisListObjetsModel> devisListObjetsList = []; // avec montant
@@ -75,10 +72,7 @@ class _DetailLigneBudgetaireState extends State<DetailLigneBudgetaire> {
   List<TransportRestaurationModel> dataTransRestList = [];
   List<TransRestAgentsModel> tansRestList = []; // avec montant
 
-  // LigneBudgetaireModel? ligneBudgetaireModel;
-
-  Future<void> getData() async {
-    var budgets = await LIgneBudgetaireApi().getAllData();
+  Future<void> getData() async { 
     var campaigns = await CampaignApi().getAllData();
     var devis = await DevisAPi().getAllData();
     var projets = await ProjetsApi().getAllData();
@@ -87,8 +81,7 @@ class _DetailLigneBudgetaireState extends State<DetailLigneBudgetaire> {
     var devisListObjets = await DevisListObjetsApi().getAllData();
     var transRestAgents = await TransRestAgentsApi().getAllData();
     if (!mounted) return;
-    setState(() {
-      ligneBudgetaireList = budgets;
+    setState(() { 
       devisListObjetsList = devisListObjets;
       tansRestList = transRestAgents;
       dataCampaignList = campaigns

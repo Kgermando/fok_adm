@@ -5,14 +5,17 @@ import 'package:fokad_admin/src/api/budgets/departement_budget_api.dart';
 import 'package:fokad_admin/src/api/budgets/ligne_budgetaire_api.dart';
 import 'package:fokad_admin/src/api/comm_marketing/marketing/campaign_api.dart';
 import 'package:fokad_admin/src/api/devis/devis_api.dart';
+import 'package:fokad_admin/src/api/devis/devis_list_objets_api.dart';
 import 'package:fokad_admin/src/api/exploitations/projets_api.dart';
 import 'package:fokad_admin/src/api/rh/paiement_salaire_api.dart';
+import 'package:fokad_admin/src/api/rh/trans_rest_agents_api.dart';
 import 'package:fokad_admin/src/api/rh/transport_restaurant_api.dart';
 import 'package:fokad_admin/src/constants/app_theme.dart';
 import 'package:fokad_admin/src/constants/responsive.dart';
 import 'package:fokad_admin/src/models/budgets/departement_budget_model.dart';
 import 'package:fokad_admin/src/models/budgets/ligne_budgetaire_model.dart';
 import 'package:fokad_admin/src/models/comm_maketing/campaign_model.dart';
+import 'package:fokad_admin/src/models/devis/devis_list_objets_model.dart';
 import 'package:fokad_admin/src/models/devis/devis_models.dart';
 import 'package:fokad_admin/src/models/exploitations/projet_model.dart';
 import 'package:fokad_admin/src/models/rh/paiement_salaire_model.dart';
@@ -53,10 +56,12 @@ class _DetailDepartmentBudgetState extends State<DetailDepartmentBudget> {
   List<LigneBudgetaireModel> ligneBudgetaireList = [];
   List<CampaignModel> dataCampaignList = [];
   List<DevisModel> dataDevisList = [];
+  List<DevisListObjetsModel> devisListObjetsList = []; // avec montant
   List<ProjetModel> dataProjetList = [];
   List<PaiementSalaireModel> dataSalaireList = [];
-  List<TransportRestaurationModel> transRestList = [];
-
+  List<TransportRestaurationModel> dataTransRestList = [];
+  List<TransRestAgentsModel> tansRestList = []; // avec montant
+  
   UserModel user = UserModel(
       nom: '-',
       prenom: '-',
@@ -79,11 +84,15 @@ class _DetailDepartmentBudgetState extends State<DetailDepartmentBudget> {
     var projets = await ProjetsApi().getAllData();
     var salaires = await PaiementSalaireApi().getAllData();
     var transRests = await TransportRestaurationApi().getAllData();
+    var devisListObjets = await DevisListObjetsApi().getAllData();
+    var transRestAgents = await TransRestAgentsApi().getAllData();
+    
     if (!mounted) return;
     setState(() {
       user = userModel;
       ligneBudgetaireList = budgets;
-
+      devisListObjetsList = devisListObjets;
+      tansRestList = transRestAgents;
       dataCampaignList = campaigns
           .where((element) =>
               element.approbationDG == 'Approved' &&
@@ -113,7 +122,7 @@ class _DetailDepartmentBudgetState extends State<DetailDepartmentBudget> {
               element.approbationBudget == '-' &&
               element.observation == 'true')
           .toList();
-      transRestList = transRests
+      dataTransRestList = transRests
           .where((element) =>
               element.approbationDG == 'Approved' &&
               element.approbationDD == 'Approved' &&
@@ -434,173 +443,320 @@ class _DetailDepartmentBudgetState extends State<DetailDepartmentBudget> {
 
   Widget soldeBudgets(DepartementBudgetModel data) {
     final headline6 = Theme.of(context).textTheme.headline6;
+    // Total des lignes budgetaires
+    double coutTotal = 0.0;
+    double caisseLigneBud = 0.0;
+    double banqueLigneBud = 0.0;
+    double finExterieurLigneBud = 0.0;
+
+    // Total depenses
     double caisse = 0.0;
     double banque = 0.0;
     double finExterieur = 0.0;
 
-    double caisseetatBesion = 0.0;
-    double banqueetatBesion = 0.0;
-    double finExterieuretatBesion = 0.0;
-
-    double caissesalaire = 0.0;
-    double banquesalaire = 0.0;
-    double finExterieursalaire = 0.0;
-
+    // Campaigns
     double caisseCampaign = 0.0;
     double banqueCampaign = 0.0;
     double finExterieurCampaign = 0.0;
-
+    // Etat de besoins
+    double caisseEtatBesion = 0.0;
+    double banqueEtatBesion = 0.0;
+    double finExterieurEtatBesion = 0.0;
+    // Exploitations
     double caisseProjet = 0.0;
     double banqueProjet = 0.0;
     double finExterieurProjet = 0.0;
+    // Salaires
+    double caisseSalaire = 0.0;
+    double banqueSalaire = 0.0;
+    double finExterieursalaire = 0.0;
+    // Transports & Restaurations
+    double caisseTransRest = 0.0;
+    double banqueTransRest = 0.0;
+    double finExterieurTransRest = 0.0;
 
-    List<PaiementSalaireModel> salairecaisseList = [];
-    List<PaiementSalaireModel> salairebanqueList = [];
+    // Ligne budgetaires
+    List<LigneBudgetaireModel> ligneBudgetaireCoutTotalList = [];
+
+    // Campaigns
+    List<CampaignModel> campaignCaisseList = [];
+    List<CampaignModel> campaignBanqueList = [];
+    List<CampaignModel> campaignfinExterieurList = [];
+
+    // Etat de besoins
+    List<DevisListObjetsModel> devisCaisseList = [];
+    List<DevisListObjetsModel> devisBanqueList = [];
+    List<DevisListObjetsModel> devisfinExterieurList = [];
+
+    // Exploitations
+    List<ProjetModel> projetCaisseList = [];
+    List<ProjetModel> projetBanqueList = [];
+    List<ProjetModel> projetfinExterieurList = [];
+
+    // Salaires
+    List<PaiementSalaireModel> salaireCaisseList = [];
+    List<PaiementSalaireModel> salaireBanqueList = [];
     List<PaiementSalaireModel> salairefinExterieurList = [];
 
-    salairecaisseList = dataSalaireList
+    // Transports & Restaurations
+    List<TransRestAgentsModel> transRestCaisseList = [];
+    List<TransRestAgentsModel> transRestBanqueList = [];
+    List<TransRestAgentsModel> transRestFinExterieurList = [];
+
+
+     // Cout total ligne budgetaires
+    ligneBudgetaireCoutTotalList = ligneBudgetaireList
         .where((element) =>
             element.departement == data.departement &&
+            DateFormat("dd-MM-yyyy")
+                    .format(DateTime.parse(element.periodeBudget)) ==
+                DateFormat("dd-MM-yyyy")
+                    .format(data.periodeDebut)
+        ).toList();
+
+    // Filtre ligne budgetaire pour ce budgets
+    // Recuperer les données qui sont identique aux lignes budgetaires
+    List<CampaignModel> campaignList = [];
+    List<DevisModel> devisList = []; 
+    List<ProjetModel> projetList = [];
+    List<PaiementSalaireModel> salaireList = [];
+    List<TransportRestaurationModel> transRestList = []; 
+
+    for (var item in ligneBudgetaireCoutTotalList) {
+      campaignList = dataCampaignList
+        .where((element) => element.ligneBudgetaire == item.nomLigneBudgetaire)
+          .toSet().toList(); 
+      devisList = dataDevisList
+        .where((element) => element.ligneBudgetaire == item.nomLigneBudgetaire)
+          .toSet().toList();
+      projetList = dataProjetList
+        .where((element) => element.ligneBudgetaire == item.nomLigneBudgetaire)
+          .toSet().toList();
+      salaireList = dataSalaireList
+        .where((element) => element.ligneBudgetaire == item.nomLigneBudgetaire)
+          .toSet().toList();
+      transRestList = dataTransRestList
+        .where((element) => element.ligneBudgetaire == item.nomLigneBudgetaire)
+          .toSet().toList();
+    }
+    
+
+
+    // Campaigns
+    campaignCaisseList = campaignList
+        .where((element) =>
+            data.departement == "Commercial et Marketing" &&
+            element.created.isBefore(data.periodeFin) &&
+            element.ressource == "caisse")
+        .toList();
+    campaignBanqueList = campaignList
+        .where((element) =>
+            data.departement == "Commercial et Marketing" && 
+            element.created.isBefore(data.periodeFin) &&
+            element.ressource == "banque")
+        .toList();
+    campaignfinExterieurList = campaignList
+        .where((element) =>
+            data.departement == "Commercial et Marketing" &&
+            "Commercial et Marketing" == data.departement && 
+            element.created.isBefore(data.periodeFin) &&
+            element.ressource == "finExterieur")
+        .toList();
+
+    // Etat de Besoins
+    for (var item in devisList) {
+      devisCaisseList = devisListObjetsList
+          .where((element) =>
+              data.departement == item.departement &&
+              element.referenceDate.microsecondsSinceEpoch ==
+                  item.createdRef.microsecondsSinceEpoch &&
+              item.created.isBefore(data.periodeFin) &&
+              item.ressource == "caisse")
+          .toList();
+      devisBanqueList = devisListObjetsList
+          .where((element) =>
+              data.departement == item.departement &&
+              element.referenceDate.microsecondsSinceEpoch ==
+                  item.createdRef.microsecondsSinceEpoch && 
+              item.created.isBefore(data.periodeFin) &&
+              item.ressource == "banque")
+          .toList();
+      devisfinExterieurList = devisListObjetsList
+          .where((element) =>
+              data.departement == item.departement &&
+              element.referenceDate.microsecondsSinceEpoch ==
+                  item.createdRef.microsecondsSinceEpoch && 
+              item.created.isBefore(data.periodeFin) &&
+              item.ressource == "finExterieur")
+          .toList();
+    }
+
+    // Exploitations
+    projetCaisseList = projetList
+        .where((element) =>
+            data.departement == "Exploitations" && 
+            element.created.isBefore(data.periodeFin) &&
+            element.ressource == "caisse")
+        .toList();
+    projetBanqueList = projetList
+        .where((element) =>
+            data.departement == "Exploitations" && 
+            element.created.isBefore(data.periodeFin) &&
+            element.ressource == "banque")
+        .toList();
+    projetfinExterieurList = projetList
+        .where((element) =>
+            data.departement == "Exploitations" && 
+            element.created.isBefore(data.periodeFin) &&
+            element.ressource == "finExterieur")
+        .toList();
+
+    // Salaires
+    salaireCaisseList = salaireList
+        .where((element) =>
+            data.departement == element.departement && 
             element.createdAt.isBefore(data.periodeFin) &&
             element.ressource == "caisse")
         .toList();
-    salairebanqueList = dataSalaireList
+    salaireBanqueList = salaireList
         .where((element) =>
-            element.departement == data.departement &&
+            data.departement == element.departement && 
             element.createdAt.isBefore(data.periodeFin) &&
             element.ressource == "banque")
         .toList();
-    salairefinExterieurList = dataSalaireList
+    salairefinExterieurList = salaireList
         .where((element) =>
-            element.departement == data.departement &&
+            data.departement == element.departement && 
             element.createdAt.isBefore(data.periodeFin) &&
             element.ressource == "finExterieur")
         .toList();
 
-    for (var item in salairecaisseList) {
-      caissesalaire += double.parse(item.salaire);
+    // Transports & Restaurations
+    for (var item in transRestList) {
+      transRestCaisseList = tansRestList
+          .where((element) =>
+              data.departement == "'Ressources Humaines'" &&
+              element.reference.microsecondsSinceEpoch ==
+                  item.createdRef.microsecondsSinceEpoch && 
+              item.created.isBefore(data.periodeFin) &&
+              item.ressource == "caisse")
+          .toList();
+      transRestBanqueList = tansRestList
+          .where((element) =>
+              data.departement == "'Ressources Humaines'" &&
+              element.reference.microsecondsSinceEpoch ==
+                  item.createdRef.microsecondsSinceEpoch && 
+              item.created.isBefore(data.periodeFin) &&
+              item.ressource == "banque")
+          .toList();
+      transRestFinExterieurList = tansRestList
+          .where((element) =>
+              data.departement == "'Ressources Humaines'" &&
+              element.reference.microsecondsSinceEpoch ==
+                  item.createdRef.microsecondsSinceEpoch && 
+              item.created.isBefore(data.periodeFin) &&
+              item.ressource == "finExterieur")
+          .toList();
+    } 
+
+
+
+
+    // Sommes des Lignes Budgetaires
+    for (var item in ligneBudgetaireCoutTotalList) {
+      coutTotal += double.parse(item.coutTotal);
     }
-    for (var item in salairebanqueList) {
-      banquesalaire += double.parse(item.salaire);
+    for (var item in ligneBudgetaireCoutTotalList) {
+      caisseLigneBud += double.parse(item.caisse);
+    }
+    for (var item in ligneBudgetaireCoutTotalList) {
+      banqueLigneBud += double.parse(item.banque);
+    }
+    for (var item in ligneBudgetaireCoutTotalList) {
+      finExterieurLigneBud += double.parse(item.finExterieur);
+    } 
+
+    // Somme des Salaires
+    for (var item in salaireCaisseList) {
+      caisseSalaire += double.parse(item.salaire);
+    }
+    for (var item in salaireBanqueList) {
+      banqueSalaire += double.parse(item.salaire);
     }
     for (var item in salairefinExterieurList) {
       finExterieursalaire += double.parse(item.salaire);
     }
 
-    List<CampaignModel> campaigncaisseList = [];
-    List<CampaignModel> campaignbanqueList = [];
-    List<CampaignModel> campaignfinExterieurList = [];
-
-    campaigncaisseList = dataCampaignList
-        .where((element) =>
-            "Commercial et Marketing" == data.departement &&
-            element.created.isBefore(data.periodeFin) &&
-            element.ressource == "caisse")
-        .toList();
-    campaignbanqueList = dataCampaignList
-        .where((element) =>
-            "Commercial et Marketing" == data.departement &&
-            element.created.isBefore(data.periodeFin) &&
-            element.ressource == "banque")
-        .toList();
-    campaignfinExterieurList = dataCampaignList
-        .where((element) =>
-            "Commercial et Marketing" == data.departement &&
-            element.created.isBefore(data.periodeFin) &&
-            element.ressource == "finExterieur")
-        .toList();
-
-    for (var item in campaigncaisseList) {
+    // Somme Campaigns
+    for (var item in campaignCaisseList) {
       caisseCampaign += double.parse(item.coutCampaign);
     }
-    for (var item in campaignbanqueList) {
+    for (var item in campaignBanqueList) {
       banqueCampaign += double.parse(item.coutCampaign);
     }
     for (var item in campaignfinExterieurList) {
       finExterieurCampaign += double.parse(item.coutCampaign);
     }
 
-    List<ProjetModel> projetcaisseList = [];
-    List<ProjetModel> projetbanqueList = [];
-    List<ProjetModel> projetfinExterieurList = [];
-    projetcaisseList = dataProjetList
-        .where((element) =>
-            "Exploitations" == data.departement &&
-            element.created.isBefore(data.periodeFin) &&
-            element.ressource == "caisse")
-        .toList();
-    projetbanqueList = dataProjetList
-        .where((element) =>
-            "Exploitations" == data.departement &&
-            element.created.isBefore(data.periodeFin) &&
-            element.ressource == "banque")
-        .toList();
-    projetfinExterieurList = dataProjetList
-        .where((element) =>
-            "Exploitations" == data.departement &&
-            element.created.isBefore(data.periodeFin) &&
-            element.ressource == "finExterieur")
-        .toList();
-
-    for (var item in projetcaisseList) {
+    // Somme Exploitations
+    for (var item in projetCaisseList) {
       caisseProjet += double.parse(item.coutProjet);
     }
-    for (var item in projetbanqueList) {
+    for (var item in projetBanqueList) {
       banqueProjet += double.parse(item.coutProjet);
     }
     for (var item in projetfinExterieurList) {
       finExterieurProjet += double.parse(item.coutProjet);
     }
 
-    // Total par ressources
-    caisse = caisseetatBesion + caissesalaire + caisseCampaign + caisseProjet;
-    banque = banqueetatBesion + banquesalaire + banqueCampaign + banqueProjet;
-    finExterieur = finExterieuretatBesion +
+    // Somme Etat de Besoins
+    for (var item in devisCaisseList) {
+      caisseEtatBesion += double.parse(item.montantGlobal);
+    }
+    for (var item in devisBanqueList) {
+      banqueEtatBesion += double.parse(item.montantGlobal);
+    }
+    for (var item in devisfinExterieurList) {
+      finExterieurEtatBesion += double.parse(item.montantGlobal);
+    }
+
+    // Somme Transports & Restaurations
+    for (var item in transRestCaisseList) {
+      caisseTransRest += double.parse(item.montant);
+    }
+    for (var item in transRestBanqueList) {
+      banqueTransRest += double.parse(item.montant);
+    }
+    for (var item in transRestFinExterieurList) {
+      finExterieurTransRest += double.parse(item.montant);
+    }
+
+     // Total par ressources
+    caisse = caisseEtatBesion +
+        caisseSalaire +
+        caisseCampaign +
+        caisseProjet +
+        caisseTransRest;
+
+    banque = banqueEtatBesion +
+        banqueSalaire +
+        banqueCampaign +
+        banqueProjet +
+        banqueTransRest;
+    finExterieur = finExterieurEtatBesion +
         finExterieursalaire +
         finExterieurCampaign +
-        finExterieurProjet;
+        finExterieurProjet +
+        finExterieurTransRest;
 
-    var coutTotalLigne = ligneBudgetaireList
-        .where((element) =>
-            element.departement == data.departement &&
-            element.created.isBefore(data.periodeFin))
-        .toList();
-    var caisseLigne = ligneBudgetaireList
-        .where((element) =>
-            element.departement == data.departement &&
-            element.created.isBefore(data.periodeFin))
-        .toList();
-    var banqueLigne = ligneBudgetaireList
-        .where((element) =>
-            element.departement == data.departement &&
-            element.created.isBefore(data.periodeFin))
-        .toList();
-    var finExterieurLigne = ligneBudgetaireList
-        .where((element) =>
-            element.departement == data.departement &&
-            element.created.isBefore(data.periodeFin))
-        .toList();
 
-    double coutTotalSolde = 0.0;
-    double caisseSolde = 0.0;
-    double banqueSolde = 0.0;
-    double finPropreSolde = 0.0;
-    double finExterieurSolde = 0.0;
+    // Differences entre les couts initial et les depenses
+    double caisseSolde = caisseLigneBud - caisse;
+    double banqueSolde = banqueLigneBud - banque;
+    double finExterieurSolde = finExterieurLigneBud - finExterieur;
 
-    for (var item in coutTotalLigne) {
-      coutTotalSolde += double.parse(item.coutTotal);
-    }
-    for (var item in caisseLigne) {
-      caisseSolde += double.parse(item.caisse) - caisse;
-    }
-    for (var item in banqueLigne) {
-      banqueSolde += double.parse(item.banque) - banque;
-    }
-    for (var item in finExterieurLigne) {
-      finExterieurSolde += double.parse(item.finExterieur) - finExterieur;
-    }
-
-    finPropreSolde = caisseSolde + banqueSolde;
+    double touxExecutions = (caisseSolde + banqueSolde + finExterieurSolde) *
+        100 / coutTotal;
 
     return Row(children: [
       Expanded(
@@ -609,7 +765,7 @@ class _DetailDepartmentBudgetState extends State<DetailDepartmentBudget> {
           const Text("Coût total",
               style: TextStyle(fontWeight: FontWeight.bold)),
           SelectableText(
-              "${NumberFormat.decimalPattern('fr').format(coutTotalSolde)} \$",
+              "${NumberFormat.decimalPattern('fr').format(coutTotal)} \$",
               textAlign: TextAlign.center,
               style: headline6),
         ],
@@ -653,28 +809,7 @@ class _DetailDepartmentBudgetState extends State<DetailDepartmentBudget> {
                 style: headline6),
           ],
         ),
-      )),
-      Expanded(
-          child: Container(
-        decoration: BoxDecoration(
-            border: Border(
-          left: BorderSide(
-            color: Colors.amber.shade700,
-            width: 2,
-          ),
-        )),
-        child: Column(
-          children: [
-            const Text("Fonds Propres",
-                style: TextStyle(fontWeight: FontWeight.bold)),
-            AutoSizeText(
-                "${NumberFormat.decimalPattern('fr').format(finPropreSolde)} \$",
-                textAlign: TextAlign.center,
-                maxLines: 1,
-                style: headline6),
-          ],
-        ),
-      )),
+      )), 
       Expanded(
           child: Container(
         decoration: BoxDecoration(
@@ -692,7 +827,30 @@ class _DetailDepartmentBudgetState extends State<DetailDepartmentBudget> {
                 "${NumberFormat.decimalPattern('fr').format(finExterieurSolde)} \$",
                 textAlign: TextAlign.center,
                 maxLines: 1,
-                style: headline6!.copyWith(color: Colors.red.shade700)),
+                style: headline6!.copyWith(color: Colors.orange.shade700)),
+          ],
+        ),
+      )),
+      Expanded(
+          child: Container(
+        decoration: BoxDecoration(
+            border: Border(
+          left: BorderSide(
+            color: Colors.amber.shade700,
+            width: 2,
+          ),
+        )),
+        child: Column(
+          children: [
+            const Text("Taux d'executions",
+                style: TextStyle(fontWeight: FontWeight.bold)),
+            SelectableText(
+                "${NumberFormat.decimalPattern('fr').format(double.parse(touxExecutions.toStringAsFixed(0)))} %",
+                textAlign: TextAlign.center,
+                style: headline6.copyWith(
+                    color: (touxExecutions >= 50)
+                        ? Colors.green.shade700
+                        : Colors.red.shade700)),
           ],
         ),
       )),
