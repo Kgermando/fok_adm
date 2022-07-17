@@ -92,7 +92,9 @@ class _DetailDevisState extends State<DetailDevis> {
     if (mounted) {
       setState(() {
         user = userModel;
-        ligneBudgetaireList = budgets; 
+        ligneBudgetaireList = budgets
+            .where((element) => element.departement == "Logistique")
+            .toList();
         devObjetList = devisObjetLists;
       });
     }
@@ -1334,12 +1336,12 @@ class _DetailDevisState extends State<DetailDevis> {
   }
 
   Widget resourcesWidget() {
-    List<String> dataList = ['caisse', 'banque', 'finPropre', 'finExterieur'];
+    List<String> dataList = ['caisse', 'banque', 'finExterieur'];
     return Container(
       margin: const EdgeInsets.only(bottom: p10),
       child: DropdownButtonFormField<String>(
         decoration: InputDecoration(
-          labelText: 'Ressource',
+          labelText: 'Resource',
           labelStyle: const TextStyle(),
           border: OutlineInputBorder(borderRadius: BorderRadius.circular(5.0)),
           contentPadding: const EdgeInsets.only(left: 5.0),

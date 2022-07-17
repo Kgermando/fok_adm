@@ -84,7 +84,9 @@ class _PaiementBulletinState extends State<PaiementBulletin> {
     if (!mounted) return;
     setState(() {
       user = userModel;
-      ligneBudgetaireList = budgets;
+      ligneBudgetaireList = budgets
+          .where((element) => element.departement == "Ressources Humaines")
+          .toList(); 
     });
   }
 
@@ -1776,7 +1778,7 @@ class _PaiementBulletinState extends State<PaiementBulletin> {
   }
 
   Widget resourcesWidget() {
-    List<String> dataList = ['caisse', 'banque', 'finPropre', 'finExterieur'];
+    List<String> dataList = ['caisse', 'banque', 'finExterieur'];
     return Container(
       margin: const EdgeInsets.only(bottom: p10),
       child: DropdownButtonFormField<String>(

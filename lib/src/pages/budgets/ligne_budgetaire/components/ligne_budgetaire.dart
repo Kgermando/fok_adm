@@ -4,6 +4,7 @@ import 'package:fokad_admin/src/models/budgets/departement_budget_model.dart';
 import 'package:fokad_admin/src/models/budgets/ligne_budgetaire_model.dart';
 import 'package:fokad_admin/src/routes/routes.dart';
 import 'package:fokad_admin/src/utils/class_implemented.dart';
+import 'package:fokad_admin/src/widgets/title_widget.dart';
 import 'package:intl/intl.dart';
 import 'package:pluto_grid/pluto_grid.dart';
 
@@ -51,8 +52,8 @@ class _LigneBudgetaireState extends State<LigneBudgetaire> {
         },
         createHeader: (PlutoGridStateManager header) {
           return Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: const [],
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: const [TitleWidget(title: 'Lignes budgetaires')],
           );
         },
         configuration: PlutoGridConfiguration(
@@ -82,8 +83,6 @@ class _LigneBudgetaireState extends State<LigneBudgetaire> {
               } else if (column.field == 'caisse') {
                 return resolver<ClassFilterImplemented>() as PlutoFilterType;
               } else if (column.field == 'banque') {
-                return resolver<ClassFilterImplemented>() as PlutoFilterType;
-              } else if (column.field == 'finPropre') {
                 return resolver<ClassFilterImplemented>() as PlutoFilterType;
               } else if (column.field == 'finExterieur') {
                 return resolver<ClassFilterImplemented>() as PlutoFilterType;
@@ -222,18 +221,6 @@ class _LigneBudgetaireState extends State<LigneBudgetaire> {
       ),
       PlutoColumn(
         readOnly: true,
-        title: 'Fond Propre',
-        field: 'finPropre',
-        type: PlutoColumnType.text(),
-        enableRowDrag: true,
-        enableContextMenu: false,
-        enableDropToResize: true,
-        titleTextAlign: PlutoColumnTextAlign.left,
-        width: 200,
-        minWidth: 150,
-      ),
-      PlutoColumn(
-        readOnly: true,
         title: 'Reste à trouver',
         field: 'finExterieur',
         type: PlutoColumnType.text(),
@@ -293,9 +280,6 @@ class _LigneBudgetaireState extends State<LigneBudgetaire> {
           'banque': PlutoCell(
               value:
                   "${NumberFormat.decimalPattern('fr').format(double.parse(item.banque))} \$"),
-          'finPropre': PlutoCell(
-              value:
-                  "${NumberFormat.decimalPattern('fr').format(double.parse(item.finPropre))} \$"),
           'finExterieur': PlutoCell(
               value:
                   "${NumberFormat.decimalPattern('fr').format(double.parse(item.finExterieur))} \$"),

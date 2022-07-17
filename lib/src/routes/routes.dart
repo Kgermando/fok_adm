@@ -162,7 +162,7 @@ import 'package:fokad_admin/src/pages/rh/presences/components/detail_presence.da
 import 'package:fokad_admin/src/pages/rh/presences/components/entrer_presence.dart';
 import 'package:fokad_admin/src/pages/rh/presences/components/sortie_presence.dart';
 import 'package:fokad_admin/src/pages/rh/presences/presences_rh.dart';
-import 'package:fokad_admin/src/pages/rh/transport_restauration/components/detrail_transport_restaurant.dart';
+import 'package:fokad_admin/src/pages/rh/transport_restauration/components/detail_transport_restaurant.dart';
 import 'package:fokad_admin/src/pages/rh/transport_restauration/transport_restauration_page.dart';
 import 'package:fokad_admin/src/pages/screens/help_screen.dart';
 import 'package:fokad_admin/src/pages/screens/settings_screen.dart';

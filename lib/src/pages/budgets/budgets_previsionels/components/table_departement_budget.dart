@@ -48,7 +48,7 @@ class _TableDepartementBudgetState extends State<TableDepartementBudget> {
         return Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            const TitleWidget(title: "Lignes Budgetaires"),
+            const TitleWidget(title: "Budgets"),
             IconButton(
                 onPressed: () {
                   Navigator.pushNamed(

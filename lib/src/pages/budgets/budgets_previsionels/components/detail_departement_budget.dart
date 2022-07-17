@@ -7,6 +7,7 @@ import 'package:fokad_admin/src/api/comm_marketing/marketing/campaign_api.dart';
 import 'package:fokad_admin/src/api/devis/devis_api.dart';
 import 'package:fokad_admin/src/api/exploitations/projets_api.dart';
 import 'package:fokad_admin/src/api/rh/paiement_salaire_api.dart';
+import 'package:fokad_admin/src/api/rh/transport_restaurant_api.dart';
 import 'package:fokad_admin/src/constants/app_theme.dart';
 import 'package:fokad_admin/src/constants/responsive.dart';
 import 'package:fokad_admin/src/models/budgets/departement_budget_model.dart';
@@ -15,13 +16,13 @@ import 'package:fokad_admin/src/models/comm_maketing/campaign_model.dart';
 import 'package:fokad_admin/src/models/devis/devis_models.dart';
 import 'package:fokad_admin/src/models/exploitations/projet_model.dart';
 import 'package:fokad_admin/src/models/rh/paiement_salaire_model.dart';
+import 'package:fokad_admin/src/models/rh/transport_restauration_model.dart';
 import 'package:fokad_admin/src/models/users/user_model.dart';
 import 'package:fokad_admin/src/navigation/drawer/drawer_menu.dart';
 import 'package:fokad_admin/src/navigation/header/custom_appbar.dart';
 import 'package:fokad_admin/src/pages/budgets/ligne_budgetaire/components/ligne_budgetaire.dart';
 import 'package:fokad_admin/src/routes/routes.dart';
-import 'package:fokad_admin/src/utils/loading.dart';
-import 'package:fokad_admin/src/widgets/print_widget.dart';
+import 'package:fokad_admin/src/utils/loading.dart'; 
 import 'package:fokad_admin/src/widgets/title_widget.dart';
 import 'package:intl/intl.dart';
 
@@ -54,6 +55,7 @@ class _DetailDepartmentBudgetState extends State<DetailDepartmentBudget> {
   List<DevisModel> dataDevisList = [];
   List<ProjetModel> dataProjetList = [];
   List<PaiementSalaireModel> dataSalaireList = [];
+  List<TransportRestaurationModel> transRestList = [];
 
   UserModel user = UserModel(
       nom: '-',
@@ -76,6 +78,7 @@ class _DetailDepartmentBudgetState extends State<DetailDepartmentBudget> {
     var devis = await DevisAPi().getAllData();
     var projets = await ProjetsApi().getAllData();
     var salaires = await PaiementSalaireApi().getAllData();
+    var transRests = await TransportRestaurationApi().getAllData();
     if (!mounted) return;
     setState(() {
       user = userModel;
@@ -85,26 +88,37 @@ class _DetailDepartmentBudgetState extends State<DetailDepartmentBudget> {
           .where((element) =>
               element.approbationDG == 'Approved' &&
               element.approbationDD == 'Approved' &&
-              element.approbationBudget == '-')
+              element.approbationBudget == '-' &&
+              element.observation == 'true')
           .toList();
       dataDevisList = devis
           .where((element) =>
               element.approbationDG == 'Approved' &&
               element.approbationDD == 'Approved' &&
-              element.approbationBudget == '-')
+              element.approbationBudget == '-' &&
+              element.observation == 'true')
           .toList();
       dataProjetList = projets
           .where((element) =>
               element.approbationDG == 'Approved' &&
               element.approbationDD == 'Approved' &&
-              element.approbationBudget == '-')
+              element.approbationBudget == '-' &&
+              element.observation == 'true')
           .toList();
       dataSalaireList = salaires
           .where((element) =>
               element.createdAt.month == DateTime.now().month &&
               element.createdAt.year == DateTime.now().year &&
               element.approbationDD == 'Approved' &&
-              element.approbationBudget == '-')
+              element.approbationBudget == '-' &&
+              element.observation == 'true')
+          .toList();
+      transRestList = transRests
+          .where((element) =>
+              element.approbationDG == 'Approved' &&
+              element.approbationDD == 'Approved' &&
+              element.approbationBudget == '-' &&
+              element.observation == 'true')
           .toList();
     });
   }
@@ -165,7 +179,7 @@ class _DetailDepartmentBudgetState extends State<DetailDepartmentBudget> {
                                     const SizedBox(width: p10),
                                     Expanded(
                                       child: CustomAppbar(
-                                          title: "Budget",
+                                          title: "Budgets",
                                           controllerMenu: () =>
                                               _key.currentState!.openDrawer()),
                                     ),
@@ -227,9 +241,6 @@ class _DetailDepartmentBudgetState extends State<DetailDepartmentBudget> {
                     children: [
                       Row(
                         children: [
-                          PrintWidget(
-                              tooltip: 'Imprimer le document',
-                              onPressed: () {}),
                           if (data.isSubmit == 'false')
                             IconButton(
                                 tooltip:
@@ -242,6 +253,19 @@ class _DetailDepartmentBudgetState extends State<DetailDepartmentBudget> {
                                 },
                                 icon: const Icon(Icons.send),
                                 color: Colors.green.shade700),
+                          if (data.isSubmit == 'false')
+                            IconButton(
+                                tooltip: 'Supprimer',
+                                onPressed: () async {
+                                  setState(() {
+                                    isLoadingSend = true;
+                                  });
+                                  await DepeartementBudgetApi()
+                                      .deleteData(data.id!);
+                                  Navigator.of(context).pop();
+                                },
+                                icon: const Icon(Icons.delete),
+                                color: Colors.red.shade700),
                         ],
                       ),
                       SelectableText(
@@ -412,32 +436,26 @@ class _DetailDepartmentBudgetState extends State<DetailDepartmentBudget> {
     final headline6 = Theme.of(context).textTheme.headline6;
     double caisse = 0.0;
     double banque = 0.0;
-    double finPropre = 0.0;
     double finExterieur = 0.0;
 
     double caisseetatBesion = 0.0;
     double banqueetatBesion = 0.0;
-    double finPropreetatBesion = 0.0;
     double finExterieuretatBesion = 0.0;
 
     double caissesalaire = 0.0;
     double banquesalaire = 0.0;
-    double finPropresalaire = 0.0;
     double finExterieursalaire = 0.0;
 
     double caisseCampaign = 0.0;
     double banqueCampaign = 0.0;
-    double finPropreCampaign = 0.0;
     double finExterieurCampaign = 0.0;
 
     double caisseProjet = 0.0;
     double banqueProjet = 0.0;
-    double finPropreProjet = 0.0;
     double finExterieurProjet = 0.0;
 
     List<PaiementSalaireModel> salairecaisseList = [];
     List<PaiementSalaireModel> salairebanqueList = [];
-    List<PaiementSalaireModel> salairefinPropreList = [];
     List<PaiementSalaireModel> salairefinExterieurList = [];
 
     salairecaisseList = dataSalaireList
@@ -452,12 +470,6 @@ class _DetailDepartmentBudgetState extends State<DetailDepartmentBudget> {
             element.createdAt.isBefore(data.periodeFin) &&
             element.ressource == "banque")
         .toList();
-    salairefinPropreList = dataSalaireList
-        .where((element) =>
-            element.departement == data.departement &&
-            element.createdAt.isBefore(data.periodeFin) &&
-            element.ressource == "finPropre")
-        .toList();
     salairefinExterieurList = dataSalaireList
         .where((element) =>
             element.departement == data.departement &&
@@ -471,16 +483,12 @@ class _DetailDepartmentBudgetState extends State<DetailDepartmentBudget> {
     for (var item in salairebanqueList) {
       banquesalaire += double.parse(item.salaire);
     }
-    for (var item in salairefinPropreList) {
-      finPropresalaire += double.parse(item.salaire);
-    }
     for (var item in salairefinExterieurList) {
       finExterieursalaire += double.parse(item.salaire);
     }
 
     List<CampaignModel> campaigncaisseList = [];
     List<CampaignModel> campaignbanqueList = [];
-    List<CampaignModel> campaignfinPropreList = [];
     List<CampaignModel> campaignfinExterieurList = [];
 
     campaigncaisseList = dataCampaignList
@@ -495,12 +503,6 @@ class _DetailDepartmentBudgetState extends State<DetailDepartmentBudget> {
             element.created.isBefore(data.periodeFin) &&
             element.ressource == "banque")
         .toList();
-    campaignfinPropreList = dataCampaignList
-        .where((element) =>
-            "Commercial et Marketing" == data.departement &&
-            element.created.isBefore(data.periodeFin) &&
-            element.ressource == "finPropre")
-        .toList();
     campaignfinExterieurList = dataCampaignList
         .where((element) =>
             "Commercial et Marketing" == data.departement &&
@@ -514,16 +516,12 @@ class _DetailDepartmentBudgetState extends State<DetailDepartmentBudget> {
     for (var item in campaignbanqueList) {
       banqueCampaign += double.parse(item.coutCampaign);
     }
-    for (var item in campaignfinPropreList) {
-      finPropreCampaign += double.parse(item.coutCampaign);
-    }
     for (var item in campaignfinExterieurList) {
       finExterieurCampaign += double.parse(item.coutCampaign);
     }
 
     List<ProjetModel> projetcaisseList = [];
     List<ProjetModel> projetbanqueList = [];
-    List<ProjetModel> projetfinPropreList = [];
     List<ProjetModel> projetfinExterieurList = [];
     projetcaisseList = dataProjetList
         .where((element) =>
@@ -536,12 +534,6 @@ class _DetailDepartmentBudgetState extends State<DetailDepartmentBudget> {
             "Exploitations" == data.departement &&
             element.created.isBefore(data.periodeFin) &&
             element.ressource == "banque")
-        .toList();
-    projetfinPropreList = dataProjetList
-        .where((element) =>
-            "Exploitations" == data.departement &&
-            element.created.isBefore(data.periodeFin) &&
-            element.ressource == "finPropre")
         .toList();
     projetfinExterieurList = dataProjetList
         .where((element) =>
@@ -556,9 +548,6 @@ class _DetailDepartmentBudgetState extends State<DetailDepartmentBudget> {
     for (var item in projetbanqueList) {
       banqueProjet += double.parse(item.coutProjet);
     }
-    for (var item in projetfinPropreList) {
-      finPropreProjet += double.parse(item.coutProjet);
-    }
     for (var item in projetfinExterieurList) {
       finExterieurProjet += double.parse(item.coutProjet);
     }
@@ -566,10 +555,6 @@ class _DetailDepartmentBudgetState extends State<DetailDepartmentBudget> {
     // Total par ressources
     caisse = caisseetatBesion + caissesalaire + caisseCampaign + caisseProjet;
     banque = banqueetatBesion + banquesalaire + banqueCampaign + banqueProjet;
-    finPropre = finPropreetatBesion +
-        finPropresalaire +
-        finPropreCampaign +
-        finPropreProjet;
     finExterieur = finExterieuretatBesion +
         finExterieursalaire +
         finExterieurCampaign +
@@ -586,11 +571,6 @@ class _DetailDepartmentBudgetState extends State<DetailDepartmentBudget> {
             element.created.isBefore(data.periodeFin))
         .toList();
     var banqueLigne = ligneBudgetaireList
-        .where((element) =>
-            element.departement == data.departement &&
-            element.created.isBefore(data.periodeFin))
-        .toList();
-    var finPropreLigne = ligneBudgetaireList
         .where((element) =>
             element.departement == data.departement &&
             element.created.isBefore(data.periodeFin))
@@ -616,12 +596,11 @@ class _DetailDepartmentBudgetState extends State<DetailDepartmentBudget> {
     for (var item in banqueLigne) {
       banqueSolde += double.parse(item.banque) - banque;
     }
-    for (var item in finPropreLigne) {
-      finPropreSolde += double.parse(item.finPropre) - finPropre;
-    }
     for (var item in finExterieurLigne) {
       finExterieurSolde += double.parse(item.finExterieur) - finExterieur;
     }
+
+    finPropreSolde = caisseSolde + banqueSolde;
 
     return Row(children: [
       Expanded(
@@ -913,8 +892,7 @@ class _DetailDepartmentBudgetState extends State<DetailDepartmentBudget> {
                                   )),
                             ]),
                             if (data.approbationDD == '-' &&
-                                user.fonctionOccupe ==
-                                    "Directeur de departement")
+                                user.fonctionOccupe == "Directeur de budget")
                               Padding(
                                 padding: const EdgeInsets.all(p10),
                                 child: Row(children: [

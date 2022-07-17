@@ -36,7 +36,6 @@ class _AjoutLigneBudgetaireState extends State<AjoutLigneBudgetaire> {
   double coutUnitaireController = 0.0;
   double caisseController = 0.0;
   double banqueController = 0.0;
-  double finPropreController = 0.0;
 
   @override
   initState() {
@@ -188,11 +187,11 @@ class _AjoutLigneBudgetaireState extends State<AjoutLigneBudgetaire> {
                     ),
                     Row(
                       children: [
-                        Expanded(child: finPropreWidget()),
+                        Expanded(child: finExterieurValeur()),
                         const SizedBox(
                           width: p10,
                         ),
-                        Expanded(child: finExterieurValeur())
+                        Expanded(child: Container())
                       ],
                     ),
                     const SizedBox(
@@ -440,46 +439,7 @@ class _AjoutLigneBudgetaireState extends State<AjoutLigneBudgetaire> {
         ));
   }
 
-  Widget finPropreWidget() {
-    final headline6 = Theme.of(context).textTheme.headline6;
-    return Container(
-        margin: const EdgeInsets.only(bottom: p20),
-        child: Row(
-          children: [
-            Expanded(
-              flex: 3,
-              child: TextFormField(
-                keyboardType: TextInputType.number,
-                inputFormatters: <TextInputFormatter>[
-                  FilteringTextInputFormatter.digitsOnly
-                ],
-                decoration: InputDecoration(
-                  border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10.0)),
-                  labelText: 'Fonds Propres',
-                ),
-                style: const TextStyle(),
-                validator: (value) {
-                  if (value != null && value.isEmpty) {
-                    return 'Ce champs est obligatoire';
-                  } else {
-                    return null;
-                  }
-                },
-                onChanged: (value) => setState(() {
-                  finPropreController = (value == "") ? 1 : double.parse(value);
-                }),
-              ),
-            ),
-            Expanded(
-                flex: 1,
-                child: Container(
-                    margin: const EdgeInsets.only(left: 10.0, bottom: 20.0),
-                    child: Text('\$', style: headline6)))
-          ],
-        ));
-  }
-
+  
   Widget coutTotalValeur() {
     final headline6 = Theme.of(context).textTheme.headline6;
     final coutToal = nombreUniteController * coutUnitaireController;
@@ -492,7 +452,7 @@ class _AjoutLigneBudgetaireState extends State<AjoutLigneBudgetaire> {
   Widget finExterieurValeur() {
     final headline6 = Theme.of(context).textTheme.headline6;
     final coutToal = nombreUniteController * coutUnitaireController;
-    final fonds = caisseController + banqueController + finPropreController;
+    final fonds = caisseController + banqueController;
     final fondsAtrouver = coutToal - fonds;
     return Container(
         margin: const EdgeInsets.only(left: 10.0, bottom: 20.0),
@@ -502,7 +462,7 @@ class _AjoutLigneBudgetaireState extends State<AjoutLigneBudgetaire> {
 
   Future<void> submit(DepartementBudgetModel data) async {
     final coutToal = nombreUniteController * coutUnitaireController;
-    final fonds = caisseController + banqueController + finPropreController;
+    final fonds = caisseController + banqueController;
     final fondsAtrouver = coutToal - fonds;
 
     final ligneBudgetaireModel = LigneBudgetaireModel(
@@ -515,7 +475,6 @@ class _AjoutLigneBudgetaireState extends State<AjoutLigneBudgetaire> {
         coutTotal: coutToal.toString(),
         caisse: caisseController.toString(),
         banque: banqueController.toString(),
-        finPropre: finPropreController.toString(),
         finExterieur: fondsAtrouver.toString(),
         signature: signature.toString(),
         created: DateTime.now());

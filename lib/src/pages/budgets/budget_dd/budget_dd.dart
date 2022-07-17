@@ -1,12 +1,12 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:fokad_admin/src/api/budgets/departement_budget_api.dart';
-import 'package:fokad_admin/src/api/comm_marketing/marketing/campaign_api.dart';
-import 'package:fokad_admin/src/api/devis/devis_api.dart';
-import 'package:fokad_admin/src/api/exploitations/projets_api.dart';
-import 'package:fokad_admin/src/api/rh/paiement_salaire_api.dart';
-import 'package:fokad_admin/src/api/rh/transport_restaurant_api.dart';
+import 'package:fokad_admin/src/api/notifications/budgets/budget_notify_api.dart';
+import 'package:fokad_admin/src/api/notifications/comm_marketing/campaign_notify_api.dart';
+import 'package:fokad_admin/src/api/notifications/devis/devis_notify_api.dart';
+import 'package:fokad_admin/src/api/notifications/exploitations/projet_notify_api.dart';
+import 'package:fokad_admin/src/api/notifications/rh/salaires_notify_api.dart';
+import 'package:fokad_admin/src/api/notifications/rh/trans_rest_notify_api.dart';
 import 'package:fokad_admin/src/constants/app_theme.dart';
 import 'package:fokad_admin/src/constants/responsive.dart';
 import 'package:fokad_admin/src/navigation/drawer/drawer_menu.dart';
@@ -51,56 +51,20 @@ class _BudgetDDState extends State<BudgetDD> {
   }
 
   Future<void> getData() async {
-    var salaires = await PaiementSalaireApi().getAllData();
-    var transRests = await TransportRestaurationApi().getAllData();
-    var campaigns = await CampaignApi().getAllData();
-    var devis = await DevisAPi().getAllData();
-    var projets = await ProjetsApi().getAllData();
-    var budgetDep = await DepeartementBudgetApi().getAllData();
+    var salairesCountNotify = await SalaireNotifyApi().getCountBudget();
+    var transRestsCountNotify = await TransRestNotifyApi().getCountBudget();
+    var campaignsCountNotify = await CampaignNotifyApi().getCountBudget();
+    var devisCountNotify = await DevisNotifyApi().getCountBudget();
+    var projetsCountNotify = await ProjetNotifyApi().getCountBudget();
+    var budgetCountNotify = await BudgetNotifyApi().getCountDD(); 
 
     setState(() {
-      salaireCount = salaires
-          .where((element) =>
-              element.createdAt.month == DateTime.now().month &&
-              element.createdAt.year == DateTime.now().year &&
-              element.approbationDD == 'Approved' &&
-              element.observation == 'false' &&
-              element.approbationBudget == '-')
-          .length;
-      transRestCount = transRests
-          .where((element) =>
-              element.approbationDG == 'Approved' &&
-              element.approbationDD == 'Approved' &&
-              element.approbationBudget == '-')
-          .length;
-      campaignCount = campaigns
-          .where((element) =>
-              element.approbationDG == 'Approved' &&
-              element.approbationDD == 'Approved' &&
-              element.approbationBudget == '-')
-          .length;
-
-      devisCount = devis
-          .where((element) =>
-              element.approbationDG == 'Approved' &&
-              element.approbationDD == 'Approved' &&
-              element.approbationBudget == '-')
-          .length;
-
-      projetCount = projets
-          .where((element) =>
-              element.approbationDG == 'Approved' &&
-              element.approbationDD == 'Approved' &&
-              element.approbationBudget == '-')
-          .length;
-
-      budgetDepCount = budgetDep
-          .where((element) =>
-              DateTime.now().millisecondsSinceEpoch <=
-                  element.periodeFin.millisecondsSinceEpoch &&
-              element.approbationDD == '-' &&
-              element.isSubmit == 'true')
-          .length;
+      salaireCount = salairesCountNotify.count;
+      transRestCount = transRestsCountNotify.count;
+      campaignCount = campaignsCountNotify.count;
+      devisCount = devisCountNotify.count;
+      projetCount = projetsCountNotify.count;
+      budgetDepCount = budgetCountNotify.count;  
     });
   }
 

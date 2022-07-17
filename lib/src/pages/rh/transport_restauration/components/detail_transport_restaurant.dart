@@ -91,7 +91,8 @@ class _DetailTransportRestaurantState extends State<DetailTransportRestaurant> {
     setState(() {
       user = userModel;
       transRestAgentsFilter = transRestAgents;
-      ligneBudgetaireList = budgets;
+      ligneBudgetaireList = budgets
+        .where((element) => element.departement == "Ressources Humaines").toList();
     });
   }
 
@@ -1213,7 +1214,7 @@ class _DetailTransportRestaurantState extends State<DetailTransportRestaurant> {
   }
 
   Widget resourcesWidget() {
-    List<String> dataList = ['caisse', 'banque', 'finPropre', 'finExterieur'];
+    List<String> dataList = ['caisse', 'banque', 'finExterieur'];
     return Container(
       margin: const EdgeInsets.only(bottom: p10),
       child: DropdownButtonFormField<String>(
