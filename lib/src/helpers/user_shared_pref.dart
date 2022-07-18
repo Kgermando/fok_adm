@@ -52,7 +52,7 @@ class UserSharedPref {
     if (data != null) {
       return data;
     } else {
-      return "";
+      return "-";
     }
   }
 
@@ -71,7 +71,7 @@ class UserSharedPref {
     if (data != null) {
       return data;
     } else { 
-      return "";
+      return "-";
     }
   }
 

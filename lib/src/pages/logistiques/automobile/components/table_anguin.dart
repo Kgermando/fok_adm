@@ -59,6 +59,7 @@ class _TableAnguinState extends State<TableAnguin> {
         stateManager!.setShowColumnFilter(true);
         stateManager!.notifyListeners();
       },
+      
       createHeader: (PlutoGridStateManager header) {
         return Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,

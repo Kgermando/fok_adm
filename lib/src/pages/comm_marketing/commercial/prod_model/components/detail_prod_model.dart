@@ -384,62 +384,64 @@ class _DetailProdModelState extends State<DetailProdModel> {
                 padding: const EdgeInsets.all(p10),
                 child: Row(
                   children: [
-                   Expanded(
-                        flex: 1, child: Text("Directeur de departement", style: bodyLarge)),
+                    Expanded(
+                        flex: 1,
+                        child:
+                            Text("Directeur de departement", style: bodyLarge)),
                     const SizedBox(width: p20),
-                      Expanded(
-                          flex: 3,
-                          child: Column(
-                            children: [
-                              Row(children: [
+                    Expanded(
+                        flex: 3,
+                        child: Column(
+                          children: [
+                            Row(children: [
+                              Expanded(
+                                  flex: 2,
+                                  child: Column(
+                                    children: [
+                                      const Text("Approbation"),
+                                      const SizedBox(height: p20),
+                                      Text(data.approbationDD,
+                                          style: bodyLarge!.copyWith(
+                                              color: Colors.green.shade700)),
+                                    ],
+                                  )),
+                              if (data.approbationDD == "Unapproved")
                                 Expanded(
-                                    flex: 2,
+                                    flex: 3,
                                     child: Column(
                                       children: [
-                                        const Text("Approbation"),
+                                        const Text("Motif"),
                                         const SizedBox(height: p20),
-                                        Text(data.approbationDD, style: bodyLarge!
-                                          .copyWith(color: Colors.green.shade700)),
+                                        Text(data.motifDD),
                                       ],
                                     )),
-                                if (data.approbationDD == "Unapproved")
-                                  Expanded(
-                                      flex: 3,
-                                      child: Column(
-                                        children: [
-                                          const Text("Motif"),
-                                          const SizedBox(height: p20),
-                                          Text(data.motifDD),
-                                        ],
-                                      )),
-                                Expanded(
-                                    flex: 2,
-                                    child: Column(
-                                      children: [
-                                        const Text("Signature"),
-                                        const SizedBox(height: p20),
-                                        Text(data.signatureDD),
-                                      ],
-                                    )),
-                              ]),
-                              if (data.approbationDD == '-' &&
-                              user.fonctionOccupe == "Directeur de departement")
+                              Expanded(
+                                  flex: 2,
+                                  child: Column(
+                                    children: [
+                                      const Text("Signature"),
+                                      const SizedBox(height: p20),
+                                      Text(data.signatureDD),
+                                    ],
+                                  )),
+                            ]),
+                            if (data.approbationDD == '-' &&
+                                user.fonctionOccupe ==
+                                    "Directeur de departement")
                               Padding(
                                 padding: const EdgeInsets.all(p10),
                                 child: Row(children: [
                                   Expanded(child: approbationDDWidget(data)),
                                   const SizedBox(width: p20),
                                   if (approbationDD == "Unapproved")
-                                  Expanded(child: motifDDWidget(data))
+                                    Expanded(child: motifDDWidget(data))
                                 ]),
                               ),
-                            ],
-                          )),
-                          
+                          ],
+                        )),
                   ],
                 ),
-              ), 
-                
+              ),
             ],
           ),
         ),

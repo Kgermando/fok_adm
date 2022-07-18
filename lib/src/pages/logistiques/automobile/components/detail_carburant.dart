@@ -363,7 +363,7 @@ class _DetailCaburantState extends State<DetailCaburant> {
         ],
       ),
     );
-  }
+  } 
 
 Widget approbationWidget(CarburantModel data) {
     final bodyLarge = Theme.of(context).textTheme.bodyLarge;

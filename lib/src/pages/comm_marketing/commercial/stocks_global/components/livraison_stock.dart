@@ -15,6 +15,7 @@ import 'package:fokad_admin/src/navigation/header/custom_appbar.dart';
 import 'package:fokad_admin/src/utils/regex.dart';
 import 'package:fokad_admin/src/widgets/btn_widget.dart';
 import 'package:fokad_admin/src/widgets/title_widget.dart';
+import 'package:intl/intl.dart';
 
 class LivraisonStock extends StatefulWidget {
   const LivraisonStock({Key? key})
@@ -46,30 +47,27 @@ class _LivraisonStockState extends State<LivraisonStock> {
   TextEditingController controllerPrixVenteUnit = TextEditingController();
 
   @override
-  void initState() {
-    loadData();
+  void initState() { 
     getData(); 
     super.initState();
   }
 
   @override
   void dispose() {
+    controllerQuantity.dispose();
     controllerPrixVenteUnit.dispose();
     super.dispose();
   }
 
-  void loadData() async {
-    List<SuccursaleModel>? data = await SuccursaleApi().getAllData();
-    setState(() {
-      succursaleList = data;
-    });
-  }
+ 
 
   UserModel? user;
   Future<void> getData() async {
     UserModel userModel = await AuthApi().getUserId();
+    List<SuccursaleModel>? succursales = await SuccursaleApi().getAllData();
     setState(() {
       user = userModel;
+      succursaleList = succursales;
     });
   }
 
@@ -78,8 +76,8 @@ class _LivraisonStockState extends State<LivraisonStock> {
     StocksGlobalMOdel stocksGlobalMOdel =
         ModalRoute.of(context)!.settings.arguments as StocksGlobalMOdel;
 
-    controllerPrixVenteUnit =
-        TextEditingController(text: stocksGlobalMOdel.prixVenteUnit);
+    // controllerPrixVenteUnit =
+    //     TextEditingController(text: stocksGlobalMOdel.prixVenteUnit);
     return Scaffold(
         key: _key,
         drawer: const DrawerMenu(),
@@ -159,7 +157,7 @@ class _LivraisonStockState extends State<LivraisonStock> {
                     ),
                     succursaleField(),
                     quantityField(data),
-                    prixVenteField(),
+                    prixVenteField(data),
                     Row(
                       children: [
                         Expanded(
@@ -218,7 +216,7 @@ class _LivraisonStockState extends State<LivraisonStock> {
         validator: (value) => value != null && value.isEmpty
             ? 'La succursale est obligatoire'
             : null,
-        onChanged: (value) {
+        onChanged: (value) { 
           setState(() {
             succursale = value;
           });
@@ -230,64 +228,101 @@ class _LivraisonStockState extends State<LivraisonStock> {
   Widget quantityField(StocksGlobalMOdel data) {
     return Container(
       margin: const EdgeInsets.only(bottom: 20.0),
-      child: TextFormField(
-        // controller: controllerQuantity, // Ce champ doit etre vide pour permettre a l'admin de saisir la qty
-        keyboardType: TextInputType.number,
-        inputFormatters: <TextInputFormatter>[
-          FilteringTextInputFormatter.digitsOnly
-        ],
-        decoration: InputDecoration(
-          labelText:
-              'Qtés disponible est de ${data.quantity} ${data.unite}',
-          suffixStyle: const TextStyle(color: Colors.red),
-          labelStyle: const TextStyle(),
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(5.0),
+      child: Row(
+        children: [
+          Expanded(
+            flex: 3,
+            child: TextFormField(
+              // controller: controllerQuantity, // Ce champ doit etre vide pour permettre a l'admin de saisir la qty
+              keyboardType: TextInputType.number,
+              inputFormatters: <TextInputFormatter>[
+                FilteringTextInputFormatter.digitsOnly
+              ],
+              decoration: InputDecoration(
+                labelText:
+                    'Quantité à livrer',
+                suffixStyle: const TextStyle(color: Colors.red),
+                labelStyle: const TextStyle(),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(5.0),
+                ),
+              ),
+              validator: (value) {
+                if (value == null) {
+                  return 'La Qtés à livrer est obligatoire';
+                } else if (value.isEmpty) {
+                  return 'Qté ne peut pas être nulle';
+                } else if (value.contains(RegExp(r'[A-Z]'))) {
+                  return 'Que les chiffres svp!';
+                } else if (double.parse(value) >
+                    double.parse(data.quantity)) {
+                  return 'La Qté à livrer ne peut pas être superieur à la Qtés actuelle';
+                }
+                return null;
+              },
+              onChanged: (value) => setState(() => quantityStock = value),
+            ),
           ),
-        ),
-        validator: (value) {
-          if (value == null) {
-            return 'La Qtés à livrer est obligatoire';
-          } else if (value.isEmpty) {
-            return 'Qtés ne peut pas être nulle';
-          } else if (value.contains(RegExp(r'[A-Z]'))) {
-            return 'Que les chiffres svp!';
-          } else if (double.parse(value) >
-              double.parse(data.quantity)) {
-            return 'La Qtés à livrer ne peut pas être superieur à la Qtés actuelle';
-          }
-          return null;
-        },
-        onChanged: (value) => setState(() => quantityStock = value),
+          Expanded(
+            flex: 1,
+            child: Container(
+              margin: const EdgeInsets.only(left: 10.0, bottom: 5.0),
+              child: Text(
+                'Qté initial: ${data.quantity} ${data.unite}',
+                style: Theme.of(context)
+                    .textTheme
+                    .bodyLarge!
+                    .copyWith(color: Colors.orange)
+                  ),
+            )
+          )
+        ],
       ),
     );
   }
 
-  Widget prixVenteField() {
+  Widget prixVenteField(StocksGlobalMOdel data) {
     return Container(
       margin: const EdgeInsets.only(bottom: 20.0),
-      child: TextFormField(
-        controller: controllerPrixVenteUnit,
-        keyboardType: TextInputType.number,
-        inputFormatters: <TextInputFormatter>[
-          FilteringTextInputFormatter.digitsOnly
-        ],
-        decoration: InputDecoration(
-          labelText: 'Prix de vente unitaire',
-          labelStyle: const TextStyle(),
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(5.0),
+      child: Row(
+        children: [
+          Expanded(
+            flex: 3,
+            child: TextFormField(
+              controller: controllerPrixVenteUnit,
+              keyboardType: TextInputType.number,
+              inputFormatters: <TextInputFormatter>[
+                FilteringTextInputFormatter.digitsOnly
+              ],
+              decoration: InputDecoration(
+                labelText: 'Prix de vente unitaire',
+                labelStyle: const TextStyle(),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(5.0),
+                ),
+              ),
+              validator: (value) {
+                if (value == null || value.isEmpty) {
+                  return 'Le Prix de vente unitaires est obligatoire';
+                }
+                return null;
+              },
+              onChanged: (value) => setState(() {
+                prixVenteUnit = (value == "") ? 0.0 : double.parse(value);
+              }),
+            ),
           ),
-        ),
-        validator: (value) {
-          if (value == null || value.isEmpty) {
-            return 'Le Prix de vente unitaires est obligatoire';
-          }
-          return null;
-        },
-        onChanged: (value) => setState(() {
-          prixVenteUnit = (value == "") ? 0.0 : double.parse(value);
-        }),
+          Expanded(
+            flex: 1,
+            child: Container(
+            margin: const EdgeInsets.only(left: 10.0, bottom: 5.0),
+            child: Text(
+              'Prix initial: ${NumberFormat.decimalPattern('fr').format(double
+              .parse(double.parse(data.prixVenteUnit).toStringAsFixed(2)))} \$',
+              style: Theme.of(context).textTheme.bodyLarge!.copyWith(color: Colors.orange)
+            ),
+          ))
+        ],
       ),
     );
   }
@@ -407,17 +442,15 @@ class _LivraisonStockState extends State<LivraisonStock> {
 
   double? pavTVARemise;
 
-  remiseValeur() {
-    final bodyText1 = Theme.of(context).textTheme.bodyText1;
-
+  remiseValeur() { 
     var remiseEnPourcent = (prixVenteUnit * remise) / 100;
 
     pavTVARemise = prixVenteUnit - remiseEnPourcent;
 
     return Container(
-      margin: const EdgeInsets.only(left: 10.0, bottom: 20.0),
+      margin: const EdgeInsets.only(left: 5.0, bottom: 20.0),
       child:
-          Text('R: ${pavTVARemise!.toStringAsFixed(2)} \$', style: bodyText1),
+          Text('R: ${pavTVARemise!.toStringAsFixed(2)} \$', style: Theme.of(context).textTheme.headline6),
     );
   }
 
