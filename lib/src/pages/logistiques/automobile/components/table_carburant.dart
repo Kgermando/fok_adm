@@ -113,11 +113,26 @@ class _TableCarburantState extends State<TableCarburant> {
               return resolver<ClassFilterImplemented>() as PlutoFilterType;
             } else if (column.field == 'created') {
               return resolver<ClassFilterImplemented>() as PlutoFilterType;
-            }
+            } else if (column.field == 'approbationDD') {
+              return resolver<ClassFilterImplemented>() as PlutoFilterType;
+            } 
             return resolver<PlutoFilterTypeContains>() as PlutoFilterType;
           },
         ),
       ),
+      rowColorCallback: (rowColorContext) {
+        if (rowColorContext.row.cells.entries.elementAt(11).value.value ==
+                'Unapproved') {
+          return Colors.red.shade700;
+        } else if (rowColorContext.row.cells.entries
+                    .elementAt(11)
+                    .value
+                    .value ==
+                'Approved') {
+          return Colors.green.shade700;
+        }
+        return Colors.white;
+      }, 
     );
   }
 
@@ -255,6 +270,18 @@ class _TableCarburantState extends State<TableCarburant> {
         width: 200,
         minWidth: 150,
       ),
+      PlutoColumn(
+        readOnly: true,
+        title: 'approbation DD',
+        field: 'approbationDD',
+        type: PlutoColumnType.text(),
+        enableRowDrag: true,
+        enableContextMenu: false,
+        enableDropToResize: true,
+        titleTextAlign: PlutoColumnTextAlign.left,
+        width: 300,
+        minWidth: 150,
+      ),
     ];
   }
 
@@ -285,7 +312,8 @@ class _TableCarburantState extends State<TableCarburant> {
                 value:
                     DateFormat("dd-MM-yy").format(item.dateHeureSortieAnguin)),
             'created': PlutoCell(
-                value: DateFormat("dd-MM-yy HH:mm").format(item.created))
+                value: DateFormat("dd-MM-yy HH:mm").format(item.created)),
+            'approbationDD': PlutoCell(value: item.approbationDD)
           }));
           stateManager!.resetCurrentState();
         }

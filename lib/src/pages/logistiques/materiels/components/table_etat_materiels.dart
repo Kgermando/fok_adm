@@ -93,11 +93,9 @@ class _TableEtatMaterielState extends State<TableEtatMateriel> {
             ClassFilterImplemented(),
           ],
           resolveDefaultColumnFilter: (column, resolver) {
-            if (column.field == 'nom') {
+            if (column.field == 'id') {
               return resolver<ClassFilterImplemented>() as PlutoFilterType;
-            } else if (column.field == 'modele') {
-              return resolver<ClassFilterImplemented>() as PlutoFilterType;
-            } else if (column.field == 'marque') {
+            } else if (column.field == 'nom') {
               return resolver<ClassFilterImplemented>() as PlutoFilterType;
             } else if (column.field == 'typeObjet') {
               return resolver<ClassFilterImplemented>() as PlutoFilterType;
@@ -105,11 +103,26 @@ class _TableEtatMaterielState extends State<TableEtatMateriel> {
               return resolver<ClassFilterImplemented>() as PlutoFilterType;
             } else if (column.field == 'created') {
               return resolver<ClassFilterImplemented>() as PlutoFilterType;
-            }
+            } else if (column.field == 'approbationDD') {
+              return resolver<ClassFilterImplemented>() as PlutoFilterType;
+            } 
             return resolver<PlutoFilterTypeContains>() as PlutoFilterType;
           },
         ),
       ),
+      rowColorCallback: (rowColorContext) {
+        if (rowColorContext.row.cells.entries.elementAt(5).value.value ==
+            'Unapproved') {
+          return Colors.red.shade700;
+        } else if (rowColorContext.row.cells.entries
+                .elementAt(5)
+                .value
+                .value ==
+            'Approved') {
+          return Colors.green.shade700;
+        }
+        return Colors.white;
+      }, 
     );
   }
 
@@ -175,6 +188,18 @@ class _TableEtatMaterielState extends State<TableEtatMateriel> {
         width: 150,
         minWidth: 150,
       ),
+      PlutoColumn(
+        readOnly: true,
+        title: 'approbation DD',
+        field: 'approbationDD',
+        type: PlutoColumnType.text(),
+        enableRowDrag: true,
+        enableContextMenu: false,
+        enableDropToResize: true,
+        titleTextAlign: PlutoColumnTextAlign.left,
+        width: 300,
+        minWidth: 150,
+      ),
     ];
   }
 
@@ -194,7 +219,8 @@ class _TableEtatMaterielState extends State<TableEtatMateriel> {
             'typeObjet': PlutoCell(value: item.typeObjet),
             'statut': PlutoCell(value: item.statut),
             'created': PlutoCell(
-                value: DateFormat("dd-MM-yy H:mm").format(item.created))
+                value: DateFormat("dd-MM-yy H:mm").format(item.created)),
+            'approbationDD': PlutoCell(value: item.approbationDD)
           }));
         }
         stateManager!.resetCurrentState();

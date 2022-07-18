@@ -6,6 +6,7 @@ import 'package:fokad_admin/src/models/users/user_model.dart';
 import 'package:fokad_admin/src/routes/routes.dart';
 import 'package:fokad_admin/src/widgets/print_widget.dart';
 import 'package:fokad_admin/src/utils/class_implemented.dart';
+import 'package:fokad_admin/src/widgets/title_widget.dart';
 import 'package:intl/intl.dart';
 import 'package:pluto_grid/pluto_grid.dart';
 
@@ -73,16 +74,15 @@ class _TableCreanceFactState extends State<TableCreanceFact> {
       },
       createHeader: (PlutoGridStateManager header) {
         return Row(
-          mainAxisAlignment: MainAxisAlignment.end,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
+            const TitleWidget(title: "Facture Créance"),
             IconButton(
                 onPressed: () {
                   Navigator.pushNamed(
                       context, ComMarketingRoutes.comMarketingCreance);
                 },
                 icon: Icon(Icons.refresh, color: Colors.green.shade700)),
-            IconButton(onPressed: () {}, icon: const Icon(Icons.download)),
-            PrintWidget(onPressed: () {})
           ],
         );
       },

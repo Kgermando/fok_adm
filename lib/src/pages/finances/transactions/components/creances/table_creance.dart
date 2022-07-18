@@ -144,26 +144,40 @@ class _TableCreanceState extends State<TableCreance> {
                   } else if (column.field == 'montant') {
                     return resolver<ClassFilterImplemented>()
                         as PlutoFilterType;
-                  } else if (column.field == 'ligneBudgtaire') {
-                    return resolver<ClassFilterImplemented>()
-                        as PlutoFilterType;
-                  } else if (column.field == 'departement') {
-                    return resolver<ClassFilterImplemented>()
-                        as PlutoFilterType;
-                  } else if (column.field == 'typeOperation') {
-                    return resolver<ClassFilterImplemented>()
-                        as PlutoFilterType;
                   } else if (column.field == 'numeroOperation') {
                     return resolver<ClassFilterImplemented>()
                         as PlutoFilterType;
                   } else if (column.field == 'created') {
                     return resolver<ClassFilterImplemented>()
                         as PlutoFilterType;
-                  }
+                  } else if (column.field == 'approbationDG') {
+                    return resolver<ClassFilterImplemented>()
+                        as PlutoFilterType;
+                  } else if (column.field == 'approbationDD') {
+                    return resolver<ClassFilterImplemented>()
+                        as PlutoFilterType;
+                  } 
                   return resolver<PlutoFilterTypeContains>() as PlutoFilterType;
                 },
               ),
             ),
+            rowColorCallback: (rowColorContext) {
+              if (rowColorContext.row.cells.entries.elementAt(7).value.value ==
+                      'Unapproved' ||
+                  rowColorContext.row.cells.entries.elementAt(8).value.value ==
+                      'Unapproved') {
+                return Colors.red.shade700;
+              } else if (rowColorContext.row.cells.entries
+                          .elementAt(7)
+                          .value
+                          .value ==
+                      'Approved' &&
+                  rowColorContext.row.cells.entries.elementAt(8).value.value ==
+                      'Approved') {
+                return Colors.green.shade700;
+              }
+              return Colors.white;
+            }, 
           ),
         ),
         totalSolde()
@@ -308,18 +322,37 @@ class _TableCreanceState extends State<TableCreance> {
         width: 200,
         minWidth: 150,
       ),
+      PlutoColumn(
+        readOnly: true,
+        title: 'approbation DG',
+        field: 'approbationDG',
+        type: PlutoColumnType.text(),
+        enableRowDrag: true,
+        enableContextMenu: false,
+        enableDropToResize: true,
+        titleTextAlign: PlutoColumnTextAlign.left,
+        width: 300,
+        minWidth: 150,
+      ),
+      PlutoColumn(
+        readOnly: true,
+        title: 'approbation DD',
+        field: 'approbationDD',
+        type: PlutoColumnType.text(),
+        enableRowDrag: true,
+        enableContextMenu: false,
+        enableDropToResize: true,
+        titleTextAlign: PlutoColumnTextAlign.left,
+        width: 300,
+        minWidth: 150,
+      ),
     ];
   }
 
   Future agentsRow() async {
     List<CreanceModel?> dataList = await CreanceApi().getAllData();
-    UserModel userModel = await AuthApi().getUserId();
-    var data = dataList
-        .where((element) =>
-            element!.approbationDG == "Approved" &&
-                element.approbationDD == "Approved" ||
-            element.signature == userModel.matricule)
-        .toList();
+    // UserModel userModel = await AuthApi().getUserId();
+    var data = dataList.toList();
 
     if (mounted) {
       setState(() {
@@ -335,7 +368,9 @@ class _TableCreanceState extends State<TableCreance> {
                     "${NumberFormat.decimalPattern('fr').format(double.parse(item.montant))} \$"),
             'numeroOperation': PlutoCell(value: item.numeroOperation),
             'created': PlutoCell(
-                value: DateFormat("dd-MM-yyyy HH:mm").format(item.created))
+                value: DateFormat("dd-MM-yyyy HH:mm").format(item.created)),
+            'approbationDG': PlutoCell(value: item.approbationDG),
+            'approbationDD': PlutoCell(value: item.approbationDD)
           }));
         }
         stateManager!.resetCurrentState();

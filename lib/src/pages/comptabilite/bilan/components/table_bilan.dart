@@ -103,11 +103,32 @@ class _TableBilanState extends State<TableBilan> {
               return resolver<ClassFilterImplemented>() as PlutoFilterType;
             } else if (column.field == 'created') {
               return resolver<ClassFilterImplemented>() as PlutoFilterType;
-            }
+            } else if (column.field == 'approbationDG') {
+              return resolver<ClassFilterImplemented>() as PlutoFilterType;
+            } else if (column.field == 'approbationDD') {
+              return resolver<ClassFilterImplemented>() as PlutoFilterType;
+            } 
             return resolver<PlutoFilterTypeContains>() as PlutoFilterType;
           },
         ),
       ),
+      rowColorCallback: (rowColorContext) {
+        if (rowColorContext.row.cells.entries.elementAt(4).value.value ==
+                'Unapproved' ||
+            rowColorContext.row.cells.entries.elementAt(5).value.value ==
+                'Unapproved') {
+          return Colors.red.shade700;
+        } else if (rowColorContext.row.cells.entries
+                    .elementAt(4)
+                    .value
+                    .value ==
+                'Approved' &&
+            rowColorContext.row.cells.entries.elementAt(5).value.value ==
+                'Approved') {
+          return Colors.green.shade700;
+        }
+        return Colors.white;
+      }, 
     );
   }
 
@@ -161,6 +182,30 @@ class _TableBilanState extends State<TableBilan> {
         width: 200,
         minWidth: 150,
       ),
+      PlutoColumn(
+        readOnly: true,
+        title: 'approbation DG',
+        field: 'approbationDG',
+        type: PlutoColumnType.text(),
+        enableRowDrag: true,
+        enableContextMenu: false,
+        enableDropToResize: true,
+        titleTextAlign: PlutoColumnTextAlign.left,
+        width: 300,
+        minWidth: 150,
+      ),
+      PlutoColumn(
+        readOnly: true,
+        title: 'approbation DD',
+        field: 'approbationDD',
+        type: PlutoColumnType.text(),
+        enableRowDrag: true,
+        enableContextMenu: false,
+        enableDropToResize: true,
+        titleTextAlign: PlutoColumnTextAlign.left,
+        width: 300,
+        minWidth: 150,
+      ),
     ];
   }
 
@@ -183,7 +228,9 @@ class _TableBilanState extends State<TableBilan> {
             'titleBilan': PlutoCell(value: item.titleBilan),
             'signature': PlutoCell(value: item.signature),
             'created': PlutoCell(
-                value: DateFormat("dd-MM-yyyy HH:mm").format(item.created))
+                value: DateFormat("dd-MM-yyyy HH:mm").format(item.created)),
+            'approbationDG': PlutoCell(value: item.approbationDG),
+            'approbationDD': PlutoCell(value: item.approbationDD)
           }));
           stateManager!.resetCurrentState();
         }

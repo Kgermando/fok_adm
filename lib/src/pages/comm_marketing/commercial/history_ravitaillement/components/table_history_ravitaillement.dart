@@ -101,7 +101,9 @@ class _TableHistoryRavitaillementState
             ClassFilterImplemented(),
           ],
           resolveDefaultColumnFilter: (column, resolver) {
-            if (column.field == 'idProduct') {
+            if (column.field == 'id') {
+              return resolver<ClassFilterImplemented>() as PlutoFilterType;
+            } else if (column.field == 'idProduct') {
               return resolver<ClassFilterImplemented>() as PlutoFilterType;
             } else if (column.field == 'quantity') {
               return resolver<ClassFilterImplemented>() as PlutoFilterType;

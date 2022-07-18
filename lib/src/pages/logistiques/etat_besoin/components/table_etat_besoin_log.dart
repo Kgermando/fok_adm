@@ -130,11 +130,50 @@ class _TableEtatBesoinLogState extends State<TableEtatBesoinLog> {
                 return resolver<ClassFilterImplemented>() as PlutoFilterType;
               } else if (column.field == 'created') {
                 return resolver<ClassFilterImplemented>() as PlutoFilterType;
-              }
+              } else if (column.field == 'approbationDG') {
+                return resolver<ClassFilterImplemented>() as PlutoFilterType;
+              } else if (column.field == 'approbationDD') {
+                return resolver<ClassFilterImplemented>() as PlutoFilterType;
+              } else if (column.field == 'approbationBudget') {
+                return resolver<ClassFilterImplemented>() as PlutoFilterType;
+              } else if (column.field == 'approbationFin') {
+                return resolver<ClassFilterImplemented>() as PlutoFilterType;
+              } 
               return resolver<PlutoFilterTypeContains>() as PlutoFilterType;
             },
           ),
         ),
+        rowColorCallback: (rowColorContext) {
+          if (rowColorContext.row.cells.entries
+                      .elementAt(5)
+                      .value
+                      .value ==
+                  'Unapproved' ||
+              rowColorContext.row.cells.entries
+                      .elementAt(6)
+                      .value
+                      .value ==
+                  'Unapproved' ||
+              rowColorContext.row.cells.entries.elementAt(7).value.value ==
+                  'Unapproved' ||
+              rowColorContext.row.cells.entries.elementAt(8).value.value ==
+                  'Unapproved') {
+            return Colors.red.shade700;
+          } else if (rowColorContext.row.cells.entries
+                      .elementAt(5)
+                      .value
+                      .value ==
+                  'Approved' &&
+              rowColorContext.row.cells.entries.elementAt(6).value.value ==
+                  'Approved' &&
+              rowColorContext.row.cells.entries.elementAt(7).value.value ==
+                  'Approved' &&
+              rowColorContext.row.cells.entries.elementAt(8).value.value ==
+                  'Approved') {
+            return Colors.green.shade700;
+          }
+          return Colors.white;
+        }, 
       ),
     );
   }
@@ -201,6 +240,54 @@ class _TableEtatBesoinLogState extends State<TableEtatBesoinLog> {
         width: 300,
         minWidth: 150,
       ),
+      PlutoColumn(
+        readOnly: true,
+        title: 'approbation DG',
+        field: 'approbationDG',
+        type: PlutoColumnType.text(),
+        enableRowDrag: true,
+        enableContextMenu: false,
+        enableDropToResize: true,
+        titleTextAlign: PlutoColumnTextAlign.left,
+        width: 300,
+        minWidth: 150,
+      ),
+      PlutoColumn(
+        readOnly: true,
+        title: 'approbation DD',
+        field: 'approbationDD',
+        type: PlutoColumnType.text(),
+        enableRowDrag: true,
+        enableContextMenu: false,
+        enableDropToResize: true,
+        titleTextAlign: PlutoColumnTextAlign.left,
+        width: 300,
+        minWidth: 150,
+      ),
+      PlutoColumn(
+        readOnly: true,
+        title: 'approbation Budget',
+        field: 'approbationBudget',
+        type: PlutoColumnType.text(),
+        enableRowDrag: true,
+        enableContextMenu: false,
+        enableDropToResize: true,
+        titleTextAlign: PlutoColumnTextAlign.left,
+        width: 300,
+        minWidth: 150,
+      ),
+      PlutoColumn(
+        readOnly: true,
+        title: 'approbation Fin',
+        field: 'approbationFin',
+        type: PlutoColumnType.text(),
+        enableRowDrag: true,
+        enableContextMenu: false,
+        enableDropToResize: true,
+        titleTextAlign: PlutoColumnTextAlign.left,
+        width: 300,
+        minWidth: 150,
+      ),
     ];
   }
 
@@ -208,13 +295,7 @@ class _TableEtatBesoinLogState extends State<TableEtatBesoinLog> {
     List<DevisModel> devis = await DevisAPi().getAllData();
     // UserModel userModel = await AuthApi().getUserId();
 
-    var data = devis
-        // .where((element) =>
-        //     element.approbationDG == "Approved" &&
-        //         element.approbationDD == "Approved" &&
-        //         element.approbationBudget == "Approved" &&
-        //         element.approbationFin == "Approved" ||
-        //     element.signature == userModel.matricule)
+    var data = devis 
         .toList();
 
     if (mounted) {
@@ -226,7 +307,11 @@ class _TableEtatBesoinLogState extends State<TableEtatBesoinLog> {
             'priority': PlutoCell(value: item.priority),
             'departement': PlutoCell(value: item.departement),
             'created': PlutoCell(
-                value: DateFormat("dd-MM-yyyy HH:mm").format(item.created))
+                value: DateFormat("dd-MM-yyyy HH:mm").format(item.created)),
+            'approbationDG': PlutoCell(value: item.approbationDG),
+            'approbationDD': PlutoCell(value: item.approbationDD),
+            'approbationBudget': PlutoCell(value: item.approbationBudget),
+            'approbationFin': PlutoCell(value: item.approbationFin)
           }));
           stateManager!.resetCurrentState();
           stateManager!.notifyListeners();

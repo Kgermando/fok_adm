@@ -107,11 +107,26 @@ class _TableTrajetState extends State<TableTrajet> {
               return resolver<ClassFilterImplemented>() as PlutoFilterType;
             } else if (column.field == 'created') {
               return resolver<ClassFilterImplemented>() as PlutoFilterType;
-            }
+            } else if (column.field == 'approbationDD') {
+              return resolver<ClassFilterImplemented>() as PlutoFilterType;
+            } 
             return resolver<PlutoFilterTypeContains>() as PlutoFilterType;
           },
         ),
       ),
+      rowColorCallback: (rowColorContext) {
+        if (rowColorContext.row.cells.entries.elementAt(9).value.value ==
+            'Unapproved') {
+          return Colors.red.shade700;
+        } else if (rowColorContext.row.cells.entries
+                .elementAt(9)
+                .value
+                .value ==
+            'Approved') {
+          return Colors.green.shade700;
+        }
+        return Colors.white;
+      }, 
     );
   }
 
@@ -213,6 +228,18 @@ class _TableTrajetState extends State<TableTrajet> {
         width: 200,
         minWidth: 150,
       ),
+      PlutoColumn(
+        readOnly: true,
+        title: 'approbation DD',
+        field: 'approbationDD',
+        type: PlutoColumnType.text(),
+        enableRowDrag: true,
+        enableContextMenu: false,
+        enableDropToResize: true,
+        titleTextAlign: PlutoColumnTextAlign.left,
+        width: 300,
+        minWidth: 150,
+      ),
     ];
   }
 
@@ -240,7 +267,8 @@ class _TableTrajetState extends State<TableTrajet> {
             'kilometrageRetour':
                 PlutoCell(value: "${item.kilometrageRetour} km/h"),
             'created': PlutoCell(
-                value: DateFormat("dd-MM-yy HH:mm").format(item.created))
+                value: DateFormat("dd-MM-yy HH:mm").format(item.created)),
+            'approbationDD': PlutoCell(value: item.approbationDD)
           }));
         }
         stateManager!.resetCurrentState();

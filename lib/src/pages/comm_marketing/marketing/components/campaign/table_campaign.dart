@@ -35,12 +35,7 @@ class _TableCampaignState extends State<TableCampaign> {
   Future<void> getData() async {
     List<CampaignModel> campaigns = await CampaignApi().getAllData();
     setState(() {
-      dataList = campaigns
-          // .where((element) =>
-          //     element.approbationDG == 'Approved' &&
-          //     element.approbationDD == 'Approved' &&
-          //     element.approbationBudget == 'Approved' &&
-          //     element.approbationFin == 'Approved')
+      dataList = campaigns 
           .toList();
     });
   }
@@ -112,11 +107,47 @@ class _TableCampaignState extends State<TableCampaign> {
               return resolver<ClassFilterImplemented>() as PlutoFilterType;
             } else if (column.field == 'created') {
               return resolver<ClassFilterImplemented>() as PlutoFilterType;
-            }
+            } else if (column.field == 'approbationDG') {
+              return resolver<ClassFilterImplemented>() as PlutoFilterType;
+            } else if (column.field == 'approbationDD') {
+              return resolver<ClassFilterImplemented>() as PlutoFilterType;
+            } else if (column.field == 'approbationBudget') {
+              return resolver<ClassFilterImplemented>() as PlutoFilterType;
+            } else if (column.field == 'approbationFin') {
+              return resolver<ClassFilterImplemented>() as PlutoFilterType;
+            } 
             return resolver<PlutoFilterTypeContains>() as PlutoFilterType;
           },
         ),
       ),
+      rowColorCallback: (rowColorContext) {
+        if (rowColorContext.row.cells.entries
+                    .elementAt(8)
+                    .value
+                    .value ==
+                'Unapproved' ||
+            rowColorContext.row.cells.entries
+                    .elementAt(9)
+                    .value
+                    .value ==
+                'Unapproved' ||
+            rowColorContext.row.cells.entries.elementAt(10).value.value ==
+                'Unapproved' ||
+            rowColorContext.row.cells.entries.elementAt(11).value.value ==
+                'Unapproved') {
+          return Colors.red.shade700;
+        } else if (rowColorContext.row.cells.entries.elementAt(8).value.value ==
+                'Approved' &&
+            rowColorContext.row.cells.entries.elementAt(9).value.value ==
+                'Approved' &&
+            rowColorContext.row.cells.entries.elementAt(10).value.value ==
+                'Approved' &&
+            rowColorContext.row.cells.entries.elementAt(11).value.value ==
+                'Approved') {
+          return Colors.green.shade700;
+        }
+        return Colors.white;
+      }, 
     );
   }
 
@@ -196,7 +227,7 @@ class _TableCampaignState extends State<TableCampaign> {
       ),
       PlutoColumn(
         readOnly: true,
-        title: 'objectifs',
+        title: 'Objectifs',
         field: 'objectifs',
         type: PlutoColumnType.text(),
         enableRowDrag: true,
@@ -218,18 +249,61 @@ class _TableCampaignState extends State<TableCampaign> {
         width: 200,
         minWidth: 150,
       ),
+      PlutoColumn(
+        readOnly: true,
+        title: 'approbation DG',
+        field: 'approbationDG',
+        type: PlutoColumnType.text(),
+        enableRowDrag: true,
+        enableContextMenu: false,
+        enableDropToResize: true,
+        titleTextAlign: PlutoColumnTextAlign.left,
+        width: 300,
+        minWidth: 150,
+      ),
+      PlutoColumn(
+        readOnly: true,
+        title: 'approbation DD',
+        field: 'approbationDD',
+        type: PlutoColumnType.text(),
+        enableRowDrag: true,
+        enableContextMenu: false,
+        enableDropToResize: true,
+        titleTextAlign: PlutoColumnTextAlign.left,
+        width: 300,
+        minWidth: 150,
+      ),
+      PlutoColumn(
+        readOnly: true,
+        title: 'approbation Budget',
+        field: 'approbationBudget',
+        type: PlutoColumnType.text(),
+        enableRowDrag: true,
+        enableContextMenu: false,
+        enableDropToResize: true,
+        titleTextAlign: PlutoColumnTextAlign.left,
+        width: 300,
+        minWidth: 150,
+      ),
+      PlutoColumn(
+        readOnly: true,
+        title: 'approbation Fin',
+        field: 'approbationFin',
+        type: PlutoColumnType.text(),
+        enableRowDrag: true,
+        enableContextMenu: false,
+        enableDropToResize: true,
+        titleTextAlign: PlutoColumnTextAlign.left,
+        width: 300,
+        minWidth: 150,
+      ),
     ];
   }
 
   Future agentsRow() async {
     List<CampaignModel> campaigns = await CampaignApi().getAllData();
     // Uniquement ceux qui ont déjà été approuvé
-    var data = campaigns
-        // .where((element) =>
-        //     element.approbationDG == 'Approved' &&
-        //     element.approbationDD == 'Approved' &&
-        //     element.approbationBudget == 'Approved' &&
-        //     element.approbationFin == 'Approved')
+    var data = campaigns 
         .toList();
 
     if (mounted) {
@@ -244,7 +318,11 @@ class _TableCampaignState extends State<TableCampaign> {
             'promotion': PlutoCell(value: item.promotion),
             'objectifs': PlutoCell(value: item.objectifs),
             'created': PlutoCell(
-                value: DateFormat("dd-MM-yy H:mm").format(item.created))
+                value: DateFormat("dd-MM-yy H:mm").format(item.created)),
+            'approbationDG': PlutoCell(value: item.approbationDG),
+            'approbationDD': PlutoCell(value: item.approbationDD),
+            'approbationBudget': PlutoCell(value: item.approbationBudget),
+            'approbationFin': PlutoCell(value: item.approbationFin)
           }));
         }
         stateManager!.resetCurrentState();

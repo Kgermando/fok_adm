@@ -69,17 +69,40 @@ class _TableDepartementBudgetState extends State<TableDepartementBudget> {
             if (column.field == 'id') {
               return resolver<ClassFilterImplemented>() as PlutoFilterType;
             }
-            if (column.field == 'departement') {
+            else if (column.field == 'title') {
+              return resolver<ClassFilterImplemented>() as PlutoFilterType;
+            } else if (column.field == 'departement') {
               return resolver<ClassFilterImplemented>() as PlutoFilterType;
             } else if (column.field == 'periodeBudget') {
               return resolver<ClassFilterImplemented>() as PlutoFilterType;
             } else if (column.field == 'created') {
               return resolver<ClassFilterImplemented>() as PlutoFilterType;
-            }
+            } else if (column.field == 'approbationDG') {
+              return resolver<ClassFilterImplemented>() as PlutoFilterType;
+            } else if (column.field == 'approbationDD') {
+              return resolver<ClassFilterImplemented>() as PlutoFilterType;
+            } 
             return resolver<PlutoFilterTypeContains>() as PlutoFilterType;
           },
         ),
       ),
+      rowColorCallback: (rowColorContext) {
+        if (rowColorContext.row.cells.entries.elementAt(5).value.value ==
+                'Unapproved' ||
+            rowColorContext.row.cells.entries.elementAt(6).value.value ==
+                'Unapproved') {
+          return Colors.red.shade700;
+        } else if (rowColorContext.row.cells.entries
+                    .elementAt(5)
+                    .value
+                    .value ==
+                'Approved' &&
+            rowColorContext.row.cells.entries.elementAt(6).value.value ==
+                'Approved') {
+          return Colors.green.shade700;
+        }
+        return Colors.white;
+      }, 
     );
   }
 
@@ -145,6 +168,30 @@ class _TableDepartementBudgetState extends State<TableDepartementBudget> {
         width: 200,
         minWidth: 150,
       ),
+      PlutoColumn(
+        readOnly: true,
+        title: 'approbation DG',
+        field: 'approbationDG',
+        type: PlutoColumnType.text(),
+        enableRowDrag: true,
+        enableContextMenu: false,
+        enableDropToResize: true,
+        titleTextAlign: PlutoColumnTextAlign.left,
+        width: 300,
+        minWidth: 150,
+      ),
+      PlutoColumn(
+        readOnly: true,
+        title: 'approbation DD',
+        field: 'approbationDD',
+        type: PlutoColumnType.text(),
+        enableRowDrag: true,
+        enableContextMenu: false,
+        enableDropToResize: true,
+        titleTextAlign: PlutoColumnTextAlign.left,
+        width: 300,
+        minWidth: 150,
+      ),
     ];
   }
 
@@ -174,7 +221,9 @@ class _TableDepartementBudgetState extends State<TableDepartementBudget> {
                 value:
                     "${DateFormat("dd-MM-yyyy").format(item.periodeDebut)} - ${DateFormat("dd-MM-yyyy").format(item.periodeFin)}"),
             'created': PlutoCell(
-                value: DateFormat("dd-MM-yyyy HH:mm").format(item.created))
+                value: DateFormat("dd-MM-yyyy HH:mm").format(item.created)),
+            'approbationDG': PlutoCell(value: item.approbationDG),
+            'approbationDD': PlutoCell(value: item.approbationDD)
           }));
         }
         stateManager!.resetCurrentState();

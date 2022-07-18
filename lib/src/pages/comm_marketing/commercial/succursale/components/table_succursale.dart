@@ -97,21 +97,40 @@ class _TableSuccursaleState extends State<TableSuccursale> {
               ClassFilterImplemented(),
             ],
             resolveDefaultColumnFilter: (column, resolver) {
-              if (column.field == 'name') {
+              if (column.field == 'id') {
+                return resolver<ClassFilterImplemented>() as PlutoFilterType;
+              } else if (column.field == 'name') {
                 return resolver<ClassFilterImplemented>() as PlutoFilterType;
               } else if (column.field == 'province') {
+                return resolver<ClassFilterImplemented>() as PlutoFilterType;
+              } else if (column.field == 'created') {
                 return resolver<ClassFilterImplemented>() as PlutoFilterType;
               } else if (column.field == 'approbationDG') {
                 return resolver<ClassFilterImplemented>() as PlutoFilterType;
               } else if (column.field == 'approbationDD') {
                 return resolver<ClassFilterImplemented>() as PlutoFilterType;
-              } else if (column.field == 'created') {
-                return resolver<ClassFilterImplemented>() as PlutoFilterType;
-              }
+              } 
               return resolver<PlutoFilterTypeContains>() as PlutoFilterType;
             },
           ),
         ),
+        rowColorCallback: (rowColorContext) {
+          if (rowColorContext.row.cells.entries.elementAt(4).value.value ==
+                  'Unapproved' ||
+              rowColorContext.row.cells.entries.elementAt(5).value.value ==
+                  'Unapproved') {
+            return Colors.red.shade700;
+          } else if (rowColorContext.row.cells.entries
+                      .elementAt(4)
+                      .value
+                      .value ==
+                  'Approved' &&
+              rowColorContext.row.cells.entries.elementAt(5).value.value ==
+                  'Approved') {
+            return Colors.green.shade700;
+          }
+          return Colors.white;
+        }, 
       ),
     );
   }
@@ -166,6 +185,30 @@ class _TableSuccursaleState extends State<TableSuccursale> {
         width: 200,
         minWidth: 150,
       ),
+      PlutoColumn(
+        readOnly: true,
+        title: 'approbation DG',
+        field: 'approbationDG',
+        type: PlutoColumnType.text(),
+        enableRowDrag: true,
+        enableContextMenu: false,
+        enableDropToResize: true,
+        titleTextAlign: PlutoColumnTextAlign.left,
+        width: 300,
+        minWidth: 150,
+      ),
+      PlutoColumn(
+        readOnly: true,
+        title: 'approbation DD',
+        field: 'approbationDD',
+        type: PlutoColumnType.text(),
+        enableRowDrag: true,
+        enableContextMenu: false,
+        enableDropToResize: true,
+        titleTextAlign: PlutoColumnTextAlign.left,
+        width: 300,
+        minWidth: 150,
+      ),
     ];
   }
 
@@ -185,7 +228,9 @@ class _TableSuccursaleState extends State<TableSuccursale> {
             'name': PlutoCell(value: item.name),
             'province': PlutoCell(value: item.province),
             'created': PlutoCell(
-                value: DateFormat("dd-MM-yy H:mm").format(item.created))
+                value: DateFormat("dd-MM-yy H:mm").format(item.created)),
+            'approbationDG': PlutoCell(value: item.approbationDG),
+            'approbationDD': PlutoCell(value: item.approbationDD)
           }));
         }
         stateManager!.resetCurrentState();

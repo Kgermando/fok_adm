@@ -92,7 +92,9 @@ class _TableImmobilierState extends State<TableImmobilier> {
             ClassFilterImplemented(),
           ],
           resolveDefaultColumnFilter: (column, resolver) {
-            if (column.field == 'typeAllocation') {
+            if (column.field == 'id') {
+              return resolver<ClassFilterImplemented>() as PlutoFilterType;
+            } else if (column.field == 'typeAllocation') {
               return resolver<ClassFilterImplemented>() as PlutoFilterType;
             } else if (column.field == 'numeroCertificat') {
               return resolver<ClassFilterImplemented>() as PlutoFilterType;
@@ -102,11 +104,32 @@ class _TableImmobilierState extends State<TableImmobilier> {
               return resolver<ClassFilterImplemented>() as PlutoFilterType;
             } else if (column.field == 'created') {
               return resolver<ClassFilterImplemented>() as PlutoFilterType;
-            }
+            } else if (column.field == 'approbationDG') {
+              return resolver<ClassFilterImplemented>() as PlutoFilterType;
+            } else if (column.field == 'approbationDD') {
+              return resolver<ClassFilterImplemented>() as PlutoFilterType;
+            } 
             return resolver<PlutoFilterTypeContains>() as PlutoFilterType;
           },
         ),
       ),
+      rowColorCallback: (rowColorContext) {
+        if (rowColorContext.row.cells.entries.elementAt(6).value.value ==
+                'Unapproved' ||
+            rowColorContext.row.cells.entries.elementAt(7).value.value ==
+                'Unapproved') {
+          return Colors.red.shade700;
+        } else if (rowColorContext.row.cells.entries
+                    .elementAt(6)
+                    .value
+                    .value ==
+                'Approved' &&
+            rowColorContext.row.cells.entries.elementAt(7).value.value ==
+                'Approved') {
+          return Colors.green.shade700;
+        }
+        return Colors.white;
+      }, 
     );
   }
 
@@ -205,7 +228,9 @@ class _TableImmobilierState extends State<TableImmobilier> {
                 value:
                     DateFormat("dd-MM-yy H:mm").format(item.dateAcquisition)),
             'created': PlutoCell(
-                value: DateFormat("dd-MM-yy H:mm").format(item.created))
+                value: DateFormat("dd-MM-yy H:mm").format(item.created)),
+            'approbationDG': PlutoCell(value: item.approbationDG),
+            'approbationDD': PlutoCell(value: item.approbationDD)
           }));
         }
         stateManager!.resetCurrentState();
