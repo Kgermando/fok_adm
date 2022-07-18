@@ -288,7 +288,6 @@ class _TableGrandLivreState extends State<TableGrandLivre> {
     List<JournalModel?> dataList = await JournalApi().getAllData();
     var data = dataList.where((element) =>
         element!.compteDebit == widget.grandLivreModel.comptedebit ||
-        element.compteCredit == widget.grandLivreModel.comptecredit ||
         element.created.millisecondsSinceEpoch >=
                 widget.grandLivreModel.dateStart.millisecondsSinceEpoch &&
             element.created.millisecondsSinceEpoch <=

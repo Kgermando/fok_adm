@@ -81,15 +81,6 @@ class _SearchGrandLivreState extends State<SearchGrandLivre> {
                       Expanded(
                         child: Column(
                           children: [
-                            classCreditWidget(),
-                            compteCreditWidget(),
-                          ],
-                        ),
-                      ),
-                      const SizedBox(width: p20),
-                      Expanded(
-                        child: Column(
-                          children: [
                             dateStartWidget(),
                             dateEndWidget(),
                           ],
@@ -209,90 +200,7 @@ class _SearchGrandLivreState extends State<SearchGrandLivre> {
     );
   }
 
-  Widget classCreditWidget() {
-    return Container(
-      margin: const EdgeInsets.only(bottom: p20),
-      child: DropdownButtonFormField<String>(
-        decoration: InputDecoration(
-          labelText: 'Classe',
-          labelStyle: const TextStyle(),
-          border: OutlineInputBorder(borderRadius: BorderRadius.circular(5.0)),
-          // contentPadding: const EdgeInsets.only(left: 5.0),
-        ),
-        // value: compteClassActifDrop,
-        isExpanded: true,
-        items: comptesDropdown
-            .map((String value) {
-              return DropdownMenuItem<String>(
-                value: value,
-                child: Text(value),
-              );
-            })
-            .toSet()
-            .toList(),
-        onChanged: (value) {
-          if (value == "Classe_1_Comptes_de_ressources_durables") {
-            comptesCreditList = class1Dropdown;
-          } else if (value == "Classe_2_Comptes_Actif_immobilise") {
-            comptesCreditList = class2Dropdown;
-          } else if (value == "Classe_3_Comptes_de_stocks") {
-            comptesCreditList = class3Dropdown;
-          } else if (value == "Classe_4_Comptes_de_tiers") {
-            comptesCreditList = class4Dropdown;
-          } else if (value == "Classe_5_Comptes_de_tresorerie") {
-            comptesCreditList = class5Dropdown;
-          } else if (value ==
-              "Classe_6_Comptes_de_charges_des_activites_ordinaires") {
-            comptesCreditList = class6Dropdown;
-          } else if (value ==
-              "Classe_7_Comptes_de_produits_des_activites_ordinaires") {
-            comptesCreditList = class7Dropdown;
-          } else if (value ==
-              "Classe_8_Comptes_des_autres_charges_et_des_autres_produits") {
-            comptesCreditList = class8Dropdown;
-          } else if (value ==
-              "Classe_9_Comptes_des_engagements_hors_bilan_et_comptes_de_la_comptabilite_analytique_de_gestion") {
-            comptesCreditList = class9Dropdown;
-          } else {
-            comptesCreditList = [];
-          }
-          setState(() {});
-        },
-      ),
-    );
-  }
-
-  Widget compteCreditWidget() {
-    return Container(
-      margin: const EdgeInsets.only(bottom: p20),
-      child: DropdownButtonFormField<String>(
-        decoration: InputDecoration(
-          labelText: 'Comptes Crédit',
-          labelStyle: const TextStyle(),
-          border: OutlineInputBorder(borderRadius: BorderRadius.circular(5.0)),
-          // contentPadding: const EdgeInsets.only(left: 5.0),
-        ),
-        // value: comptesActifControllerList[index],
-        isExpanded: true,
-        items: comptesCreditList
-            .map((String? value) {
-              return DropdownMenuItem<String>(
-                value: value,
-                child: Text(value!),
-              );
-            })
-            .toSet()
-            .toList(),
-        validator: (value) => value == null ? "Select compte" : null,
-        onChanged: (value) {
-          setState(() {
-            comptesCreditController = value!;
-          });
-        },
-      ),
-    );
-  }
-
+  
   Widget dateStartWidget() {
     return Container(
         margin: const EdgeInsets.only(bottom: p20),
@@ -344,10 +252,7 @@ class _SearchGrandLivreState extends State<SearchGrandLivre> {
     final grandLivreModel = GrandLivreModel(
         comptedebit: (comptesDebitController == "")
             ? ""
-            : comptesDebitController.toString(),
-        comptecredit: (comptesCreditController == "")
-            ? " "
-            : comptesCreditController.toString(),
+            : comptesDebitController.toString(), 
         dateStart: DateTime.parse((dateStartController.text == "")
             ? "2021-12-31 00:00:00"
             : dateStartController.text),
