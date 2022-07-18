@@ -212,7 +212,7 @@ class _AddAgentState extends State<AddAgent> {
                           Row(
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: const [
-                              TitleWidget(title: 'Nouveau profile'),
+                              TitleWidget(title: 'Nouveau profil'),
                             ],
                           ),
                           const SizedBox(

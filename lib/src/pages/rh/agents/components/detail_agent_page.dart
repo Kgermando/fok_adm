@@ -38,10 +38,11 @@ class _DetailAgentPageState extends State<DetailAgentPage> {
 
   @override
   initState() {
-    getData(context);
+    getData();
     super.initState();
   }
 
+  List<ActionnaireModel> actionnaireList = [];
   // AgentModel? agentModel;
   UserModel user = UserModel(
       nom: '-',
@@ -57,16 +58,16 @@ class _DetailAgentPageState extends State<DetailAgentPage> {
       createdAt: DateTime.now(),
       passwordHash: '-',
       succursale: '-');
-  Future<void> getData(BuildContext context) async {
+  Future<void> getData() async {
     UserModel userModel = await AuthApi().getUserId();
     final data = await UserApi().getAllData();
-    // final agent = await AgentsApi().getOneData(id);
-    if(mounted) {
+    var actionnaires = await ActionnaireApi().getAllData();
+    if (mounted) {
       setState(() {
-      user = userModel;
-      userList = data;
-      // agentModel = agent;
-    });
+        user = userModel;
+        userList = data;
+        actionnaireList = actionnaires;
+      });
     }
   }
 
@@ -147,6 +148,9 @@ class _DetailAgentPageState extends State<DetailAgentPage> {
   }
 
   Widget pageDetail(AgentModel agentModel) {
+    var actionnaire = actionnaireList
+        .where((element) => element.matricule == agentModel.matricule)
+        .toList();
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
@@ -173,7 +177,7 @@ class _DetailAgentPageState extends State<DetailAgentPage> {
                     const TitleWidget(title: 'Curriculum vitæ'),
                     Row(
                       children: [
-                        if (int.parse(user.role) == 1)
+                        if (int.parse(user.role) == 0 && actionnaire.isEmpty)
                           IconButton(
                               color: Colors.red.shade700,
                               tooltip: 'Ajout Actionnaire',

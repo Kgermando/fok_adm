@@ -42,7 +42,7 @@ class _AgentsRhState extends State<AgentsRh> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      CustomAppbar(title: 'Liste du Personnels',
+                      CustomAppbar(title: 'Ressources Humaines',
                           controllerMenu: () =>
                               _key.currentState!.openDrawer()),
                       const Expanded(child: TableAgents())

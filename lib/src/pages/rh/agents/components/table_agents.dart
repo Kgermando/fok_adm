@@ -64,7 +64,7 @@ class _TableAgentsState extends State<TableAgents> {
         return Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            const TitleWidget(title: "Agents"),
+            const TitleWidget(title: "Personnels"),
             Row(
               children: [
                 IconButton(
