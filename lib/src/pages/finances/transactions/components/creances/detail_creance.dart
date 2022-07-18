@@ -486,6 +486,15 @@ class _DetailCreanceState extends State<DetailCreance> {
                       const SizedBox(
                         height: p20,
                       ),
+                      if (data.approbationDG == "-" &&
+                          data.approbationDD == "-")
+                        Text('Ajout payement',
+                            style: Theme.of(context)
+                                .textTheme
+                                .headline6!
+                                .copyWith(
+                                    color: Colors.red.shade700,
+                                    fontWeight: FontWeight.bold)),
                       if (data.approbationDG == "Approved" &&
                           data.approbationDD == "Approved")
                       BtnWidget(
