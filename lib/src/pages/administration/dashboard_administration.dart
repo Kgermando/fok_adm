@@ -8,6 +8,7 @@ import 'package:fokad_admin/src/api/comm_marketing/marketing/campaign_api.dart';
 import 'package:fokad_admin/src/api/comptabilite/bilan_api.dart';
 import 'package:fokad_admin/src/api/comptabilite/journal_api.dart';
 import 'package:fokad_admin/src/api/devis/devis_api.dart';
+import 'package:fokad_admin/src/api/devis/devis_list_objets_api.dart';
 import 'package:fokad_admin/src/api/exploitations/projets_api.dart';
 import 'package:fokad_admin/src/api/finances/banque_api.dart';
 import 'package:fokad_admin/src/api/finances/caisse_api.dart';
@@ -17,11 +18,14 @@ import 'package:fokad_admin/src/api/finances/dette_api.dart';
 import 'package:fokad_admin/src/api/finances/fin_exterieur_api.dart';
 import 'package:fokad_admin/src/api/rh/agents_api.dart';
 import 'package:fokad_admin/src/api/rh/paiement_salaire_api.dart';
+import 'package:fokad_admin/src/api/rh/trans_rest_agents_api.dart';
+import 'package:fokad_admin/src/api/rh/transport_restaurant_api.dart';
 import 'package:fokad_admin/src/constants/app_theme.dart';
 import 'package:fokad_admin/src/constants/responsive.dart';
 import 'package:fokad_admin/src/models/budgets/departement_budget_model.dart';
 import 'package:fokad_admin/src/models/budgets/ligne_budgetaire_model.dart';
 import 'package:fokad_admin/src/models/comm_maketing/campaign_model.dart';
+import 'package:fokad_admin/src/models/devis/devis_list_objets_model.dart';
 import 'package:fokad_admin/src/models/devis/devis_models.dart';
 import 'package:fokad_admin/src/models/exploitations/projet_model.dart';
 import 'package:fokad_admin/src/models/finances/banque_model.dart';
@@ -30,6 +34,7 @@ import 'package:fokad_admin/src/models/finances/creances_model.dart';
 import 'package:fokad_admin/src/models/finances/dette_model.dart';
 import 'package:fokad_admin/src/models/finances/fin_exterieur_model.dart';
 import 'package:fokad_admin/src/models/rh/paiement_salaire_model.dart';
+import 'package:fokad_admin/src/models/rh/transport_restauration_model.dart';
 import 'package:fokad_admin/src/navigation/drawer/drawer_menu.dart';
 import 'package:fokad_admin/src/navigation/header/custom_appbar.dart';
 import 'package:fokad_admin/src/pages/comm_marketing/dashboard/components/courbe_vente_gain_mounth.dart';
@@ -54,13 +59,16 @@ class _DashboardAdministrationState extends State<DashboardAdministration> {
  
   // Budgets
   double coutTotal = 0.0;
-  double sommeEnCours = 0.0;
-  double sommeRestantes = 0.0;
-  double poursentExecution = 0.0;
+  double sommeEnCours = 0.0; // cest la somme des 4 departements
+  double sommeRestantes =
+      0.0; // la somme restante apres la soustration entre coutTotal - sommeEnCours
+  double poursentExecution = 0;
+  // Total par departements
   double totalCampaign = 0.0;
-  double totalDevis = 0.0;
   double totalProjet = 0.0;
   double totalSalaire = 0.0;
+  double totalDevis = 0.0;
+  double totalTransRest = 0.0;
 
   // Comptabilite
   int bilanCount = 0;
@@ -98,8 +106,11 @@ class _DashboardAdministrationState extends State<DashboardAdministration> {
   List<LigneBudgetaireModel> ligneBudgetaireList = [];
   List<CampaignModel> dataCampaignList = [];
   List<DevisModel> dataDevisList = [];
+  List<DevisListObjetsModel> devisListObjetsList = []; // avec montant
   List<ProjetModel> dataProjetList = [];
   List<PaiementSalaireModel> dataSalaireList = [];
+  List<TransportRestaurationModel> dataTransRestList = [];
+  List<TransRestAgentsModel> tansRestList = []; // avec montant
   List<DepartementBudgetModel> departementsList = [];
 
   Future<void> getData() async {
@@ -113,6 +124,10 @@ class _DashboardAdministrationState extends State<DashboardAdministration> {
     var devis = await DevisAPi().getAllData();
     var projets = await ProjetsApi().getAllData();
     var salaires = await PaiementSalaireApi().getAllData();
+    var transRests = await TransportRestaurationApi().getAllData();
+    var devisListObjets = await DevisListObjetsApi().getAllData();
+    var transRestAgents = await TransRestAgentsApi().getAllData();
+
 
     // Comptabilite
     var bilans = await BilanApi().getAllData();
@@ -147,6 +162,8 @@ class _DashboardAdministrationState extends State<DashboardAdministration> {
             .length;
 
         // Budgets
+        devisListObjetsList = devisListObjets;
+        tansRestList = transRestAgents;
         departementsList = departements
             .where((element) =>
                 element.approbationDG == 'Approved' &&
@@ -154,35 +171,59 @@ class _DashboardAdministrationState extends State<DashboardAdministration> {
                 DateTime.now().isBefore(element.periodeFin))
             .toList();
 
-        ligneBudgetaireList = budgets
-            .where((element) =>
-                DateTime.now().isBefore(element.periodeBudgetFin))
-            .toList();
+        for (var i in departementsList) {
+          ligneBudgetaireList = budgets
+              .where((element) =>
+                  element.periodeBudgetDebut.microsecondsSinceEpoch ==
+                      i.periodeDebut.microsecondsSinceEpoch &&
+                  DateTime.now().isBefore(element.periodeBudgetFin) &&
+                  i.approbationDG == "Approved" &&
+                  i.approbationDD == "Approved")
+              .toList();
+        }
+
 
         for (var item in ligneBudgetaireList) {
           dataCampaignList = campaigns
               .where((element) =>
                   element.approbationDG == 'Approved' &&
                   element.approbationDD == 'Approved' &&
+                  element.approbationBudget == 'Approved' &&
+                  element.observation == 'true' &&
                   element.created.isBefore(item.periodeBudgetFin))
               .toList();
           dataDevisList = devis
               .where((element) =>
                   element.approbationDG == 'Approved' &&
                   element.approbationDD == 'Approved' &&
+                  element.approbationBudget == 'Approved' &&
+                  element.observation == 'true' &&
                   element.created.isBefore(item.periodeBudgetFin))
               .toList();
           dataProjetList = projets
               .where((element) =>
                   element.approbationDG == 'Approved' &&
                   element.approbationDD == 'Approved' &&
+                  element.approbationBudget == 'Approved' &&
+                  element.observation == 'true' &&
                   element.created.isBefore(item.periodeBudgetFin))
               .toList();
           dataSalaireList = salaires
               .where((element) =>
+                  element.createdAt.month == DateTime.now().month &&
+                  element.createdAt.year == DateTime.now().year &&
                   element.approbationDD == 'Approved' &&
-                  element.createdAt
-                      .isBefore(item.periodeBudgetFin))
+                  element.approbationBudget == 'Approved' &&
+                  element.observation == 'true' &&
+                  element.createdAt.isBefore(item.periodeBudgetFin))
+              .toList();
+          dataTransRestList = transRests
+              .where((element) =>
+                  element.approbationDG == 'Approved' &&
+                  element.approbationDD == 'Approved' &&
+                  element.approbationBudget == 'Approved' &&
+                  element.observation == 'true' &&
+                  element.created.isBefore(item.periodeBudgetFin))
               .toList();
         }
 
@@ -269,19 +310,42 @@ class _DashboardAdministrationState extends State<DashboardAdministration> {
       for (var item in ligneBudgetaireList) {
         coutTotal += double.parse(item.coutTotal);
       }
+
       for (var item in dataCampaignList) {
         totalCampaign += double.parse(item.coutCampaign);
       }
-      // for (var item in dataDevisList) {
-      //   totalDevis += double.parse(item.resources);
-      // }
+      for (var item in dataDevisList) {
+        var devisCaisseList = devisListObjetsList
+            .where((element) =>
+                element.referenceDate.microsecondsSinceEpoch ==
+                item.createdRef.microsecondsSinceEpoch)
+            .toList();
+        for (var element in devisCaisseList) {
+          totalDevis += double.parse(element.montantGlobal);
+        }
+      }
       for (var item in dataProjetList) {
         totalProjet += double.parse(item.coutProjet);
       }
       for (var item in dataSalaireList) {
         totalSalaire += double.parse(item.salaire);
       }
-      sommeEnCours = totalCampaign + totalDevis + totalProjet + totalSalaire;
+      for (var item in dataTransRestList) {
+        var devisCaisseList = tansRestList
+            .where((element) =>
+                element.reference.microsecondsSinceEpoch ==
+                item.createdRef.microsecondsSinceEpoch)
+            .toList();
+        for (var element in devisCaisseList) {
+          totalTransRest += double.parse(element.montant);
+        }
+      }
+      // Sommes budgets
+      sommeEnCours = totalCampaign +
+          totalDevis +
+          totalProjet +
+          totalSalaire +
+          totalTransRest;
       sommeRestantes = coutTotal - sommeEnCours;
       poursentExecution = sommeRestantes * 100 / coutTotal;
     }
@@ -328,7 +392,7 @@ class _DashboardAdministrationState extends State<DashboardAdministration> {
                                   icon: Icons.person,
                                   color: Colors.green.shade700),
                               DashNumberWidget(
-                                  number: '$poursentExecution %',
+                                  number: "${NumberFormat.decimalPattern('fr').format(double.parse(poursentExecution.toStringAsFixed(0)))} %",
                                   title: "Budgets",
                                   icon: Icons.monetization_on_outlined,
                                   color: Colors.purple.shade700),

@@ -53,8 +53,14 @@ class _TableDepartementBudgetDGState extends State<TableDepartementBudgetDG> {
         createHeader: (PlutoGridStateManager header) {
           return Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: const [
-              TitleWidget(title: "Lignes Budgetaires"),
+            children: [
+              const TitleWidget(title: "Budgets"),
+              IconButton(
+                  onPressed: () {
+                    Navigator.pushNamed(
+                        context, AdminRoutes.adminBudget);
+                  },
+                  icon: Icon(Icons.refresh, color: Colors.green.shade700))
             ],
           );
         },
