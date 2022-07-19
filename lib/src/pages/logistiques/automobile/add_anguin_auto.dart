@@ -23,8 +23,7 @@ class AddAnguinAuto extends StatefulWidget {
 }
 
 class _AddAnguinAutoState extends State<AddAnguinAuto> {
-  final GlobalKey<ScaffoldState> _key = GlobalKey();
-  final ScrollController _controllerScroll = ScrollController();
+  final GlobalKey<ScaffoldState> _key = GlobalKey(); 
   final _formKey = GlobalKey<FormState>();
   bool isLoading = false;
 

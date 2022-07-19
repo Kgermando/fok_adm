@@ -1,5 +1,5 @@
-import 'package:flutter/material.dart';
-import 'package:fokad_admin/src/api/devis/devis_api.dart';
+import 'package:flutter/material.dart'; 
+import 'package:fokad_admin/src/api/notifications/devis/devis_notify_api.dart';
 import 'package:fokad_admin/src/constants/app_theme.dart';
 import 'package:fokad_admin/src/constants/responsive.dart';
 import 'package:fokad_admin/src/navigation/drawer/drawer_menu.dart';
@@ -35,14 +35,9 @@ class _EtatBesoinAdminState extends State<EtatBesoinAdmin> {
 
   String? matricule;
   Future<void> getData() async {
-    var data = await DevisAPi().getAllData();
+    var data = await DevisNotifyApi().getCountDG();
     setState(() {
-      itemCount = data
-          .where((element) =>
-              element.approbationDG == '-' &&
-              element.approbationDD == 'Approved')
-          .toList()
-          .length;
+      itemCount = data.count;
     });
   }
 

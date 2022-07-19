@@ -1,8 +1,8 @@
 import 'dart:async';
 
-import 'package:flutter/material.dart'; 
-import 'package:fokad_admin/src/api/rh/paiement_salaire_api.dart';
-import 'package:fokad_admin/src/api/rh/transport_restaurant_api.dart';
+import 'package:flutter/material.dart';
+import 'package:fokad_admin/src/api/notifications/rh/salaires_notify_api.dart';
+import 'package:fokad_admin/src/api/notifications/rh/trans_rest_notify_api.dart'; 
 import 'package:fokad_admin/src/constants/app_theme.dart';
 import 'package:fokad_admin/src/constants/responsive.dart';
 import 'package:fokad_admin/src/navigation/drawer/drawer_menu.dart';
@@ -28,7 +28,6 @@ class _DepartementRHState extends State<DepartementRH> {
 
   int salairesCount = 0;
   int transRestCount = 0;
-  // int userAcount = 0;
 
   @override
   void initState() {
@@ -38,19 +37,12 @@ class _DepartementRHState extends State<DepartementRH> {
 
   Future<void> getData() async {
     // RH
-    var salaires = await PaiementSalaireApi().getAllData();
-    var transRests = await TransportRestaurationApi().getAllData();
+    var salaires = await SalaireNotifyApi().getCountDD();
+    var transRests = await TransRestNotifyApi().getCountDD();
 
     setState(() {
-      salairesCount = salaires
-          .where((element) =>
-              element.createdAt.month == DateTime.now().month &&
-              element.createdAt.year == DateTime.now().year && 
-              element.approbationDD == "-"
-          ).length;
-
-      transRestCount =
-          transRests.where((element) => element.approbationDD == '-').length;
+      salairesCount = salaires.count;
+      transRestCount = transRests.count;
     });
   }
 

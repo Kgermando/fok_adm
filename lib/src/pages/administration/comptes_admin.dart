@@ -1,10 +1,10 @@
 import 'dart:async';
 
-import 'package:flutter/material.dart'; 
-import 'package:fokad_admin/src/api/comptabilite/balance_compte_api.dart';
-import 'package:fokad_admin/src/api/comptabilite/bilan_api.dart';
-import 'package:fokad_admin/src/api/comptabilite/compte_resultat_api.dart';
-import 'package:fokad_admin/src/api/comptabilite/journal_api.dart';
+import 'package:flutter/material.dart';  
+import 'package:fokad_admin/src/api/notifications/comptabilite/balance_notify_api.dart';
+import 'package:fokad_admin/src/api/notifications/comptabilite/bilan_notify_api.dart';
+import 'package:fokad_admin/src/api/notifications/comptabilite/compte_resultat_notify_api.dart';
+import 'package:fokad_admin/src/api/notifications/comptabilite/journal_notify_api.dart';
 import 'package:fokad_admin/src/constants/app_theme.dart';
 import 'package:fokad_admin/src/constants/responsive.dart';
 import 'package:fokad_admin/src/navigation/drawer/drawer_menu.dart';
@@ -43,34 +43,16 @@ class _CompteAdminState extends State<CompteAdmin> {
   }
 
   Future<void> getData() async {
-    var bilans = await BilanApi().getAllData();
-    var journal = await JournalApi().getAllData();
-    var compteReultats = await CompteResultatApi().getAllData();
-    var balances = await BalanceCompteApi().getAllData(); 
+    var bilans = await BilanNotifyApi().getCountDG();
+    var journal = await JournalNotifyApi().getCountDG();
+    var compteReultats = await CompteResultatNotifyApi().getCountDG();
+    var balances = await BalanceNotifyApi().getCountDG();
 
     setState(() {
-      bilanCount = bilans
-          .where((element) =>
-              element.approbationDG == '-' &&
-              element.approbationDD == 'Approved' &&
-              element.isSubmit == "true")
-          .length;
-      journalCount = journal
-          .where((element) =>
-              element.approbationDG == '-' &&
-              element.approbationDD == 'Approved')
-          .length;
-      compteResultatCount = compteReultats
-          .where((element) =>
-              element.approbationDG == '-' &&
-              element.approbationDD == 'Approved')
-          .length;
-      balanceCount = balances
-          .where((element) =>
-              element.approbationDG == '-' &&
-              element.approbationDD == 'Approved' &&
-              element.isSubmit == "true")
-          .length;
+      bilanCount = bilans.count;
+      journalCount = journal.count;
+      compteResultatCount = compteReultats.count;
+      balanceCount = balances.count;
     });
   }
 

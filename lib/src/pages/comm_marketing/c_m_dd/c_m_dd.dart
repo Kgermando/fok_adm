@@ -1,12 +1,9 @@
-import 'package:flutter/material.dart';
-import 'package:fokad_admin/src/api/comm_marketing/commerciale/produit_model_api.dart';
-import 'package:fokad_admin/src/api/comm_marketing/commerciale/succursale_api.dart';
-import 'package:fokad_admin/src/api/comm_marketing/marketing/campaign_api.dart';
+import 'package:flutter/material.dart'; 
+import 'package:fokad_admin/src/api/notifications/comm_marketing/campaign_notify_api.dart';
+import 'package:fokad_admin/src/api/notifications/comm_marketing/prod_model_notify_api.dart';
+import 'package:fokad_admin/src/api/notifications/comm_marketing/succursale_notify_api.dart';
 import 'package:fokad_admin/src/constants/app_theme.dart';
-import 'package:fokad_admin/src/constants/responsive.dart';
-import 'package:fokad_admin/src/models/comm_maketing/campaign_model.dart';
-import 'package:fokad_admin/src/models/comm_maketing/prod_model.dart';
-import 'package:fokad_admin/src/models/comm_maketing/succursale_model.dart';
+import 'package:fokad_admin/src/constants/responsive.dart'; 
 import 'package:fokad_admin/src/navigation/drawer/drawer_menu.dart';
 import 'package:fokad_admin/src/navigation/header/custom_appbar.dart';
 import 'package:fokad_admin/src/pages/comm_marketing/c_m_dd/components/campaigns/table_campaign_dd.dart';
@@ -38,19 +35,13 @@ class _CMDDState extends State<CMDD> {
   }
 
   Future<void> getData() async {
-    List<CampaignModel> campaign = await CampaignApi().getAllData();
-    List<SuccursaleModel> succursale = await SuccursaleApi().getAllData();
-    List<ProductModel> prodModel = await ProduitModelApi().getAllData();
+    var campaigns = await CampaignNotifyApi().getCountDD();
+    var succursales = await SuccursaleNotifyApi().getCountDD();
+    var prodModels = await ProdModelNotifyApi().getCountDD();
     setState(() {
-      campaignCount =
-          campaign
-          .where((element) => 
-              element.approbationDD == '-')
-          .length; 
-      succursaleCount =
-          succursale.where((element) => element.approbationDD == "-").length;
-      prodModelCount =
-          prodModel.where((element) => element.approbationDD == "-").length;
+      campaignCount = campaigns.count;
+      succursaleCount = succursales.count;
+      prodModelCount = prodModels.count;
     });
   }
 
@@ -91,8 +82,8 @@ class _CMDDState extends State<CMDD> {
                               child: ExpansionTile(
                                 leading: const Icon(Icons.folder,
                                     color: Colors.white),
-                                title:
-                                    Text('Dossier Campagnes', style: headline6!
+                                title: Text('Dossier Campagnes',
+                                    style: headline6!
                                         .copyWith(color: Colors.white)),
                                 subtitle: Text(
                                     "Vous avez $campaignCount dossiers necessitent votre approbation",
@@ -104,7 +95,10 @@ class _CMDDState extends State<CMDD> {
                                     isOpenRh1 = !val;
                                   });
                                 },
-                                trailing: const Icon(Icons.arrow_drop_down, color: Colors.white,),
+                                trailing: const Icon(
+                                  Icons.arrow_drop_down,
+                                  color: Colors.white,
+                                ),
                                 children: const [TableCampaignDD()],
                               ),
                             ),
@@ -118,14 +112,18 @@ class _CMDDState extends State<CMDD> {
                                         color: Colors.white)),
                                 subtitle: Text(
                                     "Vous avez $succursaleCount dossiers necessitent votre approbation",
-                                    style: bodyMedium.copyWith(color: Colors.white)),
+                                    style: bodyMedium.copyWith(
+                                        color: Colors.white)),
                                 initiallyExpanded: false,
                                 onExpansionChanged: (val) {
                                   setState(() {
                                     isOpenRh1 = !val;
                                   });
                                 },
-                                trailing: const Icon(Icons.arrow_drop_down, color: Colors.white,),
+                                trailing: const Icon(
+                                  Icons.arrow_drop_down,
+                                  color: Colors.white,
+                                ),
                                 children: const [TableSuccursaleDD()],
                               ),
                             ),
@@ -135,17 +133,22 @@ class _CMDDState extends State<CMDD> {
                                 leading: const Icon(Icons.folder,
                                     color: Colors.white),
                                 title: Text('Dossier modèle produits',
-                                    style: headline6.copyWith(color: Colors.white)),
+                                    style: headline6.copyWith(
+                                        color: Colors.white)),
                                 subtitle: Text(
                                     "Vous avez $prodModelCount dossiers necessitent votre approbation",
-                                    style: bodyMedium.copyWith(color: Colors.white)),
+                                    style: bodyMedium.copyWith(
+                                        color: Colors.white)),
                                 initiallyExpanded: false,
                                 onExpansionChanged: (val) {
                                   setState(() {
                                     isOpenRh1 = !val;
                                   });
                                 },
-                                trailing: const Icon(Icons.arrow_drop_down, color: Colors.white,),
+                                trailing: const Icon(
+                                  Icons.arrow_drop_down,
+                                  color: Colors.white,
+                                ),
                                 children: const [TableProduitModelDD()],
                               ),
                             ),

@@ -1,5 +1,6 @@
-import 'package:flutter/material.dart'; 
+import 'package:flutter/material.dart';
 import 'package:fokad_admin/src/api/budgets/departement_budget_api.dart';
+import 'package:fokad_admin/src/api/notifications/budgets/budget_notify_api.dart';
 import 'package:fokad_admin/src/constants/app_theme.dart';
 import 'package:fokad_admin/src/constants/responsive.dart';
 import 'package:fokad_admin/src/models/budgets/departement_budget_model.dart';
@@ -29,20 +30,9 @@ class _BudgetsAdminState extends State<BudgetsAdmin> {
   }
 
   Future<void> getData() async {
-    List<DepartementBudgetModel?> departementBudget =
-        await DepeartementBudgetApi().getAllData(); 
-    // List<LigneBudgetaireModel?> dataLigneBudgetaireList =
-    //     await LIgneBudgetaireApi().getAllData();
+    var budgetCountNotify = await BudgetNotifyApi().getCountDG();
     setState(() {
-      budgetCount = departementBudget
-          .where((element) =>
-              DateTime.now().millisecondsSinceEpoch <=
-                  element!.periodeFin.millisecondsSinceEpoch &&  
-              element.isSubmit == 'true' && 
-              element.approbationDG == '-' &&
-              element.approbationDD == 'Approved')
-              
-          .length;
+      budgetCount = budgetCountNotify.count;
     });
   }
 

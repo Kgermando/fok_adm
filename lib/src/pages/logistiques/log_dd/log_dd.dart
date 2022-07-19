@@ -53,7 +53,6 @@ class _LogDDState extends State<LogDD> {
   @override
   void initState() {
     getData();
-
     super.initState();
   }
 
@@ -76,8 +75,6 @@ class _LogDDState extends State<LogDD> {
       entretiensCount = entretiens.count;
       etatmaterielsCount = etatmateriels.count;
       etatBesoinCount = devis.count;
-
-      print("enguin: $anguinsCount");
     });
   }
 

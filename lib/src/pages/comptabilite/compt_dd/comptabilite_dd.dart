@@ -1,10 +1,10 @@
 import 'dart:async';
 
-import 'package:flutter/material.dart';
-import 'package:fokad_admin/src/api/comptabilite/balance_compte_api.dart';
-import 'package:fokad_admin/src/api/comptabilite/bilan_api.dart';
-import 'package:fokad_admin/src/api/comptabilite/compte_resultat_api.dart';
-import 'package:fokad_admin/src/api/comptabilite/journal_api.dart';
+import 'package:flutter/material.dart'; 
+import 'package:fokad_admin/src/api/notifications/comptabilite/balance_notify_api.dart';
+import 'package:fokad_admin/src/api/notifications/comptabilite/bilan_notify_api.dart';
+import 'package:fokad_admin/src/api/notifications/comptabilite/compte_resultat_notify_api.dart';
+import 'package:fokad_admin/src/api/notifications/comptabilite/journal_notify_api.dart';
 import 'package:fokad_admin/src/constants/app_theme.dart';
 import 'package:fokad_admin/src/constants/responsive.dart';
 import 'package:fokad_admin/src/navigation/drawer/drawer_menu.dart';
@@ -40,24 +40,20 @@ class _ComptabiliteDDState extends State<ComptabiliteDD> {
   @override
   void initState() {
     getData();
-
     super.initState();
   }
 
   Future<void> getData() async {
-    var bilans = await BilanApi().getAllData();
-    var journal = await JournalApi().getAllData();
-    var compteReultats = await CompteResultatApi().getAllData();
-    var balances = await BalanceCompteApi().getAllData();
+    var bilans = await BilanNotifyApi().getCountDD();
+    var journal = await JournalNotifyApi().getCountDD();
+    var compteReultats = await CompteResultatNotifyApi().getCountDD();
+    var balances = await BalanceNotifyApi().getCountDD();
 
     setState(() {
-      bilanCount =
-      bilans.where((element) => element.approbationDD == "-").length;
-      journalCount = journal.where((element) => element.approbationDD == "-").length;
-      compteResultatCount = compteReultats
-          .where((element) => element.approbationDD == "-")
-          .length;
-      balanceCount = balances.where((element) => element.approbationDD == "-").length;
+      bilanCount = bilans.count;
+      journalCount = journal.count;
+      compteResultatCount = compteReultats.count;
+      balanceCount = balances.count;
     });
   }
 
@@ -162,7 +158,7 @@ class _ComptabiliteDDState extends State<ComptabiliteDD> {
                                 initiallyExpanded: false,
                                 onExpansionChanged: (val) {
                                   setState(() {
-                                    isOpen4 = !val;
+                                    isOpen3 = !val;
                                   });
                                 },
                                 trailing: const Icon(

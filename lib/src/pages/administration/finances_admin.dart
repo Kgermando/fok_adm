@@ -1,6 +1,6 @@
-import 'package:flutter/material.dart';
-import 'package:fokad_admin/src/api/finances/creance_api.dart';
-import 'package:fokad_admin/src/api/finances/dette_api.dart';
+import 'package:flutter/material.dart'; 
+import 'package:fokad_admin/src/api/notifications/finances/creance_notify_api.dart';
+import 'package:fokad_admin/src/api/notifications/finances/dette_notify_api.dart';
 import 'package:fokad_admin/src/constants/app_theme.dart';
 import 'package:fokad_admin/src/constants/responsive.dart';
 import 'package:fokad_admin/src/navigation/drawer/drawer_menu.dart';
@@ -21,12 +21,10 @@ class _FinancesAdminState extends State<FinancesAdmin> {
   final ScrollController _controllerScroll = ScrollController();
 
   bool isOpenFin1 = false;
-  bool isOpenFin2 = false; 
-
+  bool isOpenFin2 = false;
 
   int nbrCreance = 0;
   int nbrDette = 0;
- 
 
   @override
   initState() {
@@ -35,16 +33,12 @@ class _FinancesAdminState extends State<FinancesAdmin> {
   }
 
   Future<void> getData() async {
-    var dataCreanceList = await CreanceApi().getAllData();
-    var dataDetteList = await DetteApi().getAllData();
-    
+    var creances = await CreanceNotifyApi().getCountDG();
+    var dettes = await DetteNotifyApi().getCountDG();
+
     setState(() {
-       nbrCreance = dataCreanceList
-          .where((element) => element.statutPaie == 'false')
-          .length;
-      nbrDette = dataDetteList
-          .where((element) =>  element.statutPaie == 'false')
-          .length;
+      nbrCreance = creances.count;
+      nbrDette = dettes.count;
     });
   }
 
@@ -70,7 +64,9 @@ class _FinancesAdminState extends State<FinancesAdmin> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      CustomAppbar(title: 'Finances', controllerMenu: () =>
+                      CustomAppbar(
+                          title: 'Finances',
+                          controllerMenu: () =>
                               _key.currentState!.openDrawer()),
                       Expanded(
                           child: Scrollbar(
@@ -109,10 +105,12 @@ class _FinancesAdminState extends State<FinancesAdmin> {
                                 leading: const Icon(Icons.folder,
                                     color: Colors.white),
                                 title: Text('Dossier Dettes',
-                                    style: headline6.copyWith(color: Colors.white)),
+                                    style: headline6.copyWith(
+                                        color: Colors.white)),
                                 subtitle: Text(
                                     "Vous avez $nbrDette dossiers necessitent votre approbation",
-                                    style: bodyMedium.copyWith(color: Colors.white)),
+                                    style: bodyMedium.copyWith(
+                                        color: Colors.white)),
                                 initiallyExpanded: false,
                                 onExpansionChanged: (val) {
                                   setState(() {
@@ -126,7 +124,6 @@ class _FinancesAdminState extends State<FinancesAdmin> {
                                 children: const [TableDetteAdmin()],
                               ),
                             ),
-                            
                           ],
                         ),
                       ))

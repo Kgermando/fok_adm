@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:fokad_admin/src/api/comm_marketing/marketing/campaign_api.dart';
-import 'package:fokad_admin/src/api/devis/devis_api.dart';
-import 'package:fokad_admin/src/api/exploitations/projets_api.dart';
-import 'package:fokad_admin/src/api/finances/creance_api.dart';
-import 'package:fokad_admin/src/api/finances/dette_api.dart';
-import 'package:fokad_admin/src/api/rh/paiement_salaire_api.dart';
-import 'package:fokad_admin/src/api/rh/transport_restaurant_api.dart';
+import 'package:fokad_admin/src/api/notifications/comm_marketing/campaign_notify_api.dart';
+import 'package:fokad_admin/src/api/notifications/devis/devis_notify_api.dart';
+import 'package:fokad_admin/src/api/notifications/exploitations/projet_notify_api.dart';
+import 'package:fokad_admin/src/api/notifications/finances/creance_notify_api.dart';
+import 'package:fokad_admin/src/api/notifications/finances/dette_notify_api.dart';
+import 'package:fokad_admin/src/api/notifications/rh/salaires_notify_api.dart';
+import 'package:fokad_admin/src/api/notifications/rh/trans_rest_notify_api.dart';
 import 'package:fokad_admin/src/constants/app_theme.dart';
 import 'package:fokad_admin/src/constants/responsive.dart';
 import 'package:fokad_admin/src/navigation/drawer/drawer_menu.dart';
@@ -52,68 +52,22 @@ class _DepartementFinState extends State<DepartementFin> {
   }
 
   Future<void> getData() async {
-    var creances = await CreanceApi().getAllData();
-    var dettes = await DetteApi().getAllData();
-    var salaires = await PaiementSalaireApi().getAllData();
-    var transRests = await TransportRestaurationApi().getAllData();
-    var campaigns = await CampaignApi().getAllData();
-    var devis = await DevisAPi().getAllData();
-    var projets = await ProjetsApi().getAllData();
+    var creances = await CreanceNotifyApi().getCountDD();
+    var dettes = await DetteNotifyApi().getCountDD(); 
+    var salairesCountNotify = await SalaireNotifyApi().getCountFin();
+    var transRestsCountNotify = await TransRestNotifyApi().getCountFin();
+    var campaignsCountNotify = await CampaignNotifyApi().getCountFin();
+    var devisCountNotify = await DevisNotifyApi().getCountFin();
+    var projetsCountNotify = await ProjetNotifyApi().getCountFin(); 
 
     setState(() {
-      creanceCount = creances
-          .where((element) =>
-              element.statutPaie == 'false' && element.approbationDD == '-')
-          .toList()
-          .length;
-
-      detteCount = dettes
-          .where((element) =>
-              element.statutPaie == 'false' && element.approbationDD == '-')
-          .toList()
-          .length;
-
-      salaireCount = salaires
-          .where((element) =>
-              element.createdAt.month == DateTime.now().month &&
-              element.createdAt.year == DateTime.now().year &&
-              element.approbationDD == 'Approved' &&
-              element.approbationBudget == 'Approved' &&
-              element.approbationFin == "-")
-          .length;
-
-      transRestCount =
-          transRests
-          .where((element) =>
-              element.approbationDG == 'Approved' &&
-              element.approbationDD == 'Approved' &&
-              element.approbationBudget == 'Approved' &&
-              element.approbationFin == "-")
-          .length;
-
-      campaignCount = campaigns
-          .where((element) =>
-              element.approbationDG == 'Approved' &&
-              element.approbationDD == 'Approved' &&
-              element.approbationBudget == 'Approved' &&
-              element.approbationFin == "-")
-          .length;
-
-      devisCount = devis
-          .where((element) =>
-              element.approbationDG == 'Approved' &&
-              element.approbationDD == 'Approved' &&
-              element.approbationBudget == 'Approved' &&
-              element.approbationFin == "-")
-          .length;
-
-      projetCount = projets
-          .where((element) =>
-              element.approbationDG == 'Approved' &&
-              element.approbationDD == 'Approved' &&
-              element.approbationBudget == 'Approved' &&
-              element.approbationFin == "-")
-          .length;
+      creanceCount = creances.count;
+      detteCount = dettes.count;
+      salaireCount = salairesCountNotify.count;
+      transRestCount = transRestsCountNotify.count;
+      campaignCount = campaignsCountNotify.count;
+      devisCount = devisCountNotify.count;
+      projetCount = projetsCountNotify.count; 
     });
   }
 
