@@ -7,7 +7,8 @@ import 'package:fokad_admin/src/models/logistiques/immobilier_model.dart';
 import 'package:fokad_admin/src/models/users/user_model.dart';
 import 'package:fokad_admin/src/navigation/drawer/drawer_menu.dart';
 import 'package:fokad_admin/src/navigation/header/custom_appbar.dart';
-import 'package:fokad_admin/src/utils/loading.dart'; 
+import 'package:fokad_admin/src/routes/routes.dart';
+import 'package:fokad_admin/src/utils/loading.dart';
 import 'package:fokad_admin/src/widgets/title_widget.dart';
 import 'package:intl/intl.dart';
 
@@ -154,14 +155,27 @@ class _DetailImmobilierState extends State<DetailImmobilier> {
                     children: [
                       Row(
                         children: [
+                          // IconButton(
+                          //     tooltip: 'Modifier',
+                          //     onPressed: () {
+                          //       Navigator.pushNamed(
+                          //           context,
+                          //           LogistiqueRoutes
+                          //               .logImmobilierMaterielUpdate,
+                          //           arguments: data);
+                          //     },
+                          //     icon: const Icon(Icons.edit)),
                           IconButton(
-                              tooltip: 'Modifier',
-                              onPressed: () {},
-                              icon: const Icon(Icons.edit)),
+                              tooltip: 'Supprimer',
+                              onPressed: () async { 
+                                alertDeleteDialog(data);
+                              },
+                              icon: const Icon(Icons.delete),
+                              color: Colors.red.shade700),
                         ],
                       ),
                       SelectableText(
-                          DateFormat("dd-MM-yy").format(data.created),
+                          DateFormat("dd-MM-yyyy").format(data.created),
                           textAlign: TextAlign.start),
                     ],
                   )
@@ -173,6 +187,36 @@ class _DetailImmobilierState extends State<DetailImmobilier> {
         ),
       ),
     ]);
+  }
+
+  alertDeleteDialog(ImmobilierModel data) {
+    return showDialog(
+        context: context,
+        barrierDismissible: true,
+        builder: (context) {
+          return StatefulBuilder(builder: (context, StateSetter setState) {
+            return AlertDialog(
+              title: const Text('Etes-vous sûr de vouloir faire ceci ?'),
+              content: const SizedBox(
+                  height: 100,
+                  width: 100,
+                  child: Text("Cette action permet de supprimer le document")),
+              actions: <Widget>[
+                TextButton(
+                  onPressed: () => Navigator.pop(context, 'Cancel'),
+                  child: const Text('Annuler'),
+                ),
+                TextButton(
+                  onPressed: () async {
+                    await ImmobilierApi().deleteData(data.id!);
+                    Navigator.of(context).pop();
+                  },
+                  child: const Text('OK'),
+                ),
+              ],
+            );
+          });
+        });
   }
 
   Widget dataWidget(ImmobilierModel data) {
@@ -281,7 +325,7 @@ class _DetailImmobilierState extends State<DetailImmobilier> {
     );
   }
 
- Widget approbationWidget(ImmobilierModel data) {
+  Widget approbationWidget(ImmobilierModel data) {
     final bodyLarge = Theme.of(context).textTheme.bodyLarge;
     return Row(mainAxisAlignment: MainAxisAlignment.center, children: [
       Card(
@@ -580,7 +624,7 @@ class _DetailImmobilierState extends State<DetailImmobilier> {
 
   Future<void> submitDG(ImmobilierModel data) async {
     final immobilierModel = ImmobilierModel(
-      id: data.id!,
+        id: data.id!,
         typeAllocation: data.typeAllocation,
         adresse: data.adresse,
         numeroCertificat: data.numeroCertificat,
@@ -594,7 +638,7 @@ class _DetailImmobilierState extends State<DetailImmobilier> {
         signatureDG: user.matricule,
         approbationDD: data.approbationDD,
         motifDD: data.motifDD,
-        signatureDD: data.signatureDD); 
+        signatureDD: data.signatureDD);
     await ImmobilierApi().updateData(immobilierModel);
     Navigator.pop(context);
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(

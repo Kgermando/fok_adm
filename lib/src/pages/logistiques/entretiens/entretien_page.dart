@@ -41,7 +41,7 @@ class _EntretienPageState extends State<EntretienPage> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      CustomAppbar(title: 'Geston des entretiens',
+                      CustomAppbar(title: 'Gestion des entretiens & Maintenaces',
                           controllerMenu: () =>
                               _key.currentState!.openDrawer()),
                       const Expanded(child: TableEntretien())

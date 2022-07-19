@@ -61,7 +61,7 @@ class _TableEntretienState extends State<TableEntretien> {
         return Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            const TitleWidget(title: "Entretiens"),
+            const TitleWidget(title: "Entretiens & Maintenances"),
             Row(
               children: [
                 IconButton(
@@ -91,7 +91,9 @@ class _TableEntretienState extends State<TableEntretien> {
             ClassFilterImplemented(),
           ],
           resolveDefaultColumnFilter: (column, resolver) {
-            if (column.field == 'nom') {
+            if (column.field == 'id') {
+              return resolver<ClassFilterImplemented>() as PlutoFilterType;
+            } else if (column.field == 'nom') {
               return resolver<ClassFilterImplemented>() as PlutoFilterType;
             } else if (column.field == 'modele') {
               return resolver<ClassFilterImplemented>() as PlutoFilterType;

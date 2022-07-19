@@ -7,6 +7,7 @@ import 'package:fokad_admin/src/models/logistiques/mobilier_model.dart';
 import 'package:fokad_admin/src/models/users/user_model.dart';
 import 'package:fokad_admin/src/navigation/drawer/drawer_menu.dart';
 import 'package:fokad_admin/src/navigation/header/custom_appbar.dart';
+import 'package:fokad_admin/src/routes/routes.dart';
 import 'package:fokad_admin/src/utils/loading.dart'; 
 import 'package:fokad_admin/src/widgets/title_widget.dart';
 import 'package:intl/intl.dart';
@@ -146,10 +147,23 @@ class _DetailMobilierState extends State<DetailMobilier> {
                     children: [
                       Row(
                         children: [
+                          // IconButton(
+                          //     tooltip: 'Modifier',
+                          //     onPressed: () {
+                          //       Navigator.pushNamed(
+                          //           context,
+                          //           LogistiqueRoutes
+                          //               .logMobilierMaterielUpdate,
+                          //           arguments: data);
+                          //     },
+                          //     icon: const Icon(Icons.edit)),
                           IconButton(
-                              tooltip: 'Modifier',
-                              onPressed: () {},
-                              icon: const Icon(Icons.edit)),
+                              tooltip: 'Supprimer',
+                              onPressed: () async { 
+                                alertDeleteDialog(data);
+                              },
+                              icon: const Icon(Icons.delete),
+                              color: Colors.red.shade700),
                         ],
                       ),
                       SelectableText(
@@ -165,6 +179,36 @@ class _DetailMobilierState extends State<DetailMobilier> {
         ),
       ),
     ]);
+  }
+
+  alertDeleteDialog(MobilierModel data) {
+    return showDialog(
+        context: context,
+        barrierDismissible: true,
+        builder: (context) {
+          return StatefulBuilder(builder: (context, StateSetter setState) {
+            return AlertDialog(
+              title: const Text('Etes-vous sûr de vouloir faire ceci ?'),
+              content: const SizedBox(
+                  height: 100,
+                  width: 100,
+                  child: Text("Cette action permet de supprimer le document")),
+              actions: <Widget>[
+                TextButton(
+                  onPressed: () => Navigator.pop(context, 'Cancel'),
+                  child: const Text('Annuler'),
+                ),
+                TextButton(
+                  onPressed: () async {
+                    await MobilierApi().deleteData(data.id!);
+                    Navigator.of(context).pop();
+                  },
+                  child: const Text('OK'),
+                ),
+              ],
+            );
+          });
+        });
   }
 
   Widget dataWidget(MobilierModel data) {

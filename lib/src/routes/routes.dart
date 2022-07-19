@@ -14,7 +14,7 @@ import 'package:fokad_admin/src/pages/archives/add_archive.dart';
 import 'package:fokad_admin/src/pages/archives/archive.dart';
 import 'package:fokad_admin/src/pages/archives/archive_folder.dart';
 import 'package:fokad_admin/src/pages/archives/components/archive_pdf_viewer.dart';
-import 'package:fokad_admin/src/pages/archives/detail_archive.dart'; 
+import 'package:fokad_admin/src/pages/archives/detail_archive.dart';
 import 'package:fokad_admin/src/pages/auth/change_password.dart';
 import 'package:fokad_admin/src/pages/auth/forgot_password.dart';
 import 'package:fokad_admin/src/pages/auth/login_auth.dart';
@@ -23,7 +23,7 @@ import 'package:fokad_admin/src/pages/budgets/budget_dd/budget_dd.dart';
 import 'package:fokad_admin/src/pages/budgets/budgets_previsionels/budgets_previsionnels.dart';
 import 'package:fokad_admin/src/pages/budgets/budgets_previsionels/components/add_budget_previsionel.dart';
 import 'package:fokad_admin/src/pages/budgets/budgets_previsionels/components/detail_departement_budget.dart';
-import 'package:fokad_admin/src/pages/budgets/dashboard/dashboard_budget.dart'; 
+import 'package:fokad_admin/src/pages/budgets/dashboard/dashboard_budget.dart';
 import 'package:fokad_admin/src/pages/budgets/historique_budget/historique_budgets_previsionnels.dart';
 import 'package:fokad_admin/src/pages/budgets/ligne_budgetaire/components/ajout_ligne_budgetaire.dart';
 import 'package:fokad_admin/src/pages/budgets/ligne_budgetaire/components/detail_ligne_budgetaire.dart';
@@ -54,7 +54,7 @@ import 'package:fokad_admin/src/pages/comm_marketing/commercial/succursale/compo
 import 'package:fokad_admin/src/pages/comm_marketing/commercial/succursale/components/detail_succurssale.dart';
 import 'package:fokad_admin/src/pages/comm_marketing/commercial/succursale/succursale_page.dart';
 import 'package:fokad_admin/src/pages/comm_marketing/commercial/ventes/ventes_page.dart';
-import 'package:fokad_admin/src/pages/comm_marketing/dashboard/dashboard_com_marketing.dart'; 
+import 'package:fokad_admin/src/pages/comm_marketing/dashboard/dashboard_com_marketing.dart';
 import 'package:fokad_admin/src/pages/comm_marketing/marketing/agenda_marketing.dart';
 import 'package:fokad_admin/src/pages/comm_marketing/marketing/annuaire_marketing.dart';
 import 'package:fokad_admin/src/pages/comm_marketing/marketing/campaign_marketing.dart';
@@ -78,14 +78,14 @@ import 'package:fokad_admin/src/pages/comptabilite/compte_resultat/components/ad
 import 'package:fokad_admin/src/pages/comptabilite/compte_resultat/components/detail_compte_resultat.dart';
 import 'package:fokad_admin/src/pages/comptabilite/compte_resultat/components/update_compte_resultat.dart';
 import 'package:fokad_admin/src/pages/comptabilite/compte_resultat/compte_resultat.dart';
-import 'package:fokad_admin/src/pages/comptabilite/dashboard/dashboard_comptabilite.dart'; 
+import 'package:fokad_admin/src/pages/comptabilite/dashboard/dashboard_comptabilite.dart';
 import 'package:fokad_admin/src/pages/comptabilite/grand_livre/grand_livre_comptabilite.dart';
 import 'package:fokad_admin/src/pages/comptabilite/journal/components/add_journal_comptabilite.dart';
 import 'package:fokad_admin/src/pages/comptabilite/journal/components/detail_journal.dart';
 import 'package:fokad_admin/src/pages/comptabilite/journal/journal_comptabilite.dart';
 import 'package:fokad_admin/src/pages/devis/components/detail_devis.dart';
 import 'package:fokad_admin/src/pages/devis/devis_page.dart';
-import 'package:fokad_admin/src/pages/exploitations/dashboard/dashboard_exp.dart'; 
+import 'package:fokad_admin/src/pages/exploitations/dashboard/dashboard_exp.dart';
 import 'package:fokad_admin/src/pages/exploitations/expl_dd/exploitaion_dd.dart';
 import 'package:fokad_admin/src/pages/exploitations/projets/add_projet_exp.dart';
 import 'package:fokad_admin/src/pages/exploitations/projets/components/detail_projet.dart';
@@ -99,7 +99,7 @@ import 'package:fokad_admin/src/pages/exploitations/versements/components/detail
 import 'package:fokad_admin/src/pages/exploitations/versements/versement_projet.dart';
 import 'package:fokad_admin/src/pages/finances/dashboard/dashboard_finance.dart';
 import 'package:fokad_admin/src/pages/finances/dd_finance/departement_fin.dart';
-import 'package:fokad_admin/src/pages/finances/observation/observation_page.dart'; 
+import 'package:fokad_admin/src/pages/finances/observation/observation_page.dart';
 import 'package:fokad_admin/src/pages/finances/transactions/banque_transactions.dart';
 import 'package:fokad_admin/src/pages/finances/transactions/caisses_transactions.dart';
 import 'package:fokad_admin/src/pages/finances/transactions/components/banques/add_depot_banque.dart';
@@ -140,18 +140,21 @@ import 'package:fokad_admin/src/pages/logistiques/materiels/components/detail_mo
 import 'package:fokad_admin/src/pages/logistiques/materiels/etat_materiel.dart';
 import 'package:fokad_admin/src/pages/logistiques/materiels/immobilier_materiel.dart';
 import 'package:fokad_admin/src/pages/logistiques/materiels/mobilier_materiel.dart';
+import 'package:fokad_admin/src/pages/logistiques/materiels/update_etat_materiel.dart';
+import 'package:fokad_admin/src/pages/logistiques/materiels/update_immobilier.dart';
+import 'package:fokad_admin/src/pages/logistiques/materiels/update_mobilier.dart';
 import 'package:fokad_admin/src/pages/mails/components/detail_mail.dart';
 import 'package:fokad_admin/src/pages/mails/components/new_mail.dart';
 import 'package:fokad_admin/src/pages/mails/components/repondre_mail.dart';
 import 'package:fokad_admin/src/pages/mails/components/tranfert_mail.dart';
-import 'package:fokad_admin/src/pages/mails/mails_page.dart'; 
+import 'package:fokad_admin/src/pages/mails/mails_page.dart';
 import 'package:fokad_admin/src/pages/rh/agents/agents_rh.dart';
 import 'package:fokad_admin/src/pages/rh/agents/components/add_agent.dart';
 import 'package:fokad_admin/src/pages/rh/agents/components/detail_agent_page.dart';
 import 'package:fokad_admin/src/pages/rh/agents/components/update_agent.dart';
 import 'package:fokad_admin/src/pages/rh/dashboard/dashboard_rh.dart';
 import 'package:fokad_admin/src/pages/rh/dd_rh/departement_rh.dart';
-import 'package:fokad_admin/src/pages/rh/dd_rh/historique/table_salaires_historique.dart'; 
+import 'package:fokad_admin/src/pages/rh/dd_rh/historique/table_salaires_historique.dart';
 import 'package:fokad_admin/src/pages/rh/paiements/components/add_paiement_salaire.dart';
 import 'package:fokad_admin/src/pages/rh/paiements/components/paiement_bulletin.dart';
 import 'package:fokad_admin/src/pages/rh/paiements/paiements_rh.dart';
@@ -166,7 +169,6 @@ import 'package:fokad_admin/src/pages/rh/transport_restauration/components/detai
 import 'package:fokad_admin/src/pages/rh/transport_restauration/transport_restauration_page.dart';
 import 'package:fokad_admin/src/pages/screens/help_screen.dart';
 import 'package:fokad_admin/src/pages/screens/settings_screen.dart';
-
 
 class UserRoutes {
   static const login = "/";
@@ -196,7 +198,7 @@ class AdminRoutes {
   static const adminLogistique = "/admin-logistiques";
   static const adminEtatBesoin = "/admin-etat-besoin";
   static const adminActionnaire = "/admin-actionnaire";
-  static const adminActionnaireDetail = "/admin-actionnaire-detail"; 
+  static const adminActionnaireDetail = "/admin-actionnaire-detail";
 }
 
 class RhRoutes {
@@ -218,7 +220,7 @@ class RhRoutes {
   static const rhPerformenceAddNote = "/rh-performence-add-note";
   static const rhPerformenceAdd = "/rh-performence-add";
   static const rhDD = "/rh-dd";
-  static const rhHistoriqueSalaire = "/rh-historique-salaire"; 
+  static const rhHistoriqueSalaire = "/rh-historique-salaire";
   static const rhTransportRest = "/rh-transport-rest";
   static const rhTransportRestDetail = "/rh-transport-rest-detail";
 }
@@ -232,8 +234,7 @@ class BudgetRoutes {
   static const budgetLignebudgetaireAdd = "/budgets-ligne-budgetaire-add";
   static const historiqueBudgetBudgetPrevisionel =
       "/historique-budgets-previsionels";
-  static const budgetBudgetPrevisionelDetail =
-      "/budgets-previsionels-detail"; 
+  static const budgetBudgetPrevisionelDetail = "/budgets-previsionels-detail";
 }
 
 class FinanceRoutes {
@@ -259,10 +260,10 @@ class FinanceRoutes {
       "/transactions-financement-externe-add";
   static const transactionsFinancementExterneDetail =
       "/transactions-financement-externe-detail";
-  
+
   // static const transactionsDepenses = "/transactions-depenses";
-  static const finDD = "/fin-dd"; 
-  static const finObservation = "/fin-observation"; 
+  static const finDD = "/fin-dd";
+  static const finObservation = "/fin-observation";
 }
 
 class ComptabiliteRoutes {
@@ -284,8 +285,9 @@ class ComptabiliteRoutes {
   static const comptabiliteBalanceAdd = "/comptabilite-balance-add";
   static const comptabiliteBalanceDetail = "/comptabilite-balance-detail";
   static const comptabiliteGrandLivre = "/comptabilite-grand-livre";
-  static const comptabiliteGrandLivreSearch = "/comptabilite-grand-livre-search";
-  static const comptabiliteDD = "/comptabilite-dd"; 
+  static const comptabiliteGrandLivreSearch =
+      "/comptabilite-grand-livre-search";
+  static const comptabiliteDD = "/comptabilite-dd";
 }
 
 class LogistiqueRoutes {
@@ -306,14 +308,17 @@ class LogistiqueRoutes {
   static const logAddEtatMateriel = "/log-add-etat-materiel";
   static const logEtatMateriel = "/log-etat-materiel";
   static const logEtatMaterielDetail = "/log-etat-materiel-detail";
+  static const logEtatMaterielUpdate = "/log-etat-materiel-update";
   static const logAddImmobilerMateriel = "/log-add-immobilier-materiel";
   static const logImmobilierMateriel = "/log-immobilier-materiel";
   static const logImmobilierMaterielDetail = "/log-immobilier-materiel-detail";
+  static const logImmobilierMaterielUpdate = "/log-immobilier-materiel-update";
   static const logAddMobilierMateriel = "/log-add-mobilier-materiel";
   static const logMobilierMateriel = "/log-mobilier-materiel";
   static const logMobilierMaterielDetail = "/log-mobilier-materiel-detail";
-  static const logDD = "/log-dd"; 
-  static const logEtatBesoin = "/log-etat-besoin"; 
+  static const logMobilierMaterielUpdate = "/log-mobilier-materiel-udpate";
+  static const logDD = "/log-dd";
+  static const logEtatBesoin = "/log-etat-besoin";
 }
 
 class ExploitationRoutes {
@@ -323,12 +328,12 @@ class ExploitationRoutes {
   static const expProjetUpdate = "/exploitation-projet-update";
   static const expProjetDetail = "/exploitation-projets-detail";
   static const expTacheAdd = "/exploitation-taches-add";
-  static const expTache = "/exploitation-taches"; 
-  static const expTacheDetail = "/exploitation-taches-detail"; 
+  static const expTache = "/exploitation-taches";
+  static const expTacheDetail = "/exploitation-taches-detail";
   static const expVersement = "/exploitation-virement";
   static const expVersementAdd = "/exploitation-virement-add";
   static const expVersementDetail = "/exploitation-virement-detail";
-  static const expDD = "/exp-dd"; 
+  static const expDD = "/exp-dd";
 }
 
 class ComMarketingRoutes {
@@ -347,26 +352,31 @@ class ComMarketingRoutes {
   static const comMarketingCampaignAdd = "/com-marketing-campaign-add";
   static const comMarketingCampaignDetail = "/com-marketing-campaign-detail";
   static const comMarketingCampaignUpdate = "/com-marketing-campaign-update";
-  
 
   // Commercial
   static const comMarketingProduitModel = "/com-marketing-produit-model";
-  static const comMarketingProduitModelDetail = "/com-marketing-produit-model-detail";
+  static const comMarketingProduitModelDetail =
+      "/com-marketing-produit-model-detail";
   static const comMarketingProduitModelAdd = "/com-marketing-produit-model-add";
-  static const comMarketingProduitModelUpdate = "/com-marketing-produit-model-update";
+  static const comMarketingProduitModelUpdate =
+      "/com-marketing-produit-model-update";
   static const comMarketingStockGlobal = "/com-marketing-stock-global";
-  static const comMarketingStockGlobalDetail = "/com-marketing-stock-global-detail";
+  static const comMarketingStockGlobalDetail =
+      "/com-marketing-stock-global-detail";
   static const comMarketingStockGlobalAdd = "/com-marketing-stock-global-add";
-  static const comMarketingStockGlobalRavitaillement = "/com-marketing-stock-global-ravitaillement";
+  static const comMarketingStockGlobalRavitaillement =
+      "/com-marketing-stock-global-ravitaillement";
   static const comMarketingStockGlobalLivraisonStock =
       "/com-marketing-stock-global-livraisonStock";
   static const comMarketingSuccursale = "/com-marketing-succursale";
-  static const comMarketingSuccursaleDetail = "/com-marketing-succursale-detail";
+  static const comMarketingSuccursaleDetail =
+      "/com-marketing-succursale-detail";
   static const comMarketingSuccursaleAdd = "/com-marketing-succursale-add";
   static const comMarketingAchat = "/com-marketing-achat";
   static const comMarketingAchatDetail = "/com-marketing-achat-detail";
   static const comMarketingBonLivraison = "/com-marketing-bon-livraison";
-  static const comMarketingBonLivraisonDetail = "/com-marketing-bon-livraison-detail";
+  static const comMarketingBonLivraisonDetail =
+      "/com-marketing-bon-livraison-detail";
   static const comMarketingcart = "/com-marketing-cart";
   static const comMarketingcartDetail = "/com-marketing-cart-detail";
   static const comMarketingCreance = "/com-marketing-creance";
@@ -380,8 +390,9 @@ class ComMarketingRoutes {
       "/com-marketing-history-livraison";
   static const comMarketingnumberFact = "/com-marketing-number-fact";
   static const comMarketingRestitution = "/com-marketing-restitution";
-  static const comMarketingRestitutionDetail = "/com-marketing-restitution-detail";
-  static const comMarketingVente = "/com-marketing-vente"; 
+  static const comMarketingRestitutionDetail =
+      "/com-marketing-restitution-detail";
+  static const comMarketingVente = "/com-marketing-vente";
 }
 
 class ArchiveRoutes {
@@ -402,9 +413,9 @@ class MailRoutes {
 
 final routes = <String, WidgetBuilder>{
   // User
-  UserRoutes.login : (context) => const LoginPage(),
+  UserRoutes.login: (context) => const LoginPage(),
   UserRoutes.logout: (context) => const LoginPage(),
-  UserRoutes.profile : (context) => const ProfilPage(),
+  UserRoutes.profile: (context) => const ProfilPage(),
   UserRoutes.helps: (context) => const HelpScreen(),
   UserRoutes.settings: (context) => const SettingsScreen(),
   UserRoutes.changePassword: (context) => const ChangePassword(),
@@ -440,25 +451,29 @@ final routes = <String, WidgetBuilder>{
   RhRoutes.rhPerformenceDetail: (context) => const DetailPerformence(),
   RhRoutes.rhPerformenceAddNote: (context) => const AddPerformenceNote(),
   RhRoutes.rhDD: (context) => const DepartementRH(),
-  RhRoutes.rhHistoriqueSalaire: (context) => const TableSalairesHistorique(), 
+  RhRoutes.rhHistoriqueSalaire: (context) => const TableSalairesHistorique(),
   RhRoutes.rhTransportRest: (context) => const TransportRestaurationPage(),
-  RhRoutes.rhTransportRestDetail: (context) => const DetailTransportRestaurant(),
+  RhRoutes.rhTransportRestDetail: (context) =>
+      const DetailTransportRestaurant(),
 
   // Budgets
   BudgetRoutes.budgetDashboard: (context) => const DashboardBudget(),
   BudgetRoutes.budgetDD: (context) => const BudgetDD(),
-  BudgetRoutes.budgetBudgetPrevisionel: (context) => const BudgetsPrevisionnels(),
-  BudgetRoutes.budgetBudgetPrevisionelAdd: (context) => const AddBudgetPrevionel(),
+  BudgetRoutes.budgetBudgetPrevisionel: (context) =>
+      const BudgetsPrevisionnels(),
+  BudgetRoutes.budgetBudgetPrevisionelAdd: (context) =>
+      const AddBudgetPrevionel(),
   BudgetRoutes.budgetLignebudgetaireDetail: (context) =>
       const DetailLigneBudgetaire(),
   BudgetRoutes.budgetLignebudgetaireAdd: (context) =>
       const AjoutLigneBudgetaire(),
-  BudgetRoutes.historiqueBudgetBudgetPrevisionel: (context) => const HistoriqueBudgetsPrevisionnels(),
+  BudgetRoutes.historiqueBudgetBudgetPrevisionel: (context) =>
+      const HistoriqueBudgetsPrevisionnels(),
   BudgetRoutes.budgetBudgetPrevisionelDetail: (context) =>
-      const DetailDepartmentBudget(), 
+      const DetailDepartmentBudget(),
 
   // FInance
-  FinanceRoutes.finDD: (context) => const DepartementFin(), 
+  FinanceRoutes.finDD: (context) => const DepartementFin(),
   FinanceRoutes.financeDashboard: (context) => const DashboardFinance(),
   FinanceRoutes.transactionsBanque: (context) => const BanqueTransactions(),
   FinanceRoutes.transactionsBanqueDetail: (context) => const DetailBanque(),
@@ -466,44 +481,54 @@ final routes = <String, WidgetBuilder>{
   FinanceRoutes.transactionsBanqueRetrait: (context) => const AddRetratBanque(),
   FinanceRoutes.transactionsCaisse: (context) => const CaisseTransactions(),
   FinanceRoutes.transactionsCaisseDetail: (context) => const DetailCaisse(),
-  FinanceRoutes.transactionsCaisseEncaissement: (context) => const AddEncaissement(),
-  FinanceRoutes.transactionsCaisseDecaissement: (context) => const AddDecaissement(),
+  FinanceRoutes.transactionsCaisseEncaissement: (context) =>
+      const AddEncaissement(),
+  FinanceRoutes.transactionsCaisseDecaissement: (context) =>
+      const AddDecaissement(),
   FinanceRoutes.transactionsCreances: (context) => const CreanceTransactions(),
   FinanceRoutes.transactionsCreanceDetail: (context) => const DetailCreance(),
   FinanceRoutes.transactionsDettes: (context) => const DetteTransactions(),
   FinanceRoutes.transactionsDetteDetail: (context) => const DetailDette(),
-  FinanceRoutes.transactionsFinancementExterne: (context) => const FinExterneTransactions(),
-  FinanceRoutes.transactionsFinancementExterneAdd: (context) => const AddAutreFin(),
+  FinanceRoutes.transactionsFinancementExterne: (context) =>
+      const FinExterneTransactions(),
+  FinanceRoutes.transactionsFinancementExterneAdd: (context) =>
+      const AddAutreFin(),
   FinanceRoutes.transactionsFinancementExterneDetail: (context) =>
-      const DetailFinExterieur(), 
-  FinanceRoutes.finObservation: (context) => const ObservationPage(), 
+      const DetailFinExterieur(),
+  FinanceRoutes.finObservation: (context) => const ObservationPage(),
 
   // Comptabilite
   ComptabiliteRoutes.comptabiliteDD: (context) => const ComptabiliteDD(),
-  ComptabiliteRoutes.comptabiliteDashboard: (context) => const DashboardComptabilite(),
-  ComptabiliteRoutes.comptabiliteBilan: (context) =>const BilanComptabilite(),
+  ComptabiliteRoutes.comptabiliteDashboard: (context) =>
+      const DashboardComptabilite(),
+  ComptabiliteRoutes.comptabiliteBilan: (context) => const BilanComptabilite(),
   ComptabiliteRoutes.comptabiliteBilanAdd: (context) => const AddCompteBilan(),
-  ComptabiliteRoutes.comptabiliteBilanDetail: (context) => const DetailBilan(), 
-  ComptabiliteRoutes.comptabiliteJournal: (context) => const JournalComptabilite(),
+  ComptabiliteRoutes.comptabiliteBilanDetail: (context) => const DetailBilan(),
+  ComptabiliteRoutes.comptabiliteJournal: (context) =>
+      const JournalComptabilite(),
   ComptabiliteRoutes.comptabiliteJournalDetail: (context) =>
       const DetailJournal(),
-  ComptabiliteRoutes.comptabiliteJournalAdd: (context) => const AddJournalComptabilite(),
-  ComptabiliteRoutes.comptabiliteCompteResultat: (context) =>const CompteResultat(),
+  ComptabiliteRoutes.comptabiliteJournalAdd: (context) =>
+      const AddJournalComptabilite(),
+  ComptabiliteRoutes.comptabiliteCompteResultat: (context) =>
+      const CompteResultat(),
   ComptabiliteRoutes.comptabiliteCompteResultatDetail: (context) =>
       const DetailCompteResultat(),
-    ComptabiliteRoutes.comptabiliteCompteResultatAdd: (context) =>
+  ComptabiliteRoutes.comptabiliteCompteResultatAdd: (context) =>
       const AddCompteResultat(),
   ComptabiliteRoutes.comptabiliteCompteResultatUpdate: (context) =>
       const UpdateCompteResultat(),
 
-  ComptabiliteRoutes.comptabiliteBalance: (context) => const BalanceComptabilite(),
+  ComptabiliteRoutes.comptabiliteBalance: (context) =>
+      const BalanceComptabilite(),
   ComptabiliteRoutes.comptabiliteBalanceAdd: (context) =>
       const AddCompteBalanceRef(),
   ComptabiliteRoutes.comptabiliteBalanceDetail: (context) =>
-      const DetailBalance(), 
-  ComptabiliteRoutes.comptabiliteGrandLivre: (context) => const GrandLivreComptabilite(),
+      const DetailBalance(),
+  ComptabiliteRoutes.comptabiliteGrandLivre: (context) =>
+      const GrandLivreComptabilite(),
   // ComptabiliteRoutes.comptabiliteGrandLivreSearch: (context) =>
-  //     const TableGrandLivre(), 
+  //     const TableGrandLivre(),
 
   // DEVIS
   DevisRoutes.devis: (context) => const DevisPage(),
@@ -513,7 +538,7 @@ final routes = <String, WidgetBuilder>{
   LogistiqueRoutes.logDD: (context) => const LogDD(),
   LogistiqueRoutes.logDashboard: (context) => const DashboardLog(),
   LogistiqueRoutes.logAddAnguinAuto: (context) => const AddAnguinAuto(),
-  LogistiqueRoutes.logAnguinAuto: (context) =>const AnguinAuto(),
+  LogistiqueRoutes.logAnguinAuto: (context) => const AnguinAuto(),
   LogistiqueRoutes.logAnguinAutoDetail: (context) => const DetailAnguin(),
   LogistiqueRoutes.logAddCarburantAuto: (context) => const AddCarburantAuto(),
   LogistiqueRoutes.logCarburantAuto: (context) => const CarburantAuto(),
@@ -527,14 +552,25 @@ final routes = <String, WidgetBuilder>{
   LogistiqueRoutes.logEntretienDetail: (context) => const DetailEntretien(),
   LogistiqueRoutes.logAddEtatMateriel: (context) => const AddEtatMateriel(),
   LogistiqueRoutes.logEtatMateriel: (context) => const EtatMateriel(),
-  LogistiqueRoutes.logEtatMaterielDetail: (context) => const DetailEtatMateriel(),
-  LogistiqueRoutes.logAddImmobilerMateriel: (context) => const AddImmobilierMateriel(),
-  LogistiqueRoutes.logImmobilierMateriel: (context) =>const ImmobilierMateriel(),
+  LogistiqueRoutes.logEtatMaterielDetail: (context) =>
+      const DetailEtatMateriel(),
+  LogistiqueRoutes.logEtatMaterielUpdate: (context) =>
+      const UpdateEtatMateriel(),
+  LogistiqueRoutes.logAddImmobilerMateriel: (context) =>
+      const AddImmobilierMateriel(),
+  LogistiqueRoutes.logImmobilierMateriel: (context) =>
+      const ImmobilierMateriel(),
   LogistiqueRoutes.logImmobilierMaterielDetail: (context) =>
       const DetailImmobilier(),
-  LogistiqueRoutes.logAddMobilierMateriel: (context) =>const AddMobilerMateriel(),
-  LogistiqueRoutes.logMobilierMateriel: (context) =>const MobilierMateriel(),
-  LogistiqueRoutes.logMobilierMaterielDetail: (context) => const DetailMobilier(),
+  LogistiqueRoutes.logImmobilierMaterielUpdate: (context) =>
+      const UpdateImmobilier(),
+  LogistiqueRoutes.logAddMobilierMateriel: (context) =>
+      const AddMobilerMateriel(),
+  LogistiqueRoutes.logMobilierMateriel: (context) => const MobilierMateriel(),
+  LogistiqueRoutes.logMobilierMaterielDetail: (context) =>
+      const DetailMobilier(),
+  LogistiqueRoutes.logMobilierMaterielUpdate: (context) =>
+      const UpdateMobilier(),
   LogistiqueRoutes.logEtatBesoin: (context) => const EtatBesoinLogPage(),
 
   // Exploitations
@@ -545,64 +581,83 @@ final routes = <String, WidgetBuilder>{
   ExploitationRoutes.expProjetUpdate: (context) => const UpdateProjet(),
   ExploitationRoutes.expProjetDetail: (context) => const DetailProjet(),
   ExploitationRoutes.expVersement: (context) => const VersementProjet(),
-  ExploitationRoutes.expVersementDetail: (context) => const DetailVersementProjet(),
+  ExploitationRoutes.expVersementDetail: (context) =>
+      const DetailVersementProjet(),
   ExploitationRoutes.expVersementAdd: (context) => const AddVersementProjet(),
   ExploitationRoutes.expTache: (context) => const TacheExp(),
   ExploitationRoutes.expTacheAdd: (context) => const AddTacheExp(),
-  ExploitationRoutes.expTacheDetail: (context) => const DetailTache(), 
+  ExploitationRoutes.expTacheDetail: (context) => const DetailTache(),
 
   // Marketing
   ComMarketingRoutes.comMarketingDD: (context) => const CMDD(),
-  ComMarketingRoutes.comMarketingDashboard: (context) =>const ComMarketing(),
-  ComMarketingRoutes.comMarketingAnnuaire: (context) =>const AnnuaireMarketing(),
+  ComMarketingRoutes.comMarketingDashboard: (context) => const ComMarketing(),
+  ComMarketingRoutes.comMarketingAnnuaire: (context) =>
+      const AnnuaireMarketing(),
   ComMarketingRoutes.comMarketingAnnuaireAdd: (context) => const AddAnnuaire(),
-  ComMarketingRoutes.comMarketingAnnuaireDetail: (context) => const DetailAnnuaire(),
+  ComMarketingRoutes.comMarketingAnnuaireDetail: (context) =>
+      const DetailAnnuaire(),
   ComMarketingRoutes.comMarketingAnnuaireEdit: (context) =>
       const UpdateAnnuaire(),
   ComMarketingRoutes.comMarketingAgenda: (context) => const AgendaMarketing(),
   ComMarketingRoutes.comMarketingAgendaAdd: (context) => const AddAgenda(),
-  ComMarketingRoutes.comMarketingAgendaDetail: (context) => const DetailAgenda(),
+  ComMarketingRoutes.comMarketingAgendaDetail: (context) =>
+      const DetailAgenda(),
   ComMarketingRoutes.comMarketingAgendaUpdate: (context) =>
       const UpdateAgenda(),
-  ComMarketingRoutes.comMarketingCampaign: (context) =>const CampaignMarketing(),
-  ComMarketingRoutes.comMarketingCampaignAdd: (context) =>const AddCampaign(),
-  ComMarketingRoutes.comMarketingCampaignDetail: (context) => const DetailCampaign(),
-  ComMarketingRoutes.comMarketingCampaignUpdate: (context) => const UpdateCampaign(),
+  ComMarketingRoutes.comMarketingCampaign: (context) =>
+      const CampaignMarketing(),
+  ComMarketingRoutes.comMarketingCampaignAdd: (context) => const AddCampaign(),
+  ComMarketingRoutes.comMarketingCampaignDetail: (context) =>
+      const DetailCampaign(),
+  ComMarketingRoutes.comMarketingCampaignUpdate: (context) =>
+      const UpdateCampaign(),
 
   // Commercial
-  ComMarketingRoutes.comMarketingProduitModel: (context) =>const ProduitModelPage(),
+  ComMarketingRoutes.comMarketingProduitModel: (context) =>
+      const ProduitModelPage(),
   ComMarketingRoutes.comMarketingProduitModelDetail: (context) =>
       const DetailProdModel(),
-  ComMarketingRoutes.comMarketingProduitModelAdd: (context) =>const AddProModel(),
+  ComMarketingRoutes.comMarketingProduitModelAdd: (context) =>
+      const AddProModel(),
   ComMarketingRoutes.comMarketingProduitModelUpdate: (context) =>
       const UpdateProModel(),
-  ComMarketingRoutes.comMarketingStockGlobal: (context) =>const StockGlobalPage(),
+  ComMarketingRoutes.comMarketingStockGlobal: (context) =>
+      const StockGlobalPage(),
   ComMarketingRoutes.comMarketingStockGlobalDetail: (context) =>
       const DetailStockGlobal(),
-  ComMarketingRoutes.comMarketingStockGlobalAdd: (context) =>const AddStockGlobal(),
+  ComMarketingRoutes.comMarketingStockGlobalAdd: (context) =>
+      const AddStockGlobal(),
   ComMarketingRoutes.comMarketingStockGlobalRavitaillement: (context) =>
       const RavitailleemntStock(),
   ComMarketingRoutes.comMarketingStockGlobalLivraisonStock: (context) =>
       const LivraisonStock(),
-  ComMarketingRoutes.comMarketingSuccursale: (context) =>const SuccursalePage(),
-  ComMarketingRoutes.comMarketingSuccursaleAdd: (context) =>const AddSurrsale(),
+  ComMarketingRoutes.comMarketingSuccursale: (context) =>
+      const SuccursalePage(),
+  ComMarketingRoutes.comMarketingSuccursaleAdd: (context) =>
+      const AddSurrsale(),
   ComMarketingRoutes.comMarketingSuccursaleDetail: (context) =>
       const DetailSuccursale(),
-  ComMarketingRoutes.comMarketingAchat: (context) =>const AchatsPage(),
+  ComMarketingRoutes.comMarketingAchat: (context) => const AchatsPage(),
   ComMarketingRoutes.comMarketingAchatDetail: (context) => const DetailAchat(),
-  ComMarketingRoutes.comMarketingBonLivraison: (context) =>const BonLivraisonPage(),
+  ComMarketingRoutes.comMarketingBonLivraison: (context) =>
+      const BonLivraisonPage(),
   ComMarketingRoutes.comMarketingBonLivraisonDetail: (context) =>
       const DetailBonLivraison(),
-  ComMarketingRoutes.comMarketingRestitution: (context) =>const RestitutionPage(),
-  ComMarketingRoutes.comMarketingFacture: (context) =>const FacturePage(),
-  ComMarketingRoutes.comMarketingFactureDetail: (context) => const DetailFacture(),
-  ComMarketingRoutes.comMarketingCreance: (context) =>const CreanceFactPage(),
-  ComMarketingRoutes.comMarketingCreanceDetail: (context) => const DetailCreanceFact(),
-  ComMarketingRoutes.comMarketingVente: (context) =>const VentesPage(),
-  ComMarketingRoutes.comMarketingcart: (context) =>const CartPage(),
+  ComMarketingRoutes.comMarketingRestitution: (context) =>
+      const RestitutionPage(),
+  ComMarketingRoutes.comMarketingFacture: (context) => const FacturePage(),
+  ComMarketingRoutes.comMarketingFactureDetail: (context) =>
+      const DetailFacture(),
+  ComMarketingRoutes.comMarketingCreance: (context) => const CreanceFactPage(),
+  ComMarketingRoutes.comMarketingCreanceDetail: (context) =>
+      const DetailCreanceFact(),
+  ComMarketingRoutes.comMarketingVente: (context) => const VentesPage(),
+  ComMarketingRoutes.comMarketingcart: (context) => const CartPage(),
   ComMarketingRoutes.comMarketingcartDetail: (context) => const DetailCart(),
-  ComMarketingRoutes.comMarketingHistoryRavitaillement: (context) =>const HistoryRavitaillement(),
-  ComMarketingRoutes.comMarketingHistoryLivraison: (context) =>const HistoryLivraison(), 
+  ComMarketingRoutes.comMarketingHistoryRavitaillement: (context) =>
+      const HistoryRavitaillement(),
+  ComMarketingRoutes.comMarketingHistoryLivraison: (context) =>
+      const HistoryLivraison(),
 
   // Mails
   MailRoutes.mails: (context) => const MailPages(),
