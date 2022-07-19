@@ -205,15 +205,19 @@ class _DetailCompteResultatState extends State<DetailCompteResultat> {
                         children: [
                           if (data.approbationDG == "Unapproved" ||
                               data.approbationDD == "Unapproved")
-                          editButton(data),
+                            editButton(data),
                           deleteButton(data),
                           PrintWidget(
                               tooltip: 'Imprimer le document',
                               onPressed: () async {
-                                await CompteResultatPdf.generate(data, 
-                                  totalCharges1, totalCharges123, 
-                                  totalGeneralCharges, totalProduits1, 
-                                  totalProduits123, totalGeneralProduits);
+                                await CompteResultatPdf.generate(
+                                    data,
+                                    totalCharges1,
+                                    totalCharges123,
+                                    totalGeneralCharges,
+                                    totalProduits1,
+                                    totalProduits123,
+                                    totalGeneralProduits);
                               }),
                         ],
                       ),
@@ -1207,7 +1211,7 @@ class _DetailCompteResultatState extends State<DetailCompteResultat> {
     );
   }
 
- Widget approbationWidget(CompteResulatsModel data) {
+  Widget approbationWidget(CompteResulatsModel data) {
     final bodyLarge = Theme.of(context).textTheme.bodyLarge;
     return Row(mainAxisAlignment: MainAxisAlignment.center, children: [
       Card(
@@ -1258,7 +1262,10 @@ class _DetailCompteResultatState extends State<DetailCompteResultat> {
                                       const SizedBox(height: p20),
                                       Text(data.approbationDG,
                                           style: bodyLarge!.copyWith(
-                                              color: Colors.red.shade700)),
+                                              color: (data.approbationDG ==
+                                                      "Unapproved")
+                                                  ? Colors.red.shade700
+                                                  : Colors.green.shade700)),
                                     ],
                                   )),
                               if (data.approbationDG == "Unapproved")
@@ -1321,7 +1328,10 @@ class _DetailCompteResultatState extends State<DetailCompteResultat> {
                                       const SizedBox(height: p20),
                                       Text(data.approbationDD,
                                           style: bodyLarge.copyWith(
-                                              color: Colors.green.shade700)),
+                                              color: (data.approbationDD ==
+                                                      "Unapproved")
+                                                  ? Colors.red.shade700
+                                                  : Colors.green.shade700)),
                                     ],
                                   )),
                               if (data.approbationDD == "Unapproved")
@@ -1505,8 +1515,8 @@ class _DetailCompteResultatState extends State<DetailCompteResultat> {
   }
 
   Future<void> submitDG(CompteResulatsModel data) async {
-   final compteResulatsModel = CompteResulatsModel(
-    id: data.id!,
+    final compteResulatsModel = CompteResulatsModel(
+        id: data.id!,
         intitule: data.intitule,
         achatMarchandises: data.achatMarchandises,
         variationStockMarchandises: data.variationStockMarchandises,
@@ -1535,12 +1545,12 @@ class _DetailCompteResultatState extends State<DetailCompteResultat> {
         signature: data.signature,
         createdRef: data.createdRef,
         created: data.created,
-       approbationDG: approbationDG,
+        approbationDG: approbationDG,
         motifDG: (motifDGController.text == '') ? '-' : motifDGController.text,
         signatureDG: user.matricule,
         approbationDD: data.approbationDD,
         motifDD: data.motifDD,
-        signatureDD: data.signatureDD); 
+        signatureDD: data.signatureDD);
     await CompteResultatApi().updateData(compteResulatsModel);
     Navigator.pop(context);
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
@@ -1551,7 +1561,7 @@ class _DetailCompteResultatState extends State<DetailCompteResultat> {
 
   Future<void> submitDD(CompteResulatsModel data) async {
     final compteResulatsModel = CompteResulatsModel(
-      id: data.id!,
+        id: data.id!,
         intitule: data.intitule,
         achatMarchandises: data.achatMarchandises,
         variationStockMarchandises: data.variationStockMarchandises,
@@ -1585,7 +1595,7 @@ class _DetailCompteResultatState extends State<DetailCompteResultat> {
         signatureDG: '-',
         approbationDD: approbationDD,
         motifDD: (motifDDController.text == '') ? '-' : motifDDController.text,
-        signatureDD: user.matricule); 
+        signatureDD: user.matricule);
     await CompteResultatApi().updateData(compteResulatsModel);
     Navigator.pop(context);
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(

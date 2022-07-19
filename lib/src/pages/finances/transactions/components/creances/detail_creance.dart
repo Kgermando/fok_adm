@@ -14,7 +14,7 @@ import 'package:fokad_admin/src/navigation/header/custom_appbar.dart';
 import 'package:fokad_admin/src/pages/finances/transactions/components/creance_dette/table_creance_dette.dart';
 import 'package:fokad_admin/src/utils/loading.dart';
 import 'package:fokad_admin/src/widgets/btn_widget.dart';
-import 'package:fokad_admin/src/widgets/title_widget.dart'; 
+import 'package:fokad_admin/src/widgets/title_widget.dart';
 import 'package:intl/intl.dart';
 import 'package:pluto_grid/pluto_grid.dart';
 
@@ -213,7 +213,7 @@ class _DetailCreanceState extends State<DetailCreance> {
                 children: [
                   // TitleWidget(title: creanceModel.libelle),
                   Column(
-                    children: [ 
+                    children: [
                       SelectableText(
                           DateFormat("dd-MM-yyyy HH:mm").format(data.created),
                           textAlign: TextAlign.start),
@@ -497,16 +497,16 @@ class _DetailCreanceState extends State<DetailCreance> {
                                     fontWeight: FontWeight.bold)),
                       if (data.approbationDG == "Approved" &&
                           data.approbationDD == "Approved")
-                      BtnWidget(
-                          title: 'Soumettre',
-                          isLoading: isLoading,
-                          press: () {
-                            final form = _formKey.currentState!;
-                            if (form.validate()) {
-                              creanceDette(data);
-                              form.reset();
-                            }
-                          })
+                        BtnWidget(
+                            title: 'Soumettre',
+                            isLoading: isLoading,
+                            press: () {
+                              final form = _formKey.currentState!;
+                              if (form.validate()) {
+                                creanceDette(data);
+                                form.reset();
+                              }
+                            })
                     ],
                   ),
                 ),
@@ -653,7 +653,7 @@ class _DetailCreanceState extends State<DetailCreance> {
     ));
   }
 
-   Widget approbationWidget(CreanceModel data) {
+  Widget approbationWidget(CreanceModel data) {
     final bodyLarge = Theme.of(context).textTheme.bodyLarge;
     return Row(mainAxisAlignment: MainAxisAlignment.center, children: [
       Card(
@@ -704,7 +704,10 @@ class _DetailCreanceState extends State<DetailCreance> {
                                       const SizedBox(height: p20),
                                       Text(data.approbationDG,
                                           style: bodyLarge!.copyWith(
-                                              color: Colors.red.shade700)),
+                                              color: (data.approbationDG ==
+                                                      "Unapproved")
+                                                  ? Colors.red.shade700
+                                                  : Colors.green.shade700)),
                                     ],
                                   )),
                               if (data.approbationDG == "Unapproved")
@@ -767,7 +770,10 @@ class _DetailCreanceState extends State<DetailCreance> {
                                       const SizedBox(height: p20),
                                       Text(data.approbationDD,
                                           style: bodyLarge.copyWith(
-                                              color: Colors.green.shade700)),
+                                              color: (data.approbationDD ==
+                                                      "Unapproved")
+                                                  ? Colors.red.shade700
+                                                  : Colors.green.shade700)),
                                     ],
                                   )),
                               if (data.approbationDD == "Unapproved")
@@ -953,7 +959,7 @@ class _DetailCreanceState extends State<DetailCreance> {
 
   Future<void> submitDG(CreanceModel data) async {
     final creanceModel = CreanceModel(
-      id: data.id!,
+        id: data.id!,
         nomComplet: data.nomComplet,
         pieceJustificative: data.pieceJustificative,
         libelle: data.libelle,
@@ -968,7 +974,7 @@ class _DetailCreanceState extends State<DetailCreance> {
         signatureDG: user.matricule,
         approbationDD: data.approbationDD,
         motifDD: data.motifDD,
-        signatureDD: data.signatureDD); 
+        signatureDD: data.signatureDD);
     await CreanceApi().updateData(creanceModel);
     Navigator.pop(context);
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(

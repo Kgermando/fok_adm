@@ -1,8 +1,8 @@
-import 'package:flutter/material.dart'; 
+import 'package:flutter/material.dart';
 import 'package:fokad_admin/src/api/auth/auth_api.dart';
 import 'package:fokad_admin/src/api/comptabilite/journal_api.dart';
 import 'package:fokad_admin/src/constants/app_theme.dart';
-import 'package:fokad_admin/src/constants/responsive.dart'; 
+import 'package:fokad_admin/src/constants/responsive.dart';
 import 'package:fokad_admin/src/models/comptabilites/journal_model.dart';
 import 'package:fokad_admin/src/models/users/user_model.dart';
 import 'package:fokad_admin/src/navigation/drawer/drawer_menu.dart';
@@ -10,7 +10,7 @@ import 'package:fokad_admin/src/navigation/header/custom_appbar.dart';
 import 'package:fokad_admin/src/pages/comptabilite/journal/components/journal_pdf.dart';
 import 'package:fokad_admin/src/utils/loading.dart';
 import 'package:fokad_admin/src/widgets/print_widget.dart';
-import 'package:fokad_admin/src/widgets/title_widget.dart'; 
+import 'package:fokad_admin/src/widgets/title_widget.dart';
 import 'package:intl/intl.dart';
 
 class DetailJournal extends StatefulWidget {
@@ -30,12 +30,11 @@ class _DetailJournalState extends State<DetailJournal> {
 
   bool statutCorbeille = false;
 
-    // Approbations
+  // Approbations
   String approbationDG = '-';
   String approbationDD = '-';
   TextEditingController motifDGController = TextEditingController();
   TextEditingController motifDDController = TextEditingController();
-
 
   @override
   initState() {
@@ -43,7 +42,7 @@ class _DetailJournalState extends State<DetailJournal> {
     super.initState();
   }
 
-    @override
+  @override
   void dispose() {
     motifDGController.dispose();
     motifDDController.dispose();
@@ -63,7 +62,7 @@ class _DetailJournalState extends State<DetailJournal> {
       isOnline: 'false',
       createdAt: DateTime.now(),
       passwordHash: '-',
-      succursale: '-'); 
+      succursale: '-');
   // JournalModel? JournalModel;
   Future<void> getData() async {
     UserModel userModel = await AuthApi().getUserId();
@@ -95,7 +94,7 @@ class _DetailJournalState extends State<DetailJournal> {
                         builder: (BuildContext context,
                             AsyncSnapshot<JournalModel> snapshot) {
                           if (snapshot.hasData) {
-                            JournalModel? data = snapshot.data; 
+                            JournalModel? data = snapshot.data;
                             return Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
@@ -130,8 +129,7 @@ class _DetailJournalState extends State<DetailJournal> {
                               ],
                             );
                           } else {
-                            return Center(
-                                child: loading());
+                            return Center(child: loading());
                           }
                         })),
               ),
@@ -167,14 +165,13 @@ class _DetailJournalState extends State<DetailJournal> {
                         children: [
                           if (data.approbationDG == "Unapproved" ||
                               data.approbationDD == "Unapproved")
-                          
-                          deleteButton(data),
+                            deleteButton(data),
                           PrintWidget(
                               tooltip: 'Imprimer le document',
-                              onPressed: () async{
+                              onPressed: () async {
                                 await JournalPdf.generate(data);
                               }),
-                        ], 
+                        ],
                       ),
                       SelectableText(
                           DateFormat("dd-MM-yy HH:mm").format(data.created),
@@ -271,12 +268,12 @@ class _DetailJournalState extends State<DetailJournal> {
                     style: bodyMedium.copyWith(fontWeight: FontWeight.bold)),
               ),
               Expanded(
-                flex: 3,
-                child: Column(
-                  children: [
-                    Row(
-                      children: [
-                        Expanded( 
+                  flex: 3,
+                  child: Column(
+                    children: [
+                      Row(
+                        children: [
+                          Expanded(
                             child: Text('Compte',
                                 textAlign: TextAlign.center,
                                 style: bodyMedium.copyWith(
@@ -288,25 +285,25 @@ class _DetailJournalState extends State<DetailJournal> {
                                 style: bodyMedium.copyWith(
                                     fontWeight: FontWeight.bold)),
                           ),
-                      ],
-                    ), 
-                    const SizedBox(height: p20),
-                    Row(
-                      children: [
-                        Expanded( 
-                          child: SelectableText(data.compteDebit,
-                              textAlign: TextAlign.center, style: bodyMedium),
-                        ),
-                        Expanded( 
-                          child: SelectableText("${NumberFormat.decimalPattern('fr').format(double.parse(data.montantDebit))} \$",
-                              textAlign: TextAlign.center, style: bodyMedium),
-                        ),
-                      ],
-                    ),
-                    
-                  ],
-                )
-              ), 
+                        ],
+                      ),
+                      const SizedBox(height: p20),
+                      Row(
+                        children: [
+                          Expanded(
+                            child: SelectableText(data.compteDebit,
+                                textAlign: TextAlign.center, style: bodyMedium),
+                          ),
+                          Expanded(
+                            child: SelectableText(
+                                "${NumberFormat.decimalPattern('fr').format(double.parse(data.montantDebit))} \$",
+                                textAlign: TextAlign.center,
+                                style: bodyMedium),
+                          ),
+                        ],
+                      ),
+                    ],
+                  )),
             ],
           ),
           Divider(
@@ -348,12 +345,13 @@ class _DetailJournalState extends State<DetailJournal> {
                                 textAlign: TextAlign.center, style: bodyMedium),
                           ),
                           Expanded(
-                            child: SelectableText("${NumberFormat.decimalPattern('fr').format(double.parse(data.montantCredit))} \$",
-                                textAlign: TextAlign.center, style: bodyMedium),
+                            child: SelectableText(
+                                "${NumberFormat.decimalPattern('fr').format(double.parse(data.montantCredit))} \$",
+                                textAlign: TextAlign.center,
+                                style: bodyMedium),
                           ),
                         ],
                       )
-                      
                     ],
                   )),
             ],
@@ -415,28 +413,28 @@ class _DetailJournalState extends State<DetailJournal> {
         ],
       ),
     );
-  } 
+  }
 
   Future<void> submitCorbeille(JournalModel data) async {
     final journalModel = JournalModel(
       id: data.id!,
-        numeroOperation: data.numeroOperation,
-        libele: data.libele,
-        compteDebit: data.compteDebit,
-        montantDebit: data.montantDebit,
-        compteCredit: data.compteCredit,
-        montantCredit: data.montantCredit,
-        tva: data.tva,
-        remarque: data.remarque,
-        signature: data.signature,
-        createdRef: data.created,
-        created: DateTime.now(),
-        approbationDG: data.approbationDG,
-        motifDG: data.motifDG,
-        signatureDG: data.signatureDG,
-        approbationDD: data.approbationDD,
-        motifDD: data.motifDD,
-        signatureDD: data.signatureDD,
+      numeroOperation: data.numeroOperation,
+      libele: data.libele,
+      compteDebit: data.compteDebit,
+      montantDebit: data.montantDebit,
+      compteCredit: data.compteCredit,
+      montantCredit: data.montantCredit,
+      tva: data.tva,
+      remarque: data.remarque,
+      signature: data.signature,
+      createdRef: data.created,
+      created: DateTime.now(),
+      approbationDG: data.approbationDG,
+      motifDG: data.motifDG,
+      signatureDG: data.signatureDG,
+      approbationDD: data.approbationDD,
+      motifDD: data.motifDD,
+      signatureDD: data.signatureDD,
     );
     await JournalApi().updateData(journalModel);
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
@@ -444,8 +442,6 @@ class _DetailJournalState extends State<DetailJournal> {
       backgroundColor: Colors.red[700],
     ));
   }
-
-
 
   Widget approbationWidget(JournalModel data) {
     final bodyLarge = Theme.of(context).textTheme.bodyLarge;
@@ -498,7 +494,10 @@ class _DetailJournalState extends State<DetailJournal> {
                                       const SizedBox(height: p20),
                                       Text(data.approbationDG,
                                           style: bodyLarge!.copyWith(
-                                              color: Colors.red.shade700)),
+                                              color: (data.approbationDG ==
+                                                      "Unapproved")
+                                                  ? Colors.red.shade700
+                                                  : Colors.green.shade700)),
                                     ],
                                   )),
                               if (data.approbationDG == "Unapproved")
@@ -561,7 +560,10 @@ class _DetailJournalState extends State<DetailJournal> {
                                       const SizedBox(height: p20),
                                       Text(data.approbationDD,
                                           style: bodyLarge.copyWith(
-                                              color: Colors.green.shade700)),
+                                              color: (data.approbationDD ==
+                                                      "Unapproved")
+                                                  ? Colors.red.shade700
+                                                  : Colors.green.shade700)),
                                     ],
                                   )),
                               if (data.approbationDD == "Unapproved")
@@ -746,25 +748,24 @@ class _DetailJournalState extends State<DetailJournal> {
 
   Future<void> submitDG(JournalModel data) async {
     final journalModel = JournalModel(
-      id: data.id!,
-      numeroOperation: data.numeroOperation,
-      libele: data.libele,
-      compteDebit: data.compteDebit,
-      montantDebit: data.montantDebit,
-      compteCredit: data.compteCredit,
-      montantCredit: data.montantCredit,
-      tva: data.tva,
-      remarque: data.remarque,
-      signature: data.signature,
-      createdRef: data.created,
-      created: DateTime.now(),
-      approbationDG: approbationDG,
-      motifDG: (motifDGController.text == '') ? '-' : motifDGController.text,
-      signatureDG: user.matricule,
-      approbationDD: data.approbationDD,
-      motifDD: data.motifDD,
-      signatureDD: data.signatureDD
-    );
+        id: data.id!,
+        numeroOperation: data.numeroOperation,
+        libele: data.libele,
+        compteDebit: data.compteDebit,
+        montantDebit: data.montantDebit,
+        compteCredit: data.compteCredit,
+        montantCredit: data.montantCredit,
+        tva: data.tva,
+        remarque: data.remarque,
+        signature: data.signature,
+        createdRef: data.created,
+        created: DateTime.now(),
+        approbationDG: approbationDG,
+        motifDG: (motifDGController.text == '') ? '-' : motifDGController.text,
+        signatureDG: user.matricule,
+        approbationDD: data.approbationDD,
+        motifDD: data.motifDD,
+        signatureDD: data.signatureDD);
     await JournalApi().updateData(journalModel);
     Navigator.pop(context);
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
@@ -775,25 +776,24 @@ class _DetailJournalState extends State<DetailJournal> {
 
   Future<void> submitDD(JournalModel data) async {
     final journalModel = JournalModel(
-      id: data.id!,
-      numeroOperation: data.numeroOperation,
-      libele: data.libele,
-      compteDebit: data.compteDebit,
-      montantDebit: data.montantDebit,
-      compteCredit: data.compteCredit,
-      montantCredit: data.montantCredit,
-      tva: data.tva,
-      remarque: data.remarque,
-      signature: data.signature,
-      createdRef: data.created,
-      created: DateTime.now(),
-      approbationDG: '-',
-      motifDG: '-',
-      signatureDG: '-',
-      approbationDD: approbationDD,
-      motifDD: (motifDDController.text == '') ? '-' : motifDDController.text,
-      signatureDD: user.matricule
-    );
+        id: data.id!,
+        numeroOperation: data.numeroOperation,
+        libele: data.libele,
+        compteDebit: data.compteDebit,
+        montantDebit: data.montantDebit,
+        compteCredit: data.compteCredit,
+        montantCredit: data.montantCredit,
+        tva: data.tva,
+        remarque: data.remarque,
+        signature: data.signature,
+        createdRef: data.created,
+        created: DateTime.now(),
+        approbationDG: '-',
+        motifDG: '-',
+        signatureDG: '-',
+        approbationDD: approbationDD,
+        motifDD: (motifDDController.text == '') ? '-' : motifDDController.text,
+        signatureDD: user.matricule);
     await JournalApi().updateData(journalModel);
     Navigator.pop(context);
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(

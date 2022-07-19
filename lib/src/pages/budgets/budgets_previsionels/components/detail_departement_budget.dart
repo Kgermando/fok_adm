@@ -269,8 +269,7 @@ class _DetailDepartmentBudgetState extends State<DetailDepartmentBudget> {
                                   setState(() {
                                     isLoadingSend = true;
                                   });
-                                  alertDeleteDialog(data); 
-                                  
+                                  alertDeleteDialog(data);
                                 },
                                 icon: const Icon(Icons.delete),
                                 color: Colors.red.shade700),
@@ -504,10 +503,11 @@ class _DetailDepartmentBudgetState extends State<DetailDepartmentBudget> {
 
     // Cout total ligne budgetaires
     ligneBudgetaireCoutTotalList = ligneBudgetaireList
-      .where((element) =>
-        element.departement == data.departement &&
-        element.periodeBudgetDebut.microsecondsSinceEpoch == data.periodeDebut.microsecondsSinceEpoch)
-      .toList();
+        .where((element) =>
+            element.departement == data.departement &&
+            element.periodeBudgetDebut.microsecondsSinceEpoch ==
+                data.periodeDebut.microsecondsSinceEpoch)
+        .toList();
 
     // Filtre ligne budgetaire pour ce budgets
     // Recuperer les données qui sont identique aux lignes budgetaires
@@ -897,8 +897,7 @@ class _DetailDepartmentBudgetState extends State<DetailDepartmentBudget> {
               content: const SizedBox(
                   height: 100,
                   width: 100,
-                  child: Text(
-                      "Cette action permet de supprimer le budget")),
+                  child: Text("Cette action permet de supprimer le budget")),
               actions: <Widget>[
                 TextButton(
                   onPressed: () => Navigator.pop(context, 'Cancel'),
@@ -993,7 +992,10 @@ class _DetailDepartmentBudgetState extends State<DetailDepartmentBudget> {
                                       const SizedBox(height: p20),
                                       Text(data.approbationDG,
                                           style: bodyLarge!.copyWith(
-                                              color: Colors.red.shade700)),
+                                              color: (data.approbationDG ==
+                                                      "Unapproved")
+                                                  ? Colors.red.shade700
+                                                  : Colors.green.shade700)),
                                     ],
                                   )),
                               if (data.approbationDG == "Unapproved")

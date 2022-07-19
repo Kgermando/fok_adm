@@ -41,7 +41,7 @@ class _LogDDState extends State<LogDD> {
   bool isOpenLog7 = false;
   bool isOpenLog8 = false;
 
-  int anguinsapprobationDD = 0;
+  int anguinsCount = 0;
   int carburantCount = 0;
   int trajetsCount = 0;
   int immobiliersCount = 0;
@@ -69,7 +69,7 @@ class _LogDDState extends State<LogDD> {
     var devis = await DevisNotifyApi().getCountDD();
 
     setState(() {
-      anguinsapprobationDD = anguins.count;
+      anguinsCount = anguins.count;
       carburantCount = carburants.count;
       trajetsCount = trajets.count;
       immobiliersCount = immobiliers.count;
@@ -117,7 +117,7 @@ class _LogDDState extends State<LogDD> {
                                 title:
                                     Text('Dossier engins', style: headline6!.copyWith(color: Colors.white)),
                                 subtitle: Text(
-                                    "Vous avez $anguinsapprobationDD dossiers necessitent votre approbation",
+                                    "Vous avez $anguinsCount dossiers necessitent votre approbation",
                                     style: bodyMedium!.copyWith(
                                         color: Colors.white)),
                                 initiallyExpanded: false,

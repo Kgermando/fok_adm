@@ -28,7 +28,7 @@ class DetailDevis extends StatefulWidget {
 }
 
 class _DetailDevisState extends State<DetailDevis> {
-  final GlobalKey<ScaffoldState> _key = GlobalKey<ScaffoldState>(); 
+  final GlobalKey<ScaffoldState> _key = GlobalKey<ScaffoldState>();
   bool isLoading = false;
   bool isChecked = false;
 
@@ -40,7 +40,6 @@ class _DetailDevisState extends State<DetailDevis> {
   double montantUnitaire = 0.0;
   double montantGlobal = 0.0;
 
- 
   // Approbations
   String approbationDG = '-';
   String approbationBudget = '-';
@@ -60,7 +59,7 @@ class _DetailDevisState extends State<DetailDevis> {
   }
 
   @override
-  void dispose() { 
+  void dispose() {
     motifDGController.dispose();
     motifBudgetController.dispose();
     motifFinController.dispose();
@@ -70,7 +69,7 @@ class _DetailDevisState extends State<DetailDevis> {
 
   List<DevisListObjetsModel> devisObjetList = [];
   List<DevisListObjetsModel> devObjetList = [];
-  List<LigneBudgetaireModel> ligneBudgetaireList = []; 
+  List<LigneBudgetaireModel> ligneBudgetaireList = [];
   UserModel user = UserModel(
       nom: '-',
       prenom: '-',
@@ -87,7 +86,7 @@ class _DetailDevisState extends State<DetailDevis> {
       succursale: '-');
   Future<void> getData() async {
     UserModel userModel = await AuthApi().getUserId();
-    var budgets = await LIgneBudgetaireApi().getAllData(); 
+    var budgets = await LIgneBudgetaireApi().getAllData();
     var devisObjetLists = await DevisListObjetsApi().getAllData();
     if (mounted) {
       setState(() {
@@ -134,7 +133,7 @@ class _DetailDevisState extends State<DetailDevis> {
                         builder: (BuildContext context,
                             AsyncSnapshot<DevisModel> snapshot) {
                           if (snapshot.hasData) {
-                            DevisModel? data = snapshot.data; 
+                            DevisModel? data = snapshot.data;
                             return Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
@@ -629,11 +628,9 @@ class _DetailDevisState extends State<DetailDevis> {
     ]);
   }
 
-  
-
   Future<void> submitobservation(DevisModel data) async {
     final devisModel = DevisModel(
-      id: data.id!,
+        id: data.id!,
         title: data.title,
         priority: data.priority,
         departement: data.departement,
@@ -642,7 +639,7 @@ class _DetailDevisState extends State<DetailDevis> {
         createdRef: data.createdRef,
         created: DateTime.now(),
         isSubmit: data.isSubmit,
-       approbationDG: data.approbationDG,
+        approbationDG: data.approbationDG,
         motifDG: data.motifDG,
         signatureDG: data.signatureDG,
         approbationBudget: data.approbationBudget,
@@ -714,10 +711,6 @@ class _DetailDevisState extends State<DetailDevis> {
     ));
   }
 
-
-
-
-
   Widget approbationWidget(DevisModel data) {
     final bodyLarge = Theme.of(context).textTheme.bodyLarge;
     return Row(mainAxisAlignment: MainAxisAlignment.center, children: [
@@ -768,7 +761,10 @@ class _DetailDevisState extends State<DetailDevis> {
                                       const SizedBox(height: p20),
                                       Text(data.approbationDG,
                                           style: bodyLarge!.copyWith(
-                                              color: Colors.red.shade700)),
+                                              color: (data.approbationDG ==
+                                                      "Unapproved")
+                                                  ? Colors.red.shade700
+                                                  : Colors.green.shade700)),
                                     ],
                                   )),
                               if (data.approbationDG == "Unapproved")
@@ -831,7 +827,10 @@ class _DetailDevisState extends State<DetailDevis> {
                                       const SizedBox(height: p20),
                                       Text(data.approbationDD,
                                           style: bodyLarge.copyWith(
-                                              color: Colors.green.shade700)),
+                                              color: (data.approbationDD ==
+                                                      "Unapproved")
+                                                  ? Colors.red.shade700
+                                                  : Colors.green.shade700)),
                                     ],
                                   )),
                               if (data.approbationDD == "Unapproved")
@@ -892,7 +891,10 @@ class _DetailDevisState extends State<DetailDevis> {
                                       const SizedBox(height: p20),
                                       Text(data.approbationBudget,
                                           style: bodyLarge.copyWith(
-                                              color: Colors.grey.shade700)),
+                                              color: (data.approbationBudget ==
+                                                      "Unapproved")
+                                                  ? Colors.red.shade700
+                                                  : Colors.green.shade700)),
                                     ],
                                   )),
                               if (data.approbationBudget == "Unapproved")
@@ -987,7 +989,10 @@ class _DetailDevisState extends State<DetailDevis> {
                                       const SizedBox(height: p20),
                                       Text(data.approbationFin,
                                           style: bodyLarge.copyWith(
-                                              color: Colors.blue.shade700)),
+                                              color: (data.approbationFin ==
+                                                      "Unapproved")
+                                                  ? Colors.red.shade700
+                                                  : Colors.green.shade700)),
                                     ],
                                   )),
                               if (data.approbationFin == "Unapproved")
@@ -1374,7 +1379,6 @@ class _DetailDevisState extends State<DetailDevis> {
         createdRef: data.createdRef,
         created: DateTime.now(),
         isSubmit: data.isSubmit,
-
         approbationDG: approbationDG,
         motifDG: (motifDGController.text == '') ? '-' : motifDGController.text,
         signatureDG: user.matricule,
@@ -1408,7 +1412,6 @@ class _DetailDevisState extends State<DetailDevis> {
         createdRef: data.createdRef,
         created: DateTime.now(),
         isSubmit: data.isSubmit,
-
         approbationDG: '-',
         motifDG: '-',
         signatureDG: '-',
@@ -1442,7 +1445,6 @@ class _DetailDevisState extends State<DetailDevis> {
         createdRef: data.createdRef,
         created: DateTime.now(),
         isSubmit: data.isSubmit,
-
         approbationDG: data.approbationDG,
         motifDG: data.motifDG,
         signatureDG: data.signatureDG,
@@ -1479,7 +1481,6 @@ class _DetailDevisState extends State<DetailDevis> {
         createdRef: data.createdRef,
         created: DateTime.now(),
         isSubmit: data.isSubmit,
-
         approbationDG: data.approbationDG,
         motifDG: data.motifDG,
         signatureDG: data.signatureDG,

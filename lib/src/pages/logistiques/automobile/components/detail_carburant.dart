@@ -416,7 +416,10 @@ Widget approbationWidget(CarburantModel data) {
                                       const SizedBox(height: p20),
                                       Text(data.approbationDD,
                                           style: bodyLarge!.copyWith(
-                                              color: Colors.green.shade700)),
+                                              color: (data.approbationDD ==
+                                                      "Unapproved")
+                                                  ? Colors.red.shade700
+                                                  : Colors.green.shade700)),
                                     ],
                                   )),
                               if (data.approbationDD == "Unapproved")

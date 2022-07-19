@@ -194,15 +194,15 @@ class _DetailBilanState extends State<DetailBilan> {
                         children: [
                           if (data.signature ==
                               user.matricule) // Uniqyement celui a remplit le document
-                          sendButton(data),
+                            sendButton(data),
                           if (data.approbationDG == "Unapproved" ||
                               data.approbationDD == "Unapproved")
-                          deleteButton(data),
+                            deleteButton(data),
                           PrintWidget(
                               tooltip: 'Imprimer le document',
-                              onPressed: () async{
+                              onPressed: () async {
                                 await BilanPdf.generate(
-                                  data, compteActifList, comptePassifList);
+                                    data, compteActifList, comptePassifList);
                               }),
                         ],
                       ),
@@ -634,7 +634,10 @@ class _DetailBilanState extends State<DetailBilan> {
                                       const SizedBox(height: p20),
                                       Text(data.approbationDG,
                                           style: bodyLarge!.copyWith(
-                                              color: Colors.red.shade700)),
+                                              color: (data.approbationDG ==
+                                                      "Unapproved")
+                                                  ? Colors.red.shade700
+                                                  : Colors.green.shade700)),
                                     ],
                                   )),
                               if (data.approbationDG == "Unapproved")
@@ -697,7 +700,10 @@ class _DetailBilanState extends State<DetailBilan> {
                                       const SizedBox(height: p20),
                                       Text(data.approbationDD,
                                           style: bodyLarge.copyWith(
-                                              color: Colors.green.shade700)),
+                                              color: (data.approbationDD ==
+                                                      "Unapproved")
+                                                  ? Colors.red.shade700
+                                                  : Colors.green.shade700)),
                                     ],
                                   )),
                               if (data.approbationDD == "Unapproved")
@@ -882,7 +888,7 @@ class _DetailBilanState extends State<DetailBilan> {
 
   Future<void> submitDG(BilanModel data) async {
     final bilanModel = BilanModel(
-      id: data.id!,
+        id: data.id!,
         titleBilan: data.titleBilan,
         signature: data.signature,
         createdRef: data.createdRef,
@@ -893,7 +899,7 @@ class _DetailBilanState extends State<DetailBilan> {
         signatureDG: user.matricule,
         approbationDD: data.approbationDD,
         motifDD: data.motifDD,
-        signatureDD: data.signatureDD); 
+        signatureDD: data.signatureDD);
     await BilanApi().updateData(bilanModel);
     Navigator.pop(context);
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
@@ -904,7 +910,7 @@ class _DetailBilanState extends State<DetailBilan> {
 
   Future<void> submitDD(BilanModel data) async {
     final bilanModel = BilanModel(
-      id: data.id!,
+        id: data.id!,
         titleBilan: data.titleBilan,
         signature: data.signature,
         createdRef: data.createdRef,
@@ -915,7 +921,7 @@ class _DetailBilanState extends State<DetailBilan> {
         signatureDG: '-',
         approbationDD: approbationDD,
         motifDD: (motifDDController.text == '') ? '-' : motifDDController.text,
-        signatureDD: user.matricule); 
+        signatureDD: user.matricule);
     await BilanApi().updateData(bilanModel);
     Navigator.pop(context);
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(

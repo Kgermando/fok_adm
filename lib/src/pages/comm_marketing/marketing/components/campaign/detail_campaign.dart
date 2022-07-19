@@ -1,9 +1,9 @@
-import 'package:flutter/material.dart'; 
+import 'package:flutter/material.dart';
 import 'package:fokad_admin/src/api/auth/auth_api.dart';
 import 'package:fokad_admin/src/api/budgets/ligne_budgetaire_api.dart';
 import 'package:fokad_admin/src/api/comm_marketing/marketing/campaign_api.dart';
 import 'package:fokad_admin/src/constants/app_theme.dart';
-import 'package:fokad_admin/src/constants/responsive.dart'; 
+import 'package:fokad_admin/src/constants/responsive.dart';
 import 'package:fokad_admin/src/models/budgets/ligne_budgetaire_model.dart';
 import 'package:fokad_admin/src/models/comm_maketing/campaign_model.dart';
 import 'package:fokad_admin/src/models/users/user_model.dart';
@@ -45,8 +45,9 @@ class _DetailCampaignState extends State<DetailCampaign> {
     getData();
     super.initState();
   }
-    @override
-  void dispose() { 
+
+  @override
+  void dispose() {
     motifDGController.dispose();
     motifBudgetController.dispose();
     motifFinController.dispose();
@@ -54,7 +55,7 @@ class _DetailCampaignState extends State<DetailCampaign> {
     super.dispose();
   }
 
-  List<LigneBudgetaireModel> ligneBudgetaireList = []; 
+  List<LigneBudgetaireModel> ligneBudgetaireList = [];
   UserModel user = UserModel(
       nom: '-',
       prenom: '-',
@@ -71,7 +72,7 @@ class _DetailCampaignState extends State<DetailCampaign> {
       succursale: '-');
   Future<void> getData() async {
     UserModel userModel = await AuthApi().getUserId();
-    var budgets = await LIgneBudgetaireApi().getAllData(); 
+    var budgets = await LIgneBudgetaireApi().getAllData();
     setState(() {
       user = userModel;
       ligneBudgetaireList = budgets
@@ -103,7 +104,7 @@ class _DetailCampaignState extends State<DetailCampaign> {
                         builder: (BuildContext context,
                             AsyncSnapshot<CampaignModel> snapshot) {
                           if (snapshot.hasData) {
-                            CampaignModel? data = snapshot.data; 
+                            CampaignModel? data = snapshot.data;
                             return Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
@@ -176,9 +177,9 @@ class _DetailCampaignState extends State<DetailCampaign> {
                           Row(
                             children: [
                               editButton(data),
-                              PrintWidget(
-                                  tooltip: 'Imprimer le document',
-                                  onPressed: () {})
+                              // PrintWidget(
+                              //     tooltip: 'Imprimer le document',
+                              //     onPressed: () {})
                             ],
                           ),
                           SelectableText(
@@ -276,9 +277,10 @@ class _DetailCampaignState extends State<DetailCampaign> {
                     style: bodyMedium.copyWith(fontWeight: FontWeight.bold)),
               ),
               Expanded(
-                child: SelectableText("${NumberFormat.decimalPattern('fr')
-              .format(double.parse(data.coutCampaign))} \$",  
-                    textAlign: TextAlign.start, style: bodyMedium),
+                child: SelectableText(
+                    "${NumberFormat.decimalPattern('fr').format(double.parse(data.coutCampaign))} \$",
+                    textAlign: TextAlign.start,
+                    style: bodyMedium),
               )
             ],
           ),
@@ -396,32 +398,31 @@ class _DetailCampaignState extends State<DetailCampaign> {
 
   Future<void> submitobservation(CampaignModel data) async {
     final campaignModel = CampaignModel(
-      id: data.id!,
-      typeProduit: data.typeProduit,
-      dateDebutEtFin: data.dateDebutEtFin,
-      coutCampaign: data.coutCampaign,
-      lieuCible: data.lieuCible,
-      promotion: data.promotion,
-      objectifs: data.objectifs,
-      observation: 'true',
-      signature: data.signature,
-      createdRef: data.createdRef,
-      created: DateTime.now(),
-      approbationDG: data.approbationDG,
-      motifDG: data.motifDG,
-      signatureDG: data.signatureDG,
-      approbationBudget: data.approbationBudget,
-      motifBudget: data.motifBudget,
-      signatureBudget: data.signatureBudget,
-      approbationFin: data.approbationFin,
-      motifFin: data.motifFin,
-      signatureFin: data.signatureFin,
-      approbationDD: data.approbationDD,
-      motifDD: data.motifDD,
-      signatureDD: data.signatureDD,
-      ligneBudgetaire: data.ligneBudgetaire,
-      ressource: data.ressource
-    );
+        id: data.id!,
+        typeProduit: data.typeProduit,
+        dateDebutEtFin: data.dateDebutEtFin,
+        coutCampaign: data.coutCampaign,
+        lieuCible: data.lieuCible,
+        promotion: data.promotion,
+        objectifs: data.objectifs,
+        observation: 'true',
+        signature: data.signature,
+        createdRef: data.createdRef,
+        created: DateTime.now(),
+        approbationDG: data.approbationDG,
+        motifDG: data.motifDG,
+        signatureDG: data.signatureDG,
+        approbationBudget: data.approbationBudget,
+        motifBudget: data.motifBudget,
+        signatureBudget: data.signatureBudget,
+        approbationFin: data.approbationFin,
+        motifFin: data.motifFin,
+        signatureFin: data.signatureFin,
+        approbationDD: data.approbationDD,
+        motifDD: data.motifDD,
+        signatureDD: data.signatureDD,
+        ligneBudgetaire: data.ligneBudgetaire,
+        ressource: data.ressource);
     await CampaignApi().updateData(campaignModel);
     Navigator.of(context).pop();
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
@@ -429,7 +430,6 @@ class _DetailCampaignState extends State<DetailCampaign> {
       backgroundColor: Colors.green[700],
     ));
   }
-
 
   Widget approbationWidget(CampaignModel data) {
     final bodyLarge = Theme.of(context).textTheme.bodyLarge;
@@ -481,7 +481,10 @@ class _DetailCampaignState extends State<DetailCampaign> {
                                       const SizedBox(height: p20),
                                       Text(data.approbationDG,
                                           style: bodyLarge!.copyWith(
-                                              color: Colors.red.shade700)),
+                                              color: (data.approbationDG ==
+                                                      "Unapproved")
+                                                  ? Colors.red.shade700
+                                                  : Colors.green.shade700)),
                                     ],
                                   )),
                               if (data.approbationDG == "Unapproved")
@@ -544,7 +547,10 @@ class _DetailCampaignState extends State<DetailCampaign> {
                                       const SizedBox(height: p20),
                                       Text(data.approbationDD,
                                           style: bodyLarge.copyWith(
-                                              color: Colors.green.shade700)),
+                                              color: (data.approbationDD ==
+                                                      "Unapproved")
+                                                  ? Colors.red.shade700
+                                                  : Colors.green.shade700)),
                                     ],
                                   )),
                               if (data.approbationDD == "Unapproved")
@@ -605,7 +611,10 @@ class _DetailCampaignState extends State<DetailCampaign> {
                                       const SizedBox(height: p20),
                                       Text(data.approbationBudget,
                                           style: bodyLarge.copyWith(
-                                              color: Colors.grey.shade700)),
+                                              color: (data.approbationBudget ==
+                                                      "Unapproved")
+                                                  ? Colors.red.shade700
+                                                  : Colors.green.shade700)),
                                     ],
                                   )),
                               if (data.approbationBudget == "Unapproved")
@@ -700,7 +709,10 @@ class _DetailCampaignState extends State<DetailCampaign> {
                                       const SizedBox(height: p20),
                                       Text(data.approbationFin,
                                           style: bodyLarge.copyWith(
-                                              color: Colors.blue.shade700)),
+                                              color: (data.approbationFin ==
+                                                      "Unapproved")
+                                                  ? Colors.red.shade700
+                                                  : Colors.green.shade700)),
                                     ],
                                   )),
                               if (data.approbationFin == "Unapproved")

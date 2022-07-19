@@ -153,27 +153,27 @@ class _DetailImmobilierState extends State<DetailImmobilier> {
                   Column(
                     children: [
                       if (int.parse(user.role) <= 3)
-                      Row(
-                        children: [
-                          // IconButton(
-                          //     tooltip: 'Modifier',
-                          //     onPressed: () {
-                          //       Navigator.pushNamed(
-                          //           context,
-                          //           LogistiqueRoutes
-                          //               .logImmobilierMaterielUpdate,
-                          //           arguments: data);
-                          //     },
-                          //     icon: const Icon(Icons.edit)),
-                          IconButton(
-                              tooltip: 'Supprimer',
-                              onPressed: () async { 
-                                alertDeleteDialog(data);
-                              },
-                              icon: const Icon(Icons.delete),
-                              color: Colors.red.shade700),
-                        ],
-                      ),
+                        Row(
+                          children: [
+                            // IconButton(
+                            //     tooltip: 'Modifier',
+                            //     onPressed: () {
+                            //       Navigator.pushNamed(
+                            //           context,
+                            //           LogistiqueRoutes
+                            //               .logImmobilierMaterielUpdate,
+                            //           arguments: data);
+                            //     },
+                            //     icon: const Icon(Icons.edit)),
+                            IconButton(
+                                tooltip: 'Supprimer',
+                                onPressed: () async {
+                                  alertDeleteDialog(data);
+                                },
+                                icon: const Icon(Icons.delete),
+                                color: Colors.red.shade700),
+                          ],
+                        ),
                       SelectableText(
                           DateFormat("dd-MM-yyyy").format(data.created),
                           textAlign: TextAlign.start),
@@ -376,7 +376,10 @@ class _DetailImmobilierState extends State<DetailImmobilier> {
                                       const SizedBox(height: p20),
                                       Text(data.approbationDG,
                                           style: bodyLarge!.copyWith(
-                                              color: Colors.red.shade700)),
+                                              color: (data.approbationDG ==
+                                                      "Unapproved")
+                                                  ? Colors.red.shade700
+                                                  : Colors.green.shade700)),
                                     ],
                                   )),
                               if (data.approbationDG == "Unapproved")

@@ -9,7 +9,7 @@ import 'package:fokad_admin/src/navigation/drawer/drawer_menu.dart';
 import 'package:fokad_admin/src/navigation/header/custom_appbar.dart';
 import 'package:fokad_admin/src/pages/logistiques/automobile/components/update_engin.dart';
 import 'package:fokad_admin/src/routes/routes.dart';
-import 'package:fokad_admin/src/utils/loading.dart'; 
+import 'package:fokad_admin/src/utils/loading.dart';
 import 'package:fokad_admin/src/widgets/title_widget.dart';
 import 'package:intl/intl.dart';
 
@@ -183,28 +183,28 @@ class _DetailAnguinState extends State<DetailAnguin> {
                   TitleWidget(title: data.modele),
                   Column(
                     children: [
-                      if(int.parse(user.role) <= 3)
-                      Row(
-                        children: [
-                          // IconButton(
-                          //     tooltip: 'Modifier',
-                          //     onPressed: () {
-                          //       Navigator.pushNamed(
-                          //           context,
-                          //           LogistiqueRoutes
-                          //               .logImmobilierMaterielUpdate,
-                          //           arguments: data);
-                          //     },
-                          //     icon: const Icon(Icons.edit)),
-                          IconButton(
-                              tooltip: 'Supprimer',
-                              onPressed: () async {
-                                alertDeleteDialog(data);
-                              },
-                              icon: const Icon(Icons.delete),
-                              color: Colors.red.shade700),
-                        ],
-                      ),
+                      if (int.parse(user.role) <= 3)
+                        Row(
+                          children: [
+                            // IconButton(
+                            //     tooltip: 'Modifier',
+                            //     onPressed: () {
+                            //       Navigator.pushNamed(
+                            //           context,
+                            //           LogistiqueRoutes
+                            //               .logImmobilierMaterielUpdate,
+                            //           arguments: data);
+                            //     },
+                            //     icon: const Icon(Icons.edit)),
+                            IconButton(
+                                tooltip: 'Supprimer',
+                                onPressed: () async {
+                                  alertDeleteDialog(data);
+                                },
+                                icon: const Icon(Icons.delete),
+                                color: Colors.red.shade700),
+                          ],
+                        ),
                       SelectableText(
                           DateFormat("dd-MM-yyyy HH:mm").format(data.created),
                           textAlign: TextAlign.start),
@@ -546,7 +546,10 @@ class _DetailAnguinState extends State<DetailAnguin> {
                                       const SizedBox(height: p20),
                                       Text(data.approbationDG,
                                           style: bodyLarge!.copyWith(
-                                              color: Colors.red.shade700)),
+                                              color: (data.approbationDG ==
+                                                      "Unapproved")
+                                                  ? Colors.red.shade700
+                                                  : Colors.green.shade700)),
                                     ],
                                   )),
                               if (data.approbationDG == "Unapproved")
@@ -609,7 +612,10 @@ class _DetailAnguinState extends State<DetailAnguin> {
                                       const SizedBox(height: p20),
                                       Text(data.approbationDD,
                                           style: bodyLarge.copyWith(
-                                              color: Colors.green.shade700)),
+                                              color: (data.approbationDD ==
+                                                      "Unapproved")
+                                                  ? Colors.red.shade700
+                                                  : Colors.green.shade700)),
                                     ],
                                   )),
                               if (data.approbationDD == "Unapproved")
@@ -794,7 +800,7 @@ class _DetailAnguinState extends State<DetailAnguin> {
 
   Future<void> submitDG(AnguinModel data) async {
     final anguinModel = AnguinModel(
-      id: data.id!,
+        id: data.id!,
         nom: data.nom,
         modele: data.modele,
         marque: data.marque,
@@ -817,7 +823,7 @@ class _DetailAnguinState extends State<DetailAnguin> {
         signatureDG: user.matricule,
         approbationDD: data.approbationDD,
         motifDD: data.motifDD,
-        signatureDD: data.signatureDD); 
+        signatureDD: data.signatureDD);
     await AnguinApi().updateData(anguinModel);
     Navigator.pop(context);
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(

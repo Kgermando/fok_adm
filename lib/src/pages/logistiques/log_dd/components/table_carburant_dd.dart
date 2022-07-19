@@ -428,15 +428,15 @@ class _TableCarburantDDState extends State<TableCarburantDD> {
   }
 
   Future agentsRow() async {
-    List<CarburantModel?> dataList = await CarburantApi().getAllData();
+    List<CarburantModel> carburants = await CarburantApi().getAllData();
     var data =
-        dataList.where((element) => element!.approbationDD == '-').toList();
+        carburants.where((element) => element.approbationDD == '-').toList();
 
     if (mounted) {
       setState(() {
         for (var item in data) {
           rows.add(PlutoRow(cells: {
-            'id': PlutoCell(value: item!.id),
+            'id': PlutoCell(value: item.id),
             'operationEntreSortie': PlutoCell(value: item.operationEntreSortie),
             'typeCaburant': PlutoCell(value: item.typeCaburant),
             'fournisseur': PlutoCell(value: item.fournisseur),

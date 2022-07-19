@@ -429,8 +429,12 @@ class _DetailSuccursaleState extends State<DetailSuccursale> {
                                       children: [
                                         const Text("Approbation"),
                                         const SizedBox(height: p20),
-                                        Text(data.approbationDG, style: bodyLarge!
-                                      .copyWith(color: Colors.red.shade700)),
+                                        Text(data.approbationDG,
+                                          style: bodyLarge!.copyWith(
+                                              color: (data.approbationDG ==
+                                                      "Unapproved")
+                                                  ? Colors.red.shade700
+                                                  : Colors.green.shade700)),
                                       ],
                                     )),
                                 if (data.approbationDG == "Unapproved")
@@ -491,8 +495,12 @@ class _DetailSuccursaleState extends State<DetailSuccursale> {
                                       children: [
                                         const Text("Approbation"),
                                         const SizedBox(height: p20),
-                                        Text(data.approbationDD, style: bodyLarge
-                                      .copyWith(color: Colors.green.shade700)),
+                                        Text(data.approbationDD,
+                                          style: bodyLarge.copyWith(
+                                              color: (data.approbationDD ==
+                                                      "Unapproved")
+                                                  ? Colors.red.shade700
+                                                  : Colors.green.shade700)),
                                       ],
                                     )),
                                 if (data.approbationDD == "Unapproved")

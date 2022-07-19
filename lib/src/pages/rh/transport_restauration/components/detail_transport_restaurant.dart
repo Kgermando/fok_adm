@@ -92,7 +92,8 @@ class _DetailTransportRestaurantState extends State<DetailTransportRestaurant> {
       user = userModel;
       transRestAgentsFilter = transRestAgents;
       ligneBudgetaireList = budgets
-        .where((element) => element.departement == "Ressources Humaines").toList();
+          .where((element) => element.departement == "Ressources Humaines")
+          .toList();
     });
   }
 
@@ -596,7 +597,7 @@ class _DetailTransportRestaurantState extends State<DetailTransportRestaurant> {
     ));
   }
 
- Widget approbationWidget(TransportRestaurationModel data) {
+  Widget approbationWidget(TransportRestaurationModel data) {
     final bodyLarge = Theme.of(context).textTheme.bodyLarge;
     return Row(mainAxisAlignment: MainAxisAlignment.center, children: [
       Card(
@@ -646,7 +647,10 @@ class _DetailTransportRestaurantState extends State<DetailTransportRestaurant> {
                                       const SizedBox(height: p20),
                                       Text(data.approbationDG,
                                           style: bodyLarge!.copyWith(
-                                              color: Colors.red.shade700)),
+                                              color: (data.approbationDG ==
+                                                      "Unapproved")
+                                                  ? Colors.red.shade700
+                                                  : Colors.green.shade700)),
                                     ],
                                   )),
                               if (data.approbationDG == "Unapproved")
@@ -770,7 +774,10 @@ class _DetailTransportRestaurantState extends State<DetailTransportRestaurant> {
                                       const SizedBox(height: p20),
                                       Text(data.approbationBudget,
                                           style: bodyLarge.copyWith(
-                                              color: Colors.grey.shade700)),
+                                              color: (data.approbationBudget ==
+                                                      "Unapproved")
+                                                  ? Colors.red.shade700
+                                                  : Colors.green.shade700)),
                                     ],
                                   )),
                               if (data.approbationBudget == "Unapproved")
@@ -865,7 +872,10 @@ class _DetailTransportRestaurantState extends State<DetailTransportRestaurant> {
                                       const SizedBox(height: p20),
                                       Text(data.approbationFin,
                                           style: bodyLarge.copyWith(
-                                              color: Colors.blue.shade700)),
+                                              color: (data.approbationFin ==
+                                                      "Unapproved")
+                                                  ? Colors.red.shade700
+                                                  : Colors.green.shade700)),
                                     ],
                                   )),
                               if (data.approbationFin == "Unapproved")
@@ -1249,7 +1259,6 @@ class _DetailTransportRestaurantState extends State<DetailTransportRestaurant> {
         signature: data.signature,
         createdRef: data.createdRef,
         created: data.created,
- 
         approbationDG: approbationDG,
         motifDG: (motifDGController.text == '') ? '-' : motifDGController.text,
         signatureDG: user.matricule,
@@ -1263,8 +1272,7 @@ class _DetailTransportRestaurantState extends State<DetailTransportRestaurant> {
         motifDD: data.motifDD,
         signatureDD: data.signatureDD,
         ligneBudgetaire: '-',
-        ressource: '-'
-    );
+        ressource: '-');
     await TransportRestaurationApi().updateData(transRest);
     Navigator.pop(context);
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
@@ -1281,7 +1289,6 @@ class _DetailTransportRestaurantState extends State<DetailTransportRestaurant> {
         signature: data.signature,
         createdRef: data.createdRef,
         created: data.created,
-
         approbationDG: '-',
         motifDG: '-',
         signatureDG: '-',
@@ -1295,8 +1302,7 @@ class _DetailTransportRestaurantState extends State<DetailTransportRestaurant> {
         motifDD: (motifDDController.text == '') ? '-' : motifDDController.text,
         signatureDD: user.matricule,
         ligneBudgetaire: '-',
-        ressource: '-'
-    );
+        ressource: '-');
     await TransportRestaurationApi().updateData(transRest);
     Navigator.pop(context);
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
@@ -1313,7 +1319,6 @@ class _DetailTransportRestaurantState extends State<DetailTransportRestaurant> {
         signature: data.signature,
         createdRef: data.createdRef,
         created: data.created,
-
         approbationDG: data.approbationDG,
         motifDG: data.motifDG,
         signatureDG: data.signatureDG,
@@ -1330,8 +1335,7 @@ class _DetailTransportRestaurantState extends State<DetailTransportRestaurant> {
         signatureDD: data.signatureDD,
         ligneBudgetaire:
             (ligneBudgtaire.toString() == '') ? '-' : ligneBudgtaire.toString(),
-        ressource: (ressource.toString() == '') ? '-' : ressource.toString()
-    );
+        ressource: (ressource.toString() == '') ? '-' : ressource.toString());
     await TransportRestaurationApi().updateData(transRest);
     Navigator.pop(context);
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
@@ -1362,8 +1366,7 @@ class _DetailTransportRestaurantState extends State<DetailTransportRestaurant> {
         motifDD: data.motifDD,
         signatureDD: data.signatureDD,
         ligneBudgetaire: data.ligneBudgetaire,
-        ressource: data.ressource
-    );
+        ressource: data.ressource);
     await TransportRestaurationApi().updateData(transRest);
     Navigator.pop(context);
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(

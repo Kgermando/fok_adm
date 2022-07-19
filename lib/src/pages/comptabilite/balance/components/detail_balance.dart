@@ -184,12 +184,12 @@ class _DetailBalanceState extends State<DetailBalance> {
                     children: [
                       Row(
                         children: [
-                          if(data.signature == user.matricule) // Uniqyement celui a remplit le document
-                          sendButton(data),
+                          if (data.signature ==
+                              user.matricule) // Uniqyement celui a remplit le document
+                            sendButton(data),
                           if (data.approbationDG == "Unapproved" ||
                               data.approbationDD == "Unapproved")
-                          deleteButton(data),
-                          
+                            deleteButton(data),
                           PrintWidget(
                               tooltip: 'Imprimer le document',
                               onPressed: () async {
@@ -199,7 +199,8 @@ class _DetailBalanceState extends State<DetailBalance> {
                                             .reference.microsecondsSinceEpoch ==
                                         data.createdRef.microsecondsSinceEpoch)
                                     .toList();
-                                await BalancePdf.generate(data, compteBalanceRefPdf);
+                                await BalancePdf.generate(
+                                    data, compteBalanceRefPdf);
                               }),
                         ],
                       ),
@@ -641,7 +642,10 @@ class _DetailBalanceState extends State<DetailBalance> {
                                       const SizedBox(height: p20),
                                       Text(data.approbationDG,
                                           style: bodyLarge!.copyWith(
-                                              color: Colors.red.shade700)),
+                                              color: (data.approbationDG ==
+                                                      "Unapproved")
+                                                  ? Colors.red.shade700
+                                                  : Colors.green.shade700)),
                                     ],
                                   )),
                               if (data.approbationDG == "Unapproved")
@@ -704,7 +708,10 @@ class _DetailBalanceState extends State<DetailBalance> {
                                       const SizedBox(height: p20),
                                       Text(data.approbationDD,
                                           style: bodyLarge.copyWith(
-                                              color: Colors.green.shade700)),
+                                              color: (data.approbationDD ==
+                                                      "Unapproved")
+                                                  ? Colors.red.shade700
+                                                  : Colors.green.shade700)),
                                     ],
                                   )),
                               if (data.approbationDD == "Unapproved")

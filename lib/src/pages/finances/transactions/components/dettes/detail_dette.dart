@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart'; 
+import 'package:flutter/services.dart';
 import 'package:fokad_admin/src/api/auth/auth_api.dart';
 import 'package:fokad_admin/src/api/finances/creance_dette_api.dart';
 import 'package:fokad_admin/src/api/finances/dette_api.dart';
 import 'package:fokad_admin/src/api/user/user_api.dart';
 import 'package:fokad_admin/src/constants/app_theme.dart';
-import 'package:fokad_admin/src/constants/responsive.dart'; 
+import 'package:fokad_admin/src/constants/responsive.dart';
 import 'package:fokad_admin/src/models/finances/creance_dette_model.dart';
 import 'package:fokad_admin/src/models/finances/dette_model.dart';
 import 'package:fokad_admin/src/models/users/user_model.dart';
@@ -13,7 +13,7 @@ import 'package:fokad_admin/src/navigation/drawer/drawer_menu.dart';
 import 'package:fokad_admin/src/navigation/header/custom_appbar.dart';
 import 'package:fokad_admin/src/pages/finances/transactions/components/creance_dette/table_creance_dette.dart';
 import 'package:fokad_admin/src/utils/loading.dart';
-import 'package:fokad_admin/src/widgets/btn_widget.dart'; 
+import 'package:fokad_admin/src/widgets/btn_widget.dart';
 import 'package:fokad_admin/src/widgets/title_widget.dart';
 import 'package:intl/intl.dart';
 import 'package:pluto_grid/pluto_grid.dart';
@@ -56,7 +56,6 @@ class _DetailDetteState extends State<DetailDette> {
   TextEditingController motifDGController = TextEditingController();
   TextEditingController motifDDController = TextEditingController();
 
-  
   @override
   initState() {
     getData();
@@ -73,7 +72,6 @@ class _DetailDetteState extends State<DetailDette> {
     motifDDController.dispose();
     super.dispose();
   }
-
 
   List<CreanceDetteModel> creanceDetteList = [];
   List<CreanceDetteModel> creanceDetteFilter = [];
@@ -94,11 +92,11 @@ class _DetailDetteState extends State<DetailDette> {
   Future<void> getData() async {
     final dataUser = await UserApi().getAllData();
     UserModel userModel = await AuthApi().getUserId();
-    var creanceDette = await CreanceDetteApi().getAllData(); 
+    var creanceDette = await CreanceDetteApi().getAllData();
     setState(() {
       userList = dataUser;
       user = userModel;
-      creanceDetteFilter = creanceDette; 
+      creanceDetteFilter = creanceDette;
     });
   }
 
@@ -147,7 +145,7 @@ class _DetailDetteState extends State<DetailDette> {
                                     element.creanceDette == 'dettes' &&
                                     element.reference.microsecondsSinceEpoch ==
                                         data!.createdRef.microsecondsSinceEpoch)
-                                .toList(); 
+                                .toList();
                             return Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
@@ -213,7 +211,7 @@ class _DetailDetteState extends State<DetailDette> {
                 children: [
                   TitleWidget(title: data.libelle),
                   Column(
-                    children: [ 
+                    children: [
                       SelectableText(
                           DateFormat("dd-MM-yyyy HH:mm").format(data.created),
                           textAlign: TextAlign.start),
@@ -384,7 +382,8 @@ class _DetailDetteState extends State<DetailDette> {
               const SizedBox(
                 width: p10,
               ),
-              if (detteModel.statutPaie == 'false' && user.departement == "Finances")
+              if (detteModel.statutPaie == 'false' &&
+                  user.departement == "Finances")
                 Expanded(child: checkboxRead(detteModel)),
               (detteModel.statutPaie == 'true')
                   ? Expanded(
@@ -510,19 +509,25 @@ class _DetailDetteState extends State<DetailDette> {
                       height: p20,
                     ),
                     if (data.approbationDG == "-" && data.approbationDD == "-")
-                      Text('Ajout payement', style: Theme.of(context).textTheme
-                        .headline6!.copyWith(color: Colors.red.shade700, fontWeight: FontWeight.bold)),
-                    if(data.approbationDG == "Approved" && data.approbationDD == "Approved")
-                    BtnWidget(
-                        title: 'Soumettre',
-                        isLoading: isLoading,
-                        press: () {
-                          final form = _formKey.currentState!;
-                          if (form.validate()) {
-                            creanceDette(data);
-                            form.reset();
-                          }
-                        })
+                      Text('Ajout payement',
+                          style: Theme.of(context)
+                              .textTheme
+                              .headline6!
+                              .copyWith(
+                                  color: Colors.red.shade700,
+                                  fontWeight: FontWeight.bold)),
+                    if (data.approbationDG == "Approved" &&
+                        data.approbationDD == "Approved")
+                      BtnWidget(
+                          title: 'Soumettre',
+                          isLoading: isLoading,
+                          press: () {
+                            final form = _formKey.currentState!;
+                            if (form.validate()) {
+                              creanceDette(data);
+                              form.reset();
+                            }
+                          })
                   ],
                 ),
               ),
@@ -642,8 +647,7 @@ class _DetailDetteState extends State<DetailDette> {
     ));
   }
 
-   
-   Widget approbationWidget(DetteModel data) {
+  Widget approbationWidget(DetteModel data) {
     final bodyLarge = Theme.of(context).textTheme.bodyLarge;
     return Row(mainAxisAlignment: MainAxisAlignment.center, children: [
       Card(
@@ -694,7 +698,10 @@ class _DetailDetteState extends State<DetailDette> {
                                       const SizedBox(height: p20),
                                       Text(data.approbationDG,
                                           style: bodyLarge!.copyWith(
-                                              color: Colors.red.shade700)),
+                                              color: (data.approbationDG ==
+                                                      "Unapproved")
+                                                  ? Colors.red.shade700
+                                                  : Colors.green.shade700)),
                                     ],
                                   )),
                               if (data.approbationDG == "Unapproved")
@@ -757,7 +764,10 @@ class _DetailDetteState extends State<DetailDette> {
                                       const SizedBox(height: p20),
                                       Text(data.approbationDD,
                                           style: bodyLarge.copyWith(
-                                              color: Colors.green.shade700)),
+                                              color: (data.approbationDD ==
+                                                      "Unapproved")
+                                                  ? Colors.red.shade700
+                                                  : Colors.green.shade700)),
                                     ],
                                   )),
                               if (data.approbationDD == "Unapproved")
@@ -781,9 +791,9 @@ class _DetailDetteState extends State<DetailDette> {
                                   )),
                             ]),
                             if (data.approbationDD == '-' &&
-                                user.fonctionOccupe ==
-                                  "Directeur de departement" || 
-                                  user.fonctionOccupe == "Directeur de finance")
+                                    user.fonctionOccupe ==
+                                        "Directeur de departement" ||
+                                user.fonctionOccupe == "Directeur de finance")
                               Padding(
                                 padding: const EdgeInsets.all(p10),
                                 child: Row(children: [
