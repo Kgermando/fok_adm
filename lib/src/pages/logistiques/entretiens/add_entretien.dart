@@ -25,7 +25,7 @@ class AddEntretienPage extends StatefulWidget {
 }
 
 class _AddEntretienPageState extends State<AddEntretienPage> {
-  final GlobalKey<ScaffoldState> _key = GlobalKey(); 
+  final GlobalKey<ScaffoldState> _key = GlobalKey();
   final _formKey = GlobalKey<FormState>();
   final _formObjetKey = GlobalKey<FormState>();
   bool isLoading = false;
@@ -499,7 +499,8 @@ class _AddEntretienPageState extends State<AddEntretienPage> {
                   textAlign: TextAlign.start, style: bodyMedium),
             ),
           ]),
-          for (var item in objetRemplaceList.where((element) => element.reference == entretiensCount))
+          for (var item in objetRemplaceList
+              .where((element) => element.reference == entretiensCount))
             tableDataWidget(
                 item.nom, item.cout, item.caracteristique, item.observation)
         ],
@@ -509,6 +510,7 @@ class _AddEntretienPageState extends State<AddEntretienPage> {
 
   TableRow tableDataWidget(
       String nom, String cout, String caraterique, String observation) {
+    double coutProduit = (cout == '') ? double.parse('0') : double.parse(cout);
     final bodyMedium = Theme.of(context).textTheme.bodyMedium;
     return TableRow(children: [
       Container(
@@ -519,7 +521,7 @@ class _AddEntretienPageState extends State<AddEntretienPage> {
       Container(
         padding: const EdgeInsets.all(p10),
         child: SelectableText(
-            "${NumberFormat.decimalPattern('fr').format(double.parse(cout))} \$",
+            "${NumberFormat.decimalPattern('fr').format(coutProduit)} \$",
             textAlign: TextAlign.center,
             style: bodyMedium),
       ),
@@ -545,7 +547,7 @@ class _AddEntretienPageState extends State<AddEntretienPage> {
         dureeTravaux: dureeTravauxController.text,
         signature: signature.toString(),
         createdRef: entretiensCount,
-        created: DateTime.now(), 
+        created: DateTime.now(),
         approbationDD: '-',
         motifDD: '-',
         signatureDD: '-');

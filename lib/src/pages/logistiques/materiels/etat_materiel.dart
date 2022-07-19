@@ -1,13 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:fokad_admin/src/api/auth/auth_api.dart';
+import 'package:fokad_admin/src/api/logistiques/anguin_api.dart';
 import 'package:fokad_admin/src/api/logistiques/etat_materiel_api.dart';
+import 'package:fokad_admin/src/api/logistiques/immobiler_api.dart';
+import 'package:fokad_admin/src/api/logistiques/mobilier_api.dart';
 import 'package:fokad_admin/src/constants/app_theme.dart';
 import 'package:fokad_admin/src/constants/responsive.dart';
+import 'package:fokad_admin/src/models/logistiques/anguin_model.dart';
 import 'package:fokad_admin/src/models/logistiques/etat_materiel_model.dart';
+import 'package:fokad_admin/src/models/logistiques/immobilier_model.dart';
+import 'package:fokad_admin/src/models/logistiques/mobilier_model.dart';
 import 'package:fokad_admin/src/models/users/user_model.dart';
 import 'package:fokad_admin/src/navigation/drawer/drawer_menu.dart';
 import 'package:fokad_admin/src/navigation/header/custom_appbar.dart';
 import 'package:fokad_admin/src/pages/logistiques/materiels/components/table_etat_materiels.dart';
+import 'package:fokad_admin/src/routes/routes.dart';
 import 'package:fokad_admin/src/utils/loading.dart';
 
 class EtatMateriel extends StatefulWidget {
@@ -19,14 +26,10 @@ class EtatMateriel extends StatefulWidget {
 
 class _EtatMaterielState extends State<EtatMateriel> {
   final GlobalKey<ScaffoldState> _key = GlobalKey();
-
-  final ScrollController _controllerScroll = ScrollController();
   final _formKey = GlobalKey<FormState>();
   bool isLoading = false;
 
-  final TextEditingController nomController = TextEditingController();
-  final TextEditingController modeleController = TextEditingController();
-  final TextEditingController marqueController = TextEditingController();
+  String? nom;
   String? typeObjet;
   String? statut;
 
@@ -36,63 +39,73 @@ class _EtatMaterielState extends State<EtatMateriel> {
     super.initState();
   }
 
+  List<String> nomList = [];
+  List<MobilierModel> mobilierList = [];
+  List<ImmobilierModel> immobilierList = [];
+  List<AnguinModel> enguinsList = [];
+
   String? signature;
   Future<void> date() async {
     UserModel userModel = await AuthApi().getUserId();
+    var mobiliers = await MobilierApi().getAllData();
+    var immobiliers = await ImmobilierApi().getAllData();
+    var enguins = await AnguinApi().getAllData();
     setState(() {
       signature = userModel.matricule;
+      mobilierList = mobiliers
+          .where((element) => element.approbationDD == "Approved")
+          .toList();
+      immobilierList = immobiliers
+          .where((element) =>
+              element.approbationDG == "Approved" &&
+              element.approbationDD == "Approved")
+          .toList();
+      enguinsList = enguins
+          .where((element) =>
+              element.approbationDG == "Approved" &&
+              element.approbationDD == "Approved")
+          .toList();
     });
-  }
-
-  @override
-  void dispose() {
-    _controllerScroll.dispose();
-
-    nomController.dispose();
-    modeleController.dispose();
-    marqueController.dispose();
-
-    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      key: _key,
-      drawer: const DrawerMenu(),
-      floatingActionButton: FloatingActionButton(
-          child: const Icon(Icons.add),
-          onPressed: () {
-            newFicheDialog();
-            // Navigator.pushNamed(context, LogistiqueRoutes.logAddEtatMateriel);
-          }),
-      body: SafeArea(
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            if (Responsive.isDesktop(context))
-              const Expanded(
-                child: DrawerMenu(),
-              ),
-            Expanded(
-              flex: 5,
-              child: Padding(
-                padding: const EdgeInsets.all(p10),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    CustomAppbar(
-                        title: 'Etat des materiels',
-                        controllerMenu: () =>
-                            _key.currentState!.openDrawer()),
-                    const Expanded(child: TableEtatMateriel())
-                  ],
+        key: _key,
+        drawer: const DrawerMenu(),
+        floatingActionButton: FloatingActionButton(
+            child: const Icon(Icons.add),
+            onPressed: () {
+              // newFicheDialog();
+              Navigator.pushNamed(context, LogistiqueRoutes.logAddEtatMateriel);
+            }),
+        body: SafeArea(
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              if (Responsive.isDesktop(context))
+                const Expanded(
+                  child: DrawerMenu(),
+                ),
+              Expanded(
+                flex: 5,
+                child: Padding(
+                  padding: const EdgeInsets.all(p10),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      CustomAppbar(
+                          title: 'Materiels',
+                          controllerMenu: () =>
+                              _key.currentState!.openDrawer()),
+                      const Expanded(child: TableEtatMateriel())
+                    ],
+                  ),
                 ),
               ),
-            ),
-          ],
-        ),
-      ));
+            ],
+          ),
+        ));
   }
 
   newFicheDialog() {
@@ -108,38 +121,26 @@ class _EtatMaterielState extends State<EtatMateriel> {
                   height: 400,
                   width: 500,
                   child: isLoading
-                  ? loading()
-                  : Form(
-                      key: _formKey,
-                      child: Column(
-                        children: [
-                          Row(
+                      ? loading()
+                      : Form(
+                          key: _formKey,
+                          child: Column(
                             children: [
-                              Expanded(child: nomWidget()),
-                              const SizedBox(
-                                width: p10,
+                              Row(
+                                children: [
+                                  Expanded(child: typeObjetWidget()),
+                                  const SizedBox(
+                                    width: p10,
+                                  ),
+                                  Expanded(child: nomWidget())
+                                ],
                               ),
-                              Expanded(child: modeleWidget())
-                            ],
-                          ),
-                          Row(
-                            children: [
-                              Expanded(child: marqueWidget()),
+                              statutListWidget(),
                               const SizedBox(
-                                width: p10,
+                                height: p20,
                               ),
-                              Expanded(child: typeObjetWidget())
                             ],
-                          ),
-                          statutListWidget(),
-                          const SizedBox(
-                            height: p20,
-                          ),
-                        ],
-                      )
-                    )
-                  ),
-
+                          ))),
               actions: <Widget>[
                 TextButton(
                   onPressed: () => Navigator.pop(context, 'Cancel'),
@@ -150,7 +151,7 @@ class _EtatMaterielState extends State<EtatMateriel> {
                     setState(() {
                       isLoading = true;
                     });
-                    
+
                     submit();
                   },
                   child: const Text('OK'),
@@ -159,76 +160,13 @@ class _EtatMaterielState extends State<EtatMateriel> {
             );
           });
         });
-  } 
-
-  Widget nomWidget() {
-    return Container(
-        margin: const EdgeInsets.only(bottom: p20),
-        child: TextFormField(
-          controller: nomController,
-          decoration: InputDecoration(
-            border:
-                OutlineInputBorder(borderRadius: BorderRadius.circular(10.0)),
-            labelText: 'Nom',
-          ),
-          keyboardType: TextInputType.text,
-          style: const TextStyle(),
-          validator: (value) {
-            if (value != null && value.isEmpty) {
-              return 'Ce champs est obligatoire';
-            } else {
-              return null;
-            }
-          },
-        ));
-  }
-
-  Widget modeleWidget() {
-    return Container(
-        margin: const EdgeInsets.only(bottom: p20),
-        child: TextFormField(
-          controller: modeleController,
-          decoration: InputDecoration(
-            border:
-                OutlineInputBorder(borderRadius: BorderRadius.circular(10.0)),
-            labelText: 'Modèle',
-          ),
-          keyboardType: TextInputType.text,
-          style: const TextStyle(),
-          validator: (value) {
-            if (value != null && value.isEmpty) {
-              return 'Ce champs est obligatoire';
-            } else {
-              return null;
-            }
-          },
-        ));
-  }
-
-  Widget marqueWidget() {
-    return Container(
-        margin: const EdgeInsets.only(bottom: p20),
-        child: TextFormField(
-          controller: marqueController,
-          decoration: InputDecoration(
-            border:
-                OutlineInputBorder(borderRadius: BorderRadius.circular(10.0)),
-            labelText: 'Marque',
-          ),
-          keyboardType: TextInputType.text,
-          style: const TextStyle(),
-          validator: (value) {
-            if (value != null && value.isEmpty) {
-              return 'Ce champs est obligatoire';
-            } else {
-              return null;
-            }
-          },
-        ));
   }
 
   Widget typeObjetWidget() {
-    List<String> typeObjetList = ["Mobilier", "Immobilier"];
+    List<String> typeObjetList = ["Mobilier", "Immobilier", "Enguins"];
+    var mobiliers = mobilierList.map((e) => e.nom).toList();
+    var immobiliers = immobilierList.map((e) => e.numeroCertificat).toList();
+    var enguins = enguinsList.map((e) => e.nom).toList();
     return Container(
       margin: const EdgeInsets.only(bottom: p20),
       child: DropdownButtonFormField<String>(
@@ -249,6 +187,49 @@ class _EtatMaterielState extends State<EtatMateriel> {
         onChanged: (value) {
           setState(() {
             typeObjet = value!;
+            switch (value) {
+              case 'Mobilier':
+                nom = '';
+                nomList = mobiliers;
+                break;
+              case 'Immobilier':
+                nom = '';
+                nomList = immobiliers;
+                break;
+              case 'Enguins':
+                nom = '';
+                nomList = enguins;
+
+                break;
+              default:
+            }
+          });
+        },
+      ),
+    );
+  }
+
+  Widget nomWidget() {
+    return Container(
+      margin: const EdgeInsets.only(bottom: p20),
+      child: DropdownButtonFormField<String>(
+        decoration: InputDecoration(
+          labelText: 'Type d\'Objet',
+          labelStyle: const TextStyle(),
+          border: OutlineInputBorder(borderRadius: BorderRadius.circular(5.0)),
+          contentPadding: const EdgeInsets.only(left: 5.0),
+        ),
+        value: typeObjet,
+        isExpanded: true,
+        items: nomList.map((String value) {
+          return DropdownMenuItem<String>(
+            value: value,
+            child: Text(value),
+          );
+        }).toList(),
+        onChanged: (value) {
+          setState(() {
+            nom = value!;
           });
         },
       ),
@@ -285,14 +266,14 @@ class _EtatMaterielState extends State<EtatMateriel> {
 
   Future<void> submit() async {
     final etatMaterielModel = EtatMaterielModel(
-        nom: nomController.text,
-        modele: modeleController.text,
-        marque: marqueController.text,
+        nom: nom.toString(),
+        modele: '-',
+        marque: '-',
         typeObjet: typeObjet.toString(),
         statut: statut.toString(),
         signature: signature.toString(),
         createdRef: DateTime.now(),
-        created: DateTime.now(), 
+        created: DateTime.now(),
         approbationDD: '-',
         motifDD: '-',
         signatureDD: '-');
