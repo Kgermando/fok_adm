@@ -6,7 +6,8 @@ import 'package:fokad_admin/src/constants/responsive.dart';
 import 'package:fokad_admin/src/models/logistiques/anguin_model.dart';
 import 'package:fokad_admin/src/models/users/user_model.dart';
 import 'package:fokad_admin/src/navigation/drawer/drawer_menu.dart';
-import 'package:fokad_admin/src/navigation/header/custom_appbar.dart'; 
+import 'package:fokad_admin/src/navigation/header/custom_appbar.dart';
+import 'package:fokad_admin/src/pages/logistiques/automobile/components/update_engin.dart';
 import 'package:fokad_admin/src/routes/routes.dart';
 import 'package:fokad_admin/src/utils/loading.dart';
 import 'package:fokad_admin/src/widgets/title_widget.dart';
@@ -83,6 +84,7 @@ class _DetailAnguinState extends State<DetailAnguin> {
               if (snapshot.hasData) {
                 AnguinModel? data = snapshot.data;
                 return FloatingActionButton(
+                    tooltip: 'Ajouter le trajet',
                     child: Row(
                       children: const [
                         Icon(Icons.add),
@@ -185,16 +187,18 @@ class _DetailAnguinState extends State<DetailAnguin> {
                       if (int.parse(user.role) <= 3)
                         Row(
                           children: [
-                            // IconButton(
-                            //     tooltip: 'Modifier',
-                            //     onPressed: () {
-                            //       Navigator.pushNamed(
-                            //           context,
-                            //           LogistiqueRoutes
-                            //               .logImmobilierMaterielUpdate,
-                            //           arguments: data);
-                            //     },
-                            //     icon: const Icon(Icons.edit)),
+                            IconButton(
+                                tooltip: 'Modifier',
+                                onPressed: () {
+                                  Navigator.push(context,
+                                      MaterialPageRoute(builder: (context) => UpdateEngin(engin: data)));
+                                  // Navigator.pushNamed(
+                                  //     context,
+                                  //     LogistiqueRoutes
+                                  //         .logImmobilierMaterielUpdate,
+                                  //     arguments: data);
+                                },
+                                icon: const Icon(Icons.edit)),
                             IconButton(
                                 tooltip: 'Supprimer',
                                 onPressed: () async {

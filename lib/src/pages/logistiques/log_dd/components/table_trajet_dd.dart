@@ -178,7 +178,7 @@ class _TableTrajetDDState extends State<TableTrajetDD> {
       ),
       PlutoColumn(
         readOnly: true,
-        title: 'kilometrage Soritie',
+        title: 'Kilometrage Soritie',
         field: 'kilometrageSorite',
         type: PlutoColumnType.text(),
         enableRowDrag: true,
@@ -190,7 +190,7 @@ class _TableTrajetDDState extends State<TableTrajetDD> {
       ),
       PlutoColumn(
         readOnly: true,
-        title: 'kilometrage Retour',
+        title: 'Kilometrage Retour',
         field: 'kilometrageRetour',
         type: PlutoColumnType.text(),
         enableRowDrag: true,

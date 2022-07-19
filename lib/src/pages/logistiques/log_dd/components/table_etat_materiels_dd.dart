@@ -167,7 +167,7 @@ class _TableEtatMaterielDDState extends State<TableEtatMaterielDD> {
       ),
       PlutoColumn(
         readOnly: true,
-        title: 'type d\'Objet',
+        title: 'Type d\'Objet',
         field: 'typeObjet',
         type: PlutoColumnType.text(),
         enableRowDrag: true,
