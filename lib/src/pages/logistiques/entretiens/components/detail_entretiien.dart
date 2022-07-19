@@ -26,6 +26,7 @@ class DetailEntretien extends StatefulWidget {
 class _DetailEntretienState extends State<DetailEntretien> {
   final GlobalKey<ScaffoldState> _key = GlobalKey();
   bool isLoading = false;
+  bool isLoadingDelete = false;
 
   List<PlutoColumn> columns = [];
   List<PlutoRow> rows = [];
@@ -172,10 +173,20 @@ class _DetailEntretienState extends State<DetailEntretien> {
                     children: [
                       Row(
                         children: [
+                          // IconButton(
+                          //     tooltip: 'Modifier',
+                          //     onPressed: () {},
+                          //     icon: const Icon(Icons.edit)),
                           IconButton(
-                              tooltip: 'Modifier',
-                              onPressed: () {},
-                              icon: const Icon(Icons.edit)),
+                              tooltip: 'Supprimer',
+                              onPressed: () async {
+                                setState(() {
+                                  isLoadingDelete = true;
+                                });
+                                alertDeleteDialog(data);
+                              },
+                              icon: const Icon(Icons.delete),
+                              color: Colors.red.shade700),
                         ],
                       ),
                       SelectableText(
@@ -192,6 +203,36 @@ class _DetailEntretienState extends State<DetailEntretien> {
         ),
       ),
     ]);
+  }
+
+  alertDeleteDialog(EntretienModel data) {
+    return showDialog(
+        context: context,
+        barrierDismissible: true,
+        builder: (context) {
+          return StatefulBuilder(builder: (context, StateSetter setState) {
+            return AlertDialog(
+              title: const Text('Etes-vous sûr de vouloir faire ceci ?'),
+              content: const SizedBox(
+                  height: 100,
+                  width: 100,
+                  child: Text("Cette action permet de supprimer le document")),
+              actions: <Widget>[
+                TextButton(
+                  onPressed: () => Navigator.pop(context, 'Cancel'),
+                  child: const Text('Annuler'),
+                ),
+                TextButton(
+                  onPressed: () async {
+                    await EntretienApi().deleteData(data.id!);
+                    Navigator.of(context).pop();
+                  },
+                  child: const Text('OK'),
+                ),
+              ],
+            );
+          });
+        });
   }
 
   Widget dataWidget(EntretienModel data) {

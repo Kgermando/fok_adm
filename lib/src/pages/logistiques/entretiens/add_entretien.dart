@@ -499,7 +499,7 @@ class _AddEntretienPageState extends State<AddEntretienPage> {
                   textAlign: TextAlign.start, style: bodyMedium),
             ),
           ]),
-          for (var item in objetRemplaceList)
+          for (var item in objetRemplaceList.where((element) => element.reference == entretiensCount))
             tableDataWidget(
                 item.nom, item.cout, item.caracteristique, item.observation)
         ],

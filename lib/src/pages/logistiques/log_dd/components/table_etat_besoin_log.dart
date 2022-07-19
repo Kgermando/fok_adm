@@ -201,14 +201,9 @@ class _TableEtatBesoinDDState extends State<TableEtatBesoinDD> {
   }
 
   Future agentsRow() async {
-    List<DevisModel> devis = await DevisAPi().getAllData();
-    UserModel userModel = await AuthApi().getUserId();
+    List<DevisModel> devis = await DevisAPi().getAllData(); 
 
-    var data = devis
-        .where((element) =>
-            element.approbationDD == "-" ||
-            element.signature == userModel.matricule)
-        .toList();
+    var data = devis.where((element) => element.approbationDD == '-').toList();
 
     if (mounted) {
       setState(() {

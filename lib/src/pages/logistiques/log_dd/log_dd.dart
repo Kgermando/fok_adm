@@ -1,14 +1,14 @@
 import 'dart:async';
 
-import 'package:flutter/material.dart';
-import 'package:fokad_admin/src/api/devis/devis_api.dart';
-import 'package:fokad_admin/src/api/logistiques/anguin_api.dart';
-import 'package:fokad_admin/src/api/logistiques/carburant_api.dart';
-import 'package:fokad_admin/src/api/logistiques/entretien_api.dart';
-import 'package:fokad_admin/src/api/logistiques/etat_materiel_api.dart';
-import 'package:fokad_admin/src/api/logistiques/immobiler_api.dart';
-import 'package:fokad_admin/src/api/logistiques/mobilier_api.dart';
-import 'package:fokad_admin/src/api/logistiques/trajet_api.dart';
+import 'package:flutter/material.dart'; 
+import 'package:fokad_admin/src/api/notifications/devis/devis_notify_api.dart';
+import 'package:fokad_admin/src/api/notifications/logistique/carburant_notify_api.dart';
+import 'package:fokad_admin/src/api/notifications/logistique/engin_notify_api.dart';
+import 'package:fokad_admin/src/api/notifications/logistique/entretien_notify_api.dart';
+import 'package:fokad_admin/src/api/notifications/logistique/etat_materiel_notify_api.dart';
+import 'package:fokad_admin/src/api/notifications/logistique/immobilier_notify_api.dart';
+import 'package:fokad_admin/src/api/notifications/logistique/mobilier_notify_api.dart';
+import 'package:fokad_admin/src/api/notifications/logistique/trajet_notify_api.dart';
 import 'package:fokad_admin/src/constants/app_theme.dart';
 import 'package:fokad_admin/src/constants/responsive.dart';
 import 'package:fokad_admin/src/navigation/drawer/drawer_menu.dart';
@@ -59,34 +59,24 @@ class _LogDDState extends State<LogDD> {
   }
 
   Future<void> getData() async {
-var anguins = await AnguinApi().getAllData();
-    var carburants = await CarburantApi().getAllData();
-    var trajets = await TrajetApi().getAllData();
-    var immobiliers = await ImmobilierApi().getAllData();
-    var mobiliers = await MobilierApi().getAllData();
-    var entretiens = await EntretienApi().getAllData();
-    var etatmateriels = await EtatMaterielApi().getAllData();
-    var devis = await DevisAPi().getAllData();
+    var anguins = await EnginNotifyApi().getCountDD();
+    var carburants = await CarburantNotifyApi().getCountDD();
+    var trajets = await TrajetNotifyApi().getCountDD();
+    var immobiliers = await ImmobilierNotifyApi().getCountDD();
+    var mobiliers = await MobilierNotifyApi().getCountDD();
+    var entretiens = await EntretienNotifyApi().getCountDD();
+    var etatmateriels = await EtatMaterielNotifyApi().getCountDD();
+    var devis = await DevisNotifyApi().getCountDD();
 
     setState(() {
-      anguinsapprobationDD =
-          anguins
-          .where((element) =>element.approbationDD == '-')
-          .length;
-      carburantCount =
-          carburants.where((element) => element.approbationDD == '-').length;
-      trajetsCount =
-          trajets.where((element) => element.approbationDD == '-').length;
-      immobiliersCount =
-          immobiliers.where((element) => element.approbationDD == '-').length;
-      mobiliersCount =
-          mobiliers.where((element) => element.approbationDD == '-').length;
-      entretiensCount =
-          entretiens.where((element) => element.approbationDD == '-').length;
-      etatmaterielsCount =
-          etatmateriels.where((element) => element.approbationDD == '-').length;
-      etatBesoinCount =
-          devis.where((element) => element.approbationDD == "-").length;
+      anguinsapprobationDD = anguins.count;
+      carburantCount = carburants.count;
+      trajetsCount = trajets.count;
+      immobiliersCount = immobiliers.count;
+      mobiliersCount = mobiliers.count;
+      entretiensCount = entretiens.count;
+      etatmaterielsCount = etatmateriels.count;
+      etatBesoinCount = devis.count;
     });
   }
 
