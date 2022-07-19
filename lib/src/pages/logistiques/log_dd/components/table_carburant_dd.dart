@@ -49,8 +49,8 @@ class _TableCarburantDDState extends State<TableCarburantDD> {
 
   Future<void> getData() async {
     List<CarburantModel> carburants = await CarburantApi().getAllData();
-    if (mounted) return;
-    setState(() {
+    if (mounted) {
+      setState(() {
       List<CarburantModel?> entreListEssence = carburants
           .where((element) =>
               element.operationEntreSortie == "Entrer" &&
@@ -122,6 +122,7 @@ class _TableCarburantDDState extends State<TableCarburantDD> {
       dataList =
           carburants.where((element) => element.approbationDD == "-").toList();
     });
+    }
   }
 
   @override
