@@ -67,8 +67,7 @@ class _DetailDevisState extends State<DetailDevis> {
     super.dispose();
   }
 
-  List<DevisListObjetsModel> devisObjetList = [];
-  List<DevisListObjetsModel> devObjetList = [];
+  List<DevisListObjetsModel> devisObjetList = [];  
   List<LigneBudgetaireModel> ligneBudgetaireList = [];
   UserModel user = UserModel(
       nom: '-',
@@ -94,7 +93,7 @@ class _DetailDevisState extends State<DetailDevis> {
         ligneBudgetaireList = budgets
             .where((element) => element.departement == "Logistique")
             .toList();
-        devObjetList = devisObjetLists;
+        devisObjetList = devisObjetLists;
       });
     }
   }
@@ -224,7 +223,7 @@ class _DetailDevisState extends State<DetailDevis> {
               SizedBox(
                 height: 300,
                 width: double.infinity,
-                child: SingleChildScrollView(child: tableDevisListObjet()),
+                child: SingleChildScrollView(child: tableDevisListObjet(data)),
               ),
             ],
           ),
@@ -242,11 +241,13 @@ class _DetailDevisState extends State<DetailDevis> {
           Row(
             children: [
               Expanded(
+                flex: 1,
                 child: Text('Titre :',
                     textAlign: TextAlign.start,
                     style: bodyMedium!.copyWith(fontWeight: FontWeight.bold)),
               ),
               Expanded(
+                flex: 3,
                 child: SelectableText(data.title,
                     textAlign: TextAlign.start, style: bodyMedium),
               )
@@ -256,11 +257,13 @@ class _DetailDevisState extends State<DetailDevis> {
           Row(
             children: [
               Expanded(
+                flex: 1,
                 child: Text('Priorité :',
                     textAlign: TextAlign.start,
                     style: bodyMedium.copyWith(fontWeight: FontWeight.bold)),
               ),
               Expanded(
+                flex: 3,
                 child: SelectableText(data.priority,
                     textAlign: TextAlign.start, style: bodyMedium),
               )
@@ -270,11 +273,13 @@ class _DetailDevisState extends State<DetailDevis> {
           Row(
             children: [
               Expanded(
+                flex: 1,
                 child: Text('Département :',
                     textAlign: TextAlign.start,
                     style: bodyMedium.copyWith(fontWeight: FontWeight.bold)),
               ),
               Expanded(
+                flex: 3,
                 child: SelectableText(data.departement,
                     textAlign: TextAlign.start, style: bodyMedium),
               )
@@ -284,6 +289,7 @@ class _DetailDevisState extends State<DetailDevis> {
           Row(
             children: [
               Expanded(
+                flex: 1,
                 child: Text(
                   'Observation',
                   style: bodyMedium.copyWith(fontWeight: FontWeight.bold),
@@ -293,8 +299,9 @@ class _DetailDevisState extends State<DetailDevis> {
                 width: p10,
               ),
               if (data.observation == 'false' && user.departement == "Finances")
-                Expanded(child: checkboxRead(data)),
+                Expanded(flex: 3, child: checkboxRead(data)),
               Expanded(
+                  flex: 3,
                   child: (data.observation == 'true')
                       ? SelectableText(
                           'Payé',
@@ -510,7 +517,7 @@ class _DetailDevisState extends State<DetailDevis> {
     );
   }
 
-  Widget tableDevisListObjet() {
+  Widget tableDevisListObjet(DevisModel data) {
     return Table(
       border: TableBorder.all(color: Colors.amber.shade700),
       columnWidths: const {
@@ -521,7 +528,10 @@ class _DetailDevisState extends State<DetailDevis> {
       },
       children: [
         tableDevisHeader(),
-        for (var item in devisObjetList) tableDevisBody(item)
+        for (var item in devisObjetList
+          .where((element) => element.referenceDate.microsecondsSinceEpoch == 
+          data.createdRef.microsecondsSinceEpoch)) 
+        tableDevisBody(item)
       ],
     );
   }
