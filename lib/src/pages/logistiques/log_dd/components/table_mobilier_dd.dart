@@ -34,11 +34,13 @@ class _TableMobilierDDState extends State<TableMobilierDD> {
 
   Future<void> getData() async {
     List<MobilierModel> mobiliers = await MobilierApi().getAllData();
-    setState(() {
+    if (mounted) {
+      setState(() {
       dataList = mobiliers
           .where((element) => element.approbationDD == "Approved")
           .toList();
     });
+    }
   }
 
   @override

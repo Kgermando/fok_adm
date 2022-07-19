@@ -34,10 +34,12 @@ class _TableEntretienDDState extends State<TableEntretienDD> {
 
   Future<void> getData() async {
     List<EntretienModel> entretiens = await EntretienApi().getAllData();
-    setState(() {
+    if (mounted) {
+      setState(() {
       dataList =
           entretiens.where((element) => element.approbationDD == "-").toList();
     });
+    }
   }
 
   @override

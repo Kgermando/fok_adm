@@ -27,9 +27,7 @@ class _LogistiquesAdminState extends State<LogistiquesAdmin> {
   bool isOpenLog4 = false;
 
   int anguinsapprobationDD = 0; 
-  int immobiliersCount = 0; 
-  int entretiensCount = 0;
-  int etatmaterielsCount = 0;
+  int immobiliersCount = 0;  
 
   @override
   void initState() {

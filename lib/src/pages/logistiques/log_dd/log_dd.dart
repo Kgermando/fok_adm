@@ -74,7 +74,7 @@ class _LogDDState extends State<LogDD> {
       mobiliersCount = mobiliers.count;
       entretiensCount = entretiens.count;
       etatmaterielsCount = etatmateriels.count;
-      etatBesoinCount = devis.count;
+      etatBesoinCount = devis.count; 
     });
   }
 

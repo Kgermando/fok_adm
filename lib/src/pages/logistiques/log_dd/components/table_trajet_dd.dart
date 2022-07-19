@@ -34,10 +34,12 @@ class _TableTrajetDDState extends State<TableTrajetDD> {
 
   Future<void> getData() async {
     List<TrajetModel> trajets = await TrajetApi().getAllData();
-    setState(() {
+    if (mounted) {
+      setState(() {
       dataList =
           trajets.where((element) => element.approbationDD == "-").toList();
     });
+    }
   }
 
   @override

@@ -35,11 +35,13 @@ class _TableEtatMaterielDDState extends State<TableEtatMaterielDD> {
   Future<void> getData() async {
     List<EtatMaterielModel> etatMateriels =
         await EtatMaterielApi().getAllData();
-    setState(() {
+    if (mounted) {
+      setState(() {
       dataList = etatMateriels
           .where((element) => element.approbationDD == "-")
           .toList();
     });
+    }
   }
 
   @override

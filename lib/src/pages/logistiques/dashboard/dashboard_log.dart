@@ -61,17 +61,30 @@ class _DashboardLogState extends State<DashboardLog> {
     var carburants = await CarburantApi().getAllData();
 
     setState(() {
-      anguinsCount = anguins.length;
-      mobilierCount = mobiliers.length;
-      immobilierCount = immobliers.length;
-      var carburantsList = carburants.where((element) => element.approbationDD == "Approved");
-      etatMaterielActif =
-          etatMaterielList.where((element) => element.statut == "Actif").length;
+      anguinsCount = anguins
+          .where((element) =>
+              element.approbationDG == "Approved" &&
+              element.approbationDD == "Approved")
+          .length;
+      mobilierCount = mobiliers
+          .where((element) => element.approbationDD == "Approved").length;
+      immobilierCount = immobliers
+          .where((element) => 
+            element.approbationDG == "Approved" &&
+            element.approbationDD == "Approved")
+          .length;
+      var carburantsList = carburants.where((element) => element.approbationDD == "Approved").toList();
+      etatMaterielActif = etatMaterielList
+          .where((element) =>
+              element.statut == "Actif" && element.approbationDD == "Approved")
+          .length;
       etatMaterielInActif = etatMaterielList
-          .where((element) => element.statut == "Inactif")
+          .where((element) => element.statut == "Inactif" &&
+              element.approbationDD == "Approved")
           .length;
       etatMaterielDeclaser = etatMaterielList
-          .where((element) => element.statut == "Declaser")
+          .where((element) => element.statut == "Declaser" &&
+              element.approbationDD == "Approved")
           .length;
 
       List<CarburantModel?> entreListEssence = carburantsList
