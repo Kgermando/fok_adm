@@ -36,7 +36,8 @@ class _TableAnguinDGState extends State<TableAnguinDG> {
 
   Future<void> getData() async {
     List<AnguinModel> engins = await AnguinApi().getAllData();
-    setState(() {
+    if(mounted) {
+      setState(() {
       dataList =
           engins
           .where((element) =>
@@ -44,6 +45,7 @@ class _TableAnguinDGState extends State<TableAnguinDG> {
               element.approbationDD == 'Approved')
           .toList();
     });
+    }
   }
 
 
