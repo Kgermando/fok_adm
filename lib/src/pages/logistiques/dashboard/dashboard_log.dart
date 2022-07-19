@@ -58,15 +58,15 @@ class _DashboardLogState extends State<DashboardLog> {
     var mobiliers = await MobilierApi().getAllData();
     var immobliers = await ImmobilierApi().getAllData();
     var etatMaterielList = await EtatMaterielApi().getAllData();
-    List<CarburantModel?> dataList = await CarburantApi().getAllData();
+    var carburants = await CarburantApi().getAllData();
 
     setState(() {
       anguinsCount = anguins.length;
       mobilierCount = mobiliers.length;
       immobilierCount = immobliers.length;
-      etatMaterielActif = etatMaterielList
-          .where((element) => element.statut == "Actif")
-          .length;
+      var carburantsList = carburants.where((element) => element.approbationDD == "Approved");
+      etatMaterielActif =
+          etatMaterielList.where((element) => element.statut == "Actif").length;
       etatMaterielInActif = etatMaterielList
           .where((element) => element.statut == "Inactif")
           .length;
@@ -74,14 +74,14 @@ class _DashboardLogState extends State<DashboardLog> {
           .where((element) => element.statut == "Declaser")
           .length;
 
-      List<CarburantModel?> entreListEssence = dataList
+      List<CarburantModel?> entreListEssence = carburantsList
           .where((element) =>
-              element!.operationEntreSortie == "Entrer" &&
+              element.operationEntreSortie == "Entrer" &&
               element.typeCaburant == "Essence")
           .toList();
-      List<CarburantModel?> sortieListEssence = dataList
+      List<CarburantModel?> sortieListEssence = carburantsList
           .where((element) =>
-              element!.operationEntreSortie == "Sortie" && 
+              element.operationEntreSortie == "Sortie" &&
               element.typeCaburant == "Essence")
           .toList();
       for (var item in entreListEssence) {
@@ -91,14 +91,14 @@ class _DashboardLogState extends State<DashboardLog> {
         sortieEssence += double.parse(item!.qtyAchat);
       }
 
-      List<CarburantModel?> entrerListMazoute = dataList
+      List<CarburantModel?> entrerListMazoute = carburantsList
           .where((element) =>
-              element!.operationEntreSortie == "Entrer" &&
+              element.operationEntreSortie == "Entrer" &&
               element.typeCaburant == "Mazoutte")
           .toList();
-      List<CarburantModel?> sortieListMazoute = dataList
+      List<CarburantModel?> sortieListMazoute = carburantsList
           .where((element) =>
-              element!.operationEntreSortie == "Sortie" &&
+              element.operationEntreSortie == "Sortie" &&
               element.typeCaburant == "Mazoutte")
           .toList();
       for (var item in entrerListMazoute) {
@@ -108,14 +108,14 @@ class _DashboardLogState extends State<DashboardLog> {
         sortieMazoute += double.parse(item!.qtyAchat);
       }
 
-      List<CarburantModel?> entrerListHuilleMoteur = dataList
+      List<CarburantModel?> entrerListHuilleMoteur = carburantsList
           .where((element) =>
-              element!.operationEntreSortie == "Entrer" &&
+              element.operationEntreSortie == "Entrer" &&
               element.typeCaburant == "Huille moteur")
           .toList();
-      List<CarburantModel?> sortieListHuilleMoteur = dataList
+      List<CarburantModel?> sortieListHuilleMoteur = carburantsList
           .where((element) =>
-              element!.operationEntreSortie == "Sortie" &&
+              element.operationEntreSortie == "Sortie" &&
               element.typeCaburant == "Huille moteur")
           .toList();
       for (var item in entrerListHuilleMoteur) {
@@ -125,14 +125,14 @@ class _DashboardLogState extends State<DashboardLog> {
         sortieHuilleMoteur += double.parse(item!.qtyAchat);
       }
 
-      List<CarburantModel?> entrerListPetrole = dataList
+      List<CarburantModel?> entrerListPetrole = carburantsList
           .where((element) =>
-              element!.operationEntreSortie == "Entrer" &&
+              element.operationEntreSortie == "Entrer" &&
               element.typeCaburant == "Pétrole")
           .toList();
-      List<CarburantModel?> sortieListPetrole = dataList
+      List<CarburantModel?> sortieListPetrole = carburantsList
           .where((element) =>
-              element!.operationEntreSortie == "Sortie" &&
+              element.operationEntreSortie == "Sortie" &&
               element.typeCaburant == "Pétrole")
           .toList();
       for (var item in entrerListPetrole) {
@@ -178,9 +178,9 @@ class _DashboardLogState extends State<DashboardLog> {
                               alignment: WrapAlignment.spaceEvenly,
                               children: [
                                 DashNumberWidget(
-                                  gestureTapCallback: () {
-                                      Navigator.pushNamed(
-                                          context, LogistiqueRoutes.logAnguinAuto);
+                                    gestureTapCallback: () {
+                                      Navigator.pushNamed(context,
+                                          LogistiqueRoutes.logAnguinAuto);
                                     },
                                     number: '$anguinsCount',
                                     title: 'Total anguins',
@@ -196,44 +196,45 @@ class _DashboardLogState extends State<DashboardLog> {
                                     icon: Icons.desktop_mac,
                                     color: Colors.grey.shade700),
                                 DashNumberWidget(
-                                  gestureTapCallback: () {
-                                      Navigator.pushNamed(context,
-                                          LogistiqueRoutes.logImmobilierMateriel);
+                                    gestureTapCallback: () {
+                                      Navigator.pushNamed(
+                                          context,
+                                          LogistiqueRoutes
+                                              .logImmobilierMateriel);
                                     },
-                                  number: '$immobilierCount',
-                                  title: 'Total immobilier',
-                                  icon: Icons.house_sharp,
-                                  color: Colors.brown.shade700),
+                                    number: '$immobilierCount',
+                                    title: 'Total immobilier',
+                                    icon: Icons.house_sharp,
+                                    color: Colors.brown.shade700),
                                 DashNumberWidget(
                                     gestureTapCallback: () {
                                       Navigator.pushNamed(context,
                                           LogistiqueRoutes.logEtatMateriel);
                                     },
-                                  number: '$etatMaterielActif',
-                                  title: 'Materiels actifs',
-                                  icon: Icons.check,
-                                  color: Colors.green.shade700),
+                                    number: '$etatMaterielActif',
+                                    title: 'Materiels actifs',
+                                    icon: Icons.check,
+                                    color: Colors.green.shade700),
                                 DashNumberWidget(
                                     gestureTapCallback: () {
                                       Navigator.pushNamed(context,
                                           LogistiqueRoutes.logEtatMateriel);
                                     },
-                                  number: '$etatMaterielInActif',
-                                  title: 'Materiels inactifs',
-                                  icon: Icons.indeterminate_check_box_sharp,
-                                  color: Colors.pink.shade700),
+                                    number: '$etatMaterielInActif',
+                                    title: 'Materiels inactifs',
+                                    icon: Icons.indeterminate_check_box_sharp,
+                                    color: Colors.pink.shade700),
                                 DashNumberWidget(
                                     gestureTapCallback: () {
                                       Navigator.pushNamed(context,
                                           LogistiqueRoutes.logEtatMateriel);
                                     },
-                                  number: '$etatMaterielDeclaser',
-                                  title: 'Materiels déclassés',
-                                  icon: Icons.not_interested,
-                                  color: Colors.red.shade700),
+                                    number: '$etatMaterielDeclaser',
+                                    title: 'Materiels déclassés',
+                                    icon: Icons.not_interested,
+                                    color: Colors.red.shade700),
                               ],
                             ),
-
                             const SizedBox(height: p30),
                             const TitleWidget(title: "Tableau carburants"),
                             const SizedBox(height: p10),
@@ -246,7 +247,6 @@ class _DashboardLogState extends State<DashboardLog> {
                                 tableCellHuileMoteur()
                               ],
                             ),
-
                             const SizedBox(
                               height: 20.0,
                             ),
@@ -256,7 +256,7 @@ class _DashboardLogState extends State<DashboardLog> {
                                       Expanded(child: EtatMaterielPie()),
                                       Expanded(child: EnguinPie()),
                                     ],
-                                  ) 
+                                  )
                                 : Column(
                                     children: const [
                                       EtatMaterielPie(),
@@ -277,7 +277,6 @@ class _DashboardLogState extends State<DashboardLog> {
           ),
         ));
   }
-
 
   TableRow tableCarburant() {
     final headline6 = Theme.of(context).textTheme.headline6;
@@ -412,7 +411,6 @@ class _DashboardLogState extends State<DashboardLog> {
           ),
         ),
       ),
-     
     ]);
   }
 
@@ -751,10 +749,4 @@ class _DashboardLogState extends State<DashboardLog> {
       ),
     ]);
   }
-
-  
- 
-
-
-  
 }

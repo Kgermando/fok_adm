@@ -111,7 +111,7 @@ class _TableMobilierState extends State<TableMobilier> {
         ),
       ),
       rowColorCallback: (rowColorContext) {
-        if (rowColorContext.row.cells.entries.elementAt(11).value.value ==
+        if (rowColorContext.row.cells.entries.elementAt(6).value.value ==
             'Unapproved') {
           return Colors.red.shade700;
         } else if (rowColorContext.row.cells.entries

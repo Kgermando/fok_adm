@@ -44,7 +44,7 @@ class CarburantApi {
       }
       return data;
     } else {
-      throw Exception(jsonDecode(resp.body)['message']);
+      throw Exception(resp.statusCode);
     }
   }
 

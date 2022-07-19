@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:flutter/material.dart'; 
+import 'package:flutter/material.dart';
 import 'package:fokad_admin/src/api/notifications/devis/devis_notify_api.dart';
 import 'package:fokad_admin/src/api/notifications/logistique/carburant_notify_api.dart';
 import 'package:fokad_admin/src/api/notifications/logistique/engin_notify_api.dart';
@@ -20,17 +20,17 @@ import 'package:fokad_admin/src/pages/logistiques/log_dd/components/table_etat_b
 import 'package:fokad_admin/src/pages/logistiques/log_dd/components/table_etat_materiels_dd.dart';
 import 'package:fokad_admin/src/pages/logistiques/log_dd/components/table_immobilier_dd.dart';
 import 'package:fokad_admin/src/pages/logistiques/log_dd/components/table_mobilier_dd.dart';
-import 'package:fokad_admin/src/pages/logistiques/log_dd/components/table_trajet_dd.dart'; 
+import 'package:fokad_admin/src/pages/logistiques/log_dd/components/table_trajet_dd.dart';
 
 class LogDD extends StatefulWidget {
-  const LogDD({ Key? key }) : super(key: key);
+  const LogDD({Key? key}) : super(key: key);
 
   @override
   State<LogDD> createState() => _LogDDState();
 }
 
 class _LogDDState extends State<LogDD> {
-   final GlobalKey<ScaffoldState> _key = GlobalKey();
+  final GlobalKey<ScaffoldState> _key = GlobalKey();
 
   bool isOpenLog1 = false;
   bool isOpenLog2 = false;
@@ -49,7 +49,6 @@ class _LogDDState extends State<LogDD> {
   int entretiensCount = 0;
   int etatmaterielsCount = 0;
   int etatBesoinCount = 0;
-  
 
   @override
   void initState() {
@@ -77,6 +76,8 @@ class _LogDDState extends State<LogDD> {
       entretiensCount = entretiens.count;
       etatmaterielsCount = etatmateriels.count;
       etatBesoinCount = devis.count;
+
+      print("enguin: $anguinsCount");
     });
   }
 
@@ -113,13 +114,15 @@ class _LogDDState extends State<LogDD> {
                             Card(
                               color: Colors.blue.shade700,
                               child: ExpansionTile(
-                                leading: const Icon(Icons.folder, color: Colors.white),
-                                title:
-                                    Text('Dossier engins', style: headline6!.copyWith(color: Colors.white)),
+                                leading: const Icon(Icons.folder,
+                                    color: Colors.white),
+                                title: Text('Dossier engins',
+                                    style: headline6!
+                                        .copyWith(color: Colors.white)),
                                 subtitle: Text(
                                     "Vous avez $anguinsCount dossiers necessitent votre approbation",
-                                    style: bodyMedium!.copyWith(
-                                        color: Colors.white)),
+                                    style: bodyMedium!
+                                        .copyWith(color: Colors.white)),
                                 initiallyExpanded: false,
                                 onExpansionChanged: (val) {
                                   setState(() {
@@ -134,10 +137,11 @@ class _LogDDState extends State<LogDD> {
                             Card(
                               color: Colors.orange.shade700,
                               child: ExpansionTile(
-                                leading: const Icon(Icons.folder, color: Colors.white),
-                                title:
-                                    Text('Dossier Carburants', style: headline6
-                                        .copyWith(color: Colors.white)),
+                                leading: const Icon(Icons.folder,
+                                    color: Colors.white),
+                                title: Text('Dossier Carburants',
+                                    style: headline6.copyWith(
+                                        color: Colors.white)),
                                 subtitle: Text(
                                     "Vous avez $carburantCount dossiers necessitent votre approbation",
                                     style: bodyMedium.copyWith(
@@ -158,8 +162,8 @@ class _LogDDState extends State<LogDD> {
                               child: ExpansionTile(
                                 leading: const Icon(Icons.folder,
                                     color: Colors.white),
-                                title:
-                                    Text('Dossier Trajets', style: headline6.copyWith(
+                                title: Text('Dossier Trajets',
+                                    style: headline6.copyWith(
                                         color: Colors.white)),
                                 subtitle: Text(
                                     "Vous avez $trajetsCount dossiers necessitent votre approbation",
@@ -181,7 +185,8 @@ class _LogDDState extends State<LogDD> {
                               child: ExpansionTile(
                                 leading: const Icon(Icons.folder,
                                     color: Colors.white),
-                                title: Text('Dossier Immobiliers', style: headline6.copyWith(
+                                title: Text('Dossier Immobiliers',
+                                    style: headline6.copyWith(
                                         color: Colors.white)),
                                 subtitle: Text(
                                     "Vous avez $immobiliersCount dossiers necessitent votre approbation",
@@ -203,7 +208,8 @@ class _LogDDState extends State<LogDD> {
                               child: ExpansionTile(
                                 leading: const Icon(Icons.folder,
                                     color: Colors.white),
-                                title: Text('Dossier Mobiliers', style: headline6.copyWith(
+                                title: Text('Dossier Mobiliers',
+                                    style: headline6.copyWith(
                                         color: Colors.white)),
                                 subtitle: Text(
                                     "Vous avez $mobiliersCount dossiers necessitent votre approbation",
@@ -225,8 +231,8 @@ class _LogDDState extends State<LogDD> {
                               child: ExpansionTile(
                                 leading: const Icon(Icons.folder,
                                     color: Colors.white),
-                                title:
-                                    Text('Dossier maintenances', style: headline6.copyWith(
+                                title: Text('Dossier maintenances',
+                                    style: headline6.copyWith(
                                         color: Colors.white)),
                                 subtitle: Text(
                                     "Vous avez $entretiensCount dossiers necessitent votre approbation",
@@ -248,8 +254,8 @@ class _LogDDState extends State<LogDD> {
                               child: ExpansionTile(
                                 leading: const Icon(Icons.folder,
                                     color: Colors.white),
-                                title:
-                                    Text('Dossier Etat de materiels', style: headline6.copyWith(
+                                title: Text('Dossier Etat de materiels',
+                                    style: headline6.copyWith(
                                         color: Colors.white)),
                                 subtitle: Text(
                                     "Vous avez $etatmaterielsCount dossiers necessitent votre approbation",
@@ -300,4 +306,4 @@ class _LogDDState extends State<LogDD> {
           ),
         ));
   }
-} 
+}
