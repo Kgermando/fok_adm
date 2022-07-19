@@ -10,9 +10,9 @@ import 'package:fokad_admin/src/navigation/header/custom_appbar.dart';
 import 'package:fokad_admin/src/widgets/btn_widget.dart';
 import 'package:fokad_admin/src/widgets/print_widget.dart';
 
-
 class UpdateTrajet extends StatefulWidget {
-  const UpdateTrajet({Key? key}) : super(key: key);
+  const UpdateTrajet({Key? key, this.trajetModel}) : super(key: key);
+  final TrajetModel? trajetModel;
 
   @override
   State<UpdateTrajet> createState() => _UpdateTrajetState();
@@ -20,7 +20,6 @@ class UpdateTrajet extends StatefulWidget {
 
 class _UpdateTrajetState extends State<UpdateTrajet> {
   final GlobalKey<ScaffoldState> _key = GlobalKey();
-  final ScrollController _controllerScroll = ScrollController();
   final _formKey = GlobalKey<FormState>();
   bool isLoading = false;
 
@@ -35,14 +34,19 @@ class _UpdateTrajetState extends State<UpdateTrajet> {
   @override
   initState() {
     getData();
-    
+    nomeroEntrepriseController =
+        TextEditingController(text: widget.trajetModel!.nomeroEntreprise);
+    nomUtilisateurController = TextEditingController(text: widget.trajetModel!.nomUtilisateur);
+    trajetDeController = TextEditingController(text: widget.trajetModel!.trajetDe);
+    trajetAController = TextEditingController(text: widget.trajetModel!.trajetA);
+    missionController = TextEditingController(text: widget.trajetModel!.mission);
+    kilometrageSoriteController =
+        TextEditingController(text: widget.trajetModel!.kilometrageSorite);
     super.initState();
   }
 
   @override
   void dispose() {
-    _controllerScroll.dispose();
-
     nomeroEntrepriseController.dispose();
     nomUtilisateurController.dispose();
     trajetDeController.dispose();
@@ -64,17 +68,8 @@ class _UpdateTrajetState extends State<UpdateTrajet> {
 
   @override
   Widget build(BuildContext context) {
-    final data = ModalRoute.of(context)!.settings.arguments as TrajetModel;
-    nomeroEntrepriseController =
-        TextEditingController(text: data.nomeroEntreprise);
-    nomUtilisateurController =
-        TextEditingController(text: data.nomUtilisateur);
-    trajetDeController =
-        TextEditingController(text: data.trajetDe);
-    trajetAController = TextEditingController(text: data.trajetA);
-    missionController = TextEditingController(text: data.mission);
-    kilometrageSoriteController =
-        TextEditingController(text: data.kilometrageSorite);
+    // final data = ModalRoute.of(context)!.settings.arguments as TrajetModel;
+    
     return Scaffold(
         key: _key,
         drawer: const DrawerMenu(),
@@ -113,9 +108,8 @@ class _UpdateTrajetState extends State<UpdateTrajet> {
                         ],
                       ),
                       Expanded(
-                          child: Scrollbar(
-                        controller: _controllerScroll,
-                        child: addAgentWidget(data),
+                          child: SingleChildScrollView(
+                        child: addAgentWidget(),
                       ))
                     ],
                   ),
@@ -126,7 +120,7 @@ class _UpdateTrajetState extends State<UpdateTrajet> {
         ));
   }
 
-  Widget addAgentWidget(TrajetModel data) {
+  Widget addAgentWidget() {
     return Form(
       key: _formKey,
       child: Row(
@@ -140,8 +134,7 @@ class _UpdateTrajetState extends State<UpdateTrajet> {
                 width: Responsive.isDesktop(context)
                     ? MediaQuery.of(context).size.width / 2
                     : MediaQuery.of(context).size.width,
-                child: ListView(
-                  controller: _controllerScroll,
+                child: Column(
                   children: [
                     Row(
                       mainAxisAlignment: MainAxisAlignment.end,
@@ -187,7 +180,7 @@ class _UpdateTrajetState extends State<UpdateTrajet> {
                         press: () {
                           final form = _formKey.currentState!;
                           if (form.validate()) {
-                            submit(data);
+                            submit();
                             form.reset();
                           }
                         })
@@ -363,19 +356,19 @@ class _UpdateTrajetState extends State<UpdateTrajet> {
         ));
   }
 
-  Future<void> submit(TrajetModel data) async {
+  Future<void> submit() async {
     final trajetModel = TrajetModel(
-      id: data.id!,
-        nomeroEntreprise: data.nomeroEntreprise,
-        nomUtilisateur: data.nomUtilisateur,
-        trajetDe: data.trajetDe,
-        trajetA: data.trajetA,
-        mission: data.mission,
-        kilometrageSorite: data.kilometrageSorite,
+        id: widget.trajetModel!.id!,
+        nomeroEntreprise: widget.trajetModel!.nomeroEntreprise,
+        nomUtilisateur: widget.trajetModel!.nomUtilisateur,
+        trajetDe: widget.trajetModel!.trajetDe,
+        trajetA: widget.trajetModel!.trajetA,
+        mission: widget.trajetModel!.mission,
+        kilometrageSorite: widget.trajetModel!.kilometrageSorite,
         kilometrageRetour: kilometrageRetourController.text,
         signature: signature.toString(),
-        createdRef: data.createdRef,
-        created: DateTime.now(), 
+        createdRef: widget.trajetModel!.createdRef,
+        created: DateTime.now(),
         approbationDD: '-',
         motifDD: '-',
         signatureDD: '-');

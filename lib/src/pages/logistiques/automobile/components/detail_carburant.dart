@@ -153,6 +153,14 @@ class _DetailCaburantState extends State<DetailCaburant> {
                           : 'Consommation'),
                   Column(
                     children: [
+                      if (int.parse(user.role) <= 3)
+                      IconButton(
+                          tooltip: 'Supprimer',
+                          onPressed: () async {
+                            alertDeleteDialog(data);
+                          },
+                          icon: const Icon(Icons.delete),
+                          color: Colors.red.shade700),
                       SelectableText(
                           DateFormat("dd-MM-yyyy HH:mm").format(data.created),
                           textAlign: TextAlign.start),
@@ -166,6 +174,36 @@ class _DetailCaburantState extends State<DetailCaburant> {
         ),
       ),
     ]);
+  }
+
+  alertDeleteDialog(CarburantModel data) {
+    return showDialog(
+        context: context,
+        barrierDismissible: true,
+        builder: (context) {
+          return StatefulBuilder(builder: (context, StateSetter setState) {
+            return AlertDialog(
+              title: const Text('Etes-vous sûr de vouloir faire ceci ?'),
+              content: const SizedBox(
+                  height: 100,
+                  width: 100,
+                  child: Text("Cette action permet de supprimer le document")),
+              actions: <Widget>[
+                TextButton(
+                  onPressed: () => Navigator.pop(context, 'Cancel'),
+                  child: const Text('Annuler'),
+                ),
+                TextButton(
+                  onPressed: () async {
+                    await CarburantApi().deleteData(data.id!);
+                    Navigator.of(context).pop();
+                  },
+                  child: const Text('OK'),
+                ),
+              ],
+            );
+          });
+        });
   }
 
   Widget dataWidget(CarburantModel data) {
