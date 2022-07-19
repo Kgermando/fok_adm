@@ -144,6 +144,7 @@ class _DetailMobilierState extends State<DetailMobilier> {
                   TitleWidget(title: data.modele),
                   Column(
                     children: [
+                      if (int.parse(user.role) <= 3)
                       Row(
                         children: [
                           // IconButton(

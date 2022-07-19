@@ -248,15 +248,15 @@ class _TableAnguinDDState extends State<TableAnguinDD> {
   }
 
   Future agentsRow() async {
-    List<AnguinModel?> dataList = await AnguinApi().getAllData();
+    List<AnguinModel> engins = await AnguinApi().getAllData();
     var data =
-        dataList.where((element) => element!.approbationDD == '-').toList();
+        engins.where((element) => element.approbationDD == '-').toList();
 
     if (mounted) {
       setState(() {
         for (var item in data) {
           rows.add(PlutoRow(cells: {
-            'id': PlutoCell(value: item!.id),
+            'id': PlutoCell(value: item.id),
             'nom': PlutoCell(value: item.nom),
             'modele': PlutoCell(value: item.modele),
             'marque': PlutoCell(value: item.marque),

@@ -20,14 +20,28 @@ class _TableImmobilierDGState extends State<TableImmobilierDG> {
   PlutoGridStateManager? stateManager;
   PlutoGridSelectingMode gridSelectingMode = PlutoGridSelectingMode.row;
 
-  int? id;
-
   @override
-  void initState() {
+  initState() {
     agentsColumn();
+    getData();
     agentsRow();
     super.initState();
   }
+
+  List<ImmobilierModel> dataList = [];
+
+  Future<void> getData() async {
+    List<ImmobilierModel> immobiliers = await ImmobilierApi().getAllData();
+    setState(() {
+      dataList =
+          immobiliers
+          .where((element) =>
+              element.approbationDG == '-' &&
+              element.approbationDD == 'Approved')
+          .toList();
+    });
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -40,7 +54,7 @@ class _TableImmobilierDGState extends State<TableImmobilierDG> {
           final dataId = tapEvent.row!.cells.values;
           final idPlutoRow = dataId.elementAt(0);
           Navigator.pushNamed(
-              context, LogistiqueRoutes.logImmobilierMaterielDetail,
+              context, AdminRoutes.adminLogistique,
               arguments: idPlutoRow.value);
         },
         onLoaded: (PlutoGridOnLoadedEvent event) {
@@ -167,17 +181,16 @@ class _TableImmobilierDGState extends State<TableImmobilierDG> {
   }
 
   Future agentsRow() async {
-    List<ImmobilierModel?> dataList = await ImmobilierApi().getAllData();
-    var data = dataList
+   List<ImmobilierModel> immobiliers = await ImmobilierApi().getAllData();
+    var data = immobiliers
         .where((element) =>
-            element!.approbationDG == '-' &&
+            element.approbationDG == '-' &&
             element.approbationDD == 'Approved')
         .toList();
 
     if (mounted) {
       setState(() {
-        for (var item in data) {
-          id = item!.id;
+        for (var item in data) { 
           rows.add(PlutoRow(cells: {
             'id': PlutoCell(value: item.id),
             'typeAllocation': PlutoCell(value: item.typeAllocation),
@@ -185,9 +198,9 @@ class _TableImmobilierDGState extends State<TableImmobilierDG> {
             'superficie': PlutoCell(value: item.superficie),
             'dateAcquisition': PlutoCell(
                 value:
-                    DateFormat("dd-MM-yy H:mm").format(item.dateAcquisition)),
+                    DateFormat("dd-MM-yy HH:mm").format(item.dateAcquisition)),
             'created': PlutoCell(
-                value: DateFormat("dd-MM-yy H:mm").format(item.created))
+                value: DateFormat("dd-MM-yy HH:mm").format(item.created))
           }));
         }
         stateManager!.resetCurrentState();

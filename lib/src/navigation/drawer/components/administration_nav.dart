@@ -367,7 +367,7 @@ class _AdministrationNavState extends State<AdministrationNav> {
                       Navigator.pushNamed(context, ArchiveRoutes.archives);
                       // Navigator.of(context).pop();
                     }),
-                if (int.parse(user.role) == 1)
+                if (int.parse(user.role) == 0)
                   DrawerWidget(
                       selected:
                           widget.pageCurrente == AdminRoutes.adminActionnaire,

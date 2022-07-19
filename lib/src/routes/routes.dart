@@ -123,6 +123,7 @@ import 'package:fokad_admin/src/pages/logistiques/automobile/carburant_auto.dart
 import 'package:fokad_admin/src/pages/logistiques/automobile/components/detail_anguin.dart';
 import 'package:fokad_admin/src/pages/logistiques/automobile/components/detail_carburant.dart';
 import 'package:fokad_admin/src/pages/logistiques/automobile/components/detail_trajet.dart';
+import 'package:fokad_admin/src/pages/logistiques/automobile/components/update_engin.dart';
 import 'package:fokad_admin/src/pages/logistiques/automobile/components/update_trajet.dart';
 import 'package:fokad_admin/src/pages/logistiques/automobile/trajet_auto.dart';
 import 'package:fokad_admin/src/pages/logistiques/dashboard/dashboard_log.dart';
@@ -294,6 +295,7 @@ class LogistiqueRoutes {
   static const logDashboard = "/log-dashboard";
   static const logAnguinAuto = "/log-anguin-auto";
   static const logAnguinAutoDetail = "/log-anguin-auto-detail";
+  static const logAnguinAutoUpdate = "/log-anguin-auto-update";
   static const logAddAnguinAuto = "/log-add-anguin-auto";
   static const logAddCarburantAuto = "/log-add-carburant-auto";
   static const logCarburantAuto = "/log-carburant-auto";
@@ -540,6 +542,7 @@ final routes = <String, WidgetBuilder>{
   LogistiqueRoutes.logAddAnguinAuto: (context) => const AddAnguinAuto(),
   LogistiqueRoutes.logAnguinAuto: (context) => const AnguinAuto(),
   LogistiqueRoutes.logAnguinAutoDetail: (context) => const DetailAnguin(),
+  LogistiqueRoutes.logAnguinAutoUpdate: (context) => const UpdateEngin(),
   LogistiqueRoutes.logAddCarburantAuto: (context) => const AddCarburantAuto(),
   LogistiqueRoutes.logCarburantAuto: (context) => const CarburantAuto(),
   LogistiqueRoutes.logCarburantAutoDetail: (context) => const DetailCaburant(),

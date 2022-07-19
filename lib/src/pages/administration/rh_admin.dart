@@ -1,5 +1,5 @@
-import 'package:flutter/material.dart'; 
-import 'package:fokad_admin/src/api/rh/transport_restaurant_api.dart';
+import 'package:flutter/material.dart';
+import 'package:fokad_admin/src/api/notifications/rh/trans_rest_notify_api.dart'; 
 import 'package:fokad_admin/src/constants/app_theme.dart';
 import 'package:fokad_admin/src/constants/responsive.dart';
 import 'package:fokad_admin/src/navigation/drawer/drawer_menu.dart';
@@ -30,14 +30,9 @@ class _RhAdminState extends State<RhAdmin> {
 
   Future<void> getData() async {
     // RH
-    var transRests = await TransportRestaurationApi().getAllData();
-
-
+    var transRests = await TransRestNotifyApi().getCountDG(); 
     setState(() {
-
-        transRestCount =
-          transRests.where((element) =>  element.approbationDD == 'Approved' &&
-              element.approbationDG == '-').length;
+        transRestCount = transRests.count;
     });
   }
 

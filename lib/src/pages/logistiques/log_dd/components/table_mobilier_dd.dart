@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:fokad_admin/src/api/logistiques/mobilier_api.dart';
 import 'package:fokad_admin/src/models/logistiques/mobilier_model.dart';
+import 'package:fokad_admin/src/pages/logistiques/materiels/components/mobilier_xlsx.dart';
 import 'package:fokad_admin/src/routes/routes.dart';
 import 'package:fokad_admin/src/widgets/print_widget.dart';
 import 'package:fokad_admin/src/utils/class_implemented.dart';
+import 'package:fokad_admin/src/widgets/title_widget.dart';
 import 'package:intl/intl.dart';
 import 'package:pluto_grid/pluto_grid.dart';
 
@@ -60,14 +62,27 @@ class _TableMobilierDDState extends State<TableMobilierDD> {
         },
         createHeader: (PlutoGridStateManager header) {
           return Row(
-            mainAxisAlignment: MainAxisAlignment.end,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              IconButton(
-                  onPressed: () {
-                    Navigator.pushNamed(context, LogistiqueRoutes.logDD);
-                  },
-                  icon: Icon(Icons.refresh, color: Colors.green.shade700)),
-              PrintWidget(onPressed: () {})
+              const TitleWidget(title: "Mobiliers"),
+              Row(
+                children: [
+                  IconButton(
+                      onPressed: () {
+                        Navigator.pushNamed(
+                            context, LogistiqueRoutes.logDD);
+                      },
+                      icon: Icon(Icons.refresh, color: Colors.green.shade700)),
+                  PrintWidget(onPressed: () {
+                    MobilierXlsx().exportToExcel(dataList);
+                    if (!mounted) return;
+                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                      content: const Text("Exportation effectué!"),
+                      backgroundColor: Colors.green[700],
+                    ));
+                  })
+                ],
+              ),
             ],
           );
         },

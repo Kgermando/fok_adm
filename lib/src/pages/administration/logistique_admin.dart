@@ -2,7 +2,9 @@ import 'dart:async';
 
 import 'package:flutter/material.dart'; 
 import 'package:fokad_admin/src/api/logistiques/anguin_api.dart'; 
-import 'package:fokad_admin/src/api/logistiques/immobiler_api.dart'; 
+import 'package:fokad_admin/src/api/logistiques/immobiler_api.dart';
+import 'package:fokad_admin/src/api/notifications/logistique/engin_notify_api.dart';
+import 'package:fokad_admin/src/api/notifications/logistique/immobilier_notify_api.dart'; 
 import 'package:fokad_admin/src/constants/app_theme.dart';
 import 'package:fokad_admin/src/constants/responsive.dart';
 import 'package:fokad_admin/src/navigation/drawer/drawer_menu.dart';
@@ -34,23 +36,15 @@ class _LogistiquesAdminState extends State<LogistiquesAdmin> {
   @override
   void initState() {
     getData();
-
     super.initState();
   }
 
   Future<void> getData() async {
-    var anguins = await AnguinApi().getAllData(); 
-    var immobiliers = await ImmobilierApi().getAllData(); 
-
+    var anguins = await EnginNotifyApi().getCountDG(); 
+    var immobiliers = await ImmobilierNotifyApi().getCountDG(); 
     setState(() {
-      anguinsapprobationDD = anguins
-          .where((element) => element.approbationDG == '-' && element.approbationDD == 'Approved')
-          .length; 
-      immobiliersCount = immobiliers
-          .where((element) =>
-              element.approbationDG == '-' &&
-              element.approbationDD == 'Approved')
-          .length; 
+      anguinsapprobationDD = anguins.count; 
+      immobiliersCount = immobiliers.count; 
     });
   }
 

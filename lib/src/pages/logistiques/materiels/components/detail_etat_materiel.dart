@@ -154,6 +154,7 @@ class _DetailEtatMaterielState extends State<DetailEtatMateriel> {
                     children: [
                       Column(
                         children: [
+                          if (int.parse(user.role) <= 3)
                           Row(
                             children: [
                               // IconButton(

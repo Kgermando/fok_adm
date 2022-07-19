@@ -152,6 +152,7 @@ class _DetailImmobilierState extends State<DetailImmobilier> {
                   TitleWidget(title: data.superficie),
                   Column(
                     children: [
+                      if (int.parse(user.role) <= 3)
                       Row(
                         children: [
                           // IconButton(
