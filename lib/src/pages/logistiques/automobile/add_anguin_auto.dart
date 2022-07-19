@@ -10,6 +10,7 @@ import 'package:fokad_admin/src/models/users/user_model.dart';
 import 'package:fokad_admin/src/navigation/drawer/drawer_menu.dart';
 import 'package:fokad_admin/src/navigation/header/custom_appbar.dart';
 import 'package:fokad_admin/src/utils/enguins_dropdown.dart';
+import 'package:fokad_admin/src/utils/loading.dart';
 import 'package:fokad_admin/src/widgets/btn_widget.dart';
 import 'package:fokad_admin/src/widgets/print_widget.dart';
 import 'package:fokad_admin/src/widgets/title_widget.dart';
@@ -56,12 +57,10 @@ class _AddAnguinAutoState extends State<AddAnguinAuto> {
   String? signature;
   Future<void> getData() async {
     UserModel userModel = await AuthApi().getUserId();
-    var anguins = await AnguinApi().getAllData();
     if (mounted) {
       setState(() {
-      signature = userModel.matricule;
-      numberPlaque = anguins.length;
-    });
+        signature = userModel.matricule;
+      });
     }
   }
 
@@ -99,37 +98,44 @@ class _AddAnguinAutoState extends State<AddAnguinAuto> {
               Expanded(
                 flex: 5,
                 child: Padding(
-                  padding: const EdgeInsets.all(p10),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Row(
-                        children: [
-                          SizedBox(
-                            width: 20.0,
-                            child: IconButton(
-                                onPressed: () {
-                                  Navigator.of(context).pop();
-                                },
-                                icon: const Icon(Icons.arrow_back)),
-                          ),
-                          const SizedBox(width: p10),
-                          Expanded(
-                              flex: 5,
-                              child: CustomAppbar(
-                                  title: 'Engin',
-                                  controllerMenu: () =>
-                                      _key.currentState!.openDrawer())),
-                        ],
-                      ),
-                      Expanded(
-                          child: Scrollbar(
-                        controller: _controllerScroll,
-                        child: addAgentWidget(),
-                      ))
-                    ],
-                  ),
-                ),
+                    padding: const EdgeInsets.all(p10),
+                    child: FutureBuilder<List<AnguinModel>>(
+                        future: AnguinApi().getAllData(),
+                        builder: (BuildContext context,
+                            AsyncSnapshot<List<AnguinModel>> snapshot) {
+                          if (snapshot.hasData) {
+                            List<AnguinModel>? data = snapshot.data;
+                            numberPlaque = data!.length;
+                            return Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Row(
+                                  children: [
+                                    SizedBox(
+                                      width: p20,
+                                      child: IconButton(
+                                          onPressed: () =>
+                                              Navigator.pop(context),
+                                          icon: const Icon(Icons.arrow_back)),
+                                    ),
+                                    const SizedBox(width: p10),
+                                    Expanded(
+                                      child: CustomAppbar(
+                                          title: "Nouvel Enguin",
+                                          controllerMenu: () =>
+                                              _key.currentState!.openDrawer()),
+                                    ),
+                                  ],
+                                ),
+                                Expanded(
+                                    child: SingleChildScrollView(
+                                        child: addAgentWidget()))
+                              ],
+                            );
+                          } else {
+                            return Center(child: loadingMega());
+                          }
+                        })),
               ),
             ],
           ),
@@ -150,8 +156,7 @@ class _AddAnguinAutoState extends State<AddAnguinAuto> {
                 width: Responsive.isDesktop(context)
                     ? MediaQuery.of(context).size.width / 2
                     : MediaQuery.of(context).size.width,
-                child: ListView(
-                  controller: _controllerScroll,
+                child: Column( 
                   children: [
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
