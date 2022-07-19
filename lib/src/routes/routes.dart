@@ -260,7 +260,7 @@ class FinanceRoutes {
   static const transactionsFinancementExterneDetail =
       "/transactions-financement-externe-detail";
   
-  static const transactionsDepenses = "/transactions-depenses";
+  // static const transactionsDepenses = "/transactions-depenses";
   static const finDD = "/fin-dd"; 
   static const finObservation = "/fin-observation"; 
 }

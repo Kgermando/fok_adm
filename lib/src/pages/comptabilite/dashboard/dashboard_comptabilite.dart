@@ -11,6 +11,7 @@ import 'package:fokad_admin/src/navigation/drawer/drawer_menu.dart';
 import 'package:fokad_admin/src/navigation/header/custom_appbar.dart';
 import 'package:fokad_admin/src/pages/comptabilite/dashboard/components/courbe_journal_mounth.dart';
 import 'package:fokad_admin/src/pages/comptabilite/dashboard/components/courbe_journal_year.dart';
+import 'package:fokad_admin/src/routes/routes.dart';
 import 'package:fokad_admin/src/widgets/dash_number_widget.dart';
 
 class DashboardComptabilite extends StatefulWidget {
@@ -93,21 +94,37 @@ class _DashboardComptabiliteState extends State<DashboardComptabilite> {
                               alignment: WrapAlignment.spaceEvenly,
                               children: [
                                 DashNumberWidget(
+                                    gestureTapCallback: () {
+                                      Navigator.pushNamed(context,
+                                          ComptabiliteRoutes.comptabiliteBilan);
+                                    },
                                     number: '$bilanCount',
                                     title: 'Bilans',
                                     icon: Icons.blur_linear_rounded,
                                     color: Colors.green.shade700),
                                 DashNumberWidget(
+                                    gestureTapCallback: () {
+                                      Navigator.pushNamed(context,
+                                          ComptabiliteRoutes.comptabiliteJournal);
+                                    },
                                     number: '$journalCount',
                                     title: 'Journals',
                                     icon: Icons.backup_table,
                                     color: Colors.blue.shade700),
                                 DashNumberWidget(
+                                    gestureTapCallback: () {
+                                      Navigator.pushNamed(context,
+                                          ComptabiliteRoutes.comptabiliteCompteResultat);
+                                    },
                                     number: '$compteResultatCount',
                                     title: 'Comptes resultats',
                                     icon: Icons.view_compact_rounded,
                                     color: Colors.teal.shade700),
                                 DashNumberWidget(
+                                    gestureTapCallback: () {
+                                      Navigator.pushNamed(context,
+                                          ComptabiliteRoutes.comptabiliteBalance);
+                                    },
                                     number: '$balanceCount',
                                     title: 'Balances',
                                     icon: Icons.balcony_outlined,

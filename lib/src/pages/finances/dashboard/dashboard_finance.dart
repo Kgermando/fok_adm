@@ -22,6 +22,7 @@ import 'package:fokad_admin/src/pages/finances/dashboard/components/caisse/courb
 import 'package:fokad_admin/src/pages/finances/dashboard/components/caisse/courbe_caisse_year.dart';
 import 'package:fokad_admin/src/pages/finances/dashboard/components/depenses/devie_pie_dep_mounth.dart';
 import 'package:fokad_admin/src/pages/finances/dashboard/components/depenses/devie_pie_dep_year.dart';
+import 'package:fokad_admin/src/routes/routes.dart';
 import 'package:fokad_admin/src/widgets/dashboard_card_widget.dart';
 
 class DashboardFinance extends StatefulWidget {
@@ -200,6 +201,10 @@ class _DashboardFinanceState extends State<DashboardFinance> {
                             direction: Axis.horizontal,
                             children: [
                               DashboardCardWidget(
+                                gestureTapCallback: () {
+                                  Navigator.pushNamed(context,
+                                      FinanceRoutes.transactionsCaisse);
+                                },
                                 title: 'CAISSE',
                                 icon: Icons.view_stream_outlined,
                                 montant: '$soldeCaisse',
@@ -207,6 +212,10 @@ class _DashboardFinanceState extends State<DashboardFinance> {
                                 colorText: Colors.black,
                               ),
                               DashboardCardWidget(
+                                gestureTapCallback: () {
+                                  Navigator.pushNamed(context,
+                                      FinanceRoutes.transactionsBanque);
+                                },
                                 title: 'BANQUE',
                                 icon: Icons.business,
                                 montant: '$soldeBanque',
@@ -214,6 +223,10 @@ class _DashboardFinanceState extends State<DashboardFinance> {
                                 colorText: Colors.white,
                               ),
                               DashboardCardWidget(
+                                gestureTapCallback: () {
+                                  Navigator.pushNamed(context,
+                                      FinanceRoutes.transactionsDettes);
+                                },
                                 title: 'DETTES',
                                 icon: Icons.money_off,
                                 montant: '$soldeDette',
@@ -221,6 +234,10 @@ class _DashboardFinanceState extends State<DashboardFinance> {
                                 colorText: Colors.white,
                               ),
                               DashboardCardWidget(
+                                gestureTapCallback: () {
+                                  Navigator.pushNamed(context,
+                                      FinanceRoutes.transactionsCreances);
+                                },
                                 title: 'CREANCES',
                                 icon: Icons.money_off_csred,
                                 montant: '$soldeCreance',
@@ -228,6 +245,10 @@ class _DashboardFinanceState extends State<DashboardFinance> {
                                 colorText: Colors.white,
                               ),
                               DashboardCardWidget(
+                                gestureTapCallback: () {
+                                  Navigator.pushNamed(context,
+                                      FinanceRoutes.transactionsFinancementExterne);
+                                },
                                 title: 'FIN. EXTERNE',
                                 icon: Icons.money_outlined,
                                 montant: '$cumulFinanceExterieur',
@@ -235,6 +256,7 @@ class _DashboardFinanceState extends State<DashboardFinance> {
                                 colorText: Colors.white,
                               ),
                               DashboardCardWidget(
+                                gestureTapCallback: () { },
                                 title: 'DEPENSES',
                                 icon: Icons.monetization_on,
                                 montant: '$depenses',
@@ -242,6 +264,7 @@ class _DashboardFinanceState extends State<DashboardFinance> {
                                 colorText: Colors.white,
                               ),
                               DashboardCardWidget(
+                                gestureTapCallback: () {},
                                 title: 'DIPONIBLES',
                                 icon: Icons.attach_money,
                                 montant: '$disponible',

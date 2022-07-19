@@ -40,6 +40,7 @@ import 'package:fokad_admin/src/navigation/header/custom_appbar.dart';
 import 'package:fokad_admin/src/pages/comm_marketing/dashboard/components/courbe_vente_gain_mounth.dart';
 import 'package:fokad_admin/src/pages/comm_marketing/dashboard/components/courbe_vente_gain_year.dart';
 import 'package:fokad_admin/src/pages/rh/dashboard/components/dash_pie_wdget.dart';
+import 'package:fokad_admin/src/routes/routes.dart';
 import 'package:fokad_admin/src/widgets/dash_number_widget.dart';
 import 'package:intl/intl.dart';
 
@@ -382,60 +383,108 @@ class _DashboardAdministrationState extends State<DashboardAdministration> {
                             alignment: WrapAlignment.spaceEvenly,
                             children: [
                               DashNumberWidget(
+                                  gestureTapCallback: () {
+                                    Navigator.pushNamed(
+                                        context, RhRoutes.rhDashboard);
+                                  },
                                   number: '$agentsCount',
                                   title: 'Total agents',
                                   icon: Icons.group,
                                   color: Colors.blue.shade700),
                               DashNumberWidget(
+                                  gestureTapCallback: () {
+                                    Navigator.pushNamed(
+                                        context, RhRoutes.rhDashboard);
+                                  },
                                   number: '$agentActifCount',
                                   title: 'Agent Actifs',
                                   icon: Icons.person,
                                   color: Colors.green.shade700),
                               DashNumberWidget(
+                                  gestureTapCallback: () {
+                                    Navigator.pushNamed(
+                                        context, BudgetRoutes.budgetDashboard);
+                                  },
                                   number: "${NumberFormat.decimalPattern('fr').format(double.parse(poursentExecution.toStringAsFixed(0)))} %",
                                   title: "Budgets",
                                   icon: Icons.monetization_on_outlined,
                                   color: Colors.purple.shade700),
                               DashNumberWidget(
+                                  gestureTapCallback: () {
+                                    Navigator.pushNamed(
+                                        context, FinanceRoutes.financeDashboard);
+                                  },
                                   number:
                                       "${NumberFormat.decimalPattern('fr').format(soldeDette)} \$",
                                   title: 'Dette',
                                   icon: Icons.blur_linear_rounded,
                                   color: Colors.red.shade700),
                               DashNumberWidget(
+                                  gestureTapCallback: () {
+                                    Navigator.pushNamed(context,
+                                        FinanceRoutes.financeDashboard);
+                                  },
                                   number:
                                       "${NumberFormat.decimalPattern('fr').format(soldeCreance)} \$",
                                   title: 'Créance',
                                   icon: Icons.money_off_csred,
                                   color: Colors.deepOrange.shade700),
                               DashNumberWidget(
+                                  gestureTapCallback: () {
+                                    Navigator.pushNamed(context,
+                                        FinanceRoutes.financeDashboard);
+                                  },
                                   number:
                                       "${NumberFormat.decimalPattern('fr').format(depenses)} \$",
                                   title: 'Dépenses',
                                   icon: Icons.monetization_on,
                                   color: Colors.pink.shade700),
                               DashNumberWidget(
+                                  gestureTapCallback: () {
+                                    Navigator.pushNamed(context,
+                                        FinanceRoutes.financeDashboard);
+                                  },
                                   number:
                                       "${NumberFormat.decimalPattern('fr').format(disponible)} \$",
                                   title: 'Disponible',
                                   icon: Icons.attach_money,
                                   color: Colors.teal.shade700),
                               DashNumberWidget(
+                                  gestureTapCallback: () {
+                                    Navigator.pushNamed(context,
+                                        ComptabiliteRoutes.comptabiliteDashboard);
+                                  },
                                   number: '$bilanCount',
                                   title: 'Bilans',
                                   icon: Icons.blur_linear_rounded,
                                   color: Colors.blueGrey.shade700),
                               DashNumberWidget(
+                                  gestureTapCallback: () {
+                                    Navigator.pushNamed(
+                                        context,
+                                        ComptabiliteRoutes
+                                            .comptabiliteDashboard);
+                                  },
                                   number: '$journalCount',
                                   title: 'Journals',
                                   icon: Icons.backup_table,
                                   color: Colors.blueAccent.shade700),
                               DashNumberWidget(
+                                  gestureTapCallback: () {
+                                    Navigator.pushNamed(
+                                        context,
+                                        ExploitationRoutes.expDashboard);
+                                  },
                                   number: '$projetsApprouveCount',
                                   title: 'Projets approvés',
                                   icon: Icons.work,
                                   color: Colors.grey.shade700),
                               DashNumberWidget(
+                                  gestureTapCallback: () {
+                                    Navigator.pushNamed(
+                                        context,
+                                        ComMarketingRoutes.comMarketingDashboard);
+                                  },
                                   number: '$campaignCount',
                                   title: 'Campaignes',
                                   icon: Icons.campaign,

@@ -74,10 +74,12 @@ class _TableActionnaireState extends State<TableActionnaire> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             DashNumberBudgetWidget(
+                gestureTapCallback: () { },
               number: "${NumberFormat.decimalPattern('fr').format(totalGen)} \$",
                  title: "Total général", icon: Icons.date_range, 
                  color: Colors.green.shade700),
             DashNumberBudgetWidget(
+                gestureTapCallback: () { },
               number: "${NumberFormat.decimalPattern('fr').format(totalMonth)} \$",
                 title: "Total de ce mois", icon: Icons.date_range_outlined, 
                 color: Colors.red.shade700),

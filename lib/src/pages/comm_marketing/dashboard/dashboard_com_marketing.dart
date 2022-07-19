@@ -18,6 +18,7 @@ import 'package:fokad_admin/src/navigation/header/custom_appbar.dart';
 import 'package:fokad_admin/src/pages/comm_marketing/dashboard/components/arcticle_plus_vendus.dart';
 import 'package:fokad_admin/src/pages/comm_marketing/dashboard/components/courbe_vente_gain_mounth.dart';
 import 'package:fokad_admin/src/pages/comm_marketing/dashboard/components/courbe_vente_gain_year.dart';
+import 'package:fokad_admin/src/routes/routes.dart';
 import 'package:fokad_admin/src/widgets/dash_number_widget.dart';
 import 'package:intl/intl.dart';
 
@@ -149,39 +150,75 @@ class _ComMarketingState extends State<ComMarketing> {
                               alignment: WrapAlignment.spaceEvenly,
                               children: [
                                 DashNumberWidget(
+                                    gestureTapCallback: () {
+                                      Navigator.pushNamed(context,
+                                          ComMarketingRoutes.comMarketingVente);
+                                    },
                                     number:
                                         '${NumberFormat.decimalPattern('fr').format(sumVente)} \$',
                                     title: 'Ventes',
                                     icon: Icons.shopping_cart,
                                     color: Colors.purple.shade700),
                                 DashNumberWidget(
+                                    gestureTapCallback: () {
+                                      Navigator.pushNamed(context,
+                                          ComMarketingRoutes.comMarketingVente);
+                                    },
                                     number:
                                         '${NumberFormat.decimalPattern('fr').format(sumGain)} \$',
                                     title: 'Gains',
                                     icon: Icons.grain,
                                     color: Colors.green.shade700),
                                 DashNumberWidget(
+                                    gestureTapCallback: () {
+                                      Navigator.pushNamed(context,
+                                          ComMarketingRoutes.comMarketingCreance);
+                                    },
                                     number:
                                         '${NumberFormat.decimalPattern('fr').format(sumDCreance)} \$',
                                     title: 'Créances',
                                     icon: Icons.money_off_outlined,
                                     color: Colors.pink.shade700),
                                 DashNumberWidget(
+                                    gestureTapCallback: () {
+                                      Navigator.pushNamed(
+                                          context,
+                                          ComMarketingRoutes
+                                              .comMarketingSuccursale);
+                                    },
                                     number: '$succursaleCount',
                                     title: 'Succursale',
                                     icon: Icons.house,
                                     color: Colors.brown.shade700),
                                 DashNumberWidget(
+                                    gestureTapCallback: () {
+                                      Navigator.pushNamed(
+                                          context,
+                                          ComMarketingRoutes
+                                              .comMarketingCampaign);
+                                    },
                                     number: '$campaignCount',
                                     title: 'Campaignes',
                                     icon: Icons.campaign,
                                     color: Colors.orange.shade700),
                                 DashNumberWidget(
+                                    gestureTapCallback: () {
+                                      Navigator.pushNamed(
+                                          context,
+                                          ComMarketingRoutes
+                                              .comMarketingAnnuaire);
+                                    },
                                     number: '$annuaireCount',
                                     title: 'Annuaire',
                                     icon: Icons.group,
                                     color: Colors.yellow.shade700),
                                 DashNumberWidget(
+                                    gestureTapCallback: () {
+                                      Navigator.pushNamed(
+                                          context,
+                                          ComMarketingRoutes
+                                              .comMarketingAgenda);
+                                    },
                                     number: '$agendaCount',
                                     title: 'Agenda',
                                     icon: Icons.checklist_rtl,

@@ -14,6 +14,7 @@ import 'package:fokad_admin/src/navigation/drawer/drawer_menu.dart';
 import 'package:fokad_admin/src/navigation/header/custom_appbar.dart';
 import 'package:fokad_admin/src/pages/logistiques/dashboard/components/enguin_pie.dart';
 import 'package:fokad_admin/src/pages/logistiques/dashboard/components/etat_materiel_pie.dart';
+import 'package:fokad_admin/src/routes/routes.dart';
 import 'package:fokad_admin/src/widgets/dash_number_widget.dart';
 import 'package:fokad_admin/src/widgets/title_widget.dart';
 import 'package:intl/intl.dart';
@@ -177,31 +178,55 @@ class _DashboardLogState extends State<DashboardLog> {
                               alignment: WrapAlignment.spaceEvenly,
                               children: [
                                 DashNumberWidget(
+                                  gestureTapCallback: () {
+                                      Navigator.pushNamed(
+                                          context, LogistiqueRoutes.logAnguinAuto);
+                                    },
                                     number: '$anguinsCount',
                                     title: 'Total anguins',
                                     icon: Icons.car_rental,
                                     color: Colors.blue.shade700),
                                 DashNumberWidget(
+                                    gestureTapCallback: () {
+                                      Navigator.pushNamed(context,
+                                          LogistiqueRoutes.logMobilierMateriel);
+                                    },
                                     number: '$mobilierCount',
                                     title: 'Total mobilier',
                                     icon: Icons.desktop_mac,
                                     color: Colors.grey.shade700),
                                 DashNumberWidget(
+                                  gestureTapCallback: () {
+                                      Navigator.pushNamed(context,
+                                          LogistiqueRoutes.logImmobilierMateriel);
+                                    },
                                   number: '$immobilierCount',
                                   title: 'Total immobilier',
                                   icon: Icons.house_sharp,
                                   color: Colors.brown.shade700),
                                 DashNumberWidget(
+                                    gestureTapCallback: () {
+                                      Navigator.pushNamed(context,
+                                          LogistiqueRoutes.logEtatMateriel);
+                                    },
                                   number: '$etatMaterielActif',
                                   title: 'Materiels actifs',
                                   icon: Icons.check,
                                   color: Colors.green.shade700),
                                 DashNumberWidget(
+                                    gestureTapCallback: () {
+                                      Navigator.pushNamed(context,
+                                          LogistiqueRoutes.logEtatMateriel);
+                                    },
                                   number: '$etatMaterielInActif',
                                   title: 'Materiels inactifs',
                                   icon: Icons.indeterminate_check_box_sharp,
                                   color: Colors.pink.shade700),
                                 DashNumberWidget(
+                                    gestureTapCallback: () {
+                                      Navigator.pushNamed(context,
+                                          LogistiqueRoutes.logEtatMateriel);
+                                    },
                                   number: '$etatMaterielDeclaser',
                                   title: 'Materiels déclassés',
                                   icon: Icons.not_interested,

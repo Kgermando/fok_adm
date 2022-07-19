@@ -9,20 +9,21 @@ class DashNumberBudgetWidget extends StatelessWidget {
       required this.number,
       required this.title,
       required this.icon,
-      required this.color})
+      required this.color, required this.gestureTapCallback})
       : super(key: key);
 
   final String number;
   final String title;
   final IconData icon;
   final Color color;
+  final GestureTapCallback gestureTapCallback;
 
   @override
   Widget build(BuildContext context) {
     final headline6 = Theme.of(context).textTheme.headline6;
     final bodyMedium = Theme.of(context).textTheme.bodyMedium;
     return InkWell(
-      onTap: () {},
+      onTap: gestureTapCallback,
       child: Card(
         elevation: 10.0,
         shadowColor: color,

@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:flutter/material.dart'; 
+import 'package:flutter/material.dart';
 import 'package:fokad_admin/src/api/rh/agents_api.dart';
 import 'package:fokad_admin/src/api/rh/paiement_salaire_api.dart';
 import 'package:fokad_admin/src/constants/app_theme.dart';
@@ -10,6 +10,7 @@ import 'package:fokad_admin/src/navigation/drawer/drawer_menu.dart';
 import 'package:fokad_admin/src/navigation/header/custom_appbar.dart';
 import 'package:fokad_admin/src/pages/rh/dashboard/components/calendar_widget.dart';
 import 'package:fokad_admin/src/pages/rh/dashboard/components/dash_pie_wdget.dart';
+import 'package:fokad_admin/src/routes/routes.dart';
 import 'package:fokad_admin/src/widgets/dash_number_rh_widget.dart';
 import 'package:intl/intl.dart';
 
@@ -42,7 +43,7 @@ class _DashboardRhState extends State<DashboardRh> {
   List<PaiementSalaireModel> salaireList = [];
   Future<void> getData() async {
     var agents = await AgentsApi().getAllData();
-    var salaires = await PaiementSalaireApi().getAllData(); 
+    var salaires = await PaiementSalaireApi().getAllData();
     setState(() {
       agentsCount = agents.length;
       agentActifCount =
@@ -64,12 +65,11 @@ class _DashboardRhState extends State<DashboardRh> {
           .where((element) =>
               element.createdAt.month == DateTime.now().month &&
               element.createdAt.year == DateTime.now().year &&
-              element.approbationDD == "Approved" && 
-              element.approbationBudget == "Approved" && 
-              element.approbationFin == "Approved" && 
+              element.approbationDD == "Approved" &&
+              element.approbationBudget == "Approved" &&
+              element.approbationFin == "Approved" &&
               element.observation == "true")
-          .toList(); 
-
+          .toList();
 
       for (var element in salaireList) {
         totalEnveloppeSalaire += double.parse(element.salaire);
@@ -106,8 +106,8 @@ class _DashboardRhState extends State<DashboardRh> {
       isMonth = 'Novembre';
     } else if (month == 12) {
       isMonth = 'Décembre';
-    } 
-    
+    }
+
     return Scaffold(
         // key: _key,
         drawer: const DrawerMenu(),
@@ -140,37 +140,65 @@ class _DashboardRhState extends State<DashboardRh> {
                               alignment: WrapAlignment.spaceEvenly,
                               children: [
                                 DashNumberRHWidget(
+                                    gestureTapCallback: () {
+                                      Navigator.pushNamed(
+                                          context, RhRoutes.rhAgent);
+                                    },
                                     number: '$agentsCount',
                                     title: 'Total agents',
                                     icon: Icons.group,
                                     color: Colors.blue.shade700),
                                 DashNumberRHWidget(
+                                    gestureTapCallback: () {
+                                      Navigator.pushNamed(
+                                          context, RhRoutes.rhAgent);
+                                    },
                                     number: '$agentActifCount',
                                     title: 'Agents Actifs',
                                     icon: Icons.person,
                                     color: Colors.green.shade700),
                                 DashNumberRHWidget(
+                                    gestureTapCallback: () {
+                                      Navigator.pushNamed(
+                                          context, RhRoutes.rhAgent);
+                                    },
                                     number: '$agentInactifCount',
                                     title: 'Agents inactifs',
                                     icon: Icons.person_off,
                                     color: Colors.red.shade700),
                                 DashNumberRHWidget(
+                                    gestureTapCallback: () {
+                                      Navigator.pushNamed(
+                                          context, RhRoutes.rhAgent);
+                                    },
                                     number: '$agentFemmeCount',
                                     title: 'Femmes',
                                     icon: Icons.female,
                                     color: Colors.purple.shade700),
                                 DashNumberRHWidget(
+                                    gestureTapCallback: () {
+                                      Navigator.pushNamed(
+                                          context, RhRoutes.rhAgent);
+                                    },
                                     number: '$agentHommeCount',
                                     title: 'Hommes',
                                     icon: Icons.male,
                                     color: Colors.grey.shade700),
                                 DashNumberRHWidget(
-                                    number: "${NumberFormat.decimalPattern('fr')
-                                      .format(totalEnveloppeSalaire)} \$",
+                                    gestureTapCallback: () {
+                                      Navigator.pushNamed(
+                                          context, RhRoutes.rhPaiement);
+                                    },
+                                    number:
+                                        "${NumberFormat.decimalPattern('fr').format(totalEnveloppeSalaire)} \$",
                                     title: 'Enveloppe salariale',
                                     icon: Icons.monetization_on,
                                     color: Colors.teal.shade700),
                                 DashNumberRHWidget(
+                                    gestureTapCallback: () {
+                                      Navigator.pushNamed(
+                                          context, RhRoutes.rhPaiement);
+                                    },
                                     number: '$agentNonPaye',
                                     title: 'Non payés $isMonth',
                                     icon: Icons.person_remove,

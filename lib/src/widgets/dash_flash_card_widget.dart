@@ -11,7 +11,7 @@ class DashFlashCardWidget extends StatelessWidget {
       required this.frontNumber,
       required this.frontTitle,
       required this.icon,
-      required this.color})
+      required this.color, required this.gestureTapCallback})
       : super(key: key);
 
   final String backNumber;
@@ -20,6 +20,7 @@ class DashFlashCardWidget extends StatelessWidget {
   final String frontTitle;
   final IconData icon;
   final Color color;
+  final GestureTapCallback gestureTapCallback;
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +28,7 @@ class DashFlashCardWidget extends StatelessWidget {
     final bodyMedium = Theme.of(context).textTheme.bodyMedium;
     return FlashCard(
       backWidget: InkWell(
-        onTap: () {},
+        onTap: gestureTapCallback,
         child: Card(
           elevation: 10.0,
           shadowColor: color,

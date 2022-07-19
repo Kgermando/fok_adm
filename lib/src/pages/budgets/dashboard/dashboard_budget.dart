@@ -23,6 +23,7 @@ import 'package:fokad_admin/src/models/rh/paiement_salaire_model.dart';
 import 'package:fokad_admin/src/models/rh/transport_restauration_model.dart';
 import 'package:fokad_admin/src/navigation/drawer/drawer_menu.dart';
 import 'package:fokad_admin/src/navigation/header/custom_appbar.dart';
+import 'package:fokad_admin/src/routes/routes.dart';
 import 'package:fokad_admin/src/widgets/dash_number_budget_widget.dart';
 import 'package:fokad_admin/src/widgets/title_widget.dart';
 import 'package:intl/intl.dart';
@@ -351,24 +352,41 @@ class _DashboardBudgetState extends State<DashboardBudget> {
                               alignment: WrapAlignment.spaceEvenly,
                               children: [
                                 DashNumberBudgetWidget(
+                                    gestureTapCallback: () {
+                                      Navigator.pushNamed(
+                                          context,
+                                          BudgetRoutes.budgetBudgetPrevisionel);
+                                    },
                                     number:
                                         '${NumberFormat.decimalPattern('fr').format(coutTotal)} \$',
                                     title: "Coût Total prévisionnel",
                                     icon: Icons.monetization_on,
                                     color: Colors.blue.shade700),
                                 DashNumberBudgetWidget(
+                                    gestureTapCallback: () {
+                                      Navigator.pushNamed(context,
+                                          BudgetRoutes.budgetBudgetPrevisionel);
+                                    },
                                     number:
                                         '${NumberFormat.decimalPattern('fr').format(sommeEnCours)} \$',
                                     title: "Sommes en cours d'execution",
                                     icon: Icons.monetization_on_outlined,
                                     color: Colors.pink.shade700),
                                 DashNumberBudgetWidget(
+                                    gestureTapCallback: () {
+                                      Navigator.pushNamed(context,
+                                          BudgetRoutes.budgetBudgetPrevisionel);
+                                    },
                                     number:
                                         '${NumberFormat.decimalPattern('fr').format(sommeRestantes)} \$',
                                     title: "Sommes restantes",
                                     icon: Icons.monetization_on_outlined,
                                     color: Colors.red.shade700),
                                 DashNumberBudgetWidget(
+                                    gestureTapCallback: () {
+                                      Navigator.pushNamed(context,
+                                          BudgetRoutes.budgetBudgetPrevisionel);
+                                    },
                                     number:
                                         "${NumberFormat.decimalPattern('fr').format(double.parse(poursentExecution.toStringAsFixed(0)))} %",
                                     title: "Taux d'executions",
