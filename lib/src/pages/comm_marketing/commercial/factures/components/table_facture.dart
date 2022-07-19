@@ -4,7 +4,6 @@ import 'package:fokad_admin/src/api/comm_marketing/commerciale/facture_api.dart'
 import 'package:fokad_admin/src/models/comm_maketing/facture_cart_model.dart';
 import 'package:fokad_admin/src/models/users/user_model.dart';
 import 'package:fokad_admin/src/routes/routes.dart';
-import 'package:fokad_admin/src/widgets/print_widget.dart';
 import 'package:fokad_admin/src/utils/class_implemented.dart';
 import 'package:fokad_admin/src/widgets/title_widget.dart';
 import 'package:intl/intl.dart';
