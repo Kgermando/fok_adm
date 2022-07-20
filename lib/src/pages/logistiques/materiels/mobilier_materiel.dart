@@ -10,7 +10,6 @@ import 'package:fokad_admin/src/navigation/header/custom_appbar.dart';
 import 'package:fokad_admin/src/pages/logistiques/materiels/components/table_mobilier.dart';
 import 'package:fokad_admin/src/utils/loading.dart';
 
-
 class MobilierMateriel extends StatefulWidget {
   const MobilierMateriel({Key? key}) : super(key: key);
 
@@ -31,7 +30,7 @@ class _MobilierMaterielState extends State<MobilierMateriel> {
       TextEditingController();
   final TextEditingController nombreController = TextEditingController();
 
-    @override
+  @override
   initState() {
     date();
     super.initState();
@@ -47,7 +46,7 @@ class _MobilierMaterielState extends State<MobilierMateriel> {
 
   @override
   void dispose() {
-      nomController.dispose();
+    nomController.dispose();
     modeleController.dispose();
     marqueController.dispose();
     descriptionMobilierController.dispose();
@@ -55,8 +54,6 @@ class _MobilierMaterielState extends State<MobilierMateriel> {
 
     super.dispose();
   }
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -68,7 +65,7 @@ class _MobilierMaterielState extends State<MobilierMateriel> {
             onPressed: () {
               // Navigator.pushNamed(
               //     context, LogistiqueRoutes.logAddMobilierMateriel);
-                  newFicheDialog();
+              newFicheDialog();
             }),
         body: SafeArea(
           child: Row(
@@ -85,7 +82,8 @@ class _MobilierMaterielState extends State<MobilierMateriel> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      CustomAppbar(title: 'Mobilier',
+                      CustomAppbar(
+                          title: 'Mobilier',
                           controllerMenu: () =>
                               _key.currentState!.openDrawer()),
                       const Expanded(child: TableMobilier())
@@ -98,27 +96,26 @@ class _MobilierMaterielState extends State<MobilierMateriel> {
         ));
   }
 
-
   newFicheDialog() {
     return showDialog(
-      context: context,
-      barrierDismissible: true,
-      builder: (context) {
-        return StatefulBuilder(builder: (context, StateSetter setState) {
-          return AlertDialog(
-            scrollable: true,
-            title: const Text('Ajout mobilier'),
-            content: SizedBox(
-                height: 400,
-                width: 500,
-                child: isLoading
-                    ? loading()
-                    : Form(
-                        key: _formKey,
-                        child: Column(
-                          children: [
-                            const SizedBox(height: 20),
-                            Row(
+        context: context,
+        barrierDismissible: true,
+        builder: (context) {
+          return StatefulBuilder(builder: (context, StateSetter setState) {
+            return AlertDialog(
+              scrollable: true,
+              title: const Text('Ajout mobilier'),
+              content: SizedBox(
+                  height: 400,
+                  width: 500,
+                  child: isLoading
+                      ? loading()
+                      : Form(
+                          key: _formKey,
+                          child: Column(
+                            children: [
+                              const SizedBox(height: 20),
+                              Row(
                                 children: [
                                   Expanded(child: nomWidget()),
                                   const SizedBox(
@@ -140,27 +137,25 @@ class _MobilierMaterielState extends State<MobilierMateriel> {
                               const SizedBox(
                                 height: p20,
                               ),
-                          ],
-                        ))),
-            actions: <Widget>[
-              TextButton(
-                onPressed: () => Navigator.pop(context, 'Cancel'),
-                child: const Text('Annuler'),
-              ),
-              TextButton(
-                onPressed: () {
-                  isLoading = true;
-                  submit();
-                },
-                child: const Text('OK'),
-              ),
-            ],
-          );
+                            ],
+                          ))),
+              actions: <Widget>[
+                TextButton(
+                  onPressed: () => Navigator.pop(context, 'Cancel'),
+                  child: const Text('Annuler'),
+                ),
+                TextButton(
+                  onPressed: () {
+                    isLoading = true;
+                    submit();
+                  },
+                  child: const Text('OK'),
+                ),
+              ],
+            );
+          });
         });
-      }
-    );
   }
-
 
   Widget nomWidget() {
     return Container(
@@ -286,6 +281,7 @@ class _MobilierMaterielState extends State<MobilierMateriel> {
         motifDD: '-',
         signatureDD: '-');
     await MobilierApi().insertData(mobilierModel);
+    Navigator.of(context).pop();
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
       content: const Text("Enregistrer avec succès!"),
       backgroundColor: Colors.green[700],

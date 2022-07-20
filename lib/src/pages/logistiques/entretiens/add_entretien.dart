@@ -12,6 +12,7 @@ import 'package:fokad_admin/src/models/logistiques/objet_remplace_model.dart';
 import 'package:fokad_admin/src/models/users/user_model.dart';
 import 'package:fokad_admin/src/navigation/drawer/drawer_menu.dart';
 import 'package:fokad_admin/src/navigation/header/custom_appbar.dart';
+import 'package:fokad_admin/src/utils/loading.dart';
 import 'package:fokad_admin/src/widgets/btn_widget.dart';
 import 'package:fokad_admin/src/widgets/print_widget.dart';
 import 'package:fokad_admin/src/widgets/title_widget.dart';
@@ -30,6 +31,7 @@ class _AddEntretienPageState extends State<AddEntretienPage> {
   final _formObjetKey = GlobalKey<FormState>();
   bool isLoading = false;
   bool isLoadingObjet = false;
+  bool isDeletingItem = false;
 
   TextEditingController nomController = TextEditingController();
   TextEditingController modeleController = TextEditingController();
@@ -68,19 +70,16 @@ class _AddEntretienPageState extends State<AddEntretienPage> {
 
   int entretiensCount = 0;
   List<ObjetRemplaceModel> objetRemplaceList = [];
+  List<ObjetRemplaceModel> objetRemplaceFilter = [];
 
   String? signature;
   Future<void> getDate() async {
     UserModel userModel = await AuthApi().getUserId();
-    var entretiens = await EntretienApi().getAllData();
     var objetRemplace = await ObjetRemplaceApi().getAllData();
     if (!mounted) return;
     setState(() {
       signature = userModel.matricule;
-      entretiensCount = entretiens.length + 1;
-      objetRemplaceList = objetRemplace
-          .where((element) => element.reference == entretiensCount)
-          .toList();
+      objetRemplaceFilter = objetRemplace.toList();
     });
   }
 
@@ -100,36 +99,53 @@ class _AddEntretienPageState extends State<AddEntretienPage> {
               Expanded(
                 flex: 5,
                 child: Padding(
-                  padding: const EdgeInsets.all(p10),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Row(
-                        children: [
-                          SizedBox(
-                            width: 20.0,
-                            child: IconButton(
-                                onPressed: () {
-                                  Navigator.of(context).pop();
-                                },
-                                icon: const Icon(Icons.arrow_back)),
-                          ),
-                          const SizedBox(width: p10),
-                          Expanded(
-                              flex: 5,
-                              child: CustomAppbar(
-                                  title: 'Nouveau entretien / Maintenance',
-                                  controllerMenu: () =>
-                                      _key.currentState!.openDrawer())),
-                        ],
-                      ),
-                      Expanded(
-                          child: SingleChildScrollView(
-                        child: addDataWidget(),
-                      ))
-                    ],
-                  ),
-                ),
+                    padding: const EdgeInsets.all(p10),
+                    child: FutureBuilder<List<EntretienModel>>(
+                        future: EntretienApi().getAllData(),
+                        builder: (BuildContext context,
+                            AsyncSnapshot<List<EntretienModel>> snapshot) {
+                          if (snapshot.hasData) {
+                            List<EntretienModel>? data = snapshot.data;
+                            entretiensCount = data!.length + 1;
+                            objetRemplaceList = objetRemplaceFilter
+                                .where((element) =>
+                                    element.reference == entretiensCount)
+                                .toList();
+                            return Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Row(
+                                  children: [
+                                    SizedBox(
+                                      width: p20,
+                                      child: IconButton(
+                                          onPressed: () =>
+                                              Navigator.pop(context),
+                                          icon: const Icon(Icons.arrow_back)),
+                                    ),
+                                    const SizedBox(width: p10),
+                                    Expanded(
+                                      child: CustomAppbar(
+                                          title:
+                                              'Nouveau entretien / Maintenance',
+                                          controllerMenu: () =>
+                                              _key.currentState!.openDrawer()),
+                                    ),
+                                  ],
+                                ),
+                                Expanded(
+                                    child: SingleChildScrollView(
+                                        child: Column(
+                                  children: [
+                                    addDataWidget(),
+                                  ],
+                                )))
+                              ],
+                            );
+                          } else {
+                            return Center(child: loadingMega());
+                          }
+                        })),
               ),
             ],
           ),
@@ -389,8 +405,11 @@ class _AddEntretienPageState extends State<AddEntretienPage> {
                         const SizedBox(width: p20),
                         Expanded(
                             flex: 1,
-                            child: Text("\$",
-                                style: Theme.of(context).textTheme.headline6))
+                            child: Padding(
+                              padding: const EdgeInsets.only(bottom: p8),
+                              child: Text("\$",
+                                  style: Theme.of(context).textTheme.headline6),
+                            ))
                       ],
                     ))
                   ],
@@ -476,6 +495,7 @@ class _AddEntretienPageState extends State<AddEntretienPage> {
           1: FlexColumnWidth(1),
           2: FlexColumnWidth(4),
           3: FlexColumnWidth(4),
+          4: FlexColumnWidth(1),
         },
         children: [
           TableRow(children: [
@@ -498,20 +518,25 @@ class _AddEntretienPageState extends State<AddEntretienPage> {
               child: Text("Observation",
                   textAlign: TextAlign.start, style: bodyMedium),
             ),
+            Container(
+              padding: const EdgeInsets.all(p10),
+              child: Text("Retirer",
+                  textAlign: TextAlign.start, style: bodyMedium),
+            ),
           ]),
-          for (var item in objetRemplaceList
-              .where((element) => element.reference == entretiensCount))
-            tableDataWidget(
-                item.nom, item.cout, item.caracteristique, item.observation)
+          for (var item in objetRemplaceList)
+            tableDataWidget(item.nom, item.cout, item.caracteristique,
+                item.observation, item.id!)
         ],
       ),
     );
   }
 
   TableRow tableDataWidget(
-      String nom, String cout, String caraterique, String observation) {
+      String nom, String cout, String caraterique, String observation, int id) {
     double coutProduit = (cout == '') ? double.parse('0') : double.parse(cout);
     final bodyMedium = Theme.of(context).textTheme.bodyMedium;
+    
     return TableRow(children: [
       Container(
         padding: const EdgeInsets.all(p10),
@@ -535,6 +560,16 @@ class _AddEntretienPageState extends State<AddEntretienPage> {
         child: SelectableText(observation,
             textAlign: TextAlign.start, style: bodyMedium),
       ),
+      Container(
+          padding: const EdgeInsets.all(p10),
+          child: (isDeletingItem) ? loadingMini() : IconButton(
+              onPressed: () async {
+                setState(() {
+                  isDeletingItem = true;
+                });
+                await ObjetRemplaceApi().deleteData(id).then((value) => isDeletingItem = false);
+              },
+              icon: const Icon(Icons.delete))),
     ]);
   }
 

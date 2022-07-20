@@ -702,6 +702,8 @@ class _AddAgentState extends State<AddAgent> {
         onChanged: (value) {
           setState(() {
             departement = value!;
+            fonctionList.clear();
+            servAffectList.clear();
             String fokad = 'FO';
             final date = DateFormat("yy").format(DateTime.now());
 
@@ -709,34 +711,50 @@ class _AddAgentState extends State<AddAgent> {
               matricule = "${fokad}ADM$date-${agentCount.count + 1}";
               fonctionList = fonctionAdminList;
               servAffectList = serviceAffectationAdmin;
+              fonctionOccupe = fonctionList.first;
+              servicesAffectation = serviceAffectationAdmin.first;
             } else if (departement == 'Finances') {
               matricule = "${fokad}FIN$date-${agentCount.count + 1}";
               fonctionList = fonctionfinList;
               servAffectList = serviceAffectationFin;
+              fonctionOccupe = fonctionList.first;
+              servicesAffectation = serviceAffectationAdmin.first;
             } else if (departement == 'Comptabilites') {
               matricule = "${fokad}CPT$date-${agentCount.count + 1}";
               fonctionList = fonctioncompteList;
               servAffectList = serviceAffectationCompt;
+              fonctionOccupe = fonctionList.first;
+              servicesAffectation = serviceAffectationAdmin.first;
             } else if (departement == 'Budgets') {
               matricule = "${fokad}BUD$date-${agentCount.count + 1}";
               fonctionList = fonctionbudList;
               servAffectList = serviceAffectationBud;
+              fonctionOccupe = fonctionList.first;
+              servicesAffectation = serviceAffectationAdmin.first;
             } else if (departement == 'Ressources Humaines') {
               matricule = "${fokad}RH$date-${agentCount.count + 1}";
               fonctionList = fonctionrhList;
               servAffectList = serviceAffectationRH;
+              fonctionOccupe = fonctionList.first;
+              servicesAffectation = serviceAffectationAdmin.first;
             } else if (departement == 'Exploitations') {
               matricule = "${fokad}EXP$date-${agentCount.count + 1}";
               fonctionList = fonctionexpList;
               servAffectList = serviceAffectationEXp;
+              fonctionOccupe = fonctionList.first;
+              servicesAffectation = serviceAffectationAdmin.first;
             } else if (departement == 'Commercial et Marketing') {
               matricule = "${fokad}COM$date-${agentCount.count + 1}";
               fonctionList = fonctioncommList;
               servAffectList = serviceAffectationComm;
+              fonctionOccupe = fonctionList.first;
+              servicesAffectation = serviceAffectationAdmin.first;
             } else if (departement == 'Logistique') {
               matricule = "${fokad}LOG$date-${agentCount.count + 1}";
               fonctionList = fonctionlogList;
               servAffectList = serviceAffectationLog;
+              fonctionOccupe = fonctionList.first;
+              servicesAffectation = serviceAffectationAdmin.first;
             } else {
               setState(() {
                 fonctionList = [];

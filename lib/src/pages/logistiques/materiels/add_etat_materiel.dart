@@ -192,6 +192,7 @@ class _AddEtatMaterielState extends State<AddEtatMateriel> {
         ),
         value: typeObjet,
         isExpanded: true,
+        validator: (value) => value == null ? "Champs obligatoire" : null,
         items: typeObjetList
             .map((String value) {
               return DropdownMenuItem<String>(
@@ -204,30 +205,24 @@ class _AddEtatMaterielState extends State<AddEtatMateriel> {
         onChanged: (value) {
           setState(() {
             typeObjet = value!;
+            nomList.clear();
             switch (value) {
               case 'Mobilier':
-                nom = '';
                 nomList = mobiliers;
+                nom = nomList.first;
+                print("nomList $nomList");
                 break;
               case 'Immobilier':
-                nom = '';
                 nomList = immobiliers;
+                nom = nomList.first;
+                print("nomList $nomList");
                 break;
               case 'Enguins':
-                nom = '';
                 nomList = enguins;
-                
+                nom = nomList.first;
                 break;
               default:
             }
-
-            // if (typeObjet == 'Mobilier') {
-            //   nomList = mobiliers;
-            // } else if (typeObjet == 'Immobilier') {
-            //   nomList = immobiliers;
-            // } else if (typeObjet == 'Enguins') {
-            //   nomList = enguins;
-            // }
           });
         },
       ),
@@ -255,6 +250,7 @@ class _AddEtatMaterielState extends State<AddEtatMateriel> {
             })
             .toSet()
             .toList(),
+        validator: (value) => value == null ? "Champs obligatoire" : null,
         onChanged: (value) {
           setState(() {
             nom = value!;

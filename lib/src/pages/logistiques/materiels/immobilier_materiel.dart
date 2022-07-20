@@ -290,7 +290,7 @@ class _ImmobilierMaterielState extends State<ImmobilierMateriel> {
         motifDD: '-',
         signatureDD: '-');
     await ImmobilierApi().insertData(immobilierModel);
-    Navigator.pop(context);
+    Navigator.of(context).pop();
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
       content: const Text("Enregistrer avec succès!"),
       backgroundColor: Colors.green[700],

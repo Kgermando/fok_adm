@@ -116,7 +116,7 @@ class ObjetRemplaceApi {
     });
     if (res.statusCode == 200) { 
     } else {
-      throw Exception(json.decode(res.body)['message']);
+      throw Exception(res.statusCode);
     }
   }
 }

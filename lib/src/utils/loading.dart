@@ -32,4 +32,7 @@ Widget loadingWhite() => Row(
 );
 
 
-Widget loadingMini() => const CircularProgressIndicator(strokeWidth: 2.0);
+Widget loadingMini() => const SizedBox(
+  width: 10,
+  height: 10,
+  child: CircularProgressIndicator(strokeWidth: 2.0));

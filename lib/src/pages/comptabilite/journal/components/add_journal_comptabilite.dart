@@ -141,9 +141,7 @@ class _AddJournalComptabiliteState extends State<AddJournalComptabilite> {
               padding: const EdgeInsets.all(p10),
               child: Row(
                 children: [
-                  SizedBox(
-                      width: 100.0,
-                      child: numeroOperationWidget()),
+                  SizedBox(width: 100.0, child: numeroOperationWidget()),
                   const SizedBox(
                     width: p10,
                   ),
@@ -204,7 +202,8 @@ class _AddJournalComptabiliteState extends State<AddJournalComptabilite> {
                           form.reset();
                         }
                       },
-                      child: Text('Soumettre', style: Theme.of(context).textTheme.bodyLarge)),
+                      child: Text('Soumettre',
+                          style: Theme.of(context).textTheme.bodyLarge)),
                 ],
               ),
             )
@@ -287,28 +286,38 @@ class _AddJournalComptabiliteState extends State<AddJournalComptabilite> {
             .toSet()
             .toList(),
         onChanged: (value) {
+          comptesDebitList.clear();
           if (value == "Classe_1_Comptes_de_ressources_durables") {
             comptesDebitList = class1Dropdown;
+            comptesDebitController = comptesDebitList.first;
           } else if (value == "Classe_2_Comptes_Actif_immobilise") {
             comptesDebitList = class2Dropdown;
+            comptesDebitController = comptesDebitList.first;
           } else if (value == "Classe_3_Comptes_de_stocks") {
             comptesDebitList = class3Dropdown;
+            comptesDebitController = comptesDebitList.first;
           } else if (value == "Classe_4_Comptes_de_tiers") {
             comptesDebitList = class4Dropdown;
+            comptesDebitController = comptesDebitList.first;
           } else if (value == "Classe_5_Comptes_de_tresorerie") {
             comptesDebitList = class5Dropdown;
+            comptesDebitController = comptesDebitList.first;
           } else if (value ==
               "Classe_6_Comptes_de_charges_des_activites_ordinaires") {
             comptesDebitList = class6Dropdown;
+            comptesDebitController = comptesDebitList.first;
           } else if (value ==
               "Classe_7_Comptes_de_produits_des_activites_ordinaires") {
             comptesDebitList = class7Dropdown;
+            comptesDebitController = comptesDebitList.first;
           } else if (value ==
               "Classe_8_Comptes_des_autres_charges_et_des_autres_produits") {
             comptesDebitList = class8Dropdown;
+            comptesDebitController = comptesDebitList.first;
           } else if (value ==
               "Classe_9_Comptes_des_engagements_hors_bilan_et_comptes_de_la_comptabilite_analytique_de_gestion") {
             comptesDebitList = class9Dropdown;
+            comptesDebitController = comptesDebitList.first;
           } else {
             comptesDebitList = [];
           }
@@ -328,7 +337,7 @@ class _AddJournalComptabiliteState extends State<AddJournalComptabilite> {
           border: OutlineInputBorder(borderRadius: BorderRadius.circular(5.0)),
           // contentPadding: const EdgeInsets.only(left: 5.0),
         ),
-        // value: comptesActifControllerList[index],
+        value: comptesDebitController,
         isExpanded: true,
         items: comptesDebitList
             .map((String? value) {
@@ -371,28 +380,38 @@ class _AddJournalComptabiliteState extends State<AddJournalComptabilite> {
             .toSet()
             .toList(),
         onChanged: (value) {
+          comptesCreditList.clear();
           if (value == "Classe_1_Comptes_de_ressources_durables") {
             comptesCreditList = class1Dropdown;
+            comptesCreditController = comptesCreditList.first;
           } else if (value == "Classe_2_Comptes_Actif_immobilise") {
             comptesCreditList = class2Dropdown;
+            comptesCreditController = comptesCreditList.first;
           } else if (value == "Classe_3_Comptes_de_stocks") {
             comptesCreditList = class3Dropdown;
+            comptesCreditController = comptesCreditList.first;
           } else if (value == "Classe_4_Comptes_de_tiers") {
             comptesCreditList = class4Dropdown;
+            comptesCreditController = comptesCreditList.first;
           } else if (value == "Classe_5_Comptes_de_tresorerie") {
             comptesCreditList = class5Dropdown;
+            comptesCreditController = comptesCreditList.first;
           } else if (value ==
               "Classe_6_Comptes_de_charges_des_activites_ordinaires") {
             comptesCreditList = class6Dropdown;
+            comptesCreditController = comptesCreditList.first;
           } else if (value ==
               "Classe_7_Comptes_de_produits_des_activites_ordinaires") {
             comptesCreditList = class7Dropdown;
+            comptesCreditController = comptesCreditList.first;
           } else if (value ==
               "Classe_8_Comptes_des_autres_charges_et_des_autres_produits") {
             comptesCreditList = class8Dropdown;
+            comptesCreditController = comptesCreditList.first;
           } else if (value ==
               "Classe_9_Comptes_des_engagements_hors_bilan_et_comptes_de_la_comptabilite_analytique_de_gestion") {
             comptesCreditList = class9Dropdown;
+            comptesCreditController = comptesCreditList.first;
           } else {
             comptesCreditList = [];
           }
@@ -412,7 +431,7 @@ class _AddJournalComptabiliteState extends State<AddJournalComptabilite> {
           border: OutlineInputBorder(borderRadius: BorderRadius.circular(5.0)),
           // contentPadding: const EdgeInsets.only(left: 5.0),
         ),
-        // value: comptesActifControllerList[index],
+        value: comptesCreditController,
         isExpanded: true,
         items: comptesCreditList
             .map((String? value) {
