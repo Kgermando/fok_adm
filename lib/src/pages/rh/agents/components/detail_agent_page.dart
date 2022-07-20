@@ -87,8 +87,8 @@ class _DetailAgentPageState extends State<DetailAgentPage> {
                     AgentModel? data = snapshot.data;
                     return
                         // speedialWidget(data!);
-                        (int.parse(data!.role) <= 3)
-                            ? speedialWidget(data)
+                        (int.parse(user.role) <= 3)
+                            ? speedialWidget(data!)
                             : Container();
                   } else {
                     return loadingMini();

@@ -151,7 +151,7 @@ class _TableSalairesFINState extends State<TableSalairesFIN> {
         enableContextMenu: false,
         enableDropToResize: true,
         titleTextAlign: PlutoColumnTextAlign.left,
-        width: 150,
+        width: 200,
         minWidth: 150,
       ),
       PlutoColumn(
@@ -163,7 +163,7 @@ class _TableSalairesFINState extends State<TableSalairesFIN> {
         enableContextMenu: false,
         enableDropToResize: true,
         titleTextAlign: PlutoColumnTextAlign.left,
-        width: 150,
+        width: 200,
         minWidth: 150,
       ),
       PlutoColumn(
@@ -175,19 +175,19 @@ class _TableSalairesFINState extends State<TableSalairesFIN> {
         enableContextMenu: false,
         enableDropToResize: true,
         titleTextAlign: PlutoColumnTextAlign.left,
-        width: 150,
+        width: 200,
         minWidth: 150,
       ),
       PlutoColumn(
         readOnly: true,
-        title: 'departement',
+        title: 'Département',
         field: 'departement',
         type: PlutoColumnType.text(),
         enableRowDrag: true,
         enableContextMenu: false,
         enableDropToResize: true,
         titleTextAlign: PlutoColumnTextAlign.left,
-        width: 150,
+        width: 200,
         minWidth: 150,
       ),
       PlutoColumn(
@@ -199,7 +199,7 @@ class _TableSalairesFINState extends State<TableSalairesFIN> {
         enableContextMenu: false,
         enableDropToResize: true,
         titleTextAlign: PlutoColumnTextAlign.left,
-        width: 150,
+        width: 200,
         minWidth: 150,
       ),
       PlutoColumn(
@@ -211,7 +211,7 @@ class _TableSalairesFINState extends State<TableSalairesFIN> {
         enableContextMenu: false,
         enableDropToResize: true,
         titleTextAlign: PlutoColumnTextAlign.left,
-        width: 150,
+        width: 200,
         minWidth: 150,
       ),
       PlutoColumn(
@@ -223,7 +223,7 @@ class _TableSalairesFINState extends State<TableSalairesFIN> {
         enableContextMenu: false,
         enableDropToResize: true,
         titleTextAlign: PlutoColumnTextAlign.left,
-        width: 150,
+        width: 200,
         minWidth: 150,
       ),
     ];
@@ -255,7 +255,7 @@ class _TableSalairesFINState extends State<TableSalairesFIN> {
                 value: (item.observation == 'true') ? "Payé" : "Non payé"),
             'modePaiement': PlutoCell(value: item.modePaiement),
             'createdAt': PlutoCell(
-                value: DateFormat("DD-MM-yy HH:mm").format(item.createdAt))
+                value: DateFormat("dd-MM-yy HH:mm").format(item.createdAt))
           }));
         }
         stateManager!.resetCurrentState();

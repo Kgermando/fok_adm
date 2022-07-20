@@ -138,7 +138,7 @@ class _DepartementFinState extends State<DepartementFin> {
                                     style: headline6.copyWith(
                                         color: Colors.white)),
                                 subtitle: Text(
-                                    "Vous $transRestCount dossiers necessitent votre approbation",
+                                    "Vous avez $transRestCount dossiers necessitent votre approbation",
                                     style: bodyMedium.copyWith(
                                         color: Colors.white)),
                                 initiallyExpanded: false,
