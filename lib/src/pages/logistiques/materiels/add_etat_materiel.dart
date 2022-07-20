@@ -209,13 +209,11 @@ class _AddEtatMaterielState extends State<AddEtatMateriel> {
             switch (value) {
               case 'Mobilier':
                 nomList = mobiliers;
-                nom = nomList.first;
-                print("nomList $nomList");
+                nom = nomList.first; 
                 break;
               case 'Immobilier':
                 nomList = immobiliers;
-                nom = nomList.first;
-                print("nomList $nomList");
+                nom = nomList.first; 
                 break;
               case 'Enguins':
                 nomList = enguins;
