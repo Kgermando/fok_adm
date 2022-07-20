@@ -569,12 +569,12 @@ class _DetailBilanState extends State<DetailBilan> {
         createdRef: data.createdRef,
         created: DateTime.now(),
         isSubmit: 'true',
-        approbationDG: data.approbationDG,
-        motifDG: data.motifDG,
-        signatureDG: data.signatureDG,
-        approbationDD: data.approbationDD,
-        motifDD: data.motifDD,
-        signatureDD: data.signatureDD);
+        approbationDG: '-',
+        motifDG: '-',
+        signatureDG: '-',
+        approbationDD: '-',
+        motifDD: '-',
+        signatureDD: '-');
     await BilanApi().updateData(bilanModel);
     Navigator.of(context).pop();
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(

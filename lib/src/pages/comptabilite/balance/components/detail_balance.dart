@@ -577,16 +577,16 @@ class _DetailBalanceState extends State<DetailBalance> {
         createdRef: data.createdRef,
         created: DateTime.now(),
         isSubmit: 'true',
-        approbationDG: data.approbationDG,
-        motifDG: data.motifDG,
-        signatureDG: data.signatureDG,
-        approbationDD: data.approbationDD,
-        motifDD: data.motifDD,
-        signatureDD: data.signatureDD);
+        approbationDG: '-',
+        motifDG: '-',
+        signatureDG: '-',
+        approbationDD: '-',
+        motifDD: '-',
+        signatureDD: '-');
     await BalanceCompteApi().updateData(balanceCompteModel);
     Navigator.of(context).pop();
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-      content: const Text("Mis en corbeille avec succès!"),
+      content: const Text("Document envoyé avec succès!"),
       backgroundColor: Colors.red[700],
     ));
   }

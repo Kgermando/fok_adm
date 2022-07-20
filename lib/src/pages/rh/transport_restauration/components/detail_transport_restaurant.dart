@@ -30,6 +30,7 @@ class _DetailTransportRestaurantState extends State<DetailTransportRestaurant> {
   final _formKey = GlobalKey<FormState>();
   bool isLoading = false;
   bool isChecked = false;
+  bool isDeleting = false;
 
   final TextEditingController nomController = TextEditingController();
   final TextEditingController prenomController = TextEditingController();
@@ -109,11 +110,14 @@ class _DetailTransportRestaurantState extends State<DetailTransportRestaurant> {
                 AsyncSnapshot<TransportRestaurationModel> snapshot) {
               if (snapshot.hasData) {
                 TransportRestaurationModel? data = snapshot.data;
-                return FloatingActionButton(
-                    child: const Icon(Icons.add),
-                    onPressed: () {
-                      detailAgentDialog(data!);
-                    });
+                return (data!.approbationDD == "Approved" ||
+                        data.approbationDD == "Unapproved")
+                    ? Container()
+                    : FloatingActionButton(
+                        child: const Icon(Icons.add),
+                        onPressed: () {
+                          detailAgentDialog(data);
+                        });
               } else {
                 return loadingMini();
               }
@@ -383,6 +387,10 @@ class _DetailTransportRestaurantState extends State<DetailTransportRestaurant> {
         padding: const EdgeInsets.all(p10),
         child: const AutoSizeText("Montant"),
       ),
+      Container(
+        padding: const EdgeInsets.all(p10),
+        child: const AutoSizeText("Retirer"),
+      ),
     ]);
   }
 
@@ -405,6 +413,18 @@ class _DetailTransportRestaurantState extends State<DetailTransportRestaurant> {
         child: AutoSizeText(
             "${NumberFormat.decimalPattern('fr').format(double.parse(item.montant))} \$"),
       ),
+      Container(
+        padding: const EdgeInsets.all(p10),
+        child: IconButton(
+            color: Colors.red.shade700,
+            onPressed: () async {
+              setState(() {
+                isDeleting = true;
+              });
+              await TransRestAgentsApi().deleteData(item.id!).then((value) => isDeleting = false);
+            },
+            icon: const Icon(Icons.delete)),
+      ),
     ]);
   }
 
@@ -415,7 +435,7 @@ class _DetailTransportRestaurantState extends State<DetailTransportRestaurant> {
         builder: (context) {
           return StatefulBuilder(builder: (context, StateSetter setState) {
             return AlertDialog(
-              title: const Text('Infos detail'),
+              title: const Text('Ajout personnel'),
               content: SizedBox(
                   height: 200,
                   width: 500,
