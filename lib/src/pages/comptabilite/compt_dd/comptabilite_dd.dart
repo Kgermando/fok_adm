@@ -9,11 +9,7 @@ import 'package:fokad_admin/src/constants/app_theme.dart';
 import 'package:fokad_admin/src/constants/responsive.dart';
 import 'package:fokad_admin/src/navigation/drawer/drawer_menu.dart';
 import 'package:fokad_admin/src/navigation/header/custom_appbar.dart';
-import 'package:fokad_admin/src/pages/comptabilite/compt_dd/components/table_balance_compte_dd.dart';
-import 'package:fokad_admin/src/pages/comptabilite/compt_dd/corbeille/table_balance_corbeille.dart';
-import 'package:fokad_admin/src/pages/comptabilite/compt_dd/corbeille/table_bilan_corbeille.dart';
-import 'package:fokad_admin/src/pages/comptabilite/compt_dd/components/table_compte_bilan_dd.dart';
-import 'package:fokad_admin/src/pages/comptabilite/compt_dd/components/table_compte_resultat_dd.dart';
+import 'package:fokad_admin/src/pages/comptabilite/compt_dd/components/table_balance_compte_dd.dart'; 
 import 'package:fokad_admin/src/pages/comptabilite/compt_dd/components/table_journal_comptabilite_dd.dart';
 
 class ComptabiliteDD extends StatefulWidget {
