@@ -530,6 +530,7 @@ class _AddAgentState extends State<AddAgent> {
           Expanded(
               flex: 1,
               child: IconButton(
+                color: Colors.red.shade700,
                   onPressed: () {
                     helpDialog();
                   },
