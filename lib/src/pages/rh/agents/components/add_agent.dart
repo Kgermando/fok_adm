@@ -970,12 +970,17 @@ class _AddAgentState extends State<AddAgent> {
                   height: 200,
                   width: 300,
                   child: Column(
-                    children: const [
-                      Text("Niveau 1: Directeur général, PCA, ..."),
-                      Text("Niveau 2: Directeur département"),
-                      Text("Niveau 3: Chef de service"),
-                      Text("Niveau 4: Personnel travailler (Agent)"),
-                      Text("Niveau 5: Stagiaire, Experts, ..."),
+                    crossAxisAlignment: CrossAxisAlignment.start, 
+                    children: [
+                      Text("Niveau 1: Directeur général, PCA, Président ...", style: Theme.of(context).textTheme.bodyLarge),
+                      const SizedBox(height: p8),
+                      Text("Niveau 2: Directeur département", style: Theme.of(context).textTheme.bodyLarge),
+                      const SizedBox(height: p8),
+                      Text("Niveau 3: Chef de service", style: Theme.of(context).textTheme.bodyLarge),
+                      const SizedBox(height: p8),
+                      Text("Niveau 4: Personnel travailler (Agent)", style: Theme.of(context).textTheme.bodyLarge),
+                      const SizedBox(height: p8),
+                      Text("Niveau 5: Stagiaire, Experts, ...", style: Theme.of(context).textTheme.bodyLarge),
                     ],
                   )),
               actions: <Widget>[
