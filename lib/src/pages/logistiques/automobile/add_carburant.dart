@@ -376,7 +376,7 @@ class _AddCarburantAutoState extends State<AddCarburantAuto> {
           decoration: InputDecoration(
             border:
                 OutlineInputBorder(borderRadius: BorderRadius.circular(10.0)),
-            labelText: 'Numero plaque',
+            labelText: 'Numero entreprise',
           ),
           keyboardType: TextInputType.text,
           style: const TextStyle(),

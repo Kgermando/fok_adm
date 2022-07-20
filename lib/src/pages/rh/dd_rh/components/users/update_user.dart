@@ -338,6 +338,7 @@ class _UpdateUserState extends State<UpdateUser> {
 
   Future<void> submit(UserModel user) async {
     final userModel = UserModel(
+      id: user.id,
         nom: user.nom,
         prenom: user.prenom,
         email: user.email,
