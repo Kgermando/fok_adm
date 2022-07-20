@@ -84,15 +84,17 @@ class _DetailBalanceState extends State<DetailBalance> {
                 AsyncSnapshot<BalanceCompteModel> snapshot) {
               if (snapshot.hasData) {
                 BalanceCompteModel? data = snapshot.data;
-                return (data!.isSubmit == 'true')
-                    ? Container()
-                    : FloatingActionButton(
+                return (data!.isSubmit == 'false' &&
+                        data.approbationDD == '-' &&
+                        data.approbationDG == '-')
+                    ? FloatingActionButton(
                         child: const Icon(Icons.add),
                         onPressed: () {
                           Navigator.pushNamed(context,
                               ComptabiliteRoutes.comptabiliteBalanceAdd,
                               arguments: data);
-                        });
+                        })
+                    : Container();
               } else {
                 return loadingMini();
               }

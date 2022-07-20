@@ -92,15 +92,16 @@ class _DetailBilanState extends State<DetailBilan> {
                 (BuildContext context, AsyncSnapshot<BilanModel> snapshot) {
               if (snapshot.hasData) {
                 BilanModel? data = snapshot.data;
-                return (data!.isSubmit == 'true')
-                    ? Container()
-                    : FloatingActionButton(
-                        child: const Icon(Icons.add),
-                        onPressed: () {
-                          Navigator.pushNamed(
-                              context, ComptabiliteRoutes.comptabiliteBilanAdd,
-                              arguments: data);
-                        });
+                return (data!.isSubmit == 'false' && 
+                data.approbationDD == '-' && data.approbationDG =='-')
+                  ? FloatingActionButton(
+                      child: const Icon(Icons.add),
+                      onPressed: () {
+                        Navigator.pushNamed(
+                            context, ComptabiliteRoutes.comptabiliteBilanAdd,
+                            arguments: data);
+                      })
+                  : Container();
               } else {
                 return loadingMini();
               }

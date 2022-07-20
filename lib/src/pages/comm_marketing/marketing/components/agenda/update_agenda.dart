@@ -19,8 +19,7 @@ class UpdateAgenda extends StatefulWidget {
 }
 
 class _UpdateAgendaState extends State<UpdateAgenda> {
-  final GlobalKey<ScaffoldState> _key = GlobalKey();
-  final ScrollController _controllerScroll = ScrollController();
+  final GlobalKey<ScaffoldState> _key = GlobalKey(); 
   final _formKey = GlobalKey<FormState>();
   bool isLoading = false;
 
@@ -84,8 +83,7 @@ class _UpdateAgendaState extends State<UpdateAgenda> {
                           controllerMenu: () =>
                               _key.currentState!.openDrawer()),
                       Expanded(
-                          child: Scrollbar(
-                        controller: _controllerScroll,
+                          child: SingleChildScrollView( 
                         child: addPageWidget(),
                       ))
                     ],
@@ -111,8 +109,7 @@ class _UpdateAgendaState extends State<UpdateAgenda> {
                 width: Responsive.isDesktop(context)
                     ? MediaQuery.of(context).size.width / 2
                     : MediaQuery.of(context).size.width,
-                child: ListView(
-                  controller: _controllerScroll,
+                child: Column( 
                   children: [
                     dateRappelWidget(),
                     const SizedBox(height: p8),
