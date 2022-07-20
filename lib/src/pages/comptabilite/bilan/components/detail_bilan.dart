@@ -578,7 +578,7 @@ class _DetailBilanState extends State<DetailBilan> {
     await BilanApi().updateData(bilanModel);
     Navigator.of(context).pop();
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-      content: const Text("Mis à jour effectué avec succès!"),
+      content: const Text("Envoie effectué avec succès!"),
       backgroundColor: Colors.blue[700],
     ));
   }
