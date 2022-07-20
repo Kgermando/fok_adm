@@ -14,11 +14,11 @@ import 'package:fokad_admin/src/navigation/drawer/drawer_menu.dart';
 import 'package:fokad_admin/src/navigation/header/custom_appbar.dart';
 import 'package:fokad_admin/src/utils/dropdown.dart';
 import 'package:fokad_admin/src/utils/regex.dart';
-import 'package:fokad_admin/src/widgets/btn_widget.dart'; 
+import 'package:fokad_admin/src/widgets/btn_widget.dart';
+import 'package:intl/intl.dart';
 
 class RavitailleemntStock extends StatefulWidget {
-  const RavitailleemntStock({Key? key})
-      : super(key: key); 
+  const RavitailleemntStock({Key? key}) : super(key: key);
 
   @override
   State<RavitailleemntStock> createState() => _RavitailleemntStockState();
@@ -56,9 +56,7 @@ class _RavitailleemntStockState extends State<RavitailleemntStock> {
     super.initState();
     getData();
     loadProdModel();
-    setState(() {
-      
-    });
+    setState(() {});
   }
 
   @override
@@ -89,19 +87,19 @@ class _RavitailleemntStockState extends State<RavitailleemntStock> {
 
   @override
   Widget build(BuildContext context) {
-    StocksGlobalMOdel stocksGlobalMOdel = ModalRoute.of(context)!.settings.arguments as StocksGlobalMOdel;
-    id = stocksGlobalMOdel.id;
+    StocksGlobalMOdel stocksGlobalMOdel =
+        ModalRoute.of(context)!.settings.arguments as StocksGlobalMOdel;
 
-    controlleridProduct =
-        TextEditingController(text: stocksGlobalMOdel.idProduct);
-    controllerquantity =
-        TextEditingController(text: stocksGlobalMOdel.quantity); 
-    controllerpriceAchatUnit =
-        TextEditingController(text: stocksGlobalMOdel.priceAchatUnit);
-    controllerPrixVenteUnit =
-        TextEditingController(text: stocksGlobalMOdel.prixVenteUnit);
-    controllerUnite =
-        TextEditingController(text: stocksGlobalMOdel.unite);
+    // controlleridProduct =
+    //     TextEditingController(text: stocksGlobalMOdel.idProduct);
+    // controllerquantity =
+    //     TextEditingController(text: stocksGlobalMOdel.quantity);
+    // controllerpriceAchatUnit =
+    //     TextEditingController(text: stocksGlobalMOdel.priceAchatUnit);
+    // controllerPrixVenteUnit =
+    //     TextEditingController(text: stocksGlobalMOdel.prixVenteUnit);
+    // controllerUnite =
+    //     TextEditingController(text: stocksGlobalMOdel.unite);
     return Scaffold(
         key: _key,
         drawer: const DrawerMenu(),
@@ -175,13 +173,13 @@ class _RavitailleemntStockState extends State<RavitailleemntStock> {
                       Row(
                         children: [
                           Expanded(
-                            child: quantityField(),
+                            child: quantityField(data),
                           ),
                           const SizedBox(
                             width: 5.0,
                           ),
                           Expanded(
-                            child: priceAchatUnitField(),
+                            child: priceAchatUnitField(data),
                           )
                         ],
                       ),
@@ -189,20 +187,21 @@ class _RavitailleemntStockState extends State<RavitailleemntStock> {
                       Row(
                         children: [
                           Expanded(
-                            child: prixVenteField(),
+                            child: prixVenteField(data),
                           ),
                           const SizedBox(
                             width: 5.0,
                           ),
                           Expanded(
-                            child: tvaField(),
+                            child: tvaField(data),
                           )
                         ],
                       ),
-                    if (!Responsive.isDesktop(context)) quantityField(),
-                    if (!Responsive.isDesktop(context)) priceAchatUnitField(),
-                    if (!Responsive.isDesktop(context)) prixVenteField(),
-                    if (!Responsive.isDesktop(context)) tvaField(),
+                    if (!Responsive.isDesktop(context)) quantityField(data),
+                    if (!Responsive.isDesktop(context))
+                      priceAchatUnitField(data),
+                    if (!Responsive.isDesktop(context)) prixVenteField(data),
+                    if (!Responsive.isDesktop(context)) tvaField(data),
                     if (!Responsive.isDesktop(context))
                       const SizedBox(
                         height: p20,
@@ -251,165 +250,198 @@ class _RavitailleemntStockState extends State<RavitailleemntStock> {
     );
   }
 
-  Widget quantityField() {
+  Widget quantityField(StocksGlobalMOdel data) {
     return Container(
       margin: const EdgeInsets.only(bottom: 20.0),
-      child: TextFormField(
-        controller: controllerquantity,
-        keyboardType: TextInputType.number,
-        inputFormatters: <TextInputFormatter>[
-          FilteringTextInputFormatter.digitsOnly
-        ],
-        decoration: InputDecoration(
-          labelText: 'Quantités',
-          labelStyle: const TextStyle(),
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(5.0),
-          ),
-        ),
-        validator: (quantity) => quantity != null && quantity.isEmpty
-            ? 'La Quantité total est obligatoire'
-            : null,
-        onChanged: (value) => setState(() => controllerquantity.text),
-      ),
-    );
-  }
-
-  Widget priceAchatUnitField() {
-    return Container(
-      margin: const EdgeInsets.only(bottom: 20.0),
-      child: TextFormField(
-        controller: controllerpriceAchatUnit,
-        keyboardType: TextInputType.number,
-        inputFormatters: <TextInputFormatter>[
-          FilteringTextInputFormatter.digitsOnly
-        ],
-        decoration: InputDecoration(
-          labelText: 'Prix d\'achats unitaire',
-          labelStyle: const TextStyle(),
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(5.0),
-          ),
-        ),
-        validator: (value) => value != null && value.isEmpty
-            ? 'Le prix d\'achat unitaire est obligatoire'
-            : null,
-        onChanged: (value) => setState(() => controllerpriceAchatUnit.text),
-      ),
-    );
-  }
-
-  Widget prixVenteField() {
-    return Container(
-      margin: const EdgeInsets.only(bottom: 20.0),
-      child: TextFormField(
-        controller: controllerPrixVenteUnit,
-        keyboardType: TextInputType.number,
-        inputFormatters: <TextInputFormatter>[
-          FilteringTextInputFormatter.digitsOnly
-        ],
-        decoration: InputDecoration(
-          labelText: 'Prix de vente unitaire',
-          labelStyle: const TextStyle(),
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(5.0),
-          ),
-        ),
-        validator: (value) {
-          if (value != null && value.isEmpty) {
-            return 'Le Prix de vente unitaires est obligatoire';
-          } else if (RegExpIsValide().isValideVente.hasMatch(value!)) {
-            return 'chiffres obligatoire';
-          } else {
-            return null;
-          }
-        },
-        onChanged: (value) => setState(() {
-          prixVenteUnit = (value == "") ? 0.0 : double.parse(value);
-        }),
-      ),
-    );
-  }
-
-  Widget tvaField() {
-    return Responsive.isDesktop(context)
-        ? Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Expanded(
-                flex: 3,
-                child: Container(
-                  margin: const EdgeInsets.only(bottom: 20.0),
-                  child: TextFormField(
-                    keyboardType: TextInputType.number,
-                    inputFormatters: <TextInputFormatter>[
-                      FilteringTextInputFormatter.digitsOnly
-                    ],
-                    decoration: InputDecoration(
-                      labelText: 'TVA en %',
-                      // hintText: 'Mettez "1" si vide',
-                      labelStyle: const TextStyle(),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(5.0),
-                      ),
-                    ),
-                    validator: (value) {
-                      if (RegExpIsValide().isValideVente.hasMatch(value!)) {
-                        return 'chiffres obligatoire';
-                      } else {
-                        return null;
-                      }
-                    },
-                    onChanged: (value) => setState(() {
-                      tva = (value == "") ? 1 : double.parse(value);
-                    }),
-                  ),
+      child: Row(
+        children: [
+          Expanded(
+            flex: 3,
+            child: TextFormField(
+              controller: controllerquantity,
+              keyboardType: TextInputType.number,
+              inputFormatters: <TextInputFormatter>[
+                FilteringTextInputFormatter.digitsOnly
+              ],
+              decoration: InputDecoration(
+                labelText: 'Quantités',
+                labelStyle: const TextStyle(),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(5.0),
                 ),
               ),
-              const SizedBox(
-                width: 10.0,
-              ),
-              Expanded(
-                child: tvaValeur(),
-              )
-            ],
-          )
-        : Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Container(
-                margin: const EdgeInsets.only(bottom: 20.0),
-                child: TextFormField(
-                  keyboardType: TextInputType.number,
-                  inputFormatters: <TextInputFormatter>[
-                    FilteringTextInputFormatter.digitsOnly
+              validator: (quantity) => quantity != null && quantity.isEmpty
+                  ? 'La Quantité total est obligatoire'
+                  : null,
+              onChanged: (value) => setState(() => controllerquantity.text),
+            ),
+          ),
+          Expanded(
+              flex: 1,
+              child: Container(
+                margin: const EdgeInsets.only(left: 10.0, bottom: 5.0),
+                child: Column(
+                  children: [
+                    const Text("Quantité précédent"),
+                    Text("${data.quantity} ${data.unite} \$",
+                        style: Theme.of(context)
+                            .textTheme
+                            .bodyLarge!
+                            .copyWith(color: Colors.orange)),
                   ],
-                  decoration: InputDecoration(
-                    labelText: 'TVA en %',
-                    // hintText: 'Mettez "1" si vide',
-                    labelStyle: const TextStyle(),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(5.0),
-                    ),
-                  ),
-                  validator: (value) {
-                    if (RegExpIsValide().isValideVente.hasMatch(value!)) {
-                      return 'chiffres obligatoire';
-                    } else {
-                      return null;
-                    }
-                  },
-                  onChanged: (value) => setState(() {
-                    tva = (value == "") ? 1 : double.parse(value);
-                  }),
+                ),
+              ))
+        ],
+      ),
+    );
+  }
+
+  Widget priceAchatUnitField(StocksGlobalMOdel data) {
+    return Container(
+      margin: const EdgeInsets.only(bottom: 20.0),
+      child: Row(
+        children: [
+          Expanded(
+            flex: 3,
+            child: TextFormField(
+              controller: controllerpriceAchatUnit,
+              keyboardType: TextInputType.number,
+              inputFormatters: <TextInputFormatter>[
+                FilteringTextInputFormatter.digitsOnly
+              ],
+              decoration: InputDecoration(
+                labelText: 'Prix d\'achats unitaire',
+                labelStyle: const TextStyle(),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(5.0),
                 ),
               ),
-              const SizedBox(
-                width: 10.0,
+              validator: (value) => value != null && value.isEmpty
+                  ? 'Le prix d\'achat unitaire est obligatoire'
+                  : null,
+              onChanged: (value) =>
+                  setState(() => controllerpriceAchatUnit.text),
+            ),
+          ),
+          Expanded(
+              flex: 1,
+              child: Container(
+                margin: const EdgeInsets.only(left: 10.0, bottom: 5.0),
+                child: Column(
+                  children: [
+                    const Text("Prix d'achat précédent"),
+                    Text(
+                        "${NumberFormat.decimalPattern('fr').format(double.parse(double.parse(data.priceAchatUnit).toStringAsFixed(2)))} \$",
+                        style: Theme.of(context)
+                            .textTheme
+                            .bodyLarge!
+                            .copyWith(color: Colors.orange)),
+                  ],
+                ),
+              ))
+        ],
+      ),
+    );
+  }
+
+  Widget prixVenteField(StocksGlobalMOdel data) {
+    return Container(
+      margin: const EdgeInsets.only(bottom: 20.0),
+      child: Row(
+        children: [
+          Expanded(
+            flex: 3,
+            child: TextFormField(
+              controller: controllerPrixVenteUnit,
+              keyboardType: TextInputType.number,
+              inputFormatters: <TextInputFormatter>[
+                FilteringTextInputFormatter.digitsOnly
+              ],
+              decoration: InputDecoration(
+                labelText: 'Prix de vente unitaire',
+                labelStyle: const TextStyle(),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(5.0),
+                ),
               ),
-              tvaValeur()
-            ],
-          );
+              validator: (value) {
+                if (value != null && value.isEmpty) {
+                  return 'Le Prix de vente unitaires est obligatoire';
+                } else if (RegExpIsValide().isValideVente.hasMatch(value!)) {
+                  return 'chiffres obligatoire';
+                } else {
+                  return null;
+                }
+              },
+              onChanged: (value) => setState(() {
+                prixVenteUnit = (value == "") ? 0.0 : double.parse(value);
+              }),
+            ),
+          ),
+          Expanded(
+              flex: 1,
+              child: Container(
+                margin: const EdgeInsets.only(left: 10.0, bottom: 5.0),
+                child: Column(
+                  children: [
+                    const Text("Prix de vente précédent"),
+                    Text(
+                        "${NumberFormat.decimalPattern('fr').format(double.parse(double.parse(data.prixVenteUnit).toStringAsFixed(2)))} \$",
+                        style: Theme.of(context)
+                            .textTheme
+                            .bodyLarge!
+                            .copyWith(color: Colors.orange)),
+                  ],
+                ),
+              ))
+        ],
+      ),
+    );
+  }
+
+  Widget tvaField(StocksGlobalMOdel data) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Expanded(
+          flex: 3,
+          child: Container(
+            margin: const EdgeInsets.only(bottom: 20.0),
+            child: TextFormField(
+              keyboardType: TextInputType.number,
+              inputFormatters: <TextInputFormatter>[
+                FilteringTextInputFormatter.digitsOnly
+              ],
+              decoration: InputDecoration(
+                labelText: 'TVA en %',
+                // hintText: 'Mettez "1" si vide',
+                labelStyle: const TextStyle(),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(5.0),
+                ),
+              ),
+              validator: (value) {
+                if (RegExpIsValide().isValideVente.hasMatch(value!)) {
+                  return 'chiffres obligatoire';
+                } else {
+                  return null;
+                }
+              },
+              onChanged: (value) => setState(() {
+                tva = (value == "") ? 1 : double.parse(value);
+              }),
+            ),
+          ),
+        ),
+        const SizedBox(
+          width: 10.0,
+        ),
+        Expanded(
+          flex: 1,
+          child: tvaValeur(),
+        )
+      ],
+    );
   }
 
   double? pavTVA;
@@ -428,14 +460,13 @@ class _RavitailleemntStockState extends State<RavitailleemntStock> {
 
   // HIstorique de ravitaillement
   void submit(StocksGlobalMOdel data) async {
-    var qtyDisponible = double.parse(controllerquantity.text) +
-        double.parse(data.quantity);
+    var qtyDisponible =
+        double.parse(controllerquantity.text) + double.parse(data.quantity);
 
     // Add Achat history pour voir les entrés et sorties de chaque produit
-    var qtyDifference = double.parse(data.quantityAchat) -
-        double.parse(data.quantity);
-    var priceDifference =
-        pavTVA! - double.parse(data.priceAchatUnit);
+    var qtyDifference =
+        double.parse(data.quantityAchat) - double.parse(data.quantity);
+    var priceDifference = pavTVA! - double.parse(data.priceAchatUnit);
     var margeBenMap = qtyDifference * priceDifference;
 
     final historyRavitaillementModel = HistoryRavitaillementModel(
@@ -455,20 +486,19 @@ class _RavitailleemntStockState extends State<RavitailleemntStock> {
 
     // Update Achat stock global
     final stocksGlobalMOdel = StocksGlobalMOdel(
-      id: data.id!,
+        id: data.id!,
         idProduct: data.idProduct,
         quantity: qtyDisponible.toString(),
         quantityAchat: qtyDisponible.toString(),
         priceAchatUnit: controllerpriceAchatUnit.text,
         prixVenteUnit: pavTVA.toString(),
         unite: data.unite,
-        modeAchat: 'true',
-        tva: data.tva,
+        modeAchat: modeAchat.toString(),
+        tva: tva.toString(),
         qtyRavitailler: data.qtyRavitailler,
         signature: user!.matricule.toString(),
         created: DateTime.now());
-    await StockGlobalApi()
-        .updateData(stocksGlobalMOdel);
+    await StockGlobalApi().updateData(stocksGlobalMOdel);
 
     Navigator.of(context).pop();
     if (!mounted) return;

@@ -34,7 +34,7 @@ class _AddEtatMaterielState extends State<AddEtatMateriel> {
 
   @override
   initState() {
-    date();
+    getDate();
     super.initState();
   }
 
@@ -44,7 +44,7 @@ class _AddEtatMaterielState extends State<AddEtatMateriel> {
   List<AnguinModel> enguinsList = [];
 
   String? signature;
-  Future<void> date() async {
+  Future<void> getDate() async {
     UserModel userModel = await AuthApi().getUserId();
     var mobiliers = await MobilierApi().getAllData();
     var immobiliers = await ImmobilierApi().getAllData();
@@ -277,6 +277,7 @@ class _AddEtatMaterielState extends State<AddEtatMateriel> {
             child: Text(value),
           );
         }).toList(),
+        validator: (value) => value == null ? "Champs obligatoire" : null,
         onChanged: (value) {
           setState(() {
             statut = value!;

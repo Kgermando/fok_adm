@@ -104,7 +104,7 @@ class UserApi {
     if (resp.statusCode == 200) {
       return UserModel.fromJson(json.decode(resp.body));
     } else {
-      throw Exception(json.decode(resp.body)['message']);
+      throw Exception(resp.statusCode);
     }
   }
 
