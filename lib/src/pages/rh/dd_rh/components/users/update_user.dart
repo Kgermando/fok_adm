@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:fokad_admin/src/api/auth/auth_api.dart';
 import 'package:fokad_admin/src/api/comm_marketing/commerciale/succursale_api.dart';
 import 'package:fokad_admin/src/api/user/user_api.dart';
 import 'package:fokad_admin/src/constants/app_theme.dart';
@@ -8,13 +7,12 @@ import 'package:fokad_admin/src/models/comm_maketing/succursale_model.dart';
 import 'package:fokad_admin/src/models/users/user_model.dart';
 import 'package:fokad_admin/src/navigation/drawer/drawer_menu.dart';
 import 'package:fokad_admin/src/navigation/header/custom_appbar.dart';
-import 'package:fokad_admin/src/widgets/btn_widget.dart';
-import 'package:fokad_admin/src/widgets/print_widget.dart';
-
+import 'package:fokad_admin/src/utils/loading.dart';
+import 'package:fokad_admin/src/widgets/title_widget.dart';
+import 'package:intl/intl.dart';
 
 class UpdateUser extends StatefulWidget {
-  const UpdateUser({Key? key, required this.userModel}) : super(key: key);
-  final UserModel userModel;
+  const UpdateUser({Key? key}) : super(key: key);
 
   @override
   State<UpdateUser> createState() => _UpdateUserState();
@@ -22,72 +20,32 @@ class UpdateUser extends StatefulWidget {
 
 class _UpdateUserState extends State<UpdateUser> {
   final GlobalKey<ScaffoldState> _key = GlobalKey();
-  final ScrollController _controllerScroll = ScrollController();
-  final _formKey = GlobalKey<FormState>();
   bool isLoading = false;
 
-  TextEditingController nomController = TextEditingController();
-  TextEditingController prenomController = TextEditingController();
-  TextEditingController matriculeController = TextEditingController();
-  TextEditingController departementController = TextEditingController();
-  TextEditingController servicesAffectationController = TextEditingController();
-  TextEditingController fonctionOccupeController = TextEditingController();
-  TextEditingController roleController = TextEditingController();
-  String? succursale;
-
   @override
-  initState() {
+  void initState() {
     getData();
-    setState(() {
-      nomController = TextEditingController(text: widget.userModel.nom);
-      prenomController = TextEditingController(text: widget.userModel.prenom);
-      matriculeController =
-          TextEditingController(text: widget.userModel.matricule);
-      departementController =
-          TextEditingController(text: widget.userModel.departement);
-      servicesAffectationController =
-          TextEditingController(text: widget.userModel.servicesAffectation);
-      fonctionOccupeController =
-          TextEditingController(text: widget.userModel.fonctionOccupe);
-      roleController = TextEditingController(text: widget.userModel.role);
-    });
     super.initState();
   }
 
-  @override
-  void dispose() {
-    _controllerScroll.dispose();
-
-    nomController.dispose();
-    prenomController.dispose();
-    matriculeController.dispose();
-    departementController.dispose();
-    servicesAffectationController.dispose();
-    fonctionOccupeController.dispose();
-    roleController.dispose();
-
-    super.dispose();
-  }
-
+  String? succursale;
   List<SuccursaleModel> succursaleList = [];
-  String? signature;
   Future<void> getData() async {
-    UserModel userModel = await AuthApi().getUserId();
-    var succursaleModel = await SuccursaleApi().getAllData();
+    var succursales = await SuccursaleApi().getAllData();
     setState(() {
-      signature = userModel.matricule;
-      succursaleList = succursaleModel;
+      succursaleList = succursales;
     });
   }
 
   @override
   Widget build(BuildContext context) {
+    final id = ModalRoute.of(context)!.settings.arguments as int;
     return Scaffold(
         key: _key,
         drawer: const DrawerMenu(),
         body: SafeArea(
           child: Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               if (Responsive.isDesktop(context))
                 const Expanded(
@@ -96,333 +54,307 @@ class _UpdateUserState extends State<UpdateUser> {
               Expanded(
                 flex: 5,
                 child: Padding(
-                  padding: const EdgeInsets.all(p10),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Row(
-                        children: [
-                          SizedBox(
-                            width: 20.0,
-                            child: IconButton(
-                                onPressed: () {
-                                  Navigator.of(context).pop();
-                                },
-                                icon: const Icon(Icons.arrow_back)),
-                          ),
-                          Expanded(
-                              flex: 5,
-                              child: CustomAppbar(
-                                  title: widget.userModel.matricule,
-                                  controllerMenu: () =>
-                                      _key.currentState!.openDrawer())),
-                        ],
-                      ),
-                      Expanded(
-                          child: Scrollbar(
-                        controller: _controllerScroll,
-                        child: addPageWidget(),
-                      ))
-                    ],
-                  ),
-                ),
+                    padding: const EdgeInsets.all(p10),
+                    child: FutureBuilder<UserModel>(
+                        future: UserApi().getOneData(id),
+                        builder: (BuildContext context,
+                            AsyncSnapshot<UserModel> snapshot) {
+                          if (snapshot.hasData) {
+                            UserModel? data = snapshot.data;
+                            return Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Row(
+                                  children: [
+                                    SizedBox(
+                                      width: p20,
+                                      child: IconButton(
+                                          onPressed: () =>
+                                              Navigator.pop(context),
+                                          icon: const Icon(Icons.arrow_back)),
+                                    ),
+                                    const SizedBox(width: p10),
+                                    Expanded(
+                                      child: CustomAppbar(
+                                          title: data!.matricule,
+                                          controllerMenu: () =>
+                                              _key.currentState!.openDrawer()),
+                                    ),
+                                  ],
+                                ),
+                                Expanded(
+                                    child: SingleChildScrollView(
+                                        child: Column(
+                                  children: [
+                                    pageDetail(data),
+                                  ],
+                                )))
+                              ],
+                            );
+                          } else {
+                            return Center(child: loading());
+                          }
+                        })),
               ),
             ],
           ),
         ));
   }
 
-  Widget addPageWidget() {
-    return Form(
-      key: _formKey,
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Card(
-            elevation: 10,
-            child: Padding(
-              padding: const EdgeInsets.all(p16),
-              child: SizedBox(
-                width: Responsive.isDesktop(context)
-                    ? MediaQuery.of(context).size.width / 2
-                    : MediaQuery.of(context).size.width,
-                child: ListView(
-                  controller: _controllerScroll,
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [PrintWidget(onPressed: () {})],
-                    ),
-                    const SizedBox(
-                      height: p20,
-                    ),
-                    Row(
-                      children: [
-                        Expanded(child: nomWidget()),
-                        const SizedBox(
-                          width: p10,
-                        ),
-                        Expanded(child: prenomWidget())
-                      ],
-                    ),
-                    Row(
-                      children: [
-                        Expanded(child: departementWidget()),
-                        const SizedBox(
-                          width: p10,
-                        ),
-                        Expanded(child: servicesAffectationWidget())
-                      ],
-                    ),
-                    Row(
-                      children: [
-                        Expanded(child: fonctionOccupeWidget()),
-                        const SizedBox(
-                          width: p10,
-                        ),
-                        Expanded(child: roleWidget())
-                      ],
-                    ),
-                    Row(
-                      children: [
-                        Expanded(child: matriculeWidget()),
-                        const SizedBox(
-                          width: p10,
-                        ),
-                        Expanded(child: succursaleWidget())
-                      ],
-                    ),
-                    const SizedBox(
-                      height: p20,
-                    ),
-                    BtnWidget(
-                        title: 'Soumettre',
-                        isLoading: isLoading,
-                        press: () {
-                          final form = _formKey.currentState!;
-                          if (form.validate()) {
-                            submit();
-                            form.reset();
-                          }
-                        })
-                  ],
-                ),
-              ),
+  Widget pageDetail(UserModel data) {
+    return Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+      Card(
+        elevation: 10,
+        child: Container(
+          margin: const EdgeInsets.all(p16),
+          width: (Responsive.isDesktop(context))
+              ? MediaQuery.of(context).size.width / 2
+              : MediaQuery.of(context).size.width,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(p10),
+            border: Border.all(
+              color: Colors.blueGrey.shade700,
+              width: 2.0,
             ),
+          ),
+          child: Column(
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  TitleWidget(title: data.departement),
+                  Column(
+                    children: [
+                      SelectableText(
+                          DateFormat("dd-MM-yyyy HH:mm").format(data.createdAt),
+                          textAlign: TextAlign.start),
+                    ],
+                  )
+                ],
+              ),
+              dataWidget(data),
+            ],
+          ),
+        ),
+      ),
+    ]);
+  }
+
+  Widget dataWidget(UserModel data) {
+    final bodyMedium = Theme.of(context).textTheme.bodyMedium;
+    return Padding(
+      padding: const EdgeInsets.all(p10),
+      child: Column(
+        children: [
+          Row(
+            children: [
+              Expanded(
+                flex: 1,
+                child: Text('Nom :',
+                    textAlign: TextAlign.start,
+                    style: bodyMedium!.copyWith(fontWeight: FontWeight.bold)),
+              ),
+              Expanded(
+                flex: 3,
+                child: SelectableText(data.nom,
+                    textAlign: TextAlign.start, style: bodyMedium),
+              ),
+            ],
+          ),
+          Divider(
+            color: Colors.amber.shade700,
+          ),
+          Row(
+            children: [
+              Expanded(
+                flex: 1,
+                child: Text('Prénom :',
+                    textAlign: TextAlign.start,
+                    style: bodyMedium.copyWith(fontWeight: FontWeight.bold)),
+              ),
+              Expanded(
+                flex: 3,
+                child: SelectableText(data.prenom,
+                    textAlign: TextAlign.start, style: bodyMedium),
+              )
+            ],
+          ),
+          Divider(
+            color: Colors.amber.shade700,
+          ),
+          Row(
+            children: [
+              Expanded(
+                flex: 1,
+                child: Text('Email :',
+                    textAlign: TextAlign.start,
+                    style: bodyMedium.copyWith(fontWeight: FontWeight.bold)),
+              ),
+              Expanded(
+                flex: 3,
+                child: SelectableText(data.email,
+                    textAlign: TextAlign.start, style: bodyMedium),
+              )
+            ],
+          ),
+          Divider(
+            color: Colors.amber.shade700,
+          ),
+          Row(
+            children: [
+              Expanded(
+                flex: 1,
+                child: Text('Téléphone :',
+                    textAlign: TextAlign.start,
+                    style: bodyMedium.copyWith(fontWeight: FontWeight.bold)),
+              ),
+              Expanded(
+                flex: 3,
+                child: SelectableText(data.telephone,
+                    textAlign: TextAlign.start, style: bodyMedium),
+              )
+            ],
+          ),
+          Divider(
+            color: Colors.amber.shade700,
+          ),
+          Row(
+            children: [
+              Expanded(
+                flex: 1,
+                child: Text('Matricule :',
+                    textAlign: TextAlign.start,
+                    style: bodyMedium.copyWith(fontWeight: FontWeight.bold)),
+              ),
+              Expanded(
+                flex: 3,
+                child: SelectableText(data.matricule,
+                    textAlign: TextAlign.start, style: bodyMedium),
+              )
+            ],
+          ),
+          Divider(
+            color: Colors.amber.shade700,
+          ),
+          Row(
+            children: [
+              Expanded(
+                flex: 1,
+                child: Text('Département :',
+                    textAlign: TextAlign.start,
+                    style: bodyMedium.copyWith(fontWeight: FontWeight.bold)),
+              ),
+              Expanded(
+                flex: 3,
+                child: SelectableText(data.departement,
+                    textAlign: TextAlign.start, style: bodyMedium),
+              )
+            ],
+          ),
+          Divider(
+            color: Colors.amber.shade700,
+          ),
+          Row(
+            children: [
+              Expanded(
+                flex: 1,
+                child: Text("Services d'affectation :",
+                    textAlign: TextAlign.start,
+                    style: bodyMedium.copyWith(fontWeight: FontWeight.bold)),
+              ),
+              Expanded(
+                flex: 3,
+                child: SelectableText(data.servicesAffectation,
+                    textAlign: TextAlign.start, style: bodyMedium),
+              )
+            ],
+          ),
+          Divider(
+            color: Colors.amber.shade700,
+          ),
+          Row(
+            children: [
+              Expanded(
+                flex: 1,
+                child: Text('Accredition :',
+                    textAlign: TextAlign.start,
+                    style: bodyMedium.copyWith(fontWeight: FontWeight.bold)),
+              ),
+              Expanded(
+                flex: 3,
+                child: SelectableText(data.role,
+                    textAlign: TextAlign.start, style: bodyMedium),
+              )
+            ],
+          ),
+          Divider(
+            color: Colors.amber.shade700,
+          ),
+          Row(
+            children: [
+              Expanded(
+                flex: 1,
+                child: Text('succursale :',
+                    textAlign: TextAlign.start,
+                    style: bodyMedium.copyWith(fontWeight: FontWeight.bold)),
+              ),
+              Expanded(flex: 3, child: succursaleWidget(data))
+            ],
           ),
         ],
       ),
     );
   }
 
-  Widget nomWidget() {
+  Widget succursaleWidget(UserModel user) {
+    var succList = succursaleList.map((e) => e.name).toList();
     return Container(
-        margin: const EdgeInsets.only(bottom: p20),
-        child: TextFormField(
-          readOnly: true,
-          controller: nomController,
-          decoration: InputDecoration(
-            border:
-                OutlineInputBorder(borderRadius: BorderRadius.circular(10.0)),
-            labelText: 'Nom',
-          ),
-          keyboardType: TextInputType.text,
-          style: const TextStyle(),
-          validator: (value) {
-            if (value != null && value.isEmpty) {
-              return 'Ce champs est obligatoire';
-            } else {
-              return null;
-            }
-          },
-        ));
+      margin: const EdgeInsets.only(bottom: p20),
+      child: DropdownButtonFormField<String>(
+        decoration: InputDecoration(
+          labelText: 'Succursale',
+          labelStyle: const TextStyle(),
+          border: OutlineInputBorder(borderRadius: BorderRadius.circular(5.0)),
+          contentPadding: const EdgeInsets.only(left: 5.0),
+        ),
+        value: succursale,
+        isExpanded: true,
+        items: succList.map((String value) {
+          return DropdownMenuItem<String>(
+            value: value,
+            child: Text(value),
+          );
+        }).toList(),
+        validator: (value) => value == null ? "Select Nationalite" : null,
+        onChanged: (value) {
+          setState(() {
+            succursale = value!;
+            submit(user);
+          });
+        },
+      ),
+    );
   }
 
-  Widget prenomWidget() {
-    return Container(
-        margin: const EdgeInsets.only(bottom: p20),
-        child: TextFormField(
-          readOnly: true,
-          controller: prenomController,
-          decoration: InputDecoration(
-            border:
-                OutlineInputBorder(borderRadius: BorderRadius.circular(10.0)),
-            labelText: 'Prénom',
-          ),
-          keyboardType: TextInputType.text,
-          style: const TextStyle(),
-          validator: (value) {
-            if (value != null && value.isEmpty) {
-              return 'Ce champs est obligatoire';
-            } else {
-              return null;
-            }
-          },
-        ));
-  }
-
-  Widget matriculeWidget() {
-    return Container(
-        margin: const EdgeInsets.only(bottom: p20),
-        child: TextFormField(
-          readOnly: true,
-          controller: matriculeController,
-          decoration: InputDecoration(
-            border:
-                OutlineInputBorder(borderRadius: BorderRadius.circular(10.0)),
-            labelText: 'Matricule',
-          ),
-          keyboardType: TextInputType.text,
-          style: const TextStyle(),
-          validator: (value) {
-            if (value != null && value.isEmpty) {
-              return 'Ce champs est obligatoire';
-            } else {
-              return null;
-            }
-          },
-        ));
-  }
-
-  Widget departementWidget() {
-    return Container(
-        margin: const EdgeInsets.only(bottom: p20),
-        child: TextFormField(
-          readOnly: true,
-          controller: departementController,
-          decoration: InputDecoration(
-            border:
-                OutlineInputBorder(borderRadius: BorderRadius.circular(10.0)),
-            labelText: 'departement',
-          ),
-          keyboardType: TextInputType.text,
-          style: const TextStyle(),
-          validator: (value) {
-            if (value != null && value.isEmpty) {
-              return 'Ce champs est obligatoire';
-            } else {
-              return null;
-            }
-          },
-        ));
-  }
-
-  Widget servicesAffectationWidget() {
-    return Container(
-        margin: const EdgeInsets.only(bottom: p20),
-        child: TextFormField(
-          readOnly: true,
-          controller: servicesAffectationController,
-          decoration: InputDecoration(
-            border:
-                OutlineInputBorder(borderRadius: BorderRadius.circular(10.0)),
-            labelText: 'services d\'Affectation',
-          ),
-          keyboardType: TextInputType.text,
-          style: const TextStyle(),
-          validator: (value) {
-            if (value != null && value.isEmpty) {
-              return 'Ce champs est obligatoire';
-            } else {
-              return null;
-            }
-          },
-        ));
-  }
-
-  Widget fonctionOccupeWidget() {
-    return Container(
-        margin: const EdgeInsets.only(bottom: p20),
-        child: TextFormField(
-          readOnly: true,
-          controller: fonctionOccupeController,
-          decoration: InputDecoration(
-            border:
-                OutlineInputBorder(borderRadius: BorderRadius.circular(10.0)),
-            labelText: 'Fonction Occupé',
-          ),
-          keyboardType: TextInputType.text,
-          style: const TextStyle(),
-          validator: (value) {
-            if (value != null && value.isEmpty) {
-              return 'Ce champs est obligatoire';
-            } else {
-              return null;
-            }
-          },
-        ));
-  }
-
-  Widget roleWidget() {
-    return Container(
-        margin: const EdgeInsets.only(bottom: p20),
-        child: TextFormField(
-          readOnly: true,
-          controller: roleController,
-          decoration: InputDecoration(
-            border:
-                OutlineInputBorder(borderRadius: BorderRadius.circular(10.0)),
-            labelText: 'Accreditation',
-          ),
-          keyboardType: TextInputType.text,
-          style: const TextStyle(),
-          validator: (value) {
-            if (value != null && value.isEmpty) {
-              return 'Ce champs est obligatoire';
-            } else {
-              return null;
-            }
-          },
-        ));
-  }
-
-  Widget succursaleWidget() {
-    var dataList = succursaleList.map((e) => e.name).toSet().toList();
-    return Container(
-        margin: const EdgeInsets.only(bottom: p20),
-        child: DropdownButtonFormField<String>(
-          decoration: InputDecoration(
-            labelText: 'Succursale',
-            labelStyle: const TextStyle(),
-            border:
-                OutlineInputBorder(borderRadius: BorderRadius.circular(5.0)),
-            contentPadding: const EdgeInsets.only(left: 5.0),
-          ),
-          value: succursale,
-          isExpanded: true,
-          items: dataList.map((String value) {
-            return DropdownMenuItem<String>(
-              value: value,
-              child: Text(value),
-            );
-          }).toList(),
-          onChanged: (value) {
-            setState(() {
-              succursale = value!;
-            });
-          },
-        ));
-  }
-
-  Future<void> submit() async {
+  Future<void> submit(UserModel user) async {
     final userModel = UserModel(
-        nom: widget.userModel.nom,
-        prenom: widget.userModel.prenom,
-        email: widget.userModel.email,
-        telephone: widget.userModel.telephone,
-        matricule: widget.userModel.matricule,
-        departement: widget.userModel.departement,
-        servicesAffectation: widget.userModel.servicesAffectation,
-        fonctionOccupe: widget.userModel.fonctionOccupe,
-        role: widget.userModel.role,
-        isOnline: widget.userModel.isOnline,
-        createdAt: widget.userModel.createdAt,
-        passwordHash: widget.userModel.passwordHash,
+        nom: user.nom,
+        prenom: user.prenom,
+        email: user.email,
+        telephone: user.telephone,
+        matricule: user.matricule,
+        departement: user.departement,
+        servicesAffectation: user.servicesAffectation,
+        fonctionOccupe: user.fonctionOccupe,
+        role: user.role,
+        isOnline: user.isOnline,
+        createdAt: user.createdAt,
+        passwordHash: user.passwordHash,
         succursale: succursale.toString());
     await UserApi().updateData(userModel);
     Navigator.of(context).pop();
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-      content: const Text("Enregistrer agent avec succès!"),
+      content: const Text("Modifiez avec succès!"),
       backgroundColor: Colors.green[700],
     ));
   }

@@ -24,8 +24,6 @@ class _TableUsersState extends State<TableUsers> {
   PlutoGridStateManager? stateManager;
   PlutoGridSelectingMode gridSelectingMode = PlutoGridSelectingMode.row;
 
-  int? id;
-
   @override
   initState() {
     agentsColumn();
@@ -44,6 +42,8 @@ class _TableUsersState extends State<TableUsers> {
   }
   }
 
+  
+
   @override
   Widget build(BuildContext context) {
     return SizedBox(
@@ -54,7 +54,7 @@ class _TableUsersState extends State<TableUsers> {
         onRowDoubleTap: (PlutoGridOnRowDoubleTapEvent tapEvent) {
           final dataId = tapEvent.row!.cells.values;
           final idPlutoRow = dataId.elementAt(0);
-          Navigator.pushNamed(context, RhRoutes.rhAgentPageUser,
+          Navigator.pushNamed(context, RhRoutes.rhUpdateUser,
               arguments: idPlutoRow.value);
         },
         onLoaded: (PlutoGridOnLoadedEvent event) {
@@ -66,7 +66,7 @@ class _TableUsersState extends State<TableUsers> {
           return Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              const TitleWidget(title: "Agents activés"),
+              const TitleWidget(title: "Agents déjà activés"),
               Row(
                 children: [
                   IconButton(

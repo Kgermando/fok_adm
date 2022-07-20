@@ -80,8 +80,8 @@ class _DetailUserState extends State<DetailUser> {
           floatingActionButton: FloatingActionButton(
               child: const Icon(Icons.edit),
               onPressed: () {
-                Navigator.of(context).push(MaterialPageRoute(
-                    builder: (context) => UpdateUser(userModel: user)));
+                // Navigator.of(context).push(MaterialPageRoute(
+                //     builder: (context) => UpdateUser(userModel: user)));
               }),
           body: SafeArea(
             child: Row(

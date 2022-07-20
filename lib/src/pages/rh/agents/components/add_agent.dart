@@ -103,8 +103,7 @@ class _AddAgentState extends State<AddAgent> {
   }
 
   @override
-  void dispose() { 
-
+  void dispose() {
     nomController.dispose();
     postNomController.dispose();
     prenomController.dispose();
@@ -188,159 +187,158 @@ class _AddAgentState extends State<AddAgent> {
 
   Widget addAgentWidget() {
     return FutureBuilder<AgentCountModel>(
-      future: AgentsApi().getCount(),
-      builder: (BuildContext context, AsyncSnapshot<AgentCountModel> snapshot) {
-        if (snapshot.hasData) {
-          AgentCountModel? agentCount = snapshot.data;
+        future: AgentsApi().getCount(),
+        builder:
+            (BuildContext context, AsyncSnapshot<AgentCountModel> snapshot) {
+          if (snapshot.hasData) {
+            AgentCountModel? agentCount = snapshot.data;
 
-          return Form(
-            key: _formKey,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Card(
-                  elevation: 10,
-                  child: Padding(
-                    padding: const EdgeInsets.all(p16),
-                    child: SizedBox(
-                      width: Responsive.isDesktop(context)
-                          ? MediaQuery.of(context).size.width / 2
-                          : MediaQuery.of(context).size.width,
-                      child: ListView(
-                        controller: _controllerScroll,
-                        children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: const [
-                              TitleWidget(title: 'Nouveau profil'),
-                            ],
-                          ),
-                          const SizedBox(
-                            height: p20,
-                          ),
-                          Row(
-                            children: [
-                              Expanded(child: nomWidget()),
-                              const SizedBox(
-                                width: p10,
-                              ),
-                              Expanded(child: postNomWidget())
-                            ],
-                          ),
-                          Row(
-                            children: [
-                              Expanded(child: prenomWidget()),
-                              const SizedBox(
-                                width: p10,
-                              ),
-                              Expanded(child: sexeWidget())
-                            ],
-                          ),
-                          Row(
-                            children: [
-                              Expanded(child: dateNaissanceWidget()),
-                              const SizedBox(
-                                width: p10,
-                              ),
-                              Expanded(child: lieuNaissanceWidget())
-                            ],
-                          ),
-                          Row(
-                            children: [
-                              Expanded(child: nationaliteWidget()),
-                              const SizedBox(
-                                width: p10,
-                              ),
-                              Expanded(child: adresseWidget())
-                            ],
-                          ),
-                          Row(
-                            children: [
-                              Expanded(child: emailWidget()),
-                              const SizedBox(
-                                width: p10,
-                              ),
-                              Expanded(child: telephoneWidget())
-                            ],
-                          ),
-                          Row(
-                            children: [
-                              Expanded(child: departmentWidget(agentCount!)),
-                              const SizedBox(
-                                width: p10,
-                              ),
-                              Expanded(child: servicesAffectationWidget())
-                            ],
-                          ),
-                          Row(
-                            children: [
-                              Expanded(child: matriculeWidget()),
-                              const SizedBox(
-                                width: p10,
-                              ),
-                              Expanded(child: numeroSecuriteSocialeWidget())
-                            ],
-                          ),
-                          Row(
-                            children: [
-                              Expanded(child: fonctionOccupeWidget()),
-                              const SizedBox(
-                                width: p10,
-                              ),
-                              Expanded(child: roleWidget())
-                            ],
-                          ),
-                          Row(
-                            children: [
-                              Expanded(child: typeContratWidget()),
-                              const SizedBox(
-                                width: p10,
-                              ),
-                              Expanded(child: salaireWidget())
-                            ],
-                          ),
-                          Row(
-                            children: [
-                              Expanded(child: dateDebutContratWidget()),
-                              const SizedBox(
-                                width: p10,
-                              ),
-                              if (typeContrat == 'CDD')
-                                Expanded(child: dateFinContratWidget())
-                            ],
-                          ),
-                          competanceWidget(),
-                          const SizedBox(
-                            width: p10,
-                          ),
-                          experienceWidget(),
-                          const SizedBox(
-                            height: p20,
-                          ),
-                          BtnWidget(
-                              title: 'Soumettre',
-                              isLoading: isLoading,
-                              press: () {
-                                final form = _formKey.currentState!;
-                                if (form.validate()) {
-                                  submit();
-                                  form.reset();
-                                }
-                              })
-                        ],
+            return Form(
+              key: _formKey,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Card(
+                    elevation: 10,
+                    child: Padding(
+                      padding: const EdgeInsets.all(p16),
+                      child: SizedBox(
+                        width: Responsive.isDesktop(context)
+                            ? MediaQuery.of(context).size.width / 2
+                            : MediaQuery.of(context).size.width,
+                        child: ListView(
+                          controller: _controllerScroll,
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: const [
+                                TitleWidget(title: 'Nouveau profil'),
+                              ],
+                            ),
+                            const SizedBox(
+                              height: p20,
+                            ),
+                            Row(
+                              children: [
+                                Expanded(child: nomWidget()),
+                                const SizedBox(
+                                  width: p10,
+                                ),
+                                Expanded(child: postNomWidget())
+                              ],
+                            ),
+                            Row(
+                              children: [
+                                Expanded(child: prenomWidget()),
+                                const SizedBox(
+                                  width: p10,
+                                ),
+                                Expanded(child: sexeWidget())
+                              ],
+                            ),
+                            Row(
+                              children: [
+                                Expanded(child: dateNaissanceWidget()),
+                                const SizedBox(
+                                  width: p10,
+                                ),
+                                Expanded(child: lieuNaissanceWidget())
+                              ],
+                            ),
+                            Row(
+                              children: [
+                                Expanded(child: nationaliteWidget()),
+                                const SizedBox(
+                                  width: p10,
+                                ),
+                                Expanded(child: adresseWidget())
+                              ],
+                            ),
+                            Row(
+                              children: [
+                                Expanded(child: emailWidget()),
+                                const SizedBox(
+                                  width: p10,
+                                ),
+                                Expanded(child: telephoneWidget())
+                              ],
+                            ),
+                            Row(
+                              children: [
+                                Expanded(child: departmentWidget(agentCount!)),
+                                const SizedBox(
+                                  width: p10,
+                                ),
+                                Expanded(child: servicesAffectationWidget())
+                              ],
+                            ),
+                            Row(
+                              children: [
+                                Expanded(child: matriculeWidget()),
+                                const SizedBox(
+                                  width: p10,
+                                ),
+                                Expanded(child: numeroSecuriteSocialeWidget())
+                              ],
+                            ),
+                            Row(
+                              children: [
+                                Expanded(child: fonctionOccupeWidget()),
+                                const SizedBox(
+                                  width: p10,
+                                ),
+                                Expanded(child: roleWidget())
+                              ],
+                            ),
+                            Row(
+                              children: [
+                                Expanded(child: typeContratWidget()),
+                                const SizedBox(
+                                  width: p10,
+                                ),
+                                Expanded(child: salaireWidget())
+                              ],
+                            ),
+                            Row(
+                              children: [
+                                Expanded(child: dateDebutContratWidget()),
+                                const SizedBox(
+                                  width: p10,
+                                ),
+                                if (typeContrat == 'CDD')
+                                  Expanded(child: dateFinContratWidget())
+                              ],
+                            ),
+                            competanceWidget(),
+                            const SizedBox(
+                              width: p10,
+                            ),
+                            experienceWidget(),
+                            const SizedBox(
+                              height: p20,
+                            ),
+                            BtnWidget(
+                                title: 'Soumettre',
+                                isLoading: isLoading,
+                                press: () {
+                                  final form = _formKey.currentState!;
+                                  if (form.validate()) {
+                                    submit();
+                                    form.reset();
+                                  }
+                                })
+                          ],
+                        ),
                       ),
                     ),
                   ),
-                ),
-              ],
-            ),
-          );
-        } else {
-          return Center(child: loadingMega());
-        }
-      });
-
-    
+                ],
+              ),
+            );
+          } else {
+            return Center(child: loadingMega());
+          }
+        });
   }
 
   Widget nomWidget() {
@@ -500,27 +498,43 @@ class _AddAgentState extends State<AddAgent> {
   Widget roleWidget() {
     return Container(
       margin: const EdgeInsets.only(bottom: p20),
-      child: DropdownButtonFormField<String>(
-        decoration: InputDecoration(
-          labelText: 'Niveau d\'accréditation',
-          labelStyle: const TextStyle(),
-          border: OutlineInputBorder(borderRadius: BorderRadius.circular(5.0)),
-          contentPadding: const EdgeInsets.only(left: 5.0),
-        ),
-        value: role,
-        isExpanded: true,
-        items: roleList.map((String value) {
-          return DropdownMenuItem<String>(
-            value: value,
-            child: Text(value),
-          );
-        }).toList(),
-        validator: (value) => value == null ? "Select accréditation" : null,
-        onChanged: (value) {
-          setState(() {
-            role = value!;
-          });
-        },
+      child: Row(
+        children: [
+          Expanded(
+            flex: 5,
+            child: DropdownButtonFormField<String>(
+              decoration: InputDecoration(
+                labelText: 'Niveau d\'accréditation',
+                labelStyle: const TextStyle(),
+                border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(5.0)),
+                contentPadding: const EdgeInsets.only(left: 5.0),
+              ),
+              value: role,
+              isExpanded: true,
+              items: roleList.map((String value) {
+                return DropdownMenuItem<String>(
+                  value: value,
+                  child: Text(value),
+                );
+              }).toList(),
+              validator: (value) =>
+                  value == null ? "Select accréditation" : null,
+              onChanged: (value) {
+                setState(() {
+                  role = value!;
+                });
+              },
+            ),
+          ),
+          Expanded(
+              flex: 1,
+              child: IconButton(
+                  onPressed: () {
+                    helpDialog();
+                  },
+                  icon: const Icon(Icons.help)))
+        ],
       ),
     );
   }
@@ -926,6 +940,37 @@ class _AddAgentState extends State<AddAgent> {
         ));
   }
 
+  helpDialog() {
+    return showDialog(
+        context: context,
+        barrierDismissible: true,
+        builder: (context) {
+          return StatefulBuilder(builder: (context, StateSetter setState) {
+            return AlertDialog(
+              title: const Text('Accreditation'),
+              content: SizedBox(
+                  height: 200,
+                  width: 300,
+                  child: Column(
+                    children: const [
+                      Text("Niveau 1: Directeur général, PCA, ..."),
+                      Text("Niveau 2: Directeur département"),
+                      Text("Niveau 3: Chef de service"),
+                      Text("Niveau 4: Personnel travailler (Agent)"),
+                      Text("Niveau 5: Stagiaire, Experts, ..."),
+                    ],
+                  )),
+              actions: <Widget>[
+                TextButton(
+                  onPressed: () => Navigator.pop(context, 'OK'),
+                  child: const Text('OK'),
+                ),
+              ],
+            );
+          });
+        });
+  }
+
   Future submit() async {
     final agentModel = AgentModel(
         nom: (nomController.text == '') ? '-' : nomController.text,
@@ -979,8 +1024,7 @@ class _AddAgentState extends State<AddAgent> {
         signatureDG: '-',
         approbationDD: '-',
         motifDD: '-',
-        signatureDD: '-'
-    );
+        signatureDD: '-');
 
     await AgentsApi().insertData(agentModel);
     await submitPerformence();

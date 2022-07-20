@@ -154,6 +154,7 @@ import 'package:fokad_admin/src/pages/rh/agents/components/add_agent.dart';
 import 'package:fokad_admin/src/pages/rh/agents/components/detail_agent_page.dart';
 import 'package:fokad_admin/src/pages/rh/agents/components/update_agent.dart';
 import 'package:fokad_admin/src/pages/rh/dashboard/dashboard_rh.dart';
+import 'package:fokad_admin/src/pages/rh/dd_rh/components/users/update_user.dart';
 import 'package:fokad_admin/src/pages/rh/dd_rh/departement_rh.dart';
 import 'package:fokad_admin/src/pages/rh/dd_rh/historique/table_salaires_historique.dart';
 import 'package:fokad_admin/src/pages/rh/paiements/components/add_paiement_salaire.dart';
@@ -204,6 +205,7 @@ class AdminRoutes {
 
 class RhRoutes {
   static const rhDashboard = "/rh-dashboard";
+  static const rhUpdateUser = "/rh-update-user";
   static const rhAgent = "/rh-agents";
   static const rhAgentPage = "/rh-agents-page";
   static const rhAgentPageUser = "/rh-agents-page-user";
@@ -438,6 +440,7 @@ final routes = <String, WidgetBuilder>{
 
   // RH
   RhRoutes.rhDashboard: (context) => const DashboardRh(),
+  RhRoutes.rhUpdateUser: (context) => const UpdateUser(),
   RhRoutes.rhAgent: (context) => const AgentsRh(),
   RhRoutes.rhAgentPage: (context) => const DetailAgentPage(),
   RhRoutes.rhAgentAdd: (context) => const AddAgent(),
