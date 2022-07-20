@@ -32,8 +32,6 @@ class _TableGrandLivreState extends State<TableGrandLivre> {
   PlutoGridStateManager? stateManager;
   PlutoGridSelectingMode gridSelectingMode = PlutoGridSelectingMode.row;
 
-  int? id;
-
   @override
   void initState() {
     agentsColumn();
@@ -285,9 +283,10 @@ class _TableGrandLivreState extends State<TableGrandLivre> {
   }
 
   Future agentsRow() async {
-    List<JournalModel?> dataList = await JournalApi().getAllData();
-    var data = dataList.where((element) =>
-        element!.compteDebit == widget.grandLivreModel.comptedebit ||
+    List<JournalModel> journals = await JournalApi().getAllData();
+    var data = journals.where((element) =>
+        element.compteDebit == widget.grandLivreModel.comptedebit ||
+        element.compteCredit == widget.grandLivreModel.comptedebit ||
         element.created.millisecondsSinceEpoch >=
                 widget.grandLivreModel.dateStart.millisecondsSinceEpoch &&
             element.created.millisecondsSinceEpoch <=
@@ -297,7 +296,7 @@ class _TableGrandLivreState extends State<TableGrandLivre> {
       setState(() {
         for (var item in data) {
           rows.add(PlutoRow(cells: {
-            'id': PlutoCell(value: item!.id),
+            'id': PlutoCell(value: item.id),
             'numeroOperation': PlutoCell(value: item.numeroOperation),
             'libele': PlutoCell(value: item.libele),
             'compteDebit': PlutoCell(value: item.compteDebit),

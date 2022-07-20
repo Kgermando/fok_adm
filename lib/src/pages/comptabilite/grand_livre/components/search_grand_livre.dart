@@ -174,7 +174,7 @@ class _SearchGrandLivreState extends State<SearchGrandLivre> {
       margin: const EdgeInsets.only(bottom: p20),
       child: DropdownButtonFormField<String>(
         decoration: InputDecoration(
-          labelText: 'Comptes Debit',
+          labelText: 'Comptes',
           labelStyle: const TextStyle(),
           border: OutlineInputBorder(borderRadius: BorderRadius.circular(5.0)),
           // contentPadding: const EdgeInsets.only(left: 5.0),
