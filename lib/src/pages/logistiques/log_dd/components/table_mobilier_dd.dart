@@ -138,7 +138,7 @@ class _TableMobilierDDState extends State<TableMobilierDD> {
         enableContextMenu: false,
         enableDropToResize: true,
         titleTextAlign: PlutoColumnTextAlign.left,
-        width: 150,
+        width: 300,
         minWidth: 150,
       ),
       PlutoColumn(
@@ -150,7 +150,7 @@ class _TableMobilierDDState extends State<TableMobilierDD> {
         enableContextMenu: false,
         enableDropToResize: true,
         titleTextAlign: PlutoColumnTextAlign.left,
-        width: 150,
+        width: 300,
         minWidth: 150,
       ),
       PlutoColumn(
@@ -162,7 +162,7 @@ class _TableMobilierDDState extends State<TableMobilierDD> {
         enableContextMenu: false,
         enableDropToResize: true,
         titleTextAlign: PlutoColumnTextAlign.left,
-        width: 150,
+        width: 300,
         minWidth: 150,
       ),
       PlutoColumn(
@@ -174,7 +174,7 @@ class _TableMobilierDDState extends State<TableMobilierDD> {
         enableContextMenu: false,
         enableDropToResize: true,
         titleTextAlign: PlutoColumnTextAlign.left,
-        width: 150,
+        width: 300,
         minWidth: 150,
       ),
       PlutoColumn(

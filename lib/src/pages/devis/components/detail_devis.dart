@@ -4,11 +4,13 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:fokad_admin/src/api/auth/auth_api.dart';
+import 'package:fokad_admin/src/api/budgets/departement_budget_api.dart';
 import 'package:fokad_admin/src/api/budgets/ligne_budgetaire_api.dart';
 import 'package:fokad_admin/src/api/devis/devis_api.dart';
 import 'package:fokad_admin/src/api/devis/devis_list_objets_api.dart';
 import 'package:fokad_admin/src/constants/app_theme.dart';
 import 'package:fokad_admin/src/constants/responsive.dart';
+import 'package:fokad_admin/src/models/budgets/departement_budget_model.dart';
 import 'package:fokad_admin/src/models/budgets/ligne_budgetaire_model.dart';
 import 'package:fokad_admin/src/models/devis/devis_list_objets_model.dart';
 import 'package:fokad_admin/src/models/devis/devis_models.dart';
@@ -68,6 +70,7 @@ class _DetailDevisState extends State<DetailDevis> {
   }
 
   List<DevisListObjetsModel> devisObjetList = [];  
+  List<DepartementBudgetModel> departementsList = [];
   List<LigneBudgetaireModel> ligneBudgetaireList = [];
   UserModel user = UserModel(
       nom: '-',
@@ -85,14 +88,14 @@ class _DetailDevisState extends State<DetailDevis> {
       succursale: '-');
   Future<void> getData() async {
     UserModel userModel = await AuthApi().getUserId();
+    var departements = await DepeartementBudgetApi().getAllData();
     var budgets = await LIgneBudgetaireApi().getAllData();
     var devisObjetLists = await DevisListObjetsApi().getAllData();
     if (mounted) {
       setState(() {
         user = userModel;
-        ligneBudgetaireList = budgets
-            .where((element) => element.departement == "Logistique")
-            .toList();
+        departementsList = departements;
+        ligneBudgetaireList = budgets; 
         devisObjetList = devisObjetLists;
       });
     }
@@ -1322,8 +1325,17 @@ class _DetailDevisState extends State<DetailDevis> {
 
   // Soumettre une ligne budgetaire
   Widget ligneBudgtaireWidget() {
-    var dataList =
-        ligneBudgetaireList.map((e) => e.nomLigneBudgetaire).toList();
+        List<String> dataList = [];
+    for (var i in departementsList) {
+      dataList = ligneBudgetaireList
+          .where((element) =>
+              element.periodeBudgetDebut.microsecondsSinceEpoch ==
+                  i.periodeDebut.microsecondsSinceEpoch &&
+              DateTime.now().isBefore(element.periodeBudgetFin) &&
+              element.departement == "Ressources Humaines")
+          .map((e) => e.nomLigneBudgetaire)
+          .toList();
+    }
     return Container(
       margin: const EdgeInsets.only(bottom: p10),
       child: DropdownButtonFormField<String>(

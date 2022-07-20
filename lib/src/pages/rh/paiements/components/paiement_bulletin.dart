@@ -2,11 +2,13 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:fokad_admin/src/api/auth/auth_api.dart';
+import 'package:fokad_admin/src/api/budgets/departement_budget_api.dart';
 import 'package:fokad_admin/src/api/budgets/ligne_budgetaire_api.dart';
 import 'package:fokad_admin/src/api/mails/mail_api.dart';
 import 'package:fokad_admin/src/api/rh/paiement_salaire_api.dart';
 import 'package:fokad_admin/src/constants/app_theme.dart';
 import 'package:fokad_admin/src/constants/responsive.dart';
+import 'package:fokad_admin/src/models/budgets/departement_budget_model.dart';
 import 'package:fokad_admin/src/models/budgets/ligne_budgetaire_model.dart';
 import 'package:fokad_admin/src/models/mail/mail_model.dart';
 import 'package:fokad_admin/src/models/rh/paiement_salaire_model.dart';
@@ -62,6 +64,7 @@ class _PaiementBulletinState extends State<PaiementBulletin> {
     super.dispose();
   }
 
+  List<DepartementBudgetModel> departementsList = [];
   List<LigneBudgetaireModel> ligneBudgetaireList = [];
 
   UserModel user = UserModel(
@@ -80,13 +83,13 @@ class _PaiementBulletinState extends State<PaiementBulletin> {
       succursale: '-');
   Future<void> getData() async {
     UserModel userModel = await AuthApi().getUserId();
+    var departements = await DepeartementBudgetApi().getAllData();
     var budgets = await LIgneBudgetaireApi().getAllData();
     if (!mounted) return;
     setState(() {
       user = userModel;
-      ligneBudgetaireList = budgets
-          .where((element) => element.departement == "Ressources Humaines")
-          .toList(); 
+      departementsList = departements;
+      ligneBudgetaireList = budgets; 
     });
   }
 
@@ -1758,8 +1761,17 @@ class _PaiementBulletinState extends State<PaiementBulletin> {
 
   // Soumettre une ligne budgetaire
   Widget ligneBudgtaireWidget() {
-    var dataList =
-        ligneBudgetaireList.map((e) => e.nomLigneBudgetaire).toList();
+    List<String> dataList = [];
+    for (var i in departementsList) {
+      dataList = ligneBudgetaireList
+          .where((element) => 
+            element.periodeBudgetDebut.microsecondsSinceEpoch ==
+                  i.periodeDebut.microsecondsSinceEpoch &&
+              DateTime.now().isBefore(element.periodeBudgetFin) &&
+            element.departement == "Ressources Humaines")
+          .map((e) => e.nomLigneBudgetaire)
+          .toList();
+    }
     return Container(
       margin: const EdgeInsets.only(bottom: p10),
       child: DropdownButtonFormField<String>(

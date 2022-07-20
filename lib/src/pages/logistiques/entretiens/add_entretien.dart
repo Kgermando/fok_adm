@@ -3,11 +3,17 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:fokad_admin/src/api/auth/auth_api.dart';
+import 'package:fokad_admin/src/api/logistiques/anguin_api.dart';
 import 'package:fokad_admin/src/api/logistiques/entretien_api.dart';
+import 'package:fokad_admin/src/api/logistiques/immobiler_api.dart';
+import 'package:fokad_admin/src/api/logistiques/mobilier_api.dart';
 import 'package:fokad_admin/src/api/logistiques/objet_remplace_api.dart';
 import 'package:fokad_admin/src/constants/app_theme.dart';
 import 'package:fokad_admin/src/constants/responsive.dart';
+import 'package:fokad_admin/src/models/logistiques/anguin_model.dart';
 import 'package:fokad_admin/src/models/logistiques/entretien_model.dart';
+import 'package:fokad_admin/src/models/logistiques/immobilier_model.dart';
+import 'package:fokad_admin/src/models/logistiques/mobilier_model.dart';
 import 'package:fokad_admin/src/models/logistiques/objet_remplace_model.dart';
 import 'package:fokad_admin/src/models/users/user_model.dart';
 import 'package:fokad_admin/src/navigation/drawer/drawer_menu.dart';
@@ -33,9 +39,9 @@ class _AddEntretienPageState extends State<AddEntretienPage> {
   bool isLoadingObjet = false;
   bool isDeletingItem = false;
 
-  TextEditingController nomController = TextEditingController();
-  TextEditingController modeleController = TextEditingController();
-  TextEditingController marqueController = TextEditingController();
+
+  String? nom;
+  String? typeObjet;
   String? typeMaintenance;
   TextEditingController dureeTravauxController = TextEditingController();
 
@@ -53,12 +59,17 @@ class _AddEntretienPageState extends State<AddEntretienPage> {
     super.initState();
   }
 
+  List<String> nomList = [];
+  List<MobilierModel> mobilierList = [];
+  List<ImmobilierModel> immobilierList = [];
+  List<AnguinModel> enguinsList = [];
+
+
+
+
   @override
   void dispose() {
-    timer!.cancel();
-    nomController.dispose();
-    modeleController.dispose();
-    marqueController.dispose();
+    timer!.cancel();  
     dureeTravauxController.dispose();
     nomObjetController.dispose();
     coutController.dispose();
@@ -76,10 +87,26 @@ class _AddEntretienPageState extends State<AddEntretienPage> {
   Future<void> getDate() async {
     UserModel userModel = await AuthApi().getUserId();
     var objetRemplace = await ObjetRemplaceApi().getAllData();
+    var mobiliers = await MobilierApi().getAllData();
+    var immobiliers = await ImmobilierApi().getAllData();
+    var enguins = await AnguinApi().getAllData();
     if (!mounted) return;
     setState(() {
       signature = userModel.matricule;
       objetRemplaceFilter = objetRemplace.toList();
+      mobilierList = mobiliers
+          .where((element) => element.approbationDD == "Approved")
+          .toList();
+      immobilierList = immobiliers
+          .where((element) =>
+              element.approbationDG == "Approved" &&
+              element.approbationDD == "Approved")
+          .toList();
+      enguinsList = enguins
+          .where((element) =>
+              element.approbationDG == "Approved" &&
+              element.approbationDD == "Approved")
+          .toList();
     });
   }
 
@@ -180,21 +207,21 @@ class _AddEntretienPageState extends State<AddEntretienPage> {
                     ),
                     Row(
                       children: [
-                        Expanded(child: nomWidget()),
+                        Expanded(child: typeObjetWidget()),
                         const SizedBox(
                           width: p10,
                         ),
-                        Expanded(child: modeleWidget())
+                        Expanded(child: nomWidget())
                       ],
                     ),
                     etatObjetWidget(),
                     Row(
                       children: [
-                        Expanded(child: marqueWidget()),
+                        Expanded(child: dureeTravauxWidget()),
                         const SizedBox(
                           width: p10,
                         ),
-                        Expanded(child: dureeTravauxWidget())
+                        Expanded(child: Container())
                       ],
                     ),
                     // SizedBox(
@@ -225,71 +252,89 @@ class _AddEntretienPageState extends State<AddEntretienPage> {
     );
   }
 
+
+  Widget typeObjetWidget() {
+    List<String> typeObjetList = ["Mobilier", "Immobilier", "Enguins"];
+    var mobiliers = mobilierList.map((e) => e.nom).toList();
+    var immobiliers = immobilierList.map((e) => e.numeroCertificat).toList();
+    var enguins = enguinsList.map((e) => e.nom).toList();
+
+    return Container(
+      margin: const EdgeInsets.only(bottom: p20),
+      child: DropdownButtonFormField<String>(
+        decoration: InputDecoration(
+          labelText: 'Type d\'Objet',
+          labelStyle: const TextStyle(),
+          border: OutlineInputBorder(borderRadius: BorderRadius.circular(5.0)),
+          contentPadding: const EdgeInsets.only(left: 5.0),
+        ),
+        value: typeObjet,
+        isExpanded: true,
+        validator: (value) => value == null ? "Champs obligatoire" : null,
+        items: typeObjetList
+            .map((String value) {
+              return DropdownMenuItem<String>(
+                value: value,
+                child: Text(value),
+              );
+            })
+            .toSet()
+            .toList(),
+        onChanged: (value) {
+          setState(() {
+            typeObjet = value!;
+            nomList.clear();
+            switch (value) {
+              case 'Mobilier':
+                nomList = mobiliers;
+                nom = nomList.first;
+                break;
+              case 'Immobilier':
+                nomList = immobiliers;
+                nom = nomList.first;
+                break;
+              case 'Enguins':
+                nomList = enguins;
+                nom = nomList.first;
+                break;
+              default:
+            }
+          });
+        },
+      ),
+    );
+  }
+
   Widget nomWidget() {
     return Container(
-        margin: const EdgeInsets.only(bottom: p20),
-        child: TextFormField(
-          controller: nomController,
-          decoration: InputDecoration(
-            border:
-                OutlineInputBorder(borderRadius: BorderRadius.circular(10.0)),
-            labelText: 'Nom',
-          ),
-          keyboardType: TextInputType.text,
-          style: const TextStyle(),
-          validator: (value) {
-            if (value != null && value.isEmpty) {
-              return 'Ce champs est obligatoire';
-            } else {
-              return null;
-            }
-          },
-        ));
-  }
-
-  Widget modeleWidget() {
-    return Container(
-        margin: const EdgeInsets.only(bottom: p20),
-        child: TextFormField(
-          controller: modeleController,
-          decoration: InputDecoration(
-              border:
-                  OutlineInputBorder(borderRadius: BorderRadius.circular(10.0)),
-              labelText: 'Modèle',
-              hintText: 'Samsung G 22, Benz 208'),
-          keyboardType: TextInputType.text,
-          style: const TextStyle(),
-          validator: (value) {
-            if (value != null && value.isEmpty) {
-              return 'Ce champs est obligatoire';
-            } else {
-              return null;
-            }
-          },
-        ));
-  }
-
-  Widget marqueWidget() {
-    return Container(
-        margin: const EdgeInsets.only(bottom: p20),
-        child: TextFormField(
-          controller: marqueController,
-          decoration: InputDecoration(
-              border:
-                  OutlineInputBorder(borderRadius: BorderRadius.circular(10.0)),
-              labelText: 'Marque',
-              hintText: 'Samsung, Mercedes, ...'),
-          keyboardType: TextInputType.text,
-          style: const TextStyle(),
-          validator: (value) {
-            if (value != null && value.isEmpty) {
-              return 'Ce champs est obligatoire';
-            } else {
-              return null;
-            }
-          },
-        ));
-  }
+      margin: const EdgeInsets.only(bottom: p20),
+      child: DropdownButtonFormField<String>(
+        decoration: InputDecoration(
+          labelText: 'Nom',
+          labelStyle: const TextStyle(),
+          border: OutlineInputBorder(borderRadius: BorderRadius.circular(5.0)),
+          contentPadding: const EdgeInsets.only(left: 5.0),
+        ),
+        value: nom,
+        isExpanded: true,
+        items: nomList
+            .map((String value) {
+              return DropdownMenuItem<String>(
+                value: value,
+                child: Text(value),
+              );
+            })
+            .toSet()
+            .toList(),
+        validator: (value) => value == null ? "Champs obligatoire" : null,
+        onChanged: (value) {
+          setState(() {
+            nom = value!;
+          });
+        },
+      ),
+    );
+  }  
 
   Widget dureeTravauxWidget() {
     return Container(
@@ -575,9 +620,9 @@ class _AddEntretienPageState extends State<AddEntretienPage> {
 
   Future<void> submit() async {
     final entretienModel = EntretienModel(
-        nom: nomController.text,
-        modele: modeleController.text,
-        marque: marqueController.text,
+        nom: nom.toString(),
+        modele: typeObjet.toString(),
+        marque: '-',
         etatObjet: typeMaintenance.toString(),
         dureeTravaux: dureeTravauxController.text,
         signature: signature.toString(),
