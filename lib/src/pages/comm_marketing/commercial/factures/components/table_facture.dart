@@ -22,13 +22,12 @@ class _TableFactureState extends State<TableFacture> {
   PlutoGridStateManager? stateManager;
   PlutoGridSelectingMode gridSelectingMode = PlutoGridSelectingMode.row;
 
-  int? id;
-
+  
   @override
-  void initState() {
-    getData();
+  initState() {
     agentsColumn();
     agentsRow();
+    getData();
     super.initState();
   }
 
@@ -161,9 +160,9 @@ class _TableFactureState extends State<TableFacture> {
   }
 
   Future agentsRow() async {
-    List<FactureCartModel> dataList = await FactureApi().getAllData();
+    List<FactureCartModel> factures = await FactureApi().getAllData();
     var data =
-        dataList.where((element) => element.succursale == user.succursale);
+        factures.where((element) => element.succursale == user.succursale);
 
     if (mounted) {
       setState(() {

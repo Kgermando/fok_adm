@@ -19,7 +19,6 @@ class TableAgents extends StatefulWidget {
 }
 
 class _TableAgentsState extends State<TableAgents> {
-  int? id;
   List<PlutoColumn> columns = [];
   List<PlutoRow> rows = [];
   PlutoGridStateManager? stateManager;
@@ -290,13 +289,11 @@ class _TableAgentsState extends State<TableAgents> {
 
   Future agentsRow() async {
     List<AgentModel?> data = await AgentsApi().getAllData();
-    // print('agents $data');
     if (mounted) {
       setState(() {
-        for (var item in data) {
-          id = item!.id;
+        for (var item in data) { 
           rows.add(PlutoRow(cells: {
-            'id': PlutoCell(value: item.id),
+            'id': PlutoCell(value: item!.id),
             'nom': PlutoCell(value: item.nom),
             'postNom': PlutoCell(value: item.postNom),
             'prenom': PlutoCell(value: item.prenom),

@@ -4,6 +4,7 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:fokad_admin/src/api/auth/auth_api.dart';
 import 'package:fokad_admin/src/helpers/pdf_api.dart';
+import 'package:fokad_admin/src/models/comm_maketing/cart_model.dart';
 import 'package:fokad_admin/src/models/comm_maketing/creance_cart_model.dart';
 import 'package:fokad_admin/src/models/users/user_model.dart';
 import 'package:intl/intl.dart';
@@ -131,35 +132,38 @@ class CreanceCartPDF {
         ],
       );
 
-  static Widget buildInvoice(CreanceCartModel factureCartModel, monnaie) {
-    final headers = ['Qté', 'Designation', 'PVU', 'TVA', 'Montant'];
+  static Widget buildInvoice(CreanceCartModel creanceCartModel, monnaie) {
+    final headers = ['Quantité', 'Designation', 'PVU', 'TVA', 'Montant'];
 
-    final jsonList =
-        factureCartModel.cart.map((item) => jsonDecode(item)).toList();
-    final data = jsonList.map((item) {
+    final jsonList = jsonDecode(creanceCartModel.cart) as List;
+    List<CartModel> cartItemList = [];
+
+    for (var element in jsonList) {
+      cartItemList.add(CartModel.fromJson(element));
+    }
+
+    final data = cartItemList.map((item) {
       double priceTotal = 0;
 
-      var qtyRemise = double.parse(item['qtyRemise']);
-      var quantity = double.parse(item['quantityCart']);
+      var qtyRemise = double.parse(item.qtyRemise);
+      var quantity = double.parse(item.quantityCart);
 
       if (quantity >= qtyRemise) {
         priceTotal +=
-            double.parse(item['remise']) * double.parse(item['quantityCart']);
+            double.parse(item.remise) * double.parse(item.quantityCart);
       } else {
-        priceTotal += double.parse(item['priceCart']) *
-            double.parse(item['quantityCart']);
+        priceTotal +=
+            double.parse(item.priceCart) * double.parse(item.quantityCart);
       }
 
       return [
-        '${NumberFormat.decimalPattern('fr').format(double.parse(item['quantityCart']))} ${item['unite']}',
-        item['idProductCart'],
-        (double.parse(item['quantityCart']) >= double.parse(item['qtyRemise']))
-            ? NumberFormat.decimalPattern('fr')
-                .format(double.parse(item['remise']))
-            : NumberFormat.decimalPattern('fr')
-                .format(double.parse(item['priceCart'])),
-        '${item['tva']} %',
-        (priceTotal.toStringAsFixed(2)),
+        '${NumberFormat.decimalPattern('fr').format(double.parse(item.quantityCart))} ${item.unite}',
+        item.idProductCart,
+        (double.parse(item.quantityCart) >= double.parse(item.qtyRemise))
+            ? '${NumberFormat.decimalPattern('fr').format(double.parse(item.remise))} $monnaie'
+            : '${NumberFormat.decimalPattern('fr').format(double.parse(item.priceCart))} $monnaie',
+        '${item.tva} %',
+        '${priceTotal.toStringAsFixed(2)} $monnaie',
       ];
     }).toList();
 
@@ -168,41 +172,45 @@ class CreanceCartPDF {
       data: data,
       border: null,
       headerStyle: TextStyle(fontWeight: FontWeight.bold),
-      headerDecoration: const BoxDecoration(color: PdfColors.grey400),
+      headerDecoration: const BoxDecoration(color: PdfColors.grey300),
       cellHeight: 30,
       cellAlignments: {
         0: Alignment.centerLeft,
         1: Alignment.centerLeft,
-        2: Alignment.centerLeft,
+        2: Alignment.centerRight,
         3: Alignment.centerLeft,
-        4: Alignment.centerLeft,
-        5: Alignment.centerLeft,
+        4: Alignment.centerRight,
+        5: Alignment.centerRight,
       },
     );
   }
 
-  static Widget buildTotal(CreanceCartModel factureCartModel, monnaie) {
-    final jsonList =
-        factureCartModel.cart.map((item) => jsonDecode(item)).toList();
-
-    double tva;
+  static Widget buildTotal(CreanceCartModel creanceCartModel, monnaie) {
+    // ignore: prefer_typing_uninitialized_variables, unused_local_variable
+    var tva;
     double sumCart = 0;
-    for (var item in jsonList) {
-      // TVA
-      tva = double.parse(item['tva']);
+    final jsonList = jsonDecode(creanceCartModel.cart) as List;
 
-      var qtyRemise = double.parse(item['qtyRemise']);
-      var quantity = double.parse(item['quantityCart']);
+    List<CartModel> cartItemList = [];
 
-      if (quantity >= qtyRemise) {
-        sumCart +=
-            double.parse(item['remise']) * double.parse(item['quantityCart']);
-      } else {
-        sumCart += double.parse(item['priceCart']) *
-            double.parse(item['quantityCart']);
-      }
+    for (var element in jsonList) {
+      cartItemList.add(CartModel.fromJson(element));
     }
 
+    for (var item in jsonList) {
+      // TVA
+      tva = double.parse(item.tva);
+
+      var qtyRemise = double.parse(item.qtyRemise);
+      var quantity = double.parse(item.quantityCart);
+
+      if (quantity >= qtyRemise) {
+        sumCart += double.parse(item.remise) * double.parse(item.quantityCart);
+      } else {
+        sumCart +=
+            double.parse(item.priceCart) * double.parse(item.quantityCart);
+      }
+    }
     return Container(
       alignment: Alignment.centerRight,
       child: Row(
@@ -213,6 +221,11 @@ class CreanceCartPDF {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                // buildText(
+                //   title: 'TVA',
+                //   value: '$tva %',
+                //   unite: true,
+                // ),
                 Divider(),
                 buildText(
                   title: 'Total ($monnaie)',

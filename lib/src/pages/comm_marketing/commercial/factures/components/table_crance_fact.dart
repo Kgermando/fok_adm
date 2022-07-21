@@ -22,8 +22,6 @@ class _TableCreanceFactState extends State<TableCreanceFact> {
   PlutoGridStateManager? stateManager;
   PlutoGridSelectingMode gridSelectingMode = PlutoGridSelectingMode.row;
 
-  int? id;
-
   @override
   void initState() {
     getData();
@@ -167,10 +165,9 @@ class _TableCreanceFactState extends State<TableCreanceFact> {
 
     if (mounted) {
       setState(() {
-        for (var item in data) {
-          id = item!.id;
+        for (var item in data) { 
           rows.add(PlutoRow(cells: {
-            'id': PlutoCell(value: item.id),
+            'id': PlutoCell(value: item!.id),
             'client': PlutoCell(value: item.client),
             'succursale': PlutoCell(value: item.succursale),
             'created': PlutoCell(

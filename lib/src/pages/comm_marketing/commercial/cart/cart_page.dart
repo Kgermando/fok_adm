@@ -84,9 +84,8 @@ class _CartPageState extends State<CartPage> {
     return Scaffold(
         key: _key,
         drawer: const DrawerMenu(),
-        floatingActionButton: (panierBtnList.isNotEmpty)
-            ? speedialWidget()
-            : Container(),
+        floatingActionButton:
+            (panierBtnList.isNotEmpty) ? speedialWidget() : Container(),
         body: SafeArea(
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -165,8 +164,7 @@ class _CartPageState extends State<CartPage> {
                               ],
                             );
                           } else {
-                            return Center(
-                                child: loading());
+                            return Center(child: loading());
                           }
                         })),
               ),
@@ -204,7 +202,10 @@ class _CartPageState extends State<CartPage> {
       child: Text(
         'Total: ${NumberFormat.decimalPattern('fr').format(sumCart)} \$',
         textAlign: TextAlign.center,
-        style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold, color: Colors.red.shade700),
+        style: TextStyle(
+            fontSize: 20.0,
+            fontWeight: FontWeight.bold,
+            color: Colors.red.shade700),
       ),
     );
   }
@@ -260,9 +261,10 @@ class _CartPageState extends State<CartPage> {
   }
 
   Future<void> factureData() async {
-    final jsonList = listDataCart.map((item) => jsonEncode(item)).toList();
+    // final jsonList = listDataCart.map((item) => jsonEncode(item)).toList();
+    final jsonList = jsonEncode(listDataCart);
     final factureCartModel = FactureCartModel(
-        cart: listDataCart,
+        cart: jsonList,
         client: '$numberFacture',
         succursale: user.succursale.toString(),
         signature: user.matricule.toString(),
@@ -289,7 +291,8 @@ class _CartPageState extends State<CartPage> {
 
   // PDF Generate Facture
   Future<void> _createFacturePDF() async {
-    final jsonList = listDataCart.map((item) => jsonEncode(item)).toList();
+    // final jsonList = listDataCart.map((item) => jsonEncode(item)).toList();
+    final jsonList = jsonEncode(listDataCart);
     final factureCartModel = FactureCartModel(
         cart: jsonList,
         client: '$numberFacture',
@@ -311,7 +314,7 @@ class _CartPageState extends State<CartPage> {
   }
 
   Future<void> creanceData() async {
-    final jsonList = listDataCart.map((item) => jsonEncode(item)).toList();
+    final jsonList = jsonEncode(listDataCart);
     final creanceCartModel = CreanceCartModel(
         cart: jsonList,
         client: '$numberFacture',
@@ -338,7 +341,7 @@ class _CartPageState extends State<CartPage> {
 
   // PDF Generate Creance
   Future<void> _createPDFCreance() async {
-    final jsonList = listDataCart.map((item) => jsonEncode(item)).toList();
+    final jsonList = jsonEncode(listDataCart);
     final creanceCartModel = CreanceCartModel(
         cart: jsonList,
         client: '$numberFacture',

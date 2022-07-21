@@ -1,15 +1,20 @@
+import 'dart:convert';
+import 'dart:ffi';
+
 import 'package:flutter/material.dart';
 import 'package:fokad_admin/src/api/auth/auth_api.dart';
 import 'package:fokad_admin/src/api/comm_marketing/commerciale/facture_api.dart';
 import 'package:fokad_admin/src/constants/app_theme.dart';
 import 'package:fokad_admin/src/constants/responsive.dart';
 import 'package:fokad_admin/src/helpers/pdf_api.dart';
+import 'package:fokad_admin/src/models/comm_maketing/cart_model.dart';
 import 'package:fokad_admin/src/models/comm_maketing/facture_cart_model.dart';
 import 'package:fokad_admin/src/models/users/user_model.dart';
 import 'package:fokad_admin/src/navigation/drawer/drawer_menu.dart';
 import 'package:fokad_admin/src/navigation/header/custom_appbar.dart';
 import 'package:fokad_admin/src/pages/comm_marketing/commercial/factures/pdf/facture_cart_pdf.dart';
 import 'package:fokad_admin/src/utils/class_implemented.dart';
+import 'package:fokad_admin/src/utils/loading.dart';
 import 'package:fokad_admin/src/widgets/print_widget.dart';
 import 'package:fokad_admin/src/widgets/title_widget.dart';
 import 'package:intl/intl.dart';
@@ -23,7 +28,7 @@ class DetailFacture extends StatefulWidget {
 }
 
 class _DetailFactureState extends State<DetailFacture> {
-  final GlobalKey<ScaffoldState> _key = GlobalKey(); 
+  final GlobalKey<ScaffoldState> _key = GlobalKey();
   bool isLoading = false;
 
   List<PlutoColumn> columns = [];
@@ -32,12 +37,14 @@ class _DetailFactureState extends State<DetailFacture> {
   PlutoGridSelectingMode gridSelectingMode = PlutoGridSelectingMode.row;
 
   @override
-  void initState() {
+  initState() {
+    agentsColumn();
+    agentsRow();
     getData();
     super.initState();
   }
 
-  FactureCartModel? facture;
+  List<dynamic> factureList = [];
 
   UserModel user = UserModel(
       nom: '-',
@@ -54,75 +61,78 @@ class _DetailFactureState extends State<DetailFacture> {
       passwordHash: '-',
       succursale: '-');
   Future<void> getData() async {
-    UserModel userModel = await AuthApi().getUserId(); 
+    UserModel userModel = await AuthApi().getUserId();
     setState(() {
-      user = userModel; 
+      user = userModel;
     });
   }
 
   @override
   Widget build(BuildContext context) {
-     FactureCartModel data =
-        ModalRoute.of(context)!.settings.arguments as FactureCartModel;
-    facture = data;
+    int id = ModalRoute.of(context)!.settings.arguments as int;
 
     return Scaffold(
-        key: _key,
-        drawer: const DrawerMenu(),
-        bottomNavigationBar: totalCart(),
-        body: SafeArea(
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              if (Responsive.isDesktop(context))
-                const Expanded(
-                  child: DrawerMenu(),
-                ),
-              Expanded(
-                flex: 5,
-                child: Padding(
-                    padding: const EdgeInsets.all(p10),
-                    child: FutureBuilder<FactureCartModel>(
-                        future: FactureApi().getOneData(data.id!),
-                        builder: (BuildContext context,
-                            AsyncSnapshot<FactureCartModel> snapshot) {
-                          if (snapshot.hasData) {
-                            FactureCartModel? data = snapshot.data;
-                            return Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Row(
-                                  children: [
-                                    SizedBox(
-                                      width: p20,
-                                      child: IconButton(
-                                          onPressed: () =>
-                                              Navigator.pop(context),
-                                          icon: const Icon(Icons.arrow_back)),
-                                    ),
-                                    const SizedBox(width: p10),
-                                    Expanded(
-                                      child: CustomAppbar(
-                                          title: data!.client,
-                                          controllerMenu: () =>
-                                              _key.currentState!.openDrawer()),
-                                    ),
-                                  ],
-                                ),
-                                Expanded(
-                                    child: SingleChildScrollView(
-                                        child: pageDetail(data)))
-                              ],
-                            );
-                          } else {
-                            return const Center(
-                                child: CircularProgressIndicator());
-                          }
-                        })),
+      key: _key,
+      drawer: const DrawerMenu(),
+      body: SafeArea(
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            if (Responsive.isDesktop(context))
+              const Expanded(
+                child: DrawerMenu(),
               ),
-            ],
-          ),
-        ));
+            Expanded(
+              flex: 5,
+              child: Padding(
+                  padding: const EdgeInsets.all(p10),
+                  child: FutureBuilder<FactureCartModel>(
+                      future: FactureApi().getOneData(id),
+                      builder: (BuildContext context,
+                          AsyncSnapshot<FactureCartModel> snapshot) {
+                        if (snapshot.hasData) {
+                          FactureCartModel? data = snapshot.data;
+                          factureList = jsonDecode(data!.cart) as List;
+                          return Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Row(
+                                children: [
+                                  SizedBox(
+                                    width: p20,
+                                    child: IconButton(
+                                        onPressed: () => Navigator.pop(context),
+                                        icon: const Icon(Icons.arrow_back)),
+                                  ),
+                                  const SizedBox(width: p10),
+                                  Expanded(
+                                    child: CustomAppbar(
+                                        title: data.client,
+                                        controllerMenu: () =>
+                                            _key.currentState!.openDrawer()),
+                                  ),
+                                ],
+                              ),
+                              Expanded(
+                                  child: SingleChildScrollView(
+                                      child: Column(
+                                children: [
+                                  pageDetail(data),
+                                  const SizedBox(height: p20),
+                                  totalCart(data)
+                                ],
+                              )))
+                            ],
+                          );
+                        } else {
+                          return Center(child: loading());
+                        }
+                      })),
+            ),
+          ],
+        ),
+      ),
+    );
   }
 
   Widget pageDetail(FactureCartModel data) {
@@ -141,7 +151,7 @@ class _DetailFactureState extends State<DetailFacture> {
               width: 2.0,
             ),
           ),
-          child: Column( 
+          child: Column(
             children: [
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -151,10 +161,6 @@ class _DetailFactureState extends State<DetailFacture> {
                     children: [
                       Row(
                         children: [
-                          // IconButton(
-                          //     tooltip: 'Modifier',
-                          //     onPressed: () {},
-                          //     icon: const Icon(Icons.edit)),
                           PrintWidget(
                               tooltip: 'Imprimer le document',
                               onPressed: () async {
@@ -189,11 +195,13 @@ class _DetailFactureState extends State<DetailFacture> {
           Row(
             children: [
               Expanded(
+                flex: 1,
                 child: Text('Signature :',
                     textAlign: TextAlign.start,
                     style: bodyMedium!.copyWith(fontWeight: FontWeight.bold)),
               ),
               Expanded(
+                flex: 3,
                 child: SelectableText(data.signature,
                     textAlign: TextAlign.start, style: bodyMedium),
               )
@@ -204,28 +212,34 @@ class _DetailFactureState extends State<DetailFacture> {
     );
   }
 
-  Widget totalCart() {
+  Widget totalCart(FactureCartModel data) {
     List<dynamic> cartItem;
-    cartItem = facture!.cart.toList();
+    // cartItem = facture!.cart.toList();
+    cartItem = jsonDecode(data.cart) as List;
+
+    List<CartModel> cartItemList = [];
+
+    for (var element in cartItem) {
+      cartItemList.add(CartModel.fromJson(element));
+    }
 
     double sumCart = 0;
-    for (var data in cartItem) {
-      var qtyRemise = double.parse(data['qtyRemise']);
-      var quantity = double.parse(data['quantityCart']);
+    for (var data in cartItemList) {
+      var qtyRemise = double.parse(data.qtyRemise);
+      var quantity = double.parse(data.quantityCart);
       if (quantity >= qtyRemise) {
-        sumCart +=
-            double.parse(data['remise']) * double.parse(data['quantityCart']);
+        sumCart += double.parse(data.remise) * double.parse(data.quantityCart);
       } else {
-        sumCart += double.parse(data['priceCart']) *
-            double.parse(data['quantityCart']);
+        sumCart +=
+            double.parse(data.priceCart) * double.parse(data.quantityCart);
       }
     }
-    return Container(
-      padding: const EdgeInsets.only(
-          top: 10.0, bottom: 10.0, right: 20.0, left: 20.0),
-      // color: const Color(0xFFE8F5E9),
-      child: Card(
-        elevation: 10,
+    return Card(
+      elevation: 5,
+      child: Container(
+        width: double.infinity,
+        padding: const EdgeInsets.all(p20),
+        // color: const Color(0xFFE8F5E9),
         child: Text(
           'Total: ${NumberFormat.decimalPattern('fr').format(sumCart)} \$',
           textAlign: TextAlign.center,
@@ -237,7 +251,7 @@ class _DetailFactureState extends State<DetailFacture> {
 
   listCart() {
     return SizedBox(
-        height: MediaQuery.of(context).size.height,
+        height: MediaQuery.of(context).size.height / 2,
         child: PlutoGrid(
           columns: columns,
           rows: rows,
@@ -245,15 +259,6 @@ class _DetailFactureState extends State<DetailFacture> {
             stateManager = event.stateManager;
             stateManager!.setShowColumnFilter(true);
             stateManager!.notifyListeners();
-          },
-          createHeader: (PlutoGridStateManager header) {
-            return Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                IconButton(onPressed: () {}, icon: const Icon(Icons.download)),
-                PrintWidget(onPressed: () {})
-              ],
-            );
           },
           configuration: PlutoGridConfiguration(
             columnFilterConfig: PlutoGridColumnFilterConfig(
@@ -306,7 +311,7 @@ class _DetailFactureState extends State<DetailFacture> {
         enableContextMenu: false,
         enableDropToResize: true,
         titleTextAlign: PlutoColumnTextAlign.left,
-        width: 150,
+        width: 300,
         minWidth: 150,
       ),
       PlutoColumn(
@@ -318,7 +323,7 @@ class _DetailFactureState extends State<DetailFacture> {
         enableContextMenu: false,
         enableDropToResize: true,
         titleTextAlign: PlutoColumnTextAlign.left,
-        width: 150,
+        width: 200,
         minWidth: 150,
       ),
       PlutoColumn(
@@ -330,7 +335,7 @@ class _DetailFactureState extends State<DetailFacture> {
         enableContextMenu: false,
         enableDropToResize: true,
         titleTextAlign: PlutoColumnTextAlign.left,
-        width: 150,
+        width: 200,
         minWidth: 150,
       ),
       PlutoColumn(
@@ -342,7 +347,7 @@ class _DetailFactureState extends State<DetailFacture> {
         enableContextMenu: false,
         enableDropToResize: true,
         titleTextAlign: PlutoColumnTextAlign.left,
-        width: 150,
+        width: 200,
         minWidth: 150,
       ),
       PlutoColumn(
@@ -354,43 +359,51 @@ class _DetailFactureState extends State<DetailFacture> {
         enableContextMenu: false,
         enableDropToResize: true,
         titleTextAlign: PlutoColumnTextAlign.left,
-        width: 150,
+        width: 200,
         minWidth: 150,
       ),
     ];
   }
 
   Future agentsRow() async {
-    List<dynamic> cartItem = facture!.cart.toList();
+    // List<dynamic> cartItem = facture!.cart.toList();
+    // final cartItem = jsonDecode(facture!.cart) as List;
+
+    List<CartModel> cartItemList = [];
+
+    for (var element in factureList) {
+      cartItemList.add(CartModel.fromJson(element));
+    }
+
+    print("factureList $factureList");
 
     if (mounted) {
       setState(() {
-        for (var item in cartItem) {
+        for (var item in cartItemList) {
           double total = 0;
 
-          var qtyRemise = double.parse(item['qtyRemise']);
-          var quantity = double.parse(item['quantityCart']);
-
+          var qtyRemise = double.parse(item.qtyRemise);
+          var quantity = double.parse(item.quantityCart);
           if (quantity >= qtyRemise) {
-            total += double.parse(item['remise']) *
-                double.parse(item['quantityCart']);
+            total +=
+                double.parse(item.remise) * double.parse(item.quantityCart);
           } else {
-            total += double.parse(item['priceCart']) *
-                double.parse(item['quantityCart']);
+            total +=
+                double.parse(item.priceCart) * double.parse(item.quantityCart);
           }
 
           rows.add(PlutoRow(cells: {
             'quantityCart': PlutoCell(
                 value:
-                    '${NumberFormat.decimalPattern('fr').format(double.parse(item['quantityCart']))} ${cartItem[5]['unite']}'),
-            'idProductCart': PlutoCell(value: item['idProductCart']),
-            'priceAchatUnit': PlutoCell(value: item['idProductCart']),
+                    '${NumberFormat.decimalPattern('fr').format(double.parse(item.quantityCart))} ${item.unite}'),
+            'idProductCart': PlutoCell(value: item.idProductCart),
+            'priceAchatUnit': PlutoCell(value: item.priceAchatUnit),
             'priceCart': PlutoCell(
-                value: (double.parse(item['quantityCart']) >=
-                        double.parse(item['qtyRemise']))
-                    ? "${NumberFormat.decimalPattern('fr').format(double.parse(item['remise']))} \$"
-                    : "${NumberFormat.decimalPattern('fr').format(double.parse(item['priceCart']))} \$"),
-            'tva': PlutoCell(value: "${item['tva']} %"),
+                value: (double.parse(item.quantityCart) >=
+                        double.parse(item.qtyRemise))
+                    ? "${NumberFormat.decimalPattern('fr').format(double.parse(item.remise))} \$"
+                    : "${NumberFormat.decimalPattern('fr').format(double.parse(item.priceCart))} \$"),
+            'tva': PlutoCell(value: "${item.tva} %"),
             'total': PlutoCell(
                 value: "${NumberFormat.decimalPattern('fr').format(total)} \$")
           }));

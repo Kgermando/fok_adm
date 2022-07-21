@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:fokad_admin/src/api/comm_marketing/commerciale/creance_facture_api.dart';
@@ -10,6 +11,7 @@ import 'package:fokad_admin/src/api/comm_marketing/marketing/annuaire_api.dart';
 import 'package:fokad_admin/src/api/comm_marketing/marketing/campaign_api.dart';
 import 'package:fokad_admin/src/constants/app_theme.dart';
 import 'package:fokad_admin/src/constants/responsive.dart';
+import 'package:fokad_admin/src/models/comm_maketing/cart_model.dart';
 import 'package:fokad_admin/src/models/comm_maketing/creance_cart_model.dart';
 import 'package:fokad_admin/src/models/comm_maketing/gain_model.dart';
 import 'package:fokad_admin/src/models/comm_maketing/vente_cart_model.dart';
@@ -98,21 +100,26 @@ class _ComMarketingState extends State<ComMarketing> {
         ventesList.map((e) => double.parse(e.priceTotalCart)).toList();
     for (var data in dataPriceVente) {
       sumVente += data;
-    }
-
+    } 
+    
     // Créances
     double sumDCreance = 0;
     for (var item in creanceFactureList) {
-      final cartItem = item.cart.toList();
-      for (var data in cartItem) {
-        if (double.parse(data['quantityCart']) >=
-            double.parse(data['qtyRemise'])) {
+      final cartItem = jsonDecode(item.cart) as List;
+      List<CartModel> cartItemList = [];
+
+      for (var element in cartItem) {
+        cartItemList.add(CartModel.fromJson(element));
+      }
+
+      for (var data in cartItemList) {
+        if (double.parse(data.quantityCart) >= double.parse(data.qtyRemise)) {
           double total =
-              double.parse(data['remise']) * double.parse(data['quantityCart']);
+              double.parse(data.remise) * double.parse(data.quantityCart);
           sumDCreance += total;
         } else {
-          double total = double.parse(data['priceCart']) *
-              double.parse(data['quantityCart']);
+          double total =
+              double.parse(data.priceCart) * double.parse(data.quantityCart);
           sumDCreance += total;
         }
       }

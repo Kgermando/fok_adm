@@ -1,6 +1,8 @@
+import 'dart:convert';
 import 'dart:io';
 import 'package:fokad_admin/src/api/auth/auth_api.dart';
 import 'package:fokad_admin/src/helpers/pdf_api.dart';
+import 'package:fokad_admin/src/models/comm_maketing/cart_model.dart';
 import 'package:fokad_admin/src/models/comm_maketing/facture_cart_model.dart';
 import 'package:fokad_admin/src/models/users/user_model.dart';
 import 'package:intl/intl.dart';
@@ -124,27 +126,34 @@ class FacturePDF {
   static Widget buildInvoice(FactureCartModel creanceCartModel, monnaie) {
     final headers = ['Quantité', 'Designation', 'PVU', 'TVA', 'Montant'];
 
-    final data = creanceCartModel.cart.map((item) {
+    final jsonList = jsonDecode(creanceCartModel.cart) as List;
+    List<CartModel> cartItemList = [];
+
+    for (var element in jsonList) {
+      cartItemList.add(CartModel.fromJson(element));
+    }
+
+    final data = cartItemList.map((item) {
       double priceTotal = 0;
 
-      var qtyRemise = double.parse(item['qtyRemise']);
-      var quantity = double.parse(item['quantityCart']);
+      var qtyRemise = double.parse(item.qtyRemise);
+      var quantity = double.parse(item.quantityCart);
 
       if (quantity >= qtyRemise) {
         priceTotal +=
-            double.parse(item['remise']) * double.parse(item['quantityCart']);
+            double.parse(item.remise) * double.parse(item.quantityCart);
       } else {
-        priceTotal += double.parse(item['priceCart']) *
-            double.parse(item['quantityCart']);
+        priceTotal +=
+            double.parse(item.priceCart) * double.parse(item.quantityCart);
       }
 
       return [
-        '${NumberFormat.decimalPattern('fr').format(double.parse(item['quantityCart']))} ${item['unite']}',
-        item['idProductCart'],
-        (double.parse(item['quantityCart']) >= double.parse(item['qtyRemise']))
-            ? '${NumberFormat.decimalPattern('fr').format(double.parse(item['remise']))} $monnaie'
-            : '${NumberFormat.decimalPattern('fr').format(double.parse(item['priceCart']))} $monnaie',
-        '${item['tva']} %',
+        '${NumberFormat.decimalPattern('fr').format(double.parse(item.quantityCart))} ${item.unite}',
+        item.idProductCart,
+        (double.parse(item.quantityCart) >= double.parse(item.qtyRemise))
+            ? '${NumberFormat.decimalPattern('fr').format(double.parse(item.remise))} $monnaie'
+            : '${NumberFormat.decimalPattern('fr').format(double.parse(item.priceCart))} $monnaie',
+        '${item.tva} %',
         '${priceTotal.toStringAsFixed(2)} $monnaie',
       ];
     }).toList();
@@ -167,26 +176,32 @@ class FacturePDF {
     );
   }
 
-  static Widget buildTotal(FactureCartModel creanceCartModel, monnaie) {
+    static Widget buildTotal(FactureCartModel creanceCartModel, monnaie) {
     // ignore: prefer_typing_uninitialized_variables, unused_local_variable
     var tva;
     double sumCart = 0;
-    for (var item in creanceCartModel.cart) {
-      // TVA
-      tva = double.parse(item['tva']);
+    final jsonList = jsonDecode(creanceCartModel.cart) as List;
 
-      var qtyRemise = double.parse(item['qtyRemise']);
-      var quantity = double.parse(item['quantityCart']);
+    List<CartModel> cartItemList = [];
 
-      if (quantity >= qtyRemise) {
-        sumCart +=
-            double.parse(item['remise']) * double.parse(item['quantityCart']);
-      } else {
-        sumCart += double.parse(item['priceCart']) *
-            double.parse(item['quantityCart']);
-      }
+    for (var element in jsonList) {
+      cartItemList.add(CartModel.fromJson(element));
     }
 
+    for (var item in jsonList) {
+      // TVA
+      tva = double.parse(item.tva);
+
+      var qtyRemise = double.parse(item.qtyRemise);
+      var quantity = double.parse(item.quantityCart);
+
+      if (quantity >= qtyRemise) {
+        sumCart += double.parse(item.remise) * double.parse(item.quantityCart);
+      } else {
+        sumCart +=
+            double.parse(item.priceCart) * double.parse(item.quantityCart);
+      }
+    }
     return Container(
       alignment: Alignment.centerRight,
       child: Row(
