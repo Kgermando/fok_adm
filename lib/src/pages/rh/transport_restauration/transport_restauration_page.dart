@@ -69,7 +69,7 @@ class _TransportRestaurationPageState extends State<TransportRestaurationPage> {
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
                       children: <Widget>[
-                        const TitleWidget(title: "Créez la liste de paiement"),
+                        const TitleWidget(title: "Créez la liste de paie"),
                         const SizedBox(
                           height: p20,
                         ),
