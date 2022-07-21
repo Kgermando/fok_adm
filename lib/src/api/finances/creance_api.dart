@@ -9,13 +9,7 @@ import 'package:fokad_admin/src/models/finances/creances_model.dart';
 import 'package:http/http.dart' as http;
 
 class CreanceApi {
-  var client = http.Client();
-  // final storage = const FlutterSecureStorage();
-
-  // Future<String?> getToken() async {
-  //   final data = await storage.read(key: "accessToken");
-  //   return data;
-  // }
+  var client = http.Client(); 
 
   Future<List<CreanceModel>> getAllData() async {
     String? token = await UserSharedPref().getAccessToken();
@@ -96,7 +90,7 @@ class CreanceApi {
     var data = creanceModel.toJson();
     var body = jsonEncode(data);
     var updateUrl = Uri.parse(
-        "$mainUrl/finances/transactions/banques/update-transaction-creance/");
+        "$mainUrl/finances/transactions/creances/update-transaction-creance/");
 
     var res = await client.put(updateUrl,
         headers: <String, String>{
@@ -115,7 +109,7 @@ class CreanceApi {
     String? token = await UserSharedPref().getAccessToken();
 
     var deleteUrl = Uri.parse(
-        "$mainUrl/finances/transactions/banques/delete-transaction-creance/$id");
+        "$mainUrl/finances/transactions/creances/delete-transaction-creance/$id");
 
     var res = await client.delete(deleteUrl, headers: <String, String>{
       'Content-Type': 'application/json; charset=UTF-8',

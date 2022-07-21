@@ -613,7 +613,11 @@ final routes = <String, WidgetBuilder>{
   ExploitationRoutes.expVersement: (context) => const VersementProjet(),
   ExploitationRoutes.expVersementDetail: (context) =>
       const DetailVersementProjet(),
-  ExploitationRoutes.expVersementAdd: (context) => const AddVersementProjet(),
+  ExploitationRoutes.expVersementAdd: (context) {
+    final projetModel =
+        ModalRoute.of(context)!.settings.arguments as ProjetModel;
+    return AddVersementProjet(projetModel: projetModel);
+  },
   ExploitationRoutes.expTache: (context) => const TacheExp(),
   ExploitationRoutes.expTacheAdd: (context) => const AddTacheExp(),
   ExploitationRoutes.expTacheDetail: (context) => const DetailTache(),

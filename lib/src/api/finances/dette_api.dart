@@ -96,7 +96,7 @@ class DetteApi {
     var data = detteModel.toJson();
     var body = jsonEncode(data);
     var updateUrl = Uri.parse(
-        "$mainUrl/finances/transactions/banques/update-transaction-dette/");
+        "$mainUrl/finances/transactions/dettes/update-transaction-dette/");
 
     var res = await client.put(updateUrl,
         headers: <String, String>{
@@ -115,7 +115,7 @@ class DetteApi {
     String? token = await UserSharedPref().getAccessToken();
 
     var deleteUrl = Uri.parse(
-        "$mainUrl/finances/transactions/banques/delete-transaction-dette/$id");
+        "$mainUrl/finances/transactions/dettes/delete-transaction-dette/$id");
 
     var res = await client.delete(deleteUrl, headers: <String, String>{
       'Content-Type': 'application/json; charset=UTF-8',
