@@ -157,6 +157,7 @@ class _ComMarketingState extends State<ComMarketing> {
                               context, ComMarketingRoutes.comMarketingAgenda);
                           // Navigator.of(context).pop();
                         }),
+                    if (userRole <= 3)
                     DrawerWidget(
                         selected: widget.pageCurrente ==
                             ComMarketingRoutes.comMarketingCampaign,
@@ -181,6 +182,7 @@ class _ComMarketingState extends State<ComMarketing> {
                     });
                   },
                   children: [
+                    if (userRole <= 3)
                     DrawerWidget(
                         selected: widget.pageCurrente ==
                             ComMarketingRoutes.comMarketingSuccursale,
@@ -193,6 +195,7 @@ class _ComMarketingState extends State<ComMarketing> {
                               ComMarketingRoutes.comMarketingSuccursale);
                           // Navigator.of(context).pop();
                         }),
+                        if (userRole <= 3)
                     DrawerWidget(
                         selected: widget.pageCurrente ==
                             ComMarketingRoutes.comMarketingProduitModel,
@@ -205,6 +208,7 @@ class _ComMarketingState extends State<ComMarketing> {
                               ComMarketingRoutes.comMarketingProduitModel);
                           // Navigator.of(context).pop();
                         }),
+                        if (userRole <= 3)
                     DrawerWidget(
                         selected: widget.pageCurrente ==
                             ComMarketingRoutes.comMarketingStockGlobal,
@@ -229,6 +233,7 @@ class _ComMarketingState extends State<ComMarketing> {
                               context, ComMarketingRoutes.comMarketingAchat);
                           // Navigator.of(context).pop();
                         }),
+                        if (userRole <= 3)
                     DrawerWidget(
                         selected: widget.pageCurrente ==
                             ComMarketingRoutes.comMarketingBonLivraison,
@@ -241,6 +246,7 @@ class _ComMarketingState extends State<ComMarketing> {
                               ComMarketingRoutes.comMarketingBonLivraison);
                           // Navigator.of(context).pop();
                         }),
+                        if (userRole <= 3)
                     DrawerWidget(
                         selected: widget.pageCurrente ==
                             ComMarketingRoutes.comMarketingRestitution,
@@ -330,6 +336,7 @@ class _ComMarketingState extends State<ComMarketing> {
                         }),
                   ],
                 ),
+                if (userRole <= 3)
                 DrawerWidget(
                     selected: widget.pageCurrente == RhRoutes.rhPerformence,
                     icon: Icons.multiline_chart_sharp,

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:fokad_admin/src/models/comm_maketing/agenda_model.dart';
+import 'package:fokad_admin/src/models/comm_maketing/campaign_model.dart';
+import 'package:fokad_admin/src/models/exploitations/projet_model.dart';
 import 'package:fokad_admin/src/models/logistiques/anguin_model.dart';
 import 'package:fokad_admin/src/models/logistiques/entretien_model.dart';
 import 'package:fokad_admin/src/models/logistiques/trajet_model.dart';
@@ -602,7 +604,11 @@ final routes = <String, WidgetBuilder>{
   ExploitationRoutes.expDashboard: (context) => const DashboardExp(),
   ExploitationRoutes.expProjetAdd: (context) => const AddProjetExp(),
   ExploitationRoutes.expProjet: (context) => const ProjetsExp(),
-  ExploitationRoutes.expProjetUpdate: (context) => const UpdateProjet(),
+  ExploitationRoutes.expProjetUpdate: (context) {
+    final projetModel =
+        ModalRoute.of(context)!.settings.arguments as ProjetModel;
+    return UpdateProjet(projetModel: projetModel);
+  },
   ExploitationRoutes.expProjetDetail: (context) => const DetailProjet(),
   ExploitationRoutes.expVersement: (context) => const VersementProjet(),
   ExploitationRoutes.expVersementDetail: (context) =>
@@ -637,8 +643,11 @@ final routes = <String, WidgetBuilder>{
   ComMarketingRoutes.comMarketingCampaignAdd: (context) => const AddCampaign(),
   ComMarketingRoutes.comMarketingCampaignDetail: (context) =>
       const DetailCampaign(),
-  ComMarketingRoutes.comMarketingCampaignUpdate: (context) =>
-      const UpdateCampaign(),
+  ComMarketingRoutes.comMarketingCampaignUpdate: (context) {
+    final campaignModel =
+        ModalRoute.of(context)!.settings.arguments as CampaignModel;
+    return UpdateCampaign(campaignModel: campaignModel);
+  },
 
   // Commercial
   ComMarketingRoutes.comMarketingProduitModel: (context) =>

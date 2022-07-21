@@ -178,6 +178,7 @@ class _DetailCampaignState extends State<DetailCampaign> {
                         children: [
                           Row(
                             children: [
+                              if(data.approbationDD == "-")
                               editButton(data),
                               // PrintWidget(
                               //     tooltip: 'Imprimer le document',

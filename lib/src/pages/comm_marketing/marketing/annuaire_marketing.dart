@@ -132,6 +132,24 @@ class _AnnuaireMarketingState extends State<AnnuaireMarketing> {
                                                         fontSize: 16),
                                               ),
                                             ),
+                                            Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.end,
+                                              children: [
+                                                PrintWidget(onPressed: () {
+                                                  AnnuaireXlsx()
+                                                      .exportToExcel(dataList);
+                                                  if (!mounted) return;
+                                                  ScaffoldMessenger.of(context)
+                                                      .showSnackBar(SnackBar(
+                                                    content: const Text(
+                                                        "Exportation effectué!"),
+                                                    backgroundColor:
+                                                        Colors.green[700],
+                                                  ));
+                                                })
+                                              ],
+                                            ),
                                           ],
                                         )
                                       : ListView.builder(
@@ -177,19 +195,6 @@ class _AnnuaireMarketingState extends State<AnnuaireMarketing> {
     final color = _lightColors[index % _lightColors.length];
     return Column(
       children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.end,
-          children: [
-            PrintWidget(onPressed: () {
-              AnnuaireXlsx().exportToExcel(dataList);
-              if (!mounted) return;
-              ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                content: const Text("Exportation effectué!"),
-                backgroundColor: Colors.green[700],
-              ));
-            })
-          ],
-        ),
         GestureDetector(
             onTap: () {
               Navigator.of(context).pushNamed(

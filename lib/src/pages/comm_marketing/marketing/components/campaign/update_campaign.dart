@@ -16,7 +16,8 @@ import 'package:fokad_admin/src/widgets/title_widget.dart';
 import 'package:intl/intl.dart';
 
 class UpdateCampaign extends StatefulWidget {
-  const UpdateCampaign({Key? key}) : super(key: key);
+  const UpdateCampaign({Key? key, required this.campaignModel}) : super(key: key);
+  final CampaignModel campaignModel;
 
   @override
   State<UpdateCampaign> createState() => _UpdateCampaignState();
@@ -50,7 +51,13 @@ class _UpdateCampaignState extends State<UpdateCampaign> {
   @override
   initState() {
     getData();
-    setState(() {});
+    setState(() {
+        typeProduitController = TextEditingController(text: widget.campaignModel.typeProduit);
+      coutCampaignController = TextEditingController(text: widget.campaignModel.coutCampaign);
+      lieuCibleController = TextEditingController(text: widget.campaignModel.lieuCible);
+      promotionController = TextEditingController(text: widget.campaignModel.promotion);
+      objectifsController = TextEditingController(text: widget.campaignModel.objectifs);
+    });
     super.initState();
   }
 
@@ -81,12 +88,8 @@ class _UpdateCampaignState extends State<UpdateCampaign> {
 
   @override
   Widget build(BuildContext context) {
-    final data = ModalRoute.of(context)!.settings.arguments as CampaignModel;
-    typeProduitController = TextEditingController(text: data.typeProduit);
-    coutCampaignController = TextEditingController(text: data.coutCampaign);
-    lieuCibleController = TextEditingController(text: data.lieuCible);
-    promotionController = TextEditingController(text: data.promotion);
-    objectifsController = TextEditingController(text: data.objectifs);
+    
+    
 
     return Scaffold(
         key: _key,
@@ -120,7 +123,7 @@ class _UpdateCampaignState extends State<UpdateCampaign> {
                           Expanded(
                               flex: 5,
                               child: CustomAppbar(
-                                  title: data.typeProduit,
+                                  title: widget.campaignModel.typeProduit,
                                   controllerMenu: () =>
                                       _key.currentState!.openDrawer())),
                         ],
@@ -128,7 +131,7 @@ class _UpdateCampaignState extends State<UpdateCampaign> {
                       Expanded(
                           child: Scrollbar(
                         controller: _controllerScroll,
-                        child: addPageWidget(data),
+                        child: addPageWidget(),
                       ))
                     ],
                   ),
@@ -139,7 +142,7 @@ class _UpdateCampaignState extends State<UpdateCampaign> {
         ));
   }
 
-  Widget addPageWidget(CampaignModel data) {
+  Widget addPageWidget() {
     return Form(
       key: _formKey,
       child: Row(
@@ -156,7 +159,7 @@ class _UpdateCampaignState extends State<UpdateCampaign> {
                 child: ListView(
                   controller: _controllerScroll,
                   children: [
-                    TitleWidget(title: data.typeProduit),
+                    TitleWidget(title: widget.campaignModel.typeProduit),
                     const SizedBox(
                       height: p20,
                     ),
@@ -199,7 +202,7 @@ class _UpdateCampaignState extends State<UpdateCampaign> {
                         press: () {
                           final form = _formKey.currentState!;
                           if (form.validate()) {
-                            submit(data);
+                            submit();
                             form.reset();
                           }
                         })
@@ -393,9 +396,9 @@ class _UpdateCampaignState extends State<UpdateCampaign> {
         ));
   }
 
-  Future<void> submit(CampaignModel data) async {
+  Future<void> submit() async {
     final campaignModel = CampaignModel(
-      id: data.id!,
+        id: widget.campaignModel.id!,
         typeProduit: typeProduitController.text,
         dateDebutEtFin:
             "Du ${DateFormat('dd/MM/yyyy').format(dateRange!.start)} - Au ${DateFormat('dd/MM/yyyy').format(dateRange!.end)}",
@@ -405,7 +408,7 @@ class _UpdateCampaignState extends State<UpdateCampaign> {
         objectifs: objectifsController.text,
         observation: 'false',
         signature: user!.matricule.toString(),
-        createdRef: data.createdRef,
+        createdRef: widget.campaignModel.createdRef,
         created: DateTime.now(),
         approbationDG: '-',
         motifDG: '-',
