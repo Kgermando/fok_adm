@@ -191,6 +191,16 @@ class _CartPageState extends State<CartPage> {
 
     return Container(
       padding: const EdgeInsets.only(top: 10.0, bottom: 10.0),
+      // decoration: BoxDecoration(
+      //   borderRadius: BorderRadius.circular(10),
+      //   color: Colors.white,
+      //   border: const Border(
+      //     left: BorderSide(
+      //       color: Colors.green,
+      //       width: 3,
+      //     ),
+      //   ),
+      // ),
       child: Text(
         'Total: ${NumberFormat.decimalPattern('fr').format(sumCart)} \$',
         textAlign: TextAlign.center,
@@ -252,7 +262,7 @@ class _CartPageState extends State<CartPage> {
   Future<void> factureData() async {
     final jsonList = listDataCart.map((item) => jsonEncode(item)).toList();
     final factureCartModel = FactureCartModel(
-        cart: jsonList,
+        cart: listDataCart,
         client: '$numberFacture',
         succursale: user.succursale.toString(),
         signature: user.matricule.toString(),

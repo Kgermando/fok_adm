@@ -209,7 +209,7 @@ class _DetailDetteState extends State<DetailDette> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  TitleWidget(title: data.libelle),
+                  // TitleWidget(title: data.libelle),
                   Column(
                     children: [
                       SelectableText(
