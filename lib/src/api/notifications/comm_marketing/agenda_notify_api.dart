@@ -12,17 +12,18 @@ import 'package:http/http.dart' as http;
 class AgendaNotifyApi extends ChangeNotifier {
   var client = http.Client();
 
-  var getDDUrl = Uri.parse("$agendasNotifyUrl/get-count/");
 
-  Future<NotifyModel> getCount() async {
+  Future<NotifyModel> getCount(String matricule) async {
     String? token = await UserSharedPref().getAccessToken();
     if (token!.isNotEmpty) {
       var splittedJwt = token.split(".");
       var payload = json.decode(
           ascii.decode(base64.decode(base64.normalize(splittedJwt[1]))));
     }
+
+    var getUrl = Uri.parse("$agendasNotifyUrl/get-count/$matricule");
     var resp = await client.get(
-      getDDUrl,
+      getUrl,
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
         'Authorization': 'Bearer $token'
@@ -33,7 +34,7 @@ class AgendaNotifyApi extends ChangeNotifier {
       return NotifyModel.fromJson(json.decode(resp.body));
     } else if (resp.statusCode == 401) {
       await AuthApi().refreshAccessToken();
-      return getCount();
+      return getCount(matricule);
     } else {
       throw Exception(resp.statusCode);
     }

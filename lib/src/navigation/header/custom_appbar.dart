@@ -57,7 +57,7 @@ class _CustomAppbarState extends State<CustomAppbar> {
     var cartCountNotify = await CartNotifyApi().getCount(userModel.matricule);
     var tacheCountNotify = await TacheNotifyApi().getCount(userModel.matricule);
     var mailsCountNotify = await MailsNotifyApi().getCount(userModel.email);
-    var agendaCountNotify = await AgendaNotifyApi().getCount();
+    var agendaCountNotify = await AgendaNotifyApi().getCount(userModel.matricule);
     if (mounted) {
       setState(() {
         agendaCount = agendaCountNotify.count;
