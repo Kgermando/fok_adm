@@ -156,13 +156,14 @@ class _DetailAgendaState extends State<DetailAgenda> {
         if (isLoading) return;
         Navigator.of(context).pushNamed(
             ComMarketingRoutes.comMarketingAgendaUpdate,
-            arguments: AgendaColor(
+            arguments: AgendaColor( 
                 agendaModel: agendaColor.agendaModel,
                 color: agendaColor.color));
       });
 
   Widget deleteButton(AgendaColor agendaColor) {
     return IconButton(
+      color: Colors.red.shade700,
       icon: const Icon(Icons.delete),
       tooltip: "Suppression",
       onPressed: () => showDialog<String>(

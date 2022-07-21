@@ -69,7 +69,7 @@ class _TransportRestaurationPageState extends State<TransportRestaurationPage> {
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
                       children: <Widget>[
-                        const TitleWidget(title: "Créez la liste de payement"),
+                        const TitleWidget(title: "Créez la liste de paiement"),
                         const SizedBox(
                           height: p20,
                         ),
@@ -169,7 +169,8 @@ class _TransportRestaurationPageState extends State<TransportRestaurationPage> {
         motifDD: '-',
         signatureDD: '-',
         ligneBudgetaire: '-',
-        ressource: '-'
+        ressource: '-',
+        isSubmit: 'false'
       );
     await TransportRestaurationApi().insertData(transRest);
     Navigator.pop(context);

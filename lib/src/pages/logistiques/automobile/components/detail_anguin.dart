@@ -192,11 +192,11 @@ class _DetailAnguinState extends State<DetailAnguin> {
                                 onPressed: () {
                                   Navigator.push(context,
                                       MaterialPageRoute(builder: (context) => UpdateEngin(engin: data)));
-                                  // Navigator.pushNamed(
-                                  //     context,
-                                  //     LogistiqueRoutes
-                                  //         .logImmobilierMaterielUpdate,
-                                  //     arguments: data);
+                                  Navigator.pushNamed(
+                                      context,
+                                      LogistiqueRoutes
+                                          .logImmobilierMaterielUpdate,
+                                      arguments: data);
                                 },
                                 icon: const Icon(Icons.edit)),
                             IconButton(

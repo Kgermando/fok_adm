@@ -11,8 +11,8 @@ import 'package:fokad_admin/src/navigation/header/custom_appbar.dart';
 import 'package:fokad_admin/src/widgets/btn_widget.dart';
 
 class UpdateAgenda extends StatefulWidget {
-  const UpdateAgenda({Key? key, this.agendaModel}) : super(key: key);
-  final AgendaModel? agendaModel;
+  const UpdateAgenda({Key? key, required this.agendaColor}) : super(key: key);
+  final AgendaColor agendaColor;
 
   @override
   State<UpdateAgenda> createState() => _UpdateAgendaState();
@@ -31,13 +31,12 @@ class _UpdateAgendaState extends State<UpdateAgenda> {
   @override
   void initState() {
     getData();
-    setState(() {
-      id = widget.agendaModel!.id;
-      titleController = TextEditingController(text: widget.agendaModel!.title);
+    setState(() { 
+      titleController = TextEditingController(text: widget.agendaColor.agendaModel.title);
       descriptionController =
-          TextEditingController(text: widget.agendaModel!.description);
+          TextEditingController(text: widget.agendaColor.agendaModel.description);
       dateRappelController =
-          TextEditingController(text: widget.agendaModel!.dateRappel.toIso8601String());
+          TextEditingController(text: widget.agendaColor.agendaModel.dateRappel.toIso8601String());
     });
     super.initState();
   }
@@ -60,6 +59,7 @@ class _UpdateAgendaState extends State<UpdateAgenda> {
 
   @override
   Widget build(BuildContext context) {
+    
     return Scaffold(
         key: _key,
         drawer: const DrawerMenu(),
@@ -79,7 +79,7 @@ class _UpdateAgendaState extends State<UpdateAgenda> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       CustomAppbar(
-                          title: widget.agendaModel!.title,
+                          title: widget.agendaColor.agendaModel.title,
                           controllerMenu: () =>
                               _key.currentState!.openDrawer()),
                       Expanded(

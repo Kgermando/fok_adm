@@ -191,11 +191,11 @@ class _TableTansportRestaurantDDState extends State<TableTansportRestaurantDD> {
   }
 
   Future agentsRow() async {
-    var dataList = await TransportRestaurationApi().getAllData();
+    var transRests = await TransportRestaurationApi().getAllData();
 
     // Uniquement ceux qui ont déjà été approuvé
     var data =
-        dataList.where((element) => element.approbationDD == '-').toList();
+        transRests.where((element) => element.approbationDD == '-' && element.isSubmit == 'true').toList();
 
     if (mounted) {
       setState(() {

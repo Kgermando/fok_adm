@@ -154,7 +154,7 @@ class _AddEntretienPageState extends State<AddEntretienPage> {
                                     Expanded(
                                       child: CustomAppbar(
                                           title:
-                                              'Nouveau entretien / Maintenance',
+                                              'Entretien / Maintenance',
                                           controllerMenu: () =>
                                               _key.currentState!.openDrawer()),
                                     ),
@@ -197,9 +197,8 @@ class _AddEntretienPageState extends State<AddEntretienPage> {
                   children: [
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        const TitleWidget(title: "Entretiens & Maintenance"),
-                        PrintWidget(onPressed: () {})
+                      children: const [
+                        TitleWidget(title: "Entretiens & Maintenance"),
                       ],
                     ),
                     const SizedBox(

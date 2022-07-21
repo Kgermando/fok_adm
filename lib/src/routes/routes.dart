@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:fokad_admin/src/models/comm_maketing/agenda_model.dart';
+import 'package:fokad_admin/src/models/logistiques/anguin_model.dart';
+import 'package:fokad_admin/src/models/logistiques/entretien_model.dart';
+import 'package:fokad_admin/src/models/logistiques/trajet_model.dart';
 import 'package:fokad_admin/src/pages/administration/actionnaires/actionnaires_page.dart';
 import 'package:fokad_admin/src/pages/administration/actionnaires/components/detail_actionnaire.dart';
 import 'package:fokad_admin/src/pages/administration/budgets_admin.dart';
@@ -130,6 +134,7 @@ import 'package:fokad_admin/src/pages/logistiques/dashboard/dashboard_log.dart';
 import 'package:fokad_admin/src/pages/logistiques/entretiens/add_entretien.dart';
 import 'package:fokad_admin/src/pages/logistiques/entretiens/components/detail_entretiien.dart';
 import 'package:fokad_admin/src/pages/logistiques/entretiens/entretien_page.dart';
+import 'package:fokad_admin/src/pages/logistiques/entretiens/update_entretien.dart';
 import 'package:fokad_admin/src/pages/logistiques/etat_besoin/etat_besoin_log_page.dart';
 import 'package:fokad_admin/src/pages/logistiques/log_dd/log_dd.dart';
 import 'package:fokad_admin/src/pages/logistiques/materiels/add_etat_materiel.dart';
@@ -309,6 +314,7 @@ class LogistiqueRoutes {
   static const logAddEntretien = "/log-add-entretien";
   static const logEntretien = "/log-entretien";
   static const logEntretienDetail = "/log-entretien-detail";
+  static const logEntretienUpdate = "/log-entretien-update";
   static const logAddEtatMateriel = "/log-add-etat-materiel";
   static const logEtatMateriel = "/log-etat-materiel";
   static const logEtatMaterielDetail = "/log-etat-materiel-detail";
@@ -545,17 +551,29 @@ final routes = <String, WidgetBuilder>{
   LogistiqueRoutes.logAddAnguinAuto: (context) => const AddAnguinAuto(),
   LogistiqueRoutes.logAnguinAuto: (context) => const AnguinAuto(),
   LogistiqueRoutes.logAnguinAutoDetail: (context) => const DetailAnguin(),
-  LogistiqueRoutes.logAnguinAutoUpdate: (context) => const UpdateEngin(),
+  LogistiqueRoutes.logAnguinAutoUpdate: (context) {
+    final engin = ModalRoute.of(context)!.settings.arguments as AnguinModel;
+    return UpdateEngin(engin: engin);
+  },
   LogistiqueRoutes.logAddCarburantAuto: (context) => const AddCarburantAuto(),
   LogistiqueRoutes.logCarburantAuto: (context) => const CarburantAuto(),
   LogistiqueRoutes.logCarburantAutoDetail: (context) => const DetailCaburant(),
   LogistiqueRoutes.logAddTrajetAuto: (context) => const AddTrajetAuto(),
   LogistiqueRoutes.logTrajetAuto: (context) => const TrajetAuto(),
   LogistiqueRoutes.logTrajetAutoDetail: (context) => const DetailTrajet(),
-  LogistiqueRoutes.logTrajetAutoUpdate: (context) => const UpdateTrajet(),
+  LogistiqueRoutes.logTrajetAutoUpdate: (context) {
+    final trajetModel =
+        ModalRoute.of(context)!.settings.arguments as TrajetModel;
+    return UpdateTrajet(trajetModel: trajetModel);
+  },
   LogistiqueRoutes.logAddEntretien: (context) => const AddEntretienPage(),
   LogistiqueRoutes.logEntretien: (context) => const EntretienPage(),
   LogistiqueRoutes.logEntretienDetail: (context) => const DetailEntretien(),
+  LogistiqueRoutes.logEntretienUpdate: (context) {
+    final entretienModel =
+        ModalRoute.of(context)!.settings.arguments as EntretienModel;
+    return UpdateEntretien(entretienModel: entretienModel);
+  },
   LogistiqueRoutes.logAddEtatMateriel: (context) => const AddEtatMateriel(),
   LogistiqueRoutes.logEtatMateriel: (context) => const EtatMateriel(),
   LogistiqueRoutes.logEtatMaterielDetail: (context) =>
@@ -595,6 +613,7 @@ final routes = <String, WidgetBuilder>{
   ExploitationRoutes.expTacheDetail: (context) => const DetailTache(),
 
   // Marketing
+
   ComMarketingRoutes.comMarketingDD: (context) => const CMDD(),
   ComMarketingRoutes.comMarketingDashboard: (context) => const ComMarketing(),
   ComMarketingRoutes.comMarketingAnnuaire: (context) =>
@@ -608,8 +627,11 @@ final routes = <String, WidgetBuilder>{
   ComMarketingRoutes.comMarketingAgendaAdd: (context) => const AddAgenda(),
   ComMarketingRoutes.comMarketingAgendaDetail: (context) =>
       const DetailAgenda(),
-  ComMarketingRoutes.comMarketingAgendaUpdate: (context) =>
-      const UpdateAgenda(),
+  ComMarketingRoutes.comMarketingAgendaUpdate: (context) {
+    AgendaColor agendaColor =
+        ModalRoute.of(context)!.settings.arguments as AgendaColor;
+    return UpdateAgenda(agendaColor: agendaColor);
+  },
   ComMarketingRoutes.comMarketingCampaign: (context) =>
       const CampaignMarketing(),
   ComMarketingRoutes.comMarketingCampaignAdd: (context) => const AddCampaign(),

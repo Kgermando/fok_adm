@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -14,6 +16,7 @@ import 'package:fokad_admin/src/models/rh/transport_restauration_model.dart';
 import 'package:fokad_admin/src/models/users/user_model.dart';
 import 'package:fokad_admin/src/navigation/drawer/drawer_menu.dart';
 import 'package:fokad_admin/src/navigation/header/custom_appbar.dart';
+import 'package:fokad_admin/src/pages/rh/transport_restauration/components/transport_rest_pdf.dart';
 import 'package:fokad_admin/src/utils/loading.dart';
 import 'package:fokad_admin/src/widgets/print_widget.dart';
 import 'package:fokad_admin/src/widgets/title_widget.dart';
@@ -51,14 +54,20 @@ class _DetailTransportRestaurantState extends State<DetailTransportRestaurant> {
   String? ligneBudgtaire;
   String? ressource;
 
+  Timer? timer;
+
   @override
   initState() {
     getData();
+    timer = Timer.periodic(const Duration(seconds: 1), (timer) {
+      getDataTransRest();
+    });
     super.initState();
   }
 
   @override
   void dispose() {
+    timer!.cancel();
     nomController.dispose();
     prenomController.dispose();
     matriculeController.dispose();
@@ -84,21 +93,28 @@ class _DetailTransportRestaurantState extends State<DetailTransportRestaurant> {
       createdAt: DateTime.now(),
       passwordHash: '-',
       succursale: '-');
-      
-  List<TransRestAgentsModel> transRestAgentsList = [];
-  List<TransRestAgentsModel> transRestAgentsFilter = [];
+
   List<DepartementBudgetModel> departementsList = [];
   List<LigneBudgetaireModel> ligneBudgetaireList = [];
   Future<void> getData() async {
     UserModel userModel = await AuthApi().getUserId();
-    var transRestAgents = await TransRestAgentsApi().getAllData();
     var departements = await DepeartementBudgetApi().getAllData();
     var budgets = await LIgneBudgetaireApi().getAllData();
     setState(() {
       user = userModel;
-      transRestAgentsFilter = transRestAgents;
       departementsList = departements;
-      ligneBudgetaireList = budgets; 
+      ligneBudgetaireList = budgets;
+    });
+  }
+
+  List<TransRestAgentsModel> transRestAgentsList = [];
+  List<TransRestAgentsModel> transRestAgentsFilter = [];
+  Future<void> getDataTransRest() async {
+    UserModel userModel = await AuthApi().getUserId();
+    var transRestAgents = await TransRestAgentsApi().getAllData();
+    setState(() {
+      user = userModel;
+      transRestAgentsFilter = transRestAgents;
     });
   }
 
@@ -218,15 +234,15 @@ class _DetailTransportRestaurantState extends State<DetailTransportRestaurant> {
                     children: [
                       Row(
                         children: [
-                          // IconButton(
-                          //     onPressed: () {
-                          //       Navigator.pushNamed(
-                          //           context, RhRoutes.rhTransportRest);
-                          //     },
-                          //     icon: Icon(Icons.refresh, color: Colors.green.shade700)),
-                          PrintWidget(
-                              tooltip: 'Imprimer le document',
-                              onPressed: () {}),
+                          IconButton(
+                            color: Colors.green.shade700,
+                            onPressed: () {
+                            sendDD(data);
+                          }, icon: const Icon(Icons.send)),
+                          PrintWidget(onPressed: () async {
+                            await TransRestPdf.generate(
+                                transRestAgentsList, data);
+                          }),
                         ],
                       ),
                       SelectableText(
@@ -365,9 +381,16 @@ class _DetailTransportRestaurantState extends State<DetailTransportRestaurant> {
       padding: const EdgeInsets.all(p10),
       child: Table(
         border: TableBorder.all(),
+        columnWidths: const {
+          0: FlexColumnWidth(3),
+          1: FlexColumnWidth(3),
+          2: FlexColumnWidth(2),
+          3: FlexColumnWidth(2),
+          4: FlexColumnWidth(1),
+        },
         children: [
           tableRowHeader(),
-          for (var item in transRestAgentsList) tableRow(item)
+          for (var item in transRestAgentsList) tableRow(item, data)
         ],
       ),
     );
@@ -398,7 +421,8 @@ class _DetailTransportRestaurantState extends State<DetailTransportRestaurant> {
     ]);
   }
 
-  TableRow tableRow(TransRestAgentsModel item) {
+  TableRow tableRow(
+      TransRestAgentsModel item, TransportRestaurationModel data) {
     return TableRow(children: [
       Container(
         padding: const EdgeInsets.all(p10),
@@ -419,15 +443,17 @@ class _DetailTransportRestaurantState extends State<DetailTransportRestaurant> {
       ),
       Container(
         padding: const EdgeInsets.all(p10),
-        child: IconButton(
-            color: Colors.red.shade700,
-            onPressed: () async {
-              setState(() {
-                isDeleting = true;
-              });
-              await TransRestAgentsApi().deleteData(item.id!).then((value) => isDeleting = false);
-            },
-            icon: const Icon(Icons.delete)),
+        child: (data.approbationDD == "Approved")
+            ? Icon(Icons.check_box, color: Colors.green.shade700)
+            : IconButton(
+                color: Colors.red.shade700,
+                onPressed: () async {
+                  setState(() {
+                    isDeleting = true;
+                  });
+                  await TransRestAgentsApi().deleteData(item.id!);
+                },
+                icon: const Icon(Icons.delete)),
       ),
     ]);
   }
@@ -576,6 +602,38 @@ class _DetailTransportRestaurantState extends State<DetailTransportRestaurant> {
         ));
   }
 
+  Future<void> sendDD(TransportRestaurationModel data) async {
+    final transRest = TransportRestaurationModel(
+        id: data.id!,
+        title: data.title,
+        observation: 'true',
+        signature: data.signature,
+        createdRef: data.createdRef,
+        created: DateTime.now(),
+        approbationDG: data.approbationDG,
+        motifDG: data.motifDG,
+        signatureDG: data.signatureDG,
+        approbationBudget: data.approbationBudget,
+        motifBudget: data.motifBudget,
+        signatureBudget: data.signatureBudget,
+        approbationFin: data.approbationFin,
+        motifFin: data.motifFin,
+        signatureFin: data.signatureFin,
+        approbationDD: data.approbationDD,
+        motifDD: data.motifDD,
+        signatureDD: data.signatureDD,
+        ligneBudgetaire: data.ligneBudgetaire,
+        ressource: data.ressource,
+        isSubmit: 'true'
+    );
+    await TransportRestaurationApi().updateData(transRest);
+    Navigator.pop(context);
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      content: const Text("Soumis avec succès!"),
+      backgroundColor: Colors.green[700],
+    ));
+  }
+
   Future<void> submitObservation(TransportRestaurationModel data) async {
     final transRest = TransportRestaurationModel(
         id: data.id!,
@@ -597,7 +655,8 @@ class _DetailTransportRestaurantState extends State<DetailTransportRestaurant> {
         motifDD: data.motifDD,
         signatureDD: data.signatureDD,
         ligneBudgetaire: data.ligneBudgetaire,
-        ressource: data.ressource);
+        ressource: data.ressource,
+        isSubmit: data.isSubmit);
     await TransportRestaurationApi().updateData(transRest);
     Navigator.pop(context);
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
@@ -1305,7 +1364,7 @@ class _DetailTransportRestaurantState extends State<DetailTransportRestaurant> {
         motifDD: data.motifDD,
         signatureDD: data.signatureDD,
         ligneBudgetaire: '-',
-        ressource: '-');
+        ressource: '-', isSubmit: data.isSubmit);
     await TransportRestaurationApi().updateData(transRest);
     Navigator.pop(context);
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
@@ -1335,7 +1394,8 @@ class _DetailTransportRestaurantState extends State<DetailTransportRestaurant> {
         motifDD: (motifDDController.text == '') ? '-' : motifDDController.text,
         signatureDD: user.matricule,
         ligneBudgetaire: '-',
-        ressource: '-');
+        ressource: '-',
+        isSubmit: data.isSubmit);
     await TransportRestaurationApi().updateData(transRest);
     Navigator.pop(context);
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
@@ -1368,7 +1428,8 @@ class _DetailTransportRestaurantState extends State<DetailTransportRestaurant> {
         signatureDD: data.signatureDD,
         ligneBudgetaire:
             (ligneBudgtaire.toString() == '') ? '-' : ligneBudgtaire.toString(),
-        ressource: (ressource.toString() == '') ? '-' : ressource.toString());
+        ressource: (ressource.toString() == '') ? '-' : ressource.toString(),
+        isSubmit: data.isSubmit);
     await TransportRestaurationApi().updateData(transRest);
     Navigator.pop(context);
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
@@ -1399,7 +1460,8 @@ class _DetailTransportRestaurantState extends State<DetailTransportRestaurant> {
         motifDD: data.motifDD,
         signatureDD: data.signatureDD,
         ligneBudgetaire: data.ligneBudgetaire,
-        ressource: data.ressource);
+        ressource: data.ressource,
+        isSubmit: data.isSubmit);
     await TransportRestaurationApi().updateData(transRest);
     Navigator.pop(context);
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(

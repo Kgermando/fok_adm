@@ -11,8 +11,8 @@ import 'package:fokad_admin/src/widgets/btn_widget.dart';
 import 'package:fokad_admin/src/widgets/print_widget.dart';
 
 class UpdateTrajet extends StatefulWidget {
-  const UpdateTrajet({Key? key, this.trajetModel}) : super(key: key);
-  final TrajetModel? trajetModel;
+  const UpdateTrajet({Key? key, required this.trajetModel}) : super(key: key);
+  final TrajetModel trajetModel;
 
   @override
   State<UpdateTrajet> createState() => _UpdateTrajetState();
@@ -35,13 +35,13 @@ class _UpdateTrajetState extends State<UpdateTrajet> {
   initState() {
     getData();
     nomeroEntrepriseController =
-        TextEditingController(text: widget.trajetModel!.nomeroEntreprise);
-    nomUtilisateurController = TextEditingController(text: widget.trajetModel!.nomUtilisateur);
-    trajetDeController = TextEditingController(text: widget.trajetModel!.trajetDe);
-    trajetAController = TextEditingController(text: widget.trajetModel!.trajetA);
-    missionController = TextEditingController(text: widget.trajetModel!.mission);
+        TextEditingController(text: widget.trajetModel.nomeroEntreprise);
+    nomUtilisateurController = TextEditingController(text: widget.trajetModel.nomUtilisateur);
+    trajetDeController = TextEditingController(text: widget.trajetModel.trajetDe);
+    trajetAController = TextEditingController(text: widget.trajetModel.trajetA);
+    missionController = TextEditingController(text: widget.trajetModel.mission);
     kilometrageSoriteController =
-        TextEditingController(text: widget.trajetModel!.kilometrageSorite);
+        TextEditingController(text: widget.trajetModel.kilometrageSorite);
     super.initState();
   }
 
@@ -358,16 +358,16 @@ class _UpdateTrajetState extends State<UpdateTrajet> {
 
   Future<void> submit() async {
     final trajetModel = TrajetModel(
-        id: widget.trajetModel!.id!,
-        nomeroEntreprise: widget.trajetModel!.nomeroEntreprise,
-        nomUtilisateur: widget.trajetModel!.nomUtilisateur,
-        trajetDe: widget.trajetModel!.trajetDe,
-        trajetA: widget.trajetModel!.trajetA,
-        mission: widget.trajetModel!.mission,
-        kilometrageSorite: widget.trajetModel!.kilometrageSorite,
+        id: widget.trajetModel.id!,
+        nomeroEntreprise: widget.trajetModel.nomeroEntreprise,
+        nomUtilisateur: widget.trajetModel.nomUtilisateur,
+        trajetDe: widget.trajetModel.trajetDe,
+        trajetA: widget.trajetModel.trajetA,
+        mission: widget.trajetModel.mission,
+        kilometrageSorite: widget.trajetModel.kilometrageSorite,
         kilometrageRetour: kilometrageRetourController.text,
         signature: signature.toString(),
-        createdRef: widget.trajetModel!.createdRef,
+        createdRef: widget.trajetModel.createdRef,
         created: DateTime.now(),
         approbationDD: '-',
         motifDD: '-',

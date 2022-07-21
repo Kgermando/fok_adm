@@ -50,7 +50,8 @@ class _TableTansportRestaurantFinState
                 element.approbationDG == 'Approved' &&
                 element.approbationDD == 'Approved' &&
                 element.approbationBudget == 'Approved' &&
-                element.approbationFin == '-')
+                element.approbationFin == '-'  &&
+                element.isSubmit == 'true')
             .toList();
       });
     }
@@ -205,7 +206,8 @@ class _TableTansportRestaurantFinState
             element.approbationDG == 'Approved' &&
             element.approbationDD == 'Approved' &&
             element.approbationBudget == 'Approved' &&
-            element.approbationFin == '-')
+            element.approbationFin == '-' &&
+            element.isSubmit == 'true')
         .toList();
 
     if (mounted) {

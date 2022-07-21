@@ -200,7 +200,8 @@ class _TableTansportRestaurantAdminState
     // Uniquement ceux qui ont déjà été approuvé
     var data = dataList
         .where((element) =>
-            element.approbationDD == 'Approved' && element.approbationDG == '-')
+            element.approbationDD == 'Approved' && element.approbationDG == '-' &&
+            element.isSubmit == 'true')
         .toList();
 
     if (mounted) {

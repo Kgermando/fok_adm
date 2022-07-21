@@ -14,8 +14,8 @@ import 'package:fokad_admin/src/widgets/btn_widget.dart';
 import 'package:fokad_admin/src/widgets/title_widget.dart';
 
 class UpdateEngin extends StatefulWidget {
-  const UpdateEngin({Key? key, this.engin}) : super(key: key);
-  final AnguinModel? engin;
+  const UpdateEngin({Key? key, required this.engin}) : super(key: key);
+  final AnguinModel engin;
 
   @override
   State<UpdateEngin> createState() => _UpdateEnginState();
@@ -56,27 +56,27 @@ class _UpdateEnginState extends State<UpdateEngin> {
     if (mounted) {
       setState(() {
         signature = userModel.matricule;
-        nomController = TextEditingController(text: widget.engin!.nom);
-        modeleController = TextEditingController(text: widget.engin!.modele);
-        marqueController = TextEditingController(text: widget.engin!.marque);
+        nomController = TextEditingController(text: widget.engin.nom);
+        modeleController = TextEditingController(text: widget.engin.modele);
+        marqueController = TextEditingController(text: widget.engin.marque);
         numeroChassieController =
-            TextEditingController(text: widget.engin!.numeroChassie);
-        couleurController = TextEditingController(text: widget.engin!.couleur);
-        genre = widget.engin!.genre;
+            TextEditingController(text: widget.engin.numeroChassie);
+        couleurController = TextEditingController(text: widget.engin.couleur);
+        genre = widget.engin.genre;
         qtyMaxReservoirController =
-            TextEditingController(text: widget.engin!.qtyMaxReservoir);
+            TextEditingController(text: widget.engin.qtyMaxReservoir);
         dateFabricationController = TextEditingController(
-            text: widget.engin!.dateFabrication.toIso8601String());
+            text: widget.engin.dateFabrication.toIso8601String());
         nomeroPLaqueController =
-            TextEditingController(text: widget.engin!.nomeroPLaque);
+            TextEditingController(text: widget.engin.nomeroPLaque);
         kilometrageInitialeController =
-            TextEditingController(text: widget.engin!.kilometrageInitiale);
+            TextEditingController(text: widget.engin.kilometrageInitiale);
         provenanceController =
-            TextEditingController(text: widget.engin!.provenance);
+            TextEditingController(text: widget.engin.provenance);
         typeCaburantController =
-            TextEditingController(text: widget.engin!.typeCaburant);
+            TextEditingController(text: widget.engin.typeCaburant);
         typeMoteurController =
-            TextEditingController(text: widget.engin!.typeMoteur);
+            TextEditingController(text: widget.engin.typeMoteur);
       });
     }
   }
@@ -469,7 +469,7 @@ class _UpdateEnginState extends State<UpdateEngin> {
     return Container(
         margin: const EdgeInsets.only(bottom: p20),
         child: Text(
-          "Identifiant N° ${widget.engin!.nomeroEntreprise}",
+          "Identifiant N° ${widget.engin.nomeroEntreprise}",
           style: Theme.of(context).textTheme.headline6,
         ));
   }
@@ -523,7 +523,7 @@ class _UpdateEnginState extends State<UpdateEngin> {
 
   Future<void> submit() async {
     final anguinModel = AnguinModel(
-        id: widget.engin!.id!,
+        id: widget.engin.id!,
         nom: nomController.text,
         modele: modeleController.text,
         marque: marqueController.text,
@@ -533,7 +533,7 @@ class _UpdateEnginState extends State<UpdateEngin> {
         qtyMaxReservoir: qtyMaxReservoirController.text,
         dateFabrication: DateTime.parse(dateFabricationController.text),
         nomeroPLaque: nomeroPLaqueController.text,
-        nomeroEntreprise: widget.engin!.nomeroEntreprise,
+        nomeroEntreprise: widget.engin.nomeroEntreprise,
         kilometrageInitiale: kilometrageInitialeController.text,
         provenance: provenanceController.text,
         typeCaburant: typeCaburantController.text,

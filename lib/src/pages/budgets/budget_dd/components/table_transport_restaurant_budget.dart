@@ -49,7 +49,8 @@ class _TableTansportRestaurantBudgetState
             .where((element) =>
                 element.approbationDG == 'Approved' &&
                 element.approbationDD == 'Approved' &&
-                element.approbationBudget == '-')
+                element.approbationBudget == '-' &&
+                element.isSubmit == 'true')
             .toList();
       });
     }
@@ -203,7 +204,8 @@ class _TableTansportRestaurantBudgetState
         .where((element) =>
             element.approbationDG == 'Approved' &&
             element.approbationDD == 'Approved' &&
-            element.approbationBudget == '-')
+            element.approbationBudget == '-' &&
+            element.isSubmit == 'true')
         .toList();
 
     if (mounted) {

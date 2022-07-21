@@ -172,10 +172,14 @@ class _DetailEntretienState extends State<DetailEntretien> {
                     children: [
                       Row(
                         children: [
-                          // IconButton(
-                          //     tooltip: 'Modifier',
-                          //     onPressed: () {},
-                          //     icon: const Icon(Icons.edit)),
+                          IconButton(
+                              tooltip: 'Modifier',
+                              onPressed: () {
+                                Navigator.pushNamed(context,
+                                    LogistiqueRoutes.logEntretienUpdate,
+                                    arguments: data);
+                              },
+                              icon: const Icon(Icons.edit)),
                           IconButton(
                               tooltip: 'Supprimer',
                               onPressed: () async {
