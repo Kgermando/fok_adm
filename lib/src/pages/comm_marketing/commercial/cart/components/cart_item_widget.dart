@@ -64,7 +64,7 @@ class _CartItemWidgetState extends State<CartItemWidget> {
 
   @override
   Widget build(BuildContext context) {
-    var role = int.parse(user.role) <= 3;
+    // var role = int.parse(user.role) <= 3;
     double sum = 0;
     var qtyRemise = double.parse(widget.cart.qtyRemise);
     var quantity = double.parse(widget.cart.quantityCart);
@@ -116,7 +116,7 @@ class _CartItemWidgetState extends State<CartItemWidget> {
                           Text(
                               'Total: ${NumberFormat.decimalPattern('fr').format(sum)} \$',
                               style: Theme.of(context).textTheme.bodyText1),
-                          if (role) onCancel(),
+                          onCancel(),
                         ],
                       ),
                     ),
@@ -170,7 +170,7 @@ class _CartItemWidgetState extends State<CartItemWidget> {
                             Text(
                                 '${NumberFormat.decimalPattern('fr').format(sum)} \$',
                                 style: Theme.of(context).textTheme.bodyText1),
-                            if (role) onCancel(),
+                            onCancel(),
                           ],
                         ))
                   ],

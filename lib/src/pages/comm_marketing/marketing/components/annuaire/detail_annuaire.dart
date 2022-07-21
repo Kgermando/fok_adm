@@ -213,7 +213,7 @@ class _DetailAnnuaireState extends State<DetailAnnuaire> {
                                                 child: Row(
                                                   mainAxisAlignment: MainAxisAlignment.end,
                                                   children: [
-editButton(annuaireColor),
+                                                      editButton(annuaireColor),
                                                       deleteButton(
                                                           annuaireColor)
                                                   ],

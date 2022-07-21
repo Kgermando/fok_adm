@@ -86,11 +86,7 @@ class _CartPageState extends State<CartPage> {
         drawer: const DrawerMenu(),
         floatingActionButton: (panierBtnList.isNotEmpty)
             ? speedialWidget()
-            : IconButton(
-                onPressed: () {},
-                icon: const Icon(Icons.do_not_disturb_alt_rounded),
-                color: themeColor,
-              ),
+            : Container(),
         body: SafeArea(
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -169,8 +165,8 @@ class _CartPageState extends State<CartPage> {
                               ],
                             );
                           } else {
-                            return const Center(
-                                child: CircularProgressIndicator());
+                            return Center(
+                                child: loading());
                           }
                         })),
               ),
@@ -198,7 +194,7 @@ class _CartPageState extends State<CartPage> {
       child: Text(
         'Total: ${NumberFormat.decimalPattern('fr').format(sumCart)} \$',
         textAlign: TextAlign.center,
-        style: const TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),
+        style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold, color: Colors.red.shade700),
       ),
     );
   }
@@ -218,13 +214,13 @@ class _CartPageState extends State<CartPage> {
             child: const Icon(Icons.inventory_rounded),
             foregroundColor: Colors.white,
             backgroundColor: Colors.teal.shade700,
-            label: 'Facture',
+            label: 'Vente',
             onPressed: factureData),
         SpeedDialChild(
             child: const Icon(Icons.print),
             foregroundColor: Colors.white,
             backgroundColor: Colors.teal.shade700,
-            label: 'Impression facture',
+            label: 'Vente avec facture',
             onPressed: () {
               if (isloading) return;
               factureData();
@@ -243,7 +239,7 @@ class _CartPageState extends State<CartPage> {
             child: const Icon(Icons.print),
             foregroundColor: Colors.white,
             backgroundColor: Colors.orange.shade700,
-            label: 'Impression facture à crédit',
+            label: 'Vente avec facture créance',
             onPressed: () {
               if (isloading) return;
               creanceData();

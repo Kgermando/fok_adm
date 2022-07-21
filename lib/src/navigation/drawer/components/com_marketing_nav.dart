@@ -307,6 +307,7 @@ class _ComMarketingState extends State<ComMarketing> {
                               context, ComMarketingRoutes.comMarketingcart);
                           // Navigator.of(context).pop();
                         }),
+                    if (userRole <= 2)
                     DrawerWidget(
                         selected: widget.pageCurrente ==
                             ComMarketingRoutes
@@ -322,6 +323,7 @@ class _ComMarketingState extends State<ComMarketing> {
                                   .comMarketingHistoryRavitaillement);
                           // Navigator.of(context).pop();
                         }),
+                    if (userRole <= 2)
                     DrawerWidget(
                         selected: widget.pageCurrente ==
                             ComMarketingRoutes.comMarketingHistoryLivraison,

@@ -135,7 +135,7 @@ class _DetailCartState extends State<DetailCart> {
   }
 
   Widget dataWidget(CartModel cart) {
-    final headline6 = Theme.of(context).textTheme.headline6;
+    final bodyLarge = Theme.of(context).textTheme.bodyLarge;
     return Padding(
       padding: const EdgeInsets.all(p10),
       child: Column(
@@ -147,12 +147,12 @@ class _DetailCartState extends State<DetailCart> {
                 flex: 1,
                 child: Text('Produit :',
                     textAlign: TextAlign.start,
-                    style: headline6!.copyWith(fontWeight: FontWeight.bold)),
+                    style: bodyLarge!.copyWith(fontWeight: FontWeight.bold)),
               ),
               Expanded(
                 flex: 3,
                 child: SelectableText(cart.idProductCart,
-                    textAlign: TextAlign.start, style: headline6),
+                    textAlign: TextAlign.start, style: bodyLarge),
               )
             ],
           ),
@@ -165,16 +165,19 @@ class _DetailCartState extends State<DetailCart> {
                 flex: 1,
                 child: Text('Quantités :',
                     textAlign: TextAlign.start,
-                    style: headline6.copyWith(fontWeight: FontWeight.bold)),
+                    style: bodyLarge.copyWith(fontWeight: FontWeight.bold)),
               ),
               Expanded(
                 flex: 3,
                 child: Text(
                     '${NumberFormat.decimalPattern('fr').format(double.parse(cart.quantityCart))} ${cart.unite}',
                    textAlign: TextAlign.start,
-                    style: headline6),
+                    style: bodyLarge),
               ),
             ],
+          ),
+          Divider(
+            color: Colors.amber.shade700,
           ),
           Row(
             children: [
@@ -183,7 +186,7 @@ class _DetailCartState extends State<DetailCart> {
                 child: Text('Prix unitaire :',
                     textAlign: TextAlign.start,
                     style:
-                        headline6.copyWith(fontWeight: FontWeight.bold)),
+                        bodyLarge.copyWith(fontWeight: FontWeight.bold)),
               ),
               (double.parse(cart.quantityCart) >=
                       double.parse(cart.qtyRemise))
@@ -192,7 +195,7 @@ class _DetailCartState extends State<DetailCart> {
                     child: Text(
                         '${NumberFormat.decimalPattern('fr').format(double.parse(cart.remise))} x ${NumberFormat.decimalPattern('fr').format(double.parse(cart.quantityCart))} ${cart.unite}',
                         textAlign: TextAlign.start,
-                          style: headline6
+                          style: bodyLarge
                       ),
                   )
                   : Expanded(
@@ -200,7 +203,7 @@ class _DetailCartState extends State<DetailCart> {
                     child: Text(
                         '${NumberFormat.decimalPattern('fr').format(double.parse(cart.priceCart))} x ${NumberFormat.decimalPattern('fr').format(double.parse(cart.quantityCart))} ${cart.unite}',
                         textAlign: TextAlign.start,
-                        style: headline6,
+                        style: bodyLarge,
                       ),
                   ),
             ],
@@ -229,16 +232,15 @@ class _DetailCartState extends State<DetailCart> {
         child: Column(
           children: [
             Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 const Text('Montant à payé',
                     style: TextStyle(fontWeight: FontWeight.w700, fontSize: 20),
-                    overflow: TextOverflow.ellipsis),
-                const Spacer(),
+                    overflow: TextOverflow.ellipsis), 
                 Text(
                     '${NumberFormat.decimalPattern('fr').format(sum)} \$',
                     style: TextStyle(
-                        fontWeight: FontWeight.w500, fontSize: 20, color: Colors.red.shade700),
-                    overflow: TextOverflow.ellipsis),
+                        fontWeight: FontWeight.bold, fontSize: 20, color: Colors.red.shade700)),
               ],
             ),
           ],
