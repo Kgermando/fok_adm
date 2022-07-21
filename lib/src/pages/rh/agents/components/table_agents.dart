@@ -124,10 +124,6 @@ class _TableAgentsState extends State<TableAgents> {
           },
         ),
       ),
-      createFooter: (stateManager) {
-        stateManager.setPageSize(40, notify: false); // default 40
-        return PlutoPagination(stateManager);
-      },
     );
   }
 

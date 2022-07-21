@@ -46,6 +46,12 @@ class Dropdown {
     'Commercial et Marketing',
     'Logistique'
   ];
+  List<String> departementBudget = [ 
+    'Ressources Humaines',
+    'Exploitations',
+    'Commercial et Marketing',
+    'Logistique'
+  ];
 
   List<String> typeContrat = ['CDI', 'CDD'];
 

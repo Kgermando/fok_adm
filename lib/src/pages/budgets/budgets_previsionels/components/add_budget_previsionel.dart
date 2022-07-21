@@ -26,7 +26,7 @@ class _AddBudgetPrevionelState extends State<AddBudgetPrevionel> {
   final ScrollController _controllerScroll = ScrollController();
   final _formKey = GlobalKey<FormState>();
   bool isLoading = false;
-  final List<String> departementList = Dropdown().departement;
+  final List<String> departementList = Dropdown().departementBudget;
   DateTimeRange? dateRange;
 
   String? departement;

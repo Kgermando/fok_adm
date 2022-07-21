@@ -698,7 +698,13 @@ class _DetailAgentPageState extends State<DetailAgentPage> {
                           // isLoading == true;
                           setState(() {
                             statutAgent = val;
-                            if (statutAgent == true) {
+                            String vrai = '';
+                            if (statutAgent) {
+                              vrai = 'true';
+                            } else {
+                              vrai = 'false';
+                            }
+                            if (vrai == 'true') {
                               createUser(
                                   agentModel.nom,
                                   agentModel.prenom,
@@ -711,7 +717,7 @@ class _DetailAgentPageState extends State<DetailAgentPage> {
                                   agentModel.role);
                               updateAgent(agentModel);
                               // isLoading == false;
-                            } else {
+                            } else if(vrai == 'false') {
                               deleteUser(agentModel);
                               updateAgent(agentModel);
                               // isLoading == false;
@@ -814,11 +820,11 @@ class _DetailAgentPageState extends State<DetailAgentPage> {
 
   // Delete user login accès
   Future<void> deleteUser(AgentModel agentModel) async {
-    final users = userList
+    final userId = userList
         .where((element) => element.matricule == agentModel.matricule)
         .map((e) => e.id)
-        .toList();
-    await UserApi().deleteData(users.first!);
+        .first;
+    await UserApi().deleteData(userId!);
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
       content: const Text("Suppression accès agent succès!"),
       backgroundColor: Colors.red[700],
